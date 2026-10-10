@@ -10,6 +10,36 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class DifferentToTests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder,];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.DoesNotComplyWith(response => response.HasStatusCode().DifferentTo(HttpStatusCode.NotFound))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have status code 404 NotFound for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder,];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasStatusCode().DifferentTo(HttpStatusCode.OK)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have status code different to 200 OK for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenStatusCodeDiffersFromExpected_ShouldSucceed()
 			{
 				HttpStatusCode unexpected = HttpStatusCode.OK;

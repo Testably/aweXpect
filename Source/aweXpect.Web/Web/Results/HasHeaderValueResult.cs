@@ -41,8 +41,8 @@ public class HasHeaderValueResult<TType, TThat>
 	public StringEqualityResult<TType, TThat> WithValue(string? expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		_expectationBuilder.And("").AddConstraint((_, grammars) =>
-			new WithHeaderValueConstraint("the value", grammars, expected, _headerValueAccessor, options));
+		_expectationBuilder.And("").AddConstraint((it, grammars) =>
+			new WithHeaderValueConstraint(it, grammars, expected, _headerValueAccessor, options));
 		return new StringEqualityResult<TType, TThat>(_expectationBuilder, _returnValue, options);
 	}
 
@@ -118,10 +118,14 @@ public class HasHeaderValueResult<TType, TThat>
 			return this;
 		}
 
+		/// <remarks>
+		///     The text continues the one of the header, which carries the negation and the number of the subject, like
+		///     the member expectations of <c>Whose</c> do.
+		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(" whose value ");
-			stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+			stringBuilder.Append(options.GetExpectation(expected, ExpectationGrammars.Active));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -132,22 +136,23 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 			else if (_headerValues.Length != 1)
 			{
-				stringBuilder.Append("the header contained ").Append(_headerValues.Length).Append(" values ");
+				stringBuilder.Append(It).Append(" had ").Append(_headerValues.Length).Append(" header values ");
 				Formatter.Format(stringBuilder, _headerValues);
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _headerValues[0], expected));
+				AppendValueFailure(stringBuilder);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(" whose value ");
-			stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
-		}
+			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> AppendValueFailure(stringBuilder);
+
+		private void AppendValueFailure(StringBuilder stringBuilder)
+			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "header value", Grammars, _headerValues?[0],
+				expected));
 	}
 }

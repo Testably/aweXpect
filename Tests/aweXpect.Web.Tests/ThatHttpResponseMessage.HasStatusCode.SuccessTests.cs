@@ -9,6 +9,20 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class SuccessTests
 		{
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithStatusCode(HttpStatusCode.NotFound),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasStatusCode().Success()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have a success status code (2xx) for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
 			[Theory]
 			[MemberData(nameof(SuccessStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
 			public async Task WhenStatusCodeIsExpected_ShouldSucceed(HttpStatusCode statusCode)

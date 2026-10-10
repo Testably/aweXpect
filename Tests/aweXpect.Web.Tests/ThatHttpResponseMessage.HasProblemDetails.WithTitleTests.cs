@@ -9,6 +9,32 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithTitleTests
 		{
 			[Fact]
+			public async Task WhenTitleIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("foo").WithTitle("bar");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithTitle cannot be specified more than once.")
+					.Because("the second title would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenTitleIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("foo").WithStatus(500).WithTitle("bar");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithTitle cannot be specified more than once.")
+					.Because("the second title would silently replace the first one");
+			}
+
+			[Fact]
 			public async Task WhenTitleIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;

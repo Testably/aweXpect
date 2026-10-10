@@ -46,7 +46,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is an absolute URI");
+			=> stringBuilder.Append(Grammars.Verb("is an absolute URI", "are absolute URIs"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -55,7 +55,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not an absolute URI");
+			=> stringBuilder.Append(Grammars.Verb("is not an absolute URI", "are not absolute URIs"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

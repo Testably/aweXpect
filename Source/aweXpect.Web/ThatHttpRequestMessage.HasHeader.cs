@@ -76,19 +76,28 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has ").Append(expected.IndefiniteArticleForHeader()).Append(" `").Append(expected)
-				.Append("` header");
+		{
+			stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(expected.IndefiniteArticleForHeader()).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" header");
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not contain the expected header");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have ").Append(expected.IndefiniteArticleForHeader()).Append(" `")
-				.Append(expected).Append("` header");
+		{
+			stringBuilder.Append(Grammars.Verb("does not have ", "do not have "))
+				.Append(expected.IndefiniteArticleForHeader()).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" header");
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" did contain the `").Append(expected).Append("` header: ");
+			stringBuilder.Append(It).Append(" did contain the ");
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" header: ");
 			Formatter.Format(stringBuilder, _foundHeader);
 		}
 	}

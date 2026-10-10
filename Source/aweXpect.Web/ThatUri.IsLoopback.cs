@@ -46,7 +46,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("references the local host");
+			=> stringBuilder.Append(Grammars.Verb("references ", "reference ")).Append("the local host");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -55,7 +55,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not reference the local host");
+			=> stringBuilder.Append(Grammars.Verb("does not ", "do not ")).Append("reference the local host");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

@@ -36,7 +36,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-some-other-key` header whose value is equal to "some header",
+					             has an "x-some-other-key" header whose value is equal to "some header",
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -60,8 +60,8 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-my-header` header whose value is equal to "some other header",
-					             but the value was "some header", which differs at index 5:
+					             has an "x-my-header" header whose value is equal to "some other header",
+					             but it had header value "some header", which differs at index 5:
 					                     ↓ (actual)
 					               "some header"
 					               "some other header"
@@ -101,7 +101,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-some-other-key` header whose value is equal to "some header",
+					             has an "x-some-other-key" header whose value is equal to "some header",
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -121,9 +121,47 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-my-key` header whose value is equal to "foo",
+					             has an "x-my-key" header whose value is equal to "foo",
 					             but it was <null>
 					             """);
+			}
+		}
+
+		public sealed class NegatedWithValueTests
+		{
+			[Fact]
+			public async Task WhenHeaderExistsAndValueDiffers_ShouldSucceed()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "some header");
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader("x-my-header").WithValue("some other header"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenHeaderExistsAndValueIsEqual_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "some header");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasHeader("x-my-header").WithValue("some header"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have an "x-my-header" header whose value is equal to "some header",
+					             but it did contain the "x-my-header" header: ["some header"] and had header value "some header"
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: some header
+					             """)
+					.Because("the negation applies to the header as a whole, like the negated text of a `Whose`");
 			}
 		}
 	}

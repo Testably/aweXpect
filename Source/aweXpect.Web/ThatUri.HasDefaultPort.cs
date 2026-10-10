@@ -46,7 +46,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has the default port for the used scheme");
+			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append("the default port for the used scheme");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -55,7 +55,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have the default port for the used scheme");
+			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append("the default port for the used scheme");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

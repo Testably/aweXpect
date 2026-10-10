@@ -29,8 +29,7 @@ public class StatusCodeResult(
 						expected,
 						mapper,
 						(a, e) => a.Equals(e),
-						$"has status code {Formatter.Format(expected)}",
-						$"does not have status code {Formatter.Format(expected)}")),
+						$"status code {Formatter.Format(expected)}")),
 			source);
 
 	/// <summary>
@@ -46,8 +45,8 @@ public class StatusCodeResult(
 						unexpected,
 						mapper,
 						(a, u) => !a.Equals(u),
-						$"has status code different to {Formatter.Format(unexpected)}",
-						$"has status code {Formatter.Format(unexpected)}")),
+						$"status code different to {Formatter.Format(unexpected)}",
+						$"status code {Formatter.Format(unexpected)}")),
 			source);
 
 	/// <summary>
@@ -62,8 +61,7 @@ public class StatusCodeResult(
 						null,
 						mapper,
 						(a, _) => (int)a is >= 200 and < 300,
-						"has a success status code (2xx)",
-						"does not have a success status code (2xx)")),
+						"a success status code (2xx)")),
 			source);
 
 	/// <summary>
@@ -78,8 +76,7 @@ public class StatusCodeResult(
 						null,
 						mapper,
 						(a, _) => (int)a is >= 300 and < 400,
-						"has a redirection status code (3xx)",
-						"does not have a redirection status code (3xx)")),
+						"a redirection status code (3xx)")),
 			source);
 
 	/// <summary>
@@ -94,8 +91,7 @@ public class StatusCodeResult(
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 500,
-						"has a client error status code (4xx)",
-						"does not have a client error status code (4xx)")),
+						"a client error status code (4xx)")),
 			source);
 
 	/// <summary>
@@ -110,8 +106,7 @@ public class StatusCodeResult(
 						null,
 						mapper,
 						(a, _) => (int)a is >= 500 and < 600,
-						"has a server error status code (5xx)",
-						"does not have a server error status code (5xx)")),
+						"a server error status code (5xx)")),
 			source);
 
 	/// <summary>
@@ -126,8 +121,7 @@ public class StatusCodeResult(
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 600,
-						"has an error status code (4xx or 5xx)",
-						"does not have an error status code (4xx or 5xx)")),
+						"an error status code (4xx or 5xx)")),
 			source);
 
 	internal sealed class PropertyConstraint(
@@ -137,7 +131,7 @@ public class StatusCodeResult(
 		Func<HttpResponseMessage, HttpStatusCode> mapper,
 		Func<HttpStatusCode, HttpStatusCode?, bool> condition,
 		string expectation,
-		string negatedExpectation)
+		string? hasExpectationWhenNegated = null)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage?>(it, grammars),
 			IValueConstraint<HttpResponseMessage?>
 	{
@@ -164,7 +158,7 @@ public class StatusCodeResult(
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectation);
+			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(expectation);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -173,7 +167,9 @@ public class StatusCodeResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(negatedExpectation);
+			=> stringBuilder.Append(hasExpectationWhenNegated is null
+				? Grammars.Verb("does not have ", "do not have ") + expectation
+				: Grammars.Verb("has ", "have ") + hasExpectationWhenNegated);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

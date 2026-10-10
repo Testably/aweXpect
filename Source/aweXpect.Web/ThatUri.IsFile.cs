@@ -46,7 +46,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is a file URI");
+			=> stringBuilder.Append(Grammars.Verb("is a file URI", "are file URIs"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -55,7 +55,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not a file URI");
+			=> stringBuilder.Append(Grammars.Verb("is not a file URI", "are not file URIs"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

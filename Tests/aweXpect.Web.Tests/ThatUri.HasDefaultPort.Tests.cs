@@ -7,6 +7,21 @@ public sealed partial class ThatUri
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				Uri[] subjects = [new Uri("https://awexpect.com:8080/"),];
+
+				async Task Act()
+					=> await That(new { Uris = subjects, })
+						.Whose(x => x.Uris, items => items.All()
+							.ComplyWith(item => item.HasDefaultPort()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Uris have the default port for the used scheme for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;

@@ -9,6 +9,21 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpRequestMessage[] subjects = [RequestBuilder.WithHeader("x-my-header", "foo"),];
+
+				async Task Act()
+					=> await That(new { Requests = subjects, })
+						.Whose(x => x.Requests, items => items.All()
+							.ComplyWith(item => item.DoesNotHaveHeader("x-my-header")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Requests do not have an "x-my-header" header for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;
@@ -37,7 +52,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have {article} `{name}` header,
+					              does not have {article} "{name}" header,
 					              but it was <null>
 					              """);
 			}
@@ -69,8 +84,8 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have an `x-my-header` header,
-					             but it did contain the `x-my-header` header: ["some header"]
+					             does not have an "x-my-header" header,
+					             but it did contain the "x-my-header" header: ["some header"]
 
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1
@@ -92,7 +107,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have an `x-my-header` header,
+					             does not have an "x-my-header" header,
 					             but it was <null>
 					             """);
 			}

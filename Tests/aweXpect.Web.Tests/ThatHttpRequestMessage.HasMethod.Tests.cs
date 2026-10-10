@@ -9,6 +9,36 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
+			{
+				HttpRequestMessage[] subjects = [RequestBuilder,];
+
+				async Task Act()
+					=> await That(new { Requests = subjects, })
+						.Whose(x => x.Requests, items => items.All()
+							.ComplyWith(item => item.DoesNotComplyWith(request => request.HasMethod(HttpMethod.Head))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Requests do not have a HEAD method for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpRequestMessage[] subjects = [RequestBuilder,];
+
+				async Task Act()
+					=> await That(new { Requests = subjects, })
+						.Whose(x => x.Requests, items => items.All()
+							.ComplyWith(item => item.HasMethod(HttpMethod.Get)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Requests have a GET method for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;

@@ -9,6 +9,32 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithInstanceTests
 		{
 			[Fact]
+			public async Task WhenInstanceIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance("foo").WithInstance("bar");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithInstance cannot be specified more than once.")
+					.Because("the second instance would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenInstanceIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance("foo").WithStatus(500).WithInstance("bar");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithInstance cannot be specified more than once.")
+					.Because("the second instance would silently replace the first one");
+			}
+
+			[Fact]
 			public async Task WhenInstanceIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;

@@ -9,6 +9,21 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder,];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasHeader("x-my-header")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have an "x-my-header" header for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -37,7 +52,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              has {article} `{name}` header,
+					              has {article} "{name}" header,
 					              but it was <null>
 					              """);
 			}
@@ -55,7 +70,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-my-header` header,
+					             has an "x-my-header" header,
 					             but it did not contain the expected header
 
 					             HTTP-Response:
@@ -90,7 +105,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-my-header` header,
+					             has an "x-my-header" header,
 					             but it was <null>
 					             """);
 			}

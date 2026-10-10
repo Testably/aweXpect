@@ -57,7 +57,11 @@ public static partial class ThatHttpRequestMessage
 			=> $"has {Article} {expected} method";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has ").Append(Article).Append(' ').Append(expected).Append(" method");
+		{
+			stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(Article).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" method");
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -66,7 +70,11 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have ").Append(Article).Append(' ').Append(expected).Append(" method");
+		{
+			stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(Article).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" method");
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

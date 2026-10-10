@@ -9,6 +9,36 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
+			{
+				HttpRequestMessage[] subjects = [RequestBuilder,];
+
+				async Task Act()
+					=> await That(new { Requests = subjects, })
+						.Whose(x => x.Requests, items => items.All()
+							.ComplyWith(item => item.DoesNotComplyWith(request => request.HasRequestUri("https://awexpect.com/"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Requests do not have a request URI equal to "https://awexpect.com/" ignoring case for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpRequestMessage[] subjects = [RequestBuilder,];
+
+				async Task Act()
+					=> await That(new { Requests = subjects, })
+						.Whose(x => x.Requests, items => items.All()
+							.ComplyWith(item => item.HasRequestUri("https://example.com/")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Requests have a request URI equal to "https://example.com/" ignoring case for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenExpectedStringIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;
@@ -61,7 +91,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI equal to "https://awexpect.com/",
+					             has a request URI equal to "https://awexpect.com/" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -79,8 +109,8 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI equal to "https://awexpect.com/awexpect.Web",
-					             but it was "https://awexpect.com/" with a length of 21, which is shorter than the expected length of 33 and misses:
+					             has a request URI equal to "https://awexpect.com/awexpect.…" ignoring case,
+					             but it had request URI "https://awexpect.com/" with a length of 21, which is shorter than the expected length of 33 and misses:
 					               "awexpect.Web"
 
 					             HTTP-Request:
@@ -101,8 +131,8 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI equal to "https://awexpect.com/abd",
-					             but it was "https://awexpect.com/ABC", which differs at index 23:
+					             has a request URI equal to "https://awexpect.com/abd" ignoring case,
+					             but it had request URI "https://awexpect.com/ABC", which differs at index 23:
 					                           ↓ (actual)
 					               "…ect.com/ABC"
 					               "…ect.com/abd"
@@ -140,7 +170,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a request URI equal to "https://awexpect.com/",
+					             does not have a request URI equal to "https://awexpect.com/" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -171,7 +201,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a request URI equal to "https://awexpect.com/",
+					             does not have a request URI equal to "https://awexpect.com/" ignoring case,
 					             but it had
 					             
 					             HTTP-Request:

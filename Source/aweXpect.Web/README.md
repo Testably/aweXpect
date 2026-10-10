@@ -106,8 +106,8 @@ await Expect.That(request).HasHeader("Cache-Control").WithValue("max-age=0");
 
 ```text title="Failure message"
 Expected that request
-has a `Cache-Control` header whose value is equal to "max-age=0",
-but the value was "no-cache", which differs at index 0:
+has a "Cache-Control" header whose value is equal to "max-age=0",
+but it had header value "no-cache", which differs at index 0:
    ↓ (actual)
   "no-cache"
   "max-age=0"
@@ -233,7 +233,7 @@ await Expect.That(response).HasContentType("text/plain");
 ```text title="Failure message"
 Expected that response
 has a `Content-Type` header equal to "text/plain",
-but it was "application/json", which differs at index 0:
+but it had content type "application/json", which differs at index 0:
    ↓ (actual)
   "application/json"
   "text/plain"

@@ -7,6 +7,21 @@ public sealed partial class ThatUri
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				Uri[] subjects = [new Uri("http://localhost/"),];
+
+				async Task Act()
+					=> await That(new { Uris = subjects, })
+						.Whose(x => x.Uris, items => items.All()
+							.ComplyWith(item => item.IsNotLoopback()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Uris do not reference the local host for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;

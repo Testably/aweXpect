@@ -10,6 +10,21 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasContentType("application/json")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have a `Content-Type` header equal to "application/json" for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -37,7 +52,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a `Content-Type` header equal to "text/content-type",
-					             but it was "text/other-content-type", which differs at index 5:
+					             but it had content type "text/other-content-type", which differs at index 5:
 					                     ↓ (actual)
 					               "text/other-content-type"
 					               "text/content-type"

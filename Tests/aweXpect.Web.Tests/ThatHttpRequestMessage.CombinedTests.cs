@@ -19,13 +19,13 @@ public sealed partial class ThatHttpRequestMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a string content equal to "bar" and has a request URI equal to "https://example.com/",
-				             but it was "foo", which differs at index 0:
+				             has a string content equal to "bar" and has a request URI equal to "https://example.com/" ignoring case,
+				             but it had string content "foo", which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "bar"
 				                ↑ (expected)
-				             and it was "https://awexpect.com/", which differs at index 8:
+				             and it had request URI "https://awexpect.com/", which differs at index 8:
 				                        ↓ (actual)
 				               "https://awexpect.com/"
 				               "https://example.com/"
@@ -53,7 +53,7 @@ public sealed partial class ThatHttpRequestMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a POST method and has a `y` header,
+				             has a POST method and has a "y" header,
 				             but it was GET and did not contain the expected header
 
 				             HTTP-Request:

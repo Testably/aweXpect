@@ -64,6 +64,7 @@ public class ProblemDetailsOptions
 	public StringEqualityOptions WithTitle(string title)
 	{
 		ThrowHelper.ThrowIfNull(title, nameof(title));
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Title is not null, nameof(WithTitle));
 		Title = title;
 		_parts.Add(() => $"title {Formatter.Format(title)}{_titleOptions}");
 		return _titleOptions;
@@ -74,6 +75,7 @@ public class ProblemDetailsOptions
 	/// </summary>
 	public void WithStatus(int status)
 	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Status is not null, nameof(WithStatus));
 		Status = status;
 		_parts.Add(() => $"status {Formatter.Format(status)}");
 	}
@@ -84,6 +86,7 @@ public class ProblemDetailsOptions
 	public StringEqualityOptions WithDetail(string detail)
 	{
 		ThrowHelper.ThrowIfNull(detail, nameof(detail));
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Detail is not null, nameof(WithDetail));
 		Detail = detail;
 		_parts.Add(() => $"detail {Formatter.Format(detail)}{_detailOptions}");
 		return _detailOptions;
@@ -95,6 +98,7 @@ public class ProblemDetailsOptions
 	public StringEqualityOptions WithInstance(string instance)
 	{
 		ThrowHelper.ThrowIfNull(instance, nameof(instance));
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Instance is not null, nameof(WithInstance));
 		Instance = instance;
 		_parts.Add(() => $"instance {Formatter.Format(instance)}{_instanceOptions}");
 		return _instanceOptions;

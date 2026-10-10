@@ -87,7 +87,7 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a string content ")
+			=> stringBuilder.Append(Grammars.Verb("has a string content ", "have a string content "))
 				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -98,12 +98,12 @@ public static partial class ThatHttpResponseMessage
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _message, expected));
+				stringBuilder.Append(options.GetExtendedMemberFailure(It, "string content", Grammars, _message, expected));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have a string content ")
+			=> stringBuilder.Append(Grammars.Verb("does not have a string content ", "do not have a string content "))
 				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

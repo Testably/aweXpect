@@ -9,6 +9,32 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithDetailTests
 		{
 			[Fact]
+			public async Task WhenDetailIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithDetail("foo").WithDetail("bar");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithDetail cannot be specified more than once.")
+					.Because("the second detail would silently replace the first one");
+			}
+
+			[Fact]
+			public async Task WhenDetailIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithDetail("foo").WithStatus(500).WithDetail("bar");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithDetail cannot be specified more than once.")
+					.Because("the second detail would silently replace the first one");
+			}
+
+			[Fact]
 			public async Task WhenDetailIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;

@@ -58,6 +58,7 @@ public static partial class ThatHttpRequestMessage
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IValueConstraint<HttpRequestMessage>
 	{
+		private readonly StringEqualityOptions _options = new StringEqualityOptions(nameof(expected)).IgnoringCase();
 		private string? _requestUri;
 
 		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
@@ -81,20 +82,15 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("has a request URI equal to ");
-			Formatter.Format(stringBuilder, expected);
-		}
+			=> stringBuilder.Append(Grammars.Verb("has a request URI ", "have a request URI "))
+				.Append(_options.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(new StringEqualityOptions(nameof(expected)).IgnoringCase()
-				.GetExtendedFailure(It, Grammars, _requestUri, expected));
+			=> stringBuilder.Append(_options.GetExtendedMemberFailure(It, "request URI", Grammars, _requestUri, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("does not have a request URI equal to ");
-			Formatter.Format(stringBuilder, expected);
-		}
+			=> stringBuilder.Append(Grammars.Verb("does not have a request URI ", "do not have a request URI "))
+				.Append(_options.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

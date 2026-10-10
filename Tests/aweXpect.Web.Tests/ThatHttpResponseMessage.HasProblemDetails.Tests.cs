@@ -9,6 +9,36 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.DoesNotComplyWith(response => response.HasProblemDetailsContent())));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses do not have a ProblemDetails content for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasProblemDetailsContent()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have a ProblemDetails content with any type for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task ShouldCombineMultipleChecks()
 			{
 				HttpResponseMessage subject = ResponseBuilder

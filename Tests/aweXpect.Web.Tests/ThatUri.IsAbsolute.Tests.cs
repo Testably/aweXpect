@@ -7,6 +7,21 @@ public sealed partial class ThatUri
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				Uri[] subjects = [new Uri("/foo", UriKind.Relative),];
+
+				async Task Act()
+					=> await That(new { Uris = subjects, })
+						.Whose(x => x.Uris, items => items.All()
+							.ComplyWith(item => item.IsAbsolute()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Uris are absolute URIs for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;

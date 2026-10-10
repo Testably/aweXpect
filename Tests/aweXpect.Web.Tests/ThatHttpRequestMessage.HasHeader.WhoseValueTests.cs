@@ -36,7 +36,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-some-other-key` header whose value is equal to "some header",
+					             has an "x-some-other-key" header whose value is equal to "some header",
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -60,7 +60,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-my-header` header whose value is equal to "some other header",
+					             has an "x-my-header" header whose value is equal to "some other header",
 					             but the value was "some header", which differs at index 5:
 					                     ↓ (actual)
 					               "some header"
@@ -98,7 +98,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an `x-my-key` header whose value is empty,
+					             has an "x-my-key" header whose value is empty,
 					             but it was <null>
 					             """);
 			}
@@ -153,8 +153,8 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have an `x-my-header` header whose value is equal to "some header",
-					             but it did contain the `x-my-header` header: ["some header"]
+					             does not have an "x-my-header" header whose value is equal to "some header",
+					             but it did contain the "x-my-header" header: ["some header"]
 					             
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1

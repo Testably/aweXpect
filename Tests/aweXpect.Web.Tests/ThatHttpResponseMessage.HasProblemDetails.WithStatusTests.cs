@@ -9,34 +9,29 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithStatusTests
 		{
 			[Fact]
-			public async Task WhenCheckingStatusDifferentlyTwice_ShouldFail()
+			public async Task WhenStatusIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
-				HttpResponseMessage subject = ResponseBuilder
-					.WithContent("""
-					             {
-					               "type": "my-type",
-					               "status": 500
-					             }
-					             """);
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
 
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(501);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has a ProblemDetails content with any type, status 500 and status 501,
-					             but it had status 500
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithStatus cannot be specified more than once.")
+					.Because("the second status would silently replace the first one");
+			}
 
-					             HTTP-Response:
-					               200 OK HTTP/1.1
-					                 Content-Type: text/plain; charset=utf-8
-					                 Content-Length: *
-					               {
-					                 "type": "my-type",
-					                 "status": 500
-					               }
-					             """).AsWildcard();
+			[Fact]
+			public async Task WhenStatusIsSpecifiedTwiceAroundTitle_ShouldThrowInvalidOperationException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithTitle("foo").WithStatus(501);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("WithStatus cannot be specified more than once.")
+					.Because("the second status would silently replace the first one");
 			}
 
 			[Theory]
@@ -84,7 +79,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(500);
+					=> await That(subject).HasProblemDetailsContent().WithStatus(500);
 
 				await That(Act).DoesNotThrow();
 			}

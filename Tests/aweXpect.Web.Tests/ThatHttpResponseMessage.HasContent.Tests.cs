@@ -9,6 +9,36 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.DoesNotComplyWith(response => response.HasContent("foo"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses do not have a string content equal to "foo" for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasContent("bar")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""*whose Responses have a string content equal to "bar" for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -35,7 +65,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a string content equal to "other content",
-					             but it was "some content", which differs at index 0:
+					             but it had string content "some content", which differs at index 0:
 					                ↓ (actual)
 					               "some content"
 					               "other content"

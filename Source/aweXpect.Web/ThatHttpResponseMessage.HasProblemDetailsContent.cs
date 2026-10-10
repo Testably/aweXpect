@@ -210,13 +210,14 @@ public static partial class ThatHttpResponseMessage
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
+			stringBuilder.Append(Grammars.Verb("has a ProblemDetails content with ", "have a ProblemDetails content with "));
 			if (expectedType is null)
 			{
-				stringBuilder.Append("has a ProblemDetails content with any type");
+				stringBuilder.Append("any type");
 			}
 			else
 			{
-				stringBuilder.Append("has a ProblemDetails content with type ");
+				stringBuilder.Append("type ");
 				Formatter.Format(stringBuilder, expectedType);
 				stringBuilder.Append(typeOptions);
 			}
@@ -240,13 +241,10 @@ public static partial class ThatHttpResponseMessage
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (expectedType is null)
+			stringBuilder.Append(Grammars.Verb("does not have a ProblemDetails content", "do not have a ProblemDetails content"));
+			if (expectedType is not null)
 			{
-				stringBuilder.Append("does not have a ProblemDetails content");
-			}
-			else
-			{
-				stringBuilder.Append("does not have a ProblemDetails content with type ");
+				stringBuilder.Append(" with type ");
 				Formatter.Format(stringBuilder, expectedType);
 				stringBuilder.Append(typeOptions);
 			}
