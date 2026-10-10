@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
-      {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          173.47869953087397,
           372.90322062174477,
           281.60245819091796,
           181.4545805624553,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           132.31002790133158,
           119.54941979476384,
           141.5231162217947,
-          103.79578261375427
+          103.79578261375427,
+          69.7014434848513
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -425,7 +425,6 @@ window.BENCHMARK_DATA = {
           800,
           800,
           800,
-          800,
           392,
           392,
           392,
@@ -467,6 +466,7 @@ window.BENCHMARK_DATA = {
           424,
           424,
           424,
+          440,
           440,
           440,
           440
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          133.22139133725847,
           237.84199518423813,
           204.47215623514992,
           145.49324812207902,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           243.90657527630145,
           197.97437148827774,
           285.3504601160685,
-          193.90913287230902
+          193.90913287230902,
+          135.8589697519938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -646,7 +646,8 @@ window.BENCHMARK_DATA = {
           216.46895374570573,
           154.0956160545349,
           208.96469957033793,
-          153.9961994489034
+          153.9961994489034,
+          110.82983688797269
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -658,6 +659,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -711,12 +713,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
-      {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
@@ -1009,10 +1005,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -1061,14 +1062,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          146925.58851841517,
           290380.4139927455,
           220585.15937151227,
           148709.5198625837,
@@ -1117,7 +1118,8 @@ window.BENCHMARK_DATA = {
           111802.16166992187,
           80074.57087053571,
           119150.68962402343,
-          81956.30396379743
+          81956.30396379743,
+          59997.858577473955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1129,7 +1131,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          86137,
           86138,
           86138,
           86138,
@@ -1176,6 +1177,7 @@ window.BENCHMARK_DATA = {
           16424,
           16424,
           16424,
+          16440,
           16440,
           16440,
           16440
@@ -1193,7 +1195,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1254349.052734375,
           2515918.62109375,
           1808925.5673177084,
           1295520.78984375,
@@ -1242,7 +1243,8 @@ window.BENCHMARK_DATA = {
           2760839.3565104166,
           1880955.3194010416,
           2741231.515625,
-          1781619.519252232
+          1781619.519252232,
+          1331497.33828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1254,7 +1256,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841648,
           4841647,
@@ -1303,6 +1304,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841651,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -1355,7 +1357,8 @@ window.BENCHMARK_DATA = {
           206896.12636021205,
           162790.6004720052,
           205056.8501325335,
-          149215.22001953126
+          149215.22001953126,
+          103256.24863688152
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1367,6 +1370,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1420,12 +1424,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
-      {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
@@ -1718,10 +1716,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -1770,14 +1773,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          239.24562018712362,
           532.9993427276611,
           388.9199968973796,
           284.65417126814526,
@@ -1826,7 +1829,8 @@ window.BENCHMARK_DATA = {
           295.656778049469,
           223.96749958992004,
           287.59080832799276,
-          223.23441696166992
+          223.23441696166992,
+          146.93372322718304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1843,7 +1847,6 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
-          1104,
           640,
           640,
           640,
@@ -1885,6 +1888,7 @@ window.BENCHMARK_DATA = {
           616,
           616,
           616,
+          632,
           632,
           632,
           632
@@ -1902,7 +1906,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          261.75292506217954,
           480.38019987742103,
           400.45877707799275,
           268.01146796771457,
@@ -1951,7 +1954,8 @@ window.BENCHMARK_DATA = {
           525.025086743491,
           396.0151030222575,
           479.5880442301432,
-          391.89165725708006
+          391.89165725708006,
+          273.0722014427185
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2064,7 +2068,8 @@ window.BENCHMARK_DATA = {
           430.08137822151184,
           303.75583696365356,
           402.768706035614,
-          302.34659611384075
+          302.34659611384075,
+          206.35649002393086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2076,6 +2081,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2128,12 +2134,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
       {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
@@ -2427,10 +2427,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -2479,14 +2484,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          192.22235318592615,
           375.72293860117594,
           303.6057075353769,
           182.40172738295334,
@@ -2535,7 +2540,8 @@ window.BENCHMARK_DATA = {
           159.1996108373006,
           116.29780764239175,
           154.54549403190612,
-          119.91555163065593
+          119.91555163065593,
+          78.89571855862935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2552,7 +2558,6 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
-          952,
           496,
           496,
           496,
@@ -2594,6 +2599,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544,
           544,
           544
@@ -2611,7 +2617,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          141.10517188707988,
           240.2495800336202,
           191.07920319239298,
           134.61963035265606,
@@ -2660,7 +2665,8 @@ window.BENCHMARK_DATA = {
           275.2909729003906,
           192.52232818603517,
           258.54078238351,
-          191.88036661148072
+          191.88036661148072,
+          126.45058309237162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2773,7 +2779,8 @@ window.BENCHMARK_DATA = {
           260.9803979056222,
           186.36010232993536,
           236.85818397204082,
-          196.27047096888225
+          196.27047096888225,
+          122.47751767294747
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2785,6 +2792,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2837,12 +2845,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
       {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
@@ -3136,10 +3138,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -3188,14 +3195,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          224.305471438628,
           559.1372151692708,
           392.96149935041154,
           243.23858434813363,
@@ -3244,7 +3251,8 @@ window.BENCHMARK_DATA = {
           245.2147097905477,
           216.66294536590576,
           267.34504543031966,
-          204.66171051661175
+          204.66171051661175,
+          138.27861620585125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3261,7 +3269,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           624,
           624,
           624,
@@ -3303,6 +3310,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          608,
           608,
           608,
           608
@@ -3320,7 +3328,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          621.1622296651204,
           1159.2521332332067,
           882.7562196731567,
           597.8788195610047,
@@ -3369,7 +3376,8 @@ window.BENCHMARK_DATA = {
           1238.8357446988423,
           911.6847690582275,
           1226.9922340938024,
-          935.7536647160848
+          935.7536647160848,
+          646.8799695014953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3482,7 +3490,8 @@ window.BENCHMARK_DATA = {
           349.1631532033285,
           250.24395599365235,
           320.66239951207086,
-          252.89316657611303
+          252.89316657611303,
+          187.96807653563363
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3494,6 +3503,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3546,12 +3556,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
       {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
@@ -3845,10 +3849,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -3897,14 +3906,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1450.9872616254365,
           2691.866480255127,
           1944.4431457519531,
           1419.1521091461182,
@@ -3953,7 +3962,8 @@ window.BENCHMARK_DATA = {
           642.7825833002727,
           495.1894598007202,
           641.9548854192097,
-          503.2129665374756
+          503.2129665374756,
+          345.8838263193766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3970,7 +3980,6 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2896,
-          2896,
           2576,
           2576,
           2576,
@@ -4012,6 +4021,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896,
           896,
           896
@@ -4029,7 +4039,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          728.2218722025553,
           1250.2981399536134,
           1062.8478544871011,
           646.5440812792096,
@@ -4078,7 +4087,8 @@ window.BENCHMARK_DATA = {
           1380.0243453979492,
           1017.1524626413981,
           1273.6667727152505,
-          1033.9537096659342
+          1033.9537096659342,
+          731.7685546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4191,7 +4201,8 @@ window.BENCHMARK_DATA = {
           645.1081802504403,
           504.1748679478963,
           634.1702184041341,
-          517.6308202062335
+          517.6308202062335,
+          343.8891352585384
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4203,6 +4214,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4255,12 +4267,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
       {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
@@ -4554,10 +4560,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -4606,14 +4617,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1730.6978145326887,
           3242.6715207781112,
           2463.241643172044,
           1690.9833320617677,
@@ -4662,7 +4673,8 @@ window.BENCHMARK_DATA = {
           1116.2271496909004,
           784.9643902778625,
           1051.5613887786865,
-          788.6019387563069
+          788.6019387563069,
+          562.4833726565043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4679,7 +4691,6 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           3176,
-          3176,
           2816,
           2816,
           2816,
@@ -4721,6 +4732,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304,
           1304,
           1304
@@ -4738,7 +4750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11316.766002948467,
           26028.70656738281,
           15590.14028676351,
           10010.612716674805,
@@ -4787,7 +4798,8 @@ window.BENCHMARK_DATA = {
           28014.6536325308,
           15738.152657645089,
           27330.002638596754,
-          15811.865844726562
+          15811.865844726562,
+          10708.345770263672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4810,7 +4822,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33465,
@@ -4838,6 +4849,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
@@ -4900,7 +4912,8 @@ window.BENCHMARK_DATA = {
           799.8754990259806,
           584.2545240402221,
           772.756406656901,
-          596.6405504090445
+          596.6405504090445,
+          401.6827799592699
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4912,6 +4925,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4965,12 +4979,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
-      {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 16:43:01 2026 \u002B0200",
@@ -5263,10 +5271,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -5315,14 +5328,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2672.734001977103,
           5520.70621287028,
           3987.009569440569,
           2820.00571568807,
@@ -5371,7 +5384,8 @@ window.BENCHMARK_DATA = {
           783.9828212102254,
           556.5622659410749,
           722.856612141927,
-          521.4267307428213
+          521.4267307428213,
+          369.14770089662994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5388,7 +5402,6 @@ window.BENCHMARK_DATA = {
           7472,
           7472,
           7472,
-          7472,
           7000,
           7000,
           7000,
@@ -5430,6 +5443,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840,
           1840,
           1840
@@ -5447,7 +5461,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29970.870603434243,
           84091.42727225168,
           53261.49040120443,
           29120.87935093471,
@@ -5496,7 +5509,8 @@ window.BENCHMARK_DATA = {
           84426.20920410156,
           52025.71477801983,
           82344.41915189303,
-          50964.05476888021
+          50964.05476888021,
+          27934.408272879464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5508,7 +5522,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5256,
           5256,
@@ -5557,6 +5570,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -5572,12 +5586,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "e1449d7d5e7a45753707caf534e40d6fcce08dc1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 15:59:01 2026 \u002B0200",
-        "message": "ci: run the full mutation tests only nightly (#1573)"
-      },
       {
         "sha": "ec5a355e06e15d436626ffd4615b62b4ed0b7254",
         "author": "Valentin Breu\u00DF",
@@ -5871,10 +5879,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
         "message": "chore: ship the v3.0.0 API (#1779)"
+      },
+      {
+        "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
+        "message": "docs: lead the \u0022Why aweXpect?\u0022 tabs with the extension packages (#1780)"
       }
     ],
     "labels": [
-      "e1449d7d",
       "ec5a355e",
       "6f9d4282",
       "62b5cca4",
@@ -5923,14 +5936,14 @@ window.BENCHMARK_DATA = {
       "fe613c6c",
       "5ef58e1e",
       "28acb579",
-      "75406bf0"
+      "75406bf0",
+      "fa595d47"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          272.6125044482095,
           540.926056098938,
           423.7307744026184,
           260.7688136100769,
@@ -5979,7 +5992,8 @@ window.BENCHMARK_DATA = {
           256.67651211420696,
           192.95787699405963,
           266.3875561396281,
-          193.56110445658365
+          193.56110445658365,
+          127.1776643594106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5996,7 +6010,6 @@ window.BENCHMARK_DATA = {
           1176,
           1176,
           1176,
-          1176,
           712,
           712,
           712,
@@ -6038,6 +6051,7 @@ window.BENCHMARK_DATA = {
           672,
           672,
           672,
+          688,
           688,
           688,
           688
@@ -6055,7 +6069,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9999.445686848958,
           30943.731740315754,
           14791.289885384696,
           9445.914090983073,
@@ -6104,7 +6117,8 @@ window.BENCHMARK_DATA = {
           31265.845668247766,
           15174.909043532152,
           31606.306352887834,
-          15129.55615234375
+          15129.55615234375,
+          9928.43082784017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6116,7 +6130,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5615,
           5615,
@@ -6165,6 +6178,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -6217,7 +6231,8 @@ window.BENCHMARK_DATA = {
           244.78331689834596,
           181.11447252546037,
           243.9997957433973,
-          183.17132539749144
+          183.17132539749144,
+          119.09006812022282
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6229,6 +6244,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
