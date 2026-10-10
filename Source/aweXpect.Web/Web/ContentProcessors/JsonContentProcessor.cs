@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -13,9 +14,9 @@ namespace aweXpect.Web.ContentProcessors;
 /// </summary>
 public class JsonContentProcessor : IContentProcessor
 {
-	private static readonly JsonSerializerOptions SerializerOptions = new()
+	private static readonly JsonWriterOptions WriterOptions = new()
 	{
-		WriteIndented = true,
+		Indented = true,
 	};
 
 	/// <inheritdoc cref="IContentProcessor.AppendContentInfo(StringBuilder, HttpContent, string, CancellationToken)" />
@@ -49,7 +50,13 @@ public class JsonContentProcessor : IContentProcessor
 				{
 					AllowTrailingCommas = true,
 				});
-			string? prettifiedJson = JsonSerializer.Serialize(jsonDocument, SerializerOptions);
+			using MemoryStream stream = new();
+			using (Utf8JsonWriter writer = new(stream, WriterOptions))
+			{
+				jsonDocument.WriteTo(writer);
+			}
+
+			string prettifiedJson = Encoding.UTF8.GetString(stream.ToArray());
 
 			messageBuilder.AppendLine(prettifiedJson.Indent(indentation));
 		}
