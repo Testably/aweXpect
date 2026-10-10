@@ -65,17 +65,17 @@ public static partial class ThatJsonString
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is valid JSON");
+			=> stringBuilder.Append(Grammars.Verb("is valid JSON", "are valid JSON"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" could not be parsed: ").Append(_deserializationError);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is no valid JSON");
+			=> stringBuilder.Append(Grammars.Verb("is not valid JSON", "are not valid JSON"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 		}
 	}

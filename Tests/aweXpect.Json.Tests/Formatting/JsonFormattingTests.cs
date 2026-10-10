@@ -59,16 +59,22 @@ public class JsonFormattingTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is no object or $.foo does not match 1,
-				             but it was in {
+				             is not an object or $.foo does not match 1,
+				             but it was
+
+				             Actual:
+				             {
 				               "foo": 1
 				             }
 				             """);
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is no object or $.foo does not match 1,
-				             but it was in {
+				             is not an object or $.foo does not match 1,
+				             but it was
+
+				             Actual:
+				             {
 				               "foo": 1
 				             }
 				             """)

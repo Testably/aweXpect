@@ -78,7 +78,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              matches null exactly,
-					              but it differed as $ was object {json} instead of Null
+					              but it differed as $ was object {json} instead of <null>
 					              """);
 			}
 
@@ -119,7 +119,10 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected exactly,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -137,7 +140,10 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected exactly,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -155,7 +161,10 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected exactly,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -173,7 +182,10 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match null exactly,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -191,7 +203,10 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected exactly,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 		}
@@ -419,7 +434,7 @@ public sealed partial class ThatJsonElement
 					             {
 					             	bar = 2,
 					             } exactly,
-					             but it differed as $.foo had unexpected Null
+					             but it differed as $.foo had unexpected <null>
 					             """);
 			}
 

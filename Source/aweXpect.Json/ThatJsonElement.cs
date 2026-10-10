@@ -48,9 +48,19 @@ public static partial class ThatJsonElement
 			return this;
 		}
 
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Grammars.IsNegated() && Outcome == Outcome.Failure)
+			{
+				JsonElement actual = Actual;
+				contexts.Add(new ResultContext.SyncCallback("Actual",
+					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
+			}
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("matches ").Append(expectedExpression.TrimCommonWhiteSpace());
+			stringBuilder.Append(Grammars.Verb("matches ", "match ")).Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");
@@ -61,17 +71,19 @@ public static partial class ThatJsonElement
 		{
 			if (Actual.ValueKind == JsonValueKind.Undefined)
 			{
-				stringBuilder.Append(It).Append(" was undefined");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were")).Append(" undefined");
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+				stringBuilder.Append(It).Append(" differed as")
+					.Append(_comparisonResult?.ToString().IndentFollowingLines(indentation));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not match ").Append(expectedExpression.TrimCommonWhiteSpace());
+			stringBuilder.Append(Grammars.Verb("does not match ", "do not match "))
+				.Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");
@@ -82,12 +94,11 @@ public static partial class ThatJsonElement
 		{
 			if (Actual.ValueKind == JsonValueKind.Undefined)
 			{
-				stringBuilder.Append(It).Append(" was undefined");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were")).Append(" undefined");
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did match in ");
-				Formatter.Format(stringBuilder, Actual);
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -105,16 +116,16 @@ public static partial class ThatJsonElement
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is ").Append(JsonValidation.Format(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(JsonValidation.Format(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was ").Append(JsonValidation.Format(Actual.ValueKind))
-				.Append(" instead of ").Append(JsonValidation.Format(expected));
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "))
+				.Append(JsonValidation.Format(Actual.ValueKind));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is ").Append(JsonValidation.Format(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(JsonValidation.Format(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 	}
 }

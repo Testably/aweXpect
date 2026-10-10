@@ -37,7 +37,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an array,
-					              but it was {kindString} instead of an array
+					              but it was {kindString}
 					              """);
 			}
 
@@ -56,6 +56,35 @@ public sealed partial class ThatNullableJsonElement
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				JsonElement?[] items = [FromString("[]"), FromString("{}"),];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsArray()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items are arrays for all items,
+					             but only 1 of 2 were
+
+					             Not matching items (Items):
+					             [
+					               {}
+					             ]
+
+					             Collection (Items):
+					             [
+					               [],
+					               {}
+					             ]
+					             """)
+					.Because("the items are the plural subject of the expectation");
+			}
 		}
 
 		public sealed class NegatedTests
@@ -73,8 +102,11 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no array or $[0] does not match 1 or is no array or $[2] does not match 3,
-					             but it was in [
+					             is not an array or $[0] does not match 1 or is not an array or $[2] does not match 3,
+					             but it was
+
+					             Actual:
+					             [
 					               1,
 					               2,
 					               3
@@ -95,7 +127,7 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no array,
+					             is not an array,
 					             but it was
 					             """);
 			}
@@ -179,7 +211,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array and $.foo[0] matches null,
-					              but it differed as $.foo was {kindString} instead of an array
+					              but it differed as $.foo was {kindString}
 					              """);
 			}
 
@@ -198,7 +230,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array with 0 elements,
-					              but it differed as $.foo was {kindString} instead of an array
+					              but it differed as $.foo was {kindString}
 					              """);
 			}
 
@@ -217,7 +249,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array,
-					              but it differed as $.foo was {kindString} instead of an array
+					              but it differed as $.foo was {kindString}
 					              """);
 			}
 
@@ -265,7 +297,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an array and $[0] matches true,
-					              but it was {kindString} instead of an array
+					              but it was {kindString}
 					              """);
 			}
 
@@ -464,10 +496,10 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an array and $[0] matches 3 and $[1] matches True and $[2] matches Null and $[3] matches 1.2 and $[4] matches False and $[5] matches "bar",
+					             is an array and $[0] matches 3 and $[1] matches True and $[2] matches <null> and $[3] matches 1.2 and $[4] matches False and $[5] matches "bar",
 					             but it differed as
-					               $[1] was Null instead of True and
-					               $[2] was boolean True instead of Null
+					               $[1] was <null> instead of True and
+					               $[2] was boolean True instead of <null>
 					             """);
 			}
 

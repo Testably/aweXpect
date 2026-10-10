@@ -137,7 +137,7 @@ public static class ThatJsonObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is serializable as ");
+			stringBuilder.Append(Grammars.Verb("is serializable as ", "are serializable as "));
 			if (typeof(T) != typeof(object))
 			{
 				Formatter.Format(stringBuilder, typeof(T));
@@ -151,7 +151,8 @@ public static class ThatJsonObject
 		{
 			if (Actual is not T)
 			{
-				stringBuilder.Append(It).Append(" was not assignable to ");
+				stringBuilder.Append(It)
+					.Append(Grammars.SubjectVerb(It, " was not assignable to ", " were not assignable to "));
 				Formatter.Format(stringBuilder, typeof(T));
 			}
 			else if (_deserializationError is not null)
@@ -160,13 +161,14 @@ public static class ThatJsonObject
 			}
 			else if (_failureBuilder is not null)
 			{
-				stringBuilder.Append(It).Append(" was not:").Append(_failureBuilder);
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was not:", " were not:"))
+					.Append(_failureBuilder.ToString().IndentFollowingLines(indentation));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not serializable as ");
+			stringBuilder.Append(Grammars.Verb("is not serializable as ", "are not serializable as "));
 			if (typeof(T) != typeof(object))
 			{
 				Formatter.Format(stringBuilder, typeof(T));
@@ -180,7 +182,7 @@ public static class ThatJsonObject
 		{
 			if (_failureBuilder is not null)
 			{
-				stringBuilder.Append(It).Append(" was");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 			}
 		}
 

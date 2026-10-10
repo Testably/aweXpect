@@ -15,6 +15,65 @@ public sealed class ThatJsonObject
 		public sealed class ObjectTests
 		{
 			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				object?[] items = [new PocoWithIgnoredProperty { Id = 1, Name = "foo", },];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsJsonSerializable()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items are serializable as JSON for all items,
+					             but none of 1 were
+
+					             Not matching items (Items):
+					             [
+					               ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty {
+					                 Id = 1,
+					                 Name = "foo"
+					               }
+					             ]
+
+					             Collection (Items):
+					             [
+					               ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty {
+					                 Id = 1,
+					                 Name = "foo"
+					               }
+					             ]
+					             """)
+					.Because("the items are the plural subject of the expectation");
+			}
+
+			[Fact]
+			public async Task WhenNestedInThatAll_ShouldIndentTheDifferences()
+			{
+				PocoWithIgnoredProperty subject = new()
+				{
+					Id = 2,
+					Name = "foo",
+				};
+
+				async Task Act()
+					=> await ThatAll(That(subject).IsJsonSerializable());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject is serializable as JSON
+					             but
+					              [01] it was not:
+					                     Property Name differed:
+					                         Actual: <null>
+					                       Expected: "foo"
+					             """)
+					.Because("every line of the differences belongs to the nested result");
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasAnIgnoredProperty_ShouldFail()
 			{
 				PocoWithIgnoredProperty subject = new()

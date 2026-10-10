@@ -37,13 +37,100 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an array,
-					              but it was {kindString} instead of an array
+					              but it was {kindString}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				JsonElement[] items = [FromString("[]"), FromString("{}"),];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsArray()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items are arrays for all items,
+					             but only 1 of 2 were
+
+					             Not matching items (Items):
+					             [
+					               {}
+					             ]
+
+					             Collection (Items):
+					             [
+					               [],
+					               {}
+					             ]
+					             """)
+					.Because("the items are the plural subject of the expectation");
+			}
+
+			[Fact]
+			public async Task WhenItemsArePlural_WithExpectation_ShouldUsePluralFormOnlyForTheItems()
+			{
+				JsonElement[] items = [FromString("[[1]]"), FromString("[{}]"),];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsArray(a => a.WithArrays(_ => { }))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items are arrays and $[0] is an array for all items,
+					             but only 1 of 2 were
+
+					             Not matching items (Items):
+					             [
+					               [{}]
+					             ]
+
+					             Collection (Items):
+					             [
+					               [[1]],
+					               [{}]
+					             ]
+					             """)
+					.Because("the path of a nested element is a singular subject");
 			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				JsonElement[] items = [FromString("[]"), FromString("{}"),];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.DoesNotComplyWith(it => it.IsArray())));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items are not arrays for all items,
+					             but only 1 of 2 were
+
+					             Not matching items (Items):
+					             [
+					               []
+					             ]
+
+					             Collection (Items):
+					             [
+					               [],
+					               {}
+					             ]
+					             """)
+					.Because("the items are the plural subject of the expectation");
+			}
+
 			[Fact]
 			public async Task IsArray_ShouldBeChainable()
 			{
@@ -57,8 +144,11 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no array or $[0] does not match 1 or is no array or $[2] does not match 3,
-					             but it was in [
+					             is not an array or $[0] does not match 1 or is not an array or $[2] does not match 3,
+					             but it was
+
+					             Actual:
+					             [
 					               1,
 					               2,
 					               3
@@ -79,7 +169,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no array,
+					             is not an array,
 					             but it was
 					             """);
 			}
@@ -96,7 +186,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no array,
+					             is not an array,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
 					             """)
@@ -261,7 +351,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array and $.foo[0] matches null,
-					              but it differed as $.foo was {kindString} instead of an array
+					              but it differed as $.foo was {kindString}
 					              """);
 			}
 
@@ -280,7 +370,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array with 0 elements,
-					              but it differed as $.foo was {kindString} instead of an array
+					              but it differed as $.foo was {kindString}
 					              """);
 			}
 
@@ -299,7 +389,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array,
-					              but it differed as $.foo was {kindString} instead of an array
+					              but it differed as $.foo was {kindString}
 					              """);
 			}
 
@@ -318,7 +408,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an array and $[0] is an array,
-					              but it was {kindString} instead of an array
+					              but it was {kindString}
 					              """);
 			}
 
@@ -334,7 +424,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] matches 1,
-					             but it was an object instead of an array
+					             but it was an object
 					             """);
 			}
 
@@ -472,7 +562,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] is an array with 2 elements,
-					             but it differed as $[0] was an object instead of an array
+					             but it differed as $[0] was an object
 					             """);
 			}
 
@@ -581,10 +671,10 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an array and $[0] matches 3 and $[1] matches False and $[2] matches Null and $[3] matches 1.2 and $[4] matches False and $[5] matches "bar",
+					             is an array and $[0] matches 3 and $[1] matches False and $[2] matches <null> and $[3] matches 1.2 and $[4] matches False and $[5] matches "bar",
 					             but it differed as
-					               $[1] was Null instead of False and
-					               $[2] was boolean False instead of Null
+					               $[1] was <null> instead of False and
+					               $[2] was boolean False instead of <null>
 					             """);
 			}
 
@@ -638,7 +728,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] is an object and $[0].foo matches 2,
-					             but it differed as $[0] was an array instead of an object
+					             but it differed as $[0] was an array
 					             """);
 			}
 

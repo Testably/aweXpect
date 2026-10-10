@@ -79,7 +79,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              matches null,
-					              but it differed as $ was object {json} instead of Null
+					              but it differed as $ was object {json} instead of <null>
 					              """);
 			}
 
@@ -99,6 +99,55 @@ public sealed partial class ThatNullableJsonElement
 					              matches expected,
 					              but it differed as $ was {json} instead of "{expected}"
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				JsonElement?[] items = [FromString("1"), FromString("2"),];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.Matches(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items match 1 for all items,
+					             but only 1 of 2 did
+
+					             Not matching items (Items):
+					             [
+					               2
+					             ]
+
+					             Collection (Items):
+					             [
+					               1,
+					               2
+					             ]
+					             """)
+					.Because("the items are the plural subject of the expectation");
+			}
+
+			[Fact]
+			public async Task WhenNestedInThatAll_ShouldIndentTheDifferences()
+			{
+				JsonElement? subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await ThatAll(That(subject).Matches([2, 1,]));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject matches [2, 1,]
+					             but
+					              [01] it differed as
+					                     $[0] was 1 instead of 2 and
+					                     $[1] was 2 instead of 1
+					             """)
+					.Because("every line of the differences belongs to the nested result");
 			}
 
 			[Fact]
@@ -137,6 +186,38 @@ public sealed partial class ThatNullableJsonElement
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				JsonElement?[] items = [FromString("1"), FromString("2"),];
+
+				async Task Act()
+					=> await That(new { Items = items, })
+						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.DoesNotComplyWith(it => it.Matches(1))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that new { Items = items, }
+					             whose Items do not match 1 for all items,
+					             but only 1 of 2 did
+
+					             Not matching items (Items):
+					             [
+					               1
+					             ]
+
+					             Collection (Items):
+					             [
+					               1,
+					               2
+					             ]
+
+					             Actual (Items[0]):
+					             1
+					             """)
+					.Because("the items are the plural subject of the expectation");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsUndefined_ShouldFail()
 			{
 				JsonElement? subject = default(JsonElement);
@@ -169,7 +250,10 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -187,7 +271,10 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -205,7 +292,10 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -223,7 +313,10 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match null,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -241,7 +334,10 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              does not match expected,
-					              but it did match in {json}
+					              but it did
+
+					              Actual:
+					              {json}
 					              """);
 			}
 
@@ -524,7 +620,7 @@ public sealed partial class ThatNullableJsonElement
 					             {
 					             	bar = 2,
 					             } exactly,
-					             but it differed as $.foo had unexpected Null
+					             but it differed as $.foo had unexpected <null>
 					             """);
 			}
 		}

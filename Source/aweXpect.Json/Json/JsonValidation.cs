@@ -51,7 +51,7 @@ internal class JsonValidation : IJsonObjectResult,
 		_currentElements.Push(element);
 		_expectationBuilder =
 		[
-			(sb, grammars) => sb.Append("is ").Append(Format(valueKind, grammars)),
+			(sb, grammars) => sb.Append(grammars.Verb("is ", "are ")).Append(Format(valueKind, grammars)),
 		];
 		_currentPath.Push(path);
 	}
@@ -122,7 +122,7 @@ internal class JsonValidation : IJsonObjectResult,
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
 				.Append(grammars.IsNegated() ? " does not match " : " matches ")
-				.Append(expectedValue == null ? "Null" : Formatter.Format(expectedValue)));
+				.Append(Formatter.Format(expectedValue)));
 
 			if (currentElement != null)
 			{
@@ -202,15 +202,14 @@ internal class JsonValidation : IJsonObjectResult,
 
 			JsonValidation jsonValidation = new(_root, CurrentPath, currentElement, JsonValueKind.Array, _options,
 				_context);
-			_expectationBuilder.Add(jsonValidation.GetExpectation);
+			_expectationBuilder.Add(jsonValidation.GetNestedExpectation);
 			expectation.Invoke(jsonValidation);
 
 			if (currentElement != null)
 			{
 				if (currentElement.Value.ValueKind != JsonValueKind.Array)
 				{
-					_failures.Add(
-						$" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(JsonValueKind.Array)}");
+					_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)}");
 				}
 				else
 				{
@@ -255,15 +254,14 @@ internal class JsonValidation : IJsonObjectResult,
 
 			JsonValidation jsonValidation = new(_root, CurrentPath, currentElement, JsonValueKind.Object, _options,
 				_context);
-			_expectationBuilder.Add(jsonValidation.GetExpectation);
+			_expectationBuilder.Add(jsonValidation.GetNestedExpectation);
 			expectation.Invoke(jsonValidation);
 
 			if (currentElement != null)
 			{
 				if (currentElement.Value.ValueKind != JsonValueKind.Object)
 				{
-					_failures.Add(
-						$" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(JsonValueKind.Object)}");
+					_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)}");
 				}
 				else
 				{
@@ -439,7 +437,7 @@ internal class JsonValidation : IJsonObjectResult,
 		{
 			if (currentElement.Value.ValueKind != kind)
 			{
-				_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(kind)}");
+				_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)}");
 			}
 			else
 			{
@@ -460,7 +458,7 @@ internal class JsonValidation : IJsonObjectResult,
 
 		if (currentElement != null && currentElement.Value.ValueKind != kind)
 		{
-			_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(kind)}");
+			_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)}");
 		}
 
 		_currentPath.Pop();
@@ -539,7 +537,14 @@ internal class JsonValidation : IJsonObjectResult,
 		}
 	}
 
-	public string GetFailure(string it)
+	/// <summary>
+	///     The expectation on a nested element, whose path is the subject of the sentence instead of the subject of the
+	///     expectation, so it is always singular.
+	/// </summary>
+	private void GetNestedExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
+		=> GetExpectation(stringBuilder, grammars & ~ExpectationGrammars.Plural);
+
+	public string GetFailure(string it, string? indentation)
 	{
 		if (_element is null)
 		{
@@ -548,11 +553,11 @@ internal class JsonValidation : IJsonObjectResult,
 
 		if (_element.Value.ValueKind != _valueKind)
 		{
-			return $"{it} was {Format(_element.Value.ValueKind)} instead of {Format(_valueKind)}";
+			return $"{it} was {Format(_element.Value.ValueKind)}";
 		}
 
-		return
-			$"{it} differed as{(_failures.Count > 1 ? Environment.NewLine + " " : "")}{GetFailures()}";
+		return $"{it} differed as{(_failures.Count > 1 ? Environment.NewLine + " " : "")}{GetFailures()}"
+			.IndentFollowingLines(indentation);
 	}
 
 	private string GetFailures()
@@ -562,17 +567,19 @@ internal class JsonValidation : IJsonObjectResult,
 	}
 
 	internal static string Format(JsonValueKind valueKind, ExpectationGrammars grammars = ExpectationGrammars.None)
-		=> (valueKind, grammars.IsNegated()) switch
+	{
+		string kind = (valueKind, grammars.IsPlural()) switch
 		{
 			(JsonValueKind.Array, false) => "an array",
 			(JsonValueKind.Object, false) => "an object",
 			(JsonValueKind.Number, false) => "a number",
 			(JsonValueKind.String, false) => "a string",
-			(_, false) => valueKind.ToString().ToLower(),
-			(JsonValueKind.Array, true) => "no array",
-			(JsonValueKind.Object, true) => "no object",
-			(JsonValueKind.Number, true) => "no number",
-			(JsonValueKind.String, true) => "no string",
-			(_, true) => $"not {valueKind.ToString().ToLower()}",
+			(JsonValueKind.Array, true) => "arrays",
+			(JsonValueKind.Object, true) => "objects",
+			(JsonValueKind.Number, true) => "numbers",
+			(JsonValueKind.String, true) => "strings",
+			_ => valueKind.ToString().ToLower(),
 		};
+		return grammars.IsNegated() ? "not " + kind : kind;
+	}
 }

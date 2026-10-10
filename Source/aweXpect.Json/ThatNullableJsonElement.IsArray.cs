@@ -73,19 +73,25 @@ public static partial class ThatNullableJsonElement
 			return this;
 		}
 
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Grammars.IsNegated() && Outcome == Outcome.Failure && Actual is { } actual)
+			{
+				contexts.Add(new ResultContext.SyncCallback("Actual",
+					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
+			}
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _jsonValidation?.GetExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_jsonValidation?.GetFailure(It));
+			=> stringBuilder.Append(_jsonValidation?.GetFailure(It, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _jsonValidation?.GetExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was in ");
-			Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
-		}
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

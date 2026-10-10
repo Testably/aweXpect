@@ -70,7 +70,7 @@ public sealed partial class ThatJsonString
 					.WithMessage($"""
 					              Expected that subject
 					              is valid JSON which matches null exactly,
-					              but it differed as $ was object {subject} instead of Null
+					              but it differed as $ was object {subject} instead of <null>
 					              """);
 			}
 
@@ -349,7 +349,7 @@ public sealed partial class ThatJsonString
 					             {
 					             	bar = 2,
 					             } exactly,
-					             but it differed as $.foo had unexpected Null
+					             but it differed as $.foo had unexpected <null>
 					             """);
 			}
 

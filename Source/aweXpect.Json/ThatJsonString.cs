@@ -71,7 +71,7 @@ public static partial class ThatJsonString
 				return false;
 			}
 
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
 			stringBuilder.Append(", which could not be parsed as JSON: ").Append(_parseError);
 			return true;
@@ -79,7 +79,8 @@ public static partial class ThatJsonString
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is valid JSON which matches ").Append(expectedExpression.TrimCommonWhiteSpace());
+			stringBuilder.Append(Grammars.Verb("is valid JSON which matches ", "are valid JSON which matches "))
+				.Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");
@@ -90,13 +91,15 @@ public static partial class ThatJsonString
 		{
 			if (!TryAppendParseError(stringBuilder))
 			{
-				stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+				stringBuilder.Append(It).Append(" differed as")
+					.Append(_comparisonResult?.ToString().IndentFollowingLines(indentation));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is no valid JSON which matches ").Append(expectedExpression.TrimCommonWhiteSpace());
+			stringBuilder.Append(Grammars.Verb("is not valid JSON which matches ", "are not valid JSON which matches "))
+				.Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");
@@ -107,7 +110,7 @@ public static partial class ThatJsonString
 		{
 			if (!TryAppendParseError(stringBuilder))
 			{
-				stringBuilder.Append(It).Append(" was ");
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 				Formatter.Format(stringBuilder, Actual);
 			}
 		}

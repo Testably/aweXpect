@@ -67,7 +67,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object,
-					              but it was {kindString} instead of an object
+					              but it was {kindString}
 					              """);
 			}
 
@@ -88,7 +88,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo matches true,
-					              but it was {kindString} instead of an object
+					              but it was {kindString}
 					              """);
 			}
 
@@ -147,8 +147,11 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no object or not with 2 properties or $.foo does not match 21 or $.bar is no array or not with 0 elements,
-					             but it was in {
+					             is not an object or not with 2 properties or $.foo does not match 21 or $.bar is not an array or not with 0 elements,
+					             but it was
+
+					             Actual:
+					             {
 					               "foo": 21,
 					               "bar": []
 					             }
@@ -168,7 +171,7 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no object,
+					             is not an object,
 					             but it was
 					             """);
 			}

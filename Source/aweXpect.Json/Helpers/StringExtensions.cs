@@ -6,6 +6,15 @@ namespace aweXpect.Helpers;
 
 internal static class StringExtensions
 {
+	/// <summary>
+	///     Indents the lines after the first by the <paramref name="indentation" /> of a nested result.
+	/// </summary>
+	/// <remarks>
+	///     Forwards to the extension of aweXpect.Core, which cannot be imported next to <see cref="TrimCommonWhiteSpace" />.
+	/// </remarks>
+	public static string IndentFollowingLines(this string value, string? indentation)
+		=> Core.Extending.StringExtensions.Indent(value, indentation, false);
+
 	public static string TrimCommonWhiteSpace(this string value)
 	{
 		string[] lines = value.Split('\n');

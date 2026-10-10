@@ -158,16 +158,16 @@ public sealed partial class ThatJsonString
 						             Expected that subject
 						             is JSON equivalent to {},
 						             but it differed as
-						               $.foo1 had unexpected Null and
-						               $.foo2 had unexpected Null and
-						               $.foo3 had unexpected Null and
-						               $.foo4 had unexpected Null and
-						               $.foo5 had unexpected Null and
-						               $.foo6 had unexpected Null and
-						               $.foo7 had unexpected Null and
-						               $.foo8 had unexpected Null and
-						               $.foo9 had unexpected Null and
-						               $.foo10 had unexpected Null and
+						               $.foo1 had unexpected <null> and
+						               $.foo2 had unexpected <null> and
+						               $.foo3 had unexpected <null> and
+						               $.foo4 had unexpected <null> and
+						               $.foo5 had unexpected <null> and
+						               $.foo6 had unexpected <null> and
+						               $.foo7 had unexpected <null> and
+						               $.foo8 had unexpected <null> and
+						               $.foo9 had unexpected <null> and
+						               $.foo10 had unexpected <null> and
 						                … (2 more)
 
 						             Actual:
@@ -222,9 +222,9 @@ public sealed partial class ThatJsonString
 						             Expected that subject
 						             is JSON equivalent to {},
 						             but it differed as
-						               $.foo1 had unexpected Null and
-						               $.foo2 had unexpected Null and
-						               $.foo3 had unexpected Null and
+						               $.foo1 had unexpected <null> and
+						               $.foo2 had unexpected <null> and
+						               $.foo3 had unexpected <null> and
 						                … (9 more)
 
 						             Actual:
@@ -429,7 +429,7 @@ public sealed partial class ThatJsonString
 				[InlineData("{ \"foo\": 1 }", "{  \"foo\": true  }", "$.foo was number 1 instead of True")]
 				[InlineData("{ \"foo\": {\"value\":false} }", "{  \"foo\": false  }",
 					"$.foo was object {\"value\":false} instead of False")]
-				[InlineData("{ \"foo\": null }", "{  \"foo\": \"\"  }", "$.foo was Null instead of \"\"")]
+				[InlineData("{ \"foo\": null }", "{  \"foo\": \"\"  }", "$.foo was <null> instead of \"\"")]
 				public async Task WhenPropertiesOfValuesHaveDifferentType_ShouldFail(string subject, string expected,
 					string message)
 				{

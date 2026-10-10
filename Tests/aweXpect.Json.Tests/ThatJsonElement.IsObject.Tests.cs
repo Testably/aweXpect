@@ -85,7 +85,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object,
-					              but it was {kindString} instead of an object
+					              but it was {kindString}
 					              """);
 			}
 
@@ -104,7 +104,7 @@ public sealed partial class ThatJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo matches true,
-					              but it was {kindString} instead of an object
+					              but it was {kindString}
 					              """);
 			}
 		}
@@ -131,8 +131,11 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no object or not with 2 properties or $.foo does not match 21 or $.bar is no array or not with 0 elements,
-					             but it was in {
+					             is not an object or not with 2 properties or $.foo does not match 21 or $.bar is not an array or not with 0 elements,
+					             but it was
+
+					             Actual:
+					             {
 					               "foo": 21,
 					               "bar": []
 					             }
@@ -152,7 +155,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no object,
+					             is not an object,
 					             but it was
 					             """);
 			}
@@ -169,7 +172,7 @@ public sealed partial class ThatJsonElement
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no object,
+					             is not an object,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
 					             """)
@@ -193,6 +196,26 @@ public sealed partial class ThatJsonElement
 
 		public sealed class WithTests
 		{
+			[Fact]
+			public async Task WhenNestedInThatAll_ShouldIndentTheFailures()
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"bar\": 2}");
+
+				async Task Act()
+					=> await ThatAll(That(subject).IsObject(o => o.With("foo").Matching(2).With("bar").Matching(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject is an object and $.foo matches 2 and $.bar matches 1
+					             but
+					              [01] it differed as
+					                     $.foo was 1 instead of 2 and
+					                     $.bar was 2 instead of 1
+					             """)
+					.Because("every line of the failures belongs to the nested result");
+			}
+
 			[Fact]
 			public async Task WhenPropertyNameIsNull_ShouldThrowArgumentNullException()
 			{

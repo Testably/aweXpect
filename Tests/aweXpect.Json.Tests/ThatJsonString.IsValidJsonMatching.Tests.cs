@@ -8,6 +8,54 @@ public sealed partial class ThatJsonString
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				string subject = "1\n2";
+
+				async Task Act()
+					=> await That(subject).HasLines(l => l.All().ComplyWith(it => it.IsValidJsonMatching(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines of which all are valid JSON which matches 1,
+					             but only 1 of 2 were
+
+					             Not matching items:
+					             [
+					               "2"
+					             ]
+
+					             Collection:
+					             [
+					               "1",
+					               "2"
+					             ]
+					             """)
+					.Because("the lines are the plural subject of the expectation");
+			}
+
+			[Fact]
+			public async Task WhenNestedInThatAll_ShouldIndentTheDifferences()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await ThatAll(That(subject).IsValidJsonMatching([2, 1,]));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject is valid JSON which matches [2, 1,]
+					             but
+					              [01] it differed as
+					                     $[0] was 1 instead of 2 and
+					                     $[1] was 2 instead of 1
+					             """)
+					.Because("every line of the differences belongs to the nested result");
+			}
+
 			[Theory]
 			[InlineData("true", true, true)]
 			[InlineData("true", false, false)]
@@ -72,7 +120,7 @@ public sealed partial class ThatJsonString
 					.WithMessage($"""
 					              Expected that subject
 					              is valid JSON which matches null,
-					              but it differed as $ was object {subject} instead of Null
+					              but it differed as $ was object {subject} instead of <null>
 					              """);
 			}
 
@@ -167,7 +215,7 @@ public sealed partial class ThatJsonString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is no valid JSON which matches 1,
+					             is not valid JSON which matches 1,
 					             but it was "{ invalid", which could not be parsed as JSON: *
 					             """).AsWildcard()
 					.Because("a subject that is no JSON cannot be compared, so the negation must not be met either");
@@ -813,7 +861,7 @@ public sealed partial class ThatJsonString
 					             {
 					             	bar = 2,
 					             } exactly,
-					             but it differed as $.foo had unexpected Null
+					             but it differed as $.foo had unexpected <null>
 					             """);
 			}
 		}

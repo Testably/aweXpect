@@ -246,21 +246,16 @@ internal static class JsonElementValidator
 				_ => "",
 			};
 
-		if (jsonElement.ValueKind == JsonValueKind.Null)
+		string value = jsonElement.ValueKind switch
 		{
-			return "Null";
-		}
-
-		if (jsonElement.ValueKind == JsonValueKind.String)
-		{
-			return includeType
-				? $"{GetKindName(jsonElement.ValueKind)} \"{jsonElement}\""
-				: $"\"{jsonElement}\"";
-		}
-
-		return includeType
-			? $"{GetKindName(jsonElement.ValueKind)} {jsonElement}"
-			: jsonElement.ToString();
+			JsonValueKind.Null => ValueFormatter.NullString,
+			JsonValueKind.String => Formatter.Format(jsonElement.GetString()),
+			JsonValueKind.False or JsonValueKind.True => Formatter.Format(jsonElement.GetBoolean()),
+			_ => Formatter.Format(jsonElement),
+		};
+		return includeType && jsonElement.ValueKind != JsonValueKind.Null
+			? $"{GetKindName(jsonElement.ValueKind)} {value}"
+			: value;
 	}
 
 	private static async Task<bool> TryMatchExpectation(

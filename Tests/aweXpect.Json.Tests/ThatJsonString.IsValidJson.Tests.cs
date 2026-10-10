@@ -80,6 +80,23 @@ public sealed partial class ThatJsonString
 			}
 
 			[Fact]
+			public async Task WhenItemsArePlural_ShouldUsePluralVerb()
+			{
+				string subject = "[1]\n{";
+
+				async Task Act()
+					=> await That(subject).HasLines(l => l.All().ComplyWith(it => it.IsValidJson()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines of which all are valid JSON,
+					             *
+					             """).AsWildcard()
+					.Because("the lines are the plural subject of the expectation");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
