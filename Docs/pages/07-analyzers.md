@@ -3,6 +3,9 @@
 The `aweXpect` package includes analyzers that report common mistakes while you write the test. Errors stop the
 build, warnings point at code that compiles but probably does not do what you meant. Most rules come with a code fix.
 
+The analyzers and the source generators need Roslyn 4.8 or later, which ships with the .NET 8 SDK and Visual Studio
+2022 17.8. An older compiler skips them with warning `CS8032`.
+
 ## aweXpect0001
 
 :::danger[Error]

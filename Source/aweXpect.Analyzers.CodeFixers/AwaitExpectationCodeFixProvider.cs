@@ -29,7 +29,8 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 	private static readonly SyntaxAnnotation FixedNodeAnnotation = new();
 
 	/// <inheritdoc />
-	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } = [Rules.AwaitExpectationRule.Id,];
+	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } =
+		ImmutableArray.Create(Rules.AwaitExpectationRule.Id);
 
 	/// <inheritdoc />
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;

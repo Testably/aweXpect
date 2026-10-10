@@ -19,7 +19,7 @@ public class UnorderedCollectionCodeFixProvider : CodeFixProvider
 {
 	/// <inheritdoc />
 	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } =
-		[Rules.UnorderedCollectionRule.Id,];
+		ImmutableArray.Create(Rules.UnorderedCollectionRule.Id);
 
 	/// <inheritdoc />
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;

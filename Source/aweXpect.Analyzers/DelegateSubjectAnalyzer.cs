@@ -21,7 +21,8 @@ public class DelegateSubjectAnalyzer : DiagnosticAnalyzer
 	internal const string HasResultProperty = "HasResult";
 
 	/// <inheritdoc />
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = [Rules.DelegateSubjectRule,];
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
+		ImmutableArray.Create(Rules.DelegateSubjectRule);
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)

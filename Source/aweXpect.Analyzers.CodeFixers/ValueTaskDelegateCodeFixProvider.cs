@@ -23,7 +23,8 @@ public class ValueTaskDelegateCodeFixProvider : CodeFixProvider
 	private const string CancellationTokenName = "token";
 
 	/// <inheritdoc />
-	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } = [Rules.ValueTaskDelegateRule.Id,];
+	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } =
+		ImmutableArray.Create(Rules.ValueTaskDelegateRule.Id);
 
 	/// <inheritdoc />
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;

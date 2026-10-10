@@ -23,7 +23,7 @@ public class ValueTaskDelegateAnalyzer : DiagnosticAnalyzer
 
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-		[Rules.ValueTaskDelegateRule, Rules.ExplicitTaskDelegateRule,];
+		ImmutableArray.Create(Rules.ValueTaskDelegateRule, Rules.ExplicitTaskDelegateRule);
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)

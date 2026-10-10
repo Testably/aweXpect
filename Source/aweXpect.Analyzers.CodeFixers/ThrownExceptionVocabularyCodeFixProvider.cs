@@ -19,7 +19,7 @@ public class ThrownExceptionVocabularyCodeFixProvider : CodeFixProvider
 {
 	/// <inheritdoc />
 	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } =
-		[Rules.ThrownExceptionVocabularyRule.Id,];
+		ImmutableArray.Create(Rules.ThrownExceptionVocabularyRule.Id);
 
 	/// <inheritdoc />
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
