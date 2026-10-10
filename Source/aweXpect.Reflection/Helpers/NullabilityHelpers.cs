@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
@@ -260,6 +261,11 @@ internal static class NullabilityHelpers
 	/// </summary>
 	private static Type? GetDeclaredMemberType(MemberInfo memberInfo, Type genericTypeDefinition)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(genericTypeDefinition, "members");
+		}
+
 		foreach (MemberInfo member in genericTypeDefinition.GetMember(memberInfo.Name, memberInfo.MemberType,
 			         BindingFlags.DeclaredOnly |
 			         BindingFlags.NonPublic |

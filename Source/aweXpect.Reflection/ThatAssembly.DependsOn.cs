@@ -42,7 +42,7 @@ public static partial class ThatAssembly
 		{
 			Actual = actual;
 			Outcome = actual is not null &&
-			          await actual.GetReferencedAssemblies().AnyAsync(dep => options.AreConsideredEqual(dep.Name, expected))
+			          await actual.GetReferencedAssemblyNames().AnyAsync(dep => options.AreConsideredEqual(dep.Name, expected))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -67,7 +67,7 @@ public static partial class ThatAssembly
 			if (Outcome == Outcome.Failure && Actual is not null)
 			{
 				contexts.AddDependenciesContext("Dependencies",
-					Actual.GetReferencedAssemblies().Select(dep => dep.Name).ToArray());
+					Actual.GetReferencedAssemblyNames().Select(dep => dep.Name).ToArray());
 			}
 		}
 	}

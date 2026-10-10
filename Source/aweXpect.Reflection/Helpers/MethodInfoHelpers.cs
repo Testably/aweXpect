@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
@@ -230,6 +231,11 @@ internal static class MethodInfoHelpers
 			return false;
 		}
 
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(declaringType, "nested types");
+		}
+
 		foreach (Type nestedType in declaringType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
 		{
 			if (!nestedType.IsExtensionGroupingType())
@@ -274,6 +280,11 @@ internal static class MethodInfoHelpers
 		if (declaringType?.IsDefined(typeof(ExtensionAttribute), false) != true)
 		{
 			return false;
+		}
+
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(declaringType, "nested types");
 		}
 
 		foreach (Type nestedType in declaringType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))

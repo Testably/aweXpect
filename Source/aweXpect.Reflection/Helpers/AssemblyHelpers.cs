@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Options;
 
@@ -126,7 +127,7 @@ internal static class AssemblyHelpers
 	{
 		string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
 		List<string?> violations = [];
-		foreach (AssemblyName dependency in assembly.GetReferencedAssemblies())
+		foreach (AssemblyName dependency in assembly.GetReferencedAssemblyNames())
 		{
 			if (dependency.Name.IsExcludedAssemblyName(prefixes))
 			{
@@ -140,6 +141,19 @@ internal static class AssemblyHelpers
 		}
 
 		return violations.ToArray();
+	}
+
+	/// <summary>
+	///     Gets the names of the assemblies that the <paramref name="assembly" /> references.
+	/// </summary>
+	public static AssemblyName[] GetReferencedAssemblyNames(this Assembly assembly)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(assembly, "referenced assemblies");
+		}
+
+		return assembly.GetReferencedAssemblies();
 	}
 
 	/// <summary>

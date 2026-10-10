@@ -69,7 +69,7 @@ public static partial class ThatAssemblies
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context, async assembly =>
 				assembly == null ||
-				!await assembly.GetReferencedAssemblies().AnyAsync(dep =>
+				!await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
 					options.AreConsideredEqual(dep.Name, unexpected)), cancellationToken);
 #endif
 
@@ -77,7 +77,7 @@ public static partial class ThatAssemblies
 			CancellationToken cancellationToken)
 			=> await SetValue(actual, context, async assembly =>
 				assembly == null ||
-				!await assembly.GetReferencedAssemblies().AnyAsync(dep =>
+				!await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
 					options.AreConsideredEqual(dep.Name, unexpected)), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

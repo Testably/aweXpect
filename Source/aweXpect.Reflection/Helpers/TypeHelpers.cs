@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
@@ -74,6 +75,11 @@ internal static class TypeHelpers
 	public static ConstructorInfo[] GetDeclaredConstructors(
 		this Type type)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "constructors");
+		}
+
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
@@ -104,6 +110,11 @@ internal static class TypeHelpers
 		this Type type,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "events");
+		}
+
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
@@ -115,13 +126,16 @@ internal static class TypeHelpers
 				           BindingFlags.Static);
 			if (memberScope == MemberScope.IncludingInherited)
 			{
-				events = events.Concat(type.GetInheritedPrivateMembers(
-					baseType => baseType.GetEvents(BindingFlags.DeclaredOnly |
-					                               BindingFlags.NonPublic |
-					                               BindingFlags.Instance |
-					                               BindingFlags.Static),
-					@event => @event.AddMethod is not { IsPrivate: false, } &&
-					          @event.RemoveMethod is not { IsPrivate: false, }));
+				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+				{
+					events = events.Concat(baseType
+						.GetEvents(BindingFlags.DeclaredOnly |
+						           BindingFlags.NonPublic |
+						           BindingFlags.Instance |
+						           BindingFlags.Static)
+						.Where(@event => @event.AddMethod is not { IsPrivate: false, } &&
+						                 @event.RemoveMethod is not { IsPrivate: false, }));
+				}
 			}
 
 			return events
@@ -146,6 +160,11 @@ internal static class TypeHelpers
 		this Type type,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "fields");
+		}
+
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
@@ -157,12 +176,15 @@ internal static class TypeHelpers
 				           BindingFlags.Static);
 			if (memberScope == MemberScope.IncludingInherited)
 			{
-				fields = fields.Concat(type.GetInheritedPrivateMembers(
-					baseType => baseType.GetFields(BindingFlags.DeclaredOnly |
-					                               BindingFlags.NonPublic |
-					                               BindingFlags.Instance |
-					                               BindingFlags.Static),
-					field => field.IsPrivate));
+				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+				{
+					fields = fields.Concat(baseType
+						.GetFields(BindingFlags.DeclaredOnly |
+						           BindingFlags.NonPublic |
+						           BindingFlags.Instance |
+						           BindingFlags.Static)
+						.Where(field => field.IsPrivate));
+				}
 			}
 
 			return fields
@@ -189,6 +211,11 @@ internal static class TypeHelpers
 		MemberScope memberScope = MemberScope.DeclaredOnly,
 		bool includeOperators = false)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "methods");
+		}
+
 		try
 		{
 			CompilerGeneratedMembers includedCompilerGenerated = IncludedCompilerGeneratedMembers;
@@ -206,12 +233,15 @@ internal static class TypeHelpers
 				            BindingFlags.Instance);
 			if (memberScope == MemberScope.IncludingInherited)
 			{
-				methods = methods.Concat(type.GetInheritedPrivateMembers(
-					baseType => baseType.GetMethods(BindingFlags.DeclaredOnly |
-					                                BindingFlags.NonPublic |
-					                                BindingFlags.Instance |
-					                                BindingFlags.Static),
-					method => method.IsPrivate));
+				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+				{
+					methods = methods.Concat(baseType
+						.GetMethods(BindingFlags.DeclaredOnly |
+						            BindingFlags.NonPublic |
+						            BindingFlags.Instance |
+						            BindingFlags.Static)
+						.Where(method => method.IsPrivate));
+				}
 			}
 
 			return methods
@@ -235,6 +265,11 @@ internal static class TypeHelpers
 		this Type type,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "properties");
+		}
+
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
@@ -246,13 +281,16 @@ internal static class TypeHelpers
 				               BindingFlags.Instance);
 			if (memberScope == MemberScope.IncludingInherited)
 			{
-				properties = properties.Concat(type.GetInheritedPrivateMembers(
-					baseType => baseType.GetProperties(BindingFlags.DeclaredOnly |
-					                                   BindingFlags.NonPublic |
-					                                   BindingFlags.Instance |
-					                                   BindingFlags.Static),
-					property => property.GetMethod is not { IsPrivate: false, } &&
-					            property.SetMethod is not { IsPrivate: false, }));
+				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
+				{
+					properties = properties.Concat(baseType
+						.GetProperties(BindingFlags.DeclaredOnly |
+						               BindingFlags.NonPublic |
+						               BindingFlags.Instance |
+						               BindingFlags.Static)
+						.Where(property => property.GetMethod is not { IsPrivate: false, } &&
+						                   property.SetMethod is not { IsPrivate: false, }));
+				}
 			}
 
 			return properties
@@ -278,38 +316,15 @@ internal static class TypeHelpers
 	///     <see cref="MemberScope.DeclaredOnly" /> restricts the search to members declared directly on the type, while
 	///     <see cref="MemberScope.IncludingInherited" /> also returns inherited members (including inherited static members
 	///     via <see cref="BindingFlags.FlattenHierarchy" />). Inherited <see langword="private" /> members are not covered
-	///     by <see cref="BindingFlags.FlattenHierarchy" /> and are collected separately via
-	///     <see cref="GetInheritedPrivateMembers{T}" />.
+	///     by <see cref="BindingFlags.FlattenHierarchy" /> and are collected separately by walking the base type chain
+	///     and keeping only those members that reflection excludes from the derived type (i.e. members without any
+	///     non-private accessor). Each caller walks the chain itself, because the trim analyzer does not apply the
+	///     <see cref="ReflectionFallback.IsSupported" /> guard of a method to a lambda in it.
 	/// </remarks>
 	private static BindingFlags ToBindingFlags(this MemberScope memberScope)
 		=> memberScope == MemberScope.DeclaredOnly
 			? BindingFlags.DeclaredOnly
 			: BindingFlags.FlattenHierarchy;
-
-	/// <summary>
-	///     Collects the <see langword="private" /> members declared on the base types of the <paramref name="type" />.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="BindingFlags.FlattenHierarchy" /> does not return <see langword="private" /> members of base types,
-	///     so they are gathered here by walking the base type chain and keeping only those members that reflection
-	///     excludes from the derived type (i.e. members without any non-private accessor).
-	/// </remarks>
-	private static IEnumerable<T> GetInheritedPrivateMembers<T>(
-		this Type type,
-		Func<Type, IEnumerable<T>> getDeclaredMembers,
-		Func<T, bool> isPrivate)
-	{
-		for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
-		{
-			foreach (T member in getDeclaredMembers(baseType))
-			{
-				if (isPrivate(member))
-				{
-					yield return member;
-				}
-			}
-		}
-	}
 
 	/// <summary>
 	///     Determines whether the <paramref name="member" /> (or any of its declaring types) is compiler-generated.
@@ -354,6 +369,11 @@ internal static class TypeHelpers
 	/// </remarks>
 	private static IEnumerable<PropertyInfo> GetExtensionProperties(this Type type)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "extension properties");
+		}
+
 		foreach (Type nestedType in type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
 		{
 			if (!nestedType.IsExtensionGroupingType())
@@ -513,13 +533,23 @@ internal static class TypeHelpers
 			return false;
 		}
 
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "interfaces");
+		}
+
 		Type[] interfaces = type.GetInterfaces();
 		if (forceDirect)
 		{
-			IEnumerable<Type> inherited = interfaces.SelectMany(@interface => @interface.GetInterfaces());
+			List<Type> inherited = [];
+			foreach (Type @interface in interfaces)
+			{
+				inherited.AddRange(@interface.GetInterfaces());
+			}
+
 			if (type.BaseType != null)
 			{
-				inherited = inherited.Concat(type.BaseType.GetInterfaces());
+				inherited.AddRange(type.BaseType.GetInterfaces());
 			}
 
 			interfaces = interfaces
@@ -1132,6 +1162,11 @@ internal static class TypeHelpers
 	/// </remarks>
 	private static IEnumerable<Type> GetDeclaredInterfaces(Type type)
 	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+		}
+
 		Type[] interfaces = Safe(type.GetInterfaces);
 		HashSet<Type> inherited = [];
 		if (SafeOrNull(() => type.BaseType) is { } baseType)
@@ -1196,6 +1231,18 @@ internal static class TypeHelpers
 		}
 	}
 
+	private static T[] Safe<T>(Func<BindingFlags, T[]> get, BindingFlags flags)
+	{
+		try
+		{
+			return get(flags);
+		}
+		catch (Exception exception) when (IsUnresolvable(exception))
+		{
+			return [];
+		}
+	}
+
 	private static T? SafeOrNull<T>(Func<T?> get) where T : class
 	{
 		try
@@ -1212,11 +1259,14 @@ internal static class TypeHelpers
 		=> type?.IsClass == true && !type.IsRecordClass();
 
 	public static bool IsRecordClass(this Type? type)
-		=> type?.GetMethod("<Clone>$", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) is not
-			   null &&
-		   type.GetProperty("EqualityContract",
-				   BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)?
-			   .GetMethod?.HasAttribute<CompilerGeneratedAttribute>() == true;
+		=> type is not null &&
+		   (ReflectionFallback.IsSupported
+			   ? type.GetMethod("<Clone>$", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) is not
+				     null &&
+			     type.GetProperty("EqualityContract",
+					     BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)?
+				     .GetMethod?.HasAttribute<CompilerGeneratedAttribute>() == true
+			   : throw ReflectionFallbackHelpers.NotSupported(type, "members"));
 
 
 	public static bool IsReallyStruct(this Type? type) =>
@@ -1270,11 +1320,13 @@ internal static class TypeHelpers
 		// recognizing record structs from metadata is an open point. The following check is based on common sense
 		// and heuristic testing, apparently giving good results but not supported by official documentation.
 		type?.BaseType == typeof(ValueType) &&
-		type.GetMethod("PrintMembers", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly, null,
-			[typeof(StringBuilder),], null) is not null &&
-		type.GetMethod("op_Equality", BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly, null,
-				[type, type,], null)?
-			.HasAttribute<CompilerGeneratedAttribute>() == true;
+		(ReflectionFallback.IsSupported
+			? type.GetMethod("PrintMembers", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
+				  null, [typeof(StringBuilder),], null) is not null &&
+			  type.GetMethod("op_Equality", BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly, null,
+					  [type, type,], null)?
+				  .HasAttribute<CompilerGeneratedAttribute>() == true
+			: throw ReflectionFallbackHelpers.NotSupported(type, "members"));
 
 	/// <summary>
 	///     Gets a value indicating whether the <see cref="Type" /> is static.
@@ -1348,7 +1400,10 @@ internal static class TypeHelpers
 	/// </remarks>
 	public static bool HasDefaultConstructor(this Type? type)
 		=> type is not null &&
-		   (type.IsValueType || type.GetConstructor(Type.EmptyTypes) is not null);
+		   (type.IsValueType ||
+		    (ReflectionFallback.IsSupported
+			    ? type.GetConstructor(Type.EmptyTypes) is not null
+			    : throw ReflectionFallbackHelpers.NotSupported(type, "constructors")));
 
 	/// <summary>
 	///     Gets the <see cref="BindingFlags" /> used to look up operator methods, optionally including operators
@@ -1362,6 +1417,19 @@ internal static class TypeHelpers
 		=> BindingFlags.Public | BindingFlags.Static | (inherit ? BindingFlags.FlattenHierarchy : 0);
 
 	/// <summary>
+	///     Gets the methods of the <paramref name="type" /> that can be operators (see <see cref="OperatorFlags" />).
+	/// </summary>
+	private static MethodInfo[] GetOperatorMethods(this Type type, bool inherit)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "operators");
+		}
+
+		return type.GetMethods(OperatorFlags(inherit));
+	}
+
+	/// <summary>
 	///     Gets a value indicating whether the <paramref name="type" /> declares the <paramref name="operator" />.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
@@ -1371,7 +1439,7 @@ internal static class TypeHelpers
 	///     <see langword="false" /> (the default).
 	/// </param>
 	public static bool HasOperator(this Type? type, Operator @operator, bool inherit = false)
-		=> type?.GetMethods(OperatorFlags(inherit)).Any(m => m.IsOperator(@operator)) == true;
+		=> type?.GetOperatorMethods(inherit).Any(m => m.IsOperator(@operator)) == true;
 
 	/// <summary>
 	///     Gets a value indicating whether the <paramref name="type" /> declares the <paramref name="operator" /> with an
@@ -1385,7 +1453,7 @@ internal static class TypeHelpers
 	///     <see langword="false" /> (the default).
 	/// </param>
 	public static bool HasOperator(this Type? type, Operator @operator, Type operand, bool inherit = false)
-		=> type?.GetMethods(OperatorFlags(inherit))
+		=> type?.GetOperatorMethods(inherit)
 			.Any(m => m.IsOperator(@operator) &&
 			          m.GetParameters().Any(p => p.ParameterType.IsEqualTo(operand))) == true;
 
@@ -1406,7 +1474,7 @@ internal static class TypeHelpers
 	/// </param>
 	public static MethodInfo? GetConversionOperator(
 		this Type? type, bool isImplicit, Type source, Type target, bool inherit = false)
-		=> type?.GetMethods(OperatorFlags(inherit))
+		=> type?.GetOperatorMethods(inherit)
 			.FirstOrDefault(m =>
 			{
 				ParameterInfo[] parameters = m.GetParameters();
@@ -1771,10 +1839,15 @@ internal static class TypeHelpers
 
 		public void AddFields(Type type)
 		{
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+			}
+
 			// Special-name fields are runtime-supplied, not authored: most importantly every enum's `value__`
 			// instance field (typed as the underlying integral type), which would otherwise make every enum
 			// trivially "depend on" System.
-			foreach (FieldInfo field in Safe(() => type.GetFields(Flags))
+			foreach (FieldInfo field in Safe(type.GetFields, Flags)
 				         .Where(m => !m.IsCompilerGenerated() && !m.IsSpecialName))
 			{
 				// Member signature types are resolved lazily on first access and can throw when the defining
@@ -1786,7 +1859,12 @@ internal static class TypeHelpers
 
 		public void AddProperties(Type type)
 		{
-			foreach (PropertyInfo property in Safe(() => type.GetProperties(Flags)).Where(m => !m.IsCompilerGenerated()))
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+			}
+
+			foreach (PropertyInfo property in Safe(type.GetProperties, Flags).Where(m => !m.IsCompilerGenerated()))
 			{
 				AddSafe(() => property.PropertyType);
 				AddParameters(Safe(property.GetIndexParameters));
@@ -1796,7 +1874,12 @@ internal static class TypeHelpers
 
 		public void AddEvents(Type type)
 		{
-			foreach (EventInfo @event in Safe(() => type.GetEvents(Flags)).Where(m => !m.IsCompilerGenerated()))
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+			}
+
+			foreach (EventInfo @event in Safe(type.GetEvents, Flags).Where(m => !m.IsCompilerGenerated()))
 			{
 				AddSafe(() => @event.EventHandlerType);
 				AddAttributes(@event);
@@ -1805,7 +1888,12 @@ internal static class TypeHelpers
 
 		public void AddMethods(Type type)
 		{
-			foreach (MethodInfo method in Safe(() => type.GetMethods(Flags)).Where(m => !m.IsCompilerGenerated()))
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+			}
+
+			foreach (MethodInfo method in Safe(type.GetMethods, Flags).Where(m => !m.IsCompilerGenerated()))
 			{
 				AddSafe(() => method.ReturnType);
 				AddReturnValueAttributes(method);
@@ -1817,7 +1905,12 @@ internal static class TypeHelpers
 
 		public void AddConstructors(Type type)
 		{
-			foreach (ConstructorInfo constructor in Safe(() => type.GetConstructors(Flags))
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+			}
+
+			foreach (ConstructorInfo constructor in Safe(type.GetConstructors, Flags)
 				         .Where(m => !m.IsCompilerGenerated()))
 			{
 				AddParameters(Safe(constructor.GetParameters));
@@ -1827,7 +1920,13 @@ internal static class TypeHelpers
 
 		public void AddDelegateInvoke(Type type)
 		{
-			if (SafeOrNull(() => type.GetMethod("Invoke", Flags)) is { } invoke)
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
+			}
+
+			if (Safe(type.GetMethods, Flags)
+				    .FirstOrDefault(method => string.Equals(method.Name, "Invoke", StringComparison.Ordinal)) is { } invoke)
 			{
 				AddSafe(() => invoke.ReturnType);
 				AddReturnValueAttributes(invoke);
@@ -1924,8 +2023,9 @@ internal static class TypeHelpers
 		}
 
 		private static bool HasIndexer(Type type)
-			=> Safe(() => type.GetProperties(Flags))
-				.Any(property => Safe(property.GetIndexParameters).Length > 0);
+			=> ReflectionFallback.IsSupported
+				? Safe(type.GetProperties, Flags).Any(property => Safe(property.GetIndexParameters).Length > 0)
+				: throw ReflectionFallbackHelpers.NotSupported(type, "dependencies");
 
 		private void AddAttributeArgument(CustomAttributeTypedArgument argument)
 		{

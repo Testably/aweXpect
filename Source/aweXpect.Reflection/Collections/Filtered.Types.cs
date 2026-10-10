@@ -228,6 +228,11 @@ public static partial class Filtered
 		/// </remarks>
 		private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
 		{
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw ReflectionFallbackHelpers.NotSupported(assembly, "types");
+			}
+
 			IEnumerable<Type> types;
 			try
 			{
