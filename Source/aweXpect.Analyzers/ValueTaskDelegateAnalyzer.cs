@@ -9,7 +9,8 @@ namespace aweXpect.Analyzers;
 /// <summary>
 ///     An analyzer that checks that a delegate returning a <c>ValueTask</c> does not bind to the
 ///     <c>Expect.That</c> overload for a delegate with a return value, which never awaits it. This happens when no
-///     dedicated <c>ValueTask</c> overload exists (the netstandard2.0 build) or the type argument is given explicitly.
+///     dedicated <c>ValueTask</c> overload exists (the netstandard2.0 build) or the type argument is given explicitly,
+///     which has the same effect for a delegate returning a <c>Task</c>.
 /// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class ValueTaskDelegateAnalyzer : DiagnosticAnalyzer
@@ -21,7 +22,8 @@ public class ValueTaskDelegateAnalyzer : DiagnosticAnalyzer
 	internal const string HasCancellationTokenProperty = "HasCancellationToken";
 
 	/// <inheritdoc />
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = [Rules.ValueTaskDelegateRule,];
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
+		[Rules.ValueTaskDelegateRule, Rules.ExplicitTaskDelegateRule,];
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)
@@ -36,13 +38,13 @@ public class ValueTaskDelegateAnalyzer : DiagnosticAnalyzer
 	{
 		if (context.Operation is not IInvocationOperation invocation ||
 		    !IsExpectThatForADelegateWithValue(invocation.TargetMethod, out bool hasCancellationToken) ||
-		    !IsValueTask(invocation.TargetMethod.TypeArguments[0]) ||
+		    GetRule(invocation.TargetMethod.TypeArguments[0]) is not { } rule ||
 		    invocation.Arguments.FirstOrDefault(a => a.Parameter?.Ordinal == 0) is not { } argument)
 		{
 			return;
 		}
 
-		context.ReportDiagnostic(Diagnostic.Create(Rules.ValueTaskDelegateRule,
+		context.ReportDiagnostic(Diagnostic.Create(rule,
 			argument.Value.Syntax.GetLocation(),
 			hasCancellationToken
 				? ImmutableDictionary<string, string?>.Empty.Add(HasCancellationTokenProperty, null)
@@ -81,9 +83,25 @@ public class ValueTaskDelegateAnalyzer : DiagnosticAnalyzer
 		=> type is INamedTypeSymbol { Name: "CancellationToken", Arity: 0, } &&
 		   IsInSystemThreading(type.ContainingNamespace);
 
-	private static bool IsValueTask(ITypeSymbol type)
-		=> type is INamedTypeSymbol { Name: "ValueTask", Arity: 0 or 1, ContainingNamespace.Name: "Tasks", } &&
-		   IsInSystemThreading(type.ContainingNamespace.ContainingNamespace);
+	/// <summary>
+	///     The rule for a delegate whose value has the <paramref name="type" />, if that is a <c>ValueTask</c> or a
+	///     <c>Task</c>, with or without a result.
+	/// </summary>
+	private static DiagnosticDescriptor? GetRule(ITypeSymbol type)
+	{
+		if (type is not INamedTypeSymbol { Arity: 0 or 1, ContainingNamespace.Name: "Tasks", } ||
+		    !IsInSystemThreading(type.ContainingNamespace.ContainingNamespace))
+		{
+			return null;
+		}
+
+		return type.Name switch
+		{
+			"ValueTask" => Rules.ValueTaskDelegateRule,
+			"Task" => Rules.ExplicitTaskDelegateRule,
+			_ => null,
+		};
+	}
 
 	private static bool IsInSystemThreading(INamespaceSymbol? @namespace)
 		=> @namespace is { Name: "Threading", ContainingNamespace: { Name: "System", ContainingNamespace.IsGlobalNamespace: true, }, };

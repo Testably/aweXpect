@@ -135,7 +135,9 @@ await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
 
 These older targets are affected because they use the .NET Standard 2.0 build of aweXpect. On any target, the rule
 also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
-`Expect.That<ValueTask>(() => Act())`. See [Delegates](./06-behaviour/01-delegates.md).
+`Expect.That<ValueTask>(() => Act())`. An explicit `Task` type argument has the same effect and is reported as well,
+as in `Expect.That<Task>(() => ActAsync())`: remove the type argument, so that the task is awaited. See
+[Delegates](./06-behaviour/01-delegates.md).
 
 ## aweXpect0008
 
@@ -153,7 +155,7 @@ await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: th
 
 The value is `default` (also `null` for a reference type that is not annotated as nullable) when another alternative
 was met. Do not use it, or check it first and suppress the warning there. The rule is not reported when the value has
-the type of the subject, because then every alternative returns the subject. See
+the type of the subject, or a base type or an interface of it, because then every alternative returns the subject. See
 [Combining expectations](./03-how-it-works/03-combining.md#using-the-result).
 
 ## Nullability suppressor

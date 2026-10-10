@@ -51,7 +51,7 @@ public class OrResultValueAnalyzer : DiagnosticAnalyzer
 		if (value.Type is not { SpecialType: not SpecialType.System_Void, TypeKind: not TypeKind.Error, } valueType ||
 		    !IsExpectationResult(expectation.Type) ||
 		    !IsUsed(value) ||
-		    FindOrOnAnotherSubject(expectation, valueType) is not { } or)
+		    FindOrOnAnotherSubject(expectation, valueType, context.Compilation) is not { } or)
 		{
 			return;
 		}
@@ -119,27 +119,38 @@ public class OrResultValueAnalyzer : DiagnosticAnalyzer
 
 	/// <summary>
 	///     Follows the <paramref name="expectation" /> back along its fluent chain to the last <c>Or</c> that continues
-	///     with a subject of another type than the <paramref name="valueType" />.
+	///     with a subject that is not a value of the <paramref name="valueType" />.
 	/// </summary>
 	/// <remarks>
 	///     An <c>Or</c> returns the <c>IThat&lt;TSubject&gt;</c> that its alternatives were applied to. When their
-	///     subject already has the type of the value, each alternative returns it, so the value is the same whichever
+	///     subject already is a value of that type, each alternative returns it, so the value is the same whichever
 	///     of them is met.
 	/// </remarks>
-	private static IOperation? FindOrOnAnotherSubject(IOperation expectation, ITypeSymbol valueType)
+	private static IOperation? FindOrOnAnotherSubject(IOperation expectation, ITypeSymbol valueType,
+		Compilation compilation)
 	{
 		for (IOperation? current = expectation; current is not null; current = GetReceiver(current))
 		{
 			if (current is IPropertyReferenceOperation { Property: var property, Type: { } that, } &&
 			    IsOr(property) &&
 			    GetSubjectType(that) is { } subjectType &&
-			    !SymbolEqualityComparer.Default.Equals(WithoutNullable(subjectType), WithoutNullable(valueType)))
+			    !IsValueOfType(compilation, WithoutNullable(subjectType), WithoutNullable(valueType)))
 			{
 				return current;
 			}
 		}
 
 		return null;
+	}
+
+	/// <summary>
+	///     Whether every subject of the <paramref name="subjectType" /> is itself a value of the
+	///     <paramref name="valueType" />: it has that type, derives from it or implements it.
+	/// </summary>
+	private static bool IsValueOfType(Compilation compilation, ITypeSymbol subjectType, ITypeSymbol valueType)
+	{
+		CommonConversion conversion = compilation.ClassifyCommonConversion(subjectType, valueType);
+		return conversion.IsIdentity || (conversion.IsImplicit && conversion.IsReference);
 	}
 
 	/// <summary>

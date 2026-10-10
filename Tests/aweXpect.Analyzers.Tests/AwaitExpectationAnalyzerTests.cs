@@ -279,16 +279,9 @@ public class AwaitExpectationAnalyzerTests
 			using aweXpect;
 			using aweXpect.Core;
 
-			public class Holder
-			{
-			    public bool GetResult() => true;
-			}
-
 			public static class MyExtensions
 			{
-			    public static bool GetResult(this Expectation expectation) => true;
-
-			    public static Holder Hold(this Expectation expectation) => new();
+			    public static Expectation GetResult(this Expectation expectation) => expectation;
 			}
 
 			public class MyClass
@@ -297,14 +290,11 @@ public class AwaitExpectationAnalyzerTests
 			    {
 			        var subject = true;
 			        {|#0:Expect.That(subject)|}.IsTrue().GetResult();
-			        {|#1:Expect.That(subject)|}.IsTrue().Hold().GetResult();
 			    }
 			}
 			""",
 			Verifier.Diagnostic(Rules.AwaitExpectationRule)
-				.WithLocation(0),
-			Verifier.Diagnostic(Rules.AwaitExpectationRule)
-				.WithLocation(1)
+				.WithLocation(0)
 		);
 
 	[Test]
@@ -325,6 +315,98 @@ public class AwaitExpectationAnalyzerTests
 			""",
 			Verifier.Diagnostic(Rules.AwaitExpectationRule)
 				.WithLocation(0)
+		);
+
+	[Test]
+	public async Task WhenChainedWithAnExtensionMethodThatContinuesTheExpectation_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public class Quantity<T>(IThat<T> subject)
+			{
+			    public IThat<T> Items() => subject;
+			}
+
+			public static class MyExtensions
+			{
+			    public static TResult WithLogging<TResult>(this TResult result)
+			        => result;
+
+			    public static AndOrResult<T, IThat<T>> Logged<T>(this AndOrResult<T, IThat<T>> result)
+			        => result;
+
+			    public static IThat<T> AndAlso<T>(this AndOrResult<T, IThat<T>> result)
+			        => result.And;
+
+			    public static Quantity<T> Some<T>(this IThat<T> subject)
+			        => new Quantity<T>(subject);
+			}
+
+			public class MyClass
+			{
+			    public void MyTest(string subject, List<int> values)
+			    {
+			        {|#0:Expect.That(subject)|}.IsNotEmpty().WithLogging();
+			        {|#1:Expect.That(subject)|}.IsNotEmpty().Logged();
+			        {|#2:Expect.That(subject)|}.IsNotEmpty().AndAlso();
+			        {|#3:Expect.That(subject)|}.IsNotEmpty().AndAlso().IsNotEmpty();
+			        {|#4:Expect.That(values)|}.HasSingle().Which.IsGreaterThan(1);
+			        {|#5:Expect.That(values)|}.IsEqualTo(new[] { 1, 2, }).InAnyOrder();
+			        {|#6:Expect.That(values)|}.All().Satisfy(x => x > 0);
+			        {|#7:Expect.That(values)|}.All();
+			        {|#8:Expect.That(subject)|}.Some().Items().IsNotEmpty();
+			        var unused = {|#9:Expect.That(subject)|}.IsNotEmpty().WithLogging();
+			        _ = {|#10:Expect.That(subject)|}.IsNotEmpty().WithLogging();
+			        MyExtensions.WithLogging({|#11:Expect.That(subject)|}.IsNotEmpty());
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(0),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(1),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(2),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(3),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(4),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(5),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(6),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(7),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(8),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(9),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(10),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule).WithLocation(11)
+		);
+
+	[Test]
+	public async Task WhenConsumedByAnExtensionMethodReturningAValue_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+			using aweXpect.Results;
+			using aweXpect.Synchronous;
+
+			public static class MyExtensions
+			{
+			    public static T Verified<T, TSelf>(this ExpectationResult<T, TSelf> result)
+			        where TSelf : ExpectationResult<T, TSelf>
+			        => result.VerifySynchronously();
+			}
+
+			public class MyClass
+			{
+			    public void MyTest(string subject)
+			    {
+			        Expect.That(subject).IsNotEmpty().Verified();
+			        Expect.That(subject).IsNotEmpty().And.IsNotEmpty().Verified();
+			        Expect.That(subject).IsNotEmpty().Verified().ToString();
+			        _ = Expect.That(subject).IsNotEmpty().Verified();
+			        string unused = Expect.That(subject).IsNotEmpty().Verified();
+			        MyExtensions.Verified(Expect.That(subject).IsNotEmpty());
+			    }
+			}
+			"""
 		);
 
 	[Test]

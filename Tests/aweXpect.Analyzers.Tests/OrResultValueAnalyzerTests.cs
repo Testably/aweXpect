@@ -261,6 +261,56 @@ public class OrResultValueAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenTheValueIsABaseTypeOrAnInterfaceOfTheSubject_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			#nullable enable
+			using System;
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(ArgumentException exception, List<int> list, IEnumerable<int> other,
+			        ArgumentException? nullableException)
+			    {
+			        Exception inner = await Expect.That(exception).HasParamName("x").Or.HasInner();
+			        IEnumerable<int> items = await Expect.That(list).IsSameAs(other).Or.Contains(1);
+			        Exception? nullable = await Expect.That(nullableException).HasParamName("x").Or.HasInner();
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenTheValueIsADerivedTypeOfTheSubject_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(Exception exception, IEnumerable<int> items)
+			    {
+			        ArgumentException derived = await Expect.That(exception).Is<InvalidOperationException>()
+			            .{|#0:Or|}.Is<ArgumentException>();
+			        List<int> list = await Expect.That(items).Is<HashSet<int>>().{|#1:Or|}.Is<List<int>>();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.OrResultValueRule)
+				.WithLocation(0)
+				.WithArguments("ArgumentException"),
+			Verifier.Diagnostic(Rules.OrResultValueRule)
+				.WithLocation(1)
+				.WithArguments("List<int>")
+		);
+
+	[Test]
 	public async Task WhenTheValueIsAValueType_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

@@ -109,7 +109,7 @@ public class DelegateSubjectAnalyzer : DiagnosticAnalyzer
 	/// </summary>
 	private static IOperation? GetReceiver(IInvocationOperation invocation)
 	{
-		IOperation? receiver = invocation.Arguments.FirstOrDefault()?.Value;
+		IOperation? receiver = invocation.Arguments.FirstOrDefault(argument => argument.Parameter?.Ordinal == 0)?.Value;
 		while (receiver is IConversionOperation conversion)
 		{
 			receiver = conversion.Operand;

@@ -5,6 +5,29 @@ namespace aweXpect.Analyzers.Tests;
 public class DelegateSubjectAnalyzerTests
 {
 	[Test]
+	public async Task WhenCalledAsStaticMethodWithReorderedNamedArguments_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        int Act() => 1;
+
+			        await {|#0:ThatObject.IsEqualTo(expected: 1, subject: Expect.That(Act))|};
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.DelegateSubjectRule)
+				.WithLocation(0)
+				.WithArguments("IsEqualTo")
+		);
+
+	[Test]
 	public async Task WhenNotChainedDirectlyOnTheDelegateSubject_ShouldBeFlaggedOnTheWholeInvocation() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

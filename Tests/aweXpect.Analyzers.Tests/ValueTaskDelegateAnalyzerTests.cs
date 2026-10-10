@@ -33,6 +33,87 @@ public class ValueTaskDelegateAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenExplicitlyTypingATaskSubject_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(Task task, Task<int> taskWithResult)
+			    {
+			        await Expect.That<Task>(task).IsNotNull();
+			        await Expect.That<Task>(taskWithResult).IsNotNull();
+			        await Expect.That<Task<int>>(taskWithResult).IsNotNull();
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenExplicitlyTypingTheResultAsTask_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(Func<Task> act)
+			    {
+			        Task Act() => Task.CompletedTask;
+			        Task<int> Get() => Task.FromResult(1);
+			        Task ActWithToken(CancellationToken token) => Task.CompletedTask;
+
+			        await Expect.That<Task>({|#0:() => Act()|}).DoesNotThrow();
+			        await Expect.That<Task>({|#1:Act|}).DoesNotThrow();
+			        await Expect.That<Task>({|#2:act|}).DoesNotThrow();
+			        await Expect.That<Task>({|#3:token => ActWithToken(token)|}).DoesNotThrow();
+			        await Expect.That<Task>({|#4:ActWithToken|}).DoesNotThrow();
+			        await Expect.That<Task<int>>({|#5:() => Get()|}).DoesNotThrow();
+			        await Expect.That<Task<int>>({|#6:Get|}).DoesNotThrow();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(0).WithArguments("Task"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(1).WithArguments("Task"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(2).WithArguments("Task"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(3).WithArguments("Task"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(4).WithArguments("Task"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(5).WithArguments("Task<int>"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(6).WithArguments("Task<int>")
+		);
+
+	[Test]
+	public async Task WhenExplicitlyTypingTheResultAsTask_WithoutValueTaskOverloads_ShouldBeFlagged()
+		=> await VerifyWithoutValueTaskOverloadsAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public void MyTest(Task task)
+			    {
+			        Task Act() => Task.CompletedTask;
+			        Task<int> Get() => Task.FromResult(1);
+
+			        Expect.That<Task>({|#0:() => Act()|});
+			        Expect.That<Task<int>>({|#1:Get|});
+			        Expect.That<Task>(task);
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(0).WithArguments("Task"),
+			Verifier.Diagnostic(Rules.ExplicitTaskDelegateRule).WithLocation(1).WithArguments("Task<int>")
+		);
+
+	[Test]
 	public async Task WhenExplicitlyTypingTheResultAsValueTask_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

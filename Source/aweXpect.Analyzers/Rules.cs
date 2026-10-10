@@ -47,6 +47,14 @@ internal static class Rules
 		"aweXpect0007", Title("aweXpect0007"), MessageFormat("aweXpect0007"), UsageCategory,
 		DiagnosticSeverity.Error, true, Description("aweXpect0007"), HelpLinkUri("aweXpect0007"));
 
+	/// <summary>
+	///     The variant of <see cref="ValueTaskDelegateRule" /> for a <c>Task</c>, which only becomes the value of the
+	///     delegate through an explicit type argument, so that <c>AsTask()</c> cannot help.
+	/// </summary>
+	public static readonly DiagnosticDescriptor ExplicitTaskDelegateRule = new(
+		"aweXpect0007", Title("aweXpect0007"), MessageFormat("aweXpect0007", "ExplicitTaskMessageFormat"), UsageCategory,
+		DiagnosticSeverity.Error, true, Description("aweXpect0007"), HelpLinkUri("aweXpect0007"));
+
 	public static readonly DiagnosticDescriptor OrResultValueRule = new(
 		"aweXpect0008", Title("aweXpect0008"), MessageFormat("aweXpect0008"), UsageCategory,
 		DiagnosticSeverity.Warning, true, Description("aweXpect0008"), HelpLinkUri("aweXpect0008"));
