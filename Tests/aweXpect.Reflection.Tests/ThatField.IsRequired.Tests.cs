@@ -22,10 +22,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is required,
-					              but it was non-required {Formatter.Format(subject)}
+					              but it was non-required string ClassWithRequiredMembers.OptionalField
 					              """);
 			}
 
@@ -90,10 +90,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not required,
-					              but it was required {Formatter.Format(subject)}
+					              but it was required string ClassWithRequiredMembers.RequiredField
 					              """);
 			}
 		}

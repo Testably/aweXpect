@@ -22,10 +22,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is obsolete,
-					              but it was non-obsolete {Formatter.Format(subject)}
+					              but it was non-obsolete event EventHandler ClassWithObsoleteMembers.NonObsoleteEvent
 					              """);
 			}
 
@@ -90,10 +90,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not obsolete,
-					              but it was obsolete {Formatter.Format(subject)}
+					              but it was obsolete event EventHandler ClassWithObsoleteMembers.ObsoleteEvent
 					              """);
 			}
 		}

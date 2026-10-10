@@ -22,10 +22,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is required,
-					              but it was non-required {Formatter.Format(subject)}
+					              but it was non-required public string ClassWithRequiredMembers.OptionalProperty { get; set; }
 					              """);
 			}
 
@@ -90,10 +90,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not required,
-					              but it was required {Formatter.Format(subject)}
+					              but it was required public string ClassWithRequiredMembers.RequiredProperty { get; set; }
 					              """);
 			}
 		}

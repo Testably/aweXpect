@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -90,29 +91,29 @@ public static class In
 	///     Defines expectations on the given <paramref name="constructors" />.
 	/// </summary>
 	public static Filtered.Constructors Constructors(params IEnumerable<ConstructorInfo> constructors)
-		=> new(constructors, $"in the constructors {Formatter.Format(constructors)}");
+		=> new(constructors, $"in the constructors {Formatter.Format(FormattableMember.FromAll(constructors))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="events" />.
 	/// </summary>
 	public static Filtered.Events Events(params IEnumerable<EventInfo> events)
-		=> new(events, $"in the events {Formatter.Format(events)}");
+		=> new(events, $"in the events {Formatter.Format(FormattableMember.FromAll(events))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="fields" />.
 	/// </summary>
 	public static Filtered.Fields Fields(params IEnumerable<FieldInfo> fields)
-		=> new(fields, $"in the fields {Formatter.Format(fields)}");
+		=> new(fields, $"in the fields {Formatter.Format(FormattableMember.FromAll(fields))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="methods" />.
 	/// </summary>
 	public static Filtered.Methods Methods(params IEnumerable<MethodInfo> methods)
-		=> new(methods, $"in the methods {Formatter.Format(methods)}");
+		=> new(methods, $"in the methods {Formatter.Format(FormattableMember.FromAll(methods))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="properties" />.
 	/// </summary>
 	public static Filtered.Properties Properties(params IEnumerable<PropertyInfo> properties)
-		=> new(properties, $"in the properties {Formatter.Format(properties)}");
+		=> new(properties, $"in the properties {Formatter.Format(FormattableMember.FromAll(properties))}");
 }

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -49,8 +48,6 @@ public sealed partial class ThatType
 			public async Task WhenTypeHasNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNullableProperty);
-				PropertyInfo property = subject
-					.GetProperty(nameof(ClassWithSingleNullableProperty.NullableProperty))!;
 
 				async Task Act()
 				{
@@ -58,14 +55,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has non-nullable members,
 					              but it contained nullable members
 
 					              Nullable members:
 					              [
-					                {Formatter.Format(property)}
+					                public string ClassWithSingleNullableProperty.NullableProperty { get; set; }
 					              ]
 					              """);
 			}
@@ -74,8 +71,6 @@ public sealed partial class ThatType
 			public async Task WhenTypeHasNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNullableEvent);
-				EventInfo @event = subject
-					.GetEvent(nameof(ClassWithSingleNullableEvent.NullableEvent))!;
 
 				async Task Act()
 				{
@@ -83,14 +78,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has non-nullable members,
 					              but it contained nullable members
 
 					              Nullable members:
 					              [
-					                {Formatter.Format(@event)}
+					                event EventHandler ClassWithSingleNullableEvent.NullableEvent
 					              ]
 					              """);
 			}
@@ -142,11 +137,6 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenUsedInThatAll_ShouldListTheNullableMembersOfEachFailure()
 			{
-				PropertyInfo property = typeof(ClassWithSingleNullableProperty)
-					.GetProperty(nameof(ClassWithSingleNullableProperty.NullableProperty))!;
-				EventInfo @event = typeof(ClassWithSingleNullableEvent)
-					.GetEvent(nameof(ClassWithSingleNullableEvent.NullableEvent))!;
-
 				async Task Act()
 				{
 					await ThatAll(
@@ -155,7 +145,7 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected all of the following to succeed:
 					               [01] Expected that typeof(ClassWithSingleNullableProperty) only has non-nullable members
 					               [02] Expected that typeof(ClassWithSingleNullableEvent) only has non-nullable members
@@ -165,12 +155,12 @@ public sealed partial class ThatType
 
 					              [01] Nullable members:
 					              [
-					                {Formatter.Format(property)}
+					                public string ClassWithSingleNullableProperty.NullableProperty { get; set; }
 					              ]
 
 					              [02] Nullable members:
 					              [
-					                {Formatter.Format(@event)}
+					                event EventHandler ClassWithSingleNullableEvent.NullableEvent
 					              ]
 					              """);
 			}
@@ -213,8 +203,6 @@ public sealed partial class ThatType
 			public async Task WhenTypeOnlyHasNonNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNonNullableProperty);
-				PropertyInfo property = subject
-					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -222,14 +210,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              does not only have non-nullable members,
 					              but it only contained non-nullable members
 
 					              Non-nullable members:
 					              [
-					                {Formatter.Format(property)}
+					                public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }
 					              ]
 					              """);
 			}

@@ -67,10 +67,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable string ClassWithNullableMembers.NullableField
 					              """);
 			}
 
@@ -86,10 +86,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable int? ClassWithNullableMembers.NullableValueField
 					              """);
 			}
 
@@ -122,10 +122,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
+					              but it was non-nullable string ClassWithNonNullableMembers.NonNullableField
 					              """);
 			}
 

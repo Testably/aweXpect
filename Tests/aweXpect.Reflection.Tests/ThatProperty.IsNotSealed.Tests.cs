@@ -54,10 +54,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not sealed,
-					              but it was sealed {Formatter.Format(subject)}
+					              but it was sealed public string ClassWithSealedMembers.VirtualProperty { get; set; }
 					              """);
 			}
 		}

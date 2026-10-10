@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -76,7 +77,7 @@ public static partial class ThatMethod
 				stringBuilder.Append(It).Append(" was non-generic ");
 			}
 
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -85,7 +86,7 @@ public static partial class ThatMethod
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was generic ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 	}
 }

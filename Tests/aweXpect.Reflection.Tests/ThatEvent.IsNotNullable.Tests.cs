@@ -81,10 +81,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable event EventHandler ClassWithNullableEvents.NullableEvent
 					              """);
 			}
 
@@ -100,10 +100,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable event EventHandler<string> ClassWithNullableEvents.NullableGenericEvent
 					              """);
 			}
 
@@ -119,10 +119,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable event EventHandler ClassWithCustomNullableEvent.NullableCustomEvent
 					              """);
 			}
 
@@ -155,10 +155,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
+					              but it was non-nullable event EventHandler ClassWithNonNullableEvents.NonNullableEvent
 					              """);
 			}
 

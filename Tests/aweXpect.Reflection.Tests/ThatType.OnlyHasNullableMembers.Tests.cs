@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using aweXpect.Reflection.Collections;
+﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
@@ -76,8 +75,6 @@ public sealed partial class ThatType
 			public async Task WhenTypeHasNonNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNonNullableProperty);
-				PropertyInfo property = subject
-					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -85,14 +82,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has nullable members,
 					              but it contained non-nullable members
 
 					              Non-nullable members:
 					              [
-					                {Formatter.Format(property)}
+					                public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }
 					              ]
 					              """);
 			}
@@ -101,8 +98,6 @@ public sealed partial class ThatType
 			public async Task WhenTypeHasNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNonNullableEvent);
-				EventInfo @event = subject
-					.GetEvent(nameof(ClassWithSingleNonNullableEvent.NonNullableEvent))!;
 
 				async Task Act()
 				{
@@ -110,14 +105,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has nullable members,
 					              but it contained non-nullable members
 
 					              Non-nullable members:
 					              [
-					                {Formatter.Format(@event)}
+					                event EventHandler ClassWithSingleNonNullableEvent.NonNullableEvent
 					              ]
 					              """);
 			}
@@ -174,8 +169,6 @@ public sealed partial class ThatType
 					typeof(ClassWithNullableMembers), typeof(ClassWithSingleNonNullableProperty),
 					typeof(ClassWithSingleNonNullableEvent),
 				];
-				PropertyInfo property = typeof(ClassWithSingleNonNullableProperty)
-					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -183,7 +176,7 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has nullable members for all items,
 					              but only 1 of 3 did
@@ -203,7 +196,7 @@ public sealed partial class ThatType
 
 					              Non-nullable members (item [1]):
 					              [
-					                {Formatter.Format(property)}
+					                public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }
 					              ]
 					              """);
 			}
@@ -212,8 +205,6 @@ public sealed partial class ThatType
 			public async Task WithIncludingInherited_WhenBaseTypeHasNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithNullableEvent);
-				EventInfo @event = subject
-					.GetEvent(nameof(ClassWithSingleNonNullableEvent.NonNullableEvent))!;
 
 				async Task Act()
 				{
@@ -221,14 +212,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has nullable members,
 					              but it contained non-nullable members
 
 					              Non-nullable members:
 					              [
-					                {Formatter.Format(@event)}
+					                event EventHandler ClassWithSingleNonNullableEvent.NonNullableEvent
 					              ]
 					              """);
 			}
@@ -273,8 +264,6 @@ public sealed partial class ThatType
 			public async Task WithIncludingInherited_WhenBaseTypeHasPrivateNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithPrivateNonNullableBaseEvent);
-				EventInfo @event = typeof(BaseClassWithPrivateNonNullableEvent)
-					.GetEvent("PrivateNonNullableEvent", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
 				async Task Act()
 				{
@@ -282,14 +271,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only has nullable members,
 					              but it contained non-nullable members
 
 					              Non-nullable members:
 					              [
-					                {Formatter.Format(@event)}
+					                event EventHandler BaseClassWithPrivateNonNullableEvent.PrivateNonNullableEvent
 					              ]
 					              """);
 			}
@@ -332,8 +321,6 @@ public sealed partial class ThatType
 			public async Task WhenTypeOnlyHasNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNullableProperty);
-				PropertyInfo property = subject
-					.GetProperty(nameof(ClassWithSingleNullableProperty.NullableProperty))!;
 
 				async Task Act()
 				{
@@ -341,14 +328,14 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              does not only have nullable members,
 					              but it only contained nullable members
 
 					              Nullable members:
 					              [
-					                {Formatter.Format(property)}
+					                public string ClassWithSingleNullableProperty.NullableProperty { get; set; }
 					              ]
 					              """);
 			}

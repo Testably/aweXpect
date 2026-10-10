@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Reflection.Formatting;
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -25,7 +26,8 @@ internal static class MemberViolationRenderer
 		if (members.Length > 0)
 		{
 			contexts.Add(new ResultContext.SyncCallback(title,
-				() => Formatter.Format(members, FormattingOptions.MultipleLines), int.MaxValue));
+				() => Formatter.Format(FormattableMember.FromAll(members), FormattingOptions.MultipleLines),
+				int.MaxValue));
 		}
 	}
 
@@ -52,7 +54,7 @@ internal static class MemberViolationRenderer
 
 			if (type is not null && violations.TryGetValue(type, out MemberInfo[]? members))
 			{
-				stringBuilder.Append(memberHeader).Append(Formatter.Format(members));
+				stringBuilder.Append(memberHeader).Append(Formatter.Format(FormattableMember.FromAll(members)));
 			}
 
 			if (index < types.Count - 1)

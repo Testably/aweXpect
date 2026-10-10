@@ -22,10 +22,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not an operator,
-					              but it was an operator {Formatter.Format(subject)}
+					              but it was an operator ClassWithOperators ClassWithOperators.op_Addition(ClassWithOperators left, ClassWithOperators right)
 					              """);
 			}
 
@@ -92,10 +92,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an operator,
-					              but it was not an operator {Formatter.Format(subject)}
+					              but it was not an operator void ClassWithOperators.RegularMethod()
 					              """);
 			}
 		}

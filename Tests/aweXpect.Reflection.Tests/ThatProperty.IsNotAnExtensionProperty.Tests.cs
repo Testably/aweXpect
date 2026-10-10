@@ -60,10 +60,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an extension property,
-					              but it was not an extension property {Formatter.Format(subject)}
+					              but it was not an extension property public string ClassWithRequiredMembers.OptionalProperty { get; set; }
 					              """);
 			}
 		}
@@ -83,10 +83,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not an extension property,
-					              but it was an extension property {Formatter.Format(subject)}
+					              but it was an extension property public bool StaticClassWithNewExtensionProperties.<G>$34505F560D9EACF86A87F3ED1F85E448.IsBlankText { get; }
 					              """);
 			}
 
@@ -102,10 +102,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not an extension property,
-					              but it was an extension property {Formatter.Format(subject)}
+					              but it was an extension property public string StaticClassWithNewExtensionProperties.<G>$34505F560D9EACF86A87F3ED1F85E448.DefaultValue { get; }
 					              """);
 			}
 

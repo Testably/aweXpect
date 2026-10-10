@@ -53,10 +53,10 @@ public sealed partial class ThatConstructor
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not static,
-					              but it was static {Formatter.Format(subject)}
+					              but it was static TestClassWithStaticMembers()
 					              """);
 			}
 		}
@@ -74,10 +74,10 @@ public sealed partial class ThatConstructor
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is static,
-					              but it was non-static {Formatter.Format(subject)}
+					              but it was non-static TestClassWithStaticMembers()
 					              """);
 			}
 

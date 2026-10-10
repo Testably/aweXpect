@@ -22,10 +22,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is virtual,
-					              but it was non-virtual {Formatter.Format(subject)}
+					              but it was non-virtual event EventHandler BaseClassWithMembers.BaseEvent
 					              """);
 			}
 

@@ -22,10 +22,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is virtual,
-					              but it was non-virtual {Formatter.Format(subject)}
+					              but it was non-virtual public int BaseClassWithMembers.BaseProperty { get; set; }
 					              """);
 			}
 

@@ -39,10 +39,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is write-only,
-					              but it was not write-only {Formatter.Format(subject)}
+					              but it was not write-only public string TestClassWithReadWriteProperties.ReadWriteProperty { get; set; }
 					              """);
 			}
 
@@ -89,10 +89,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not write-only,
-					              but it was write-only {Formatter.Format(subject)}
+					              but it was write-only public string TestClassWithReadWriteProperties.WriteOnlyProperty { set; }
 					              """);
 			}
 		}

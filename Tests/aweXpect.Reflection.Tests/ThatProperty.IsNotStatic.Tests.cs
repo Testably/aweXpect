@@ -54,10 +54,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not static,
-					              but it was static {Formatter.Format(subject)}
+					              but it was static public string TestClassWithStaticMembers.StaticProperty { get; set; }
 					              """);
 			}
 		}
@@ -77,10 +77,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is static,
-					              but it was non-static {Formatter.Format(subject)}
+					              but it was non-static public string TestClassWithStaticMembers.NonStaticProperty { get; set; }
 					              """);
 			}
 

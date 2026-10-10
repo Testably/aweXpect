@@ -21,10 +21,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is read-only,
-					              but it was non-read-only {Formatter.Format(subject)}
+					              but it was non-read-only int TestClassWithFieldModifiers.MutableField
 					              """);
 			}
 
@@ -89,10 +89,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not read-only,
-					              but it was read-only {Formatter.Format(subject)}
+					              but it was read-only int TestClassWithFieldModifiers.ReadOnlyField
 					              """);
 			}
 		}

@@ -22,10 +22,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not abstract,
-					              but it was abstract {Formatter.Format(subject)}
+					              but it was abstract void AbstractClassWithMembers.AbstractMethod()
 					              """);
 			}
 

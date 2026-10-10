@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
@@ -66,8 +65,6 @@ public sealed partial class ThatTypes
 					typeof(ClassWithNonNullableMembers),
 					typeof(ClassWithSingleNullableProperty),
 				];
-				PropertyInfo property = typeof(ClassWithSingleNullableProperty)
-					.GetProperty(nameof(ClassWithSingleNullableProperty.NullableProperty))!;
 
 				async Task Act()
 				{
@@ -75,14 +72,14 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only have non-nullable members,
 					              but it contained types with nullable members
 
 					              Not matching items:
 					              [
-					                ClassWithSingleNullableProperty with nullable members [{Formatter.Format(property)}]
+					                ClassWithSingleNullableProperty with nullable members [public string ClassWithSingleNullableProperty.NullableProperty { get; set; }]
 					              ]
 					              """);
 			}

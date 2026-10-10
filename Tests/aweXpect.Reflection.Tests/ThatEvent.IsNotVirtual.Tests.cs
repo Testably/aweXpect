@@ -54,10 +54,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not virtual,
-					              but it was virtual {Formatter.Format(subject)}
+					              but it was virtual event EventHandler AbstractClassWithMembers.VirtualEvent
 					              """);
 			}
 		}

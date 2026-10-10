@@ -22,10 +22,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is sealed,
-					              but it was non-sealed {Formatter.Format(subject)}
+					              but it was non-sealed void AbstractClassWithMembers.VirtualMethod()
 					              """);
 			}
 

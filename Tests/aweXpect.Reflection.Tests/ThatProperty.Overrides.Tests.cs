@@ -22,10 +22,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              overrides a base property,
-					              but it did not override a base property {Formatter.Format(subject)}
+					              but it did not override a base property public string AbstractClassWithMembers.VirtualProperty { get; set; }
 					              """);
 			}
 

@@ -39,10 +39,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is read-write,
-					              but it was not read-write {Formatter.Format(subject)}
+					              but it was not read-write public string TestClassWithReadWriteProperties.ReadOnlyProperty { get; }
 					              """);
 			}
 
@@ -89,10 +89,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not read-write,
-					              but it was read-write {Formatter.Format(subject)}
+					              but it was read-write public string TestClassWithReadWriteProperties.ReadWriteProperty { get; set; }
 					              """);
 			}
 		}

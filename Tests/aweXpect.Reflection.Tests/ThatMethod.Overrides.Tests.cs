@@ -22,10 +22,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              overrides a base method,
-					              but it did not override a base method {Formatter.Format(subject)}
+					              but it did not override a base method void AbstractClassWithMembers.VirtualMethod()
 					              """);
 			}
 

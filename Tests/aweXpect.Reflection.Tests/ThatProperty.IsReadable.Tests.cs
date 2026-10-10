@@ -53,10 +53,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is readable,
-					              but it was not readable {Formatter.Format(subject)}
+					              but it was not readable public string TestClassWithReadWriteProperties.WriteOnlyProperty { set; }
 					              """);
 			}
 		}
@@ -75,10 +75,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not readable,
-					              but it was readable {Formatter.Format(subject)}
+					              but it was readable public string TestClassWithReadWriteProperties.ReadOnlyProperty { get; }
 					              """);
 			}
 

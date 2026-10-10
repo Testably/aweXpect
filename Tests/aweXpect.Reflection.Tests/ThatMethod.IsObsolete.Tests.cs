@@ -22,10 +22,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is obsolete,
-					              but it was non-obsolete {Formatter.Format(subject)}
+					              but it was non-obsolete void ClassWithObsoleteMembers.NonObsoleteMethod()
 					              """);
 			}
 
@@ -90,10 +90,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not obsolete,
-					              but it was obsolete {Formatter.Format(subject)}
+					              but it was obsolete void ClassWithObsoleteMembers.ObsoleteMethod()
 					              """);
 			}
 		}

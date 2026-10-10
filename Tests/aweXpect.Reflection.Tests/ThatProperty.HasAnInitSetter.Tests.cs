@@ -35,10 +35,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              has an init setter,
-					              but it did not have an init setter {Formatter.Format(subject)}
+					              but it did not have an init setter public string TestClassWithPropertyAccessors.WithGetterAndSetter { get; set; }
 					              """);
 			}
 
@@ -75,10 +75,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              does not have an init setter,
-					              but it had an init setter {Formatter.Format(subject)}
+					              but it had an init setter public string TestClassWithPropertyAccessors.WithGetterAndInitSetter { get; set; }
 					              """);
 			}
 

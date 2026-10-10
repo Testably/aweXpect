@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -46,7 +47,7 @@ public static partial class ThatMethod
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was non-sealed ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -55,7 +56,7 @@ public static partial class ThatMethod
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was sealed ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 	}
 }

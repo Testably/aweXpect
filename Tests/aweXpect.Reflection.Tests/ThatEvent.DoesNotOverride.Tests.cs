@@ -54,10 +54,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              does not override a base event,
-					              but it did override a base event {Formatter.Format(subject)}
+					              but it did override a base event event EventHandler ClassWithSealedMembers.VirtualEvent
 					              """);
 			}
 		}

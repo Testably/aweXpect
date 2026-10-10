@@ -9,6 +9,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -197,7 +198,7 @@ public static partial class ThatMembers
 
 				isFirst = false;
 				stringBuilder.AppendLine().Append("  ")
-					.Append(Formatter.Format(memberInfo))
+					.Append(Formatter.Format(FormattableMember.From(memberInfo)))
 					.Append(" with name ").Append(Formatter.Format(memberInfo?.Name))
 					.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")));
 			}

@@ -22,10 +22,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not an indexer,
-					              but it was an indexer {Formatter.Format(subject)}
+					              but it was an indexer public string TestClassWithIndexers.Item { get; set; }
 					              """);
 			}
 
@@ -90,10 +90,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an indexer,
-					              but it was not an indexer {Formatter.Format(subject)}
+					              but it was not an indexer public string TestClassWithIndexers.RegularProperty { get; set; }
 					              """);
 			}
 		}

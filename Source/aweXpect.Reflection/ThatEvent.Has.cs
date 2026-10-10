@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -78,7 +79,7 @@ public static partial class ThatEvent
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" did not in ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -87,7 +88,7 @@ public static partial class ThatEvent
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" did in ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 	}
 }

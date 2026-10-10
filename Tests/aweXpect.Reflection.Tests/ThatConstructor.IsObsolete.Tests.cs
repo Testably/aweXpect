@@ -25,10 +25,10 @@ public sealed partial class ThatConstructor
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is obsolete,
-					              but it was non-obsolete {Formatter.Format(subject)}
+					              but it was non-obsolete ClassWithObsoleteMembers(int value)
 					              """);
 			}
 
@@ -96,10 +96,10 @@ public sealed partial class ThatConstructor
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not obsolete,
-					              but it was obsolete {Formatter.Format(subject)}
+					              but it was obsolete ClassWithObsoleteMembers()
 					              """);
 			}
 		}

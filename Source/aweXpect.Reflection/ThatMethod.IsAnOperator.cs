@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -70,7 +71,7 @@ public static partial class ThatMethod
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was not an operator ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -79,7 +80,7 @@ public static partial class ThatMethod
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was an operator ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 	}
 
@@ -102,7 +103,7 @@ public static partial class ThatMethod
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was not the operator ").Append(_name).Append(' ');
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -111,7 +112,7 @@ public static partial class ThatMethod
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was the operator ").Append(_name).Append(' ');
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 	}
 }

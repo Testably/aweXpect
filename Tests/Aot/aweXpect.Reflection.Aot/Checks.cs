@@ -55,7 +55,8 @@ internal static class Checks
 				=> await That(typeof(Customer).GetProperty(nameof(Customer.Nickname))).IsNullable())),
 		new("a non-nullable property fails to be nullable",
 			() => ShouldFailOrFailLoudly(async ()
-				=> await That(typeof(Order).GetProperty(nameof(Order.Customer))).IsNullable(), "is nullable")),
+				=> await That(typeof(Order).GetProperty(nameof(Order.Customer))).IsNullable(),
+				"it was non-nullable public Customer Order.Customer { get; }")),
 		new("named types are sealed",
 			() => ShouldPass(async () => await That(In.Types<Order, Repository>()).AreSealed())),
 		new("the types of a namespace fail when one is not sealed",

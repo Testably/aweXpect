@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Reflection.Formatting;
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -261,7 +262,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	///     state that is captured when this method is called.
 	/// </remarks>
 	protected virtual Func<string?> FormatItems(T[] items)
-		=> () => Formatter.Format(items, FormattingOptions.MultipleLines);
+		=> () => Formatter.Format(FormattableMember.FromAll(items), FormattingOptions.MultipleLines);
 
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default

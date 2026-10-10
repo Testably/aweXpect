@@ -22,10 +22,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an extension method,
-					              but it was not an extension method {Formatter.Format(subject)}
+					              but it was not an extension method void <null>.Dynamic()
 					              """);
 			}
 
@@ -57,10 +57,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an extension method,
-					              but it was not an extension method {Formatter.Format(subject)}
+					              but it was not an extension method void StaticClassWithExtensionMethods.RegularStaticMethod()
 					              """);
 			}
 
@@ -98,10 +98,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not an extension method,
-					              but it was an extension method {Formatter.Format(subject)}
+					              but it was an extension method bool StaticClassWithExtensionMethods.IsPositive(int value)
 					              """);
 			}
 
@@ -182,10 +182,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an extension method,
-					              but it was not an extension method {Formatter.Format(subject)}
+					              but it was not an extension method void StaticClassWithNewExtensionMethods.RegularStaticMethod()
 					              """);
 			}
 
@@ -202,10 +202,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an extension method,
-					              but it was not an extension method {Formatter.Format(subject)}
+					              but it was not an extension method string StaticClassWithNewExtensionMethods.Create(int unused)
 					              """);
 			}
 
@@ -222,10 +222,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is an extension method,
-					              but it was not an extension method {Formatter.Format(subject)}
+					              but it was not an extension method string StaticClassWithNewExtensionMethods.Combine(string value)
 					              """);
 			}
 

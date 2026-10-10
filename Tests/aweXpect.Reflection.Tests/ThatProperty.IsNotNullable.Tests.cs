@@ -67,10 +67,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable public string ClassWithNullableMembers.NullableProperty { get; set; }
 					              """);
 			}
 
@@ -86,10 +86,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not nullable,
-					              but it was nullable {Formatter.Format(subject)}
+					              but it was nullable public int? ClassWithNullableMembers.NullableValueProperty { get; set; }
 					              """);
 			}
 
@@ -122,10 +122,10 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
+					              but it was non-nullable public string ClassWithNonNullableMembers.NonNullableProperty { get; set; }
 					              """);
 			}
 

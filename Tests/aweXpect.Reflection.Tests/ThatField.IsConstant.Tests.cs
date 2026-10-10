@@ -35,10 +35,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is constant,
-					              but it was non-constant {Formatter.Format(subject)}
+					              but it was non-constant int TestClassWithFieldModifiers.MutableField
 					              """);
 			}
 
@@ -75,10 +75,10 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not constant,
-					              but it was constant {Formatter.Format(subject)}
+					              but it was constant int TestClassWithFieldModifiers.ConstantField
 					              """);
 			}
 

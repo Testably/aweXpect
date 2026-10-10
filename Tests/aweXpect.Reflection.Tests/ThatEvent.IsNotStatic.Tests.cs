@@ -53,10 +53,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not static,
-					              but it was static {Formatter.Format(subject)}
+					              but it was static event EventHandler TestClassWithStaticMembers.StaticEvent
 					              """);
 			}
 		}
@@ -75,10 +75,10 @@ public sealed partial class ThatEvent
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is static,
-					              but it was non-static {Formatter.Format(subject)}
+					              but it was non-static event EventHandler TestClassWithStaticMembers.NonStaticEvent
 					              """);
 			}
 

@@ -50,10 +50,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is async,
-					              but it was non-async {Formatter.Format(subject)}
+					              but it was non-async void ClassWithAsyncMembers.RegularMethod()
 					              """);
 			}
 
@@ -87,10 +87,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is async,
-					              but it was non-async {Formatter.Format(subject)}
+					              but it was non-async Task ClassWithAsyncMembers.NonAsyncTaskMethod()
 					              """);
 			}
 		}
@@ -109,10 +109,10 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              is not async,
-					              but it was async {Formatter.Format(subject)}
+					              but it was async Task ClassWithAsyncMembers.AsyncMethod()
 					              """);
 			}
 

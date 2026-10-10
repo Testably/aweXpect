@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
@@ -66,8 +65,6 @@ public sealed partial class ThatTypes
 					typeof(ClassWithSingleNonNullableProperty),
 					null,
 				];
-				PropertyInfo property = typeof(ClassWithSingleNonNullableProperty)
-					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -75,14 +72,14 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only have nullable members,
 					              but it contained types with non-nullable members
 
 					              Not matching items:
 					              [
-					                ClassWithSingleNonNullableProperty with non-nullable members [{Formatter.Format(property)}],
+					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }],
 					                <null>
 					              ]
 					              """);
@@ -96,8 +93,6 @@ public sealed partial class ThatTypes
 					typeof(ClassWithNullableMembers),
 					typeof(ClassWithSingleNonNullableProperty),
 				];
-				PropertyInfo property = typeof(ClassWithSingleNonNullableProperty)
-					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -105,14 +100,14 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
 					              only have nullable members,
 					              but it contained types with non-nullable members
 
 					              Not matching items:
 					              [
-					                ClassWithSingleNonNullableProperty with non-nullable members [{Formatter.Format(property)}]
+					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }]
 					              ]
 					              """);
 			}

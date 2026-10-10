@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -55,7 +56,7 @@ public static partial class ThatMember
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was non-obsolete ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -64,7 +65,7 @@ public static partial class ThatMember
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was obsolete ");
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
 		}
 	}
 }
