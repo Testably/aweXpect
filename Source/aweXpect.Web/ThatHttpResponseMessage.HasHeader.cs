@@ -68,13 +68,15 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a `").Append(expected).Append("` header");
+			=> stringBuilder.Append("has ").Append(expected.IndefiniteArticleForHeader()).Append(" `").Append(expected)
+				.Append("` header");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not contain the expected header");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have a `").Append(expected).Append("` header");
+			=> stringBuilder.Append("does not have ").Append(expected.IndefiniteArticleForHeader()).Append(" `")
+				.Append(expected).Append("` header");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

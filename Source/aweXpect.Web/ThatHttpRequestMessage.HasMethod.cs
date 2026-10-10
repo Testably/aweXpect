@@ -47,11 +47,13 @@ public static partial class ThatHttpRequestMessage
 			return this;
 		}
 
+		private string Article => char.ToUpperInvariant(expected.Method[0]) is 'A' or 'E' or 'I' or 'O' or 'U' ? "an" : "a";
+
 		public override string ToString()
-			=> $"has a {expected} method";
+			=> $"has {Article} {expected} method";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a ").Append(expected).Append(" method");
+			=> stringBuilder.Append("has ").Append(Article).Append(' ').Append(expected).Append(" method");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -60,7 +62,7 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have a ").Append(expected).Append(" method");
+			=> stringBuilder.Append("does not have ").Append(Article).Append(' ').Append(expected).Append(" method");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

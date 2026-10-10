@@ -23,7 +23,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a `x-b` header and has a success status code (2xx) for all items,
+				             has an `x-b` header and has a success status code (2xx) for all items,
 				             but none of 2 did
 				             *
 				             HTTP-Response (item [0]):
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             does not have a `x-a` header and has a success status code (2xx),
+				             does not have an `x-a` header and has a success status code (2xx),
 				             but it did contain the `x-a` header: ["1"] and had status code 404 NotFound
 
 				             HTTP-Response:
@@ -107,7 +107,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a `x-a` header whose value is equal to "2" and has status code 201 Created,
+				             has an `x-a` header whose value is equal to "2" and has status code 201 Created,
 				             but the value was "1", which differs at index 0:
 				                ↓ (actual)
 				               "1"
@@ -137,7 +137,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a request message which has a `y` header and has a `x` header,
+				             has a request message which has a `y` header and has an `x` header,
 				             but it did not contain the expected header
 
 				             HTTP-Request:
@@ -225,7 +225,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a success status code (2xx) and has a `x-missing` header,
+				             has a success status code (2xx) and has an `x-missing` header,
 				             but it had status code 404 NotFound and did not contain the expected header
 
 				             HTTP-Response:
@@ -249,7 +249,7 @@ public sealed partial class ThatHttpResponseMessage
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a success status code (2xx) or has a `x-missing` header,
+				             has a success status code (2xx) or has an `x-missing` header,
 				             but it had status code 404 NotFound and did not contain the expected header
 
 				             HTTP-Response:

@@ -23,7 +23,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-some-other-key` header whose value is equal to "some header",
+					             has an `x-some-other-key` header whose value is equal to "some header",
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-my-header` header whose value is equal to "some other header",
+					             has an `x-my-header` header whose value is equal to "some other header",
 					             but the value was "some header", which differs at index 5:
 					                     ↓ (actual)
 					               "some header"
@@ -88,7 +88,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-some-other-key` header whose value is equal to "some header",
+					             has an `x-some-other-key` header whose value is equal to "some header",
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -108,7 +108,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-my-key` header whose value is equal to "foo",
+					             has an `x-my-key` header whose value is equal to "foo",
 					             but it was <null>
 					             """);
 			}

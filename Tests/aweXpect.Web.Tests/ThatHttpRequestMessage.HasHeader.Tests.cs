@@ -8,6 +8,27 @@ public sealed partial class ThatHttpRequestMessage
 	{
 		public sealed class Tests
 		{
+			[Theory]
+			[InlineData("Accept", "an")]
+			[InlineData("ETag", "an")]
+			[InlineData("Host", "a")]
+			[InlineData("User-Agent", "a")]
+			[InlineData("X-Request-Id", "an")]
+			public async Task ShouldUseTheIndefiniteArticleOfTheHeaderName(string name, string article)
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasHeader(name);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has {article} `{name}` header,
+					              but it was <null>
+					              """);
+			}
+
 			[Fact]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
@@ -21,7 +42,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-my-header` header,
+					             has an `x-my-header` header,
 					             but it did not contain the expected header
 
 					             HTTP-Request:
@@ -56,7 +77,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a `x-my-header` header,
+					             has an `x-my-header` header,
 					             but it was <null>
 					             """);
 			}
