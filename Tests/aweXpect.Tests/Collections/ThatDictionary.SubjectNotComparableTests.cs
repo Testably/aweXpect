@@ -24,7 +24,7 @@ public sealed partial class ThatDictionary
 				.WithMessage("""
 				             Expected that subject
 				             contains [1] = "1" as number,
-				             but it was "foo", which is no number
+				             but a value was "foo", which is no number
 
 				             Dictionary:
 				             {
@@ -48,7 +48,7 @@ public sealed partial class ThatDictionary
 				.WithMessage("""
 				             Expected that subject
 				             contains value "1" as number,
-				             but it was "foo", which is no number
+				             but a value was "foo", which is no number
 
 				             Dictionary:
 				             {
@@ -72,7 +72,7 @@ public sealed partial class ThatDictionary
 				.WithMessage("""
 				             Expected that subject
 				             does not contain value "1" as number,
-				             but it was "foo", which is no number
+				             but a value was "foo", which is no number
 
 				             Dictionary:
 				             {

@@ -96,5 +96,74 @@ public sealed partial class ThatString
 				             but it was "foo", which is no number
 				             """);
 		}
+
+		[Test]
+		public async Task Whose_IsEqualTo_AsNumber_WhenMemberIsNoNumber_ShouldNameTheMember()
+		{
+			Container subject = new("foo");
+
+			async Task Act()
+				=> await That(subject).Whose(x => x.Value, value => value.IsEqualTo("1").AsNumber());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Value is the number "1",
+				             but Value was "foo", which is no number
+
+				             Actual (Value):
+				             foo
+				             """);
+		}
+
+		[Test]
+		public async Task Whose_IsNotEqualTo_AsNumber_WhenMemberIsNoNumber_ShouldNameTheMember()
+		{
+			Container subject = new("foo");
+
+			async Task Act()
+				=> await That(subject).Whose(x => x.Value, value => value.IsNotEqualTo("1").AsNumber());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Value is not the number "1",
+				             but Value was "foo", which is no number
+
+				             Actual (Value):
+				             foo
+				             """)
+				.Because("a member that cannot be compared is not different from the unexpected value either");
+		}
+
+		[Test]
+		public async Task Whose_Whose_IsEqualTo_AsNumber_WhenNestedMemberIsNoNumber_ShouldNameTheNestedMember()
+		{
+			Outer subject = new(new Container("foo"));
+
+			async Task Act()
+				=> await That(subject).Whose(x => x.Inner,
+					inner => inner.Whose(x => x.Value, value => value.IsEqualTo("1").AsNumber()));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Inner has Value that is the number "1",
+				             but Value was "foo", which is no number
+
+				             Actual (Inner.Value):
+				             foo
+				             """);
+		}
+
+		private sealed class Container(string value)
+		{
+			public string Value { get; } = value;
+		}
+
+		private sealed class Outer(Container inner)
+		{
+			public Container Inner { get; } = inner;
+		}
 	}
 }

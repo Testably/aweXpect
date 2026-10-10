@@ -11,7 +11,7 @@ internal class DummyNode(string name, Func<ConstraintResult>? result = null) : N
 	private readonly string _name = name;
 	public MemberAccessor? MappingMemberAccessor { get; private set; }
 
-	public override void AddConstraint(IConstraint constraint)
+	public override void AddConstraint(IConstraint constraint, string it = "it")
 		=> throw new NotSupportedException();
 
 	public override Node AddMapping(MappingNode mappingNode)

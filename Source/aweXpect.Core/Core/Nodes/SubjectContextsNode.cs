@@ -26,8 +26,8 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 	public Node Inner { get; private set; } = inner;
 
 	/// <inheritdoc />
-	public override void AddConstraint(IConstraint constraint)
-		=> Inner.AddConstraint(constraint);
+	public override void AddConstraint(IConstraint constraint, string it = "it")
+		=> Inner.AddConstraint(constraint, it);
 
 	/// <inheritdoc />
 	public override Node AddMapping(MappingNode mappingNode)

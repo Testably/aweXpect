@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "1" as number for all items,
-				             but it was "foo", which is no number
+				             but an item was "foo", which is no number
 				             """);
 		}
 
@@ -49,6 +49,33 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Test]
+		public async Task AllComplyWith_Whose_IsEqualTo_AsNumber_WhenAMemberIsNoNumber_ShouldNameTheItemAndTheMember()
+		{
+			IEnumerable<Container> subject = [new("1"), new("foo"),];
+
+			async Task Act()
+				=> await That(subject).All()
+					.ComplyWith(item => item.Whose(x => x.Value, value => value.IsEqualTo("1").AsNumber()));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Value is the number "1" for all items,
+				             but for the item at index 1, Value was "foo", which is no number
+
+				             Collection:
+				             [
+				               ThatEnumerable.SubjectNotComparableTests.Container {
+				                 Value = "1"
+				               },
+				               ThatEnumerable.SubjectNotComparableTests.Container {
+				                 Value = "foo"
+				               }
+				             ]
+				             """);
+		}
+
+		[Test]
 		public async Task Contains_AsNumber_WhenAnItemIsNoNumber_ShouldFail()
 		{
 			IEnumerable<string> subject = ["foo", "2",];
@@ -60,7 +87,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             contains "1" as number at least once,
-				             but it was "foo", which is no number
+				             but an item was "foo", which is no number
 				             """);
 		}
 
@@ -76,7 +103,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             does not contain "1" as number,
-				             but it was "foo", which is no number
+				             but an item was "foo", which is no number
 				             """)
 				.Because("an item that cannot be compared is not different from the unexpected value either");
 		}
@@ -106,7 +133,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected as number in order,
-				             but it was "foo", which is no number
+				             but an item was "foo", which is no number
 
 				             Collection:
 				             [
@@ -135,7 +162,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected as number in any order,
-				             but it was "foo", which is no number
+				             but an item was "foo", which is no number
 
 				             Collection:
 				             [
@@ -164,7 +191,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection unexpected as number in order,
-				             but it was "foo", which is no number
+				             but an item was "foo", which is no number
 
 				             Collection:
 				             [
@@ -179,6 +206,32 @@ public sealed partial class ThatEnumerable
 				             ]
 				             """)
 				.Because("a collection with an item that cannot be compared is not different from the unexpected one either");
+		}
+
+		[Test]
+		public async Task Whose_Contains_AsNumber_WhenAnItemOfTheMemberIsNoNumber_ShouldNameTheMember()
+		{
+			Tagged subject = new(["foo", "2",]);
+
+			async Task Act()
+				=> await That(subject).Whose(x => x.Tags, tags => tags.Contains("1").AsNumber());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             whose Tags contain "1" as number at least once,
+				             but an item of Tags was "foo", which is no number
+				             """);
+		}
+
+		private sealed class Container(string value)
+		{
+			public string Value { get; } = value;
+		}
+
+		private sealed class Tagged(IEnumerable<string> tags)
+		{
+			public IEnumerable<string> Tags { get; } = tags;
 		}
 	}
 }
