@@ -134,14 +134,8 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private void CompareElement(JsonElement element, object? expectedValue)
 	{
-#pragma warning disable CA1869
-		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
-#pragma warning restore CA1869
 		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-		serializerOptions.Converters.Add(converter);
-		using JsonDocument expectedDocument =
-			JsonDocument.Parse(JsonSerializer.Serialize(expectedValue, serializerOptions),
-				_options.DocumentOptions);
+		using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions);
 		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
 			CurrentPath,
 			element,
@@ -353,13 +347,8 @@ internal class JsonValidation : IJsonObjectResult,
 			return this;
 		}
 
-#pragma warning disable CA1869
-		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
-#pragma warning restore CA1869
 		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-		serializerOptions.Converters.Add(converter);
-		using JsonDocument expectedDocument =
-			JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), _options.DocumentOptions);
+		using JsonDocument expectedDocument = converter.ParseExpected(expected, _options.DocumentOptions);
 		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
 			CurrentPath,
 			currentElement.Value,
@@ -413,13 +402,8 @@ internal class JsonValidation : IJsonObjectResult,
 			return this;
 		}
 
-#pragma warning disable CA1869
-		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
-#pragma warning restore CA1869
 		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-		serializerOptions.Converters.Add(converter);
-		using JsonDocument expectedDocument =
-			JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), _options.DocumentOptions);
+		using JsonDocument expectedDocument = converter.ParseExpected(expected, _options.DocumentOptions);
 		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
 			CurrentPath,
 			currentElement.Value,

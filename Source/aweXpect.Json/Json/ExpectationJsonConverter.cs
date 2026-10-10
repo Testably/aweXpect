@@ -7,6 +7,7 @@ using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Equivalency;
+using aweXpect.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Json;
@@ -25,6 +26,27 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	public IEvaluationContext Context => context;
 
 	public CancellationToken CancellationToken => cancellationToken;
+
+	/// <summary>
+	///     Parses the <paramref name="expected" /> value as JSON, in which this converter replaces the <c>It.Is…</c>
+	///     expectations.
+	/// </summary>
+	/// <remarks>
+	///     The expected value is usually an anonymous object, which only reflection can serialize.
+	/// </remarks>
+	public JsonDocument ParseExpected(object? expected, JsonDocumentOptions documentOptions)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported("The expected value"));
+		}
+
+#pragma warning disable CA1869
+		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
+#pragma warning restore CA1869
+		serializerOptions.Converters.Add(this);
+		return JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), documentOptions);
+	}
 
 	public override bool CanConvert(Type typeToConvert)
 		=> typeof(Expectation).IsAssignableFrom(typeToConvert);

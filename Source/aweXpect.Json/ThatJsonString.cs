@@ -38,14 +38,8 @@ public static partial class ThatJsonString
 
 			using JsonDocument actualDocument = JsonDocument.Parse(
 				actual, options.DocumentOptions);
-#pragma warning disable CA1869
-			JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
-#pragma warning restore CA1869
 			ExpectationJsonConverter converter = new(context, cancellationToken);
-			serializerOptions.Converters.Add(converter);
-			using JsonDocument expectedDocument = JsonDocument.Parse(
-				JsonSerializer.Serialize(expected, serializerOptions),
-				options.DocumentOptions);
+			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
 
 			_comparisonResult = await JsonElementValidator.Compare(
 				actualDocument.RootElement,

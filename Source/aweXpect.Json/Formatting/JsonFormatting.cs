@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Text.Json;
 using aweXpect.Customization;
 using aweXpect.Json;
@@ -23,7 +24,7 @@ public static class JsonFormatting
 			return ValueFormatter.NullString;
 		}
 
-		return JsonSerializer.Serialize(value, GetSerializerOptions(options));
+		return Write(value.Value, options);
 	}
 
 	/// <summary>
@@ -42,26 +43,33 @@ public static class JsonFormatting
 		}
 		else
 		{
-			stringBuilder.Append(JsonSerializer.Serialize(value, GetSerializerOptions(options)));
+			stringBuilder.Append(Write(value.Value, options));
 		}
 	}
 
 	/// <remarks>
-	///     Copies the customized options instead of changing them, because they belong to the user and
-	///     become read-only once they were used for serialization.
+	///     Writes the element directly with the writer settings of the customized serializer options, because
+	///     serializing it with options that have no type info resolver requires reflection.
 	/// </remarks>
-	private static JsonSerializerOptions GetSerializerOptions(FormattingOptions? options)
+	private static string Write(JsonElement value, FormattingOptions? options)
 	{
 		JsonSerializerOptions serializerOptions = Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
-		bool writeIndented = options?.UseLineBreaks == true;
-		if (serializerOptions.WriteIndented == writeIndented)
+		JsonWriterOptions writerOptions = new()
 		{
-			return serializerOptions;
+			Encoder = serializerOptions.Encoder,
+			Indented = options?.UseLineBreaks == true,
+#if !NET8_0
+			IndentCharacter = serializerOptions.IndentCharacter,
+			IndentSize = serializerOptions.IndentSize,
+			NewLine = serializerOptions.NewLine,
+#endif
+		};
+		using MemoryStream stream = new();
+		using (Utf8JsonWriter writer = new(stream, writerOptions))
+		{
+			value.WriteTo(writer);
 		}
 
-		return new JsonSerializerOptions(serializerOptions)
-		{
-			WriteIndented = writeIndented,
-		};
+		return Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length);
 	}
 }

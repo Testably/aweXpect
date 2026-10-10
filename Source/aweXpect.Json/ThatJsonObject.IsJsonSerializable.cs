@@ -98,6 +98,12 @@ public static class ThatJsonObject
 				return this;
 			}
 
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported(
+					$"The subject of type {Formatter.Format(actual.GetType())}"));
+			}
+
 			object? deserializedObject;
 			try
 			{

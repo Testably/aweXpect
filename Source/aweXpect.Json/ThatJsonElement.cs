@@ -30,13 +30,8 @@ public static partial class ThatJsonElement
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-#pragma warning disable CA1869
-			JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
-#pragma warning restore CA1869
 			ExpectationJsonConverter converter = new(context, cancellationToken);
-			serializerOptions.Converters.Add(converter);
-			using JsonDocument expectedDocument =
-				JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), options.DocumentOptions);
+			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
 
 			_comparisonResult = await JsonElementValidator.Compare(
 				actual,

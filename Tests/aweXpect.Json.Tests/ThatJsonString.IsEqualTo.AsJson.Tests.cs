@@ -69,7 +69,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {} for all items,
-						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             but an item was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 						             """)
 						.Because("an item that is no JSON cannot be compared, so the value names the item");
 				}
@@ -86,7 +86,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             contains an item JSON equivalent to {} at least once,
-						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             but an item was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 						             """);
 				}
 
@@ -342,7 +342,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             whose Json is JSON equivalent to {},
-						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             but Json was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 
 						             Actual (Json):
 						             foo
@@ -694,7 +694,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {} for no items,
-						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             but an item was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 						             """)
 						.Because("an item that is no JSON is not different from the unexpected JSON either");
 				}
@@ -711,7 +711,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             does not contain an item JSON equivalent to {},
-						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             but an item was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 						             """)
 						.Because("an item that is no JSON is not different from the unexpected JSON either");
 				}
