@@ -128,4 +128,4 @@ int single = await Expect.That(playCounts).HasSingle();
 ```
 
 After an `.Or`, the value can be the `default` of its type when an earlier alternative was the one that was met; the
-analyzer rule [`aweXpect0008`](../07-analyzers.md#awexpect0008) warns when such a value is used.
+analyzer rule [`aweXpect0008`](../08-analyzers.md#awexpect0008) warns when such a value is used.

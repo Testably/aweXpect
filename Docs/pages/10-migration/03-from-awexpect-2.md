@@ -187,7 +187,7 @@ to add `[assembly: GenerateMetadata(typeof(MyType))]`. See [Native AOT](../03-ho
   `Expect.That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`), and an expectation inside an `async`
   lambda that is converted to a void-returning delegate (`aweXpect0005`).
 
-See [Analyzers](../07-analyzers.md).
+See [Analyzers](../08-analyzers.md).
 
 ## Extensions
 

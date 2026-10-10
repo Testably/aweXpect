@@ -22,7 +22,7 @@ An asynchronous delegate is awaited, like a [task](./02-tasks.md) that is passed
 
 :::warning[.NET 8 or later: `ValueTask` delegates]
 On .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7, a delegate that returns a `ValueTask` is never awaited. Return
-`.AsTask()` instead, as reported by the analyzer rule [aweXpect0007](../07-analyzers.md#awexpect0007).
+`.AsTask()` instead, as reported by the analyzer rule [aweXpect0007](../08-analyzers.md#awexpect0007).
 :::
 
 <details>
@@ -73,7 +73,7 @@ exception was thrown at all.
 
 :::warning[An expectation must not be applied to the delegate itself]
 `Expect.That(Act).IsEqualTo(3)` compiles, but checks the delegate instead of what it returns, so it silently passes
-or fails with a message about the delegate. The analyzer rule [aweXpect0004](../07-analyzers.md#awexpect0004) reports
+or fails with a message about the delegate. The analyzer rule [aweXpect0004](../08-analyzers.md#awexpect0004) reports
 it and offers to insert `.DoesNotThrow().WhoseResult`. A delegate without a return value has nothing to compare at all.
 :::
 
@@ -294,7 +294,7 @@ await Expect.That(exception).HasMessage("Yesterday");
 
 All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
 message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has message …". The analyzer
-rule [aweXpect0003](../07-analyzers.md#awexpect0003) flags it and offers to switch to the `With…` twin or to insert
+rule [aweXpect0003](../08-analyzers.md#awexpect0003) flags it and offers to switch to the `With…` twin or to insert
 `.Which`.
 
 ## Execution time

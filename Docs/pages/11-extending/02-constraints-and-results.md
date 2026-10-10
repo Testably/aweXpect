@@ -192,7 +192,7 @@ inverted into a success when the expectation is negated. Set [`Outcome.FailureBo
 
 After an expectation that fails for a `null` subject, the subject can't be `null` any more. Mark such an expectation
 with the `[GuaranteesNotNull]` attribute from `aweXpect.Core`, so that the
-[nullability suppressor](../07-analyzers.md#nullability-suppressor) of the `aweXpect` package suppresses the
+[nullability suppressor](../08-analyzers.md#nullability-suppressor) of the `aweXpect` package suppresses the
 nullability warnings for the subject after your expectation, as it does after `IsNotNull()`:
 
 ```csharp no-compile
