@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -27,8 +28,9 @@ public static partial class ThatMembers
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
-					=> new DoNotHaveNameConstraint<TMember>(it, grammars, unexpected, options)),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IEnumerable<TMember>>((unexpected, options),
+					static (s, it, grammars)
+					=> new DoNotHaveNameConstraint<TMember>(it, grammars, s.Unexpected, s.Options)),
 			subject,
 			options);
 	}
@@ -46,8 +48,9 @@ public static partial class ThatMembers
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
-					=> new DoNotHaveNameConstraint<TMember>(it, grammars, unexpected, options)),
+				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IAsyncEnumerable<TMember>>((unexpected, options),
+					static (s, it, grammars)
+					=> new DoNotHaveNameConstraint<TMember>(it, grammars, s.Unexpected, s.Options)),
 			subject,
 			options);
 	}

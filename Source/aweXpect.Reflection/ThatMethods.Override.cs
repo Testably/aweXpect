@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -23,7 +24,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> Override(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new OverrideConstraint(it, grammars)),
 			subject);
 
@@ -34,7 +35,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> Override(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new OverrideConstraint(it, grammars)),
 			subject);
 #endif
@@ -46,7 +47,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotOverride(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new DoNotOverrideConstraint(it, grammars)),
 			subject);
 
@@ -58,7 +59,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotOverride(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new DoNotOverrideConstraint(it, grammars)),
 			subject);
 #endif

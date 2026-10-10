@@ -6,6 +6,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -33,7 +34,8 @@ public static partial class ThatFields
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
 		return new HaveAttributeWithoutInheritResult<FieldInfo?, IEnumerable<FieldInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<FieldInfo?>, IEnumerable<FieldInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -53,9 +55,10 @@ public static partial class ThatFields
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
 		return new HaveAttributeWithoutInheritResult<FieldInfo?, IEnumerable<FieldInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<FieldInfo?>, IEnumerable<FieldInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -75,7 +78,8 @@ public static partial class ThatFields
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
 		return new HaveAttributeWithoutInheritResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<FieldInfo?>, IAsyncEnumerable<FieldInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -97,9 +101,10 @@ public static partial class ThatFields
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
 		return new HaveAttributeWithoutInheritResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<FieldInfo?>, IAsyncEnumerable<FieldInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -24,7 +25,7 @@ public static partial class ThatProperties
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreIndexers(
 		this IThat<IEnumerable<PropertyInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>(static (it, grammars)
 				=> new AreIndexersConstraint(it, grammars)),
 			subject);
 
@@ -36,7 +37,7 @@ public static partial class ThatProperties
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreIndexers(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>(static (it, grammars)
 				=> new AreIndexersConstraint(it, grammars)),
 			subject);
 #endif
@@ -48,7 +49,7 @@ public static partial class ThatProperties
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotIndexers(
 		this IThat<IEnumerable<PropertyInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>(static (it, grammars)
 				=> new AreNotIndexersConstraint(it, grammars)),
 			subject);
 
@@ -60,7 +61,7 @@ public static partial class ThatProperties
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNotIndexers(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>(static (it, grammars)
 				=> new AreNotIndexersConstraint(it, grammars)),
 			subject);
 #endif

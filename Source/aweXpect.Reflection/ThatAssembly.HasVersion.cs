@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -24,8 +25,9 @@ public static partial class ThatAssembly
 		string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasVersionConstraint(it, grammars, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace())),
+		return new(subject.Get().ExpectationBuilder.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue),
+				static (s, it, grammars)
+				=> new HasVersionConstraint(it, grammars, s.Predicate, s.DoNotPopulateThisValue.TrimExpression())),
 			subject);
 	}
 
@@ -52,7 +54,8 @@ public static partial class ThatAssembly
 		private HasVersionResult(IThat<Assembly?> subject, ExpectationBuilder expectationBuilder)
 			: base(expectationBuilder, subject)
 		{
-			expectationBuilder.AddConstraint((it, grammars) => new HasVersionComponentsConstraint(it, grammars, _checks));
+			expectationBuilder.AddConstraint(_checks,
+				static (checks, it, grammars) => new HasVersionComponentsConstraint(it, grammars, checks));
 		}
 
 		/// <summary>

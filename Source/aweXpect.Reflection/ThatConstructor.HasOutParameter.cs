@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
@@ -18,7 +19,7 @@ public static partial class ThatConstructor
 	[GuaranteesNotNull]
 	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> HasOutParameter(
 		this IThat<ConstructorInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new HasOutParameterConstraint(it, grammars)),
 			subject);
 

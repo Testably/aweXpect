@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
@@ -24,7 +25,8 @@ public static partial class ThatConstructor
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -45,7 +47,8 @@ public static partial class ThatConstructor
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
-		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

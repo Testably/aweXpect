@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
@@ -27,7 +28,8 @@ public static partial class ThatMethod
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -52,8 +54,9 @@ public static partial class ThatMethod
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
+		return new HasAttributeResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

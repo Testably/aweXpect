@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -24,7 +25,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreOperators(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new AreOperatorsConstraint(it, grammars)),
 			subject);
 
@@ -36,7 +37,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreOperators(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new AreOperatorsConstraint(it, grammars)),
 			subject);
 #endif
@@ -48,7 +49,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreNotOperators(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new AreNotOperatorsConstraint(it, grammars)),
 			subject);
 
@@ -60,7 +61,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreNotOperators(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
 				=> new AreNotOperatorsConstraint(it, grammars)),
 			subject);
 #endif

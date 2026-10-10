@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -19,7 +20,7 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> IsAbstract(
 		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsAbstractConstraint(it, grammars)),
 			subject);
 
@@ -33,7 +34,7 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> IsNotAbstract(
 		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsAbstractConstraint(it, grammars).Invert()),
 			subject);
 

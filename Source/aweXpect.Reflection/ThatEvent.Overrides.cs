@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -16,7 +17,7 @@ public static partial class ThatEvent
 	[GuaranteesNotNull]
 	public static AndOrResult<EventInfo, IThat<EventInfo?>> Overrides(
 		this IThat<EventInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new OverridesConstraint(it, grammars)),
 			subject);
 
@@ -26,7 +27,7 @@ public static partial class ThatEvent
 	[GuaranteesNotNull]
 	public static AndOrResult<EventInfo, IThat<EventInfo?>> DoesNotOverride(
 		this IThat<EventInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new OverridesConstraint(it, grammars).Invert()),
 			subject);
 

@@ -50,7 +50,7 @@ public sealed class HaveAttributeResult<TMember, TResult>(
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

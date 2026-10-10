@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -28,8 +29,9 @@ public static partial class ThatAssemblies
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
-					=> new HaveNameConstraint(it, grammars, expected, options)),
+				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IEnumerable<Assembly?>>((expected, options),
+					static (s, it, grammars)
+					=> new HaveNameConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}
@@ -46,8 +48,9 @@ public static partial class ThatAssemblies
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
-					=> new HaveNameConstraint(it, grammars, expected, options)),
+				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expected, options),
+					static (s, it, grammars)
+					=> new HaveNameConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}
@@ -67,9 +70,10 @@ public static partial class ThatAssemblies
 		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
-					=> new HaveNameFromSelectorConstraint(it, grammars, expectedNameSelector, doNotPopulateThisValue,
-						options)),
+				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, StringEqualityOptions Options), IEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
+					static (s, it, grammars)
+					=> new HaveNameFromSelectorConstraint(it, grammars, s.ExpectedNameSelector, s.DoNotPopulateThisValue,
+						s.Options)),
 			subject,
 			options);
 	}
@@ -90,9 +94,10 @@ public static partial class ThatAssemblies
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
-					=> new HaveNameFromSelectorConstraint(it, grammars, expectedNameSelector, doNotPopulateThisValue,
-						options)),
+				.ExpectationBuilder.AddConstraint<(Func<Assembly?, string> ExpectedNameSelector, string DoNotPopulateThisValue, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expectedNameSelector, doNotPopulateThisValue, options),
+					static (s, it, grammars)
+					=> new HaveNameFromSelectorConstraint(it, grammars, s.ExpectedNameSelector, s.DoNotPopulateThisValue,
+						s.Options)),
 			subject,
 			options);
 	}
@@ -162,7 +167,7 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name matching ")
-				.Append(expectedNameSelectorExpression.TrimCommonWhiteSpace());
+				.Append(expectedNameSelectorExpression.TrimExpression());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
@@ -194,7 +199,7 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have name matching ")
-				.Append(expectedNameSelectorExpression.TrimCommonWhiteSpace());
+				.Append(expectedNameSelectorExpression.TrimExpression());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching assemblies");

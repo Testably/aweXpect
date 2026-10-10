@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -63,8 +64,9 @@ public static partial class ThatTypes
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, baseType, forceDirect)),
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool ForceDirect), IEnumerable<Type?>>((baseType, forceDirect),
+				static (s, it, grammars)
+				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.ForceDirect)),
 			subject);
 	}
 
@@ -117,8 +119,9 @@ public static partial class ThatTypes
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, baseType, forceDirect)),
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool ForceDirect), IAsyncEnumerable<Type?>>((baseType, forceDirect),
+				static (s, it, grammars)
+				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.ForceDirect)),
 			subject);
 	}
 #endif
@@ -169,8 +172,9 @@ public static partial class ThatTypes
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, baseType, forceDirect)),
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool ForceDirect), IEnumerable<Type?>>((baseType, forceDirect),
+				static (s, it, grammars)
+				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.ForceDirect)),
 			subject);
 	}
 
@@ -223,8 +227,9 @@ public static partial class ThatTypes
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, baseType, forceDirect)),
+		return new(subject.Get().ExpectationBuilder.AddConstraint<(Type BaseType, bool ForceDirect), IAsyncEnumerable<Type?>>((baseType, forceDirect),
+				static (s, it, grammars)
+				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, s.BaseType, s.ForceDirect)),
 			subject);
 	}
 #endif

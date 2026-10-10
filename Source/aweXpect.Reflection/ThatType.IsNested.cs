@@ -2,7 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Reflection.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Results;
 
 namespace aweXpect.Reflection;
@@ -15,7 +15,7 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> IsNested(
 		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsNestedConstraint(it, grammars)),
 			subject);
 
@@ -25,7 +25,7 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> IsNotNested(
 		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsNestedConstraint(it, grammars).Invert()),
 			subject);
 

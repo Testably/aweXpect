@@ -5,6 +5,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -36,7 +37,8 @@ public static partial class ThatMethods
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
 		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IEnumerable<MethodInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);
 	}
@@ -59,7 +61,8 @@ public static partial class ThatMethods
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
 		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<MethodInfo?>, IAsyncEnumerable<MethodInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);
 	}

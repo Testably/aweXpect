@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -25,7 +26,7 @@ public static partial class ThatMembers
 	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreProtectedInternal<TMember>(
 		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>(static (it, grammars)
 				=> new AreProtectedInternalConstraint<TMember>(it, grammars)),
 			subject);
 
@@ -38,7 +39,7 @@ public static partial class ThatMembers
 		AreProtectedInternal<TMember>(
 			this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>(static (it, grammars)
 				=> new AreProtectedInternalConstraint<TMember>(it, grammars)),
 			subject);
 #endif
@@ -50,7 +51,7 @@ public static partial class ThatMembers
 	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreNotProtectedInternal<TMember>(
 		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>(static (it, grammars)
 				=> new AreNotProtectedInternalConstraint<TMember>(it, grammars)),
 			subject);
 
@@ -63,7 +64,7 @@ public static partial class ThatMembers
 		AreNotProtectedInternal<TMember>(
 			this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>(static (it, grammars)
 				=> new AreNotProtectedInternalConstraint<TMember>(it, grammars)),
 			subject);
 #endif

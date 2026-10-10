@@ -2,8 +2,8 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
-using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Reflection;
@@ -16,7 +16,7 @@ public static partial class ThatField
 	[GuaranteesNotNull]
 	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsStatic(
 		this IThat<FieldInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsStaticConstraint(it, grammars)),
 			subject);
 
@@ -26,7 +26,7 @@ public static partial class ThatField
 	[GuaranteesNotNull]
 	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotStatic(
 		this IThat<FieldInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsStaticConstraint(it, grammars).Invert()),
 			subject);
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Core;
-using aweXpect.Reflection.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
 
 namespace aweXpect.Reflection;
@@ -28,7 +28,8 @@ public static partial class ThatProperties
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
 		return new PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<PropertyInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
@@ -55,7 +56,8 @@ public static partial class ThatProperties
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
 		return new PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);

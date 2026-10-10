@@ -21,5 +21,5 @@ public static partial class MethodFilters
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix<MethodInfo>(
 			method => !UserCode.Invoke(predicate, method, "the predicate"),
-			$"except {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
+			$"except {doNotPopulateThisValue.TrimExpression()} "));
 }

@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -38,8 +39,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new HaveConversionOperatorConstraint(it, grammars, true, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new HaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Inherit)),
 			subject);
 
 #if NET8_0_OR_GREATER
@@ -64,8 +66,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new HaveConversionOperatorConstraint(it, grammars, true, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IAsyncEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new HaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Inherit)),
 			subject);
 #endif
 
@@ -90,8 +93,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveConversionOperatorConstraint(it, grammars, true, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Inherit)),
 			subject);
 
 #if NET8_0_OR_GREATER
@@ -116,8 +120,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveConversionOperatorConstraint(it, grammars, true, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IAsyncEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Inherit)),
 			subject);
 #endif
 
@@ -152,8 +157,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new HaveConversionOperatorConstraint(it, grammars, false, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new HaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Inherit)),
 			subject);
 
 #if NET8_0_OR_GREATER
@@ -188,8 +194,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new HaveConversionOperatorConstraint(it, grammars, false, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IAsyncEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new HaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Inherit)),
 			subject);
 #endif
 
@@ -224,8 +231,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveConversionOperatorConstraint(it, grammars, false, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Inherit)),
 			subject);
 
 #if NET8_0_OR_GREATER
@@ -260,8 +268,9 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveConversionOperatorConstraint(it, grammars, false, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Type Source, Type Target, bool Inherit), IAsyncEnumerable<Type?>>((source, target, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Inherit)),
 			subject);
 #endif
 

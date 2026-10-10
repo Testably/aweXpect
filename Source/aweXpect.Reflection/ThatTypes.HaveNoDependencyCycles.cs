@@ -5,6 +5,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -40,7 +41,8 @@ public static partial class ThatTypes
 	{
 		DependencyCyclesOptions options = new(null);
 		return new DependencyCyclesResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				.AddConstraint<DependencyCyclesOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -65,7 +67,8 @@ public static partial class ThatTypes
 	{
 		DependencyCyclesOptions options = new(sliceRoot);
 		return new DependencyCyclesResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				.AddConstraint<DependencyCyclesOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -79,7 +82,8 @@ public static partial class ThatTypes
 	{
 		DependencyCyclesOptions options = new(null);
 		return new DependencyCyclesResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				.AddConstraint<DependencyCyclesOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -92,7 +96,8 @@ public static partial class ThatTypes
 	{
 		DependencyCyclesOptions options = new(sliceRoot);
 		return new DependencyCyclesResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				.AddConstraint<DependencyCyclesOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
 			options);

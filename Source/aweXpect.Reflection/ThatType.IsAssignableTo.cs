@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -44,7 +45,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(type,
+				static (type, it, grammars)
 				=> new IsAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -84,7 +86,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(type,
+				static (type, it, grammars)
 				=> new IsAssignableToConstraint(it, grammars, type).Invert()),
 			subject);
 	}
@@ -122,7 +125,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(type,
+				static (type, it, grammars)
 				=> new IsAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -160,7 +164,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(type,
+				static (type, it, grammars)
 				=> new IsAssignableFromConstraint(it, grammars, type).Invert()),
 			subject);
 	}

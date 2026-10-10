@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -20,7 +21,7 @@ public static partial class ThatProperty
 	[GuaranteesNotNull]
 	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNullable(
 		this IThat<PropertyInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsNullableConstraint(it, grammars)),
 			subject);
 
@@ -35,7 +36,7 @@ public static partial class ThatProperty
 	[GuaranteesNotNull]
 	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotNullable(
 		this IThat<PropertyInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsNullableConstraint(it, grammars).Invert()),
 			subject);
 

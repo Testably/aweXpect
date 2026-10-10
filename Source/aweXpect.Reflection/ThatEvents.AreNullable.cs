@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -23,7 +24,7 @@ public static partial class ThatEvents
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>> AreNullable(
 		this IThat<IEnumerable<EventInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<EventInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<EventInfo?>>(static (it, grammars)
 				=> new AreNullableConstraint(it, grammars)),
 			subject);
 
@@ -34,7 +35,7 @@ public static partial class ThatEvents
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>> AreNullable(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<EventInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<EventInfo?>>(static (it, grammars)
 				=> new AreNullableConstraint(it, grammars)),
 			subject);
 #endif
@@ -45,7 +46,7 @@ public static partial class ThatEvents
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>?>> AreNotNullable(
 		this IThat<IEnumerable<EventInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<EventInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<EventInfo?>>(static (it, grammars)
 				=> new AreNotNullableConstraint(it, grammars)),
 			subject);
 
@@ -56,7 +57,7 @@ public static partial class ThatEvents
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>?>> AreNotNullable(
 		this IThat<IAsyncEnumerable<EventInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<EventInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<EventInfo?>>(static (it, grammars)
 				=> new AreNotNullableConstraint(it, grammars)),
 			subject);
 #endif

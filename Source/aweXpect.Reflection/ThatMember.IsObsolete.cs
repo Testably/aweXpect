@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -20,7 +21,7 @@ public static partial class ThatMember
 	public static AndOrResult<TMember, IThat<TMember?>> IsObsolete<TMember>(
 		this IThat<TMember?> subject)
 		where TMember : MemberInfo
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsObsoleteConstraint<TMember?>(it, grammars)),
 			subject);
 
@@ -32,7 +33,7 @@ public static partial class ThatMember
 	public static AndOrResult<TMember, IThat<TMember?>> IsNotObsolete<TMember>(
 		this IThat<TMember?> subject)
 		where TMember : MemberInfo
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsObsoleteConstraint<TMember?>(it, grammars).Invert()),
 			subject);
 

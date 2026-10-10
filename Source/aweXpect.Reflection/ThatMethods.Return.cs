@@ -5,6 +5,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -37,7 +38,8 @@ public static partial class ThatMethods
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
 		return new MethodsReturnResult<IEnumerable<MethodInfo?>?, IThat<IEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
@@ -65,7 +67,8 @@ public static partial class ThatMethods
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
 		return new MethodsReturnResult<IAsyncEnumerable<MethodInfo?>?, IThat<IAsyncEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);

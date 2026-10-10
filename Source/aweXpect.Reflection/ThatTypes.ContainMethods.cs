@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -62,8 +63,9 @@ public static partial class ThatTypes
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
 		return new TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new ContainMembersConstraint(it, grammars, memberFilter, quantifier)),
+			subject.Get().ExpectationBuilder.AddConstraint<(IContainedMembersFilter MemberFilter, Quantifier Quantifier), IEnumerable<Type?>>((memberFilter, quantifier),
+				static (s, it, grammars)
+				=> new ContainMembersConstraint(it, grammars, s.MemberFilter, s.Quantifier)),
 			subject,
 			quantifier);
 	}
@@ -79,8 +81,9 @@ public static partial class ThatTypes
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
 		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new ContainMembersConstraint(it, grammars, memberFilter, quantifier)),
+			subject.Get().ExpectationBuilder.AddConstraint<(IContainedMembersFilter MemberFilter, Quantifier Quantifier), IAsyncEnumerable<Type?>>((memberFilter, quantifier),
+				static (s, it, grammars)
+				=> new ContainMembersConstraint(it, grammars, s.MemberFilter, s.Quantifier)),
 			subject,
 			quantifier);
 	}

@@ -6,6 +6,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
@@ -27,7 +28,7 @@ public static partial class ThatConstructors
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> HaveOptionalParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>(static (it, grammars)
 				=> new HaveOptionalParameterConstraint(it, grammars)),
 			subject);
 
@@ -39,7 +40,7 @@ public static partial class ThatConstructors
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>> HaveOptionalParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>(static (it, grammars)
 				=> new HaveOptionalParameterConstraint(it, grammars)),
 			subject);
 #endif

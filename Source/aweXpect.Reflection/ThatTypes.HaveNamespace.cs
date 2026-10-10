@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -26,8 +27,9 @@ public static partial class ThatTypes
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-					=> new HaveNamespaceConstraint(it, grammars, expected, options)),
+				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IEnumerable<Type?>>((expected, options),
+					static (s, it, grammars)
+					=> new HaveNamespaceConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}
@@ -43,8 +45,9 @@ public static partial class ThatTypes
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-					=> new HaveNamespaceConstraint(it, grammars, expected, options)),
+				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IAsyncEnumerable<Type?>>((expected, options),
+					static (s, it, grammars)
+					=> new HaveNamespaceConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}

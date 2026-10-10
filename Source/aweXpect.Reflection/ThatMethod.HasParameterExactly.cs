@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
@@ -22,10 +23,11 @@ public static partial class ThatMethod
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HasParameterConstraint(it, grammars, parameterType, null,
-						collectionIndexOptions,
-						parameterFilterOptions,
+				.AddConstraint((ParameterType: parameterType, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, s.ParameterType, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
 						true)),
 			subject,
 			collectionIndexOptions,
@@ -47,10 +49,11 @@ public static partial class ThatMethod
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HasParameterConstraint(it, grammars, parameterType, expected,
-						collectionIndexOptions,
-						parameterFilterOptions,
+				.AddConstraint((ParameterType: parameterType, Expected: expected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, s.ParameterType, s.Expected,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
 						true)),
 			subject,
 			collectionIndexOptions,
@@ -69,10 +72,11 @@ public static partial class ThatMethod
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HasParameterConstraint(it, grammars, parameterType, null,
-						collectionIndexOptions,
-						parameterFilterOptions,
+				.AddConstraint((ParameterType: parameterType, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, s.ParameterType, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
 						true)),
 			subject,
 			collectionIndexOptions,
@@ -93,10 +97,11 @@ public static partial class ThatMethod
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HasParameterConstraint(it, grammars, parameterType, expected,
-						collectionIndexOptions,
-						parameterFilterOptions,
+				.AddConstraint((ParameterType: parameterType, Expected: expected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, s.ParameterType, s.Expected,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
 						true)),
 			subject,
 			collectionIndexOptions,

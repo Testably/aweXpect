@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
@@ -27,7 +28,8 @@ public static partial class ThatTypes
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				.AddConstraint<NamespaceDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DependOnConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -44,7 +46,8 @@ public static partial class ThatTypes
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				.AddConstraint<NamespaceDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DependOnConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -67,7 +70,8 @@ public static partial class ThatTypes
 	{
 		TypeSetDependencyOptions options = new(target, additional);
 		return new TypeSetDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				.AddConstraint<TypeSetDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DependOnTypeSetConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -90,7 +94,8 @@ public static partial class ThatTypes
 	{
 		TypeSetDependencyOptions options = new(target, additional);
 		return new TypeSetDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				.AddConstraint<TypeSetDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DependOnTypeSetConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -107,7 +112,8 @@ public static partial class ThatTypes
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				.AddConstraint<NamespaceDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -124,7 +130,8 @@ public static partial class ThatTypes
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				.AddConstraint<NamespaceDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -147,7 +154,8 @@ public static partial class ThatTypes
 	{
 		TypeSetDependencyOptions options = new(target, additional);
 		return new TypeSetDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				.AddConstraint<TypeSetDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DoNotDependOnTypeSetConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -170,7 +178,8 @@ public static partial class ThatTypes
 	{
 		TypeSetDependencyOptions options = new(target, additional);
 		return new TypeSetDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
-				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				.AddConstraint<TypeSetDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
 					=> new DoNotDependOnTypeSetConstraint(it, grammars, options)),
 			subject,
 			options);

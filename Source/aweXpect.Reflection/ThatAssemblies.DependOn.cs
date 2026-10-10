@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -27,8 +28,9 @@ public static partial class ThatAssemblies
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
-					=> new DependOnConstraint(it, grammars, expected, options)),
+				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IEnumerable<Assembly?>>((expected, options),
+					static (s, it, grammars)
+					=> new DependOnConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}
@@ -46,8 +48,9 @@ public static partial class ThatAssemblies
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
-					=> new DependOnConstraint(it, grammars, expected, options)),
+				.ExpectationBuilder.AddConstraint<(string Expected, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((expected, options),
+					static (s, it, grammars)
+					=> new DependOnConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}

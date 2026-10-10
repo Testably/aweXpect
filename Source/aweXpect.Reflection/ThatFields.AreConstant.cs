@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -23,7 +24,7 @@ public static partial class ThatFields
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreConstant(
 		this IThat<IEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>(static (it, grammars)
 				=> new AreConstantConstraint(it, grammars)),
 			subject);
 
@@ -34,7 +35,7 @@ public static partial class ThatFields
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreConstant(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>(static (it, grammars)
 				=> new AreConstantConstraint(it, grammars)),
 			subject);
 #endif
@@ -45,7 +46,7 @@ public static partial class ThatFields
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNotConstant(
 		this IThat<IEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>(static (it, grammars)
 				=> new AreNotConstantConstraint(it, grammars)),
 			subject);
 
@@ -56,7 +57,7 @@ public static partial class ThatFields
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNotConstant(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>(static (it, grammars)
 				=> new AreNotConstantConstraint(it, grammars)),
 			subject);
 #endif

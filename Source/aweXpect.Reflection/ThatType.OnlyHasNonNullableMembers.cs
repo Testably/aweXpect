@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -23,7 +24,8 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> OnlyHasNonNullableMembers(
 		this IThat<Type?> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(memberScope,
+				static (memberScope, it, grammars)
 				=> new OnlyHasNonNullableMembersConstraint(it, grammars, memberScope)),
 			subject);
 

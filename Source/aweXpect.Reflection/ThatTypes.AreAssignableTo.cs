@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -49,7 +50,8 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<Type, IEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -87,7 +89,8 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+		return new(subject.Get().ExpectationBuilder.AddConstraint<Type, IAsyncEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -125,7 +128,8 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<Type, IEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreNotAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -163,7 +167,8 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+		return new(subject.Get().ExpectationBuilder.AddConstraint<Type, IAsyncEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreNotAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -199,7 +204,8 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<Type, IEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -235,7 +241,8 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+		return new(subject.Get().ExpectationBuilder.AddConstraint<Type, IAsyncEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -271,7 +278,8 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<Type, IEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreNotAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -307,7 +315,8 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+		return new(subject.Get().ExpectationBuilder.AddConstraint<Type, IAsyncEnumerable<Type?>>(type,
+				static (type, it, grammars)
 				=> new AreNotAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}

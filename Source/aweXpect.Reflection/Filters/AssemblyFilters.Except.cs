@@ -21,5 +21,5 @@ public static partial class AssemblyFilters
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix<Assembly>(
 			assembly => !UserCode.Invoke(predicate, assembly, "the predicate"),
-			$" except {doNotPopulateThisValue.TrimCommonWhiteSpace()}"));
+			$" except {doNotPopulateThisValue.TrimExpression()}"));
 }

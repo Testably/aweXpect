@@ -20,7 +20,7 @@ public static partial class AssemblyFilters
 	{
 		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(
 			assembly => assembly.GetName().Version is { } version && UserCode.Invoke(predicate, version, "the predicate"),
-			$" with version matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
+			$" with version matching {doNotPopulateThisValue.TrimExpression()}");
 		return @this.Which(filter);
 	}
 

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -24,8 +25,9 @@ public static partial class ThatAssembly
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new DependsOnConstraint(it, grammars, expected, options)),
+				.AddConstraint((Expected: expected, Options: options),
+					static (s, it, grammars)
+					=> new DependsOnConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}

@@ -4,8 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
-using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -22,8 +22,9 @@ public static partial class ThatAssembly
 		this IThat<Assembly?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasNameConstraint(it, grammars, expected, options)),
+		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
+				static (s, it, grammars)
+				=> new HasNameConstraint(it, grammars, s.Expected, s.Options)),
 			subject,
 			options);
 	}

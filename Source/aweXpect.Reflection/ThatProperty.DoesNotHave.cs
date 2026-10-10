@@ -2,6 +2,7 @@
 using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -26,7 +27,8 @@ public static partial class ThatProperty
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<PropertyInfo, IThat<PropertyInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<PropertyInfo, IThat<PropertyInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
 			subject);
 	}

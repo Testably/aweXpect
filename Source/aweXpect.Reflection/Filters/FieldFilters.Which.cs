@@ -17,5 +17,5 @@ public static partial class FieldFilters
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix<FieldInfo>(field => UserCode.Invoke(predicate, field, "the predicate"),
-			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
+			$"matching {doNotPopulateThisValue.TrimExpression()} "));
 }

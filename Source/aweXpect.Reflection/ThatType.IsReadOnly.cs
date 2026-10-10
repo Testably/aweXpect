@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -16,7 +17,7 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> IsReadOnly(
 		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars)),
 			subject);
 
@@ -26,7 +27,7 @@ public static partial class ThatType
 	[GuaranteesNotNull]
 	public static AndOrResult<Type, IThat<Type?>> IsNotReadOnly(
 		this IThat<Type?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars).Invert()),
 			subject);
 

@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -27,7 +28,7 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreSealed(
 		this IThat<IEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>(static (it, grammars)
 				=> new AreSealedConstraint(it, grammars)),
 			subject);
 
@@ -42,7 +43,7 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreSealed(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>(static (it, grammars)
 				=> new AreSealedConstraint(it, grammars)),
 			subject);
 #endif
@@ -57,7 +58,7 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotSealed(
 		this IThat<IEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>(static (it, grammars)
 				=> new AreNotSealedConstraint(it, grammars)),
 			subject);
 
@@ -72,7 +73,7 @@ public static partial class ThatTypes
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotSealed(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>(static (it, grammars)
 				=> new AreNotSealedConstraint(it, grammars)),
 			subject);
 #endif

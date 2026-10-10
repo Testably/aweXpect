@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using aweXpect.Core;
-using aweXpect.Reflection.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
 
 namespace aweXpect.Reflection;
@@ -26,7 +26,8 @@ public static partial class ThatProperty
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
 		return new PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
 			subject,
 			typeFilterOptions);

@@ -42,7 +42,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>(
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

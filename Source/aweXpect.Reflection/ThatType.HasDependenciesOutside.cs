@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -36,7 +37,8 @@ public static partial class ThatType
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyOutsideResult<Type, Type?>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
+				.AddConstraint(options,
+					static (options, it, grammars)
 					=> new HasDependenciesOutsideConstraint(it, grammars, options)),
 			subject,
 			options);
@@ -70,7 +72,8 @@ public static partial class ThatType
 	{
 		TypeSetDependencyOptions options = new(target, additional);
 		return new TypeSetDependencyOutsideResult<Type, Type?>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
+				.AddConstraint(options,
+					static (options, it, grammars)
 					=> new HasDependenciesOutsideTypeSetConstraint(it, grammars, options)),
 			subject,
 			options);

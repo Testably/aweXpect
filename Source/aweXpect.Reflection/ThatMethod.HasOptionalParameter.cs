@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
@@ -18,7 +19,7 @@ public static partial class ThatMethod
 	[GuaranteesNotNull]
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> HasOptionalParameter(
 		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new HasOptionalParameterConstraint(it, grammars)),
 			subject);
 

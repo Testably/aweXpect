@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -29,8 +30,9 @@ public static partial class ThatType
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasConversionOperatorConstraint(it, grammars, true, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Inherit: inherit),
+				static (s, it, grammars)
+				=> new HasConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -53,8 +55,9 @@ public static partial class ThatType
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasConversionOperatorConstraint(it, grammars, true, source, target, inherit).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Inherit: inherit),
+				static (s, it, grammars)
+				=> new HasConversionOperatorConstraint(it, grammars, true, s.Source, s.Target, s.Inherit).Invert()),
 			subject);
 
 	/// <summary>
@@ -87,8 +90,9 @@ public static partial class ThatType
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasConversionOperatorConstraint(it, grammars, false, source, target, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Inherit: inherit),
+				static (s, it, grammars)
+				=> new HasConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -121,8 +125,9 @@ public static partial class ThatType
 		Type source,
 		Type target,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasConversionOperatorConstraint(it, grammars, false, source, target, inherit).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Source: source, Target: target, Inherit: inherit),
+				static (s, it, grammars)
+				=> new HasConversionOperatorConstraint(it, grammars, false, s.Source, s.Target, s.Inherit).Invert()),
 			subject);
 
 	private sealed class HasConversionOperatorConstraint(

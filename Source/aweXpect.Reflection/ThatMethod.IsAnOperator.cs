@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -16,7 +17,7 @@ public static partial class ThatMethod
 	[GuaranteesNotNull]
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAnOperator(
 		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsAnOperatorConstraint(it, grammars)),
 			subject);
 
@@ -28,7 +29,8 @@ public static partial class ThatMethod
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAnOperator(
 		this IThat<MethodInfo?> subject,
 		Operator @operator)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(@operator,
+				static (@operator, it, grammars)
 				=> new IsTheOperatorConstraint(it, grammars, @operator)),
 			subject);
 
@@ -38,7 +40,7 @@ public static partial class ThatMethod
 	[GuaranteesNotNull]
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAnOperator(
 		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsAnOperatorConstraint(it, grammars).Invert()),
 			subject);
 
@@ -50,7 +52,8 @@ public static partial class ThatMethod
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAnOperator(
 		this IThat<MethodInfo?> subject,
 		Operator @operator)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(@operator,
+				static (@operator, it, grammars)
 				=> new IsTheOperatorConstraint(it, grammars, @operator).Invert()),
 			subject);
 

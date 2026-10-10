@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -16,7 +17,7 @@ public static partial class ThatMethod
 	[GuaranteesNotNull]
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAsync(
 		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsAsyncConstraint(it, grammars)),
 			subject);
 
@@ -27,7 +28,7 @@ public static partial class ThatMethod
 	[GuaranteesNotNull]
 	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAsync(
 		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsAsyncConstraint(it, grammars).Invert()),
 			subject);
 

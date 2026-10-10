@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Reflection.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
@@ -21,7 +21,8 @@ public static partial class ThatType
 		this IThat<Type?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new GenericArgumentCollectionResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint(genericFilterOptions,
+				static (genericFilterOptions, it, grammars)
 				=> new IsGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
 			genericFilterOptions);
@@ -35,7 +36,8 @@ public static partial class ThatType
 		this IThat<Type?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(genericFilterOptions,
+				static (genericFilterOptions, it, grammars)
 				=> new IsGenericConstraint(it, grammars, genericFilterOptions).Invert()),
 			subject);
 	}

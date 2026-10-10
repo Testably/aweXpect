@@ -6,6 +6,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -33,7 +34,8 @@ public static partial class ThatConstructors
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
 		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IEnumerable<ConstructorInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -55,7 +57,8 @@ public static partial class ThatConstructors
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
 		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IEnumerable<ConstructorInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -76,7 +79,8 @@ public static partial class ThatConstructors
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
 		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -101,7 +105,8 @@ public static partial class ThatConstructors
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
 		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilterOptions<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>>(attributeFilterOptions,
+				static (attributeFilterOptions, it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

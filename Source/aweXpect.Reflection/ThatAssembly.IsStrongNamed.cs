@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
@@ -15,7 +16,7 @@ public static partial class ThatAssembly
 	[GuaranteesNotNull]
 	public static AndOrResult<Assembly, IThat<Assembly?>> IsStrongNamed(
 		this IThat<Assembly?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsStrongNamedConstraint(it, grammars)),
 			subject);
 
@@ -25,7 +26,7 @@ public static partial class ThatAssembly
 	[GuaranteesNotNull]
 	public static AndOrResult<Assembly, IThat<Assembly?>> IsNotStrongNamed(
 		this IThat<Assembly?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
 				=> new IsStrongNamedConstraint(it, grammars).Invert()),
 			subject);
 

@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -26,8 +27,9 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject,
 		Operator @operator,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, @operator, null, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IEnumerable<Type?>>((@operator, inherit),
+				static (s, it, grammars)
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -40,8 +42,9 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, @operator, operand, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IEnumerable<Type?>>((@operator, operand, inherit),
+				static (s, it, grammars)
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -65,8 +68,9 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Operator @operator,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, @operator, null, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IAsyncEnumerable<Type?>>((@operator, inherit),
+				static (s, it, grammars)
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -79,8 +83,9 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new HaveOperatorConstraint(it, grammars, @operator, operand, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IAsyncEnumerable<Type?>>((@operator, operand, inherit),
+				static (s, it, grammars)
+				=> new HaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -104,8 +109,9 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject,
 		Operator @operator,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, @operator, null, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IEnumerable<Type?>>((@operator, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -118,8 +124,9 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, @operator, operand, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IEnumerable<Type?>>((@operator, operand, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -143,8 +150,9 @@ public static partial class ThatTypes
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Operator @operator,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, @operator, null, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, bool Inherit), IAsyncEnumerable<Type?>>((@operator, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, null, s.Inherit)),
 			subject);
 
 	/// <summary>
@@ -157,8 +165,9 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type operand,
 		bool inherit = false)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
-				=> new DoNotHaveOperatorConstraint(it, grammars, @operator, operand, inherit)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<(Operator Operator, Type Operand, bool Inherit), IAsyncEnumerable<Type?>>((@operator, operand, inherit),
+				static (s, it, grammars)
+				=> new DoNotHaveOperatorConstraint(it, grammars, s.Operator, s.Operand, s.Inherit)),
 			subject);
 
 	/// <summary>

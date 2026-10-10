@@ -14,7 +14,7 @@ public class StringHelperTests
 		                  bay
 		               """;
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEqualTo(input);
 	}
@@ -24,7 +24,7 @@ public class StringHelperTests
 	{
 		string input = string.Empty;
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEmpty();
 	}
@@ -38,9 +38,20 @@ public class StringHelperTests
 		// (StartsWith), not a trailing one (EndsWith).
 		string input = "foo\n  bar\nx  ";
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEqualTo("foo\n  bar\nx  ");
+	}
+
+	[Fact]
+	public async Task WhenLaterLineIsBlank_ShouldIgnoreItForCommonWhiteSpace()
+	{
+		string input = "foo\n    bar\n\n    baz";
+
+		string result = input.TrimExpression();
+
+		await That(result).IsEqualTo("foo\nbar\n\nbaz")
+			.Because("blank lines are often trimmed by editors and must not prevent trimming the other lines");
 	}
 
 	[Fact]
@@ -52,7 +63,7 @@ public class StringHelperTests
 		               	baz
 		               """;
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEqualTo("""
 		                             foo
@@ -71,7 +82,7 @@ public class StringHelperTests
 		                  bay
 		               """;
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEqualTo("""
 		                             foo
@@ -86,7 +97,7 @@ public class StringHelperTests
 	{
 		string input = "foo";
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEqualTo(input);
 	}
@@ -99,7 +110,7 @@ public class StringHelperTests
 		                	 bar
 		               """;
 
-		string result = input.TrimCommonWhiteSpace();
+		string result = input.TrimExpression();
 
 		await That(result).IsEqualTo("""
 		                             foo bar

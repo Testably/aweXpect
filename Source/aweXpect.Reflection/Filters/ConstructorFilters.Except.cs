@@ -21,5 +21,5 @@ public static partial class ConstructorFilters
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix<ConstructorInfo>(
 			constructor => !UserCode.Invoke(predicate, constructor, "the predicate"),
-			$"except {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
+			$"except {doNotPopulateThisValue.TrimExpression()} "));
 }

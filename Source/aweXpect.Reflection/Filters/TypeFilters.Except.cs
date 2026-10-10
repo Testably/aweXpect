@@ -20,7 +20,7 @@ public static partial class TypeFilters
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix<Type>(
 			type => !UserCode.Invoke(predicate, type, "the predicate"),
-			$"except {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
+			$"except {doNotPopulateThisValue.TrimExpression()} "));
 
 	/// <summary>
 	///     Excludes the type <typeparamref name="T" />.

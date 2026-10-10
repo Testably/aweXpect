@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Reflection.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
 
@@ -29,7 +29,8 @@ public static partial class ThatMethod
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
 		return new MethodReturnResult<MethodInfo, IThat<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
 				=> new ReturnsConstraint(it, grammars, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
