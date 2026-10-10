@@ -13,8 +13,19 @@ public class GenericArgumentCollectionResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	GenericArgumentsFilterOptions genericArgumentsFilterOptions)
-	: AndOrResult<TType, IThat<TThat>>(expectationBuilder, subject),
+	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionResult<TType, TThat>>(
+		expectationBuilder, subject, genericArgumentsFilterOptions);
+
+/// <summary>
+///     Additional constraints on a parameter collection with a parameter of a specific type.
+/// </summary>
+public class GenericArgumentCollectionResult<TType, TThat, TSelf>(
+	ExpectationBuilder expectationBuilder,
+	IThat<TThat> subject,
+	GenericArgumentsFilterOptions genericArgumentsFilterOptions)
+	: AndOrResult<TType, IThat<TThat>, TSelf>(expectationBuilder, subject),
 		IOptionsProvider<GenericArgumentsFilterOptions>
+	where TSelf : GenericArgumentCollectionResult<TType, TThat, TSelf>
 {
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 	private readonly IThat<TThat> _subject = subject;
@@ -26,11 +37,11 @@ public class GenericArgumentCollectionResult<TType, TThat>(
 	/// <summary>
 	///     …with the <paramref name="expected" /> number of generic arguments.
 	/// </summary>
-	public GenericArgumentCollectionResult<TType, TThat> WithArgumentCount(int expected)
+	public TSelf WithArgumentCount(int expected)
 	{
 		genericArgumentsFilterOptions.AddPredicate(arguments => arguments.Length == expected,
 			() => $"with {expected} generic {(expected == 1 ? "argument" : "arguments")}");
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>

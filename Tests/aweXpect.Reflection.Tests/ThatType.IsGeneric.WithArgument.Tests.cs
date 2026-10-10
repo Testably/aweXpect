@@ -467,6 +467,29 @@ public sealed partial class ThatType
 				}
 
 				[Theory]
+				[InlineData("tba", true)]
+				[InlineData("tbx", false)]
+				public async Task ShouldSupportIgnoringCaseBecauseAndAsPrefix(string prefix, bool expectSuccess)
+				{
+					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
+
+					async Task Act()
+					{
+						await That(subject).IsGeneric().WithArgument(prefix).IgnoringCase().Because("we need it")
+							.AsPrefix();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that subject
+						               is generic with argument name starting with "{{prefix}}" ignoring case, because we need it,
+						               but it was generic ThatType.GenericClassWithTwoArguments<int, ThatType.BaseClass>
+						               """)
+						.Because("Because(…) must return the result, so that the string options can still follow it");
+				}
+
+				[Theory]
 				[InlineData("TBa", true)]
 				[InlineData("Tba", false)]
 				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)

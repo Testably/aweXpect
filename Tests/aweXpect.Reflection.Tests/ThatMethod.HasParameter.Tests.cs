@@ -218,6 +218,38 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task IgnoringCase_BecauseAndAsPrefix_WhenTypeDiffers_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>("VAL").IgnoringCase().Because("we need it").AsPrefix();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string with name "VAL", because we need it,
+					             but it did not
+					             """)
+					.Because("Because(…) must return the result, so that the string options can still follow it");
+			}
+
+			[Fact]
+			public async Task IgnoringCase_BecauseAndAsPrefix_WhenNameMatches_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("VAL").IgnoringCase().Because("we need it").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task IgnoringCase_WhenParameterNameDiffersInCase_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
@@ -494,6 +526,21 @@ public sealed partial class ThatMethod
 					               boom
 					             """)
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
+
+			[Fact]
+			public async Task WithDefaultValue_BecauseAndIgnoringCase_ShouldApplyAll()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>("NAME").WithDefaultValue().Because("we need it")
+						.IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the filters of the parameter must keep the result with the options of its name");
 			}
 
 			[Fact]

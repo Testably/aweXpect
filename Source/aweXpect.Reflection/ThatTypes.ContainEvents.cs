@@ -15,7 +15,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
@@ -32,7 +32,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	[GuaranteesNotNull]

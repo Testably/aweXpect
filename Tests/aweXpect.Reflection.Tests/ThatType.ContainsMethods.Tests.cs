@@ -11,6 +11,26 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task Exactly_AfterBecause_ShouldApplyBoth()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.Because("we want two of them").Exactly(2);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly twice, because we want two of them,
+					             but it contained 1 matching member in ThatType.ContainsMethods.ClassWithMarkedMethod
+					             """)
+					.Because("Because(…) must return the result, so that the quantifier can still follow it");
+			}
+
+			[Fact]
 			public async Task Exactly_WhenCountDiffers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);

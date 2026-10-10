@@ -3517,39 +3517,43 @@ namespace aweXpect.Reflection.Options
 }
 namespace aweXpect.Reflection.Results
 {
-    public sealed class DependencyCyclesResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    public sealed class DependencyCyclesResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.DependencyCyclesResult<TThat>>
     {
         public aweXpect.Reflection.Results.DependencyCyclesResult<TThat> ExcludingSubNamespaces() { }
     }
-    public class GenericArgumentCollectionResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.GenericArgumentsFilterOptions>
+    public class GenericArgumentCollectionResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat>>
+    {
+        public GenericArgumentCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions) { }
+    }
+    public class GenericArgumentCollectionResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.GenericArgumentsFilterOptions>
+        where TSelf : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat, TSelf>
     {
         public GenericArgumentCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions) { }
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> WithArgument(string expected) { }
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> WithArgument<T>() { }
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> WithArgument<T>(string expected) { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat> WithArgumentCount(int expected) { }
+        public TSelf WithArgumentCount(int expected) { }
     }
-    public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+    public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
     {
         public GenericArgumentCollectionWithArgumentAtIndexResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat> FromEnd() { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> FromEnd() { }
     }
-    public class GenericArgumentCollectionWithArgumentResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+    public class GenericArgumentCollectionWithArgumentResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat>>
+    {
+        public GenericArgumentCollectionWithArgumentResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+    }
+    public class GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TType, TThat, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+        where TSelf : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
     {
         public GenericArgumentCollectionWithArgumentResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
         public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> AtIndex(int index) { }
     }
-    public class GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    public class GenericArgumentCollectionWithNamedArgumentResult<TType, TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat, aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
         public GenericArgumentCollectionWithNamedArgumentResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> AsPrefix() { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> AsRegex() { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> AsSuffix() { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> AsWildcard() { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> IgnoringCase(bool ignoreCase = true) { }
-        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TType, TThat> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
     }
-    public sealed class HasAttributeResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HasAttributeResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>, aweXpect.Reflection.Results.HasAttributeResult<TType, TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
     {
         public HasAttributeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TMember> subject, aweXpect.Reflection.Options.AttributeFilterOptions<TMember> attributeFilterOptions) { }
         public aweXpect.Reflection.Results.HasAttributeResult<TType, TMember> OrHas<TAttribute>(bool inherit = true)
@@ -3557,7 +3561,7 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.HasAttributeResult<TType, TMember> OrHas<TAttribute>(System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
     }
-    public sealed class HasAttributeWithoutInheritResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HasAttributeWithoutInheritResult<TType, TMember> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TMember>, aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
     {
         public HasAttributeWithoutInheritResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TMember> subject, aweXpect.Reflection.Options.AttributeFilterOptions<TMember> attributeFilterOptions) { }
         public aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>()
@@ -3565,7 +3569,7 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
     }
-    public sealed class HaveAttributeResult<TMember, TResult> : aweXpect.Results.AndOrResult<TResult, aweXpect.Core.IThat<TResult>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HaveAttributeResult<TMember, TResult> : aweXpect.Results.AndOrResult<TResult, aweXpect.Core.IThat<TResult>, aweXpect.Reflection.Results.HaveAttributeResult<TMember, TResult>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
     {
         public HaveAttributeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TResult> subject, aweXpect.Reflection.Options.AttributeFilterOptions<TMember> attributeFilterOptions) { }
         public aweXpect.Reflection.Results.HaveAttributeResult<TMember, TResult> OrHave<TAttribute>(bool inherit = true)
@@ -3573,7 +3577,7 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.HaveAttributeResult<TMember, TResult> OrHave<TAttribute>(System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
     }
-    public sealed class HaveAttributeWithoutInheritResult<TMember, TResult> : aweXpect.Results.AndOrResult<TResult, aweXpect.Core.IThat<TResult>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
+    public sealed class HaveAttributeWithoutInheritResult<TMember, TResult> : aweXpect.Results.AndOrResult<TResult, aweXpect.Core.IThat<TResult>, aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TMember, TResult>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
     {
         public HaveAttributeWithoutInheritResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TResult> subject, aweXpect.Reflection.Options.AttributeFilterOptions<TMember> attributeFilterOptions) { }
         public aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TMember, TResult> OrHave<TAttribute>()
@@ -3581,80 +3585,66 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.HaveAttributeWithoutInheritResult<TMember, TResult> OrHave<TAttribute>(System.Func<TAttribute, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
     }
-    public class NamedParameterCollectionResult<TType, TThat, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    public class NamedParameterCollectionResult<TType, TThat, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter, aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
         public NamedParameterCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions, aweXpect.Options.StringEqualityOptions options) { }
-        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter> AsPrefix() { }
-        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter> AsRegex() { }
-        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter> AsSuffix() { }
-        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter> AsWildcard() { }
-        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter> IgnoringCase(bool ignoreCase = true) { }
-        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TType, TThat, TParameter> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
     }
-    public sealed class NamespaceDependencyOnlyOnResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class NamespaceDependencyOnlyOnResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TType, TThat> ExcludingOwnSubNamespaces() { }
         public aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TType, TThat> ExcludingSubNamespaces() { }
         public aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TType, TThat> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
     }
-    public sealed class NamespaceDependencyOutsideResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class NamespaceDependencyOutsideResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.NamespaceDependencyOutsideResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.NamespaceDependencyOutsideResult<TType, TThat> ExcludingOwnSubNamespaces() { }
         public aweXpect.Reflection.Results.NamespaceDependencyOutsideResult<TType, TThat> ExcludingSubNamespaces() { }
         public aweXpect.Reflection.Results.NamespaceDependencyOutsideResult<TType, TThat> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
     }
-    public sealed class NamespaceDependencyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class NamespaceDependencyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TThat> ExcludingSubNamespaces() { }
         public aweXpect.Reflection.Results.NamespaceDependencyResult<TType, TThat> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
     }
-    public class ParameterCollectionAtIndexResult<TType, TThat, TParameter> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public class ParameterCollectionAtIndexResult<TType, TThat, TParameter> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TType, TThat, TParameter>>
     {
         public ParameterCollectionAtIndexResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
         public aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TType, TThat, TParameter> FromEnd() { }
     }
-    public class ParameterCollectionResult<TType, TThat, TParameter> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+    public class ParameterCollectionResult<TType, TThat, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter, aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter>>
+    {
+        public ParameterCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions) { }
+    }
+    public class ParameterCollectionResult<TType, TThat, TParameter, TSelf> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, TSelf>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+        where TSelf : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter, TSelf>
     {
         public ParameterCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions) { }
         public aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TType, TThat, TParameter> AtIndex(int index) { }
-        public aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter> WithDefaultValue() { }
-        public aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter> WithDefaultValue<TValue>(TValue expected)
+        public TSelf WithDefaultValue() { }
+        public TSelf WithDefaultValue<TValue>(TValue expected)
             where TValue : TParameter { }
-        public aweXpect.Reflection.Results.ParameterCollectionResult<TType, TThat, TParameter> WithoutDefaultValue() { }
+        public TSelf WithoutDefaultValue() { }
     }
-    public class TypeContainingMembersResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public class TypeContainingMembersResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
         public TypeContainingMembersResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.Quantifier quantifier) { }
-        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat>> AtLeast() { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> AtLeast(aweXpect.Core.Times minimum) { }
-        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat>> AtMost() { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> AtMost(aweXpect.Core.Times maximum) { }
-        public aweXpect.Results.BetweenResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat>> Between(int minimum) { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> Exactly(aweXpect.Core.Times expected) { }
-        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat>> LessThan() { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> LessThan(aweXpect.Core.Times maximum) { }
-        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat>> MoreThan() { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> MoreThan(aweXpect.Core.Times minimum) { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> Never() { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> Once() { }
-        public aweXpect.Reflection.Results.TypeContainingMembersResult<TType, TThat> Twice() { }
     }
-    public sealed class TypeDependencyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class TypeDependencyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.TypeDependencyResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.TypeDependencyResult<TType, TThat> OrOn(System.Type type) { }
         public aweXpect.Reflection.Results.TypeDependencyResult<TType, TThat> OrOn<T>() { }
     }
-    public sealed class TypeSetDependencyOnlyOnResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class TypeSetDependencyOnlyOnResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.TypeSetDependencyOnlyOnResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.TypeSetDependencyOnlyOnResult<TType, TThat> ExcludingOwnSubNamespaces() { }
         public aweXpect.Reflection.Results.TypeSetDependencyOnlyOnResult<TType, TThat> OrOn(params aweXpect.Reflection.Collections.Filtered.Types[] targets) { }
     }
-    public sealed class TypeSetDependencyOutsideResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class TypeSetDependencyOutsideResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.TypeSetDependencyOutsideResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.TypeSetDependencyOutsideResult<TType, TThat> ExcludingOwnSubNamespaces() { }
         public aweXpect.Reflection.Results.TypeSetDependencyOutsideResult<TType, TThat> OrOn(params aweXpect.Reflection.Collections.Filtered.Types[] targets) { }
     }
-    public sealed class TypeSetDependencyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>>
+    public sealed class TypeSetDependencyResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TThat>, aweXpect.Reflection.Results.TypeSetDependencyResult<TType, TThat>>
     {
         public aweXpect.Reflection.Results.TypeSetDependencyResult<TType, TThat> OrOn(params aweXpect.Reflection.Collections.Filtered.Types[] targets) { }
     }

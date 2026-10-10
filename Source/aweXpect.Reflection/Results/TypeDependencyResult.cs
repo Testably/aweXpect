@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Results;
 ///     The result of a specific-type dependency assertion, allowing to widen the targeted types.
 /// </summary>
 public sealed class TypeDependencyResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>>
+	: AndOrResult<TType, IThat<TThat>, TypeDependencyResult<TType, TThat>>
 {
 	private readonly TypeDependencyOptions _options;
 

@@ -11,7 +11,7 @@ namespace aweXpect.Reflection.Results;
 ///     own sub-namespaces.
 /// </summary>
 public sealed class TypeSetDependencyOutsideResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>>
+	: AndOrResult<TType, IThat<TThat>, TypeSetDependencyOutsideResult<TType, TThat>>
 {
 	private readonly TypeSetDependencyOptions _options;
 

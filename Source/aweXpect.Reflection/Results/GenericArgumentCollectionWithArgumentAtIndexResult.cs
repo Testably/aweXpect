@@ -12,7 +12,8 @@ public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>(
 	IThat<TThat> subject,
 	GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 	CollectionIndexOptions collectionIndexOptions)
-	: GenericArgumentCollectionResult<TType, TThat>(expectationBuilder, subject, genericArgumentsFilterOptions),
+	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>>(
+			expectationBuilder, subject, genericArgumentsFilterOptions),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	private readonly CollectionIndexOptions _collectionIndexOptions = collectionIndexOptions;
@@ -23,7 +24,7 @@ public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>(
 	/// <summary>
 	///     …from end.
 	/// </summary>
-	public GenericArgumentCollectionResult<TType, TThat> FromEnd()
+	public GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> FromEnd()
 	{
 		if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 		{

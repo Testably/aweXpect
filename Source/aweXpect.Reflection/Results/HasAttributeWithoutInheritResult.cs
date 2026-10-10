@@ -15,7 +15,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TMember> subject,
 	AttributeFilterOptions<TMember> attributeFilterOptions)
-	: AndOrResult<TType, IThat<TMember>>(expectationBuilder, subject),
+	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>(expectationBuilder, subject),
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />

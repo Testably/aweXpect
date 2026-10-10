@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Options;
+using aweXpect.Results;
 
 namespace aweXpect.Reflection.Results;
 
 /// <summary>
-///     Additional constraints on a parameter collection with a named parameter of a specific type.
+///     Additional constraints on a parameter collection with a named parameter of a specific type, which in addition
+///     allows specifying how the parameter name is compared via <see cref="StringEqualityOptionsExtensions" />.
 /// </summary>
 public class NamedParameterCollectionResult<TType, TThat, TParameter>(
 	ExpectationBuilder expectationBuilder,
@@ -15,66 +15,11 @@ public class NamedParameterCollectionResult<TType, TThat, TParameter>(
 	CollectionIndexOptions collectionIndexOptions,
 	ParameterFilterOptions parameterFilterOptions,
 	StringEqualityOptions options)
-	: ParameterCollectionResult<TType, TThat, TParameter>(expectationBuilder, subject, collectionIndexOptions,
-			parameterFilterOptions),
-		IOptionsProvider<StringEqualityOptions>
+	: ParameterCollectionResult<TType, TThat, TParameter, NamedParameterCollectionResult<TType, TThat, TParameter>>(
+			expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions),
+		IOptionsProvider<StringEqualityOptions>,
+		IStringMatchTypeOptions
 {
 	/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
-
-	/// <summary>
-	///     Ignores casing when comparing the parameter name,
-	///     according to the <paramref name="ignoreCase" /> parameter.
-	/// </summary>
-	public NamedParameterCollectionResult<TType, TThat, TParameter> IgnoringCase(bool ignoreCase = true)
-	{
-		options.IgnoringCase(ignoreCase);
-		return this;
-	}
-
-	/// <summary>
-	///     Uses the provided <paramref name="comparer" /> for comparing parameter names.
-	/// </summary>
-	public NamedParameterCollectionResult<TType, TThat, TParameter> Using(IEqualityComparer<string> comparer)
-	{
-		options.Using(comparer);
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected parameter name as a prefix, so that the actual value starts with it.
-	/// </summary>
-	public NamedParameterCollectionResult<TType, TThat, TParameter> AsPrefix()
-	{
-		options.AsPrefix();
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected parameter name as a <see cref="Regex" /> pattern.
-	/// </summary>
-	public NamedParameterCollectionResult<TType, TThat, TParameter> AsRegex()
-	{
-		options.AsRegex();
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected parameter name as a suffix, so that the actual value ends with it.
-	/// </summary>
-	public NamedParameterCollectionResult<TType, TThat, TParameter> AsSuffix()
-	{
-		options.AsSuffix();
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected parameter name as wildcard pattern.<br />
-	///     Supports * to match zero or more characters and ? to match exactly one character.
-	/// </summary>
-	public NamedParameterCollectionResult<TType, TThat, TParameter> AsWildcard()
-	{
-		options.AsWildcard();
-		return this;
-	}
 }

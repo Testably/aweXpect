@@ -13,7 +13,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     By default the assertion succeeds when the type contains at least one matching property. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
 	/// </remarks>
 	[GuaranteesNotNull]

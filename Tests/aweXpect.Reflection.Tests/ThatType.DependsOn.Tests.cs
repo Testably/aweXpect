@@ -124,6 +124,21 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenExcludingSubNamespacesAfterBecause_ShouldNotMatchSubNamespace()
+			{
+				Type subject = typeof(ViaSubNamespace);
+
+				async Task Act()
+				{
+					await That(subject).DependsOn(Layer1Namespace).Because("we need it").ExcludingSubNamespaces();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*, because we need it,*").AsWildcard()
+					.Because("Because(…) must return the result, so that its options can still follow it");
+			}
+
+			[Fact]
 			public async Task WhenGenericTypeDefinitionIsTargeted_ShouldMatchAnyConstruction()
 			{
 				Type subject = typeof(ViaGenericArgument);

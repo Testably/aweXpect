@@ -21,7 +21,7 @@ public static partial class ThatType
 	///     The <paramref name="filter" /> receives the methods declared on the type and may use the full method-filter
 	///     DSL (e.g. <c>methods.With&lt;FactAttribute&gt;().OrWith&lt;TheoryAttribute&gt;()</c>).<br />
 	///     By default the assertion succeeds when the type contains at least one matching method. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
 	[GuaranteesNotNull]

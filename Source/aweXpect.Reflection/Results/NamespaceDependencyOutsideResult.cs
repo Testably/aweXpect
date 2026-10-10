@@ -11,7 +11,7 @@ namespace aweXpect.Reflection.Results;
 ///     namespace.
 /// </summary>
 public sealed class NamespaceDependencyOutsideResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>>
+	: AndOrResult<TType, IThat<TThat>, NamespaceDependencyOutsideResult<TType, TThat>>
 {
 	private readonly NamespaceDependencyOptions _options;
 

@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Results;
 ///     the targeted/allowed collections.
 /// </summary>
 public sealed class TypeSetDependencyResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>>
+	: AndOrResult<TType, IThat<TThat>, TypeSetDependencyResult<TType, TThat>>
 {
 	private readonly TypeSetDependencyOptions _options;
 

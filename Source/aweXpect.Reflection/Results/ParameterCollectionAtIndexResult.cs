@@ -11,7 +11,8 @@ public class ParameterCollectionAtIndexResult<TType, TThat, TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	CollectionIndexOptions collectionIndexOptions)
-	: AndOrResult<TType, IThat<TThat>>(expectationBuilder, subject)
+	: AndOrResult<TType, IThat<TThat>, ParameterCollectionAtIndexResult<TType, TThat, TParameter>>(
+		expectationBuilder, subject)
 {
 	/// <summary>
 	///     …from end.

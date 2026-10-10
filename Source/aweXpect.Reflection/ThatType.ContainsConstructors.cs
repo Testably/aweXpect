@@ -13,7 +13,7 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     By default the assertion succeeds when the type contains at least one matching constructor. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<Type, Type?> ContainsConstructors(

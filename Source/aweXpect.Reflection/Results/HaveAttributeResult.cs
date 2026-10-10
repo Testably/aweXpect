@@ -14,7 +14,7 @@ public sealed class HaveAttributeResult<TMember, TResult>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TResult> subject,
 	AttributeFilterOptions<TMember> attributeFilterOptions)
-	: AndOrResult<TResult, IThat<TResult>>(expectationBuilder, subject),
+	: AndOrResult<TResult, IThat<TResult>, HaveAttributeResult<TMember, TResult>>(expectationBuilder, subject),
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />

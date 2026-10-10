@@ -259,6 +259,25 @@ public sealed partial class ThatType
 			public sealed class AttributeTests
 			{
 				[Fact]
+				public async Task OrHas_AfterBecause_ShouldApplyBoth()
+				{
+					Type subject = typeof(BazClass);
+
+					async Task Act()
+					{
+						await That(subject).Has<FooAttribute>().Because("we need one of them").OrHas<BarAttribute>();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has ThatType.Has.OrHas.AttributeTests.FooAttribute or ThatType.Has.OrHas.AttributeTests.BarAttribute, because we need one of them,
+						             but it did not in ThatType.Has.OrHas.AttributeTests.BazClass
+						             """)
+						.Because("Because(…) must return the result, so that the alternative attribute can still follow it");
+				}
+
+				[Fact]
 				public async Task WhenTypeHasBothAttributes_ShouldSucceed()
 				{
 					Type subject = typeof(FooBarClass);

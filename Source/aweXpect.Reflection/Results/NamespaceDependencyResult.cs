@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Results;
 ///     and to opt out of sub-namespace matching.
 /// </summary>
 public sealed class NamespaceDependencyResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>>
+	: AndOrResult<TType, IThat<TThat>, NamespaceDependencyResult<TType, TThat>>
 {
 	private readonly NamespaceDependencyOptions _options;
 

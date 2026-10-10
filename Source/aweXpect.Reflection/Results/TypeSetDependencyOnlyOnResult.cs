@@ -11,7 +11,7 @@ namespace aweXpect.Reflection.Results;
 ///     sub-namespaces.
 /// </summary>
 public sealed class TypeSetDependencyOnlyOnResult<TType, TThat>
-	: AndOrResult<TType, IThat<TThat>>
+	: AndOrResult<TType, IThat<TThat>, TypeSetDependencyOnlyOnResult<TType, TThat>>
 {
 	private readonly TypeSetDependencyOptions _options;
 

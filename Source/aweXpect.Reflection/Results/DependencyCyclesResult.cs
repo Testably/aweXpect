@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Results;
 ///     sub-namespaces as one family.
 /// </summary>
 public sealed class DependencyCyclesResult<TThat>
-	: AndOrResult<TThat, IThat<TThat>>
+	: AndOrResult<TThat, IThat<TThat>, DependencyCyclesResult<TThat>>
 {
 	private readonly DependencyCyclesOptions _options;
 

@@ -14,9 +14,21 @@ public class ParameterCollectionResult<TType, TThat, TParameter>(
 	IThat<TThat> subject,
 	CollectionIndexOptions collectionIndexOptions,
 	ParameterFilterOptions parameterFilterOptions)
-	: AndOrResult<TType, IThat<TThat>>(expectationBuilder, subject),
+	: ParameterCollectionResult<TType, TThat, TParameter, ParameterCollectionResult<TType, TThat, TParameter>>(
+		expectationBuilder, subject, collectionIndexOptions, parameterFilterOptions);
+
+/// <summary>
+///     Additional constraints on a parameter collection with a parameter of a specific type.
+/// </summary>
+public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>(
+	ExpectationBuilder expectationBuilder,
+	IThat<TThat> subject,
+	CollectionIndexOptions collectionIndexOptions,
+	ParameterFilterOptions parameterFilterOptions)
+	: AndOrResult<TType, IThat<TThat>, TSelf>(expectationBuilder, subject),
 		IOptionsProvider<CollectionIndexOptions>,
 		IOptionsProvider<ParameterFilterOptions>
+	where TSelf : ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 {
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 	private readonly IThat<TThat> _subject = subject;
@@ -40,29 +52,29 @@ public class ParameterCollectionResult<TType, TThat, TParameter>(
 	/// <summary>
 	///     …without a default value.
 	/// </summary>
-	public ParameterCollectionResult<TType, TThat, TParameter> WithoutDefaultValue()
+	public TSelf WithoutDefaultValue()
 	{
 		parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
 	///     …with a default value.
 	/// </summary>
-	public ParameterCollectionResult<TType, TThat, TParameter> WithDefaultValue()
+	public TSelf WithDefaultValue()
 	{
 		parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
 	///     …with the <paramref name="expected" /> default value.
 	/// </summary>
-	public ParameterCollectionResult<TType, TThat, TParameter> WithDefaultValue<TValue>(TValue expected)
+	public TSelf WithDefaultValue<TValue>(TValue expected)
 		where TValue : TParameter
 	{
 		parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 			() => $"with default value {Formatter.Format(expected)}");
-		return this;
+		return (TSelf)this;
 	}
 }
