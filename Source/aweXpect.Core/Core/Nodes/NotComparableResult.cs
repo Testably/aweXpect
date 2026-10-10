@@ -28,7 +28,11 @@ internal sealed class NotComparableResult<T> : ConstraintResult
 	{
 		_inner = inner;
 		_reason = reason.StartsWith(It + " ", StringComparison.Ordinal)
+#if NET8_0_OR_GREATER
+			? string.Concat(GetSubject(it, value), reason.AsSpan(It.Length))
+#else
 			? GetSubject(it, value) + reason.Substring(It.Length)
+#endif
 			: reason;
 		_value = value;
 		FailureCause = cause;
