@@ -84,7 +84,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Event",
-					             but it was "PublicEvent", which differs at index 0:
+					             but it had name "PublicEvent", which differs at index 0:
 					                ↓ (actual)
 					               "PublicEvent"
 					               "Event"
@@ -124,7 +124,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicEvent",
-					             but it was "PublicEvent"
+					             but it had name "PublicEvent"
 					             """);
 			}
 		}

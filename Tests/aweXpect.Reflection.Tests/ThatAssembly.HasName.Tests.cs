@@ -24,7 +24,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Reflection",
-					             but it was "aweXpect.Reflection.Tests", which differs at index 0:
+					             but it had name "aweXpect.Reflection.Tests", which differs at index 0:
 					                ↓ (actual)
 					               "aweXpect.Reflection.Tests"
 					               "Reflection"
@@ -119,7 +119,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "aweXpect.Reflection.Tests",
-					             but it was "aweXpect.Reflection.Tests"
+					             but it had name "aweXpect.Reflection.Tests"
 					             """);
 			}
 		}

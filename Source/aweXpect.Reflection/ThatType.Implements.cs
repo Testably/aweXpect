@@ -124,9 +124,9 @@ public static partial class ThatType
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is not null)
+			if (Actual is { } actual)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
+				contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
 			}
 		}
 
@@ -137,18 +137,9 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (forceDirect && Actual?.Implements(interfaceType) == true)
-			{
-				stringBuilder.Append(It).Append(" implemented ");
-				Formatter.Format(stringBuilder, interfaceType);
-				stringBuilder.Append(" only indirectly");
-				return;
-			}
-
-			stringBuilder.Append(It).Append(" did not implement ");
-			Formatter.Format(stringBuilder, interfaceType);
-		}
+			=> stringBuilder.Append(It).Append(forceDirect && Actual?.Implements(interfaceType) == true
+				? " did only indirectly"
+				: " did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -157,9 +148,6 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(forceDirect ? " did directly implement " : " did implement ");
-			Formatter.Format(stringBuilder, interfaceType);
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 }

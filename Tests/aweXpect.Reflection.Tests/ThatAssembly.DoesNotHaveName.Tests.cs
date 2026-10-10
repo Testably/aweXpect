@@ -37,7 +37,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "aweXpect.Reflection.Tests",
-					             but it was "aweXpect.Reflection.Tests"
+					             but it had name "aweXpect.Reflection.Tests"
 					             """);
 			}
 
@@ -55,7 +55,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name not ending with ".Tests",
-					             but it was "aweXpect.Reflection.Tests"
+					             but it had name "aweXpect.Reflection.Tests"
 					             """);
 			}
 
@@ -91,7 +91,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "AWExPECT.rEFLECTION.tESTS" ignoring case,
-					             but it was "aweXpect.Reflection.Tests"
+					             but it had name "aweXpect.Reflection.Tests"
 					             """);
 			}
 
@@ -125,7 +125,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "NonExistentAssembly",
-					             but it was "aweXpect.Reflection.Tests", which differs at index 0:
+					             but it had name "aweXpect.Reflection.Tests", which differs at index 0:
 					                ↓ (actual)
 					               "aweXpect.Reflection.Tests"
 					               "NonExistentAssembly"

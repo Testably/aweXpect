@@ -50,10 +50,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not directly implement ThatType.ITestInterface,
-					             but it did directly implement ThatType.ITestInterface
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
+					             ThatType.ClassWithInterface
 					             """);
 			}
 
@@ -84,10 +84,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not implement ThatType.ITestInterface,
-					             but it did implement ThatType.ITestInterface
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
+					             ThatType.ClassWithInterface
 					             """);
 			}
 		}
@@ -139,10 +139,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not implement ThatType.ITestInterface,
-					             but it did implement ThatType.ITestInterface
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
+					             ThatType.ClassWithInterface
 					             """);
 			}
 		}
@@ -163,10 +163,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             implements ThatType.ITestInterface,
-					             but it did not implement ThatType.ITestInterface
+					             but it did not
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
+					             ThatType.UnrelatedClass
 					             """);
 			}
 

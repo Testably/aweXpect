@@ -181,9 +181,9 @@ public static partial class ThatType
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is not null)
+			if (Actual is { } actual)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
+				contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
 			}
 		}
 
@@ -194,10 +194,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was not assignable to ");
-			Formatter.Format(stringBuilder, type);
-		}
+			=> stringBuilder.Append(It).Append(" was not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -206,10 +203,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was assignable to ");
-			Formatter.Format(stringBuilder, type);
-		}
+			=> stringBuilder.Append(It).Append(" was");
 	}
 
 	private sealed class IsAssignableFromConstraint(
@@ -228,9 +222,9 @@ public static partial class ThatType
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is not null)
+			if (Actual is { } actual)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
+				contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
 			}
 		}
 
@@ -241,10 +235,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was not assignable from ");
-			Formatter.Format(stringBuilder, type);
-		}
+			=> stringBuilder.Append(It).Append(" was not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -253,9 +244,6 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was assignable from ");
-			Formatter.Format(stringBuilder, type);
-		}
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

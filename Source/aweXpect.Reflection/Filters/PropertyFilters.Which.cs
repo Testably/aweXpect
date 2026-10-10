@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
@@ -15,5 +16,6 @@ public static partial class PropertyFilters
 		Func<PropertyInfo, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
-		=> @this.Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
+		=> @this.Which(Filter.Suffix<PropertyInfo>(property => UserCode.Invoke(predicate, property, "the predicate"),
+			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
 }

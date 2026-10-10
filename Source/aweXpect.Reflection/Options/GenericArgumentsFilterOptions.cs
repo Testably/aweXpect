@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Reflection.Options;
@@ -74,7 +75,7 @@ public class GenericArgumentsFilterOptions
 	}
 
 	private bool MatchesPredicates(Type[] arguments)
-		=> _predicates.All(predicate => predicate(arguments));
+		=> _predicates.All(predicate => UserCode.Invoke(predicate, arguments, "the predicate"));
 
 #if NET8_0_OR_GREATER
 	private async ValueTask<bool> MatchesFilters(Type[] arguments, string[]? genericTypeNames)

@@ -51,7 +51,7 @@ public static partial class ThatAssembly
 			=> stringBuilder.Append("targets ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual?.GetTargetFramework(), expected));
+			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "target framework", Grammars, Actual?.GetTargetFramework(), expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);

@@ -50,10 +50,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
-					             but it did inherit from ThatType.BaseClass
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+DerivedClass
+					             ThatType.DerivedClass
 					             """);
 			}
 
@@ -71,10 +71,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit directly from ThatType.BaseClass,
-					             but it did inherit directly from ThatType.BaseClass
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+DerivedClass
+					             ThatType.DerivedClass
 					             """);
 			}
 
@@ -92,10 +92,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
-					             but it did inherit from ThatType.BaseClass
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+GrandChildClass
+					             ThatType.GrandChildClass
 					             """);
 			}
 
@@ -160,10 +160,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
-					             but it did inherit from ThatType.BaseClass
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+DerivedClass
+					             ThatType.DerivedClass
 					             """);
 			}
 
@@ -182,10 +182,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
-					             but it did inherit from ThatType.BaseClass
+					             but it did
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+GrandChildClass
+					             ThatType.GrandChildClass
 					             """);
 			}
 		}
@@ -221,10 +221,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             inherits from ThatType.BaseClass,
-					             but it did not inherit from ThatType.BaseClass
+					             but it did not
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
+					             ThatType.UnrelatedClass
 					             """);
 			}
 

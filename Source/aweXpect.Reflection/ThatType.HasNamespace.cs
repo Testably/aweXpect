@@ -47,10 +47,10 @@ public static partial class ThatType
 			=> stringBuilder.Append("has namespace ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual?.Namespace, expected));
+			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "namespace", Grammars, Actual?.Namespace, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have namespace ").Append(options.GetExpectation(expected, Grammars));
+			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

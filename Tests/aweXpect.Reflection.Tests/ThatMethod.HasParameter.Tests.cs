@@ -1,5 +1,8 @@
 ﻿using System.IO;
 using System.Reflection;
+using aweXpect.Core;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Reflection.Tests.TestHelpers;
 using Xunit.Sdk;
 
@@ -470,6 +473,30 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task WhenParameterPredicateThrows_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+				Func<ParameterInfo, bool> predicate = _ => throw new InvalidOperationException("boom");
+
+				async Task Act()
+				{
+					ParameterCollectionResult<MethodInfo, MethodInfo?, int> result = That(methodInfo).HasParameter<int>();
+					((IOptionsProvider<ParameterFilterOptions>)result).Options
+						.AddPredicate(predicate, () => "");
+					await result;
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
+
+			[Fact]
 			public async Task WithDefaultValue_WhenParameterHasDefault_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
@@ -769,6 +796,29 @@ public sealed partial class ThatMethod
 					             does not have parameter of type int with name "value",
 					             but it did
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenParameterPredicateThrows_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+				Func<ParameterInfo, bool> predicate = _ => throw new InvalidOperationException("boom");
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it
+						=> ((IOptionsProvider<ParameterFilterOptions>)it.HasParameter<int>()).Options
+						.AddPredicate(predicate, () => ""));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("a predicate that throws answers neither the expectation nor its negation");
 			}
 
 #pragma warning disable CA1822

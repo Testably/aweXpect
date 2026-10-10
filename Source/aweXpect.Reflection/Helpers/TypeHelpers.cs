@@ -469,7 +469,7 @@ internal static class TypeHelpers
 			.FirstOrDefault();
 		if (attribute is TAttribute attributeValue)
 		{
-			return predicate?.Invoke(attributeValue) ?? true;
+			return predicate is null || UserCode.Invoke(predicate, attributeValue, "the predicate");
 		}
 
 		return false;

@@ -101,7 +101,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
-					             not all have dependency on assembly not equal to "aweXpect.Core",
+					             not all have dependency on assembly equal to "aweXpect.Core",
 					             but it only contained assemblies with the unexpected dependency
 
 					             Collection:
@@ -109,7 +109,8 @@ public sealed partial class ThatAssemblies
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """)
-					.AsWildcard();
+					.AsWildcard()
+					.Because("\"not all\" already negates the expectation, so the dependency must not be negated again");
 			}
 		}
 	}

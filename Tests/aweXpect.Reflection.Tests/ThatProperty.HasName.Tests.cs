@@ -24,7 +24,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Property",
-					             but it was "PublicProperty", which differs at index 1:
+					             but it had name "PublicProperty", which differs at index 1:
 					                 ↓ (actual)
 					               "PublicProperty"
 					               "Property"
@@ -124,7 +124,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicProperty",
-					             but it was "PublicProperty"
+					             but it had name "PublicProperty"
 					             """);
 			}
 		}

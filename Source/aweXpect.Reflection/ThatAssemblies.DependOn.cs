@@ -89,7 +89,7 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have dependency on assembly ")
-				.Append(options.GetExpectation(expected, Grammars.Negate()));
+				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained assemblies with the unexpected dependency");

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
@@ -49,7 +50,7 @@ internal static class EventInfoHelpers
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
-			return predicate?.Invoke(castedAttribute) ?? true;
+			return predicate is null || UserCode.Invoke(predicate, castedAttribute, "the predicate");
 		}
 
 		return false;

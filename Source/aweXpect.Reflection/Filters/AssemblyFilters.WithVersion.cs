@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
@@ -18,7 +19,7 @@ public static partial class AssemblyFilters
 		string doNotPopulateThisValue = "")
 	{
 		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(
-			assembly => assembly.GetName().Version is { } version && predicate(version),
+			assembly => assembly.GetName().Version is { } version && UserCode.Invoke(predicate, version, "the predicate"),
 			$" with version matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return @this.Which(filter);
 	}

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -28,6 +29,48 @@ public sealed partial class AssemblyFilters
 					.WithVersion(version => version.Major < 0);
 
 				await That(assemblies).IsEmpty();
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
+					.WithVersion(_ => throw new InvalidOperationException("boom"));
+
+				async Task Act()
+				{
+					await That(assemblies).IsEmpty();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type AssemblyFilters with version matching _ => throw new InvalidOperationException("boom")
+					             is empty,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFailWhenNegated()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
+					.WithVersion(_ => throw new InvalidOperationException("boom"));
+
+				async Task Act()
+				{
+					await That(assemblies).DoesNotComplyWith(they => they.IsEmpty());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type AssemblyFilters with version matching _ => throw new InvalidOperationException("boom")
+					             is not empty,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("a predicate that throws answers neither the expectation nor its negation");
 			}
 		}
 

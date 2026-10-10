@@ -24,7 +24,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Method",
-					             but it was "PublicMethod", which differs at index 0:
+					             but it had name "PublicMethod", which differs at index 0:
 					                ↓ (actual)
 					               "PublicMethod"
 					               "Method"
@@ -124,7 +124,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicMethod",
-					             but it was "PublicMethod"
+					             but it had name "PublicMethod"
 					             """);
 			}
 		}

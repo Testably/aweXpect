@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -62,6 +63,27 @@ public sealed partial class EventFilters
 					.IsEqualTo(
 						"events with direct EventFilters.With.FooAttribute matching foo => foo.Value == 2")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>().Events()
+					.With<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+
+				async Task Act()
+				{
+					await That(events).IsEmpty();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that events with EventFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
+					             is empty,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
 			public static TheoryData<int, EventInfo?[]> GetFooValues()

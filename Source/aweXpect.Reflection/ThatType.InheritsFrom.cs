@@ -122,9 +122,9 @@ public static partial class ThatType
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is not null)
+			if (Actual is { } actual)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
+				contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
 			}
 		}
 
@@ -136,18 +136,9 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (forceDirect && Actual?.InheritsFromClass(baseType) == true)
-			{
-				stringBuilder.Append(It).Append(" inherited from ");
-				Formatter.Format(stringBuilder, baseType);
-				stringBuilder.Append(" only indirectly");
-				return;
-			}
-
-			stringBuilder.Append(It).Append(" did not inherit from ");
-			Formatter.Format(stringBuilder, baseType);
-		}
+			=> stringBuilder.Append(It).Append(forceDirect && Actual?.InheritsFromClass(baseType) == true
+				? " did only indirectly"
+				: " did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -157,11 +148,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" did inherit ");
-			AppendDirectlyFrom(stringBuilder, forceDirect);
-			Formatter.Format(stringBuilder, baseType);
-		}
+			=> stringBuilder.Append(It).Append(" did");
 
 		private static void AppendDirectlyFrom(StringBuilder stringBuilder, bool forceDirect)
 		{

@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Collections;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -56,6 +57,27 @@ public sealed partial class TypeFilters
 					.IsEqualTo(
 						"types with direct TypeFilters.With.FooAttribute matching foo => foo.Value == 2")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Types()
+					.With<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+
+				async Task Act()
+				{
+					await That(types).IsEmpty();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that types with TypeFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
+					             is empty,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
 			public static TheoryData<int, Type[]> GetFooValues()

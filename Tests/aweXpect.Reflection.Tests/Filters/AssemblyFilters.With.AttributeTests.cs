@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -63,6 +64,27 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in all loaded assemblies with direct AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\"");
+			}
+
+			[Fact]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
+					.With<AssemblyTitleAttribute>(_ => throw new InvalidOperationException("boom"));
+
+				async Task Act()
+				{
+					await That(assemblies).IsEmpty();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type AssemblyFilters with AssemblyTitleAttribute matching _ => throw new InvalidOperationException("boom")
+					             is empty,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 		}
 

@@ -29,11 +29,11 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             targets equal to "net99.0",
-					             but it *
-					             """).AsWildcard();
+					.WithMessage($"""
+					              Expected that subject
+					              targets equal to "net99.0",
+					              but it had target framework "{CurrentTarget}", which differs *
+					              """).AsWildcard();
 			}
 
 			[Fact]
@@ -110,8 +110,8 @@ public sealed partial class ThatAssembly
 					.WithMessage($"""
 					              Expected that subject
 					              targets not equal to "{CurrentTarget}",
-					              but it *
-					              """).AsWildcard();
+					              but it had target framework "{CurrentTarget}"
+					              """);
 			}
 		}
 	}

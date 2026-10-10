@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using aweXpect.Core;
 
 namespace aweXpect.Reflection.Options;
 
@@ -98,7 +99,7 @@ public class ParameterFilterOptions
 			return new ValueTask<bool>(true);
 		}
 
-		return _predicates.AllAsync(predicate => predicate(parameter));
+		return _predicates.AllAsync(predicate => UserCode.InvokeAsync(() => predicate(parameter), "the predicate"));
 	}
 
 	private static Func<ParameterInfo, ValueTask<bool>> ToAsyncPredicate(Func<ParameterInfo, bool> predicate)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using aweXpect.Core;
 
 namespace aweXpect.Reflection.Options;
 
@@ -55,7 +56,8 @@ public class GenericArgumentFilterOptions
 			return new ValueTask<bool>(true);
 		}
 
-		return _predicates.AllAsync(predicate => predicate(argument, genericArgumentName));
+		return _predicates.AllAsync(predicate
+			=> UserCode.InvokeAsync(() => predicate(argument, genericArgumentName), "the predicate"));
 	}
 
 	/// <summary>

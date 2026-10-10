@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicAbstractClass",
-					             but it was "PublicAbstractClass"
+					             but it had name "PublicAbstractClass"
 					             """);
 			}
 
@@ -67,7 +67,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has name not ending with "AbstractClass",
-					             but it was "PublicAbstractClass"
+					             but it had name "PublicAbstractClass"
 					             """);
 			}
 
@@ -103,7 +103,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "pUBLICaBSTRACTcLASS" ignoring case,
-					             but it was "PublicAbstractClass"
+					             but it had name "PublicAbstractClass"
 					             """);
 			}
 		}
@@ -124,7 +124,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "NonExistentClass",
-					             but it was "PublicAbstractClass", which differs at index 0:
+					             but it had name "PublicAbstractClass", which differs at index 0:
 					                ↓ (actual)
 					               "PublicAbstractClass"
 					               "NonExistentClass"

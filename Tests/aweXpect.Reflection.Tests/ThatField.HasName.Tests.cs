@@ -24,7 +24,7 @@ public sealed partial class ThatField
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Field",
-					             but it was "PublicField", which differs at index 0:
+					             but it had name "PublicField", which differs at index 0:
 					                ↓ (actual)
 					               "PublicField"
 					               "Field"
@@ -124,7 +124,7 @@ public sealed partial class ThatField
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicField",
-					             but it was "PublicField"
+					             but it had name "PublicField"
 					             """);
 			}
 		}

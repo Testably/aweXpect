@@ -23,7 +23,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             has namespace equal to "Reflection.Tests.TestHelpers",
-					             but it was "aweXpect.Reflection.Tests.Test…", which differs at index 0:
+					             but it had namespace "aweXpect.Reflection.Tests.Test…", which differs at index 0:
 					                ↓ (actual)
 					               "aweXpect.Reflection.Tests.TestHelpers.Types"
 					               "Reflection.Tests.TestHelpers"
@@ -103,7 +103,12 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*does not have namespace*aweXpect.Reflection.Tests.TestHelpers.Types*").AsWildcard();
+					.WithMessage("""
+					             Expected that subject
+					             has namespace not equal to "aweXpect.Reflection.Tests.Test…",
+					             but it had namespace "aweXpect.Reflection.Tests.TestHelpers.Types"
+					             """)
+					.Because("the negated match type already says \"not\", so the verb must not be negated again");
 			}
 		}
 	}

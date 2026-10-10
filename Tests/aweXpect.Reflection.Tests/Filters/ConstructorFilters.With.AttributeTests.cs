@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -36,6 +37,27 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo(
 						"constructors with ConstructorFilters.With.FooAttribute matching foo => foo.Value == value")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>().Constructors()
+					.With<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+
+				async Task Act()
+				{
+					await That(constructors).IsEmpty();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors with ConstructorFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
+					             is empty,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
 			public static TheoryData<int, ConstructorInfo?[]> GetFooValues()

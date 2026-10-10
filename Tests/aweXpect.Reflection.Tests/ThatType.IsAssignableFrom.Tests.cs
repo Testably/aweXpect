@@ -65,10 +65,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is assignable from ThatType.UnrelatedClass,
-					             but it was not assignable from ThatType.UnrelatedClass
+					             but it was not
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+BaseClass
+					             ThatType.BaseClass
 					             """);
 			}
 
@@ -120,10 +120,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not assignable from ThatType.DerivedClass,
-					             but it was assignable from ThatType.DerivedClass
+					             but it was
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+BaseClass
+					             ThatType.BaseClass
 					             """);
 			}
 
@@ -176,10 +176,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not assignable from ThatType.DerivedClass,
-					             but it was assignable from ThatType.DerivedClass
+					             but it was
 
 					             Actual:
-					             aweXpect.Reflection.Tests.ThatType+BaseClass
+					             ThatType.BaseClass
 					             """);
 			}
 
