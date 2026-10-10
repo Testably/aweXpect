@@ -4530,6 +4530,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -5287,7 +5293,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -6048,7 +6055,8 @@ window.BENCHMARK_DATA = {
           146.38305603663127,
           148.67017429215568,
           132.31002790133158,
-          119.54941979476384
+          119.54941979476384,
+          141.5231162217947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6814,6 +6822,7 @@ window.BENCHMARK_DATA = {
           424,
           424,
           424,
+          440,
           440
         ],
         "borderColor": "#63A2AC",
@@ -7583,7 +7592,8 @@ window.BENCHMARK_DATA = {
           269.37850979396273,
           246.33960148266382,
           243.90657527630145,
-          197.97437148827774
+          197.97437148827774,
+          285.3504601160685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8349,6 +8359,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8399,7 +8410,8 @@ window.BENCHMARK_DATA = {
           213.67984322401193,
           205.66131704194206,
           216.46895374570573,
-          154.0956160545349
+          154.0956160545349,
+          208.96469957033793
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8411,6 +8423,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12528,6 +12541,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -13208,7 +13227,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -13892,7 +13912,8 @@ window.BENCHMARK_DATA = {
           120138.8503136268,
           115934.61299351284,
           111802.16166992187,
-          80074.57087053571
+          80074.57087053571,
+          119150.68962402343
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14581,6 +14602,7 @@ window.BENCHMARK_DATA = {
           16424,
           16424,
           16424,
+          16440,
           16440
         ],
         "borderColor": "#63A2AC",
@@ -15273,7 +15295,8 @@ window.BENCHMARK_DATA = {
           2847707.1596354167,
           2637252.533333333,
           2760839.3565104166,
-          1880955.3194010416
+          1880955.3194010416,
+          2741231.515625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15962,7 +15985,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16012,7 +16036,8 @@ window.BENCHMARK_DATA = {
           212375.72356305804,
           211320.69309895832,
           206896.12636021205,
-          162790.6004720052
+          162790.6004720052,
+          205056.8501325335
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16024,6 +16049,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20603,6 +20629,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -21360,7 +21392,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -22121,7 +22154,8 @@ window.BENCHMARK_DATA = {
           298.66243098576865,
           317.2777136484782,
           295.656778049469,
-          223.96749958992004
+          223.96749958992004,
+          287.59080832799276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22887,6 +22921,7 @@ window.BENCHMARK_DATA = {
           616,
           616,
           616,
+          632,
           632
         ],
         "borderColor": "#63A2AC",
@@ -23656,7 +23691,8 @@ window.BENCHMARK_DATA = {
           500.75270144144696,
           507.2803796768188,
           525.025086743491,
-          396.0151030222575
+          396.0151030222575,
+          479.5880442301432
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24422,6 +24458,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24472,7 +24509,8 @@ window.BENCHMARK_DATA = {
           410.90754448572795,
           399.4322170893351,
           430.08137822151184,
-          303.75583696365356
+          303.75583696365356,
+          402.768706035614
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24484,6 +24522,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -29063,6 +29102,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -29820,7 +29865,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -30581,7 +30627,8 @@ window.BENCHMARK_DATA = {
           160.85706199010212,
           150.09303159713744,
           159.1996108373006,
-          116.29780764239175
+          116.29780764239175,
+          154.54549403190612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31347,6 +31394,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544
         ],
         "borderColor": "#63A2AC",
@@ -32116,7 +32164,8 @@ window.BENCHMARK_DATA = {
           281.25273551940916,
           260.12614444096886,
           275.2909729003906,
-          192.52232818603517
+          192.52232818603517,
+          258.54078238351
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32882,6 +32931,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -32932,7 +32982,8 @@ window.BENCHMARK_DATA = {
           260.1941842714945,
           257.2019051483699,
           260.9803979056222,
-          186.36010232993536
+          186.36010232993536,
+          236.85818397204082
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32944,6 +32995,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -37523,6 +37575,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -38280,7 +38338,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -39041,7 +39100,8 @@ window.BENCHMARK_DATA = {
           278.7488846460978,
           254.97947362263997,
           245.2147097905477,
-          216.66294536590576
+          216.66294536590576,
+          267.34504543031966
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39807,6 +39867,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          608,
           608
         ],
         "borderColor": "#63A2AC",
@@ -40576,7 +40637,8 @@ window.BENCHMARK_DATA = {
           1355.7190945943196,
           1276.174815750122,
           1238.8357446988423,
-          911.6847690582275
+          911.6847690582275,
+          1226.9922340938024
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41342,6 +41404,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -41392,7 +41455,8 @@ window.BENCHMARK_DATA = {
           339.2543276378087,
           356.8182425816854,
           349.1631532033285,
-          250.24395599365235
+          250.24395599365235,
+          320.66239951207086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41404,6 +41468,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -45983,6 +46048,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -46740,7 +46811,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -47501,7 +47573,8 @@ window.BENCHMARK_DATA = {
           652.825014591217,
           669.0740095547268,
           642.7825833002727,
-          495.1894598007202
+          495.1894598007202,
+          641.9548854192097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48267,6 +48340,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896
         ],
         "borderColor": "#63A2AC",
@@ -49036,7 +49110,8 @@ window.BENCHMARK_DATA = {
           1404.0230564117433,
           1410.129246266683,
           1380.0243453979492,
-          1017.1524626413981
+          1017.1524626413981,
+          1273.6667727152505
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49802,6 +49877,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -49852,7 +49928,8 @@ window.BENCHMARK_DATA = {
           661.3155122756958,
           657.2392098108927,
           645.1081802504403,
-          504.1748679478963
+          504.1748679478963,
+          634.1702184041341
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49864,6 +49941,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -54443,6 +54521,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -55200,7 +55284,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -55961,7 +56046,8 @@ window.BENCHMARK_DATA = {
           1036.0475843974523,
           1016.0087453297207,
           1116.2271496909004,
-          784.9643902778625
+          784.9643902778625,
+          1051.5613887786865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56727,6 +56813,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304
         ],
         "borderColor": "#63A2AC",
@@ -57496,7 +57583,8 @@ window.BENCHMARK_DATA = {
           27858.206268310547,
           27096.974322509766,
           28014.6536325308,
-          15738.152657645089
+          15738.152657645089,
+          27330.002638596754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58262,6 +58350,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -58312,7 +58401,8 @@ window.BENCHMARK_DATA = {
           812.0843548456828,
           789.7045337677002,
           799.8754990259806,
-          584.2545240402221
+          584.2545240402221,
+          772.756406656901
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58324,6 +58414,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -58673,6 +58764,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -58725,7 +58822,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -58781,7 +58879,8 @@ window.BENCHMARK_DATA = {
           851.6755803426107,
           765.237514087132,
           783.9828212102254,
-          556.5622659410749
+          556.5622659410749,
+          722.856612141927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58842,6 +58941,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840
         ],
         "borderColor": "#63A2AC",
@@ -58906,7 +59006,8 @@ window.BENCHMARK_DATA = {
           84981.80950055804,
           83312.36499023438,
           84426.20920410156,
-          52025.71477801983
+          52025.71477801983,
+          82344.41915189303
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58967,7 +59068,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59281,6 +59383,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 08:39:58 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.0.0 (#1777)"
+      },
+      {
+        "sha": "28acb579dcb9a53f2fdd4cb58dbbf5dce70d4d5f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 10 10:34:33 2026 \u002B0200",
+        "message": "docs: clarify the once-only rule for extension options and past-tense naming for recorded occurrences (#1778)"
       }
     ],
     "labels": [
@@ -59333,7 +59441,8 @@ window.BENCHMARK_DATA = {
       "75cde8b0",
       "3fd1189b",
       "fe613c6c",
-      "5ef58e1e"
+      "5ef58e1e",
+      "28acb579"
     ],
     "datasets": [
       {
@@ -59389,7 +59498,8 @@ window.BENCHMARK_DATA = {
           259.8366877237956,
           275.5710287412008,
           256.67651211420696,
-          192.95787699405963
+          192.95787699405963,
+          266.3875561396281
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59450,6 +59560,7 @@ window.BENCHMARK_DATA = {
           672,
           672,
           672,
+          688,
           688
         ],
         "borderColor": "#63A2AC",
@@ -59514,7 +59625,8 @@ window.BENCHMARK_DATA = {
           32316.998864746092,
           30731.354388897234,
           31265.845668247766,
-          15174.909043532152
+          15174.909043532152,
+          31606.306352887834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59575,7 +59687,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59625,7 +59738,8 @@ window.BENCHMARK_DATA = {
           258.87168684005735,
           248.2426520415715,
           244.78331689834596,
-          181.11447252546037
+          181.11447252546037,
+          243.9997957433973
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59637,6 +59751,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
