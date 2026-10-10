@@ -139,6 +139,39 @@ public sealed partial class ThatJsonString
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsInvalidJson_ShouldFail()
+			{
+				string subject = "{ invalid";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches 1,
+					             but it was "{ invalid", which could not be parsed as JSON: *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsInvalidJson_AndNegated_ShouldFail()
+			{
+				string subject = "{ invalid";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidJsonMatching(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no valid JSON which matches 1,
+					             but it was "{ invalid", which could not be parsed as JSON: *
+					             """).AsWildcard()
+					.Because("a subject that is no JSON cannot be compared, so the negation must not be met either");
+			}
 		}
 
 		public sealed class ArrayTests

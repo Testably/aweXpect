@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using aweXpect.Helpers;
 
 namespace aweXpect.Json;
 
@@ -15,6 +16,7 @@ public static class JsonOptionsExtensions
 		this JsonOptions @this,
 		Func<JsonDocumentOptions, JsonDocumentOptions> jsonDocumentOptions)
 	{
+		ThrowHelper.ThrowIfNull(jsonDocumentOptions, nameof(jsonDocumentOptions));
 		JsonDocumentOptions options = jsonDocumentOptions(@this.DocumentOptions);
 		return @this with
 		{

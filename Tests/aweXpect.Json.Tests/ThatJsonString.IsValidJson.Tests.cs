@@ -140,6 +140,19 @@ public sealed partial class ThatJsonString
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson().Which(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
 		}
 	}
 }

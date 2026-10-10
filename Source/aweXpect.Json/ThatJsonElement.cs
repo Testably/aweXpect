@@ -32,6 +32,11 @@ public static partial class ThatJsonElement
 			Actual = actual;
 			ExpectationJsonConverter converter = new(context, cancellationToken);
 			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
+			if (actual.ValueKind == JsonValueKind.Undefined)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
 
 			_comparisonResult = await JsonElementValidator.Compare(
 				actual,
@@ -53,7 +58,16 @@ public static partial class ThatJsonElement
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+		{
+			if (Actual.ValueKind == JsonValueKind.Undefined)
+			{
+				stringBuilder.Append(It).Append(" was undefined");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -66,8 +80,15 @@ public static partial class ThatJsonElement
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" did match in ");
-			Formatter.Format(stringBuilder, Actual);
+			if (Actual.ValueKind == JsonValueKind.Undefined)
+			{
+				stringBuilder.Append(It).Append(" was undefined");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" did match in ");
+				Formatter.Format(stringBuilder, Actual);
+			}
 		}
 	}
 

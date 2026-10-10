@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
@@ -25,18 +26,21 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private readonly List<string> _failures = new();
 	private readonly JsonOptions _options;
+	private readonly JsonValidation _root;
 	private readonly JsonValueKind _valueKind;
 	private int? _amount;
+	private Exception? _ownException;
 
 	public JsonValidation(JsonElement? element, JsonValueKind valueKind, JsonOptions options,
 		IEvaluationContext context)
-		: this("$", element, valueKind, options, context)
+		: this(null, "$", element, valueKind, options, context)
 	{
 	}
 
-	private JsonValidation(string path, JsonElement? element, JsonValueKind valueKind, JsonOptions options,
-		IEvaluationContext context)
+	private JsonValidation(JsonValidation? root, string path, JsonElement? element, JsonValueKind valueKind,
+		JsonOptions options, IEvaluationContext context)
 	{
+		_root = root ?? this;
 		_valueKind = valueKind;
 		_options = options;
 		_context = context;
@@ -61,14 +65,11 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonPropertyResult<IJsonArrayResult> IJsonArrayResult.At(int index)
 	{
-#if NET8_0_OR_GREATER
-		ArgumentOutOfRangeException.ThrowIfNegative(index);
-#else
 		if (index < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(index), "The index must be greater than or equal to 0.");
+			throw Own(Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(index), "The index must not be negative.")));
 		}
-#endif
 
 		_currentPath.Push($"[{index}]");
 		JsonElement? currentElement = _currentElements.Peek();
@@ -97,7 +98,7 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithElements(params object?[] expected)
 	{
-		JsonElement? arrayElement = _currentElements.Pop();
+		JsonElement? arrayElement = PopArray();
 		int? arrayLength = arrayElement?.GetArrayLength();
 
 		for (int i = 0; i < expected.Length; i++)
@@ -134,14 +135,23 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private void CompareElement(JsonElement element, object? expectedValue)
 	{
-		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-		using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions);
-		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
-			CurrentPath,
-			element,
-			expectedDocument.RootElement,
-			_options,
-			converter).GetAwaiter().GetResult();
+		JsonElementValidator.JsonComparisonResult comparisonResult;
+		try
+		{
+			ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
+			using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions);
+			comparisonResult = JsonElementValidator.Compare(
+				CurrentPath,
+				element,
+				expectedDocument.RootElement,
+				_options,
+				converter).GetAwaiter().GetResult();
+		}
+		catch (Exception exception)
+		{
+			Own(exception);
+			throw;
+		}
 
 		if (comparisonResult.HasError)
 		{
@@ -152,7 +162,7 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithArrays(
 		params Action<IJsonArrayResult>?[] expectations)
 	{
-		JsonElement? arrayElement = _currentElements.Pop();
+		JsonElement? arrayElement = PopArray();
 		int? arrayLength = arrayElement?.GetArrayLength();
 
 		for (int i = 0; i < expectations.Length; i++)
@@ -178,9 +188,10 @@ internal class JsonValidation : IJsonObjectResult,
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 
-			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Array, _options, _context);
-			expectation.Invoke(jsonValidation);
+			JsonValidation jsonValidation = new(_root, CurrentPath, currentElement, JsonValueKind.Array, _options,
+				_context);
 			_expectationBuilder.Add(jsonValidation.GetExpectation);
+			expectation.Invoke(jsonValidation);
 
 			if (currentElement != null)
 			{
@@ -204,7 +215,7 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithObjects(
 		params Action<IJsonObjectResult>?[] expectations)
 	{
-		JsonElement? arrayElement = _currentElements.Pop();
+		JsonElement? arrayElement = PopArray();
 		int? arrayLength = arrayElement?.GetArrayLength();
 
 		for (int i = 0; i < expectations.Length; i++)
@@ -230,10 +241,10 @@ internal class JsonValidation : IJsonObjectResult,
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 
-			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Object, _options, _context);
-			expectation.Invoke(jsonValidation);
-
+			JsonValidation jsonValidation = new(_root, CurrentPath, currentElement, JsonValueKind.Object, _options,
+				_context);
 			_expectationBuilder.Add(jsonValidation.GetExpectation);
+			expectation.Invoke(jsonValidation);
 
 			if (currentElement != null)
 			{
@@ -306,6 +317,12 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonPropertyResult<IJsonObjectResult> IJsonObjectResult.With(string propertyName)
 	{
+		if (propertyName is null)
+		{
+			throw Own(Tracing.WriteException(
+				new ArgumentNullException(nameof(propertyName), "The 'propertyName' cannot be null.")));
+		}
+
 		_currentPath.Push($".{propertyName}");
 		JsonElement? currentElement = _currentElements.Peek();
 		if (currentElement == null)
@@ -347,20 +364,7 @@ internal class JsonValidation : IJsonObjectResult,
 			return this;
 		}
 
-		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-		using JsonDocument expectedDocument = converter.ParseExpected(expected, _options.DocumentOptions);
-		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
-			CurrentPath,
-			currentElement.Value,
-			expectedDocument.RootElement,
-			_options,
-			converter).GetAwaiter().GetResult();
-
-		if (comparisonResult.HasError)
-		{
-			_failures.Add(comparisonResult.ToString());
-		}
-
+		CompareElement(currentElement.Value, expected);
 		_currentPath.Pop();
 		return this;
 	}
@@ -402,20 +406,7 @@ internal class JsonValidation : IJsonObjectResult,
 			return this;
 		}
 
-		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-		using JsonDocument expectedDocument = converter.ParseExpected(expected, _options.DocumentOptions);
-		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
-			CurrentPath,
-			currentElement.Value,
-			expectedDocument.RootElement,
-			_options,
-			converter).GetAwaiter().GetResult();
-
-		if (comparisonResult.HasError)
-		{
-			_failures.Add(comparisonResult.ToString());
-		}
-
+		CompareElement(currentElement.Value, expected);
 		_currentPath.Pop();
 		return this;
 	}
@@ -428,9 +419,9 @@ internal class JsonValidation : IJsonObjectResult,
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 		JsonElement? currentElement = _currentElements.Pop();
 
-		JsonValidation jsonValidation = new(CurrentPath, currentElement, kind, _options, _context);
-		expectation.Invoke(jsonValidation);
+		JsonValidation jsonValidation = new(_root, CurrentPath, currentElement, kind, _options, _context);
 		_expectationBuilder.Add(jsonValidation.GetExpectation);
+		expectation.Invoke(jsonValidation);
 
 		if (currentElement != null)
 		{
@@ -462,6 +453,54 @@ internal class JsonValidation : IJsonObjectResult,
 
 		_currentPath.Pop();
 		return this;
+	}
+
+	/// <summary>
+	///     Pops the current element, or <see langword="null" /> when it is no array, which is already reported where its
+	///     kind is verified.
+	/// </summary>
+	private JsonElement? PopArray()
+	{
+		JsonElement? element = _currentElements.Pop();
+		return element is { ValueKind: JsonValueKind.Array, } ? element : null;
+	}
+
+	/// <summary>
+	///     Remembers the <paramref name="exception" /> as thrown by the validation itself and not by the expectation of
+	///     the caller, so that it is thrown as it is.
+	/// </summary>
+	private TException Own<TException>(TException exception) where TException : Exception
+	{
+		_root._ownException = exception;
+		return exception;
+	}
+
+	/// <summary>
+	///     Calls the <paramref name="expectation" /> of the caller on this array.
+	/// </summary>
+	public void Invoke(Func<IJsonArrayResult, IJsonArrayResult> expectation)
+		=> Invoke(expectation, this);
+
+	/// <summary>
+	///     Calls the <paramref name="expectation" /> of the caller on this object.
+	/// </summary>
+	public void Invoke(Func<IJsonObjectResult, IJsonObjectResult> expectation)
+		=> Invoke(expectation, this);
+
+	/// <remarks>
+	///     An exception of the <paramref name="expectation" /> fails the expectation and its negation alike, but an
+	///     exception that the validation throws itself, e.g. for an invalid argument, is thrown as it is.
+	/// </remarks>
+	private void Invoke<TResult>(Func<TResult, TResult> expectation, TResult result)
+	{
+		try
+		{
+			UserCode.Invoke(expectation, result, "the expectation");
+		}
+		catch (Exception) when (_ownException is not null)
+		{
+			ExceptionDispatchInfo.Capture(_ownException).Throw();
+		}
 	}
 
 	public bool IsMet()

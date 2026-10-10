@@ -18,6 +18,7 @@ public static partial class ThatJsonString
 	/// <summary>
 	///     Verifies that the subject is a valid JSON string.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static JsonWhichResult IsValidJson(
 		this IThat<string?> source,
 		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)

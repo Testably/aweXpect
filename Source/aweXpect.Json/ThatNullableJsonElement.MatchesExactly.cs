@@ -14,6 +14,7 @@ public static partial class ThatNullableJsonElement
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> value exactly.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> MatchesExactly(
 		this IThat<JsonElement?> source,
 		object? expected,
@@ -35,6 +36,7 @@ public static partial class ThatNullableJsonElement
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> array exactly.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> MatchesExactly<T>(
 		this IThat<JsonElement?> source,
 		IEnumerable<T> expected,

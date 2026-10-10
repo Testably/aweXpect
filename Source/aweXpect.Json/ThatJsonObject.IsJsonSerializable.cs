@@ -20,6 +20,7 @@ public static class ThatJsonObject
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable(
 		this IThat<object?> source,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
@@ -32,6 +33,7 @@ public static class ThatJsonObject
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable(
 		this IThat<object?> source,
 		JsonSerializerOptions serializerOptions,
@@ -45,6 +47,7 @@ public static class ThatJsonObject
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON of type <typeparamref name="T" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable<T>(
 		this IThat<object?> source,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
@@ -57,6 +60,7 @@ public static class ThatJsonObject
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON of type <typeparamref name="T" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable<T>(
 		this IThat<object?> source,
 		JsonSerializerOptions serializerOptions,

@@ -25,6 +25,7 @@ public static partial class ThatJsonString
 			IAsyncContextConstraint<string?>
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
+		private string? _parseError;
 
 		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -36,19 +37,44 @@ public static partial class ThatJsonString
 				return this;
 			}
 
-			using JsonDocument actualDocument = JsonDocument.Parse(
-				actual, options.DocumentOptions);
 			ExpectationJsonConverter converter = new(context, cancellationToken);
 			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
+			JsonDocument actualDocument;
+			try
+			{
+				actualDocument = JsonDocument.Parse(actual, options.DocumentOptions);
+			}
+			catch (JsonException exception)
+			{
+				_parseError = exception.Message;
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
 
-			_comparisonResult = await JsonElementValidator.Compare(
-				actualDocument.RootElement,
-				expectedDocument.RootElement,
-				options,
-				converter);
+			using (actualDocument)
+			{
+				_comparisonResult = await JsonElementValidator.Compare(
+					actualDocument.RootElement,
+					expectedDocument.RootElement,
+					options,
+					converter);
+			}
 
 			Outcome = _comparisonResult.HasError ? Outcome.Failure : Outcome.Success;
 			return this;
+		}
+
+		private bool TryAppendParseError(StringBuilder stringBuilder)
+		{
+			if (_parseError is null)
+			{
+				return false;
+			}
+
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual);
+			stringBuilder.Append(", which could not be parsed as JSON: ").Append(_parseError);
+			return true;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -61,7 +87,12 @@ public static partial class ThatJsonString
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+		{
+			if (!TryAppendParseError(stringBuilder))
+			{
+				stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -74,8 +105,11 @@ public static partial class ThatJsonString
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
+			if (!TryAppendParseError(stringBuilder))
+			{
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual);
+			}
 		}
 	}
 }

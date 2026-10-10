@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Helpers;
 
 namespace aweXpect.Results;
 
@@ -20,6 +21,7 @@ public class JsonWhichResult(
 	/// </summary>
 	public AndOrResult<string?, IThat<string?>> Which(Action<IThat<JsonElement?>> expectations)
 	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(MemberAccessor<string, JsonElement?>.FromFunc(jsonString =>
 				{

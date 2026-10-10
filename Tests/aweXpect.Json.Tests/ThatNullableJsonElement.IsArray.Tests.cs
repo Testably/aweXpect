@@ -116,6 +116,36 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WithExpectationTests
 		{
+			[Fact]
+			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement? subject = FromString("[]");
+
+				async Task Act()
+					=> await That(subject).IsArray(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectation").And
+					.WithMessage("The 'expectation' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectationThrows_ShouldFail()
+			{
+				JsonElement? subject = FromString("[1]");
+
+				async Task Act()
+					=> await That(subject).IsArray(_ => throw new InvalidOperationException("Yesterday"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array,
+					             but the expectation did throw an InvalidOperationException:
+					               Yesterday
+					             """);
+			}
+
 			[Theory]
 			[InlineData("{\"foo\":{}}", "an object")]
 			[InlineData("{\"foo\":2}", "a number")]

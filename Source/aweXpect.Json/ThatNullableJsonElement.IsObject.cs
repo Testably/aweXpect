@@ -15,6 +15,7 @@ public static partial class ThatNullableJsonElement
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Object" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsObject(
 		this IThat<JsonElement?> source)
 		=> new(
@@ -26,11 +27,13 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Object" />
 	///     whose value satisfies the <paramref name="expectation" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsObject(
 		this IThat<JsonElement?> source,
 		Func<IJsonObjectResult, IJsonObjectResult> expectation,
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
+		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 		JsonOptions jsonOptions = new()
 		{
 			IgnoreAdditionalProperties = true,
@@ -60,7 +63,7 @@ public static partial class ThatNullableJsonElement
 		{
 			Actual = actual;
 			_jsonValidation = new JsonValidation(actual, JsonValueKind.Object, options, context);
-			expectation(_jsonValidation);
+			_jsonValidation.Invoke(expectation);
 
 			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;
 			return this;

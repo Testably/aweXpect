@@ -31,6 +31,7 @@ public static partial class ThatJsonElement
 		Func<IJsonObjectResult, IJsonObjectResult> expectation,
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
+		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 		JsonOptions jsonOptions = new()
 		{
 			IgnoreAdditionalProperties = true,
@@ -60,7 +61,7 @@ public static partial class ThatJsonElement
 		{
 			Actual = actual;
 			_jsonValidation = new JsonValidation(actual, JsonValueKind.Object, options, context);
-			expectation(_jsonValidation);
+			_jsonValidation.Invoke(expectation);
 
 			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;
 			return this;

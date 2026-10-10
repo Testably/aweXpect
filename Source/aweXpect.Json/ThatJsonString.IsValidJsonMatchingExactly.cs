@@ -16,6 +16,7 @@ public static partial class ThatJsonString
 	/// <summary>
 	///     Verifies that the subject is a valid JSON string which matches the <paramref name="expected" /> value exactly.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidJsonMatchingExactly(
 		this IThat<string?> source,
 		object? expected,
@@ -37,6 +38,7 @@ public static partial class ThatJsonString
 	/// <summary>
 	///     Verifies that the subject is a valid JSON string which matches the <paramref name="expected" /> array exactly.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidJsonMatchingExactly<T>(
 		this IThat<string?> source,
 		IEnumerable<T> expected,

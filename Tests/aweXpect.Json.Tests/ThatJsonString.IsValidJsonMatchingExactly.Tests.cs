@@ -116,6 +116,22 @@ public sealed partial class ThatJsonString
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsInvalidJson_ShouldFail()
+			{
+				string subject = "{ invalid";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches 1 exactly,
+					             but it was "{ invalid", which could not be parsed as JSON: *
+					             """).AsWildcard();
+			}
 		}
 
 		public sealed class ArrayTests

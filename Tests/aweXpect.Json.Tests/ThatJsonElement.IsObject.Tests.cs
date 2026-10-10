@@ -9,6 +9,54 @@ public sealed partial class ThatJsonElement
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).IsObject(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectation").And
+					.WithMessage("The 'expectation' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectationThrows_ShouldFail()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).IsObject(_ => throw new InvalidOperationException("Yesterday"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object,
+					             but the expectation did throw an InvalidOperationException:
+					               Yesterday
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedExpectationThrows_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": {}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("foo").AnObject(_ => throw new InvalidOperationException("Yesterday")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an object,
+					             but the expectation did throw an InvalidOperationException:
+					               Yesterday
+					             """);
+			}
+
 			[Theory]
 			[InlineData("{}")]
 			[InlineData("{\"foo\": 1}")]
@@ -109,6 +157,25 @@ public sealed partial class ThatJsonElement
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenExpectationThrows_ShouldFail()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsObject(_ => throw new InvalidOperationException("Yesterday")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no object,
+					             but the expectation did throw an InvalidOperationException:
+					               Yesterday
+					             """)
+					.Because("an expectation that throws answered nothing, so its negation must not be met either");
+			}
+
 			[Theory]
 			[InlineData("[]")]
 			[InlineData("2")]
@@ -126,6 +193,20 @@ public sealed partial class ThatJsonElement
 
 		public sealed class WithTests
 		{
+			[Fact]
+			public async Task WhenPropertyNameIsNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With(null!).Matching(1));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("propertyName").And
+					.WithMessage("The 'propertyName' cannot be null.*").AsWildcard()
+					.Because("an invalid argument is thrown as it is instead of failing the expectation");
+			}
+
 			[Fact]
 			public async Task WhenMatchFails_ShouldFail()
 			{

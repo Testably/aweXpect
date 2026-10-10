@@ -13,6 +13,19 @@ public class JsonOptionsTests
 	}
 
 	[Fact]
+	public async Task WithJsonOptions_WhenCallbackIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.WithJsonOptions(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("jsonDocumentOptions").And
+			.WithMessage("The 'jsonDocumentOptions' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task WithJsonOptions_ShouldSetDocumentOptions()
 	{
 		int maxDepth = new Random().Next(1, 10);
