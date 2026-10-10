@@ -51,8 +51,8 @@ Expect.That(result).IsTrue();          // never evaluated
 await Expect.That(result).IsTrue();    // evaluated, fails when result is false
 ```
 
-The analyzer rule [aweXpect0001](../07-analyzers.md#awexpect0001) reports an expectation that is neither awaited nor
-verified, and [aweXpect0005](../07-analyzers.md#awexpect0005) reports an expectation in an `async void` method or
+The analyzer rule [aweXpect0001](../08-analyzers.md#awexpect0001) reports an expectation that is neither awaited nor
+verified, and [aweXpect0005](../08-analyzers.md#awexpect0005) reports an expectation in an `async void` method or
 lambda, whose failure would be thrown after the test has completed.
 
 Awaiting an expectation also returns the value it verified, see [combining](./03-combining.md#using-the-result).

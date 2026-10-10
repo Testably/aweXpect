@@ -34,7 +34,7 @@ Each of them fails the test, and has the exception that caused the failure, if a
 - xUnit v2 is detected by `xunit.assert`, which the `xunit` package includes. A test project that only references
   `xunit.core` counts as "none detected".
 - "None detected" also applies when the generated adapter is not registered, see
-  [aweXpect2002](../07-analyzers.md#test-framework-adapter).
+  [aweXpect2002](../08-analyzers.md#test-framework-adapter).
 
 </details>
 

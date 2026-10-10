@@ -118,6 +118,6 @@ namespace MyTests
   `ITestFrameworkAdapter`, see [reflection](../03-how-it-works/07-configuration.md#reflection).
 - The generated registration is a module initializer, which needs C# 9 or later. On .NET 8 or later, a test project
   with an older `<LangVersion>` has to register the generated adapter itself, which the warning
-  [aweXpect2002](../07-analyzers.md#test-framework-adapter) points out.
+  [aweXpect2002](../08-analyzers.md#test-framework-adapter) points out.
 
 </details>

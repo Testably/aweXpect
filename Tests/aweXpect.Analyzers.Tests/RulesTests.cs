@@ -12,7 +12,7 @@ public class RulesTests
 	[Test]
 	public async Task AnalyzersPage_ShouldHaveASectionForEachRule()
 	{
-		string[] headings = File.ReadAllLines(Path.Combine(GetRepositoryDirectory(), "Docs", "pages", "07-analyzers.md"))
+		string[] headings = File.ReadAllLines(Path.Combine(GetRepositoryDirectory(), "Docs", "pages", "08-analyzers.md"))
 			.Where(line => line.StartsWith("## aweXpect", StringComparison.Ordinal))
 			.Select(line => line.Substring(3).Trim())
 			.ToArray();

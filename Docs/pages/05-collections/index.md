@@ -57,7 +57,7 @@ tell the two apart, verify its `IsDefault` property.
 enumerates them unless `InAnyOrder()` is used, so for a `HashSet<T>`, or for the entries, keys or values of a
 `Dictionary<TKey, TValue>`, the result depends on an implementation detail. `IsEqualTo` on a dictionary itself compares
 the entries [by key](./04-dictionaries.md#equality) instead. The analyzer rule
-[aweXpect0006](../07-analyzers.md#awexpect0006) warns about it and offers to append `.InAnyOrder()`. It also warns
+[aweXpect0006](../08-analyzers.md#awexpect0006) warns about it and offers to append `.InAnyOrder()`. It also warns
 about `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()`, which have no meaning for such a collection. Sorted
 sets and dictionaries are not reported.
 :::
