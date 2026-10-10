@@ -17,7 +17,8 @@ namespace aweXpect.Analyzers;
 public class OrResultValueAnalyzer : DiagnosticAnalyzer
 {
 	/// <inheritdoc />
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = [Rules.OrResultValueRule,];
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
+		ImmutableArray.Create(Rules.OrResultValueRule);
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)

@@ -18,7 +18,8 @@ namespace aweXpect.Analyzers.CodeFixers;
 public class DelegateSubjectCodeFixProvider : CodeFixProvider
 {
 	/// <inheritdoc />
-	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } = [Rules.DelegateSubjectRule.Id,];
+	public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } =
+		ImmutableArray.Create(Rules.DelegateSubjectRule.Id);
 
 	/// <inheritdoc />
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;

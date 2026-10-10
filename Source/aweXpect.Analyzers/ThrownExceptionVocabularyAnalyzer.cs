@@ -37,7 +37,7 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-		[Rules.ThrownExceptionVocabularyRule,];
+		ImmutableArray.Create(Rules.ThrownExceptionVocabularyRule);
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)

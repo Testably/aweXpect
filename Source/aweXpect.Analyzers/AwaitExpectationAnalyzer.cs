@@ -15,7 +15,7 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 {
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-		[Rules.AwaitExpectationRule, Rules.AsyncVoidExpectationRule,];
+		ImmutableArray.Create(Rules.AwaitExpectationRule, Rules.AsyncVoidExpectationRule);
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)

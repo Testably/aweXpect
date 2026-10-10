@@ -48,7 +48,7 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-		[Rules.UnorderedCollectionRule, Rules.UnorderedCollectionNoMeaningRule,];
+		ImmutableArray.Create(Rules.UnorderedCollectionRule, Rules.UnorderedCollectionNoMeaningRule);
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)
