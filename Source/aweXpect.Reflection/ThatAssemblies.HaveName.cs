@@ -64,6 +64,7 @@ public static partial class ThatAssemblies
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
+		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
@@ -85,6 +86,7 @@ public static partial class ThatAssemblies
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
+		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
@@ -148,13 +150,15 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expectedNameSelector(assembly)), cancellationToken);
+				assembly => options.AreConsideredEqual(assembly?.GetName().Name,
+					UserCode.Invoke(expectedNameSelector, assembly, "the name selector")), cancellationToken);
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetValue(actual, context,
-				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expectedNameSelector(assembly)), cancellationToken);
+				assembly => options.AreConsideredEqual(assembly?.GetName().Name,
+					UserCode.Invoke(expectedNameSelector, assembly, "the name selector")), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name matching ")
@@ -182,7 +186,7 @@ public static partial class ThatAssemblies
 				stringBuilder.AppendLine().Append("  ")
 					.Append(Formatter.Format(assembly))
 					.Append(" with name ").Append(Formatter.Format(assembly?.GetName().Name))
-					.Append(" instead of ").Append(Formatter.Format(expectedNameSelector(assembly)));
+					.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, assembly, "the name selector")));
 			}
 
 			return stringBuilder.AppendLine().Append(']').ToString();

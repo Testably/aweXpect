@@ -29,9 +29,12 @@ public static partial class ThatAssemblies
 		Func<Version, bool> predicate,
 		[CallerArgumentExpression(nameof(predicate))]
 		string doNotPopulateThisValue = "")
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
+	{
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+		return new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 				=> new HaveVersionConstraint(it, grammars, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace())),
 			subject);
+	}
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -44,9 +47,12 @@ public static partial class ThatAssemblies
 		Func<Version, bool> predicate,
 		[CallerArgumentExpression(nameof(predicate))]
 		string doNotPopulateThisValue = "")
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
+	{
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 				=> new HaveVersionConstraint(it, grammars, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace())),
 			subject);
+	}
 #endif
 
 	/// <summary>
@@ -278,12 +284,14 @@ public static partial class ThatAssemblies
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				assembly => assembly?.GetName().Version is { } version && predicate(version), cancellationToken);
+			=> await SetAsyncValue(actual, context, Matches, cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, assembly => assembly?.GetName().Version is { } version && predicate(version));
+			=> SetValue(actual, context, Matches);
+
+		private bool Matches(Assembly? assembly)
+			=> assembly?.GetName().Version is { } version && UserCode.Invoke(predicate, version, "the predicate");
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have version matching ").Append(predicateExpression);

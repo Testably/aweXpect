@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Reflection;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
@@ -82,6 +83,41 @@ public sealed partial class ThatAssemblies
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorIsNull_ShouldThrowArgumentNullException()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveName((Func<Assembly?, string>)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectedNameSelector").And
+					.WithMessage("The 'expectedNameSelector' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenSelectorThrows_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveName(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have name matching _ => throw new InvalidOperationException("boom"),
+					             but the name selector did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the name selector must fail the expectation instead of aborting the evaluation");
 			}
 
 			[Fact]

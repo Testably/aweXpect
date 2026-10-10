@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
@@ -28,14 +29,9 @@ internal sealed class TypeSetDependencyOptions
 
 	public TypeSetDependencyOptions(Filtered.Types target, Filtered.Types[] additional)
 	{
-		_targets.Add(target ?? throw new ArgumentNullException(nameof(target),
-			"The target collection of types must not be null."));
-		if (additional is null)
-		{
-			throw new ArgumentNullException(nameof(additional),
-				"The additional target collections of types must not be null.");
-		}
-
+		ThrowHelper.ThrowIfNull(target, nameof(target));
+		ThrowHelper.ThrowIfNull(additional, nameof(additional));
+		_targets.Add(target);
 		Add(additional, nameof(additional));
 	}
 
@@ -66,14 +62,11 @@ internal sealed class TypeSetDependencyOptions
 	/// </summary>
 	public void OrOn(Filtered.Types[] targets)
 	{
-		if (targets is null)
-		{
-			throw new ArgumentNullException(nameof(targets), "The target collections of types must not be null.");
-		}
-
+		ThrowHelper.ThrowIfNull(targets, nameof(targets));
 		if (targets.Length == 0)
 		{
-			throw new ArgumentException("At least one collection of types must be specified.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{nameof(targets)}' collection cannot be empty.", nameof(targets)));
 		}
 
 		Add(targets, nameof(targets));
@@ -94,7 +87,8 @@ internal sealed class TypeSetDependencyOptions
 		// Fully validate before mutating, so that a failed widening leaves the shared instance untouched.
 		if (targets.Contains(null!))
 		{
-			throw new ArgumentNullException(paramName, "The target collections of types must not contain null.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{paramName}' collection cannot contain <null>.", paramName));
 		}
 
 		_targets.AddRange(targets);

@@ -18,7 +18,7 @@ internal sealed class TypeDependencyOptions
 
 	public TypeDependencyOptions(Type type)
 	{
-		_types.Add(type ?? throw new ArgumentNullException(nameof(type)));
+		OrOn(type);
 	}
 
 	/// <summary>
@@ -30,7 +30,10 @@ internal sealed class TypeDependencyOptions
 	///     Widens the set of targeted types by the given <paramref name="type" />.
 	/// </summary>
 	public void OrOn(Type type)
-		=> _types.Add(type ?? throw new ArgumentNullException(nameof(type)));
+	{
+		ThrowHelper.ThrowIfNull(type, nameof(type));
+		_types.Add(type);
+	}
 
 	/// <summary>
 	///     Checks whether the <paramref name="dependency" /> references any of the configured types.

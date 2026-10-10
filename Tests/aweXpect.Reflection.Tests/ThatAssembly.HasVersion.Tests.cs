@@ -41,10 +41,68 @@ public sealed partial class ThatAssembly
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(assembly).HasVersion(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFail()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				InvalidOperationException exception = new("boom");
+
+				async Task Act()
+				{
+					await That(assembly).HasVersion(_ => throw exception);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that assembly
+					             has version matching _ => throw exception,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """).And
+					.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFail()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(assembly).DoesNotComplyWith(it
+						=> it.HasVersion(_ => throw new InvalidOperationException("boom")));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that assembly
+					             does not have version matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("a predicate that throws answers neither the expectation nor its negation");
+			}
+
 			[Fact]
 			public async Task WhenVersionDoesNotMatch_ShouldSucceed()
 			{

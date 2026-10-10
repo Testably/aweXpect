@@ -664,18 +664,19 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     Throws an <see cref="ArgumentException" /> if the <paramref name="baseClass" /> is an interface,
+	///     Throws an <see cref="ArgumentException" /> if the <paramref name="baseType" /> is an interface,
 	///     because inheritance checks only consider the base-class chain.
 	/// </summary>
-	public static Type EnsureIsClass(this Type baseClass)
+	public static Type EnsureIsClass(this Type baseType)
 	{
-		if (baseClass.IsInterface)
+		ThrowHelper.ThrowIfNull(baseType, nameof(baseType));
+		if (baseType.IsInterface)
 		{
-			throw new ArgumentException(
-				$"The type to check inheritance from must be a class, but it was the interface {Formatter.Format(baseClass)}. Use 'Implements' to check for interface implementations.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The type to check inheritance from must be a class, but it was the interface {Formatter.Format(baseType)}. Use 'Implements' to check for interface implementations."));
 		}
 
-		return baseClass;
+		return baseType;
 	}
 
 	/// <summary>
@@ -684,10 +685,11 @@ internal static class TypeHelpers
 	/// </summary>
 	public static Type EnsureIsInterface(this Type interfaceType)
 	{
+		ThrowHelper.ThrowIfNull(interfaceType, nameof(interfaceType));
 		if (!interfaceType.IsInterface)
 		{
-			throw new ArgumentException(
-				$"The type to check implementation of must be an interface, but it was {Formatter.Format(interfaceType)}. Use 'InheritsFrom' to check for base-class inheritance.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The type to check implementation of must be an interface, but it was {Formatter.Format(interfaceType)}. Use 'InheritsFrom' to check for base-class inheritance."));
 		}
 
 		return interfaceType;
@@ -699,10 +701,11 @@ internal static class TypeHelpers
 	/// </summary>
 	public static Type EnsureIsNotOpenGeneric(this Type type)
 	{
+		ThrowHelper.ThrowIfNull(type, nameof(type));
 		if (type.ContainsGenericParameters)
 		{
-			throw new ArgumentException(
-				$"The type to check assignability against must not be an open generic type definition, but it was {Formatter.Format(type)}. Use 'Implements' or 'InheritsFrom' for open generic type definitions.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The type to check assignability against must not be an open generic type definition, but it was {Formatter.Format(type)}. Use 'Implements' or 'InheritsFrom' for open generic type definitions."));
 		}
 
 		return type;
@@ -1068,7 +1071,9 @@ internal static class TypeHelpers
 		}
 
 		return ResolvedDependencies.GetOrCreateValue(resolver)
-			.GetValue(type, t => NormalizeDependencies(t, resolver(t)));
+			.GetValue(type, t => NormalizeDependencies(t, ReferenceEquals(resolver, SignatureDependencies)
+				? resolver(t)
+				: UserCode.Invoke(() => resolver(t)?.ToArray(), "the dependency resolver")));
 	}
 
 	/// <summary>

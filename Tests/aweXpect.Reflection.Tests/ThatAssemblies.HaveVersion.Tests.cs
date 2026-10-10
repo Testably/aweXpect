@@ -41,10 +41,66 @@ public sealed partial class ThatAssemblies
 					             but it contained assemblies with a non-matching version*
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveVersion(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveVersion(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have version matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they
+						=> they.HaveVersion(_ => throw new InvalidOperationException("boom")));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             not all have version matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("a predicate that throws answers neither the expectation nor its negation");
+			}
+
 			[Fact]
 			public async Task WhenAllVersionsMatch_ShouldFail()
 			{

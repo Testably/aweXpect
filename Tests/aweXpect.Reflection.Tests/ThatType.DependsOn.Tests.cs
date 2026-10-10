@@ -175,7 +175,7 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenNamespaceIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenNamespaceIsNull_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
 
@@ -184,8 +184,9 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace, null!);
 				}
 
-				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The namespaces must not contain null.*").AsWildcard();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' collection cannot contain <null>.").AsPrefix();
 			}
 
 			[Fact]
@@ -199,7 +200,8 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The namespaces must not be null.*").AsWildcard();
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -226,7 +228,8 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("At least one namespace must be specified.");
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
@@ -486,7 +489,7 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenWidenedWithNullNamespace_ShouldThrowArgumentNullException()
+			public async Task WhenWidenedWithNullNamespace_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
 
@@ -495,8 +498,9 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace).OrOn(Layer2Namespace, null!);
 				}
 
-				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The namespaces must not contain null.*").AsWildcard();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' collection cannot contain <null>.").AsPrefix();
 			}
 
 			[Fact]
@@ -510,7 +514,8 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The namespaces must not be null.*").AsWildcard();
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -543,7 +548,7 @@ public sealed partial class ThatType
 		public sealed class FilteredTypesTargetTests
 		{
 			[Fact]
-			public async Task WhenAdditionalTargetIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenAdditionalTargetIsNull_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
 
@@ -553,11 +558,9 @@ public sealed partial class ThatType
 						.DependsOn(Types.InNamespace(Layer1Namespace), null!, null!);
 				}
 
-				// The localized paramName suffix differs between frameworks ("(Parameter 'additional')" vs
-				// "Parametername: additional"), so only the shared part is matched.
-				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The target collections of types must not contain null.*additional*")
-					.AsWildcard();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("additional").And
+					.WithMessage("The 'additional' collection cannot contain <null>.").AsPrefix();
 			}
 
 			[Fact]
@@ -571,7 +574,8 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The additional target collections of types must not be null.*").AsWildcard();
+					.WithParamName("additional").And
+					.WithMessage("The 'additional' cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -678,7 +682,8 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithMessage("The target collection of types must not be null.*").AsWildcard();
+					.WithParamName("target").And
+					.WithMessage("The 'target' cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -754,7 +759,8 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("At least one collection of types must be specified.");
+					.WithParamName("targets").And
+					.WithMessage("The 'targets' collection cannot be empty.").AsPrefix();
 			}
 		}
 

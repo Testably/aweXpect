@@ -97,6 +97,71 @@ public sealed partial class ThatMethods
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSelectorIsNull_ShouldThrowArgumentNullException()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName((Func<MethodInfo, string>)null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectedNameSelector").And
+					.WithMessage("The 'expectedNameSelector' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenSelectorThrows_ShouldFail()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have name matching _ => throw new InvalidOperationException("boom"),
+					             but the name selector did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the name selector must fail the expectation instead of aborting the evaluation");
+			}
+
+			[Fact]
+			public async Task WhenSelectorThrows_Negated_ShouldFail()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they
+						=> they.HaveName(_ => throw new InvalidOperationException("boom")));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have name matching _ => throw new InvalidOperationException("boom"),
+					             but the name selector did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("a name selector that throws answers neither the expectation nor its negation");
+			}
 		}
 
 		public sealed class Tests

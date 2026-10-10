@@ -166,6 +166,21 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenBaseTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).InheritsFrom(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("baseType").And
+					.WithMessage("The 'baseType' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenTypeDoesNotInherit_ShouldFail()
 			{
 				Type subject = typeof(UnrelatedClass);

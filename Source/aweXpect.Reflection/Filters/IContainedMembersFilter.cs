@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Reflection.Collections;
 
@@ -19,5 +20,5 @@ internal interface IContainedMembersFilter : IFilter<Type>
 	/// <summary>
 	///     Counts the members of the <paramref name="value" /> that match the inner member-filter.
 	/// </summary>
-	ValueTask<int> CountMatchingMembers(Type value);
+	ValueTask<int> CountMatchingMembers(Type value, CancellationToken cancellationToken);
 }

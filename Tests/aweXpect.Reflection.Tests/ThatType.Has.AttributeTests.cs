@@ -53,6 +53,26 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenPredicateThrows_ShouldFail()
+			{
+				Type subject = typeof(FooClass2);
+
+				async Task Act()
+				{
+					await That(subject).Has<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has ThatType.Has.AttributeTests.FooAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
+
+			[Fact]
 			public async Task WhenTypeHasMatchingAttribute_ShouldSucceed()
 			{
 				Type subject = typeof(FooClass2);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using aweXpect.Core;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Options;
@@ -65,20 +66,18 @@ internal sealed class NamespaceDependencyOptions
 	/// </remarks>
 	public void OrOn(IEnumerable<string> namespaces)
 	{
-		if (namespaces is null)
-		{
-			throw new ArgumentNullException(nameof(namespaces), "The namespaces must not be null.");
-		}
-
+		ThrowHelper.ThrowIfNull(namespaces, nameof(namespaces));
 		List<string> added = namespaces.ToList();
 		if (added.Count == 0)
 		{
-			throw new ArgumentException("At least one namespace must be specified.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{nameof(namespaces)}' collection cannot be empty.", nameof(namespaces)));
 		}
 
 		if (added.Contains(null!))
 		{
-			throw new ArgumentNullException(nameof(namespaces), "The namespaces must not contain null.");
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{nameof(namespaces)}' collection cannot contain <null>.", nameof(namespaces)));
 		}
 
 		ThrowOnUnmatchableNamespace(added);
@@ -103,16 +102,16 @@ internal sealed class NamespaceDependencyOptions
 
 			if (@namespace.EndsWith(".", StringComparison.Ordinal))
 			{
-				throw new ArgumentException(
-					"The namespaces must not end with a dot (sub-namespaces are matched automatically).");
+				throw Tracing.WriteException(new ArgumentException(
+					"The namespaces must not end with a dot (sub-namespaces are matched automatically)."));
 			}
 
 			if (@namespace[0] == '.' ||
 			    @namespace.Contains("..") ||
 			    @namespace.Any(char.IsWhiteSpace))
 			{
-				throw new ArgumentException(
-					"The namespaces must not contain empty segments or whitespace (such a namespace could never match).");
+				throw Tracing.WriteException(new ArgumentException(
+					"The namespaces must not contain empty segments or whitespace (such a namespace could never match)."));
 			}
 		}
 	}

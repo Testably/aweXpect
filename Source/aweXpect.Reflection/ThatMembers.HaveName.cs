@@ -67,6 +67,7 @@ public static partial class ThatMembers
 		string doNotPopulateThisValue = "")
 		where TMember : MemberInfo?
 	{
+		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
@@ -90,6 +91,7 @@ public static partial class ThatMembers
 			string doNotPopulateThisValue = "")
 		where TMember : MemberInfo?
 	{
+		ThrowHelper.ThrowIfNull(expectedNameSelector, nameof(expectedNameSelector));
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
 		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
@@ -154,13 +156,15 @@ public static partial class ThatMembers
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expectedNameSelector(memberInfo)), cancellationToken);
+				memberInfo => options.AreConsideredEqual(memberInfo?.Name,
+					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")), cancellationToken);
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 			=> await SetValue(actual, context,
-				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expectedNameSelector(memberInfo)), cancellationToken);
+				memberInfo => options.AreConsideredEqual(memberInfo?.Name,
+					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name matching ")
@@ -195,7 +199,7 @@ public static partial class ThatMembers
 				stringBuilder.AppendLine().Append("  ")
 					.Append(Formatter.Format(memberInfo))
 					.Append(" with name ").Append(Formatter.Format(memberInfo?.Name))
-					.Append(" instead of ").Append(Formatter.Format(expectedNameSelector(memberInfo)));
+					.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")));
 			}
 
 			return stringBuilder.AppendLine().Append(']').ToString();

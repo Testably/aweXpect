@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Reflection;
@@ -183,6 +184,7 @@ public static partial class TypeFilters
 			Func<TFiltered, TFiltered> filter,
 			Quantifier quantifier)
 		{
+			ThrowHelper.ThrowIfNull(filter, nameof(filter));
 			_navigate = navigate;
 			_filter = filter;
 			_quantifier = quantifier;
@@ -201,28 +203,38 @@ public static partial class TypeFilters
 		public string MembersDescription { get; }
 
 #if NET8_0_OR_GREATER
-		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type)" />
-		public async ValueTask<int> CountMatchingMembers(Type value)
+		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type, CancellationToken)" />
+		public async ValueTask<int> CountMatchingMembers(Type value, CancellationToken cancellationToken)
 		{
 			int count = 0;
-			await foreach (var _ in _filter(_navigate(new Filtered.Types([value,], ""))))
+			await foreach (var _ in Filter(value).WithCancellation(cancellationToken))
 			{
+				cancellationToken.ThrowIfCancellationRequested();
 				count++;
 			}
 
 			return count;
 		}
-
-		public async ValueTask<bool> Applies(Type value)
-			=> _quantifier.Check(await CountMatchingMembers(value), true) ?? false;
 #else
-		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type)" />
-		public ValueTask<int> CountMatchingMembers(Type value)
-			=> new ValueTask<int>(_filter(_navigate(new Filtered.Types([value,], ""))).Count());
+		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type, CancellationToken)" />
+		public ValueTask<int> CountMatchingMembers(Type value, CancellationToken cancellationToken)
+		{
+			int count = 0;
+			foreach (var _ in Filter(value))
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				count++;
+			}
+
+			return new ValueTask<int>(count);
+		}
+#endif
 
 		public async ValueTask<bool> Applies(Type value)
-			=> _quantifier.Check(await CountMatchingMembers(value), true) ?? false;
-#endif
+			=> _quantifier.Check(await CountMatchingMembers(value, CancellationToken.None), true) ?? false;
+
+		private TFiltered Filter(Type value)
+			=> UserCode.Invoke(_filter, _navigate(new Filtered.Types([value,], "")), "the filter");
 
 		public string Describes(string text)
 			=> $"{text.TrimEnd()} which contain {MembersDescription}{_quantifier} ";

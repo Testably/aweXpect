@@ -41,7 +41,8 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("At least one namespace must be specified.");
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]

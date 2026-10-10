@@ -66,7 +66,7 @@ public static partial class ThatType
 				return this;
 			}
 
-			_count = await memberFilter.CountMatchingMembers(actual);
+			_count = await memberFilter.CountMatchingMembers(actual, cancellationToken);
 			Outcome = quantifier.Check(_count, true) ?? false
 				? Outcome.Success
 				: Outcome.Failure;

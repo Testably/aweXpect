@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Threading;
+using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -51,6 +52,65 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenCanceled_ShouldNotBeVerified()
+			{
+				using CancellationTokenSource cts = new();
+				cts.Cancel();
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.WithCancellation(cts.Token);
+				}
+
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
+					             but it could not be verified, because the evaluation was already canceled
+					             """)
+					.Because("the cancellation must reach the counting of the members");
+			}
+
+			[Fact]
+			public async Task WhenFilterIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("filter").And
+					.WithMessage("The 'filter' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenFilterThrows_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+				int calls = 0;
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods
+						=> ++calls > 1 ? throw new InvalidOperationException("boom") : methods.With<MarkerAttribute>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
+					             but the filter did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("the filter is first called to describe the members and throws only while the expectation is evaluated");
 			}
 
 			[Fact]

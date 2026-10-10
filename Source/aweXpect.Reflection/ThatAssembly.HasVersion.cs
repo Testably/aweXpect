@@ -22,9 +22,12 @@ public static partial class ThatAssembly
 		Func<Version, bool> predicate,
 		[CallerArgumentExpression(nameof(predicate))]
 		string doNotPopulateThisValue = "")
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+	{
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasVersionConstraint(it, grammars, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace())),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies the individual components of the <see cref="AssemblyName.Version" /> of the <see cref="Assembly" />.
@@ -241,7 +244,7 @@ public static partial class ThatAssembly
 		public ConstraintResult IsMetBy(Assembly? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.GetName().Version is { } version && predicate(version)
+			Outcome = actual?.GetName().Version is { } version && UserCode.Invoke(predicate, version, "the predicate")
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

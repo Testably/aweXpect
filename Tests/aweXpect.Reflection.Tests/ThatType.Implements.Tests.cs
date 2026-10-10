@@ -211,6 +211,21 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenInterfaceTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("interfaceType").And
+					.WithMessage("The 'interfaceType' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenTypeDoesNotImplementInterface_ShouldFail()
 			{
 				Type subject = typeof(UnrelatedClass);

@@ -108,6 +108,8 @@ public class AttributeFilterOptions<TMember>(Func<TMember, Type, Func<Attribute,
 			sb.Append(predicateExpression);
 		});
 
-		_predicates.Add((typeof(TAttribute), a => a is TAttribute value && predicate?.Invoke(value) != false, inherit));
+		_predicates.Add((typeof(TAttribute),
+			a => a is TAttribute value && (predicate is null || UserCode.Invoke(predicate, value, "the predicate")),
+			inherit));
 	}
 }

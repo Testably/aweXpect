@@ -4,6 +4,7 @@ using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
+using Xunit.Sdk;
 
 // The unwrap test intentionally exercises the non-generic DependsOn(Type) overload with an open generic
 // construction, so the "prefer generic overload" hint does not apply here.
@@ -46,6 +47,59 @@ public sealed class DependencyResolverCustomizationTests
 		// After the scope is disposed, the built-in signature-level resolver applies again.
 		await That(subject).DependsOn(Layer1Namespace);
 		await That(subject).DoesNotDependOn(Layer2Namespace);
+	}
+
+	[Fact]
+	public async Task WhenResolverThrows_ShouldFail()
+	{
+		Type subject = typeof(OnlyLayer1);
+
+		async Task Act()
+		{
+			using (Customize.aweXpect.Reflection().DependencyResolver()
+				       .Set(_ => throw new InvalidOperationException("boom")))
+			{
+				await That(subject).DependsOn(Layer1Namespace);
+			}
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             depends on namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1",
+			             but the dependency resolver did throw an InvalidOperationException:
+			               boom
+			             """)
+			.Because("an exception of the dependency resolver must fail the expectation instead of aborting the evaluation");
+	}
+
+	[Fact]
+	public async Task WhenResolverThrowsWhileEnumerated_ShouldFailAlsoWhenNegated()
+	{
+		Type subject = typeof(OnlyLayer1);
+
+		static IEnumerable<Type> ThrowingResolver(Type _)
+		{
+			yield return typeof(TargetA);
+			throw new InvalidOperationException("boom");
+		}
+
+		async Task Act()
+		{
+			using (Customize.aweXpect.Reflection().DependencyResolver().Set(ThrowingResolver))
+			{
+				await That(subject).DoesNotDependOn(Layer2Namespace);
+			}
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not depend on namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2",
+			             but the dependency resolver did throw an InvalidOperationException:
+			               boom
+			             """)
+			.Because("a lazily enumerated resolver result is code of the caller as well, and answers no negation");
 	}
 
 	[Fact]

@@ -65,6 +65,21 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).IsAssignableTo(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("type").And
+					.WithMessage("The 'type' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenTypeIsNotAssignable_ShouldFail()
 			{
 				Type subject = typeof(UnrelatedClass);
