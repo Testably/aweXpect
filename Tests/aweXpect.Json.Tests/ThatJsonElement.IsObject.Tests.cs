@@ -258,6 +258,23 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
+			public async Task WhenNestedMatchingItIsWaits_ShouldNotBlockTheCaller()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": \"baz\"}}");
+				bool isSatisfied = false;
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AnObject(f => f.With("bar")
+						.Matching(It.Is<string>().That.Satisfies(_ => isSatisfied).Within(TimeSpan.FromSeconds(5)))));
+
+				Task evaluation = Act();
+				isSatisfied = true;
+
+				await That(() => evaluation).DoesNotThrow()
+					.Because("the evaluation must return to the caller while it waits instead of blocking it");
+			}
+
+			[Fact]
 			public async Task WhenMatchSucceeds_ShouldSucceed()
 			{
 				JsonElement subject = FromString("{\"foo\": 2}");

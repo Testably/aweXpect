@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Json.Tests;
 
@@ -162,6 +163,23 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).Throws<NotSupportedException>()
 					.Because("an expected value that cannot be serialized is thrown as it is instead of failing the expectation");
+			}
+
+			[Fact]
+			public async Task WhenElementExpectationWaits_ShouldNotBlockTheCaller()
+			{
+				JsonElement subject = FromString("[\"bar\"]");
+				bool isSatisfied = false;
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a.WithElements(
+						It.Is<string>().That.Satisfies(_ => isSatisfied).Within(TimeSpan.FromSeconds(5))));
+
+				Task evaluation = Act();
+				isSatisfied = true;
+
+				await That(() => evaluation).DoesNotThrow()
+					.Because("the evaluation must return to the caller while it waits instead of blocking it");
 			}
 
 			[Fact]

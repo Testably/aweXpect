@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
@@ -55,15 +57,17 @@ public static partial class ThatNullableJsonElement
 		Func<IJsonArrayResult, IJsonArrayResult> expectation,
 		JsonOptions options)
 		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
-			IContextConstraint<JsonElement?>
+			IAsyncContextConstraint<JsonElement?>
 	{
 		private JsonValidation? _jsonValidation;
 
-		public ConstraintResult IsMetBy(JsonElement? actual, IEvaluationContext context)
+		public async ValueTask<ConstraintResult> IsMetBy(JsonElement? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_jsonValidation = new JsonValidation(actual, JsonValueKind.Array, options, context);
 			_jsonValidation.Invoke(expectation);
+			await _jsonValidation.ValidateAsync(cancellationToken);
 
 			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;
 			return this;

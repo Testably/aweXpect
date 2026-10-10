@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
@@ -88,12 +89,13 @@ public static class ThatJsonObject
 		JsonSerializerOptions serializerOptions,
 		EquivalencyOptions options)
 		: ConstraintResult.WithNotNullValue<object?>(it, grammars),
-			IAsyncConstraint<object?>
+			IAsyncContextConstraint<object?>
 	{
 		private string? _deserializationError;
 		private StringBuilder? _failureBuilder;
 
-		public async ValueTask<ConstraintResult> IsMetBy(object? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(object? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is not T)
@@ -122,7 +124,8 @@ public static class ThatJsonObject
 			}
 
 			_failureBuilder = new StringBuilder();
-			if (await EquivalencyComparison.Compare(deserializedObject, actual, options, _failureBuilder))
+			if (await EquivalencyComparison.Compare(deserializedObject, actual, options, _failureBuilder, context,
+				    cancellationToken))
 			{
 				Outcome = Outcome.Success;
 				return this;

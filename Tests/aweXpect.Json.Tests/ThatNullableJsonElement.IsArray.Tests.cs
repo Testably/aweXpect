@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Json.Tests;
 
@@ -144,6 +145,23 @@ public sealed partial class ThatNullableJsonElement
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMatchingItIsWaits_ShouldNotBlockTheCaller()
+			{
+				JsonElement? subject = FromString("[\"bar\"]");
+				bool isSatisfied = false;
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a.At(0)
+						.Matching(It.Is<string>().That.Satisfies(_ => isSatisfied).Within(TimeSpan.FromSeconds(5))));
+
+				Task evaluation = Act();
+				isSatisfied = true;
+
+				await That(() => evaluation).DoesNotThrow()
+					.Because("the evaluation must return to the caller while it waits instead of blocking it");
 			}
 
 			[Theory]

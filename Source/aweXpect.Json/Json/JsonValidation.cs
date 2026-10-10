@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
@@ -24,8 +26,9 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private readonly List<Action<StringBuilder, ExpectationGrammars>> _expectationBuilder;
 
-	private readonly List<string> _failures = new();
+	private readonly List<string?> _failures = new();
 	private readonly JsonOptions _options;
+	private readonly List<Func<CancellationToken, Task>> _pendingChecks = new();
 	private readonly JsonValidation _root;
 	private readonly JsonValueKind _valueKind;
 	private int? _amount;
@@ -135,28 +138,37 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private void CompareElement(JsonElement element, object? expectedValue)
 	{
-		JsonElementValidator.JsonComparisonResult comparisonResult;
-		try
+		string path = CurrentPath;
+		AddPendingCheck(async cancellationToken =>
 		{
-			ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
+			ExpectationJsonConverter converter = new(_context, cancellationToken);
 			using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions);
-			comparisonResult = JsonElementValidator.Compare(
-				CurrentPath,
+			JsonElementValidator.JsonComparisonResult comparisonResult = await JsonElementValidator.Compare(
+				path,
 				element,
 				expectedDocument.RootElement,
 				_options,
-				converter).GetAwaiter().GetResult();
-		}
-		catch (Exception exception)
-		{
-			Own(exception);
-			throw;
-		}
+				converter);
+			return comparisonResult.HasError ? comparisonResult.ToString() : null;
+		});
+	}
 
-		if (comparisonResult.HasError)
+	private void ValidateNested(JsonValidation jsonValidation)
+		=> AddPendingCheck(async cancellationToken =>
 		{
-			_failures.Add(comparisonResult.ToString());
-		}
+			await jsonValidation.ValidateAsync(cancellationToken);
+			return jsonValidation.IsMet() ? null : jsonValidation.GetFailures();
+		});
+
+	/// <summary>
+	///     Reserves the place of the failure of the <paramref name="check" />, which is only made in
+	///     <see cref="ValidateAsync" />, so that the failures keep the order in which the expectation specified them.
+	/// </summary>
+	private void AddPendingCheck(Func<CancellationToken, Task<string?>> check)
+	{
+		int index = _failures.Count;
+		_failures.Add(null);
+		_pendingChecks.Add(async cancellationToken => _failures[index] = await check(cancellationToken));
 	}
 
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithArrays(
@@ -200,9 +212,9 @@ internal class JsonValidation : IJsonObjectResult,
 					_failures.Add(
 						$" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(JsonValueKind.Array)}");
 				}
-				else if (!jsonValidation.IsMet())
+				else
 				{
-					_failures.Add(jsonValidation.GetFailures());
+					ValidateNested(jsonValidation);
 				}
 			}
 
@@ -253,9 +265,9 @@ internal class JsonValidation : IJsonObjectResult,
 					_failures.Add(
 						$" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(JsonValueKind.Object)}");
 				}
-				else if (!jsonValidation.IsMet())
+				else
 				{
-					_failures.Add(jsonValidation.GetFailures());
+					ValidateNested(jsonValidation);
 				}
 			}
 
@@ -429,9 +441,9 @@ internal class JsonValidation : IJsonObjectResult,
 			{
 				_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of {Format(kind)}");
 			}
-			else if (!jsonValidation.IsMet())
+			else
 			{
-				_failures.Add(jsonValidation.GetFailures());
+				ValidateNested(jsonValidation);
 			}
 		}
 
@@ -501,6 +513,19 @@ internal class JsonValidation : IJsonObjectResult,
 		{
 			ExceptionDispatchInfo.Capture(_ownException).Throw();
 		}
+	}
+
+	/// <summary>
+	///     Makes the checks that the expectation of the caller specified, after it was invoked.
+	/// </summary>
+	public async Task ValidateAsync(CancellationToken cancellationToken)
+	{
+		foreach (Func<CancellationToken, Task> pendingCheck in _pendingChecks)
+		{
+			await pendingCheck(cancellationToken);
+		}
+
+		_failures.RemoveAll(failure => failure is null);
 	}
 
 	public bool IsMet()
