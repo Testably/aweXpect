@@ -52,6 +52,9 @@ but ASide was 7:11 long
 - Start with the verb in the present tense, in lower case, and end without punctuation: `is radio friendly`,
   `is equal to "Abbey Road"`, `starts with "Abbey"`, `has flag A`.
 - Write the negated text with `not`: `is not radio friendly`, `does not start with "Abbey"`.
+- For something that happened during the test, like the built-in `Triggered`/`DidNotTrigger` and
+  `Signaled`/`DidNotSignal`, name the method in the past tense and its negation `DidNot…`, and write the text in the
+  present perfect: `has recorded the callback at least once`, `has never recorded the PropertyChanged event`.
 - Append the options after the expectation, e.g. ` ignoring case`, ` using MyComparer` or ` in any order`.
 - Describe the expected value, not the check: `is radio friendly` instead of `Duration <= 3:00 returns true`.
 
@@ -150,6 +153,7 @@ Name the expectation methods like the built-in ones, so that the whole chain rea
 | `Is…`, `IsNot…`                            | a state or a comparison of the subject                         | `IsEmpty`, `IsNotEqualTo`, `IsRadioFriendly`        |
 | `Has…`                                     | a property of the subject, optionally with a comparison        | `HasLength(3)`, `HasCount().GreaterThan(2)`         |
 | `DoesNot…`                                 | the negation of a verb                                         | `DoesNotContain`, `DoesNotStartWith`                |
+| past tense, `DidNot…`                      | something that happened during the test                        | `Triggered`, `DidNotTrigger`, `Signaled`            |
 | `With…`                                    | a property of the result of the previous expectation           | `Throws<T>().WithMessage(…)`                        |
 | `Which`, `Whose`                           | continuing with a new subject, or with a member of the subject | `HasSingle().Which`, `Whose(x => x.Title, …)`       |
 | `Ignoring…`, `Using`, `Within`, `In…Order` | options of the previous expectation                            | `IgnoringCase()`, `Using(comparer)`, `InAnyOrder()` |
