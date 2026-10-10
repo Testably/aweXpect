@@ -30,7 +30,32 @@ but it was "It's a complement", which differs at index 12:
 ## Why aweXpect?
 
 <Tabs groupId="aweXpectFeatures">
-<TabItem value="async" label="Async-first" default>
+<TabItem value="extensible" label="Extensible" default>
+
+The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is intentionally kept stable so extensions
+don't fight over versions. Ready-made [extension packages](./07-extensions/index.md) cover JSON
+([aweXpect.Json](/aweXpect/extensions/aweXpect.Json)), HTTP ([aweXpect.Web](/aweXpect/extensions/aweXpect.Web)),
+architecture tests ([aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection)), file and time systems
+([aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)) and mocks
+([aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)).
+
+Add expectations for any other type with extension methods on `IThat<TType>`:
+
+```csharp
+public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
+    this IThat<Track?> subject)
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new IsRadioFriendlyConstraint(it, grammars)),
+        subject);
+
+// usage
+await Expect.That(track).IsRadioFriendly();
+```
+
+The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
+
+</TabItem>
+<TabItem value="async" label="Async-first">
 
 Every expectation is awaited. The same fluent chain works for sync values, `Task`, `IAsyncEnumerable`, exceptions and
 HTTP responses (with the separate [aweXpect.Web](https://github.com/aweXpect/aweXpect.Web) package): there is no
@@ -67,25 +92,6 @@ The happy path (passing assertions, the common case in a healthy test suite) is 
 <BenchmarkResult name="String" />
 
 See the [benchmarks](./12-benchmarks.mdx) for the full set.
-
-</TabItem>
-<TabItem value="extensible" label="Extensible">
-
-The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is intentionally kept stable so extensions
-don't fight over versions. Add expectations for any type with extension methods on `IThat<TType>`:
-
-```csharp
-public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(
-    this IThat<Track?> subject)
-    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-            => new IsRadioFriendlyConstraint(it, grammars)),
-        subject);
-
-// usage
-await Expect.That(track).IsRadioFriendly();
-```
-
-The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
 
 </TabItem>
 <TabItem value="frameworks" label="Any runner">
@@ -130,11 +136,6 @@ The details are in [Native AOT and trimming](./03-how-it-works/08-native-aot.md)
 The [aweXpect.Migration](https://github.com/aweXpect/aweXpect.Migration) analyzer ships code-fix providers that rewrite
 most FluentAssertions and `xunit.Assert` call sites for you. See the [migration guide](/aweXpect/migration) for the full
 walkthrough.
-
-## Extensions
-
-Expectations for JSON, HTTP, reflection, mocks and more are provided by separate packages, see
-[Extension packages](./07-extensions/index.md).
 
 ## Where to go next
 
