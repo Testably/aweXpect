@@ -13,8 +13,6 @@ public class JsonWhichResult(
 	IThat<string?> returnValue,
 	JsonDocumentOptions options) : AndOrResult<string?, IThat<string?>>(expectationBuilder, returnValue)
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
-
 	/// <summary>
 	///     Allows specifying <paramref name="expectations" /> on the <see cref="JsonElement" />
 	///     represented by the <see langword="string" />.
@@ -22,7 +20,7 @@ public class JsonWhichResult(
 	public AndOrResult<string?, IThat<string?>> Which(Action<IThat<JsonElement?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		_expectationBuilder
+		ExpectationBuilder
 			.ForMember(MemberAccessor<string, JsonElement?>.FromFunc(jsonString =>
 				{
 					using JsonDocument jsonDocument = JsonDocument.Parse(jsonString, options);

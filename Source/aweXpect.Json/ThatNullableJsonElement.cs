@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Json;
 
 namespace aweXpect;
@@ -81,7 +81,7 @@ public static partial class ThatNullableJsonElement
 			else
 			{
 				stringBuilder.Append(It).Append(" differed as")
-					.Append(_comparisonResult?.ToString().IndentFollowingLines(indentation));
+					.Append(_comparisonResult?.ToString().Indent(indentation, false));
 			}
 		}
 

@@ -107,10 +107,48 @@ public sealed partial class ThatJsonElement
 					              but it was {kindString}
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenMemberIsPlural_WithExpectation_ShouldUsePluralFormInResult()
+			{
+				JsonElement subject = FromString("[]");
+
+				async Task Act()
+					=> await WhosePluralItems(That(subject), items => items.IsObject(o => o.With("foo").Matching(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items are objects and $.foo matches 1,
+					             but Items were an array
+					             """)
+					.Because("the plural member is the subject of the result");
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenPropertyIsExpectedToBeAnArrayWithoutExpectation_ShouldNegateIt()
+			{
+				JsonElement subject = FromString("{\"bar\": []}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.With("bar").AnArray()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object or $.bar is not an array,
+					             but it was
+
+					             Actual:
+					             {
+					               "bar": []
+					             }
+					             """);
+			}
+
 			[Fact]
 			public async Task IsObject_ShouldBeChainable()
 			{

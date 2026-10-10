@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
@@ -26,9 +27,9 @@ public static class ThatJsonObject
 		this IThat<object?> source,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammar)
+			source.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
 				=> new IsJsonSerializableConstraint<object>(it, grammar, new JsonSerializerOptions(),
-					FromCallback(equivalencyOptions))),
+					FromCallback(callback))),
 			source);
 
 	/// <summary>
@@ -40,9 +41,10 @@ public static class ThatJsonObject
 		JsonSerializerOptions serializerOptions,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammar)
-				=> new IsJsonSerializableConstraint<object>(it, grammar, serializerOptions,
-					FromCallback(equivalencyOptions))),
+			source.Get().ExpectationBuilder.AddConstraint(
+				(SerializerOptions: serializerOptions, EquivalencyOptions: equivalencyOptions),
+				static (s, it, grammar) => new IsJsonSerializableConstraint<object>(it, grammar, s.SerializerOptions,
+					FromCallback(s.EquivalencyOptions))),
 			source);
 
 	/// <summary>
@@ -53,9 +55,9 @@ public static class ThatJsonObject
 		this IThat<object?> source,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammar)
+			source.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
 				=> new IsJsonSerializableConstraint<T>(it, grammar, new JsonSerializerOptions(),
-					FromCallback(equivalencyOptions))),
+					FromCallback(callback))),
 			source);
 
 	/// <summary>
@@ -67,9 +69,10 @@ public static class ThatJsonObject
 		JsonSerializerOptions serializerOptions,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammar)
-				=> new IsJsonSerializableConstraint<T>(it, grammar, serializerOptions,
-					FromCallback(equivalencyOptions))),
+			source.Get().ExpectationBuilder.AddConstraint(
+				(SerializerOptions: serializerOptions, EquivalencyOptions: equivalencyOptions),
+				static (s, it, grammar) => new IsJsonSerializableConstraint<T>(it, grammar, s.SerializerOptions,
+					FromCallback(s.EquivalencyOptions))),
 			source);
 
 	/// <summary>
@@ -162,7 +165,7 @@ public static class ThatJsonObject
 			else if (_failureBuilder is not null)
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was not:", " were not:"))
-					.Append(_failureBuilder.ToString().IndentFollowingLines(indentation));
+					.Append(_failureBuilder.ToString().Indent(indentation, false));
 			}
 		}
 

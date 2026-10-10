@@ -98,6 +98,23 @@ public sealed partial class ThatJsonElement
 					             """)
 					.Because("the path of a nested element is a singular subject");
 			}
+
+			[Fact]
+			public async Task WhenMemberIsPlural_WithExpectation_ShouldUsePluralFormInResult()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await WhosePluralItems(That(subject), items => items.IsArray(a => a.At(0).Matching(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items are arrays and $[0] matches 1,
+					             but Items were an object
+					             """)
+					.Because("the plural member is the subject of the result");
+			}
 		}
 
 		public sealed class NegatedTests
@@ -129,6 +146,27 @@ public sealed partial class ThatJsonElement
 					             ]
 					             """)
 					.Because("the items are the plural subject of the expectation");
+			}
+
+			[Fact]
+			public async Task WhenElementIsExpectedToBeAnObjectWithoutExpectation_ShouldNegateIt()
+			{
+				JsonElement subject = FromString("[{}]");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray(a => a.At(0).AnObject()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an array or $[0] is not an object,
+					             but it was
+
+					             Actual:
+					             [
+					               {}
+					             ]
+					             """);
 			}
 
 			[Fact]

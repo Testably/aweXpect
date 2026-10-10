@@ -26,6 +26,30 @@ public class StringExtensionsTests
 		}
 
 		[Fact]
+		public async Task WhenContainingBlankLines_ShouldIgnoreThemForTheCommonWhiteSpace()
+		{
+			string input = """
+			               foo
+			                   bar
+
+			                   baz
+			               """;
+
+			async Task Act()
+				=> await That("1").IsValidJsonMatching(2, null, input);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that "1"
+				             is valid JSON which matches foo
+				             bar
+
+				             baz,
+				             but it differed as $ was 1 instead of 2
+				             """);
+		}
+
+		[Fact]
 		public async Task WhenEmpty_ShouldReturnEmptyString()
 		{
 			string input = string.Empty;

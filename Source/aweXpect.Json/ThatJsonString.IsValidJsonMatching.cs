@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Json;
 using aweXpect.Results;
 
@@ -33,8 +33,9 @@ public static partial class ThatJsonString
 		}
 
 		return new AndOrResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new MatchesJsonConstraint(it, grammar, expected, doNotPopulateThisValue, defaultOptions)),
+			source.Get().ExpectationBuilder.AddConstraint(
+				(Expected: expected, Expression: doNotPopulateThisValue, Options: defaultOptions),
+				static (s, it, grammar) => new MatchesJsonConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
 			source);
 	}
 
@@ -58,8 +59,9 @@ public static partial class ThatJsonString
 		}
 
 		return new AndOrResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new MatchesJsonConstraint(it, grammar, expected, doNotPopulateThisValue, defaultOptions)),
+			source.Get().ExpectationBuilder.AddConstraint(
+				(Expected: expected, Expression: doNotPopulateThisValue, Options: defaultOptions),
+				static (s, it, grammar) => new MatchesJsonConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
 			source);
 	}
 }

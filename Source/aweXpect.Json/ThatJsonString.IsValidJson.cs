@@ -3,8 +3,8 @@ using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
-using aweXpect.Helpers;
 using aweXpect.Json;
 using aweXpect.Results;
 
@@ -29,8 +29,8 @@ public static partial class ThatJsonString
 			defaultOptions = options(defaultOptions);
 		}
 
-		return new JsonWhichResult(source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new IsValidJsonConstraint(it, grammar, defaultOptions)),
+		return new JsonWhichResult(source.Get().ExpectationBuilder.AddConstraint(defaultOptions,
+				static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o)),
 			source, defaultOptions);
 	}
 
