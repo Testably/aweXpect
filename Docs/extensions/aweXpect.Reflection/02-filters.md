@@ -1,13 +1,13 @@
-# Filters and assertions
+# Filters and expectations
 
-A **filter** (`.WhichAre…` / `.With…`) narrows a collection *before* you assert on it. An **assertion**
+A **filter** (`.WhichAre…` / `.With…`) narrows a collection *before* you verify it. An **expectation**
 (`Expect.That(…).Is… / .Are… / .Has… / .Have…`) states the rule the subject must satisfy. They mirror
-each other: a filter has an `Is…`/`Are…` assertion counterpart for the same concept.
+each other: a filter has an `Is…`/`Are…` expectation counterpart for the same concept.
 
-The tables below pair them up. The **Filter** column is used inside `In.…`; the **Assert (single)**
-column applies to one subject; the **Assert (many)** column applies to a collection.
+The tables below pair them up. The **Filter** column is used inside `In.…`; the **Expect (single)**
+column applies to one subject; the **Expect (many)** column applies to a collection.
 
-The custom `.Which(…)` filter has a universal assertion counterpart that works for **every** subject kind
+The custom `.Which(…)` filter has a universal expectation counterpart that works for **every** subject kind
 (types, members and assemblies): use aweXpect's `.Satisfies(…)` on a single subject and `.All().Satisfy(…)`
 (or `.Any().Satisfy(…)`) on a collection. See
 [Collections and quantifiers](#collections-and-quantifiers).
@@ -22,7 +22,7 @@ typed `.Except<T>()` overload that excludes exactly the type `T`.
 Shared by all types and members: these names are identical for types, methods, properties, fields,
 events and constructors.
 
-| Modifier           | Filter                                                 | Assert (single)          | Assert (many)             |
+| Modifier           | Filter                                                 | Expect (single)          | Expect (many)             |
 |--------------------|--------------------------------------------------------|--------------------------|---------------------------|
 | public             | `.WhichArePublic()` / `.Public`                        | `.IsPublic()`            | `.ArePublic()`            |
 | internal           | `.WhichAreInternal()` / `.Internal`                    | `.IsInternal()`          | `.AreInternal()`          |
@@ -32,7 +32,7 @@ events and constructors.
 | protected internal | `.WhichAreProtectedInternal()` / `.Protected.Internal` | `.IsProtectedInternal()` | `.AreProtectedInternal()` |
 
 ```csharp
-// Filter, then assert
+// Filter, then verify
 In.AllLoadedAssemblies().Public.Methods()        // shorthand modifier
 In.AllLoadedAssemblies().Methods().WhichArePublic()
 
@@ -44,17 +44,17 @@ await Expect.That(methods).ArePublic();
 
 Shared by all types, members, and assemblies.
 
-|                                    | Filter                      | Assert (single)              | Assert (many)               |
+|                                    | Filter                      | Expect (single)              | Expect (many)               |
 |------------------------------------|-----------------------------|------------------------------|-----------------------------|
 | has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`         | `.Have<TAttribute>()`       |
 | has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)`   | `.Have<TAttribute>(a => …)` |
 | any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                            | -                           |
 | does not have attribute            | `.Without<TAttribute>()`    | `.DoesNotHave<TAttribute>()` | `.DoNotHave<TAttribute>()`  |
 
-Most attribute filters and assertions (`With`, `OrWith`, `Without`, `Has`, `Have`, `DoesNotHave`, `DoNotHave`,
+Most attribute filters and expectations (`With`, `OrWith`, `Without`, `Has`, `Have`, `DoesNotHave`, `DoNotHave`,
 `OrHas`, `OrHave`) take an optional `inherit` parameter (default `true`) that controls whether attributes
 inherited from base types are considered: `.With<TAttribute>(inherit: false)`. Fields and constructors cannot
-inherit attributes, so their attribute filters and assertions omit the parameter. Chain multiple
+inherit attributes, so their attribute filters and expectations omit the parameter. Chain multiple
 `.Without<TAttribute>()` calls to exclude several attributes (an item must have none of them).
 
 ```csharp
@@ -67,7 +67,7 @@ await Expect.That(methods).Have<FactAttribute>();
 Shared by all types and members: a self-documenting shorthand for the `ObsoleteAttribute` (so that
 `.WhichAreObsolete()` reads better than `.With<ObsoleteAttribute>()` in architecture rules).
 
-|              | Filter                   | Assert (single)    | Assert (many)       |
+|              | Filter                   | Expect (single)    | Expect (many)       |
 |--------------|--------------------------|--------------------|---------------------|
 | obsolete     | `.WhichAreObsolete()`    | `.IsObsolete()`    | `.AreObsolete()`    |
 | not obsolete | `.WhichAreNotObsolete()` | `.IsNotObsolete()` | `.AreNotObsolete()` |
@@ -82,14 +82,14 @@ await Expect.That(In.AssemblyContaining<MyClass>().Types().WhichArePublic())
 
 Shared by all types and members.
 
-|                                 | Filter                  | Assert (single)           | Assert (many)              |
+|                                 | Filter                  | Expect (single)           | Expect (many)              |
 |---------------------------------|-------------------------|---------------------------|----------------------------|
 | by name                         | `.WithName("x")`        | `.HasName("x")`           | `.HaveName("x")`           |
 | not by name                     | `.WithoutName("x")`     | `.DoesNotHaveName("x")`   | `.DoNotHaveName("x")`      |
 | by namespace *(types only)*     | `.WithNamespace("x")`   | `.HasNamespace("x")`      | `.HaveNamespace("x")`      |
 | within namespace *(types only)* | `.WithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` |
 
-`WithoutName`/`DoesNotHaveName`/`DoNotHaveName` are the negations of the name filter and assertions:
+`WithoutName`/`DoesNotHaveName`/`DoNotHaveName` are the negations of the name filter and expectations:
 `WithoutName` keeps the items whose name does *not* match, `DoesNotHaveName` verifies a single item is
 *not* named the given value, and `DoNotHaveName` verifies that *none* of the items in a collection are.
 They accept the same [string matching options](#string-matching-options) as their positive
@@ -101,10 +101,10 @@ await Expect.That(In.AssemblyContaining<MyClass>().Types())
     .DoNotHaveName("Test").AsSuffix();
 ```
 
-The name/namespace *equality* filters and assertions (`WithName`, `WithNamespace`, and their
+The name/namespace *equality* filters and expectations (`WithName`, `WithNamespace`, and their
 `Has`/`Have` counterparts) accept the
 [string matching options](#string-matching-options) (`AsPrefix`, `AsSuffix`, `AsWildcard`,
-`AsRegex`, `IgnoringCase`, …). Collection assertions also accept a selector to derive the expected name per
+`AsRegex`, `IgnoringCase`, …). Collection expectations also accept a selector to derive the expected name per
 item:
 
 ```csharp
@@ -120,7 +120,7 @@ outside the namespace.
 
 ## Types
 
-| Kind                      | Filter                                          | Assert (single)                | Assert (many)                   |
+| Kind                      | Filter                                          | Expect (single)                | Expect (many)                   |
 |---------------------------|-------------------------------------------------|--------------------------------|---------------------------------|
 | class                     | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`                  | `.AreClasses()`                 |
 | interface                 | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`             | `.AreInterfaces()`              |
@@ -192,7 +192,7 @@ await Expect.That(In.AssemblyContaining<MyRequest>()
 
 :::note[Negation]
 Every kind/modifier row above has a negated form. Most use `WhichAreNot…` on filters and
-`IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
+`IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
 `IsNotInstantiable()`). The *default constructor* row uses `WhichDoNotHaveADefaultConstructor()`,
 `DoesNotHaveADefaultConstructor()` and `DoNotHaveADefaultConstructor()`.
 :::
@@ -228,13 +228,15 @@ In.AllLoadedAssemblies().Types()
 
 Each quantifier applies only to the condition it directly follows; all other conditions implicitly require
 the member to occur _at least once_. The available quantifiers are `Exactly`, `AtLeast`, `AtMost`,
-`MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`.
+`MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`. The counts are `Times` values, which
+an `int` converts to implicitly, so `.Exactly(1)` and `.Exactly(1.Times())` are the same, both on filters and on
+expectations.
 
-The same five member kinds are available as **assertions** on a single `Type` (`Contains…`) and on a
+The same five member kinds are available as **expectations** on a single `Type` (`Contains…`) and on a
 collection of types (`Contain…`), using the same member-filter lambdas and the same quantifiers (default:
 _at least one_ matching member):
 
-| Member kind  | Filter                         | Assert (single)            | Assert (many)             |
+| Member kind  | Filter                         | Expect (single)            | Expect (many)             |
 |--------------|--------------------------------|----------------------------|---------------------------|
 | methods      | `.WhichContainMethods(…)`      | `.ContainsMethods(…)`      | `.ContainMethods(…)`      |
 | properties   | `.WhichContainProperties(…)`   | `.ContainsProperties(…)`   | `.ContainProperties(…)`   |
@@ -288,7 +290,7 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                      | Filter                                              | Assert (single)                                                 | Assert (many)                |
+|                                      | Filter                                              | Expect (single)                                                 | Expect (many)                |
 |--------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|------------------------------|
 | static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                                 | `.AreStatic()` …             |
 | async                                | `.WhichAreAsync()`                                  | `.IsAsync()`                                                    | `.AreAsync()`                |
@@ -312,11 +314,11 @@ In addition to [access modifiers](#access-modifiers),
 
 `WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
 exact type. Use `OrReturn(s)<T>()` / `OrReturn(s)Exactly<T>()` to allow several return types (the single-subject
-assertion is `OrReturns…`, the filter and collection assertion are `OrReturn…`). Since `void` cannot be
+expectation is `OrReturns…`, the filter and collection expectation are `OrReturn…`). Since `void` cannot be
 used as a generic type argument, use `WhichReturnVoid()` / `ReturnsVoid()` / `ReturnVoid()` to match
 void-returning methods.
 
-The `ref` / `out` / `in` / `params` / optional parameter filters and assertions mirror `WithParameter`:
+The `ref` / `out` / `in` / `params` / optional parameter filters and expectations mirror `WithParameter`:
 each also has `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads to constrain the parameter's type
 and name (e.g. `.WithRefParameter<int>("count")`, `.HasOutParameterExactly<string>()`).
 
@@ -339,11 +341,11 @@ await Expect.That(methods).Return<Task>().OrReturn<ValueTask>();
 ## Operators
 
 The `Operator` enum maps each C# operator to its compiler-emitted `op_*` metadata name (e.g.
-`Operator.Addition` ↔ `op_Addition`), so operator assertions are type-safe and discoverable instead of relying
+`Operator.Addition` ↔ `op_Addition`), so operator expectations are type-safe and discoverable instead of relying
 on magic strings. It covers unary, binary, comparison and conversion operators, including the C# 11 `checked`
 variants and `>>>` (`UnsignedRightShift`).
 
-| Scope               | Filter                         | Assert (single)                                      | Assert (many)                                         |
+| Scope               | Filter                         | Expect (single)                                      | Expect (many)                                         |
 |---------------------|--------------------------------|------------------------------------------------------|-------------------------------------------------------|
 | any operator method | `.WhichAreOperators()`         | `.IsAnOperator()`                                    | `.AreOperators()`                                     |
 | specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | n/a                                                   |
@@ -391,7 +393,7 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                        | Filter                                      | Assert (single)                 | Assert (many)                     |
+|                                        | Filter                                      | Expect (single)                 | Expect (many)                     |
 |----------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
 | of type (or a subtype)                 | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
 | of exact type                          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
@@ -417,7 +419,7 @@ In addition to [access modifiers](#access-modifiers),
 :::note[Negation]
 The `static`, `nullable`, `abstract`, `sealed`, `virtual`, `required`, `indexer`,
 `extension property`, `read-only` *(fields)* and `constant` rows have a negated form: `WhichAreNot…` on filters
-and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`);
+and `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`);
 `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
 :::
 
@@ -463,7 +465,7 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                | Filter                                      | Assert (single)                 | Assert (many)                     |
+|                                | Filter                                      | Expect (single)                 | Expect (many)                     |
 |--------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
 | handler of type (or a subtype) | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
 | handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
@@ -473,7 +475,7 @@ In addition to [access modifiers](#access-modifiers),
 | override                       | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
 | nullable                       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  |
 
-The `OfType` / `IsOfType` / `AreOfType` filters and assertions match the event's handler type (its
+The `OfType` / `IsOfType` / `AreOfType` filters and expectations match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types.
 
@@ -483,7 +485,7 @@ properties and fields.
 
 :::note[Negation]
 The `abstract`, `sealed`, `static`, `virtual` and `nullable` rows have a negated form: `WhichAreNot…` on
-filters and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`,
+filters and `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotSealed()`, `IsNotSealed()`,
 `AreNotSealed()`); `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
 :::
 
@@ -503,7 +505,7 @@ In.AllLoadedAssemblies().Public.Events()
 In addition to [access modifiers](#access-modifiers) and
 [attributes](#attributes):
 
-|                                | Filter                                              | Assert (single)                                                 | Assert (many)                |
+|                                | Filter                                              | Expect (single)                                                 | Expect (many)                |
 |--------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|------------------------------|
 | static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                                   | `.AreStatic()`               |
 | no parameters                  | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`        |
@@ -516,7 +518,7 @@ In addition to [access modifiers](#access-modifiers) and
 | `params` parameter             | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
 | optional parameter             | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
 
-The `ref` / `out` / `in` / `params` / optional parameter filters and assertions accept the same
+The `ref` / `out` / `in` / `params` / optional parameter filters and expectations accept the same
 `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads as `WithParameter` (see [Methods](#methods)).
 
 ```csharp
@@ -529,9 +531,9 @@ In.AllLoadedAssemblies().Public.Constructors()
 ## Assemblies
 
 Assemblies are usually used as a [source](./01-sources.md#sources-the-in-helper), but you can also filter
-and assert on them directly:
+and verify them directly:
 
-|                             | Filter                       | Assert (single)              | Assert (many)              |
+|                             | Filter                       | Expect (single)              | Expect (many)              |
 |-----------------------------|------------------------------|------------------------------|----------------------------|
 | by name                     | `.WithName("x")`             | `.HasName("x")`              | `.HaveName("x")`           |
 | not by name                 | `.WithoutName("x")`          | `.DoesNotHaveName("x")`      | `.DoNotHaveName("x")`      |
@@ -564,7 +566,7 @@ having no target framework and never match.
 
 An assembly is considered strong named when its name carries a non-empty public key token.
 
-The version filter and assertions come in two forms. Pass a `Func<Version, bool>` predicate to match the whole
+The version filter and expectations come in two forms. Pass a `Func<Version, bool>` predicate to match the whole
 version, or omit it to compare individual components (`WithMajor`, `WithMinor`, `WithBuild`, `WithRevision`)
 with `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo`, `EqualTo` and `NotEqualTo`.
 Component comparisons chain (all must hold), and an assembly without a version never matches. The `Build` and
@@ -602,8 +604,8 @@ In.AllLoadedAssemblies().Properties()
 
 ## String matching options
 
-Every name and namespace filter/assertion uses the same string matching options as the core aweXpect
-library (see [the docs](https://docs.testably.org/aweXpect/common-types/string#equality)):
+Every name and namespace filter/expectation uses the same string matching options as the core aweXpect
+library (see [the docs](https://docs.testably.org/aweXpect/values/string#equality)):
 
 | Option                                                           | Effect                                            |
 |------------------------------------------------------------------|---------------------------------------------------|
@@ -626,12 +628,12 @@ await Expect.That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
 ## Collections and quantifiers
 
 Every expectation works with both a single item and a collection. A collection can be an array,
-any `IEnumerable<T?>` or, on .NET 8 and later, an `IAsyncEnumerable<T?>`. The plural assertions already
+any `IEnumerable<T?>` or, on .NET 8 and later, an `IAsyncEnumerable<T?>`. The plural expectations already
 require **every** item to match; for ad-hoc predicates use aweXpect's `Satisfies(…)` (single subject) and
 `All()` / `Any()` quantifiers with `Satisfy(…)` (collections), and combine selections with LINQ:
 
 ```csharp
-// The plural assertion already means "every item":
+// The plural expectation already means "every item":
 await Expect.That(types).ArePublic();
 
 // Ad-hoc predicate on a single subject:

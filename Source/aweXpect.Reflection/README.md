@@ -10,15 +10,15 @@ Expectations for reflection types for [aweXpect](https://github.com/Testably/awe
 
 ## At a glance
 
-Write architecture and convention tests as plain, readable assertions: **select** the assemblies, types
-or members you care about with `In` or `Types`, then **assert** a rule on them with `Expect.That`.
+Write architecture and convention tests as plain, readable expectations: **select** the assemblies, types
+or members you care about with `In` or `Types`, then **expect** a rule on them with `Expect.That`.
 
 ```csharp
 // "Every async method must end in 'Async'"
 await Expect.That(In.AssemblyContaining<MyClass>()    // ① pick a source
         .Methods()                                    // ② navigate to a member kind
         .WhichAreAsync())                             // ③ filter it down
-    .HaveName("Async").AsSuffix();                    // ④ assert
+    .HaveName("Async").AsSuffix();                    // ④ expect
 ```
 
 Every expectation follows the same four-part shape:
@@ -28,10 +28,10 @@ Every expectation follows the same four-part shape:
 | ① **Source**              | choose *where* to look | `In.AllLoadedAssemblies()`, `In.AssemblyContaining<T>()`, `In.Type<T>()`               |
 | ② **Navigate**            | move to a member kind  | `.Types()`, `.Methods()`, `.Properties()`, `.Fields()`, `.Events()`, `.Constructors()` |
 | ③ **Filter** *(optional)* | narrow the set         | `.WhichArePublic()`, `.With<T>()`, `.WithName(…)`, `.Which(…)`                         |
-| ④ **Assert**              | state the rule         | `Expect.That(…).HaveName(…)`, `.AreClasses()`, `.Return<Task>()`                       |
+| ④ **Expect**              | state the rule         | `Expect.That(…).HaveName(…)`, `.AreClasses()`, `.Return<Task>()`                       |
 
-Steps ② and ③ are optional. You can assert directly on a single `Type`, `MethodInfo`, … or on a whole
-`Assembly`, and every expectation works the same whether the subject is one item or a collection
+Steps ② and ③ are optional. You can verify a single `Type`, `MethodInfo`, … or a whole `Assembly`
+directly, and every expectation works the same whether the subject is one item or a collection
 (`Assembly[]`, `IEnumerable<Type?>`, …).
 
 The supported reflection subjects are
@@ -79,7 +79,7 @@ await Expect.That(In.AllLoadedAssemblies()
     .AreClasses();
 ```
 
-[Filters and assertions](../../Docs/extensions/aweXpect.Reflection/02-filters.md) documents the complete filter and assertion
+[Filters and expectations](../../Docs/extensions/aweXpect.Reflection/02-filters.md) documents the complete filter and expectation
 vocabulary: access modifiers, attributes, names and namespaces, type kinds, methods (return types,
 parameters, async, operators, …), properties, fields, events, constructors and assemblies.
 
@@ -89,8 +89,8 @@ There is no separate rule engine: a "layer" is just a reusable type selection, a
 just an expectation on it. Combine several rules into a single verification with `Expect.ThatAll`:
 
 ```csharp
-Filtered.Types domainTypes         = Types.InNamespace("MyApp.Domain");
-Filtered.Types infrastructureTypes = Types.InNamespace("MyApp.Infrastructure");
+Filtered.Types domainTypes         = Types.InNamespace("MusicStore.Domain");
+Filtered.Types infrastructureTypes = Types.InNamespace("MusicStore.Infrastructure");
 
 await Expect.ThatAll(
     Expect.That(domainTypes).DoNotDependOn(infrastructureTypes),
@@ -99,23 +99,23 @@ await Expect.ThatAll(
 
 A failing rule reports all violations, numbered per expectation:
 
-```
+```text title="Failure message"
 Expected all of the following to succeed:
- [01] Expected that domainTypes all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
- [02] Expected that domainTypes are all sealed
+ [01] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies all do not depend on types within namespace "MusicStore.Infrastructure" in all loaded assemblies
+ [02] Expected that types within namespace "MusicStore.Domain" in all loaded assemblies are all sealed
 but
  [01] it contained types with the dependency
  [02] it contained non-sealed types
 
 [01] Not matching items:
 [
-  OrderService
+  PlaylistService
 ]
 
 [02] Not matching items:
 [
-  Order,
-  Invoice
+  Album,
+  Track
 ]
 ```
 
@@ -126,11 +126,11 @@ The dependency rules (`DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`), 
 ## Documentation
 
 The full documentation is available at
-[docs.testably.org](https://docs.testably.org/Extensions/aweXpect.Reflection/):
+[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/):
 
 - [Selecting types and members](../../Docs/extensions/aweXpect.Reflection/01-sources.md): the `In` and `Types` sources and navigating
   between assemblies, types and members
-- [Filters and assertions](../../Docs/extensions/aweXpect.Reflection/02-filters.md): the complete reference for all subject kinds,
+- [Filters and expectations](../../Docs/extensions/aweXpect.Reflection/02-filters.md): the complete reference for all subject kinds,
   string matching options and quantifiers
 - [Architecture rules](../../Docs/extensions/aweXpect.Reflection/03-architecture-rules.md): type dependencies, dependency cycles and
   layers as type selections

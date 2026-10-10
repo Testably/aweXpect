@@ -21,8 +21,8 @@ approaches against each other.
 <TabItem value="awexpect" label="aweXpect.Reflection" default>
 
 ```csharp
-await Expect.That(Types.InNamespace("MyApp.Presentation"))
-    .DoNotDependOn("MyApp.Data")
+await Expect.That(Types.InNamespace("MusicStore.Presentation"))
+    .DoNotDependOn("MusicStore.Data")
     .Because("the presentation layer is decoupled from persistence");
 ```
 
@@ -33,9 +33,9 @@ the test with a message listing the offending types.
 <TabItem value="netarchtest" label="NetArchTest">
 
 ```csharp
-var result = Types.InAssembly(typeof(MyService).Assembly)
-    .That().ResideInNamespace("MyApp.Presentation")
-    .ShouldNot().HaveDependencyOn("MyApp.Data")
+var result = Types.InAssembly(typeof(AlbumController).Assembly)
+    .That().ResideInNamespace("MusicStore.Presentation")
+    .ShouldNot().HaveDependencyOn("MusicStore.Data")
     .GetResult();
 
 Assert.True(result.IsSuccessful);   // violations are in result.FailingTypeNames
@@ -49,10 +49,10 @@ test failure (assertion + message) is left to you.
 
 ```csharp
 private static readonly Architecture Architecture =
-    new ArchLoader().LoadAssemblies(typeof(MyService).Assembly).Build();
+    new ArchLoader().LoadAssemblies(typeof(AlbumController).Assembly).Build();
 
-IArchRule rule = Types().That().ResideInNamespace("MyApp.Presentation")
-    .Should().NotDependOnAny(Types().That().ResideInNamespace("MyApp.Data"))
+IArchRule rule = Types().That().ResideInNamespace("MusicStore.Presentation")
+    .Should().NotDependOnAny(Types().That().ResideInNamespace("MusicStore.Data"))
     .Because("the presentation layer is decoupled from persistence");
 
 rule.Check(Architecture);           // throws with the violations listed
@@ -76,7 +76,7 @@ integration package and throws a `FailedArchRuleException` describing each viola
   (xUnit, NUnit, MSTest, TUnit). It is the most feature-rich of the three for pure architecture testing:
   slices, cycle rules and PlantUML import/export.
 - **aweXpect.Reflection** works directly on `System.Reflection` objects inside the
-  [aweXpect](https://docs.testably.org/aweXpect) assertion model: a "layer" is a reusable
+  [aweXpect](https://docs.testably.org/aweXpect) expectation model: a "layer" is a reusable
   [`Filtered.Types` selection](../03-architecture-rules.md#layers-as-type-selections), an architecture rule
   is an ordinary `await Expect.That(…)` expectation, and the same vocabulary extends to methods,
   properties, fields, events, constructors and assemblies for convention tests.
@@ -85,24 +85,24 @@ integration package and throws a `FailedArchRuleException` describing each viola
 
 Legend: ✅ built-in · ⚠️ partial or via a general mechanism · ❌ not available.
 
-| Capability                                       |     NetArchTest      |        ArchUnitNET         |        aweXpect.Reflection         |
-|---------------------------------------------------|:--------------------:|:--------------------------:|:----------------------------------:|
-| Rule subjects                                     |    types only     | types + members | assemblies, types + all member kinds |
-| Selection by assembly / namespace                 |          ✅           |             ✅              |                 ✅                  |
-| Naming rules (prefix/suffix/regex)                |          ✅           |             ✅              |    ✅ (plus wildcard, custom comparer)     |
-| Type kinds                                        | ⚠️ classes, interfaces | ✅ classes, interfaces, enums, structs, records | ✅ plus delegates, exceptions, attributes, ref structs, record structs |
-| Access modifiers                                  |  ⚠️ public, nested   |             ✅              |                 ✅                  |
-| Attribute rules                                   |     ✅ presence      | ✅ incl. argument values | ✅ incl. typed predicate on the attribute instance |
-| Member-level rules (methods, properties, fields)  |          ❌           |             ✅              | ✅ plus events, constructors, parameter modifiers, async, extension methods, operators, required / nullable members |
-| Immutability / nullability rules                  |          ✅           |        ⚠️ immutability         |     ✅ type- and member-level      |
-| Dependency rules (on / not on / only on)          |          ✅           |             ✅              |                 ✅                  |
-| Body-level (IL) dependency detection              |          ✅           |             ✅              | ⚠️ signature-level default, IL via [custom resolver](../04-configuration.md#dependency-resolver) |
-| Dependency cycle detection                        |          ❌           |        ✅ via slices        | ✅ via namespaces / [slice roots](../03-architecture-rules.md#dependency-cycles) |
-| Failure messages explain the violation            | ❌ failing types only |             ✅              | ✅ all violations, grouped per rule |
-| Combine rules in one verification                 |     ✅ policies      |        ✅ `And`/`Or`        |        ✅ `Expect.ThatAll`         |
-| Exemptions to a rule                              |  ⚠️ custom rule  |       ⚠️ predicates        |    ✅ `Except(…)` / `Except<T>()`     |
-| Test-framework integration                        |  ❌ assert manually   | ✅ xUnit / NUnit / MSTest / TUnit packages | ✅ framework-agnostic (aweXpect core) |
-| PlantUML diagrams (import/export)                 |          ❌           |             ✅              |                 ❌                  |
+| Capability                                       | NetArchTest            | ArchUnitNET                                    | aweXpect.Reflection                                                                                                |
+|--------------------------------------------------|:----------------------:|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------:|
+| Rule subjects                                    | types only             | types + members                                | assemblies, types + all member kinds                                                                               |
+| Selection by assembly / namespace                | ✅                      | ✅                                              | ✅                                                                                                                  |
+| Naming rules (prefix/suffix/regex)               | ✅                      | ✅                                              | ✅ (plus wildcard, custom comparer)                                                                                 |
+| Type kinds                                       | ⚠️ classes, interfaces | ✅ classes, interfaces, enums, structs, records | ✅ plus delegates, exceptions, attributes, ref structs, record structs                                              |
+| Access modifiers                                 | ⚠️ public, nested      | ✅                                              | ✅                                                                                                                  |
+| Attribute rules                                  | ✅ presence             | ✅ incl. argument values                        | ✅ incl. typed predicate on the attribute instance                                                                  |
+| Member-level rules (methods, properties, fields) | ❌                      | ✅                                              | ✅ plus events, constructors, parameter modifiers, async, extension methods, operators, required / nullable members |
+| Immutability / nullability rules                 | ✅                      | ⚠️ immutability                                | ✅ type- and member-level                                                                                           |
+| Dependency rules (on / not on / only on)         | ✅                      | ✅                                              | ✅                                                                                                                  |
+| Body-level (IL) dependency detection             | ✅                      | ✅                                              | ⚠️ signature-level default, IL via [custom resolver](../04-configuration.md#dependency-resolver)                   |
+| Dependency cycle detection                       | ❌                      | ✅ via slices                                   | ✅ via namespaces / [slice roots](../03-architecture-rules.md#dependency-cycles)                                    |
+| Failure messages explain the violation           | ❌ failing types only   | ✅                                              | ✅ all violations, grouped per rule                                                                                 |
+| Combine rules in one verification                | ✅ policies             | ✅ `And`/`Or`                                   | ✅ `Expect.ThatAll`                                                                                                 |
+| Exemptions to a rule                             | ⚠️ custom rule         | ⚠️ predicates                                  | ✅ `Except(…)` / `Except<T>()`                                                                                      |
+| Test-framework integration                       | ❌ assert manually      | ✅ xUnit / NUnit / MSTest / TUnit packages      | ✅ framework-agnostic (aweXpect core)                                                                               |
+| PlantUML diagrams (import/export)                | ❌                      | ✅                                              | ❌                                                                                                                  |
 
 ## Dependency detection depth
 
@@ -128,14 +128,14 @@ attributes, …) so rules only see code you actually wrote.
 <TabItem value="awexpect" label="aweXpect.Reflection" default>
 
 ```csharp
-// Namespaces under MyApp must be free of (transitive) cycles,
-// grouped into one slice per direct sub-namespace of MyApp
-await Expect.That(Types.InNamespace("MyApp"))
-    .HaveNoDependencyCycles("MyApp");
+// Namespaces under MusicStore must be free of (transitive) cycles,
+// grouped into one slice per direct sub-namespace of MusicStore
+await Expect.That(Types.InNamespace("MusicStore"))
+    .HaveNoDependencyCycles("MusicStore");
 ```
 
-Cycles are reported as namespace chains (e.g. `MyApp.Orders -> MyApp.Billing -> MyApp.Orders`); see
-[dependency cycles](../03-architecture-rules.md#dependency-cycles) for the namespace-family and slice-root
+Cycles are reported as namespace chains (e.g. `MusicStore.Billing -> MusicStore.Catalog -> MusicStore.Billing`);
+see [dependency cycles](../03-architecture-rules.md#dependency-cycles) for the namespace-family and slice-root
 semantics.
 
 </TabItem>
@@ -150,7 +150,7 @@ semantics.
 
 ```csharp
 SliceRuleDefinition.Slices()
-    .Matching("MyApp.(*)")
+    .Matching("MusicStore.(*)")
     .Should().BeFreeOfCycles()
     .Check(Architecture);
 ```
@@ -164,16 +164,19 @@ type-to-type references behind each edge.
 ## Failure messages
 
 What failure of [the rule from the top of this page](#the-same-rule-in-all-three-libraries) looks like in
-each library, when `OrderService` in the presentation layer references `OrderRepository` in the data layer:
+each library, when `AlbumController` in the presentation layer references `AlbumRepository` in the data layer:
 
 <Tabs groupId="architecture-library">
 <TabItem value="awexpect" label="aweXpect.Reflection" default>
 
-```
-Expected that types within namespace "MyApp.Presentation" in all loaded assemblies
-all do not depend on namespace "MyApp.Data", because the presentation layer is decoupled from persistence,
-but it contained types with the dependency [
-  OrderService
+```text title="Failure message"
+Expected that types within namespace "MusicStore.Presentation" in all loaded assemblies
+all do not depend on namespace "MusicStore.Data", because the presentation layer is decoupled from persistence,
+but it contained types with the dependency
+
+Not matching items:
+[
+  AlbumController
 ]
 ```
 
@@ -183,7 +186,7 @@ followed by the violating types.
 </TabItem>
 <TabItem value="netarchtest" label="NetArchTest">
 
-```
+```text
 Assert.True() Failure
 Expected: True
 Actual:   False
@@ -196,9 +199,9 @@ by hand from `result.FailingTypeNames`.
 </TabItem>
 <TabItem value="archunitnet" label="ArchUnitNET">
 
-```
-"Types that reside in namespace with full name "MyApp.Presentation" should not depend on any Types that reside in namespace with full name "MyApp.Data" because the presentation layer is decoupled from persistence" failed:
-	MyApp.Presentation.OrderService does depend on "MyApp.Data.OrderRepository"
+```text
+"Types that reside in namespace with full name "MusicStore.Presentation" should not depend on any Types that reside in namespace with full name "MusicStore.Data" because the presentation layer is decoupled from persistence" failed:
+	MusicStore.Presentation.AlbumController does depend on "MusicStore.Data.AlbumRepository"
 ```
 
 The `FailedArchRuleException` message quotes the rule, including the `Because(…)` reason, and lists each
@@ -216,7 +219,7 @@ with output.
 
 NetArchTest stops at types, and ArchUnitNET's member rules cover names, visibility and a few modifiers.
 Convention tests over *member details* are where aweXpect.Reflection's
-[filter and assertion vocabulary](../02-filters.md) goes further; the same fluent style covers e.g.:
+[filter and expectation vocabulary](../02-filters.md) goes further; the same fluent style covers e.g.:
 
 ```csharp
 // All async methods end in "Async"

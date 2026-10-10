@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 # Feature Comparison with FluentAssertions
 
-aweXpect.Reflection and FluentAssertions both assert against reflection types, with different APIs and
+aweXpect.Reflection and FluentAssertions both verify reflection types, with different APIs and
 feature sets. This page maps what each offers for assemblies, types, and members.
 
 ## Conceptual model
@@ -17,7 +17,7 @@ reaches collections through selectors such as `assembly.Types()` or `type.Method
 wraps the same objects in an asynchronous `await Expect.That(subject)` call and builds collections from
 `In.*` sources (`In.AllLoadedAssemblies()`, `In.AssemblyContaining<T>()`, …) that are narrowed with
 `WhichAre*`/`With*` filter chains. aweXpect.Reflection also offers symmetric singular (`Is*`/`Has*`) and
-plural (`Are*`/`Have*`) assertions for every target, while FluentAssertions pairs single-subject assertions
+plural (`Are*`/`Have*`) expectations for every target, while FluentAssertions pairs single-subject assertions
 with a smaller set of selector assertions.
 
 ## Coverage overview
@@ -94,7 +94,7 @@ await Expect.That(In.AllLoadedAssemblies()).HaveName("System").AsPrefix();
 
 - **FluentAssertions** (`TypeAssertions`): `Be<T>`/`NotBe<T>`, `BeAssignableTo<T>`, `Implement<T>`/`NotImplement<T>`, `BeDerivedFrom<T>`, `BeAbstract`/`BeSealed`/`BeStatic`, `HaveAccessModifier(CSharpAccessModifier)`, `BeDecoratedWith<T>` (with attribute predicate and `OrInherit` variants), member presence (`HaveProperty`/`HaveMethod`/`HaveConstructor`/`HaveIndexer`/`HaveExplicit*`), and conversion operators. Type *kind* is available only as a selector filter (`ThatAreClasses()`), and namespace
   only on the selector (`BeInNamespace`); a single type's name/namespace use the string API.
-- **aweXpect.Reflection**: type-kind assertions (`IsAClass`, `IsAnInterface`, `IsAnEnum`, `IsAStruct`, `IsARecord`, `IsARecordStruct`, `IsARefStruct`, `IsADelegate`, `IsAnAttribute`, `IsAnException`), `IsAbstract`/`IsSealed`/`IsStatic`/`IsReadOnly`/`IsNested`/`IsGeneric`/`IsInstantiable`/`IsImmutable`, access modifiers (`IsPublic`, …), `InheritsFrom<T>().Directly()`, `HasName`, `HasNamespace`/`IsWithinNamespace`, `Has<TAttribute>`, quantified member containment (`ContainsMethods()`, …), member nullability (`OnlyHasNullableMembers`/`OnlyHasNonNullableMembers`), type-level dependencies (`DependsOn`/`DoesNotDependOn`/`DependsOnlyOn`/`HasDependenciesOutside`, against namespaces or type selections), operator presence by
+- **aweXpect.Reflection**: type-kind assertions (`IsAClass`, `IsAnInterface`, `IsAnEnum`, `IsAStruct`, `IsARecord`, `IsARecordStruct`, `IsARefStruct`, `IsADelegate`, `IsAnAttribute`, `IsAnException`), `IsAbstract`/`IsSealed`/`IsStatic`/`IsReadOnly`/`IsNested`/`IsGeneric`/`IsInstantiable`/`IsImmutable`, access modifiers (`IsPublic`, …), `InheritsFrom<T>(forceDirect: true)`, `HasName`, `HasNamespace`/`IsWithinNamespace`, `Has<TAttribute>`, quantified member containment (`ContainsMethods()`, …), member nullability (`OnlyHasNullableMembers`/`OnlyHasNonNullableMembers`), type-level dependencies (`DependsOn`/`DoesNotDependOn`/`DependsOnlyOn`/`HasDependenciesOutside`, against namespaces or type selections), operator presence by
   kind (`HasOperator(Operator)`, `HasOperator<TOperand>(Operator)`) and conversion operators by signature (`HasImplicitConversionOperator<TSource, TTarget>`, `HasExplicitConversionOperator<TSource, TTarget>`).
 
 <Tabs groupId="assertion-library">
@@ -205,7 +205,7 @@ await Expect.That(In.AssemblyContaining<MyClass>()
 ## Constructor
 
 - **FluentAssertions**: no dedicated constructor selector. A constructor is reached through `Type.HaveConstructor(parameterTypes)` / `HaveDefaultConstructor()`, after which `.Which` exposes the `ConstructorInfo` for `HaveAccessModifier` / `BeDecoratedWith`.
-- **aweXpect.Reflection**: dedicated singular (`ThatConstructor`) and plural (`ThatConstructors`) assertions and an `In.*…Constructors()` filter: `IsStatic`, the full parameter family (`HasParameter<T>`, `HasParameterCount`, `HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter`), `Has<TAttribute>`.
+- **aweXpect.Reflection**: dedicated expectations on a single `ConstructorInfo` and on collections of constructors, and an `In.*…Constructors()` filter: `IsStatic`, the full parameter family (`HasParameter<T>`, `HasParameterCount`, `HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter`), `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -231,7 +231,7 @@ await Expect.That(typeof(MyClass)).HasADefaultConstructor();
 ## Field
 
 - **FluentAssertions**: no `FieldInfo` assertions.
-- **aweXpect.Reflection**: singular (`ThatField`) and plural (`ThatFields`) assertions and an `In.*…Fields()` filter: `IsStatic`, `IsReadOnly`, `IsConstant`, `IsRequired`, `IsNullable`, `IsOfType<T>`/`IsOfExactType<T>`, access modifiers (`IsPublic`, …), `HasName`, `Has<TAttribute>`.
+- **aweXpect.Reflection**: expectations on a single `FieldInfo` and on collections of fields, and an `In.*…Fields()` filter: `IsStatic`, `IsReadOnly`, `IsConstant`, `IsRequired`, `IsNullable`, `IsOfType<T>`/`IsOfExactType<T>`, access modifiers (`IsPublic`, …), `HasName`, `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -261,7 +261,7 @@ await Expect.That(In.AssemblyContaining<MyClass>().Fields().WhichAreConstant())
 ## Event
 
 - **FluentAssertions**: no `EventInfo` assertions.
-- **aweXpect.Reflection**: singular (`ThatEvent`) and plural (`ThatEvents`) assertions and an `In.*…Events()` filter: `IsStatic`, `IsAbstract`, `IsSealed`, `IsOfType<T>`/`IsOfExactType<T>`, access modifiers, `HasName`, `Has<TAttribute>`.
+- **aweXpect.Reflection**: expectations on a single `EventInfo` and on collections of events, and an `In.*…Events()` filter: `IsStatic`, `IsAbstract`, `IsSealed`, `IsOfType<T>`/`IsOfExactType<T>`, access modifiers, `HasName`, `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -289,7 +289,7 @@ await Expect.That(In.AssemblyContaining<MyClass>().Events().WhichArePublic())
 ## Selecting and filtering sets
 
 - **FluentAssertions**: build a set with `assembly.Types()`, `AllTypes.From(assembly)`, `type.Methods()`, `type.Properties()`, then narrow with selector methods (`ThatAreClasses()`, `ThatDeriveFrom<T>()`, `ThatAreDecoratedWith<T>()`, `ThatAreInNamespace()`, `ThatReturn<T>()`, `ThatArePublicOrInternal`, `ThatSatisfy(predicate)`, …) and assert with the selector assertions. There are no `FieldInfo`/`EventInfo` selectors and no `ConstructorInfo` selector.
-- **aweXpect.Reflection**: start from an `In.*` source, then chain `WhichAre*`/`With<T>`/`WithName`/`Without*` filters (with `Or*` combinations and quantifiers) across every member kind, and assert with the plural `Are*`/`Have*` methods.
+- **aweXpect.Reflection**: start from an `In.*` source, then chain `WhichAre*`/`With<T>`/`WithName`/`Without*` filters (with `Or*` combinations and quantifiers) across every member kind, and verify them with the plural `Are*`/`Have*` expectations.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>

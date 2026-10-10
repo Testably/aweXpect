@@ -21,7 +21,7 @@ By default, assemblies whose name matches one of the following prefixes are excl
 `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `Castle`,
 `DynamicProxyGenAssembly2`.
 
-Both the assembly scanning and the dependency assertions (`DependsOnlyOn` / `DependOnlyOn` /
+Both the assembly scanning and the dependency expectations (`DependsOnlyOn` / `DependOnlyOn` /
 `WhichDependOnlyOn`, on both assemblies and types) use the same prefixes with the same matching: a prefix
 matches at a name-segment boundary, so `System` covers `System` and `System.Text.Json`, but not an assembly
 named `SystemsBiology`. A prefix written with a trailing dot (e.g. `MyCompany.`) is boundary-safe by
@@ -71,7 +71,7 @@ using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
 
 ## Dependency resolver
 
-The type-level dependency assertions compute a type's dependencies with a built-in signature-level
+The type-level dependency expectations compute a type's dependencies with a built-in signature-level
 resolver (base type, interfaces, field/property/event types, method/constructor signatures, generic
 arguments and applied attributes). Method-body references are not detected by the default; supply a
 custom resolver, e.g. backed by [Mono.Cecil](https://github.com/jbevain/cecil) (this library takes no
