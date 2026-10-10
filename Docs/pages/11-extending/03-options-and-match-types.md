@@ -56,8 +56,10 @@ An expectation that returns this result then offers the count and the string opt
 
 The interfaces with `TSelf` let the compiler infer the element type from your result, so pass your result type as
 `TSelf`. Every option can be specified only once, and options that would replace each other, e.g. two match types or
-`AtLeast(2).AtMost(5)`, throw an `InvalidOperationException` at the call. An expectation that already sets an option
-itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
+`AtLeast(2).AtMost(5)`, throw an `InvalidOperationException` at the call. Follow the same rule for the options of your
+own results: throw it with `Tracing.WriteException` at the second call, worded like the built-in ones, e.g.
+`WithTitle cannot be specified more than once.` or `AtMost cannot be combined with AtLeast.`. An expectation that
+already sets an option itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
 
 In the constraint, the `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected,
 grammars)` the expectation and `GetExtendedFailure(it, grammars, actual, expected)` the result, e.g. "it was "Yesterday",
