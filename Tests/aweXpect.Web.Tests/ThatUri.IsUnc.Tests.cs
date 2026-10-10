@@ -32,7 +32,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an UNC path,
+					             is a UNC path,
 					             but it was <null>
 					             """);
 			}
@@ -48,7 +48,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an UNC path,
+					             is a UNC path,
 					             but it was https://www.awexpect.com/
 					             """);
 			}
@@ -78,7 +78,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not an UNC path,
+					             is not a UNC path,
 					             but it was <null>
 					             """);
 			}
@@ -105,7 +105,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not an UNC path,
+					             is not a UNC path,
 					             but it was file://server/filename.ext
 					             """);
 			}

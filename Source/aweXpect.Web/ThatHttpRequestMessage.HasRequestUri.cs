@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -28,9 +29,9 @@ public static partial class ThatHttpRequestMessage
 
 		return new(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.RequestContexts)
-				.AddConstraint((it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, expectedUri.ToString())),
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(expectedUri.ToString(), static (expected, it, grammars) =>
+					new HasRequestUriConstraint(it, grammars, expected)),
 			source);
 	}
 
@@ -45,9 +46,9 @@ public static partial class ThatHttpRequestMessage
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		return new(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.RequestContexts)
-				.AddConstraint((it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, expected.ToString())),
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(expected.ToString(), static (expected, it, grammars) =>
+					new HasRequestUriConstraint(it, grammars, expected)),
 			source);
 	}
 

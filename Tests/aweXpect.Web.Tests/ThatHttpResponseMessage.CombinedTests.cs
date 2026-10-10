@@ -169,7 +169,7 @@ public sealed partial class ThatHttpResponseMessage
 				.WithMessage("""
 				             Expected that subject
 				             has a request message which has a POST method and has a success status code (2xx),
-				             but it was GET and had status code 404 NotFound
+				             but it had method GET and had status code 404 NotFound
 
 				             HTTP-Request:
 				               GET https://www.awexpect.com/ HTTP/1.1

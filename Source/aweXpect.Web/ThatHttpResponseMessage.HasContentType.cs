@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -29,9 +30,9 @@ public static partial class ThatHttpResponseMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
-					new HasContentTypeConstraint(it, grammars, expected, options)),
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint((expected, options), static (state, it, grammars) =>
+					new HasContentTypeConstraint(it, grammars, state.expected, state.options)),
 			source,
 			options);
 	}

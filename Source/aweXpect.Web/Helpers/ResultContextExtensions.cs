@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
-internal static class ThatExtensions
+internal static class ResultContextExtensions
 {
 	private const string HttpRequestContext = "HTTP-Request";
 	private const string HttpResponseContext = "HTTP-Response";
@@ -15,17 +14,6 @@ internal static class ThatExtensions
 
 	public static readonly Action<HttpResponseMessage, ResultContextCollector> ResponseContexts
 		= (response, contexts) => contexts.AddContext(response);
-
-	[ExcludeFromCodeCoverage]
-	public static IExpectThat<T> Get<T>(this IThat<T> subject)
-	{
-		if (subject is IExpectThat<T> expectThat)
-		{
-			return expectThat;
-		}
-
-		throw new NotSupportedException("IThat<T> must also implement IExpectThat<T>");
-	}
 
 	public static void AddContext(this ResultContextCollector contexts, HttpRequestMessage request)
 		=> contexts.Add(new ResultContext.AsyncCallback(HttpRequestContext,

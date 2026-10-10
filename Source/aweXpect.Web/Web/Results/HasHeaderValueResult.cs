@@ -41,8 +41,9 @@ public class HasHeaderValueResult<TType, TThat>
 	public StringEqualityResult<TType, TThat> WithValue(string? expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		_expectationBuilder.And("").AddConstraint((it, grammars) =>
-			new WithHeaderValueConstraint(it, grammars, expected, _headerValueAccessor, options));
+		_expectationBuilder.And("").AddConstraint((expected, _headerValueAccessor, options),
+			static (state, it, grammars) => new WithHeaderValueConstraint(
+				it, grammars, state.expected, state._headerValueAccessor, state.options));
 		return new StringEqualityResult<TType, TThat>(_expectationBuilder, _returnValue, options);
 	}
 

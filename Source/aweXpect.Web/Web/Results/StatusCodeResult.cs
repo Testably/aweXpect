@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 
@@ -22,14 +23,14 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint((expected, mapper), static (state, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
-						expected,
-						mapper,
+						state.expected,
+						state.mapper,
 						(a, e) => a.Equals(e),
-						$"status code {Formatter.Format(expected)}")),
+						$"status code {Formatter.Format(state.expected)}")),
 			source);
 
 	/// <summary>
@@ -38,15 +39,15 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
 		HttpStatusCode? unexpected)
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint((unexpected, mapper), static (state, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
-						unexpected,
-						mapper,
+						state.unexpected,
+						state.mapper,
 						(a, u) => !a.Equals(u),
-						$"status code different to {Formatter.Format(unexpected)}",
-						$"status code {Formatter.Format(unexpected)}")),
+						$"status code different to {Formatter.Format(state.unexpected)}",
+						$"status code {Formatter.Format(state.unexpected)}")),
 			source);
 
 	/// <summary>
@@ -54,8 +55,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
@@ -69,8 +70,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
@@ -84,8 +85,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
@@ -99,8 +100,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
@@ -114,8 +115,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
 		=> new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(mapper, static (mapper, it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,

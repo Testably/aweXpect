@@ -2,7 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -11,7 +11,7 @@ namespace aweXpect;
 public static partial class ThatUri
 {
 	/// <summary>
-	///     Verifies that the subject is an UNC path.
+	///     Verifies that the subject is a UNC path.
 	/// </summary>
 	/// <remarks>
 	///     <seealso cref="Uri.IsUnc" />
@@ -23,7 +23,7 @@ public static partial class ThatUri
 			source);
 
 	/// <summary>
-	///     Verifies that the subject is not an UNC path.
+	///     Verifies that the subject is not a UNC path.
 	/// </summary>
 	/// <remarks>
 	///     <seealso cref="Uri.IsUnc" />
@@ -46,7 +46,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is an UNC path", "are UNC paths"));
+			=> stringBuilder.Append(Grammars.Verb("is a UNC path", "are UNC paths"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -55,7 +55,7 @@ public static partial class ThatUri
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is not an UNC path", "are not UNC paths"));
+			=> stringBuilder.Append(Grammars.Verb("is not a UNC path", "are not UNC paths"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 using aweXpect.Web.Results;
@@ -22,8 +23,8 @@ public static partial class ThatHttpResponseMessage
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		return new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(expected, static (expected, it, grammars) =>
 					new HasHeaderConstraint(it, grammars, expected)),
 			source,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
@@ -39,8 +40,8 @@ public static partial class ThatHttpResponseMessage
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
 		return new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
 					new HasHeaderConstraint(it, grammars, unexpected).Invert()),
 			source);
 	}

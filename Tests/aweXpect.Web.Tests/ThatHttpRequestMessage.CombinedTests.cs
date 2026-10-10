@@ -54,7 +54,7 @@ public sealed partial class ThatHttpRequestMessage
 				.WithMessage("""
 				             Expected that subject
 				             has a POST method and has a "y" header,
-				             but it was GET and did not contain the expected header
+				             but it had method GET and did not contain the expected header
 
 				             HTTP-Request:
 				               GET https://awexpect.com/ HTTP/1.1

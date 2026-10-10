@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Web.Results;
@@ -42,9 +43,9 @@ public static partial class ThatHttpResponseMessage
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
-				.AddConstraint((it, grammars) =>
-					new HasProblemDetailsConstraint(it, grammars, type, options, typeOptions)),
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint((type, options, typeOptions), static (state, it, grammars) =>
+					new HasProblemDetailsConstraint(it, grammars, state.type, state.options, state.typeOptions)),
 			source,
 			typeOptions,
 			options);

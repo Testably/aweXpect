@@ -2,7 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Results;
 
 namespace aweXpect;

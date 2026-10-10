@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -24,9 +25,9 @@ public static partial class ThatHttpRequestMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.RequestContexts)
-				.AddConstraint((it, grammars) =>
-					new HasContentConstraint(it, grammars, expected, options)),
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint((expected, options), static (state, it, grammars) =>
+					new HasContentConstraint(it, grammars, state.expected, state.options)),
 			source,
 			options);
 	}
@@ -40,7 +41,7 @@ public static partial class ThatHttpRequestMessage
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.RequestContexts)
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.ForAsyncMember(MemberAccessor<HttpRequestMessage, Task<string?>>.FromFunc(
 						async m => m.Content == null ? null : await m.Content.ReadAsStringAsync(),
 						" the string content"),

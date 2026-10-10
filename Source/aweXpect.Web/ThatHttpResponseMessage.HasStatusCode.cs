@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 using aweXpect.Web.Results;
@@ -24,8 +25,8 @@ public static partial class ThatHttpResponseMessage
 		this IThat<HttpResponseMessage?> source,
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
-			.AddSubjectContexts(ThatExtensions.ResponseContexts)
-			.AddConstraint((it, grammars) =>
+			.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+			.AddConstraint(expected, static (expected, it, grammars) =>
 				new StatusCodeResult.PropertyConstraint(
 					it, grammars,
 					expected,

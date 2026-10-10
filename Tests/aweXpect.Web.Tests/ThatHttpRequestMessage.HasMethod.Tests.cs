@@ -84,7 +84,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a POST method,
-					             but it was GET
+					             but it had method GET
 
 					             HTTP-Request:
 					               GET https://awexpect.com/ HTTP/1.1

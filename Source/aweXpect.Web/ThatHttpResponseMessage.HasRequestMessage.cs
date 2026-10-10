@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using aweXpect.Core;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Results;
 
@@ -16,7 +17,7 @@ public static partial class ThatHttpResponseMessage
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new(source.Get().ExpectationBuilder
-				.AddSubjectContexts(ThatExtensions.ResponseContexts)
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.ForMember(MemberAccessor<HttpResponseMessage?, HttpRequestMessage?>.FromFunc(
 						response => response?.RequestMessage,
 						"has a request message which "),
