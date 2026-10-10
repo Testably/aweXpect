@@ -681,7 +681,7 @@ public sealed class NonNullableResultTests
 		[Test]
 		public Uri? Method() => Field;
 
-		public void ParameterMethod(in int a, out int b, ref int c, int d = 0, params int[] e)
+		public static void ParameterMethod(in int a, out int b, ref int c, int d = 0, params int[] e)
 			=> b = a + c + d + e.Length;
 
 		public void VoidMethod() => Event?.Invoke(this, EventArgs.Empty);
