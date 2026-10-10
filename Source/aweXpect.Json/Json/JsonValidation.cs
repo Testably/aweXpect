@@ -122,25 +122,7 @@ internal class JsonValidation : IJsonObjectResult,
 
 			if (currentElement != null)
 			{
-#pragma warning disable CA1869
-				JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
-#pragma warning restore CA1869
-				ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
-				serializerOptions.Converters.Add(converter);
-				using JsonDocument expectedDocument =
-					JsonDocument.Parse(JsonSerializer.Serialize(expectedValue, serializerOptions),
-						_options.DocumentOptions);
-				JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
-					CurrentPath,
-					currentElement.Value,
-					expectedDocument.RootElement,
-					_options,
-					converter).GetAwaiter().GetResult();
-
-				if (comparisonResult.HasError)
-				{
-					_failures.Add(comparisonResult.ToString());
-				}
+				CompareElement(currentElement.Value, expectedValue);
 			}
 
 
@@ -148,6 +130,29 @@ internal class JsonValidation : IJsonObjectResult,
 		}
 
 		return this;
+	}
+
+	private void CompareElement(JsonElement element, object? expectedValue)
+	{
+#pragma warning disable CA1869
+		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
+#pragma warning restore CA1869
+		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
+		serializerOptions.Converters.Add(converter);
+		using JsonDocument expectedDocument =
+			JsonDocument.Parse(JsonSerializer.Serialize(expectedValue, serializerOptions),
+				_options.DocumentOptions);
+		JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
+			CurrentPath,
+			element,
+			expectedDocument.RootElement,
+			_options,
+			converter).GetAwaiter().GetResult();
+
+		if (comparisonResult.HasError)
+		{
+			_failures.Add(comparisonResult.ToString());
+		}
 	}
 
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithArrays(
