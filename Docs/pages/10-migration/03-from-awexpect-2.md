@@ -6,13 +6,6 @@ sidebar_label: From aweXpect 2.x
 
 # What's new in v3
 
-:::warning[Pre-release]
-
-aweXpect v3 is currently available as a pre-release only. The API described on this page can still change before the
-final v3.0.0 release.
-
-:::
-
 aweXpect v3 makes the library trimmable and Native AOT compatible, applies one rule to `null` subjects and spells the
 same comparison the same way on every result type. This page covers what you need to know to upgrade. The complete
 list of changes, pull request by pull request, is in the [GitHub releases](https://github.com/Testably/aweXpect/releases).
