@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,73 +44,67 @@ internal static class TaskHelpers
 			? exceptions.Skip(1).ToArray()
 			: null;
 
-#if NET8_0_OR_GREATER
-	/// <inheritdoc cref="AwaitOrAbandon(Task, CancellationToken)" />
-	private static async Task<TResult> AwaitOrAbandon<TResult>(Task<TResult> task,
-		CancellationToken cancellationToken)
+	/// <summary>
+	///     Waits until the <paramref name="task" /> completed, without throwing its exception, unless the
+	///     <paramref name="cancellationToken" /> is canceled first: then the <paramref name="task" /> is abandoned and a
+	///     <see cref="TaskCanceledException" /> is thrown.
+	/// </summary>
+	/// <remarks>
+	///     Awaiting a faulted task rethrows its exception, which costs about as much as the original throw, so that a
+	///     caller who only inspects the exception reads it from the completed <paramref name="task" /> instead.
+	/// </remarks>
+	public static Task WaitWithoutThrowing(this Task task, CancellationToken cancellationToken)
+		=> task.IsCompleted
+			? Task.CompletedTask
+			: WaitOrAbandon(task, cancellationToken);
+
+	/// <summary>
+	///     Returns the first exception of the faulted <paramref name="task" /> and the
+	///     <paramref name="otherExceptions" />, without rethrowing them.
+	/// </summary>
+	public static Exception GetFirstException(this Task task, out Exception[]? otherExceptions)
 	{
-		try
-		{
-			return await task.WaitAsync(cancellationToken);
-		}
-		catch (OperationCanceledException) when (!task.IsCompleted)
-		{
-			throw Abandon(task);
-		}
-		catch (OperationCanceledException)
-		{
-			return await task;
-		}
+		ReadOnlyCollection<Exception> exceptions = task.Exception!.InnerExceptions;
+		otherExceptions = exceptions.Count > 1 ? exceptions.Skip(1).ToArray() : null;
+		return exceptions[0];
 	}
 
-	/// <remarks>
-	///     The outcome of the <paramref name="task" /> wins when it completed by the time the cancellation is noticed,
-	///     so that a task which reacts to the cancellation itself keeps reporting its own exception.
-	/// </remarks>
-	private static async Task AwaitOrAbandon(Task task, CancellationToken cancellationToken)
-	{
-		try
-		{
-			await task.WaitAsync(cancellationToken);
-		}
-		catch (OperationCanceledException) when (!task.IsCompleted)
-		{
-			throw Abandon(task);
-		}
-		catch (OperationCanceledException)
-		{
-			await task;
-		}
-	}
-#else
 	private static async Task<TResult> AwaitOrAbandon<TResult>(Task<TResult> task,
 		CancellationToken cancellationToken)
 	{
-		await AwaitOrAbandon((Task)task, cancellationToken);
+		await WaitOrAbandon(task, cancellationToken);
 		return await task;
 	}
 
+	private static async Task AwaitOrAbandon(Task task, CancellationToken cancellationToken)
+	{
+		await WaitOrAbandon(task, cancellationToken);
+		await task;
+	}
+
 	/// <remarks>
 	///     The outcome of the <paramref name="task" /> wins when it completed by the time the cancellation is noticed,
 	///     so that a task which reacts to the cancellation itself keeps reporting its own exception.
 	/// </remarks>
-	private static async Task AwaitOrAbandon(Task task, CancellationToken cancellationToken)
+	private static async Task WaitOrAbandon(Task task, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		await task.WaitAsync(cancellationToken)
+			.ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext | ConfigureAwaitOptions.SuppressThrowing);
+#else
 		TaskCompletionSource<bool> cancellation = new(TaskCreationOptions.RunContinuationsAsynchronously);
 		using (cancellationToken.Register(static state => ((TaskCompletionSource<bool>)state!).TrySetResult(true),
 			       cancellation))
 		{
 			await Task.WhenAny(task, cancellation.Task);
 		}
+#endif
 
 		if (!task.IsCompleted)
 		{
 			throw Abandon(task);
 		}
-
-		await task;
 	}
-#endif
 
 	/// <summary>
 	///     Abandons the running <paramref name="task" /> and returns the exception to throw instead of its outcome.
