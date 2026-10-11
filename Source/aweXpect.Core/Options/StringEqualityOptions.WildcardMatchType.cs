@@ -32,12 +32,12 @@ public partial class StringEqualityOptions
 	{
 		/// <summary>
 		///     Counts the non-overlapping matches of the <paramref name="expected" /> wildcard pattern in the
-		///     <paramref name="actual" /> value.
+		///     <paramref name="actual" /> value, up to the <paramref name="maximum" />.
 		/// </summary>
-		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
+		public static int CountOccurrences(string actual, string expected, bool ignoreCase, int maximum)
 			=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
 				GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
-					RegexOptions.Singleline));
+					RegexOptions.Singleline), maximum);
 
 		/// <summary>
 		///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
