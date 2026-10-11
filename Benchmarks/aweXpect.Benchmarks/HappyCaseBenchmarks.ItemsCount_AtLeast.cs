@@ -10,7 +10,7 @@ namespace aweXpect.Benchmarks;
 public partial class HappyCaseBenchmarks
 {
 	private readonly int _enumerableCount = 1000;
-	private readonly IEnumerable<int> _enumerableSubject = Enumerable.Range(1, 1000);
+	private readonly IEnumerable<int> _enumerableSubject = LazyRange(1000);
 
 	[Benchmark]
 	public async Task ItemsCount_AtLeast_aweXpect()
@@ -23,4 +23,15 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public async Task ItemsCount_AtLeast_TUnit()
 		=> await Assert.That(_enumerableSubject).Count().IsGreaterThanOrEqualTo(_enumerableCount);
+
+	/// <summary>
+	///     Unlike <see cref="Enumerable.Range(int, int)" />, the count is not known without enumerating the items.
+	/// </summary>
+	private static IEnumerable<int> LazyRange(int count)
+	{
+		for (int i = 1; i <= count; i++)
+		{
+			yield return i;
+		}
+	}
 }

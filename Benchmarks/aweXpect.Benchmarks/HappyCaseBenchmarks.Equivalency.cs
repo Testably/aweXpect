@@ -11,42 +11,73 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly Nested _nestedExpectation = Nested.Create(10);
-	private readonly Nested _nestedSubject = Nested.Create(10);
+	private static readonly string[] AbbeyRoadTitles =
+	[
+		"Come Together", "Something", "Maxwell's Silver Hammer", "Oh! Darling", "Octopus's Garden",
+		"I Want You (She's So Heavy)", "Here Comes the Sun", "Because", "You Never Give Me Your Money", "Sun King",
+		"Mean Mr. Mustard", "Polythene Pam", "She Came In Through the Bathroom Window", "Golden Slumbers",
+		"Carry That Weight", "The End", "Her Majesty",
+	];
+
+	private readonly Album _albumExpectation = Album.Create();
+	private readonly Album _albumSubject = Album.Create();
 
 	[Benchmark]
-	public async Task<Nested> Equivalency_aweXpect()
-		=> await Expect.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
+	public async Task<Album> Equivalency_aweXpect()
+		=> await Expect.That(_albumSubject).IsEquivalentTo(_albumExpectation);
 
 	[Benchmark]
 	public AndConstraint<ObjectAssertions> Equivalency_FluentAssertions()
-		=> _nestedSubject.Should().BeEquivalentTo(_nestedExpectation);
+		=> _albumSubject.Should().BeEquivalentTo(_albumExpectation);
 
 	[Benchmark]
-	public async Task<Nested?> Equivalency_TUnit()
-		=> await Assert.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
+	public async Task<Album?> Equivalency_TUnit()
+		=> await Assert.That(_albumSubject).IsEquivalentTo(_albumExpectation);
 
-	public sealed class Nested
+	public enum Genre
 	{
-		public int A { get; set; }
+		Pop,
+		Rock,
+	}
 
-		public Nested? B { get; set; }
+	public sealed class Album
+	{
+		public string Title { get; set; } = "";
+		public Artist Artist { get; set; } = new();
+		public DateTime ReleaseDate { get; set; }
+		public Genre Genre { get; set; }
+		public List<Track> Tracks { get; set; } = [];
 
-		public Nested? C { get; set; }
-
-		public static Nested Create(int i, int objectCount = 1)
-		{
-			if (i <= 0)
+		public static Album Create()
+			=> new()
 			{
-				return new Nested();
-			}
-
-			return new Nested
-			{
-				A = ++objectCount,
-				B = Create(i - 1, objectCount),
-				C = Create(i - 2, objectCount),
+				Title = "Abbey Road",
+				Artist = new Artist
+				{
+					Name = "The Beatles",
+					Label = "Apple Records",
+				},
+				ReleaseDate = new DateTime(1969, 9, 26),
+				Genre = Genre.Rock,
+				Tracks = AbbeyRoadTitles.Select((title, index) => new Track
+				{
+					Number = index + 1,
+					Title = title,
+					Duration = TimeSpan.FromSeconds(150 + (7 * index)),
+				}).ToList(),
 			};
-		}
+	}
+
+	public sealed class Artist
+	{
+		public string Name { get; set; } = "";
+		public string Label { get; set; } = "";
+	}
+
+	public sealed class Track
+	{
+		public int Number { get; set; }
+		public string Title { get; set; } = "";
+		public TimeSpan Duration { get; set; }
 	}
 }

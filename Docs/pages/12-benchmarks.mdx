@@ -5,6 +5,7 @@ title: Benchmarks
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import BenchmarkResult from '@site/src/components/BenchmarkResult';
+import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
 
 These benchmarks compare aweXpect's happy-path overhead (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) and [TUnit](https://tunit.dev/) calls.
 
@@ -14,6 +15,12 @@ These benchmarks compare aweXpect's happy-path overhead (passing assertions, the
 - **Job**: `MediumRun` with the in-process toolchain.
 - **Runner**: `ubuntu-latest` GitHub Actions agent, refreshed on every push to `main`.
 - Each tab shows the latest measured time and allocated memory; bars are scaled within the row so length corresponds to magnitude. **Lower is better.**
+
+:::
+
+:::tip[At a glance]
+
+<BenchmarkSummary />
 
 :::
 
@@ -30,7 +37,7 @@ await Expect.That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_stringSubject.Should().BeEquivalentTo(_stringExpectation, o => o.IgnoringCase());
+_stringSubject.Should().BeEquivalentTo(_stringExpectation);
 ```
 
 ```csharp no-compile title="TUnit"
@@ -38,28 +45,6 @@ await Assert.That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.String.cs)
-
-</TabItem>
-
-<TabItem value="Bool" label="Boolean">
-
-Verifies that a boolean subject is `true`.
-
-<BenchmarkResult name="Bool" />
-
-```csharp title="aweXpect"
-await Expect.That(_boolSubject).IsTrue();
-```
-
-```csharp no-compile title="FluentAssertions"
-_boolSubject.Should().BeTrue();
-```
-
-```csharp no-compile title="TUnit"
-await Assert.That(_boolSubject).IsTrue();
-```
-
-[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Bool.cs)
 
 </TabItem>
 
@@ -87,20 +72,20 @@ await Assert.That(_intSubject).IsGreaterThan(_intMinimum);
 
 <TabItem value="Equivalency" label="Equivalency">
 
-Verifies that two deeply nested object trees are structurally equivalent.
+Verifies that two albums are structurally equivalent, including their artist and all 17 tracks.
 
 <BenchmarkResult name="Equivalency" />
 
 ```csharp title="aweXpect"
-await Expect.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
+await Expect.That(_albumSubject).IsEquivalentTo(_albumExpectation);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_nestedSubject.Should().BeEquivalentTo(_nestedExpectation);
+_albumSubject.Should().BeEquivalentTo(_albumExpectation);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
+await Assert.That(_albumSubject).IsEquivalentTo(_albumExpectation);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Equivalency.cs)
@@ -110,6 +95,7 @@ await Assert.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
 <TabItem value="ItemsCount_AtLeast" label="Items count">
 
 Verifies that an `IEnumerable<int>` has at least the expected number of items (1,000 items in this benchmark).
+The sequence is lazy, so its count is only known after enumerating the items.
 
 <BenchmarkResult name="ItemsCount_AtLeast" />
 
@@ -126,6 +112,28 @@ await Assert.That(_enumerableSubject).Count().IsGreaterThanOrEqualTo(_enumerable
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.ItemsCount_AtLeast.cs)
+
+</TabItem>
+
+<TabItem value="Contains" label="Contains">
+
+Verifies that a `List<string>` of 17 track titles contains the expected title.
+
+<BenchmarkResult name="Contains" />
+
+```csharp title="aweXpect"
+await Expect.That(_containsSubject).Contains(_containsExpected);
+```
+
+```csharp no-compile title="FluentAssertions"
+_containsSubject.Should().Contain(_containsExpected);
+```
+
+```csharp no-compile title="TUnit"
+await Assert.That(_containsSubject).Contains(_containsExpected);
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Contains.cs)
 
 </TabItem>
 
@@ -170,6 +178,7 @@ await Assert.That(_stringArrayAnyOrderSubject)
 <TabItem value="Satisfies" label="Condition">
 
 Verifies that an `int` subject satisfies a predicate.
+FluentAssertions' `Match` takes an expression tree and compiles it on every call, which is where most of its time and memory goes.
 
 <BenchmarkResult name="Satisfies" />
 
@@ -189,10 +198,82 @@ await Assert.That(_satisfiesSubject).Satisfies(x => x > 0);
 
 </TabItem>
 
+<TabItem value="Throws" label="Exceptions">
+
+Verifies that a delegate throws an `InvalidOperationException` with the expected message.
+Throwing the exception is part of every measurement and is the same work for all three libraries.
+
+<BenchmarkResult name="Throws" />
+
+**Asynchronous**
+Verifies the same for an asynchronous delegate.
+
+<BenchmarkResult name="ThrowsAsync" />
+
+```csharp title="aweXpect"
+await Expect.That(_throwsSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
+// Asynchronous
+await Expect.That(_throwsAsyncSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
+```
+
+```csharp no-compile title="FluentAssertions"
+_throwsSubject.Should().Throw<InvalidOperationException>().WithMessage(_throwsMessage);
+// Asynchronous
+await _throwsAsyncSubject.Should().ThrowAsync<InvalidOperationException>().WithMessage(_throwsMessage);
+```
+
+```csharp no-compile title="TUnit"
+await Assert.That(_throwsSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
+// Asynchronous
+await Assert.That(_throwsAsyncSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Throws.cs)
+
+[View source on GitHub (asynchronous) →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.ThrowsAsync.cs)
+
+</TabItem>
+
+<TabItem value="Multiple" label="Several at once">
+
+Verifies three properties of an album at once, so that all failures would be reported together.
+
+<BenchmarkResult name="Multiple" />
+
+```csharp title="aweXpect"
+await Expect.ThatAll(
+    Expect.That(_multipleSubject.Title).IsEqualTo("Abbey Road"),
+    Expect.That(_multipleSubject.Artist.Name).IsEqualTo("The Beatles"),
+    Expect.That(_multipleSubject.Genre).IsEqualTo(Genre.Rock));
+```
+
+```csharp no-compile title="FluentAssertions"
+using (new AssertionScope())
+{
+    _multipleSubject.Title.Should().Be("Abbey Road");
+    _multipleSubject.Artist.Name.Should().Be("The Beatles");
+    _multipleSubject.Genre.Should().Be(Genre.Rock);
+}
+```
+
+```csharp no-compile title="TUnit"
+using (Assert.Multiple())
+{
+    await Assert.That(_multipleSubject.Title).IsEqualTo("Abbey Road");
+    await Assert.That(_multipleSubject.Artist.Name).IsEqualTo("The Beatles");
+    await Assert.That(_multipleSubject.Genre).IsEqualTo(Genre.Rock);
+}
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Multiple.cs)
+
+</TabItem>
+
 <TabItem value="EventTriggered" label="Events">
 
 Verifies that an event was raised, including starting the recording and raising the event.
 TUnit has no event recording to compare against, so it is not part of this benchmark.
+FluentAssertions' `Monitor()` emits a handler for each event of the object at runtime, which is where most of its time goes.
 
 <BenchmarkResult name="EventTriggered" />
 
