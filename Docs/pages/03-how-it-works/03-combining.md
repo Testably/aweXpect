@@ -42,6 +42,44 @@ await Expect.That(title).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(9));
 
 `.And` does not short-circuit: all expectations are evaluated, so that the failure message can report all of them.
 
+<details>
+<summary>Expectations that only apply under a condition</summary>
+
+aweXpect has no built-in way to skip part of a chain. When a part only applies under a condition, you can add an
+extension method like this one to your test project instead of duplicating the whole expectation in an `if`/`else`:
+
+```csharp
+using aweXpect.Core;
+using aweXpect.Results;
+
+public static AndOrResult<TType, TThat, TSelf> AndIf<TType, TThat, TSelf>(
+  this AndOrResult<TType, TThat, TSelf> result,
+  bool condition,
+  Func<TThat, Expectation> expectations)
+  where TSelf : AndOrResult<TType, TThat, TSelf>
+{
+  if (condition)
+  {
+    expectations(result.And);
+  }
+
+  return result;
+}
+```
+
+```csharp
+string title = "Let It Be (Remastered)";
+bool isRemastered = true;
+
+await Expect.That(title).StartsWith("Let It Be")
+  .AndIf(isRemastered, x => x.EndsWith("(Remastered)"));
+```
+
+When the condition is `false`, the expectations in the callback are neither evaluated nor part of the failure message.
+The callback has to return the expectation, so an empty callback does not compile.
+
+</details>
+
 ## On members of the subject
 
 Use `Whose` to verify different members of a common subject and combine them again with `.And` or `.Or`:
