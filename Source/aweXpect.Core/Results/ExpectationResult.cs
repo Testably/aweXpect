@@ -141,7 +141,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <remarks>
 	///     The combination does not trace its members, so a met expectation is traced here.
 	/// </remarks>
-	internal override async Task<Result> GetResult(int index)
+	internal override async ValueTask<Result> GetResult(int index)
 	{
 		ConstraintResult result = await ExpectationBuilder.IsMet(false);
 		if (result.Outcome == Outcome.Success && ExpectationBuilder.IsTracing)
@@ -368,7 +368,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <remarks>
 	///     The combination does not trace its members, so a met expectation is traced here.
 	/// </remarks>
-	internal override async Task<Result> GetResult(int index)
+	internal override async ValueTask<Result> GetResult(int index)
 	{
 		ConstraintResult result = await ExpectationBuilder.IsMet(false);
 		if (result.Outcome == Outcome.Success && ExpectationBuilder.IsTracing)
