@@ -13,6 +13,16 @@ namespace aweXpect.Core.Sources;
 internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool isTaskSubject = false)
 	: IValueSource<DelegateValue>
 {
+	private readonly Func<Task>? _actionWithoutCancellation;
+
+	/// <remarks>
+	///     Keeps the <paramref name="action" /> as it is, instead of wrapping it in a closure that ignores the token.
+	/// </remarks>
+	public DelegateAsyncSource(Func<Task>? action) : this(null, false)
+	{
+		_actionWithoutCancellation = action;
+	}
+
 	#region IValueSource<DelegateValue> Members
 
 	public bool IsNullTaskSubject => false;
@@ -20,7 +30,7 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 	public async ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
-		if (action is null)
+		if (action is null && _actionWithoutCancellation is null)
 		{
 			return new DelegateValue(null, TimeSpan.Zero)
 			{
@@ -32,7 +42,7 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 		Task? task = null;
 		try
 		{
-			task = action(cancellationToken);
+			task = action is null ? _actionWithoutCancellation!() : action(cancellationToken);
 			if (task is null)
 			{
 				return new DelegateValue(null, timeSystem.GetElapsedTime(startTimestamp))

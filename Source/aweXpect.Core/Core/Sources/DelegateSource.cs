@@ -16,6 +16,7 @@ internal class DelegateSource : IValueSource<DelegateValue>
 	private static readonly ConditionalWeakTable<MethodInfo, object> IsAsyncVoidMethod = new();
 
 	private readonly Action<CancellationToken>? _action;
+	private readonly Action? _actionWithoutCancellation;
 
 	public DelegateSource(Action<CancellationToken>? action)
 	{
@@ -23,10 +24,13 @@ internal class DelegateSource : IValueSource<DelegateValue>
 		_action = action;
 	}
 
+	/// <remarks>
+	///     Keeps the <paramref name="action" /> as it is, instead of wrapping it in a closure that ignores the token.
+	/// </remarks>
 	public DelegateSource(Action? action)
 	{
 		ThrowIfAsyncVoid(action?.GetMethodInfo(), "Func<Task>");
-		_action = action is null ? null : _ => action();
+		_actionWithoutCancellation = action;
 	}
 
 	private static void ThrowIfAsyncVoid(MethodInfo? method, string replaceType)
@@ -47,7 +51,7 @@ internal class DelegateSource : IValueSource<DelegateValue>
 	public ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
-		if (_action is null)
+		if (_action is null && _actionWithoutCancellation is null)
 		{
 			return new ValueTask<DelegateValue>(new DelegateValue(null, TimeSpan.Zero, true));
 		}
@@ -55,7 +59,15 @@ internal class DelegateSource : IValueSource<DelegateValue>
 		long startTimestamp = timeSystem.GetTimestamp();
 		try
 		{
-			_action(cancellationToken);
+			if (_action is null)
+			{
+				_actionWithoutCancellation!();
+			}
+			else
+			{
+				_action(cancellationToken);
+			}
+
 			return new ValueTask<DelegateValue>(new DelegateValue(null, timeSystem.GetElapsedTime(startTimestamp)));
 		}
 		catch (Exception ex)
