@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -17,7 +19,21 @@ public partial class StringEqualityOptions
 	/// </remarks>
 	private const RegexOptions IgnoreCaseOptions = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
 
+	private const int MaximumParsedRegexes = 256;
+
 	private static readonly IStringMatchType RegexMatch = new RegexMatchType(RegexOptions.None);
+
+	/// <summary>
+	///     The regexes parsed by any expectation, as each expectation has options of its own, and parsing a pattern
+	///     costs far more than matching it.
+	/// </summary>
+	/// <remarks>
+	///     The culture is part of the key, because it affects a pattern that ignores the casing without
+	///     <see cref="RegexOptions.CultureInvariant" />. The cache is cleared when it is full, so that generated
+	///     patterns cannot grow it without limit.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<(string Pattern, RegexOptions Options, string Culture), Regex>
+		ParsedRegexes = new();
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
@@ -73,7 +89,7 @@ public partial class StringEqualityOptions
 	{
 		try
 		{
-			_ = new Regex(string.Empty, regexOptions, RegexTimeout);
+			_ = GetOrParseRegex(string.Empty, regexOptions);
 		}
 		catch (ArgumentOutOfRangeException)
 		{
@@ -81,6 +97,24 @@ public partial class StringEqualityOptions
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(regexOptions),
 				$"The regex options '{regexOptions}' are not a valid combination."));
 		}
+	}
+
+	private static Regex GetOrParseRegex(string pattern, RegexOptions options)
+	{
+		(string, RegexOptions, string) key = (pattern, options, CultureInfo.CurrentCulture.Name);
+		if (ParsedRegexes.TryGetValue(key, out Regex? regex))
+		{
+			return regex;
+		}
+
+		regex = new Regex(pattern, options, RegexTimeout);
+		if (ParsedRegexes.Count >= MaximumParsedRegexes)
+		{
+			ParsedRegexes.Clear();
+		}
+
+		ParsedRegexes[key] = regex;
+		return regex;
 	}
 
 	private sealed class RegexMatchType(RegexOptions regexOptions) : IStringMatchType
@@ -101,7 +135,7 @@ public partial class StringEqualityOptions
 				options |= IgnoreCaseOptions;
 			}
 
-			return new Regex(expected, options, RegexTimeout);
+			return GetOrParseRegex(expected, options);
 		}
 
 		/// <summary>
