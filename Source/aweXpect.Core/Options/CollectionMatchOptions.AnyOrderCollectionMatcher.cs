@@ -26,7 +26,7 @@ public partial class CollectionMatchOptions
 		///     <see cref="DateTime" /> and calls <see cref="object.Equals(object)" /> and
 		///     <see cref="object.GetHashCode()" /> of the caller, which can throw or disagree with each other.
 		/// </remarks>
-		protected override ExpectedItemCounts<T>? CountExpectedItems(List<T> expected, IOptionsEquality<T2> options)
+		protected override ExpectedItemCounts<T>? CountExpectedItems(T[] expected, IOptionsEquality<T2> options)
 			=> options switch
 			{
 				StringEqualityOptions { ComparesByOrdinalEquality: true, } => new ExpectedItemCounts<T>(expected),
@@ -66,7 +66,7 @@ public partial class CollectionMatchOptions
 	private abstract class AnyOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
-		private readonly Dictionary<int, T> _additionalItems = new();
+		private Dictionary<int, T>? _additionalItems;
 
 		/// <summary>
 		///     The dimensions of a subject that is an array of rank greater than one.
@@ -74,7 +74,7 @@ public partial class CollectionMatchOptions
 		private readonly int[]? _dimensions;
 
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly List<T3> _expected;
+		private readonly T3[] _expected;
 
 		/// <summary>
 		///     The counts of the expected items, as long as every item was found among them, so that none was matched.
@@ -93,15 +93,24 @@ public partial class CollectionMatchOptions
 		private int _lastAssigned = -1;
 
 		private ItemMatching<T, T3>? _matching;
-		private List<T3> _missingItems = new();
+		private List<T3>? _missingItems;
 
 		protected AnyOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation, IEnumerable<T3> expected,
 			int[]? dimensions = null)
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_dimensions = dimensions;
-			_expected = expected.ToList();
+			_expected = expected as T3[] ?? expected.ToArray();
 		}
+
+		/// <summary>
+		///     The items that the matching could not assign, which are only created once an item is matched, as the
+		///     counted expected items need none.
+		/// </summary>
+		private Dictionary<int, T> AdditionalItems => _additionalItems ??= new Dictionary<int, T>();
+
+		/// <inheritdoc cref="AdditionalItems" />
+		private List<T3> MissingItems => _missingItems ??= new List<T3>();
 
 		/// <inheritdoc />
 		/// <remarks>
@@ -111,7 +120,7 @@ public partial class CollectionMatchOptions
 		public bool IsDetermined
 			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
 			   _matching?.HasMatchedAllExpectedItems == true &&
-			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
+			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || AdditionalItems.Count > 0);
 
 		/// <remarks>
 		///     An item that is found among the counted expected items is not matched, as long as all items before it
@@ -264,7 +273,7 @@ public partial class CollectionMatchOptions
 		{
 			// When all expected items are matched, none is missing, so only the ones that an aborted item kept are
 			// replaced.
-			if (!matching.HasMatchedAllExpectedItems || _missingItems.Count > 0)
+			if (!matching.HasMatchedAllExpectedItems || MissingItems.Count > 0)
 			{
 				_missingItems = matching.UnmatchedExpectedItems();
 			}
@@ -286,19 +295,19 @@ public partial class CollectionMatchOptions
 			List<string> errors = new();
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
-				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem, _dimensions));
+				errors.AddRange(AdditionalItemsError(AdditionalItems, formatItem, _dimensions));
 			}
-			else if (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
+			else if (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && !AdditionalItems.Any())
 			{
 				errors.Add("did not contain any additional items");
 			}
 
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
-				errors.AddRange(MissingItemsError(_expected.Count, _missingItems, _equivalenceRelations,
+				errors.AddRange(MissingItemsError(_expected.Length, MissingItems, _equivalenceRelations,
 					false, formatItem, options, maximumNumber));
 			}
-			else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
+			else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && !MissingItems.Any())
 			{
 				errors.Add("contained all expected items");
 			}
@@ -314,11 +323,11 @@ public partial class CollectionMatchOptions
 		private bool HasDeviations()
 		{
 			bool hasAdditionalItemError = _equivalenceRelations.Includes(EquivalenceRelations.Contains)
-				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0
-				: _additionalItems.Count > 0;
+				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && AdditionalItems.Count == 0
+				: AdditionalItems.Count > 0;
 			bool hasMissingItemError = _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
-				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
-				: _expected.Count > 0 && _missingItems.Count > 0;
+				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && MissingItems.Count == 0
+				: _expected.Length > 0 && MissingItems.Count > 0;
 			return hasAdditionalItemError || hasMissingItemError;
 		}
 
@@ -327,22 +336,22 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private ItemMatching<T, T3> GetMatching(IOptionsEquality<T2> options)
 			=> _matching ??= new ItemMatching<T, T3>(_expected, (index, value, expected)
-				=> AreConsideredEqual(index, value, expected, options), _additionalItems);
+				=> AreConsideredEqual(index, value, expected, options), AdditionalItems);
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are not counted.
 		/// </summary>
 		private int CountAdditionalDeviations()
-			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count;
+			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ? 0 : AdditionalItems.Count;
 
 		/// <summary>
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not counted.
 		/// </summary>
 		private int CountMissingDeviations()
-			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : MissingItems.Count;
 
 		private IEnumerable<string> GetDeviations()
-			=> AdditionalItemsError(_additionalItems, CreateItemFormatter(), _dimensions);
+			=> AdditionalItemsError(AdditionalItems, CreateItemFormatter(), _dimensions);
 
 		/// <summary>
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not listed.
@@ -351,14 +360,14 @@ public partial class CollectionMatchOptions
 			int maximumNumber)
 			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
 				? []
-				: MissingItemsError(_expected.Count, _missingItems, _equivalenceRelations, false, formatItem, options,
+				: MissingItemsError(_expected.Length, MissingItems, _equivalenceRelations, false, formatItem, options,
 					maximumNumber);
 
 		/// <summary>
 		///     An unexpected and a missing item that format equally differ only in their runtime type.
 		/// </summary>
 		private Func<object?, string> CreateItemFormatter()
-			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
+			=> GetItemFormatter(AdditionalItems.Values.Cast<object?>(), MissingItems.Cast<object?>());
 
 		/// <summary>
 		///     Compares the <paramref name="value" /> at the <paramref name="index" /> with the
@@ -372,7 +381,7 @@ public partial class CollectionMatchOptions
 		///     an expected item like <see cref="EqualityComparer{T}.Default" /> does; otherwise
 		///     <see langword="null" />.
 		/// </summary>
-		protected virtual ExpectedItemCounts<T>? CountExpectedItems(List<T3> expected, IOptionsEquality<T2> options)
+		protected virtual ExpectedItemCounts<T>? CountExpectedItems(T3[] expected, IOptionsEquality<T2> options)
 			=> null;
 	}
 }
