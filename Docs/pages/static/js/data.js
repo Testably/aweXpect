@@ -202,48 +202,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "16e103dc8f5e9a0c17a8a06a35bc288aec1cc782",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 11:21:19 2026 \u002B0200",
-        "message": "docs: rework the benchmarks for a fairer and broader comparison (#1793)"
-      },
-      {
-        "sha": "68b48fefc5c46acee092fa25e5a7fa916dc6b0f2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 11:24:29 2026 \u002B0200",
-        "message": "perf: keep only the items that a quantifier can show (#1784)"
-      },
-      {
-        "sha": "bb7944b0365419194033db0e4973e369cf495d99",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 11:31:23 2026 \u002B0200",
-        "message": "perf: compare numbers without boxing in \u0060IsEqualTo\u0060 (#1786)"
-      },
-      {
-        "sha": "f81fa443ff220fae1d991babf7e02b45a43f965e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
-        "message": "perf: trim the subject expression only when it is read (#1787)"
-      },
-      {
-        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
-        "message": "perf: share parsed regexes between expectations (#1788)"
-      },
-      {
-        "sha": "d79dbb79baa8b3b5b170c885e4ad77ee368fcb41",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
-        "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
-      },
-      {
-        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
-        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
-      },
-      {
         "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
@@ -257,13 +215,6 @@ window.BENCHMARK_DATA = {
       }
     ],
     "labels": [
-      "16e103dc",
-      "68b48fef",
-      "bb7944b0",
-      "f81fa443",
-      "d62d702f",
-      "d79dbb79",
-      "ad09d2ca",
       "25bdf4e4",
       "bea504d5"
     ],
@@ -272,13 +223,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          22044.231294904435,
-          22267.93892963116,
-          18613.670900472007,
-          21211.297137920672,
-          14971.154263814291,
-          20524.094112141927,
-          16868.844968159992,
           181.82756209373474,
           306.9443253449031
         ],
@@ -292,13 +236,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          9592,
-          9592,
-          9592,
-          9592,
-          9592,
-          9592,
-          9592,
           600,
           600
         ],
@@ -315,13 +252,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1796.3553591410318,
-          1804.8023882548014,
-          2094.0126187460764,
-          1937.8559629000151,
-          967.6885364239032,
-          1776.432496770223,
-          1610.1938510894774,
           331.0620517730713,
           504.2283857890538
         ],
@@ -335,13 +265,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          2008,
-          2008,
-          2008,
-          2008,
-          2008,
-          2008,
-          2008,
           2008,
           2008
         ],
@@ -358,13 +281,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          1697.752034847553,
-          1705.5915941874187,
-          2280.5935554504395,
-          1843.7720570197473,
-          994.163479868571,
-          1687.0703859965006,
-          1451.2873424802508,
           261.37859092439925,
           408.87290208680287
         ],
@@ -378,13 +294,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
-          1064,
-          1064,
-          1064,
-          1064,
-          1064,
-          1064,
-          1064,
           1064,
           1064
         ],
