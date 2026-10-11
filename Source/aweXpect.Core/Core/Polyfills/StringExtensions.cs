@@ -75,14 +75,20 @@ internal static class StringExtensionMethods
 			return @this.Replace(oldValue, newValue);
 		}
 
+		int index = @this.IndexOf(oldValue, 0, comparisonType);
+		if (index < 0)
+		{
+			// Like the overload with a comparison type on newer frameworks, which returns the instance itself.
+			return @this;
+		}
+
 		StringBuilder sb = new();
 		int start = 0;
-		int index;
-		while ((index = @this.IndexOf(oldValue, start, comparisonType)) >= 0)
+		do
 		{
 			sb.Append(@this, start, index - start).Append(newValue);
 			start = index + oldValue.Length;
-		}
+		} while ((index = @this.IndexOf(oldValue, start, comparisonType)) >= 0);
 
 		return sb.Append(@this, start, @this.Length - start).ToString();
 	}
