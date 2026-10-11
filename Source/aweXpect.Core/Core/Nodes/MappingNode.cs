@@ -327,17 +327,17 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	}
 
 	/// <inheritdoc cref="MemberResult" />
-	private sealed class MemberResult<TValue>(ConstraintResult inner, TValue value) : MemberResult(inner)
+	private sealed class MemberResult<TValue>(ConstraintResult inner, TValue memberValue) : MemberResult(inner)
 	{
-		public override bool TryGetStoredValue<TStored>(out TStored? storedValue) where TStored : default
+		public override bool TryGetStoredValue<TStored>(out TStored? value) where TStored : default
 		{
-			if (value is TStored typedValue)
+			if (memberValue is TStored typedValue)
 			{
-				storedValue = typedValue;
+				value = typedValue;
 				return true;
 			}
 
-			storedValue = default;
+			value = default;
 			return typeof(TStored).IsAssignableFrom(typeof(TValue));
 		}
 	}
