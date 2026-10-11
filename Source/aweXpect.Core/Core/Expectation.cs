@@ -71,7 +71,7 @@ public abstract class Expectation
 	public override string? ToString()
 		=> base.ToString();
 
-	internal abstract Task<Result> GetResult(int index);
+	internal abstract ValueTask<Result> GetResult(int index);
 
 	/// <summary>
 	///     Ends the evaluation, once the failure message no longer reads the collections it materialized.
@@ -171,7 +171,7 @@ public abstract class Expectation
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 
 		/// <inheritdoc />
-		internal override async Task<Result> GetResult(int index)
+		internal override async ValueTask<Result> GetResult(int index)
 		{
 			(Expectation Expectation, Result Result)[] results = new (Expectation, Result)[_expectations.Length];
 			Exception? failureCause = null;

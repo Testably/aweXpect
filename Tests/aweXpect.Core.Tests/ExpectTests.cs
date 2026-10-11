@@ -898,8 +898,8 @@ public class ExpectTests
 
 	private sealed class MyExpectation(Expectation.Result result, params ResultContext[] contexts) : Expectation
 	{
-		internal override Task<Result> GetResult(int index)
-			=> Task.FromResult(new Result(result.Index, result.SubjectLine,
+		internal override ValueTask<Result> GetResult(int index)
+			=> new(new Result(result.Index, result.SubjectLine,
 				new WithContexts(result.ConstraintResult, contexts)));
 
 		internal override Task EndEvaluation()
