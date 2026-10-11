@@ -48,6 +48,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -58,7 +64,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -72,7 +79,8 @@ window.BENCHMARK_DATA = {
           7007.373010762532,
           12983.394603474935,
           10084.662989298502,
-          6555.821635564168
+          6555.821635564168,
+          12535.305913289389
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -91,6 +99,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040
         ],
         "borderColor": "#63A2AC",
@@ -113,7 +122,8 @@ window.BENCHMARK_DATA = {
           187409.99231770833,
           359474.48984375,
           258528.38291015624,
-          189413.85319010416
+          189413.85319010416,
+          374195.22265625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -132,7 +142,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590287,
-          590224
+          590224,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -154,7 +165,8 @@ window.BENCHMARK_DATA = {
           10557.885479518345,
           19355.007954915363,
           14237.522770690917,
-          12166.199898856026
+          12166.199898856026,
+          18772.20353581355
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -166,6 +178,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -235,6 +248,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -245,7 +264,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -259,7 +279,8 @@ window.BENCHMARK_DATA = {
           14971.154263814291,
           20524.094112141927,
           16868.844968159992,
-          181.82756209373474
+          181.82756209373474,
+          306.9443253449031
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -278,6 +299,7 @@ window.BENCHMARK_DATA = {
           9592,
           9592,
           9592,
+          600,
           600
         ],
         "borderColor": "#63A2AC",
@@ -300,7 +322,8 @@ window.BENCHMARK_DATA = {
           967.6885364239032,
           1776.432496770223,
           1610.1938510894774,
-          331.0620517730713
+          331.0620517730713,
+          504.2283857890538
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -312,6 +335,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -341,7 +365,8 @@ window.BENCHMARK_DATA = {
           994.163479868571,
           1687.0703859965006,
           1451.2873424802508,
-          261.37859092439925
+          261.37859092439925,
+          408.87290208680287
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -353,6 +378,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5000,6 +5026,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -5773,7 +5805,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -6550,7 +6583,8 @@ window.BENCHMARK_DATA = {
           92.09907669287462,
           159.01998606749945,
           119.79168168703715,
-          102.63410041332244
+          102.63410041332244,
+          145.90668115615844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7332,6 +7366,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512
         ],
         "borderColor": "#63A2AC",
@@ -8117,7 +8152,8 @@ window.BENCHMARK_DATA = {
           147.03668247736417,
           255.07114610671997,
           204.0382374048233,
-          183.83041546344757
+          183.83041546344757,
+          253.06234607696533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8310,6 +8346,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -8965,7 +9002,8 @@ window.BENCHMARK_DATA = {
           147.38542197545368,
           251.19252502123516,
           202.0940637077604,
-          140.15554475784302
+          140.15554475784302,
+          245.82162682215372
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8977,6 +9015,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9090,6 +9129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -9100,7 +9145,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -9114,7 +9160,8 @@ window.BENCHMARK_DATA = {
           163.601525919778,
           300.61422910690305,
           202.27120525042216,
-          170.37307264123643
+          170.37307264123643,
+          284.33359142450183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9133,6 +9180,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576
         ],
         "borderColor": "#63A2AC",
@@ -9155,7 +9203,8 @@ window.BENCHMARK_DATA = {
           316.5562982899802,
           542.7052757898966,
           412.9906762327467,
-          413.9302067756653
+          413.9302067756653,
+          545.3726666768392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9167,6 +9216,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9196,7 +9246,8 @@ window.BENCHMARK_DATA = {
           190.8458044687907,
           343.9997938156128,
           276.31743211746215,
-          221.40054513726915
+          221.40054513726915,
+          339.0808546702067
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9208,6 +9259,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -13855,6 +13907,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -14628,7 +14686,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -15405,7 +15464,8 @@ window.BENCHMARK_DATA = {
           341.3065070424761,
           651.3049010594685,
           499.8275589261736,
-          377.7996959319481
+          377.7996959319481,
+          649.0716806139264
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16187,6 +16247,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864
         ],
         "borderColor": "#63A2AC",
@@ -16972,7 +17033,8 @@ window.BENCHMARK_DATA = {
           746.8850107192993,
           1377.3765979494367,
           1093.4844435283117,
-          915.3745296918429
+          915.3745296918429,
+          1393.0922468821207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17754,6 +17816,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -17820,7 +17883,8 @@ window.BENCHMARK_DATA = {
           366.1082080523173,
           645.6157728195191,
           511.57717418670654,
-          409.44116151332855
+          409.44116151332855,
+          660.1025011062623
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17832,6 +17896,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -22523,6 +22588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -23296,7 +23367,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -24073,7 +24145,8 @@ window.BENCHMARK_DATA = {
           566.3653113047282,
           1004.2887246449789,
           828.8989026387533,
-          392.56831844036395
+          392.56831844036395,
+          655.6204875310262
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24855,6 +24928,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912
         ],
         "borderColor": "#63A2AC",
@@ -25640,7 +25714,8 @@ window.BENCHMARK_DATA = {
           10944.914141845704,
           27059.849483235677,
           16400.73519083659,
-          11769.582413991293
+          11769.582413991293,
+          27887.573141915458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26422,7 +26497,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26488,7 +26564,8 @@ window.BENCHMARK_DATA = {
           444.03315149034773,
           795.810476175944,
           625.2940127690633,
-          482.3008575439453
+          482.3008575439453,
+          804.692634264628
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26500,6 +26577,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -26961,6 +27039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -27029,7 +27113,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -27101,7 +27186,8 @@ window.BENCHMARK_DATA = {
           402.8931168556213,
           711.3378532273429,
           561.8075871149699,
-          445.76871263980865
+          445.76871263980865,
+          744.3005462793203
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27178,6 +27264,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848
         ],
         "borderColor": "#63A2AC",
@@ -27258,7 +27345,8 @@ window.BENCHMARK_DATA = {
           32037.00215657552,
           83777.21427408855,
           51433.28704364483,
-          31058.216958852914
+          31058.216958852914,
+          82880.52755972055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27335,7 +27423,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27745,6 +27834,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -27813,7 +27908,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -27885,7 +27981,8 @@ window.BENCHMARK_DATA = {
           119.93977559529819,
           178.88042221750533,
           156.0302222887675,
-          120.64632336298625
+          120.64632336298625,
+          183.5748676141103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27962,6 +28059,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552
         ],
         "borderColor": "#63A2AC",
@@ -28042,7 +28140,8 @@ window.BENCHMARK_DATA = {
           10934.848035539899,
           30092.941772460938,
           15035.3517964681,
-          12654.644130452474
+          12654.644130452474,
+          32423.43391113281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28119,6 +28218,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -28185,7 +28285,8 @@ window.BENCHMARK_DATA = {
           133.22090535504478,
           240.8700272242228,
           183.7677354812622,
-          147.67371101379393
+          147.67371101379393,
+          255.7457534154256
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28197,6 +28298,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -28310,6 +28412,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -28320,7 +28428,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -28334,7 +28443,8 @@ window.BENCHMARK_DATA = {
           327.77489624704634,
           611.9652239935739,
           484.3638657251994,
-          335.4380095163981
+          335.4380095163981,
+          619.9793544769287
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28353,6 +28463,7 @@ window.BENCHMARK_DATA = {
           728,
           728,
           728,
+          696,
           696
         ],
         "borderColor": "#63A2AC",
@@ -28375,7 +28486,8 @@ window.BENCHMARK_DATA = {
           227.01778138478596,
           357.3124629020691,
           307.95345500310265,
-          263.01649208068847
+          263.01649208068847,
+          373.8811431271689
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28387,6 +28499,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -28416,7 +28529,8 @@ window.BENCHMARK_DATA = {
           226.67296517690022,
           404.22499952316286,
           345.89806168874105,
-          264.56047274271646
+          264.56047274271646,
+          398.0087053934733
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28428,6 +28542,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -28497,6 +28612,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -28507,7 +28628,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -28521,7 +28643,8 @@ window.BENCHMARK_DATA = {
           572.6790697915213,
           1031.8272314071655,
           872.7421139399211,
-          640.7282141367594
+          640.7282141367594,
+          1151.8307791392008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28540,6 +28663,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          1720,
           1720
         ],
         "borderColor": "#63A2AC",
@@ -28562,7 +28686,8 @@ window.BENCHMARK_DATA = {
           1129.5604832512993,
           1873.955077234904,
           1627.4117516108922,
-          1279.0739683004526
+          1279.0739683004526,
+          1887.3938435872396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28574,6 +28699,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -28603,7 +28729,8 @@ window.BENCHMARK_DATA = {
           527.6286060626691,
           886.0307658513387,
           795.0054859161377,
-          584.2220613039457
+          584.2220613039457,
+          949.4310310999552
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28615,6 +28742,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -28684,6 +28812,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -28694,7 +28828,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -28708,7 +28843,8 @@ window.BENCHMARK_DATA = {
           7416.879830932618,
           13758.310784476143,
           9684.503852844238,
-          7080.700775733361
+          7080.700775733361,
+          12135.059914725167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28727,6 +28863,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720
         ],
         "borderColor": "#63A2AC",
@@ -28749,7 +28886,8 @@ window.BENCHMARK_DATA = {
           19892.586547851562,
           41125.15801595052,
           27674.64548746745,
-          23994.497277396065
+          23994.497277396065,
+          42559.10313197545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28768,7 +28906,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18608
+          18608,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28790,7 +28929,8 @@ window.BENCHMARK_DATA = {
           6714.693571472168,
           11382.084618201623,
           8296.059771024264,
-          6847.346667698452
+          6847.346667698452,
+          11270.076776776996
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28802,6 +28942,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -28871,6 +29012,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
         "message": "chore: count the items of an array in the items count benchmark (#1810)"
+      },
+      {
+        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
+        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
       }
     ],
     "labels": [
@@ -28881,7 +29028,8 @@ window.BENCHMARK_DATA = {
       "d62d702f",
       "d79dbb79",
       "ad09d2ca",
-      "25bdf4e4"
+      "25bdf4e4",
+      "bea504d5"
     ],
     "datasets": [
       {
@@ -28895,7 +29043,8 @@ window.BENCHMARK_DATA = {
           12929.774574788411,
           23753.03332737514,
           16683.66478553185,
-          14552.560348510742
+          14552.560348510742,
+          23663.978812081474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28914,6 +29063,7 @@ window.BENCHMARK_DATA = {
           3064,
           3064,
           3064,
+          2640,
           2640
         ],
         "borderColor": "#63A2AC",
@@ -28936,7 +29086,8 @@ window.BENCHMARK_DATA = {
           28692.68379865374,
           60304.13727678572,
           39463.85021972656,
-          33270.43501281738
+          33270.43501281738,
+          61104.8171648298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28955,7 +29106,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28977,7 +29129,8 @@ window.BENCHMARK_DATA = {
           13156.13920694987,
           22183.806962076822,
           16107.392168317523,
-          13545.327889578683
+          13545.327889578683,
+          22388.99493408203
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28989,6 +29142,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
