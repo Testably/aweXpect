@@ -125,7 +125,35 @@ internal static class StringExtensions
 			return null;
 		}
 
-		return string.Join("\n", value.RemoveNewlineStyle().Split('\n').Select(line => line.TrimStart()));
+		string normalized = value.RemoveNewlineStyle();
+		if (!HasIndentedLine(normalized))
+		{
+			return normalized;
+		}
+
+		return string.Join("\n", normalized.Split('\n').Select(line => line.TrimStart()));
+	}
+
+	private static bool HasIndentedLine(string value)
+	{
+		int lineStart = 0;
+		while (lineStart < value.Length)
+		{
+			if (char.IsWhiteSpace(value[lineStart]))
+			{
+				return true;
+			}
+
+			int newline = value.IndexOf('\n', lineStart);
+			if (newline < 0)
+			{
+				return false;
+			}
+
+			lineStart = newline + 1;
+		}
+
+		return false;
 	}
 
 	[return: NotNullIfNotNull(nameof(value))]
@@ -134,6 +162,11 @@ internal static class StringExtensions
 		if (value == null)
 		{
 			return null;
+		}
+
+		if (value.IndexOf('\r') < 0)
+		{
+			return value;
 		}
 
 		return value.Replace("\r\n", "\n", StringComparison.Ordinal)
