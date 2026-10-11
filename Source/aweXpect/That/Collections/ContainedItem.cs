@@ -75,6 +75,23 @@ internal abstract class ContainedItem<TItem>
 	}
 }
 
+#if NET8_0_OR_GREATER
+/// <summary>
+///     An item that searches the items of a collection directly.
+/// </summary>
+/// <remarks>
+///     Only an item whose comparison runs no code of the caller searches directly, as the caller could modify a list
+///     while it is searched, which only its enumerator detects.
+/// </remarks>
+internal interface IDirectlySearchedItem<TItem>
+{
+	/// <summary>
+	///     The index of the first of the <paramref name="items" /> that matches, or <c>-1</c> when none does.
+	/// </summary>
+	int IndexIn(ReadOnlySpan<TItem> items);
+}
+#endif
+
 /// <summary>
 ///     An item that is matched synchronously.
 /// </summary>
@@ -292,10 +309,30 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	///     The <paramref name="item" /> compared ordinally, like the options compare it without an option.
 	/// </summary>
 	private sealed class OrdinalStringItem(EqualStringItem item) : SynchronouslyMatchedItem<string?>
+#if NET8_0_OR_GREATER
+		, IDirectlySearchedItem<string?>
+#endif
 	{
 		/// <inheritdoc />
 		public override bool IsMatch(string? value)
 			=> string.Equals(value, item.Expected);
+
+#if NET8_0_OR_GREATER
+		/// <inheritdoc />
+		public int IndexIn(ReadOnlySpan<string?> items)
+		{
+			string? expected = item.Expected;
+			for (int index = 0; index < items.Length; index++)
+			{
+				if (string.Equals(items[index], expected))
+				{
+					return index;
+				}
+			}
+
+			return -1;
+		}
+#endif
 
 		/// <inheritdoc />
 		public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)

@@ -50,6 +50,31 @@ internal readonly struct CollectionItems<TItem>
 	/// </remarks>
 	public Enumerator GetEnumerator() => new(Items, _isMaterialized);
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     The items of an array or a <see cref="List{T}" />, which can be searched without an enumerator.
+	/// </summary>
+	/// <remarks>
+	///     A <see cref="List{T}" /> detects a modification only in its enumerator, so its items must only be searched
+	///     without running code of the caller.
+	/// </remarks>
+	public bool TryGetSpan(out ReadOnlySpan<TItem> items)
+	{
+		switch (_typed)
+		{
+			case TItem[] array:
+				items = new ReadOnlySpan<TItem>(array);
+				return true;
+			case List<TItem> list:
+				items = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+				return true;
+			default:
+				items = default;
+				return false;
+		}
+	}
+#endif
+
 	/// <summary>
 	///     The items of the <paramref name="actual" /> subject without materializing them, e.g. for a collection that
 	///     knows its number of items.
