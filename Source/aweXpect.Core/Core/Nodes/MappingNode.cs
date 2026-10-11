@@ -180,7 +180,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			memberResult = await IsMetByMember(member, context, cancellationToken);
 		}
 
-		return memberResult.UseValue(value);
+		return new MemberResult<TValue>(memberResult, value);
 	}
 
 	/// <inheritdoc />
@@ -251,9 +251,94 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	{
 		if (combinedResult == null)
 		{
-			return result.PrependExpectationText(_appendMemberText, ContextMember);
+			return result is MemberResult memberResult
+				? memberResult.PrependMemberText(_appendMemberText, ContextMember)
+				: result.PrependExpectationText(_appendMemberText, ContextMember);
 		}
 
 		return new MappingResult(combinedResult, result, _appendMemberText, ContextMember);
+	}
+
+	/// <summary>
+	///     The result of the expectations on the member, which keeps the value they were evaluated on, and prepends the
+	///     text of the member once it is combined, so that it is wrapped only once for every evaluation.
+	/// </summary>
+	/// <remarks>
+	///     It behaves like a value of <see cref="ConstraintResultExtensions.UseValue{T}" />, which is wrapped by
+	///     <see cref="ConstraintResultExtensions.PrependExpectationText(ConstraintResult, Action{StringBuilder})" />
+	///     once combined.
+	/// </remarks>
+	private abstract class MemberResult : ConstraintResult
+	{
+		private string? _member;
+		private Action<StringBuilder>? _prefix;
+
+		protected MemberResult(ConstraintResult inner) : base(inner.FurtherProcessingStrategy)
+		{
+			Inner = inner;
+			Outcome = inner.Outcome;
+		}
+
+		protected ConstraintResult Inner { get; }
+
+		public override Exception? FailureCause => Inner.FailureCause;
+
+		public override string? LeadingSubject => Inner.LeadingSubject;
+
+		public override string? TrailingSubject => Inner.TrailingSubject;
+
+		internal override bool IsExpectationOnly => Inner.IsExpectationOnly;
+
+		internal override bool IsNegatedAnd => Inner.IsNegatedAnd;
+
+		public MemberResult PrependMemberText(Action<StringBuilder> prefix, string? member)
+		{
+			_prefix = prefix;
+			_member = member;
+			return this;
+		}
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (_prefix is null)
+			{
+				Inner.AppendExpectation(stringBuilder, indentation);
+				return;
+			}
+
+			StringBuilder prefix = new();
+			_prefix(prefix);
+			stringBuilder.AppendSeparatedExpectation(prefix.ToString(),
+				sb => Inner.AppendExpectation(sb, indentation));
+		}
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+			=> Inner.AppendResult(stringBuilder, indentation);
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, Inner);
+
+		public override ConstraintResult Negate()
+		{
+			Inner.Negate();
+			Outcome = Inner.Outcome;
+			return this;
+		}
+	}
+
+	/// <inheritdoc cref="MemberResult" />
+	private sealed class MemberResult<TValue>(ConstraintResult inner, TValue memberValue) : MemberResult(inner)
+	{
+		public override bool TryGetStoredValue<TStored>(out TStored? value) where TStored : default
+		{
+			if (memberValue is TStored typedValue)
+			{
+				value = typedValue;
+				return true;
+			}
+
+			value = default;
+			return typeof(TStored).IsAssignableFrom(typeof(TValue));
+		}
 	}
 }
