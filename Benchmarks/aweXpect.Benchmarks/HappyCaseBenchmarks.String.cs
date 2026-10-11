@@ -18,7 +18,7 @@ public partial class HappyCaseBenchmarks
 
 	[Benchmark]
 	public AndConstraint<StringAssertions> String_FluentAssertions()
-		=> _stringSubject.Should().BeEquivalentTo(_stringExpectation, o => o.IgnoringCase());
+		=> _stringSubject.Should().BeEquivalentTo(_stringExpectation);
 
 	[Benchmark]
 	public async Task<string?> String_TUnit()
