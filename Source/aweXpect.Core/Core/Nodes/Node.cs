@@ -50,7 +50,9 @@ internal abstract class Node
 	/// </summary>
 	/// <remarks>
 	///     A continuation such as <c>Which</c> applies only to the operand in front of it, so that <c>A or B which C</c>
-	///     is evaluated as <c>A or (B which C)</c>, like it reads.
+	///     is evaluated as <c>A or (B which C)</c>, like it reads.<br />
+	///     The <paramref name="state" /> is passed to <paramref name="replace" />, so that it needs no closure.
 	/// </remarks>
-	public virtual Node ReplaceRightMostOperand(Func<Node, Node> replace) => replace(this);
+	public virtual Node ReplaceRightMostOperand<TState>(TState state, Func<TState, Node, Node> replace)
+		=> replace(state, this);
 }

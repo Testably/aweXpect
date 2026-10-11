@@ -38,9 +38,9 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 		=> Inner.AddNode(node, separator);
 
 	/// <inheritdoc />
-	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
+	public override Node ReplaceRightMostOperand<TState>(TState state, Func<TState, Node, Node> replace)
 	{
-		Inner = Inner.ReplaceRightMostOperand(replace);
+		Inner = Inner.ReplaceRightMostOperand(state, replace);
 		return this;
 	}
 

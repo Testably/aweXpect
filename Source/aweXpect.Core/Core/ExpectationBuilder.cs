@@ -761,8 +761,9 @@ public abstract class ExpectationBuilder
 		string? contextMember = null)
 	{
 		contextMember ??= subjectName == DefaultCurrentSubject ? null : subjectName;
-		AddWhichNode(parentNode => new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator,
-			negateMemberOnly, subjectName, contextMember));
+		AddWhichNode((memberAccessor, separator, negateMemberOnly, subjectName, contextMember),
+			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.memberAccessor,
+				state.separator, state.negateMemberOnly, state.subjectName, state.contextMember));
 
 		if (subjectName != null)
 		{
@@ -798,7 +799,9 @@ public abstract class ExpectationBuilder
 		Func<TSource, Task<TTarget?>> asyncMemberAccessor,
 		string? separator = null)
 	{
-		AddWhichNode(parentNode => new WhichNode<TSource, TTarget>(parentNode, asyncMemberAccessor, separator));
+		AddWhichNode((asyncMemberAccessor, separator),
+			static (state, parentNode) => new WhichNode<TSource, TTarget>(parentNode, state.asyncMemberAccessor,
+				state.separator));
 		_it = DefaultCurrentSubject;
 		ExpectationGrammars &= ~(ExpectationGrammars.Introduced | ExpectationGrammars.Plural);
 		return this;
@@ -808,7 +811,10 @@ public abstract class ExpectationBuilder
 	///     Replaces the right-most operand with the which node from <paramref name="createWhichNode" />, which continues
 	///     it, and collects the following expectations for the member until the which node is completed.
 	/// </summary>
-	private void AddWhichNode(Func<Node?, Node> createWhichNode)
+	/// <remarks>
+	///     The <paramref name="state" /> is passed to <paramref name="createWhichNode" />, so that it needs no closure.
+	/// </remarks>
+	private void AddWhichNode<TState>(TState state, Func<TState, Node?, Node> createWhichNode)
 	{
 		CompleteWhichNode();
 		if (_subjectContexts is not null)
@@ -817,14 +823,13 @@ public abstract class ExpectationBuilder
 			_subjectContexts.Current = null;
 		}
 
-		Node? whichNode = null;
-		Node root = _node.ReplaceRightMostOperand(operand =>
-		{
-			whichNode = createWhichNode(operand is ExpectationNode e && e.IsEmpty() ? null : operand);
-			return whichNode;
-		});
-		_pendingWhichNode = whichNode!;
-		_pendingWhichRoot = root;
+		_pendingWhichRoot = _node.ReplaceRightMostOperand((Builder: this, State: state, Create: createWhichNode),
+			static (s, operand) =>
+			{
+				Node whichNode = s.Create(s.State, operand is ExpectationNode e && e.IsEmpty() ? null : operand);
+				s.Builder._pendingWhichNode = whichNode;
+				return whichNode;
+			});
 		_node = new ExpectationNode();
 	}
 
