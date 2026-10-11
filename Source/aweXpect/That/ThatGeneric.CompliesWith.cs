@@ -76,16 +76,31 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			RevertPreviousNegation();
+			if (!_options.IsRepeated)
+			{
+				return ToResult(await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken), actual);
+			}
+
+			return await IsMetRepeatedly(actual, context, cancellationToken);
+		}
+
+		private async ValueTask<ConstraintResult> IsMetRepeatedly(
+			T actual,
+			IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
 			ConstraintResult? isMatch = null;
 			Outcome outcome = await _options.CheckRepeatedly(async checkContext =>
 			{
 				isMatch = await _itemExpectationBuilder.IsMetBy(actual, checkContext, cancellationToken);
 				return IsMet(isMatch);
 			}, context);
-			ConstraintResult result = KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)
-				.AppendExpectationText(AppendSuffix);
+			ConstraintResult result = ToResult(isMatch!, actual);
 			return outcome == Outcome.Undecided ? new CanceledResult(result) : result;
 		}
+
+		private ConstraintResult ToResult(ConstraintResult isMatch, T actual)
+			=> KeepSubjectAsValue(NegateIfNegated(isMatch), actual).AppendExpectationText(AppendSuffix);
 
 		/// <remarks>
 		///     The expectation text of the expectations is not aware of the negation, so the negated result of the last

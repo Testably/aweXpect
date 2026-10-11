@@ -86,10 +86,22 @@ public static partial class ThatGeneric
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause => _exception;
 
-		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+		public ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (!options.IsRepeated)
+			{
+				IsMet(actual, cancellationToken);
+				return new ValueTask<ConstraintResult>(this);
+			}
+
+			return IsMetRepeatedly(actual, context, cancellationToken);
+		}
+
+		private async ValueTask<ConstraintResult> IsMetRepeatedly(T actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
 			Outcome outcome =
 				await options.CheckRepeatedly(_ => new ValueTask<bool>(IsMet(actual, cancellationToken)), context);
 			if (outcome == Outcome.Undecided)
