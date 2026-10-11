@@ -138,6 +138,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -163,7 +169,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -192,7 +199,8 @@ window.BENCHMARK_DATA = {
           6008.487745157878,
           12182.01574925014,
           12681.288461538461,
-          5984.236339569092
+          5984.236339569092,
+          11949.23921421596
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -211,6 +219,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -263,7 +272,8 @@ window.BENCHMARK_DATA = {
           164865.90750558037,
           363085.93411458336,
           375377.16248497594,
-          159655.32875279017
+          159655.32875279017,
+          317734.1672200521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -296,6 +306,7 @@ window.BENCHMARK_DATA = {
           590288,
           590288,
           590292,
+          590287,
           590287,
           590287
         ],
@@ -334,7 +345,8 @@ window.BENCHMARK_DATA = {
           9453.429396565754,
           19538.182954915366,
           20162.528875732423,
-          9440.710860116142
+          9440.710860116142,
+          18363.406649780274
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -346,6 +358,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -478,6 +491,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -496,7 +515,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -518,7 +538,8 @@ window.BENCHMARK_DATA = {
           123.87491848071416,
           256.69204835891725,
           257.66915973027545,
-          131.9824100335439
+          131.9824100335439,
+          258.0647947629293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -530,6 +551,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -575,7 +597,8 @@ window.BENCHMARK_DATA = {
           234.25950036730086,
           475.57399603525795,
           469.1302090326945,
-          241.21692763056075
+          241.21692763056075,
+          498.2196846008301
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -587,6 +610,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -632,7 +656,8 @@ window.BENCHMARK_DATA = {
           185.16694254141586,
           379.38167701448714,
           381.059750863484,
-          192.78251388867696
+          192.78251388867696,
+          380.74772605896
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -644,6 +669,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5389,6 +5415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -6177,7 +6209,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -6969,7 +7002,8 @@ window.BENCHMARK_DATA = {
           68.3798157618596,
           136.66892782847086,
           136.44867018063863,
-          72.11893835238048
+          72.11893835238048,
+          150.34049289043134
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7751,6 +7785,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512,
           512,
           512,
@@ -8566,7 +8601,8 @@ window.BENCHMARK_DATA = {
           119.75783220926921,
           242.6371172587077,
           236.74359079769678,
-          126.05882253646851
+          126.05882253646851,
+          246.33579088846844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8759,6 +8795,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9444,7 +9481,8 @@ window.BENCHMARK_DATA = {
           121.98481566905976,
           239.9085193020957,
           242.17698702445398,
-          119.0864387512207
+          119.0864387512207,
+          232.082898412432
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9456,6 +9494,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9674,6 +9713,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -9699,7 +9744,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -9728,7 +9774,8 @@ window.BENCHMARK_DATA = {
           132.50108671188354,
           261.8913842950548,
           272.7045071919759,
-          135.08511650562286
+          135.08511650562286,
+          255.8066055615743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9747,6 +9794,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -9799,7 +9847,8 @@ window.BENCHMARK_DATA = {
           252.48387319701058,
           497.91378231048583,
           500.0435712814331,
-          261.60860800743103
+          261.60860800743103,
+          514.6204523086548
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9811,6 +9860,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9870,7 +9920,8 @@ window.BENCHMARK_DATA = {
           166.149321607181,
           321.95204523631503,
           330.08429252184357,
-          170.819456020991
+          170.819456020991,
+          349.4351605415344
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9882,6 +9933,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -14634,6 +14686,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -15422,7 +15480,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -16214,7 +16273,8 @@ window.BENCHMARK_DATA = {
           303.5720234257834,
           652.8251293182373,
           637.1459385326931,
-          320.47928110758465
+          320.47928110758465,
+          667.6777394612631
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16996,6 +17056,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -17811,7 +17872,8 @@ window.BENCHMARK_DATA = {
           640.0742763791766,
           1272.8921439307076,
           1276.0757816314697,
-          665.4013284683227
+          665.4013284683227,
+          1346.7087434132893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18608,6 +18670,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -18689,7 +18752,8 @@ window.BENCHMARK_DATA = {
           317.38511753082275,
           620.2617315928142,
           642.2587559223175,
-          340.3529185567583
+          340.3529185567583,
+          641.4606650034586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18701,6 +18765,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -23497,6 +23562,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -24285,7 +24356,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -25077,7 +25149,8 @@ window.BENCHMARK_DATA = {
           309.3676525524684,
           615.9316425323486,
           638.4253363976112,
-          318.76253509521484
+          318.76253509521484,
+          641.110576470693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25859,6 +25932,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -26674,7 +26748,8 @@ window.BENCHMARK_DATA = {
           9625.791372680664,
           27383.033630371094,
           27246.41230061849,
-          10612.282083364633
+          10612.282083364633,
+          19659.251382010323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27471,6 +27546,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -27552,7 +27628,8 @@ window.BENCHMARK_DATA = {
           402.9900842394148,
           735.6649787267049,
           764.4799856458392,
-          421.32443789641064
+          421.32443789641064,
+          728.7831924983433
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27564,6 +27641,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -28130,6 +28208,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -28213,7 +28297,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -28300,7 +28385,8 @@ window.BENCHMARK_DATA = {
           355.1784883499146,
           699.9839832442148,
           715.5047101293292,
-          339.9446242014567
+          339.9446242014567,
+          689.3239906311035
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28377,6 +28463,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -28487,7 +28574,8 @@ window.BENCHMARK_DATA = {
           28609.374947102864,
           82843.45746663412,
           83770.81937662761,
-          29237.640865071615
+          29237.640865071615,
+          62537.88469645182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28579,7 +28667,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29079,6 +29168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -29162,7 +29257,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -29249,7 +29345,8 @@ window.BENCHMARK_DATA = {
           91.21245118549892,
           184.8453151498522,
           170.73029691832406,
-          92.0068480509978
+          92.0068480509978,
+          179.0039890130361
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29326,6 +29423,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -29436,7 +29534,8 @@ window.BENCHMARK_DATA = {
           9252.98103942871,
           31177.921638997395,
           31070.30389404297,
-          9778.957535879952
+          9778.957535879952,
+          18777.75156911214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29528,7 +29627,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29609,7 +29709,8 @@ window.BENCHMARK_DATA = {
           117.9141618183681,
           237.64518140043532,
           246.6287096463717,
-          121.14518637316567
+          121.14518637316567,
+          232.7890521458217
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29621,6 +29722,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -29839,6 +29941,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -29864,7 +29972,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -29893,7 +30002,8 @@ window.BENCHMARK_DATA = {
           209.2587564468384,
           404.9899142469679,
           364.02582801183064,
-          171.6785787343979
+          171.6785787343979,
+          349.3536177476247
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29914,6 +30024,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -29964,7 +30075,8 @@ window.BENCHMARK_DATA = {
           192.96515674250466,
           352.65819464411055,
           357.75470205942787,
-          210.7459820429484
+          210.7459820429484,
+          370.19369945526125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29976,6 +30088,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -30035,7 +30148,8 @@ window.BENCHMARK_DATA = {
           194.6366732120514,
           385.6392926148006,
           384.44486538569134,
-          195.38562648636955
+          195.38562648636955,
+          430.97812007023737
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30047,6 +30161,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -30221,6 +30336,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -30246,7 +30367,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -30275,7 +30397,8 @@ window.BENCHMARK_DATA = {
           378.10105078560963,
           779.2139341990153,
           776.7095233281453,
-          378.99411950792586
+          378.99411950792586,
+          755.0948428471883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30302,6 +30425,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -30346,7 +30470,8 @@ window.BENCHMARK_DATA = {
           931.4044423784528,
           2137.1713457743326,
           1851.6033934184484,
-          929.7047791481018
+          929.7047791481018,
+          1908.2272229512532
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30358,6 +30483,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -30417,7 +30543,8 @@ window.BENCHMARK_DATA = {
           436.8862318992615,
           895.8506848017374,
           904.096083132426,
-          439.6358465353648
+          439.6358465353648,
+          964.4059581756592
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30429,6 +30556,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -30603,6 +30731,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -30628,7 +30762,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -30657,7 +30792,8 @@ window.BENCHMARK_DATA = {
           6132.615756443569,
           12208.455094473702,
           12157.254615783691,
-          6144.8363282339915
+          6144.8363282339915,
+          10765.741252354213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30676,6 +30812,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -30728,7 +30865,8 @@ window.BENCHMARK_DATA = {
           17684.48017531175,
           41752.09412841797,
           42286.62405598958,
-          18255.346239362443
+          18255.346239362443,
+          34423.131319173175
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30748,6 +30886,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -30799,7 +30938,8 @@ window.BENCHMARK_DATA = {
           5920.095540560209,
           11287.323557927059,
           11377.641211876502,
-          6079.407038007464
+          6079.407038007464,
+          10506.115076700846
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30811,6 +30951,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -30985,6 +31126,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
         "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
+      },
+      {
+        "sha": "070403687986f512fa4e8c2a817df07e4e0e6f1a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
+        "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
       }
     ],
     "labels": [
@@ -31010,7 +31157,8 @@ window.BENCHMARK_DATA = {
       "b13f28bd",
       "a3d03b7f",
       "8daee84c",
-      "3fde3e5d"
+      "3fde3e5d",
+      "07040368"
     ],
     "datasets": [
       {
@@ -31039,7 +31187,8 @@ window.BENCHMARK_DATA = {
           5761.574476114909,
           11656.340883695162,
           11547.400995890299,
-          5846.882790120443
+          5846.882790120443,
+          10171.969947306316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31066,6 +31215,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208,
@@ -31110,7 +31260,8 @@ window.BENCHMARK_DATA = {
           26027.131057739258,
           61196.80230243389,
           61356.25277005709,
-          26563.8043082101
+          26563.8043082101,
+          49052.25335286458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31144,6 +31295,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -31181,7 +31333,8 @@ window.BENCHMARK_DATA = {
           11846.722054036458,
           22322.84870323768,
           22271.094059535437,
-          12266.409797159831
+          12266.409797159831,
+          20410.07602335612
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31193,6 +31346,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
