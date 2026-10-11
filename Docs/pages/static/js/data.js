@@ -108,6 +108,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -128,7 +134,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -152,7 +159,8 @@ window.BENCHMARK_DATA = {
           12785.174252827963,
           12646.42695399693,
           6052.38675994873,
-          12918.435275738057
+          12918.435275738057,
+          5935.649098909818
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -171,6 +179,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -213,7 +222,8 @@ window.BENCHMARK_DATA = {
           362531.04908854165,
           366663.6552734375,
           167960.37669270832,
-          379429.8074079241
+          379429.8074079241,
+          169939.83951822916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -242,7 +252,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590288,
-          590287
+          590287,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -274,7 +285,8 @@ window.BENCHMARK_DATA = {
           19877.455685424804,
           19032.301462026742,
           9529.85408935547,
-          19715.59590802874
+          19715.59590802874,
+          9873.128251211983
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -286,6 +298,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -383,6 +396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -396,7 +415,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -413,7 +433,8 @@ window.BENCHMARK_DATA = {
           308.2851254599435,
           281.621517590114,
           130.75889479196988,
-          293.21762020247326
+          293.21762020247326,
+          133.62807723192068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -425,6 +446,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -460,7 +482,8 @@ window.BENCHMARK_DATA = {
           526.7330489476522,
           471.6873571872711,
           265.6242652257284,
-          534.2417183558147
+          534.2417183558147,
+          243.22980911391122
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -472,6 +495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -507,7 +531,8 @@ window.BENCHMARK_DATA = {
           395.5228319168091,
           380.6131037076314,
           195.9252825578054,
-          412.8335898717244
+          412.8335898717244,
+          202.92691683769226
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -519,6 +544,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5229,6 +5255,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -6012,7 +6044,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -6799,7 +6832,8 @@ window.BENCHMARK_DATA = {
           152.6473163286845,
           150.22545315424603,
           72.63171771594456,
-          156.84107310431344
+          156.84107310431344,
+          75.71810007946831
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7581,6 +7615,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512,
           512,
           512,
@@ -8386,7 +8421,8 @@ window.BENCHMARK_DATA = {
           266.7450994173686,
           241.35142548878989,
           130.70497129758198,
-          275.87508427302043
+          275.87508427302043,
+          127.68469497362773
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8579,6 +8615,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9254,7 +9291,8 @@ window.BENCHMARK_DATA = {
           258.96040428601776,
           246.56834882100424,
           123.13897272745768,
-          258.54193642934166
+          258.54193642934166,
+          125.79411425590516
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9266,6 +9304,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9449,6 +9488,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -9469,7 +9514,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -9493,7 +9539,8 @@ window.BENCHMARK_DATA = {
           265.6070151646932,
           277.08701848983765,
           156.6057645540971,
-          284.38788529804776
+          284.38788529804776,
+          141.21925473213196
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9512,6 +9559,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -9554,7 +9602,8 @@ window.BENCHMARK_DATA = {
           502.54338143666587,
           552.4785277048746,
           259.7288433143071,
-          588.919128036499
+          588.919128036499,
+          254.1780743598938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9566,6 +9615,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9615,7 +9665,8 @@ window.BENCHMARK_DATA = {
           315.6501748561859,
           351.4092748846327,
           182.43414576237018,
-          377.26016019185386
+          377.26016019185386,
+          171.72276307741802
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9627,6 +9678,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -14344,6 +14396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -15127,7 +15185,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -15914,7 +15973,8 @@ window.BENCHMARK_DATA = {
           620.0752228418986,
           635.0638177235921,
           325.54806896356433,
-          683.6141338348389
+          683.6141338348389,
+          326.46587060292563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16696,6 +16756,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -17501,7 +17562,8 @@ window.BENCHMARK_DATA = {
           1402.2821521759033,
           1332.4344986506871,
           671.8430512292044,
-          1443.0494140625
+          1443.0494140625,
+          663.6142857551574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18293,6 +18355,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -18369,7 +18432,8 @@ window.BENCHMARK_DATA = {
           648.8908589908054,
           642.2845128377279,
           317.47653432992786,
-          674.4210397856576
+          674.4210397856576,
+          328.80627632141113
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18381,6 +18445,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -23142,6 +23207,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -23925,7 +23996,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -24712,7 +24784,8 @@ window.BENCHMARK_DATA = {
           629.2487077713013,
           658.6403460184733,
           313.81018338884627,
-          666.6157880783081
+          666.6157880783081,
+          332.36557775277356
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25494,6 +25567,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -26299,7 +26373,8 @@ window.BENCHMARK_DATA = {
           27947.321333821616,
           27836.36817626953,
           9910.699102129254,
-          28164.63352094378
+          28164.63352094378,
+          9539.30037689209
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27091,6 +27166,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -27167,7 +27243,8 @@ window.BENCHMARK_DATA = {
           799.5999504089356,
           814.3094218571981,
           379.94800013762256,
-          845.2547512054443
+          845.2547512054443,
+          396.73974044506366
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27179,6 +27256,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -27710,6 +27788,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -27788,7 +27872,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -27870,7 +27955,8 @@ window.BENCHMARK_DATA = {
           748.1129201253256,
           721.5044732411702,
           349.0985143865858,
-          769.441516939799
+          769.441516939799,
+          367.3472564697266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27947,6 +28033,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -28047,7 +28134,8 @@ window.BENCHMARK_DATA = {
           84880.90716959635,
           83034.60528157552,
           29670.150788370767,
-          86918.75610351562
+          86918.75610351562,
+          28238.067531040735
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28134,7 +28222,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28604,6 +28693,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -28682,7 +28777,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -28764,7 +28860,8 @@ window.BENCHMARK_DATA = {
           190.17030108769734,
           209.11784984270733,
           101.30879041978291,
-          193.69935744603475
+          193.69935744603475,
+          101.42472458680471
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28841,6 +28938,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -28941,7 +29039,8 @@ window.BENCHMARK_DATA = {
           31513.383405412947,
           31131.67742513021,
           9764.495108032226,
-          33305.731905110675
+          33305.731905110675,
+          10056.986204020182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29028,7 +29127,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29104,7 +29204,8 @@ window.BENCHMARK_DATA = {
           232.65089921156564,
           251.37362850629367,
           130.64191930634635,
-          267.91786476543973
+          267.91786476543973,
+          188.00517043700586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29116,6 +29217,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -29299,6 +29401,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -29319,7 +29427,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -29343,7 +29452,8 @@ window.BENCHMARK_DATA = {
           438.75073738098143,
           431.9166880387526,
           210.32731335503715,
-          448.5754961967468
+          448.5754961967468,
+          215.55814719200134
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29364,6 +29474,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -29404,7 +29515,8 @@ window.BENCHMARK_DATA = {
           385.7267467180888,
           383.10490332330977,
           202.2146616299947,
-          401.2828366915385
+          401.2828366915385,
+          192.45158108643122
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29416,6 +29528,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -29465,7 +29578,8 @@ window.BENCHMARK_DATA = {
           406.482049147288,
           408.0639473710741,
           194.10456383228302,
-          441.5131752649943
+          441.5131752649943,
+          196.643011535917
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29477,6 +29591,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -29616,6 +29731,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -29636,7 +29757,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -29660,7 +29782,8 @@ window.BENCHMARK_DATA = {
           1050.0359012058802,
           739.5118446667989,
           405.19137471062794,
-          817.1946416219075
+          817.1946416219075,
+          386.24306732813517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29687,6 +29810,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688
@@ -29721,7 +29845,8 @@ window.BENCHMARK_DATA = {
           1904.2053008760724,
           1919.9408293406168,
           1054.864015034267,
-          1992.4678550720214
+          1992.4678550720214,
+          1016.9913421358381
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29733,6 +29858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -29782,7 +29908,8 @@ window.BENCHMARK_DATA = {
           913.3872331619262,
           964.9470352172851,
           475.2987366358439,
-          1010.3483206885202
+          1010.3483206885202,
+          485.21077060699463
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29794,6 +29921,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -29933,6 +30061,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -29953,7 +30087,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -29977,7 +30112,8 @@ window.BENCHMARK_DATA = {
           12146.282791137695,
           11906.806794386644,
           6208.651368277414,
-          12409.56403879019
+          12409.56403879019,
+          6180.112842014858
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29996,6 +30132,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -30038,7 +30175,8 @@ window.BENCHMARK_DATA = {
           41289.762925368086,
           41345.34637451172,
           18534.45428059896,
-          42824.391392299105
+          42824.391392299105,
+          17978.845567975724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30058,6 +30196,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -30099,7 +30238,8 @@ window.BENCHMARK_DATA = {
           11512.17822011312,
           11165.123045701246,
           5966.626290541429,
-          11357.061743600028
+          11357.061743600028,
+          5953.034171471229
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30111,6 +30251,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -30250,6 +30391,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 19:14:06 2026 \u002B0200",
         "message": "perf: stop searching a string in \u0060Contains\u0060 once the outcome is decided (#1818)"
+      },
+      {
+        "sha": "b1b6a901717e3eaf634189f77d5844a2a0279fa5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 19:31:33 2026 \u002B0200",
+        "message": "perf: compare booleans without boxing (#1819)"
       }
     ],
     "labels": [
@@ -30270,7 +30417,8 @@ window.BENCHMARK_DATA = {
       "553d47fe",
       "21e72b87",
       "bfea2a41",
-      "579ea798"
+      "579ea798",
+      "b1b6a901"
     ],
     "datasets": [
       {
@@ -30294,7 +30442,8 @@ window.BENCHMARK_DATA = {
           23500.70990862165,
           11387.974061148507,
           5784.08516031901,
-          11878.125629970005
+          11878.125629970005,
+          5750.577028714693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30321,6 +30470,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208
@@ -30355,7 +30505,8 @@ window.BENCHMARK_DATA = {
           57900.49540201823,
           60040.32421439035,
           26181.755793644832,
-          62536.68813852163
+          62536.68813852163,
+          26302.309836251396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30384,7 +30535,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30416,7 +30568,8 @@ window.BENCHMARK_DATA = {
           22590.460643223352,
           22604.188334147137,
           11764.6348830003,
-          22449.238178798132
+          22449.238178798132,
+          12162.334813435873
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30428,6 +30581,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
