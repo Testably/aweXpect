@@ -65,7 +65,7 @@ public partial class CollectionMatchOptions
 	private abstract class AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
-		private readonly Dictionary<int, T> _additionalItems = new();
+		private Dictionary<int, T>? _additionalItems;
 		private readonly bool _areExpectedValues;
 		private readonly List<T3> _coveredItems = new();
 
@@ -97,6 +97,14 @@ public partial class CollectionMatchOptions
 			_dimensions = dimensions;
 		}
 
+		/// <summary>
+		///     The items that match no expected item, which are only created for the first one, as a met equality has
+		///     none.
+		/// </summary>
+		private Dictionary<int, T> AdditionalItems => _additionalItems ??= new Dictionary<int, T>();
+
+		private int AdditionalItemCount => _additionalItems?.Count ?? 0;
+
 		/// <inheritdoc />
 		/// <remarks>
 		///     Once all expected items are found, the containment relation is met, and properly met as soon as there is
@@ -105,7 +113,7 @@ public partial class CollectionMatchOptions
 		public bool IsDetermined
 			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
 			   _missingItems.Count == 0 &&
-			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
+			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || AdditionalItemCount > 0);
 
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
@@ -120,7 +128,7 @@ public partial class CollectionMatchOptions
 			_distinctItems.Add((index, value));
 			if (await IsAdditionalItem(index, value, options) && (mergesEqualItems || _uniqueItems.Add(value)))
 			{
-				_additionalItems.Add(index, value);
+				AdditionalItems.Add(index, value);
 			}
 
 			return CountAdditionalDeviations() > 2L * maximumNumber
@@ -150,9 +158,9 @@ public partial class CollectionMatchOptions
 			List<string> errors = new();
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
-				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem, _dimensions));
+				errors.AddRange(AdditionalItemsError(AdditionalItems, formatItem, _dimensions));
 			}
-			else if (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
+			else if (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && AdditionalItemCount == 0)
 			{
 				errors.Add("did not contain any additional items");
 			}
@@ -300,8 +308,8 @@ public partial class CollectionMatchOptions
 		private bool HasDeviations()
 		{
 			bool hasAdditionalItemError = _equivalenceRelations.Includes(EquivalenceRelations.Contains)
-				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0
-				: _additionalItems.Count > 0;
+				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && AdditionalItemCount == 0
+				: AdditionalItemCount > 0;
 			bool hasMissingItemError = _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
 				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
 				: _missingItems.Count > 0;
@@ -336,12 +344,36 @@ public partial class CollectionMatchOptions
 			}
 		}
 
-		private async ValueTask<(bool IsMatch, Exception? Unanswered)> Compare(int index, T value, T3 expected,
+		/// <remarks>
+		///     A comparison that completes synchronously returns without a state machine, as every comparison of a met
+		///     expectation on values does.
+		/// </remarks>
+		private ValueTask<(bool IsMatch, Exception? Unanswered)> Compare(int index, T value, T3 expected,
 			IOptionsEquality<T2> options)
+		{
+			ValueTask<bool> comparison;
+			try
+			{
+				comparison = AreConsideredEqual(index, value, expected, options);
+			}
+			catch (Exception exception) when (exception is UserCodeException or UnansweredItemException)
+			{
+				return new ValueTask<(bool, Exception?)>((false, exception));
+			}
+
+			if (!comparison.IsCompletedSuccessfully)
+			{
+				return CompareAsync(comparison);
+			}
+
+			return new ValueTask<(bool, Exception?)>((comparison.Result, null));
+		}
+
+		private static async ValueTask<(bool IsMatch, Exception? Unanswered)> CompareAsync(ValueTask<bool> comparison)
 		{
 			try
 			{
-				return (await AreConsideredEqual(index, value, expected, options), null);
+				return (await comparison, null);
 			}
 			catch (Exception exception) when (exception is UserCodeException or UnansweredItemException)
 			{
@@ -354,13 +386,13 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private bool IsAdditionalItemRelevant()
 			=> !_equivalenceRelations.Includes(EquivalenceRelations.Contains) ||
-			   (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0);
+			   (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && AdditionalItemCount == 0);
 
 		/// <summary>
 		///     Additional items are no deviation for the containment relation, so they are not counted.
 		/// </summary>
 		private int CountAdditionalDeviations()
-			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count;
+			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ? 0 : AdditionalItemCount;
 
 		/// <summary>
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not counted.
@@ -369,7 +401,7 @@ public partial class CollectionMatchOptions
 			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
 
 		private IEnumerable<string> GetDeviations()
-			=> AdditionalItemsError(_additionalItems, CreateItemFormatter(), _dimensions);
+			=> AdditionalItemsError(AdditionalItems, CreateItemFormatter(), _dimensions);
 
 		/// <summary>
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not listed.
@@ -385,7 +417,7 @@ public partial class CollectionMatchOptions
 		///     An unexpected and a missing item that format equally differ only in their runtime type.
 		/// </summary>
 		private Func<object?, string> CreateItemFormatter()
-			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
+			=> GetItemFormatter(AdditionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
 
 		protected abstract ValueTask<bool>
 			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
