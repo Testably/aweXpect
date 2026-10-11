@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -286,6 +285,11 @@ public class Signaler<TParameter>
 		{
 			Interlocked.Increment(ref _counter);
 			_parameters.Add(parameter);
+			if (_waiters.Count == 0)
+			{
+				return;
+			}
+
 			waiters = _waiters.ToArray();
 		}
 
@@ -504,14 +508,22 @@ public class Signaler<TParameter>
 
 	/// <remarks>
 	///     The predicate is user code, so it runs outside the lock: it may signal again or block on another thread
-	///     that signals.
+	///     that signals.<br />
+	///     The matches are counted in a loop instead of with LINQ, which would allocate a delegate for every wait and
+	///     every signal.
 	/// </remarks>
 	private void ReceiveOutsideTheLock(Waiter waiter, TParameter[] parameters)
 	{
-		int matches;
+		int matches = 0;
 		try
 		{
-			matches = parameters.Count(waiter.Matches);
+			for (int i = 0; i < parameters.Length; i++)
+			{
+				if (waiter.Matches(parameters[i]))
+				{
+					matches++;
+				}
+			}
 		}
 		catch (Exception exception)
 		{
