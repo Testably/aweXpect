@@ -132,6 +132,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -156,7 +162,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -184,7 +191,8 @@ window.BENCHMARK_DATA = {
           5935.649098909818,
           6008.487745157878,
           12182.01574925014,
-          12681.288461538461
+          12681.288461538461,
+          5984.236339569092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -203,6 +211,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -253,7 +262,8 @@ window.BENCHMARK_DATA = {
           169939.83951822916,
           164865.90750558037,
           363085.93411458336,
-          375377.16248497594
+          375377.16248497594,
+          159655.32875279017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -286,6 +296,7 @@ window.BENCHMARK_DATA = {
           590288,
           590288,
           590292,
+          590287,
           590287
         ],
         "borderColor": "#FF671B",
@@ -322,7 +333,8 @@ window.BENCHMARK_DATA = {
           9873.128251211983,
           9453.429396565754,
           19538.182954915366,
-          20162.528875732423
+          20162.528875732423,
+          9440.710860116142
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -334,6 +346,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -459,6 +472,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -476,7 +495,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -497,7 +517,8 @@ window.BENCHMARK_DATA = {
           133.62807723192068,
           123.87491848071416,
           256.69204835891725,
-          257.66915973027545
+          257.66915973027545,
+          131.9824100335439
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -509,6 +530,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -552,7 +574,8 @@ window.BENCHMARK_DATA = {
           243.22980911391122,
           234.25950036730086,
           475.57399603525795,
-          469.1302090326945
+          469.1302090326945,
+          241.21692763056075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -564,6 +587,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -607,7 +631,8 @@ window.BENCHMARK_DATA = {
           202.92691683769226,
           185.16694254141586,
           379.38167701448714,
-          381.059750863484
+          381.059750863484,
+          192.78251388867696
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -619,6 +644,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -648,12 +674,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
-        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
-      },
       {
         "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
         "author": "Valentin Breu\u00DF",
@@ -947,10 +967,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
-      "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
@@ -999,14 +1024,14 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          148.26110469500225,
           144.20769170125325,
           146.50328726768493,
           182.17733670870464,
@@ -1055,7 +1080,8 @@ window.BENCHMARK_DATA = {
           75.71810007946831,
           68.3798157618596,
           136.66892782847086,
-          136.44867018063863
+          136.44867018063863,
+          72.11893835238048
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1080,7 +1106,6 @@ window.BENCHMARK_DATA = {
           520,
           520,
           520,
-          520,
           528,
           528,
           528,
@@ -1102,6 +1127,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512,
           512,
           512,
@@ -1131,7 +1157,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          244.63455235163372,
           269.95344088872275,
           235.27648987088884,
           344.28317203521726,
@@ -1180,7 +1205,8 @@ window.BENCHMARK_DATA = {
           127.68469497362773,
           119.75783220926921,
           242.6371172587077,
-          236.74359079769678
+          236.74359079769678,
+          126.05882253646851
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1256,7 +1282,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          237.19669600895472,
           200.84191783836908,
           235.24980303219385,
           268.45120941797893,
@@ -1305,7 +1330,8 @@ window.BENCHMARK_DATA = {
           125.79411425590516,
           121.98481566905976,
           239.9085193020957,
-          242.17698702445398
+          242.17698702445398,
+          119.0864387512207
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1512,6 +1538,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -1536,7 +1568,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -1564,7 +1597,8 @@ window.BENCHMARK_DATA = {
           141.21925473213196,
           132.50108671188354,
           261.8913842950548,
-          272.7045071919759
+          272.7045071919759,
+          135.08511650562286
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1583,6 +1617,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -1633,7 +1668,8 @@ window.BENCHMARK_DATA = {
           254.1780743598938,
           252.48387319701058,
           497.91378231048583,
-          500.0435712814331
+          500.0435712814331,
+          261.60860800743103
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1645,6 +1681,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -1702,7 +1739,8 @@ window.BENCHMARK_DATA = {
           171.72276307741802,
           166.149321607181,
           321.95204523631503,
-          330.08429252184357
+          330.08429252184357,
+          170.819456020991
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1714,6 +1752,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -1750,12 +1789,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
-        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
-      },
       {
         "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
         "author": "Valentin Breu\u00DF",
@@ -2049,10 +2082,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
-      "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
@@ -2101,14 +2139,14 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          577.3890611784799,
           529.6957696914673,
           591.1264041491917,
           690.1892388661703,
@@ -2157,7 +2195,8 @@ window.BENCHMARK_DATA = {
           326.46587060292563,
           303.5720234257834,
           652.8251293182373,
-          637.1459385326931
+          637.1459385326931,
+          320.47928110758465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2175,7 +2214,6 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
-          856,
           872,
           872,
           872,
@@ -2204,6 +2242,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -2233,7 +2272,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1284.0766259511313,
           1272.2204156239827,
           1241.7527656555176,
           1588.7325370788574,
@@ -2282,7 +2320,8 @@ window.BENCHMARK_DATA = {
           663.6142857551574,
           640.0742763791766,
           1272.8921439307076,
-          1276.0757816314697
+          1276.0757816314697,
+          665.4013284683227
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2358,7 +2397,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          634.1302262714931,
           552.827801322937,
           613.0097901026407,
           713.7595713933309,
@@ -2407,7 +2445,8 @@ window.BENCHMARK_DATA = {
           328.80627632141113,
           317.38511753082275,
           620.2617315928142,
-          642.2587559223175
+          642.2587559223175,
+          340.3529185567583
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2484,12 +2523,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
-        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
-      },
-      {
         "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
@@ -2782,10 +2815,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
-      "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
@@ -2834,14 +2872,14 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          967.2160835266113,
           826.6514413197835,
           970.0448721476963,
           1093.7553983052571,
@@ -2890,7 +2928,8 @@ window.BENCHMARK_DATA = {
           332.36557775277356,
           309.3676525524684,
           615.9316425323486,
-          638.4253363976112
+          638.4253363976112,
+          318.76253509521484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2908,7 +2947,6 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
           1280,
           1280,
           1280,
@@ -2937,6 +2975,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -2966,7 +3005,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20204.395196097237,
           17054.773201497395,
           25491.593420846122,
           25337.29578944615,
@@ -3015,7 +3053,8 @@ window.BENCHMARK_DATA = {
           9539.30037689209,
           9625.791372680664,
           27383.033630371094,
-          27246.41230061849
+          27246.41230061849,
+          10612.282083364633
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3027,7 +3066,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33468,
@@ -3067,6 +3105,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -3091,7 +3130,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          732.0670407613119,
           677.7818338530404,
           763.0835143602811,
           923.8292442321778,
@@ -3140,7 +3178,8 @@ window.BENCHMARK_DATA = {
           396.73974044506366,
           402.9900842394148,
           735.6649787267049,
-          764.4799856458392
+          764.4799856458392,
+          421.32443789641064
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3217,12 +3256,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
-        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
-      },
-      {
         "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
@@ -3515,10 +3548,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
-      "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
@@ -3567,14 +3605,14 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          671.5482345581055,
           664.6221086638315,
           726.6206457773844,
           826.8584680557251,
@@ -3623,7 +3661,8 @@ window.BENCHMARK_DATA = {
           367.3472564697266,
           355.1784883499146,
           699.9839832442148,
-          715.5047101293292
+          715.5047101293292,
+          339.9446242014567
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3648,7 +3687,6 @@ window.BENCHMARK_DATA = {
           1816,
           1816,
           1816,
-          1816,
           1824,
           1824,
           1824,
@@ -3670,6 +3708,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -3699,7 +3738,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59742.699979341945,
           30550.12803867885,
           80930.81984165737,
           55566.31945800781,
@@ -3748,7 +3786,8 @@ window.BENCHMARK_DATA = {
           28238.067531040735,
           28609.374947102864,
           82843.45746663412,
-          83770.81937662761
+          83770.81937662761,
+          29237.640865071615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3760,7 +3799,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5252,
           5247,
@@ -3809,7 +3847,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3824,12 +3863,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
-        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
-      },
       {
         "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
         "author": "Valentin Breu\u00DF",
@@ -4123,10 +4156,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
-      "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
@@ -4175,14 +4213,14 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          238.89018327849251,
           247.55775231581467,
           240.59601265589396,
           283.48961407343546,
@@ -4231,7 +4269,8 @@ window.BENCHMARK_DATA = {
           101.42472458680471,
           91.21245118549892,
           184.8453151498522,
-          170.73029691832406
+          170.73029691832406,
+          92.0068480509978
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4256,7 +4295,6 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
-          664,
           672,
           672,
           672,
@@ -4278,6 +4316,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -4307,7 +4346,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          18302.631251408504,
           16101.794182332356,
           30843.401501464843,
           26076.549479166668,
@@ -4356,7 +4394,8 @@ window.BENCHMARK_DATA = {
           10056.986204020182,
           9252.98103942871,
           31177.921638997395,
-          31070.30389404297
+          31070.30389404297,
+          9778.957535879952
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4370,7 +4409,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5615,
           5614,
@@ -4417,7 +4455,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4432,7 +4471,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          228.9157928029696,
           218.87901401519775,
           233.129546216556,
           264.4644939740499,
@@ -4481,7 +4519,8 @@ window.BENCHMARK_DATA = {
           188.00517043700586,
           117.9141618183681,
           237.64518140043532,
-          246.6287096463717
+          246.6287096463717,
+          121.14518637316567
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4688,6 +4727,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -4712,7 +4757,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -4740,7 +4786,8 @@ window.BENCHMARK_DATA = {
           215.55814719200134,
           209.2587564468384,
           404.9899142469679,
-          364.02582801183064
+          364.02582801183064,
+          171.6785787343979
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4761,6 +4808,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -4809,7 +4857,8 @@ window.BENCHMARK_DATA = {
           192.45158108643122,
           192.96515674250466,
           352.65819464411055,
-          357.75470205942787
+          357.75470205942787,
+          210.7459820429484
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4821,6 +4870,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -4878,7 +4928,8 @@ window.BENCHMARK_DATA = {
           196.643011535917,
           194.6366732120514,
           385.6392926148006,
-          384.44486538569134
+          384.44486538569134,
+          195.38562648636955
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4890,6 +4941,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -5057,6 +5109,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -5081,7 +5139,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -5109,7 +5168,8 @@ window.BENCHMARK_DATA = {
           386.24306732813517,
           378.10105078560963,
           779.2139341990153,
-          776.7095233281453
+          776.7095233281453,
+          378.99411950792586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5136,6 +5196,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -5178,7 +5239,8 @@ window.BENCHMARK_DATA = {
           1016.9913421358381,
           931.4044423784528,
           2137.1713457743326,
-          1851.6033934184484
+          1851.6033934184484,
+          929.7047791481018
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5190,6 +5252,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -5247,7 +5310,8 @@ window.BENCHMARK_DATA = {
           485.21077060699463,
           436.8862318992615,
           895.8506848017374,
-          904.096083132426
+          904.096083132426,
+          439.6358465353648
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5259,6 +5323,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -5426,6 +5491,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -5450,7 +5521,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -5478,7 +5550,8 @@ window.BENCHMARK_DATA = {
           6180.112842014858,
           6132.615756443569,
           12208.455094473702,
-          12157.254615783691
+          12157.254615783691,
+          6144.8363282339915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5497,6 +5570,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -5547,7 +5621,8 @@ window.BENCHMARK_DATA = {
           17978.845567975724,
           17684.48017531175,
           41752.09412841797,
-          42286.62405598958
+          42286.62405598958,
+          18255.346239362443
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5567,6 +5642,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -5616,7 +5692,8 @@ window.BENCHMARK_DATA = {
           5953.034171471229,
           5920.095540560209,
           11287.323557927059,
-          11377.641211876502
+          11377.641211876502,
+          6079.407038007464
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5628,6 +5705,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -5795,6 +5873,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 20:55:30 2026 \u002B0200",
         "message": "perf: search the strings of an array or a list directly in \u0060Contains\u0060 (#1822)"
+      },
+      {
+        "sha": "3fde3e5d3f7272fd79574c61c54811f955ff25a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 20:56:42 2026 \u002B0200",
+        "message": "perf: search the primitive items of an array or a list directly in \u0060Contains\u0060 (#1823)"
       }
     ],
     "labels": [
@@ -5819,7 +5903,8 @@ window.BENCHMARK_DATA = {
       "b1b6a901",
       "b13f28bd",
       "a3d03b7f",
-      "8daee84c"
+      "8daee84c",
+      "3fde3e5d"
     ],
     "datasets": [
       {
@@ -5847,7 +5932,8 @@ window.BENCHMARK_DATA = {
           5750.577028714693,
           5761.574476114909,
           11656.340883695162,
-          11547.400995890299
+          11547.400995890299,
+          5846.882790120443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5874,6 +5960,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208,
@@ -5916,7 +6003,8 @@ window.BENCHMARK_DATA = {
           26302.309836251396,
           26027.131057739258,
           61196.80230243389,
-          61356.25277005709
+          61356.25277005709,
+          26563.8043082101
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5949,7 +6037,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5985,7 +6074,8 @@ window.BENCHMARK_DATA = {
           12162.334813435873,
           11846.722054036458,
           22322.84870323768,
-          22271.094059535437
+          22271.094059535437,
+          12266.409797159831
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5997,6 +6087,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
