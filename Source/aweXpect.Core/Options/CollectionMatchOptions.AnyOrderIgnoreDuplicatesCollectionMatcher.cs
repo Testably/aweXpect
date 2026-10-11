@@ -133,6 +133,10 @@ public partial class CollectionMatchOptions
 		{
 			MergesEqualItems(options);
 			await CoverTheRemainingMissingItems(options);
+			if (!HasDeviations())
+			{
+				return (false, null);
+			}
 
 			Func<object?, string> formatItem = CreateItemFormatter();
 			// Without an additional item, all deviations are missing items, which are known completely here.
@@ -287,6 +291,21 @@ public partial class CollectionMatchOptions
 			}
 
 			return values;
+		}
+
+		/// <summary>
+		///     Whether <see cref="VerifyComplete" /> reports an error, without creating the error texts, as a met
+		///     expectation has none.
+		/// </summary>
+		private bool HasDeviations()
+		{
+			bool hasAdditionalItemError = _equivalenceRelations.Includes(EquivalenceRelations.Contains)
+				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0
+				: _additionalItems.Count > 0;
+			bool hasMissingItemError = _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
+				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
+				: _missingItems.Count > 0;
+			return hasAdditionalItemError || hasMissingItemError;
 		}
 
 		/// <summary>
