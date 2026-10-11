@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
 using System.Threading.Tasks;
 using aweXpect.Core;
 
@@ -84,10 +87,10 @@ public partial class CollectionMatchOptions
 		private readonly int[]? _dimensions;
 
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly List<int> _firstIndexOfSubjectItem = new();
+		private readonly List<int> _firstIndexOfSubjectItem;
 		private readonly bool _ignoreInterspersedItems;
-		private readonly List<int> _subjectIdAt = new();
-		private readonly ItemIds<T> _subjectIds = new(null);
+		private readonly List<int> _subjectIdAt;
+		private readonly ItemIds<T> _subjectIds;
 		private bool _areExpectedItemsUnique;
 		private T3[] _expectedDistinctItems = [];
 		private int[] _expectedIds = [];
@@ -99,7 +102,9 @@ public partial class CollectionMatchOptions
 		/// <remarks>
 		///     The <paramref name="comparer" /> merges equal expected values, when the comparison cannot tell them apart;
 		///     predicates and expectations cannot be compared with each other, so without it each expected item stands for
-		///     itself.
+		///     itself.<br />
+		///     The subject is expected to have about as many items as the expected collection, so that the collections
+		///     for its items do not grow item by item.
 		/// </remarks>
 		protected SameOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
@@ -112,6 +117,9 @@ public partial class CollectionMatchOptions
 			_dimensions = dimensions;
 			ExpectedItems = expected as T3[] ?? expected.ToArray();
 			_comparer = comparer;
+			_firstIndexOfSubjectItem = new List<int>(ExpectedItems.Length);
+			_subjectIdAt = new List<int>(ExpectedItems.Length);
+			_subjectIds = new ItemIds<T>(null, ExpectedItems.Length);
 		}
 
 		protected T3[] ExpectedItems { get; }
@@ -225,7 +233,7 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		private void NumberTheExpectedValues(IEqualityComparer<T3> comparer, bool mergesEqualItems)
 		{
-			ItemIds<T3> expectedIds = new(comparer);
+			ItemIds<T3> expectedIds = new(comparer, ExpectedItems.Length);
 			_expectedIds = new int[ExpectedItems.Length];
 			for (int i = 0; i < ExpectedItems.Length; i++)
 			{
@@ -356,14 +364,26 @@ public partial class CollectionMatchOptions
 	/// <summary>
 	///     Numbers the distinct items in the order of their first occurrence.
 	/// </summary>
-	private sealed class ItemIds<TItem>(IEqualityComparer<TItem>? comparer)
+	private sealed class ItemIds<TItem>(IEqualityComparer<TItem>? comparer, int capacity)
 	{
-		private readonly Dictionary<Key, int> _ids = new(new KeyComparer(comparer ?? EqualityComparer<TItem>.Default));
+		private readonly Dictionary<Key, int> _ids =
+			new(capacity, new KeyComparer(comparer ?? EqualityComparer<TItem>.Default));
 
-		public List<TItem> Items { get; } = new();
+		public List<TItem> Items { get; } = new(capacity);
 
 		public int GetOrAdd(TItem item, out bool isNew)
 		{
+#if NET8_0_OR_GREATER
+			ref int id = ref CollectionsMarshal.GetValueRefOrAddDefault(_ids, new Key(item), out bool exists);
+			isNew = !exists;
+			if (isNew)
+			{
+				id = Items.Count;
+				Items.Add(item);
+			}
+
+			return id;
+#else
 			isNew = !_ids.TryGetValue(new Key(item), out int id);
 			if (isNew)
 			{
@@ -373,6 +393,7 @@ public partial class CollectionMatchOptions
 			}
 
 			return id;
+#endif
 		}
 
 		/// <summary>
