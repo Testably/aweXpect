@@ -378,7 +378,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "a\nb" as block,
-					             but it contained "a\nb" once in "  a\n  b"
+					             but it contained "a\nb" at least once in "  a\n  b"
 					             """);
 			}
 		}
@@ -914,15 +914,15 @@ public sealed partial class ThatString
 		public sealed class NegatedTests
 		{
 			[Test]
-			[Arguments("AtLeast(2)", "contains \"some\" fewer than twice")]
-			[Arguments("AtMost(2)", "contains \"some\" more than twice")]
-			[Arguments("Between(1, 3)", "does not contain \"some\" between 1 and 3 times")]
-			[Arguments("Exactly(2)", "does not contain \"some\" exactly twice")]
-			[Arguments("LessThan(3)", "contains \"some\" at least 3 times")]
-			[Arguments("MoreThan(1)", "contains \"some\" at most once")]
-			[Arguments("Twice", "does not contain \"some\" exactly twice")]
+			[Arguments("AtLeast(2)", "contains \"some\" fewer than twice", "at least twice")]
+			[Arguments("AtMost(2)", "contains \"some\" more than twice", "twice")]
+			[Arguments("Between(1, 3)", "does not contain \"some\" between 1 and 3 times", "twice")]
+			[Arguments("Exactly(2)", "does not contain \"some\" exactly twice", "twice")]
+			[Arguments("LessThan(3)", "contains \"some\" at least 3 times", "twice")]
+			[Arguments("MoreThan(1)", "contains \"some\" at most once", "at least twice")]
+			[Arguments("Twice", "does not contain \"some\" exactly twice", "twice")]
 			public async Task WhenQuantifiedExpectationIsMet_ShouldNameTheComplementOrNegateTheVerb(
-				string quantifier, string expectedExpectation)
+				string quantifier, string expectedExpectation, string expectedOccurrences)
 			{
 				string subject = "some text with some words";
 
@@ -947,7 +947,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              {expectedExpectation},
-					              but it contained "some" twice in "some text with some words"
+					              but it contained "some" {expectedOccurrences} in "some text with some words"
 					              """)
 					.Because("\"not\" in front of a quantifier without a complement reads more naturally on the verb");
 			}
@@ -964,7 +964,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "some",
-					             but it contained "some" twice in "some text with some words"
+					             but it contained "some" at least once in "some text with some words"
 					             """);
 			}
 

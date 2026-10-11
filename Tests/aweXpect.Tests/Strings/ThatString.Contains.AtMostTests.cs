@@ -20,7 +20,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" at most twice,
-					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "in" at least 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 

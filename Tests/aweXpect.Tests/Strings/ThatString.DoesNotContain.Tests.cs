@@ -20,7 +20,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "INVESTIGATOR" ignoring case,
-					             but it contained "INVESTIGATOR" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "INVESTIGATOR" at least once in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 
@@ -39,7 +39,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "InvEstIgAtOr" using IgnoreCaseForVocalsComparer,
-					             but it contained "InvEstIgAtOr" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "InvEstIgAtOr" at least once in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 
@@ -143,7 +143,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              does not contain " " ignoring trailing whitespace,
-					              but it contained " " once in {Formatter.Format(subject)}
+					              but it contained " " at least once in {Formatter.Format(subject)}
 					              """)
 					.Because("the whitespace at the end of the subject is ignored, but not the one inside it");
 			}
@@ -161,7 +161,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "me",
-					             but it contained "me" once in "some text"
+					             but it contained "me" at least once in "some text"
 					             """);
 			}
 
@@ -191,7 +191,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              does not contain " " as wildcard ignoring trailing whitespace,
-					              but it contained " " once in {Formatter.Format(subject)}
+					              but it contained " " at least once in {Formatter.Format(subject)}
 					              """)
 					.Because("the whitespace at the end of the subject is ignored, but not the one inside it");
 			}
@@ -213,7 +213,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" fewer than 3 times,
-					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "in" at least 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 
@@ -608,7 +608,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" at most twice,
-					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "in" at least 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 
@@ -655,7 +655,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "me",
-					             but it contained "me" once in "some text"
+					             but it contained "me" at least once in "some text"
 					             """)
 					.Because("more than zero occurrences are the same as any occurrence");
 			}
