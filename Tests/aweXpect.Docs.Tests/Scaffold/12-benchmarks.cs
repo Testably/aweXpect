@@ -10,7 +10,7 @@ internal static class Prelude
 	public static int _intMinimum = 1;
 	public static BenchmarkAlbum _albumSubject = new();
 	public static BenchmarkAlbum _albumExpectation = new();
-	public static IEnumerable<int> _enumerableSubject = Enumerable.Range(1, 1000);
+	public static int[] _enumerableSubject = Enumerable.Range(1, 1000).ToArray();
 	public static int _enumerableCount = 1000;
 	public static List<string> _containsSubject = ["Come Together", "Here Comes the Sun",];
 	public static string _containsExpected = "Here Comes the Sun";
