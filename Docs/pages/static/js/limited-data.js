@@ -78,6 +78,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -93,7 +99,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -112,7 +119,8 @@ window.BENCHMARK_DATA = {
           12764.462727473332,
           13265.374138465295,
           9438.285522460938,
-          12097.446114173303
+          12097.446114173303,
+          12246.197796412876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -131,6 +139,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -163,7 +172,8 @@ window.BENCHMARK_DATA = {
           392134.18125,
           377371.628515625,
           293860.6474609375,
-          356747.362109375
+          356747.362109375,
+          384922.93899739586
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -187,7 +197,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590225,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -214,7 +225,8 @@ window.BENCHMARK_DATA = {
           20086.381243024553,
           19197.259187825523,
           17536.11997680664,
-          18611.634877522785
+          18611.634877522785,
+          20371.974380493164
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -226,6 +238,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -288,6 +301,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -296,7 +315,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -308,7 +328,8 @@ window.BENCHMARK_DATA = {
           283.9505867640177,
           262.74484459559125,
           284.5397834437234,
-          345.01939748128257
+          345.01939748128257,
+          302.17039854185924
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -320,6 +341,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -345,7 +367,8 @@ window.BENCHMARK_DATA = {
           537.6015279633658,
           479.22045939309254,
           582.8737354914348,
-          474.25586230414257
+          474.25586230414257,
+          523.0753211975098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -357,6 +380,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -382,7 +406,8 @@ window.BENCHMARK_DATA = {
           414.6734790166219,
           397.2279572804769,
           406.0813612571129,
-          385.27157148948083
+          385.27157148948083,
+          402.7815722737993
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -394,6 +419,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -414,12 +440,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
-        "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
-      },
       {
         "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
         "author": "Valentin Breu\u00DF",
@@ -713,10 +733,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
-      "168dc965",
       "f21e6eab",
       "d98a48a7",
       "0c874997",
@@ -765,14 +790,14 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          146.34538300832114,
           75.11130221400943,
           75.87682268449238,
           148.91186265945436,
@@ -821,7 +846,8 @@ window.BENCHMARK_DATA = {
           163.39442869822184,
           137.40051256815593,
           165.9204727013906,
-          139.6733043352763
+          139.6733043352763,
+          151.64684874216715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -837,46 +863,46 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          528,
+          528,
+          528,
+          528,
+          528,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
           512,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          528,
-          528,
-          528,
-          528,
-          528,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
           512,
           512,
           512,
@@ -897,7 +923,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          263.06252940495807,
           126.30781677563985,
           133.5051192442576,
           260.5635449545724,
@@ -946,7 +971,8 @@ window.BENCHMARK_DATA = {
           272.8674462182181,
           245.99453417460123,
           319.2019171374185,
-          241.41593173833994
+          241.41593173833994,
+          275.70652716500416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1022,7 +1048,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          257.78513463338214,
           118.24768235133244,
           123.74599652630943,
           245.37986879348756,
@@ -1071,7 +1096,8 @@ window.BENCHMARK_DATA = {
           252.99966198603312,
           244.07392279307047,
           242.43157631556193,
-          294.8144802025386
+          294.8144802025386,
+          267.21025371551514
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1224,6 +1250,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -1239,7 +1271,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -1258,7 +1291,8 @@ window.BENCHMARK_DATA = {
           278.191194500242,
           273.1169457117716,
           269.6064307873066,
-          267.1164376894633
+          267.1164376894633,
+          275.3108608382089
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1277,6 +1311,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -1309,7 +1344,8 @@ window.BENCHMARK_DATA = {
           563.3078155517578,
           586.2725223813738,
           639.0722876957485,
-          497.47190316518146
+          497.47190316518146,
+          546.8120442708333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1321,6 +1357,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -1360,7 +1397,8 @@ window.BENCHMARK_DATA = {
           355.15742444992065,
           364.86238646507263,
           340.9181462605794,
-          332.3636480649312
+          332.3636480649312,
+          352.3641858100891
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1372,6 +1410,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -1399,12 +1438,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
-        "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
-      },
       {
         "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
         "author": "Valentin Breu\u00DF",
@@ -1698,10 +1731,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
-      "168dc965",
       "f21e6eab",
       "d98a48a7",
       "0c874997",
@@ -1750,14 +1788,14 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          612.2908625284831,
           303.5208943230765,
           296.8572865486145,
           640.9725953420003,
@@ -1806,7 +1844,8 @@ window.BENCHMARK_DATA = {
           658.9432414599827,
           633.7696231433323,
           576.9589465005057,
-          619.8607745170593
+          619.8607745170593,
+          618.6942302840097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1822,7 +1861,6 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
-          840,
           856,
           856,
           856,
@@ -1862,6 +1900,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -1882,7 +1921,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1351.6633270263671,
           640.0229090963091,
           609.1682336330414,
           1371.2204779307046,
@@ -1931,7 +1969,8 @@ window.BENCHMARK_DATA = {
           1453.0168445587158,
           1373.5659450531007,
           1493.8372756958008,
-          1308.4317564646403
+          1308.4317564646403,
+          1428.070587839399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2007,7 +2046,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          655.5329192968516,
           352.2561849753062,
           306.9008693013872,
           646.291883913676,
@@ -2056,7 +2094,8 @@ window.BENCHMARK_DATA = {
           648.3773095448812,
           625.6183510462444,
           624.6077039082845,
-          652.4163558142526
+          652.4163558142526,
+          642.1701154708862
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2133,12 +2172,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
-        "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
-      },
-      {
         "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
@@ -2431,10 +2464,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
-      "168dc965",
       "f21e6eab",
       "d98a48a7",
       "0c874997",
@@ -2483,14 +2521,14 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          972.0514018195016,
           507.56434903826033,
           502.9044852623573,
           969.7287312825521,
@@ -2539,7 +2577,8 @@ window.BENCHMARK_DATA = {
           653.0624830722809,
           626.2280548095703,
           577.4701204981122,
-          629.318281173706
+          629.318281173706,
+          624.0816643054669
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2555,7 +2594,6 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
-          1248,
           1264,
           1264,
           1264,
@@ -2595,6 +2633,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -2615,7 +2654,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27497.089080810547,
           10018.345930916923,
           9443.415021623883,
           27719.161811241738,
@@ -2664,7 +2702,8 @@ window.BENCHMARK_DATA = {
           28410.641943359376,
           27444.59106009347,
           17684.85667855399,
-          26488.795467122396
+          26488.795467122396,
+          28202.29796189528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2685,7 +2724,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33468,
@@ -2725,6 +2763,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -2740,7 +2779,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          808.3331483840942,
           427.1614917755127,
           374.5448865890503,
           808.6336347579957,
@@ -2789,7 +2827,8 @@ window.BENCHMARK_DATA = {
           826.4792725880941,
           794.8108036858695,
           745.6506352057824,
-          801.1132623036702
+          801.1132623036702,
+          804.8856128692627
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2866,12 +2905,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
-        "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
-      },
-      {
         "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
@@ -3164,10 +3197,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
-      "168dc965",
       "f21e6eab",
       "d98a48a7",
       "0c874997",
@@ -3216,14 +3254,14 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          774.0639625276838,
           365.76004629135133,
           355.55527383940563,
           744.1354974110922,
@@ -3272,7 +3310,8 @@ window.BENCHMARK_DATA = {
           743.0805713335673,
           768.1799621582031,
           745.015421740214,
-          763.5548663457234
+          763.5548663457234,
+          784.9777473449707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3288,7 +3327,6 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
           1816,
           1816,
           1816,
@@ -3328,6 +3366,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -3348,7 +3387,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84826.06088867187,
           28388.506831577844,
           28697.135393415178,
           81594.28129069011,
@@ -3397,7 +3435,8 @@ window.BENCHMARK_DATA = {
           84265.83816092355,
           85322.30723353794,
           33565.46903991699,
-          81973.57697550456
+          81973.57697550456,
+          85351.39825846354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3409,7 +3448,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5256,
           5252,
@@ -3458,6 +3496,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -3473,12 +3512,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
-        "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
-      },
       {
         "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
         "author": "Valentin Breu\u00DF",
@@ -3772,10 +3805,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
-      "168dc965",
       "f21e6eab",
       "d98a48a7",
       "0c874997",
@@ -3824,14 +3862,14 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          303.956152788798,
           135.53794468366183,
           136.48703560462366,
           283.5047616958618,
@@ -3880,7 +3918,8 @@ window.BENCHMARK_DATA = {
           191.85911434491476,
           162.5062539100647,
           200.02734831663278,
-          184.53483346303304
+          184.53483346303304,
+          225.6815455876864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3896,7 +3935,6 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
-          656,
           664,
           664,
           664,
@@ -3936,6 +3974,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -3956,7 +3995,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          30786.992837088448,
           9273.870933532715,
           9122.359176635742,
           30918.375451660155,
@@ -4005,7 +4043,8 @@ window.BENCHMARK_DATA = {
           32192.955029296874,
           31236.718094889322,
           16281.876959664482,
-          31542.44803059896
+          31542.44803059896,
+          32663.787858072916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4017,7 +4056,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5615,
           5614,
@@ -4059,6 +4097,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -4081,7 +4120,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          259.8181400934855,
           119.45650717417399,
           124.34598207473755,
           249.06301546096802,
@@ -4130,7 +4168,8 @@ window.BENCHMARK_DATA = {
           258.7912476979769,
           261.0001422564189,
           237.94517867905753,
-          234.97096369947707
+          234.97096369947707,
+          249.37043199539184
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4283,6 +4322,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -4298,7 +4343,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -4317,7 +4363,8 @@ window.BENCHMARK_DATA = {
           470.3805774961199,
           451.62953694661456,
           421.1136974266597,
-          433.5041737238566
+          433.5041737238566,
+          415.3544657780574
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4338,6 +4385,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -4368,7 +4416,8 @@ window.BENCHMARK_DATA = {
           433.2085972150167,
           411.77138430277506,
           462.4986918449402,
-          370.6075694010808
+          370.6075694010808,
+          388.9793713569641
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4380,6 +4429,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -4419,7 +4469,8 @@ window.BENCHMARK_DATA = {
           431.85279965400696,
           411.37439753214517,
           388.1898558820997,
-          391.5098382142874
+          391.5098382142874,
+          427.23298069408963
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4431,6 +4482,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -4535,6 +4587,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -4550,7 +4608,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -4569,7 +4628,8 @@ window.BENCHMARK_DATA = {
           1070.1917322794595,
           1056.3045282363892,
           1013.8042799631754,
-          1059.1332497914632
+          1059.1332497914632,
+          1101.9341340382894
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4588,6 +4648,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          1720,
           1720,
           1720,
           1720,
@@ -4620,7 +4681,8 @@ window.BENCHMARK_DATA = {
           2073.025442123413,
           1886.8613792419433,
           2113.136282348633,
-          1786.9721809387206
+          1786.9721809387206,
+          1956.3434903281075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4632,6 +4694,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -4671,7 +4734,8 @@ window.BENCHMARK_DATA = {
           972.6625693003336,
           905.5249994141715,
           881.8255934715271,
-          925.5686873118083
+          925.5686873118083,
+          980.6418190002441
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4683,6 +4747,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -4787,6 +4852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -4802,7 +4873,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -4821,7 +4893,8 @@ window.BENCHMARK_DATA = {
           12159.236760457357,
           12077.013885498047,
           9942.863399799053,
-          12069.595923790564
+          12069.595923790564,
+          12388.134509495327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4840,6 +4913,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -4872,7 +4946,8 @@ window.BENCHMARK_DATA = {
           42393.89460536412,
           41413.62630615234,
           31695.344120570593,
-          40786.8328125
+          40786.8328125,
+          42644.73285851112
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4892,6 +4967,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -4923,7 +4999,8 @@ window.BENCHMARK_DATA = {
           11256.76350402832,
           11269.664648873466,
           9598.459203447614,
-          11268.596181597028
+          11268.596181597028,
+          11358.313351949057
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4935,6 +5012,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -5039,6 +5117,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
         "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
+      },
+      {
+        "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
+        "message": "perf: wrap the result of the expectations on a member only once (#1814)"
       }
     ],
     "labels": [
@@ -5054,7 +5138,8 @@ window.BENCHMARK_DATA = {
       "45e98efc",
       "d07cd823",
       "fffb597a",
-      "b1862009"
+      "b1862009",
+      "2be671ac"
     ],
     "datasets": [
       {
@@ -5073,7 +5158,8 @@ window.BENCHMARK_DATA = {
           23638.22805434007,
           23639.355893648586,
           19387.11317007882,
-          23496.272271728514
+          23496.272271728514,
+          24031.67944771903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5092,6 +5178,7 @@ window.BENCHMARK_DATA = {
           3064,
           3064,
           3064,
+          2640,
           2640,
           2640,
           2640,
@@ -5124,7 +5211,8 @@ window.BENCHMARK_DATA = {
           61753.93634033203,
           60793.590393066406,
           45626.36217753092,
-          59158.46435546875
+          59158.46435546875,
+          62790.551060267855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5148,7 +5236,8 @@ window.BENCHMARK_DATA = {
           23554,
           23554,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5175,7 +5264,8 @@ window.BENCHMARK_DATA = {
           22202.768191019695,
           22406.342309134347,
           18875.248361440805,
-          22564.215334065757
+          22564.215334065757,
+          22492.251274695762
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5187,6 +5277,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
