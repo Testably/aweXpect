@@ -168,9 +168,23 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
 	: ExpectedItem<TItem>(expected)
 {
+	private DefaultEqualItem? _defaultEqualItem;
+
 	/// <inheritdoc />
 	public override bool UsesDefaultEquality
 		=> Expected is not null && options is IHasDefaultMatchType { HasDefaultMatchType: true, };
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The default match type compares a primitive, an enum, a <see langword="decimal" /> and a
+	///     <see cref="Guid" /> like <see cref="EqualityComparer{T}.Default" />, whose comparison of them cannot throw, so
+	///     it needs neither to be awaited nor guarded as code of the caller. Only the time types have a default
+	///     tolerance instead, see <see cref="ObjectEqualityWithToleranceOptionsFactory" />.
+	/// </remarks>
+	public override SynchronouslyMatchedItem<TItem>? GetSynchronousItem()
+		=> HasFrameworkEquality.Value && options is IHasDefaultMatchType { HasDefaultMatchType: true, }
+			? _defaultEqualItem ??= new DefaultEqualItem(this)
+			: null;
 
 	/// <inheritdoc />
 	public override ValueTask<bool> Matches(TItem item)
@@ -200,6 +214,30 @@ internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TIt
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> options.AppendContexts(contexts);
+
+	/// <summary>
+	///     The <paramref name="item" /> compared like the default match type compares it.
+	/// </summary>
+	private sealed class DefaultEqualItem(EqualItem<TItem> item) : SynchronouslyMatchedItem<TItem>
+	{
+		/// <inheritdoc />
+		public override bool IsMatch(TItem value)
+			=> EqualityComparer<TItem>.Default.Equals(value, item.Expected);
+
+		/// <inheritdoc />
+		public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
+			=> item.GetExpectation(quantifier, grammars, isNegated);
+
+		/// <inheritdoc />
+		public override string GetHasItemExpectation(ExpectationGrammars grammars)
+			=> item.GetHasItemExpectation(grammars);
+	}
+
+	private static class HasFrameworkEquality
+	{
+		public static readonly bool Value = typeof(TItem).IsPrimitive || typeof(TItem).IsEnum ||
+		                                    typeof(TItem) == typeof(decimal) || typeof(TItem) == typeof(Guid);
+	}
 }
 
 /// <summary>

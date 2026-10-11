@@ -274,7 +274,7 @@ public static partial class ThatEnumerable
 		where TCollection : IEnumerable
 	{
 		Quantifier quantifier = new();
-		ObjectEqualityOptions<TItem> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint(
