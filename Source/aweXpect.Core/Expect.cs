@@ -92,8 +92,7 @@ public static class Expect
 	public static ThatDelegate.WithoutValue That(Func<Task> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue>(
-			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			new DelegateAsyncSource(@delegate is null ? null : _ => @delegate()), doNotPopulateThisValue));
+			new DelegateAsyncSource(@delegate), doNotPopulateThisValue));
 
 	/// <summary>
 	///     Specifies expectations for the current <see cref="Func{CancellationToken, Task}" /> <paramref name="delegate" />.
