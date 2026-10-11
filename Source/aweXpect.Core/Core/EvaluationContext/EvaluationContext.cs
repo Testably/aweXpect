@@ -11,13 +11,8 @@ namespace aweXpect.Core.EvaluationContext;
 
 internal class EvaluationContext : IEvaluationContext
 {
-	private EvaluationContext? _attempt;
-	private List<EvaluationContext>? _checks;
-	private List<Dictionary<string, object?>?>? _nestedStores;
+	private Extras? _extras;
 	private int _nestingDepth;
-	private List<AsyncBecauseReason>? _pendingReasons;
-	private List<Action>? _releases;
-	private EvaluationContext? _repeatedBy;
 	private Dictionary<string, object?>? _store;
 
 	/// <summary>
@@ -67,8 +62,8 @@ internal class EvaluationContext : IEvaluationContext
 		=> _nestingDepth > 0 && !EvaluationContextExtensions.IsMaterializationKey(key);
 
 	private Dictionary<string, object?>? GetNestedStore()
-		=> _nestedStores is not null && _nestedStores.Count >= _nestingDepth
-			? _nestedStores[_nestingDepth - 1]
+		=> _extras?.NestedStores is { } nestedStores && nestedStores.Count >= _nestingDepth
+			? nestedStores[_nestingDepth - 1]
 			: null;
 
 	/// <summary>
@@ -81,13 +76,13 @@ internal class EvaluationContext : IEvaluationContext
 	/// </remarks>
 	public void ReleaseWithEvaluation(Action release)
 	{
-		if (_repeatedBy is not null)
+		if (_extras?.RepeatedBy is { } repeatedBy)
 		{
-			_repeatedBy.ReleaseWithEvaluation(release);
+			repeatedBy.ReleaseWithEvaluation(release);
 			return;
 		}
 
-		(_releases ??= []).Add(release);
+		(GetExtras().Releases ??= []).Add(release);
 	}
 
 	/// <summary>
@@ -96,10 +91,10 @@ internal class EvaluationContext : IEvaluationContext
 	/// </summary>
 	public void ResolveOnFailure(AsyncBecauseReason reason)
 	{
-		_pendingReasons ??= [];
-		if (!_pendingReasons.Contains(reason))
+		List<AsyncBecauseReason> pendingReasons = GetExtras().PendingReasons ??= [];
+		if (!pendingReasons.Contains(reason))
 		{
-			_pendingReasons.Add(reason);
+			pendingReasons.Add(reason);
 		}
 	}
 
@@ -107,7 +102,9 @@ internal class EvaluationContext : IEvaluationContext
 	///     Whether a reason is registered with <see cref="ResolveOnFailure" /> in this context or in its current
 	///     attempt.
 	/// </summary>
-	public bool HasPendingReasons => _pendingReasons is not null || _attempt is { HasPendingReasons: true, };
+	public bool HasPendingReasons
+		=> _extras is not null &&
+		   (_extras.PendingReasons is not null || _extras.Attempt is { HasPendingReasons: true, });
 
 	/// <summary>
 	///     Resolves the reasons registered with <see cref="ResolveOnFailure" /> in this context and in its current
@@ -118,14 +115,14 @@ internal class EvaluationContext : IEvaluationContext
 	/// </remarks>
 	public async Task ResolvePendingReasons(CancellationToken cancellationToken)
 	{
-		foreach (AsyncBecauseReason reason in _pendingReasons ?? [])
+		foreach (AsyncBecauseReason reason in _extras?.PendingReasons ?? [])
 		{
 			await reason.Resolve(cancellationToken);
 		}
 
-		if (_attempt is not null)
+		if (_extras?.Attempt is { } attempt)
 		{
-			await _attempt.ResolvePendingReasons(cancellationToken);
+			await attempt.ResolvePendingReasons(cancellationToken);
 		}
 	}
 
@@ -134,7 +131,7 @@ internal class EvaluationContext : IEvaluationContext
 	///     the last check of its repeated checks, and the resources registered with <see cref="ReleaseWithEvaluation" />.
 	/// </summary>
 	public Task ReleaseMaterializations()
-		=> _store is null && _releases is null && _attempt is null && _checks is null
+		=> _store is null && _extras is null
 			? Task.CompletedTask
 			: ReleaseAll();
 
@@ -149,25 +146,28 @@ internal class EvaluationContext : IEvaluationContext
 			}
 		}
 
-		if (_releases is not null)
+		if (_extras is null)
 		{
-			List<Action> releases = _releases;
-			_releases = null;
+			return;
+		}
+
+		if (_extras.Releases is { } releases)
+		{
+			_extras.Releases = null;
 			foreach (Action release in releases)
 			{
 				release();
 			}
 		}
 
-		if (_attempt is not null)
+		if (_extras.Attempt is { } attempt)
 		{
-			await _attempt.ReleaseMaterializations();
+			await attempt.ReleaseMaterializations();
 		}
 
-		if (_checks is not null)
+		if (_extras.Checks is { } checks)
 		{
-			List<EvaluationContext> checks = _checks;
-			_checks = null;
+			_extras.Checks = null;
 			foreach (EvaluationContext check in checks)
 			{
 				await check.ReleaseMaterializations();
@@ -211,16 +211,19 @@ internal class EvaluationContext : IEvaluationContext
 		{
 			Cancellation = Cancellation,
 			TimeSystem = TimeSystem,
-			_repeatedBy = this,
+			_extras = new Extras
+			{
+				RepeatedBy = this,
+			},
 		};
-		_checks ??= [];
+		List<EvaluationContext> checks = GetExtras().Checks ??= [];
 		if (previous is null)
 		{
-			_checks.Add(check);
+			checks.Add(check);
 		}
 		else
 		{
-			_checks[_checks.IndexOf(previous)] = check;
+			checks[checks.IndexOf(previous)] = check;
 			await previous.ReleaseMaterializations();
 		}
 
@@ -237,12 +240,13 @@ internal class EvaluationContext : IEvaluationContext
 	public async Task<EvaluationContext> StartAttempt()
 	{
 		await ReleaseMaterializations();
-		_attempt = new EvaluationContext
+		EvaluationContext attempt = new()
 		{
 			Cancellation = Cancellation,
 			TimeSystem = TimeSystem,
 		};
-		return _attempt;
+		GetExtras().Attempt = attempt;
+		return attempt;
 	}
 
 	/// <summary>
@@ -283,13 +287,13 @@ internal class EvaluationContext : IEvaluationContext
 	{
 		if (IsNested(key))
 		{
-			_nestedStores ??= [];
-			while (_nestedStores.Count < _nestingDepth)
+			List<Dictionary<string, object?>?> nestedStores = GetExtras().NestedStores ??= [];
+			while (nestedStores.Count < _nestingDepth)
 			{
-				_nestedStores.Add(null);
+				nestedStores.Add(null);
 			}
 
-			(_nestedStores[_nestingDepth - 1] ??= new Dictionary<string, object?>())[key] = value;
+			(nestedStores[_nestingDepth - 1] ??= new Dictionary<string, object?>())[key] = value;
 			return;
 		}
 
@@ -317,4 +321,24 @@ internal class EvaluationContext : IEvaluationContext
 	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
 
 	#endregion
+
+	private Extras GetExtras() => _extras ??= new Extras();
+
+	/// <summary>
+	///     The state of the repeated checks, the attempts, the reasons to await, the resources to release and the
+	///     values stored during nested evaluations.
+	/// </summary>
+	/// <remarks>
+	///     A context is created for every expectation, while most expectations need none of it, so it is only created
+	///     when it is first used.
+	/// </remarks>
+	private sealed class Extras
+	{
+		public EvaluationContext? Attempt { get; set; }
+		public List<EvaluationContext>? Checks { get; set; }
+		public List<Dictionary<string, object?>?>? NestedStores { get; set; }
+		public List<AsyncBecauseReason>? PendingReasons { get; set; }
+		public List<Action>? Releases { get; set; }
+		public EvaluationContext? RepeatedBy { get; init; }
+	}
 }
