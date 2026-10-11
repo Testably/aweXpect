@@ -15,7 +15,7 @@ public static partial class ThatBool
 		public ConstraintResult IsMetBy(bool actual)
 		{
 			Actual = actual;
-			Outcome = expected.Equals(actual) ? Outcome.Success : Outcome.Failure;
+			Outcome = expected == actual ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
