@@ -14,17 +14,21 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	: AndOrResult<TCollection, TThat>
 {
 	private readonly TKey[] _keys;
-	private readonly Func<TCollection, IEnumerable<TValue>> _memberAccessor;
+	private readonly Func<TCollection, TKey[], IEnumerable<TValue>> _valuesAccessor;
 
+	/// <remarks>
+	///     The <paramref name="valuesAccessor" /> gets the <paramref name="keys" /> as its argument, so that the
+	///     accessor of the values is only bound to the keys when <see cref="WhoseValues" /> is used.
+	/// </remarks>
 	internal ContainsKeysResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
 		TKey[] keys,
-		Func<TCollection, IEnumerable<TValue>> memberAccessor)
+		Func<TCollection, TKey[], IEnumerable<TValue>> valuesAccessor)
 		: base(expectationBuilder, returnValue)
 	{
 		_keys = keys;
-		_memberAccessor = memberAccessor;
+		_valuesAccessor = valuesAccessor;
 	}
 
 	/// <summary>
@@ -32,7 +36,7 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	/// </summary>
 	public IThat<IEnumerable<TValue>> WhoseValues
 		=> new ThatSubject<IEnumerable<TValue>>(ExpectationBuilder
-			.ForWhich(_memberAccessor, " whose values ", $"values of keys {Formatter.Format(_keys)}",
+			.ForWhich((TCollection collection) => _valuesAccessor(collection, _keys), " whose values ", $"values of keys {Formatter.Format(_keys)}",
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));
 }
