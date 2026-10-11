@@ -4554,6 +4554,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -5315,7 +5321,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -6080,7 +6087,8 @@ window.BENCHMARK_DATA = {
           141.5231162217947,
           103.79578261375427,
           69.7014434848513,
-          120.11752031644185
+          120.11752031644185,
+          147.36701199213664
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6846,6 +6854,7 @@ window.BENCHMARK_DATA = {
           424,
           424,
           424,
+          440,
           440,
           440,
           440,
@@ -7623,7 +7632,8 @@ window.BENCHMARK_DATA = {
           285.3504601160685,
           193.90913287230902,
           135.8589697519938,
-          219.06145945617132
+          219.06145945617132,
+          261.76065005574907
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8393,6 +8403,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8447,7 +8458,8 @@ window.BENCHMARK_DATA = {
           208.96469957033793,
           153.9961994489034,
           110.82983688797269,
-          184.38822765009743
+          184.38822765009743,
+          215.1855592886607
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8459,6 +8471,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12604,6 +12617,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -13288,7 +13307,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -13976,7 +13996,8 @@ window.BENCHMARK_DATA = {
           119150.68962402343,
           81956.30396379743,
           59997.858577473955,
-          104723.95944010417
+          104723.95944010417,
+          113954.20565592448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14665,6 +14686,7 @@ window.BENCHMARK_DATA = {
           16424,
           16424,
           16424,
+          16440,
           16440,
           16440,
           16440,
@@ -15365,7 +15387,8 @@ window.BENCHMARK_DATA = {
           2741231.515625,
           1781619.519252232,
           1331497.33828125,
-          2355660.79140625
+          2355660.79140625,
+          2630103.2174479165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16058,6 +16081,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -16112,7 +16136,8 @@ window.BENCHMARK_DATA = {
           205056.8501325335,
           149215.22001953126,
           103256.24863688152,
-          191682.09075927734
+          191682.09075927734,
+          204014.3314778646
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16124,6 +16149,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20731,6 +20757,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -21492,7 +21524,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -22257,7 +22290,8 @@ window.BENCHMARK_DATA = {
           287.59080832799276,
           223.23441696166992,
           146.93372322718304,
-          256.8581672668457
+          256.8581672668457,
+          308.99919783274333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23023,6 +23057,7 @@ window.BENCHMARK_DATA = {
           616,
           616,
           616,
+          632,
           632,
           632,
           632,
@@ -23800,7 +23835,8 @@ window.BENCHMARK_DATA = {
           479.5880442301432,
           391.89165725708006,
           273.0722014427185,
-          419.95667123794556
+          419.95667123794556,
+          505.14649499257405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24570,6 +24606,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24624,7 +24661,8 @@ window.BENCHMARK_DATA = {
           402.768706035614,
           302.34659611384075,
           206.35649002393086,
-          352.82310034434
+          352.82310034434,
+          397.04685672124225
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24636,6 +24674,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -29243,6 +29282,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -30004,7 +30049,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -30769,7 +30815,8 @@ window.BENCHMARK_DATA = {
           154.54549403190612,
           119.91555163065593,
           78.89571855862935,
-          134.65263926188152
+          134.65263926188152,
+          143.54727857907613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31535,6 +31582,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544,
           544,
           544,
@@ -32312,7 +32360,8 @@ window.BENCHMARK_DATA = {
           258.54078238351,
           191.88036661148072,
           126.45058309237162,
-          216.3354002067021
+          216.3354002067021,
+          244.9393288067409
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33082,6 +33131,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -33136,7 +33186,8 @@ window.BENCHMARK_DATA = {
           236.85818397204082,
           196.27047096888225,
           122.47751767294747,
-          212.70499805041723
+          212.70499805041723,
+          233.72915994326274
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33148,6 +33199,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -37755,6 +37807,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -38516,7 +38574,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -39281,7 +39340,8 @@ window.BENCHMARK_DATA = {
           267.34504543031966,
           204.66171051661175,
           138.27861620585125,
-          238.04743067423502
+          238.04743067423502,
+          262.3452370564143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40047,6 +40107,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          608,
           608,
           608,
           608,
@@ -40824,7 +40885,8 @@ window.BENCHMARK_DATA = {
           1226.9922340938024,
           935.7536647160848,
           646.8799695014953,
-          1085.5914348874774
+          1085.5914348874774,
+          1197.331703821818
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41594,6 +41656,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -41648,7 +41711,8 @@ window.BENCHMARK_DATA = {
           320.66239951207086,
           252.89316657611303,
           187.96807653563363,
-          295.76509823117937
+          295.76509823117937,
+          332.725138092041
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41660,6 +41724,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -46267,6 +46332,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -47028,7 +47099,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -47793,7 +47865,8 @@ window.BENCHMARK_DATA = {
           641.9548854192097,
           503.2129665374756,
           345.8838263193766,
-          595.3918642316546
+          595.3918642316546,
+          658.5875039418538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48559,6 +48632,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896,
           896,
           896,
@@ -49336,7 +49410,8 @@ window.BENCHMARK_DATA = {
           1273.6667727152505,
           1033.9537096659342,
           731.7685546875,
-          1130.4489125569662
+          1130.4489125569662,
+          1426.0169359353872
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50106,6 +50181,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -50160,7 +50236,8 @@ window.BENCHMARK_DATA = {
           634.1702184041341,
           517.6308202062335,
           343.8891352585384,
-          580.1355312892368
+          580.1355312892368,
+          629.9172812143962
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50172,6 +50249,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -54779,6 +54857,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -55540,7 +55624,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -56305,7 +56390,8 @@ window.BENCHMARK_DATA = {
           1051.5613887786865,
           788.6019387563069,
           562.4833726565043,
-          920.6372468130929
+          920.6372468130929,
+          1007.0624073028564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57071,6 +57157,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304,
           1304,
           1304,
@@ -57848,7 +57935,8 @@ window.BENCHMARK_DATA = {
           27330.002638596754,
           15811.865844726562,
           10708.345770263672,
-          23787.845112391882
+          23787.845112391882,
+          26538.971545410157
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58618,6 +58706,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -58672,7 +58761,8 @@ window.BENCHMARK_DATA = {
           772.756406656901,
           596.6405504090445,
           401.6827799592699,
-          709.1366493361337
+          709.1366493361337,
+          781.367879931132
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58684,6 +58774,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -59061,6 +59152,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -59117,7 +59214,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -59177,7 +59275,8 @@ window.BENCHMARK_DATA = {
           722.856612141927,
           521.4267307428213,
           369.14770089662994,
-          712.0842841466268
+          712.0842841466268,
+          759.7327707926432
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59238,6 +59337,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840,
           1840,
           1840,
@@ -59310,7 +59410,8 @@ window.BENCHMARK_DATA = {
           82344.41915189303,
           50964.05476888021,
           27934.408272879464,
-          75639.69289456881
+          75639.69289456881,
+          86196.58836669922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59375,6 +59476,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -59713,6 +59815,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 08:48:31 2026 \u002B0200",
         "message": "docs: show a consumer-side \u0060AndIf\u0060 for expectations that only apply under a condition (#1781)"
+      },
+      {
+        "sha": "29e1127b443bc230edabceb08a728d9198753e20",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
+        "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
       }
     ],
     "labels": [
@@ -59769,7 +59877,8 @@ window.BENCHMARK_DATA = {
       "28acb579",
       "75406bf0",
       "fa595d47",
-      "5cf6a80d"
+      "5cf6a80d",
+      "29e1127b"
     ],
     "datasets": [
       {
@@ -59829,7 +59938,8 @@ window.BENCHMARK_DATA = {
           266.3875561396281,
           193.56110445658365,
           127.1776643594106,
-          216.63132432790903
+          216.63132432790903,
+          202.07457439104715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59894,7 +60004,8 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
-          688
+          688,
+          584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59962,7 +60073,8 @@ window.BENCHMARK_DATA = {
           31606.306352887834,
           15129.55615234375,
           9928.43082784017,
-          30163.22892543248
+          30163.22892543248,
+          32356.10744628906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60027,6 +60139,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -60081,7 +60194,8 @@ window.BENCHMARK_DATA = {
           243.9997957433973,
           183.17132539749144,
           119.09006812022282,
-          219.57049543062845
+          219.57049543062845,
+          245.98374554316203
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60093,6 +60207,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
