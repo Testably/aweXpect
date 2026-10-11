@@ -60,6 +60,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
@@ -72,7 +78,8 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -88,7 +95,8 @@ window.BENCHMARK_DATA = {
           10084.662989298502,
           6555.821635564168,
           12535.305913289389,
-          12764.462727473332
+          12764.462727473332,
+          13265.374138465295
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -107,6 +115,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040
@@ -133,7 +142,8 @@ window.BENCHMARK_DATA = {
           258528.38291015624,
           189413.85319010416,
           374195.22265625,
-          392134.18125
+          392134.18125,
+          377371.628515625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -153,6 +163,7 @@ window.BENCHMARK_DATA = {
           590292,
           590287,
           590224,
+          590292,
           590292,
           590292
         ],
@@ -178,7 +189,8 @@ window.BENCHMARK_DATA = {
           14237.522770690917,
           12166.199898856026,
           18772.20353581355,
-          20086.381243024553
+          20086.381243024553,
+          19197.259187825523
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -190,6 +202,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -231,12 +244,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -245,7 +265,8 @@ window.BENCHMARK_DATA = {
         "data": [
           181.82756209373474,
           306.9443253449031,
-          283.9505867640177
+          283.9505867640177,
+          262.74484459559125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -257,6 +278,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600
@@ -276,7 +298,8 @@ window.BENCHMARK_DATA = {
         "data": [
           331.0620517730713,
           504.2283857890538,
-          537.6015279633658
+          537.6015279633658,
+          479.22045939309254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -288,6 +311,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008
@@ -307,7 +331,8 @@ window.BENCHMARK_DATA = {
         "data": [
           261.37859092439925,
           408.87290208680287,
-          414.6734790166219
+          414.6734790166219,
+          397.2279572804769
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -319,6 +344,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064
@@ -336,12 +362,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
-        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
-      },
       {
         "sha": "23b6cd56dbd45d5be7a56d4d2fc91ba0f1b6fba1",
         "author": "Valentin Breu\u00DF",
@@ -635,10 +655,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
-      "272bbb23",
       "23b6cd56",
       "a1b234c6",
       "168dc965",
@@ -687,14 +712,14 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          141.3437429024623,
           142.3776572863261,
           121.97559043566386,
           146.34538300832114,
@@ -743,7 +768,8 @@ window.BENCHMARK_DATA = {
           119.79168168703715,
           102.63410041332244,
           145.90668115615844,
-          163.39442869822184
+          163.39442869822184,
+          137.40051256815593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -762,46 +788,46 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          528,
+          528,
+          528,
+          528,
+          528,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
           512,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          528,
-          528,
-          528,
-          528,
-          528,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
           512,
           512,
           512
@@ -819,7 +845,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          235.86193222658974,
           244.92914561430612,
           206.36891317367554,
           263.06252940495807,
@@ -868,7 +893,8 @@ window.BENCHMARK_DATA = {
           204.0382374048233,
           183.83041546344757,
           253.06234607696533,
-          272.8674462182181
+          272.8674462182181,
+          245.99453417460123
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -944,7 +970,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          230.35924092928568,
           245.47175674438478,
           200.6444193805967,
           257.78513463338214,
@@ -993,7 +1018,8 @@ window.BENCHMARK_DATA = {
           202.0940637077604,
           140.15554475784302,
           245.82162682215372,
-          252.99966198603312
+          252.99966198603312,
+          244.07392279307047
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1128,6 +1154,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
@@ -1140,7 +1172,8 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -1156,7 +1189,8 @@ window.BENCHMARK_DATA = {
           202.27120525042216,
           170.37307264123643,
           284.33359142450183,
-          278.191194500242
+          278.191194500242,
+          273.1169457117716
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1175,6 +1209,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576
@@ -1201,7 +1236,8 @@ window.BENCHMARK_DATA = {
           412.9906762327467,
           413.9302067756653,
           545.3726666768392,
-          563.3078155517578
+          563.3078155517578,
+          586.2725223813738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1213,6 +1249,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -1246,7 +1283,8 @@ window.BENCHMARK_DATA = {
           276.31743211746215,
           221.40054513726915,
           339.0808546702067,
-          355.15742444992065
+          355.15742444992065,
+          364.86238646507263
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1258,6 +1296,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -1282,12 +1321,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
-        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
-      },
       {
         "sha": "23b6cd56dbd45d5be7a56d4d2fc91ba0f1b6fba1",
         "author": "Valentin Breu\u00DF",
@@ -1581,10 +1614,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
-      "272bbb23",
       "23b6cd56",
       "a1b234c6",
       "168dc965",
@@ -1633,14 +1671,14 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          593.7735684076945,
           611.4669560750325,
           477.85231691996256,
           612.2908625284831,
@@ -1689,7 +1727,8 @@ window.BENCHMARK_DATA = {
           499.8275589261736,
           377.7996959319481,
           649.0716806139264,
-          658.9432414599827
+          658.9432414599827,
+          633.7696231433323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1708,7 +1747,6 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
-          840,
           856,
           856,
           856,
@@ -1748,6 +1786,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864
@@ -1765,7 +1804,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1326.0671399434407,
           1364.6358740488688,
           1118.0606801350912,
           1351.6633270263671,
@@ -1814,7 +1852,8 @@ window.BENCHMARK_DATA = {
           1093.4844435283117,
           915.3745296918429,
           1393.0922468821207,
-          1453.0168445587158
+          1453.0168445587158,
+          1373.5659450531007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1890,7 +1929,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          610.7512573401133,
           633.0534842173258,
           532.8129401524861,
           655.5329192968516,
@@ -1939,7 +1977,8 @@ window.BENCHMARK_DATA = {
           511.57717418670654,
           409.44116151332855,
           660.1025011062623,
-          648.3773095448812
+          648.3773095448812,
+          625.6183510462444
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2016,12 +2055,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
-        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
-      },
-      {
         "sha": "23b6cd56dbd45d5be7a56d4d2fc91ba0f1b6fba1",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:15:43 2026 \u002B0200",
@@ -2314,10 +2347,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
-      "272bbb23",
       "23b6cd56",
       "a1b234c6",
       "168dc965",
@@ -2366,14 +2404,14 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          975.4341665903727,
           973.5896180959849,
           812.7235339028495,
           972.0514018195016,
@@ -2422,7 +2460,8 @@ window.BENCHMARK_DATA = {
           828.8989026387533,
           392.56831844036395,
           655.6204875310262,
-          653.0624830722809
+          653.0624830722809,
+          626.2280548095703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2441,7 +2480,6 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
-          1248,
           1264,
           1264,
           1264,
@@ -2481,6 +2519,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912
@@ -2498,7 +2537,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26816.98806966146,
           27361.74025065104,
           16816.55473429362,
           27497.089080810547,
@@ -2547,7 +2585,8 @@ window.BENCHMARK_DATA = {
           16400.73519083659,
           11769.582413991293,
           27887.573141915458,
-          28410.641943359376
+          28410.641943359376,
+          27444.59106009347
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2571,7 +2610,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33468,
@@ -2607,6 +2645,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
@@ -2623,7 +2662,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          780.9781115849813,
           774.389230455671,
           621.0810632024493,
           808.3331483840942,
@@ -2672,7 +2710,8 @@ window.BENCHMARK_DATA = {
           625.2940127690633,
           482.3008575439453,
           804.692634264628,
-          826.4792725880941
+          826.4792725880941,
+          794.8108036858695
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2749,12 +2788,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
-        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
-      },
-      {
         "sha": "23b6cd56dbd45d5be7a56d4d2fc91ba0f1b6fba1",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:15:43 2026 \u002B0200",
@@ -3047,10 +3080,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
-      "272bbb23",
       "23b6cd56",
       "a1b234c6",
       "168dc965",
@@ -3099,14 +3137,14 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          716.2311901728312,
           746.4471676690238,
           586.6084758894784,
           774.0639625276838,
@@ -3155,7 +3193,8 @@ window.BENCHMARK_DATA = {
           561.8075871149699,
           445.76871263980865,
           744.3005462793203,
-          743.0805713335673
+          743.0805713335673,
+          768.1799621582031
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3174,7 +3213,6 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
           1816,
           1816,
           1816,
@@ -3214,6 +3252,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848
@@ -3231,7 +3270,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          81844.91207682292,
           82125.86353410993,
           53291.844130452475,
           84826.06088867187,
@@ -3280,7 +3318,8 @@ window.BENCHMARK_DATA = {
           51433.28704364483,
           31058.216958852914,
           82880.52755972055,
-          84265.83816092355
+          84265.83816092355,
+          85322.30723353794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3292,7 +3331,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5256,
           5252,
@@ -3341,6 +3379,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -3356,12 +3395,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
-        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
-      },
       {
         "sha": "23b6cd56dbd45d5be7a56d4d2fc91ba0f1b6fba1",
         "author": "Valentin Breu\u00DF",
@@ -3655,10 +3688,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
-      "272bbb23",
       "23b6cd56",
       "a1b234c6",
       "168dc965",
@@ -3707,14 +3745,14 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          262.4779659679958,
           303.72475092751637,
           225.3275263150533,
           303.956152788798,
@@ -3763,7 +3801,8 @@ window.BENCHMARK_DATA = {
           156.0302222887675,
           120.64632336298625,
           183.5748676141103,
-          191.85911434491476
+          191.85911434491476,
+          162.5062539100647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3782,7 +3821,6 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
-          656,
           664,
           664,
           664,
@@ -3822,6 +3860,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552
@@ -3839,7 +3878,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31673.233797200523,
           32372.2741007487,
           15254.764650785006,
           30786.992837088448,
@@ -3888,7 +3926,8 @@ window.BENCHMARK_DATA = {
           15035.3517964681,
           12654.644130452474,
           32423.43391113281,
-          32192.955029296874
+          32192.955029296874,
+          31236.718094889322
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3901,7 +3940,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -3945,6 +3983,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -3964,7 +4003,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          236.24986244837444,
           249.67201636632282,
           197.15859258969624,
           259.8181400934855,
@@ -4013,7 +4051,8 @@ window.BENCHMARK_DATA = {
           183.7677354812622,
           147.67371101379393,
           255.7457534154256,
-          258.7912476979769
+          258.7912476979769,
+          261.0001422564189
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4148,6 +4187,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
@@ -4160,7 +4205,8 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -4176,7 +4222,8 @@ window.BENCHMARK_DATA = {
           484.3638657251994,
           335.4380095163981,
           619.9793544769287,
-          470.3805774961199
+          470.3805774961199,
+          451.62953694661456
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4197,6 +4244,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720
         ],
         "borderColor": "#63A2AC",
@@ -4221,7 +4269,8 @@ window.BENCHMARK_DATA = {
           307.95345500310265,
           263.01649208068847,
           373.8811431271689,
-          433.2085972150167
+          433.2085972150167,
+          411.77138430277506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4233,6 +4282,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -4266,7 +4316,8 @@ window.BENCHMARK_DATA = {
           345.89806168874105,
           264.56047274271646,
           398.0087053934733,
-          431.85279965400696
+          431.85279965400696,
+          411.37439753214517
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4278,6 +4329,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -4361,6 +4413,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
@@ -4373,7 +4431,8 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -4389,7 +4448,8 @@ window.BENCHMARK_DATA = {
           872.7421139399211,
           640.7282141367594,
           1151.8307791392008,
-          1070.1917322794595
+          1070.1917322794595,
+          1056.3045282363892
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4408,6 +4468,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          1720,
           1720,
           1720,
           1720
@@ -4434,7 +4495,8 @@ window.BENCHMARK_DATA = {
           1627.4117516108922,
           1279.0739683004526,
           1887.3938435872396,
-          2073.025442123413
+          2073.025442123413,
+          1886.8613792419433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4446,6 +4508,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -4479,7 +4542,8 @@ window.BENCHMARK_DATA = {
           795.0054859161377,
           584.2220613039457,
           949.4310310999552,
-          972.6625693003336
+          972.6625693003336,
+          905.5249994141715
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4491,6 +4555,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -4574,6 +4639,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
@@ -4586,7 +4657,8 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -4602,7 +4674,8 @@ window.BENCHMARK_DATA = {
           9684.503852844238,
           7080.700775733361,
           12135.059914725167,
-          12159.236760457357
+          12159.236760457357,
+          12077.013885498047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4621,6 +4694,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720
@@ -4647,7 +4721,8 @@ window.BENCHMARK_DATA = {
           27674.64548746745,
           23994.497277396065,
           42559.10313197545,
-          42393.89460536412
+          42393.89460536412,
+          41413.62630615234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4667,6 +4742,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609
         ],
@@ -4692,7 +4768,8 @@ window.BENCHMARK_DATA = {
           8296.059771024264,
           6847.346667698452,
           11270.076776776996,
-          11256.76350402832
+          11256.76350402832,
+          11269.664648873466
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4704,6 +4781,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -4787,6 +4865,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
         "message": "perf: count the items of \u0060Contains\u0060 with a string synchronously (#1808)"
+      },
+      {
+        "sha": "d07cd82372e41f39c75db0d659aed6c53da1df24",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
+        "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
       }
     ],
     "labels": [
@@ -4799,7 +4883,8 @@ window.BENCHMARK_DATA = {
       "ad09d2ca",
       "25bdf4e4",
       "bea504d5",
-      "45e98efc"
+      "45e98efc",
+      "d07cd823"
     ],
     "datasets": [
       {
@@ -4815,7 +4900,8 @@ window.BENCHMARK_DATA = {
           16683.66478553185,
           14552.560348510742,
           23663.978812081474,
-          23638.22805434007
+          23638.22805434007,
+          23639.355893648586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4834,6 +4920,7 @@ window.BENCHMARK_DATA = {
           3064,
           3064,
           3064,
+          2640,
           2640,
           2640,
           2640
@@ -4860,7 +4947,8 @@ window.BENCHMARK_DATA = {
           39463.85021972656,
           33270.43501281738,
           61104.8171648298,
-          61753.93634033203
+          61753.93634033203,
+          60793.590393066406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4880,6 +4968,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
+          23554,
           23554,
           23554
         ],
@@ -4905,7 +4994,8 @@ window.BENCHMARK_DATA = {
           16107.392168317523,
           13545.327889578683,
           22388.99493408203,
-          22202.768191019695
+          22202.768191019695,
+          22406.342309134347
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4917,6 +5007,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
