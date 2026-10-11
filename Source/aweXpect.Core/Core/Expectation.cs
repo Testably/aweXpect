@@ -138,10 +138,10 @@ public abstract class Expectation
 					new ArgumentException("You must provide at least one expectation.", nameof(expectations)));
 			}
 
-			foreach (Expectation expectation in expectations)
+			for (int i = 0; i < expectations.Length; i++)
 			{
 				// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-				if (expectation is null)
+				if (expectations[i] is null)
 				{
 					throw Tracing.WriteException(
 						new ArgumentException("The 'expectations' cannot contain null.", nameof(expectations)));

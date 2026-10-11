@@ -985,9 +985,12 @@ public abstract class ExpectationBuilder
 	internal ValueTask<Expectation.Result> GetResult(int index)
 	{
 		ValueTask<ConstraintResult> isMet = IsMet(false);
-		return isMet.IsCompletedSuccessfully && !IsTracing
-			? new ValueTask<Expectation.Result>(new Expectation.Result(index + 1, Subject, isMet.Result, true))
-			: GetResultAsync(isMet, index);
+		if (!isMet.IsCompletedSuccessfully || IsTracing)
+		{
+			return GetResultAsync(isMet, index);
+		}
+
+		return new ValueTask<Expectation.Result>(new Expectation.Result(index + 1, Subject, isMet.Result, true));
 	}
 
 	private async ValueTask<Expectation.Result> GetResultAsync(ValueTask<ConstraintResult> isMet, int index)
@@ -1015,9 +1018,9 @@ public abstract class ExpectationBuilder
 			return false;
 		}
 
-		foreach (IBecauseReason reason in _reasons!)
+		for (int i = 0; i < _reasons!.Count; i++)
 		{
-			if (reason is not BecauseReason)
+			if (_reasons[i] is not BecauseReason)
 			{
 				return false;
 			}
