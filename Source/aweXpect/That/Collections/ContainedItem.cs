@@ -330,22 +330,22 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 		=> options.GetExpectation(Expected, grammars);
 
 	/// <summary>
-	///     The <paramref name="item" /> compared ordinally, like the options compare it without an option.
+	///     The <paramref name="equalItem" /> compared ordinally, like the options compare it without an option.
 	/// </summary>
-	private sealed class OrdinalStringItem(EqualStringItem item) : SynchronouslyMatchedItem<string?>
+	private sealed class OrdinalStringItem(EqualStringItem equalItem) : SynchronouslyMatchedItem<string?>
 #if NET8_0_OR_GREATER
 		, IDirectlySearchedItem<string?>
 #endif
 	{
 		/// <inheritdoc />
-		public override bool IsMatch(string? value)
-			=> string.Equals(value, item.Expected);
+		public override bool IsMatch(string? item)
+			=> string.Equals(item, equalItem.Expected);
 
 #if NET8_0_OR_GREATER
 		/// <inheritdoc />
 		public int IndexIn(ReadOnlySpan<string?> items)
 		{
-			string? expected = item.Expected;
+			string? expected = equalItem.Expected;
 			for (int index = 0; index < items.Length; index++)
 			{
 				if (string.Equals(items[index], expected))
@@ -360,11 +360,11 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 
 		/// <inheritdoc />
 		public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
-			=> item.GetExpectation(quantifier, grammars, isNegated);
+			=> equalItem.GetExpectation(quantifier, grammars, isNegated);
 
 		/// <inheritdoc />
 		public override string GetHasItemExpectation(ExpectationGrammars grammars)
-			=> item.GetHasItemExpectation(grammars);
+			=> equalItem.GetHasItemExpectation(grammars);
 	}
 }
 
