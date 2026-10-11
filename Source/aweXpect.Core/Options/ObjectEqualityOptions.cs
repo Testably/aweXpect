@@ -76,8 +76,7 @@ internal static class ObjectEqualityOptions
 				return true;
 			}
 
-			// A primitive's Equals(object) agrees with its typed Equals, so comparing the boxed values cannot differ.
-			if (typeof(TActual).IsPrimitive && expected is TActual)
+			if (HasTypedEqualsLikeObjectEquals<TActual>() && expected is TActual)
 			{
 				return false;
 			}
@@ -91,6 +90,15 @@ internal static class ObjectEqualityOptions
 			return UserCode.Invoke(static values => Equals(values.Actual, values.Expected),
 				(Actual: actual, Expected: expected), static values => UserCode.EqualsOf(values.Actual!));
 		}
+
+		/// <summary>
+		///     Whether the <see cref="object.Equals(object)" /> of <typeparamref name="T" /> agrees with its typed
+		///     <c>Equals</c>, so that comparing the boxed values cannot differ.
+		/// </summary>
+		private static bool HasTypedEqualsLikeObjectEquals<T>()
+			=> typeof(T).IsPrimitive || typeof(T).IsEnum || typeof(T) == typeof(decimal) ||
+			   typeof(T) == typeof(Guid) || typeof(T) == typeof(DateTime) || typeof(T) == typeof(DateTimeOffset) ||
+			   typeof(T) == typeof(TimeSpan);
 
 		private static bool AreNumericsEqual(object actual, object expected)
 		{
