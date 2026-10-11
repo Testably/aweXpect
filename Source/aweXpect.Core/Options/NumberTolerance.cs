@@ -2,6 +2,8 @@
 using aweXpect.Core.Helpers;
 #if NET8_0_OR_GREATER
 using System.Numerics;
+#else
+using System.Collections.Generic;
 #endif
 
 namespace aweXpect.Options;
@@ -82,9 +84,10 @@ public class NumberTolerance<TNumber>(
 					(_, null) => false,
 					(null, _) => false,
 #if NET8_0_OR_GREATER
-					(_, _) => actual.Equals(expected) || calculateDifference(actual.Value, expected.Value) <= Tolerance,
+					(_, _) => actual.Value.Equals(expected.Value) ||
+					          calculateDifference(actual.Value, expected.Value) <= Tolerance,
 #else
-					(_, _) => actual.Equals(expected) ||
+					(_, _) => EqualityComparer<TNumber>.Default.Equals(actual.Value, expected.Value) ||
 					          calculateDifference(actual.Value, expected.Value)?.CompareTo(Tolerance ?? default) <= 0,
 #endif
 				};
