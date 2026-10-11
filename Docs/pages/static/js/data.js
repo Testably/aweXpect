@@ -42,6 +42,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -51,7 +57,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -64,7 +71,8 @@ window.BENCHMARK_DATA = {
           12761.611132108248,
           7007.373010762532,
           12983.394603474935,
-          10084.662989298502
+          10084.662989298502,
+          6555.821635564168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -82,7 +90,8 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
-          4032
+          4032,
+          3040
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -103,7 +112,8 @@ window.BENCHMARK_DATA = {
           309036.89704241074,
           187409.99231770833,
           359474.48984375,
-          258528.38291015624
+          258528.38291015624,
+          189413.85319010416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -121,7 +131,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590292,
-          590287
+          590287,
+          590224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -142,7 +153,8 @@ window.BENCHMARK_DATA = {
           17931.169439697267,
           10557.885479518345,
           19355.007954915363,
-          14237.522770690917
+          14237.522770690917,
+          12166.199898856026
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -154,6 +166,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -216,6 +229,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -225,7 +244,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -238,7 +258,8 @@ window.BENCHMARK_DATA = {
           21211.297137920672,
           14971.154263814291,
           20524.094112141927,
-          16868.844968159992
+          16868.844968159992,
+          181.82756209373474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -256,7 +277,8 @@ window.BENCHMARK_DATA = {
           9592,
           9592,
           9592,
-          9592
+          9592,
+          600
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -277,7 +299,8 @@ window.BENCHMARK_DATA = {
           1937.8559629000151,
           967.6885364239032,
           1776.432496770223,
-          1610.1938510894774
+          1610.1938510894774,
+          331.0620517730713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -289,6 +312,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -316,7 +340,8 @@ window.BENCHMARK_DATA = {
           1843.7720570197473,
           994.163479868571,
           1687.0703859965006,
-          1451.2873424802508
+          1451.2873424802508,
+          261.37859092439925
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -328,6 +353,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -4968,6 +4994,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -5740,7 +5772,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -6516,7 +6549,8 @@ window.BENCHMARK_DATA = {
           149.4230346361796,
           92.09907669287462,
           159.01998606749945,
-          119.79168168703715
+          119.79168168703715,
+          102.63410041332244
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7297,7 +7331,8 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
-          544
+          544,
+          512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8081,7 +8116,8 @@ window.BENCHMARK_DATA = {
           243.18680463518416,
           147.03668247736417,
           255.07114610671997,
-          204.0382374048233
+          204.0382374048233,
+          183.83041546344757
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8274,6 +8310,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -8927,7 +8964,8 @@ window.BENCHMARK_DATA = {
           233.4705132842064,
           147.38542197545368,
           251.19252502123516,
-          202.0940637077604
+          202.0940637077604,
+          140.15554475784302
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8939,6 +8977,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9045,6 +9084,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -9054,7 +9099,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -9067,7 +9113,8 @@ window.BENCHMARK_DATA = {
           258.15258267947604,
           163.601525919778,
           300.61422910690305,
-          202.27120525042216
+          202.27120525042216,
+          170.37307264123643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9085,7 +9132,8 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608
+          608,
+          576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9106,7 +9154,8 @@ window.BENCHMARK_DATA = {
           510.0246894200643,
           316.5562982899802,
           542.7052757898966,
-          412.9906762327467
+          412.9906762327467,
+          413.9302067756653
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9118,6 +9167,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9145,7 +9195,8 @@ window.BENCHMARK_DATA = {
           344.12981658715466,
           190.8458044687907,
           343.9997938156128,
-          276.31743211746215
+          276.31743211746215,
+          221.40054513726915
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9157,6 +9208,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -13797,6 +13849,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -14569,7 +14627,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -15345,7 +15404,8 @@ window.BENCHMARK_DATA = {
           627.9572465079171,
           341.3065070424761,
           651.3049010594685,
-          499.8275589261736
+          499.8275589261736,
+          377.7996959319481
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16126,7 +16186,8 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
-          896
+          896,
+          864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16910,7 +16971,8 @@ window.BENCHMARK_DATA = {
           1332.0978571573894,
           746.8850107192993,
           1377.3765979494367,
-          1093.4844435283117
+          1093.4844435283117,
+          915.3745296918429
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17691,6 +17753,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -17756,7 +17819,8 @@ window.BENCHMARK_DATA = {
           629.9775292323186,
           366.1082080523173,
           645.6157728195191,
-          511.57717418670654
+          511.57717418670654,
+          409.44116151332855
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17768,6 +17832,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -22452,6 +22517,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -23224,7 +23295,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -24000,7 +24072,8 @@ window.BENCHMARK_DATA = {
           1006.2845067342122,
           566.3653113047282,
           1004.2887246449789,
-          828.8989026387533
+          828.8989026387533,
+          392.56831844036395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24781,7 +24854,8 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
-          1304
+          1304,
+          912
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25565,7 +25639,8 @@ window.BENCHMARK_DATA = {
           19363.912045992336,
           10944.914141845704,
           27059.849483235677,
-          16400.73519083659
+          16400.73519083659,
+          11769.582413991293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26346,7 +26421,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26411,7 +26487,8 @@ window.BENCHMARK_DATA = {
           723.1027789433797,
           444.03315149034773,
           795.810476175944,
-          625.2940127690633
+          625.2940127690633,
+          482.3008575439453
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26423,6 +26500,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -26877,6 +26955,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -26944,7 +27028,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -27015,7 +27100,8 @@ window.BENCHMARK_DATA = {
           677.8588190759931,
           402.8931168556213,
           711.3378532273429,
-          561.8075871149699
+          561.8075871149699,
+          445.76871263980865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27091,7 +27177,8 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
-          1840
+          1840,
+          1848
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27170,7 +27257,8 @@ window.BENCHMARK_DATA = {
           59926.632983398435,
           32037.00215657552,
           83777.21427408855,
-          51433.28704364483
+          51433.28704364483,
+          31058.216958852914
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27246,6 +27334,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -27650,6 +27739,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -27717,7 +27812,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -27788,7 +27884,8 @@ window.BENCHMARK_DATA = {
           179.5712014266423,
           119.93977559529819,
           178.88042221750533,
-          156.0302222887675
+          156.0302222887675,
+          120.64632336298625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27864,7 +27961,8 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
-          584
+          584,
+          552
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27943,7 +28041,8 @@ window.BENCHMARK_DATA = {
           18368.450517926896,
           10934.848035539899,
           30092.941772460938,
-          15035.3517964681
+          15035.3517964681,
+          12654.644130452474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28019,6 +28118,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -28084,7 +28184,8 @@ window.BENCHMARK_DATA = {
           235.80043573379515,
           133.22090535504478,
           240.8700272242228,
-          183.7677354812622
+          183.7677354812622,
+          147.67371101379393
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28096,6 +28197,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -28202,6 +28304,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -28211,7 +28319,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -28224,7 +28333,8 @@ window.BENCHMARK_DATA = {
           600.5068825208224,
           327.77489624704634,
           611.9652239935739,
-          484.3638657251994
+          484.3638657251994,
+          335.4380095163981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28242,7 +28352,8 @@ window.BENCHMARK_DATA = {
           728,
           728,
           728,
-          728
+          728,
+          696
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28263,7 +28374,8 @@ window.BENCHMARK_DATA = {
           372.8653973511287,
           227.01778138478596,
           357.3124629020691,
-          307.95345500310265
+          307.95345500310265,
+          263.01649208068847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28275,6 +28387,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -28302,7 +28415,8 @@ window.BENCHMARK_DATA = {
           417.34871571858724,
           226.67296517690022,
           404.22499952316286,
-          345.89806168874105
+          345.89806168874105,
+          264.56047274271646
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28314,6 +28428,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -28376,6 +28491,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -28385,7 +28506,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -28398,7 +28520,8 @@ window.BENCHMARK_DATA = {
           1021.8631283686711,
           572.6790697915213,
           1031.8272314071655,
-          872.7421139399211
+          872.7421139399211,
+          640.7282141367594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28416,7 +28539,8 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
-          2168
+          2168,
+          1720
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28437,7 +28561,8 @@ window.BENCHMARK_DATA = {
           1830.9006284077961,
           1129.5604832512993,
           1873.955077234904,
-          1627.4117516108922
+          1627.4117516108922,
+          1279.0739683004526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28449,6 +28574,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -28476,7 +28602,8 @@ window.BENCHMARK_DATA = {
           869.4494672921987,
           527.6286060626691,
           886.0307658513387,
-          795.0054859161377
+          795.0054859161377,
+          584.2220613039457
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28488,6 +28615,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -28550,6 +28678,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -28559,7 +28693,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -28572,7 +28707,8 @@ window.BENCHMARK_DATA = {
           12161.19014798678,
           7416.879830932618,
           13758.310784476143,
-          9684.503852844238
+          9684.503852844238,
+          7080.700775733361
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28590,7 +28726,8 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
-          2360
+          2360,
+          1720
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28611,7 +28748,8 @@ window.BENCHMARK_DATA = {
           33724.59740702311,
           19892.586547851562,
           41125.15801595052,
-          27674.64548746745
+          27674.64548746745,
+          23994.497277396065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28629,7 +28767,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609
+          18609,
+          18608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28650,7 +28789,8 @@ window.BENCHMARK_DATA = {
           10518.905581883022,
           6714.693571472168,
           11382.084618201623,
-          8296.059771024264
+          8296.059771024264,
+          6847.346667698452
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28662,6 +28802,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -28724,6 +28865,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
         "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
+      },
+      {
+        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
+        "message": "chore: count the items of an array in the items count benchmark (#1810)"
       }
     ],
     "labels": [
@@ -28733,7 +28880,8 @@ window.BENCHMARK_DATA = {
       "f81fa443",
       "d62d702f",
       "d79dbb79",
-      "ad09d2ca"
+      "ad09d2ca",
+      "25bdf4e4"
     ],
     "datasets": [
       {
@@ -28746,7 +28894,8 @@ window.BENCHMARK_DATA = {
           21156.631940569197,
           12929.774574788411,
           23753.03332737514,
-          16683.66478553185
+          16683.66478553185,
+          14552.560348510742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28764,7 +28913,8 @@ window.BENCHMARK_DATA = {
           3064,
           3064,
           3064,
-          3064
+          3064,
+          2640
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28785,7 +28935,8 @@ window.BENCHMARK_DATA = {
           48864.6248953683,
           28692.68379865374,
           60304.13727678572,
-          39463.85021972656
+          39463.85021972656,
+          33270.43501281738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28799,6 +28950,7 @@ window.BENCHMARK_DATA = {
         "data": [
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -28824,7 +28976,8 @@ window.BENCHMARK_DATA = {
           20613.838934762138,
           13156.13920694987,
           22183.806962076822,
-          16107.392168317523
+          16107.392168317523,
+          13545.327889578683
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28836,6 +28989,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
