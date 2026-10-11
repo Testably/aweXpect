@@ -979,6 +979,29 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Evaluates the expectation as the member of a combination, after the <paramref name="index" /> of the
+	///     previous member, and traces it when it is met.
+	/// </summary>
+	internal ValueTask<Expectation.Result> GetResult(int index)
+	{
+		ValueTask<ConstraintResult> isMet = IsMet(false);
+		return isMet.IsCompletedSuccessfully && !IsTracing
+			? new ValueTask<Expectation.Result>(new Expectation.Result(index + 1, Subject, isMet.Result, true))
+			: GetResultAsync(isMet, index);
+	}
+
+	private async ValueTask<Expectation.Result> GetResultAsync(ValueTask<ConstraintResult> isMet, int index)
+	{
+		ConstraintResult result = await isMet;
+		if (result.Outcome == Outcome.Success && IsTracing)
+		{
+			Tracing.WriteSuccess(Subject, result);
+		}
+
+		return new Expectation.Result(index + 1, Subject, result, true);
+	}
+
+	/// <summary>
 	///     Whether the reasons need not be appended to a met result, as nothing reads its expectation text.
 	/// </summary>
 	/// <remarks>
