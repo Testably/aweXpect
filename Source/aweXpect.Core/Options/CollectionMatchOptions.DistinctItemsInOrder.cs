@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace aweXpect.Options;
@@ -29,13 +28,13 @@ public partial class CollectionMatchOptions
 	{
 		private readonly int[] _firstOccurrence;
 		private readonly Func<int, int, ValueTask<bool>> _isMatch;
-		private readonly Dictionary<(int SearchedId, int SoughtId), bool> _isMatchCache = new();
+		private readonly Dictionary<(int SearchedId, int SoughtId), bool> _isMatchCache;
 		private readonly int[] _lastOccurrence;
 		private readonly OrderMatch _orderMatch;
 		private readonly int[] _searched;
 		private readonly int _searchedCount;
 		private readonly int _soughtCount;
-		private HashSet<int> _placedIds = new();
+		private HashSet<int>? _placedIds;
 
 		/// <param name="searched">The id of each searched item.</param>
 		/// <param name="searchedCount">The number of distinct searched items.</param>
@@ -50,6 +49,8 @@ public partial class CollectionMatchOptions
 			_soughtCount = soughtCount;
 			_isMatch = isMatch;
 			_orderMatch = orderMatch;
+			// Items in the sought order need about one comparison each.
+			_isMatchCache = new Dictionary<(int SearchedId, int SoughtId), bool>(soughtCount);
 			_firstOccurrence = new int[searchedCount];
 			_lastOccurrence = new int[searchedCount];
 			for (int position = searched.Length - 1; position >= 0; position--)
@@ -81,7 +82,7 @@ public partial class CollectionMatchOptions
 					return false;
 				}
 
-				_placedIds = new HashSet<int>(placement.Select(position => _searched[position]));
+				_placedIds = GetPlacedIds(placement);
 				return _orderMatch != OrderMatch.Equal || await IsEveryOtherItemADuplicate();
 			}
 
@@ -101,12 +102,23 @@ public partial class CollectionMatchOptions
 
 				if (await IsContiguousAsSet(start, chosen))
 				{
-					_placedIds = new HashSet<int>(chosen.Select(position => _searched[position]));
+					_placedIds = GetPlacedIds(chosen);
 					return true;
 				}
 			}
 
 			return false;
+		}
+
+		private HashSet<int> GetPlacedIds(List<int> positions)
+		{
+			HashSet<int> placedIds = new();
+			foreach (int position in positions)
+			{
+				placedIds.Add(_searched[position]);
+			}
+
+			return placedIds;
 		}
 
 		/// <summary>
@@ -117,7 +129,7 @@ public partial class CollectionMatchOptions
 		{
 			for (int searchedId = 0; searchedId < _searchedCount; searchedId++)
 			{
-				if (!_placedIds.Contains(searchedId) && !await MatchesAnySoughtItem(searchedId))
+				if (_placedIds?.Contains(searchedId) != true && !await MatchesAnySoughtItem(searchedId))
 				{
 					return true;
 				}
@@ -205,7 +217,7 @@ public partial class CollectionMatchOptions
 		{
 			for (int searchedId = 0; searchedId < _searchedCount; searchedId++)
 			{
-				if (!_placedIds.Contains(searchedId) && !await MatchesAnySoughtItem(searchedId))
+				if (_placedIds?.Contains(searchedId) != true && !await MatchesAnySoughtItem(searchedId))
 				{
 					return false;
 				}
