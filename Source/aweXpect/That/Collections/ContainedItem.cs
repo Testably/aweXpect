@@ -233,21 +233,45 @@ internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TIt
 		=> options.AppendContexts(contexts);
 
 	/// <summary>
-	///     The <paramref name="item" /> compared like the default match type compares it.
+	///     The <paramref name="equalItem" /> compared like the default match type compares it.
 	/// </summary>
-	private sealed class DefaultEqualItem(EqualItem<TItem> item) : SynchronouslyMatchedItem<TItem>
+	/// <remarks>
+	///     The comparison of these types runs no code of the caller, so the items of a collection can be searched
+	///     directly.
+	/// </remarks>
+	private sealed class DefaultEqualItem(EqualItem<TItem> equalItem) : SynchronouslyMatchedItem<TItem>
+#if NET8_0_OR_GREATER
+		, IDirectlySearchedItem<TItem>
+#endif
 	{
 		/// <inheritdoc />
-		public override bool IsMatch(TItem value)
-			=> EqualityComparer<TItem>.Default.Equals(value, item.Expected);
+		public override bool IsMatch(TItem item)
+			=> EqualityComparer<TItem>.Default.Equals(item, equalItem.Expected);
+
+#if NET8_0_OR_GREATER
+		/// <inheritdoc />
+		public int IndexIn(ReadOnlySpan<TItem> items)
+		{
+			TItem expected = equalItem.Expected;
+			for (int index = 0; index < items.Length; index++)
+			{
+				if (EqualityComparer<TItem>.Default.Equals(items[index], expected))
+				{
+					return index;
+				}
+			}
+
+			return -1;
+		}
+#endif
 
 		/// <inheritdoc />
 		public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
-			=> item.GetExpectation(quantifier, grammars, isNegated);
+			=> equalItem.GetExpectation(quantifier, grammars, isNegated);
 
 		/// <inheritdoc />
 		public override string GetHasItemExpectation(ExpectationGrammars grammars)
-			=> item.GetHasItemExpectation(grammars);
+			=> equalItem.GetHasItemExpectation(grammars);
 	}
 
 	private static class HasFrameworkEquality
