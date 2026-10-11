@@ -89,6 +89,28 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 		return false;
 	}
 
+	/// <summary>
+	///     Gets the item at the <paramref name="index" />, reading the source only as far as needed.
+	/// </summary>
+	/// <remarks>
+	///     Reads the items without an enumerator, so that a consumer that knows the position of the next item, e.g. a
+	///     counting loop, avoids the overhead of one.
+	/// </remarks>
+	internal bool TryGetItem(int index, out T item)
+	{
+		while (index >= _materializedItems.Count)
+		{
+			if (!MoveNext())
+			{
+				item = default!;
+				return false;
+			}
+		}
+
+		item = _materializedItems[index];
+		return true;
+	}
+
 	private bool ReadNextItem()
 	{
 		_enumerator ??= _enumerable.GetEnumerator();

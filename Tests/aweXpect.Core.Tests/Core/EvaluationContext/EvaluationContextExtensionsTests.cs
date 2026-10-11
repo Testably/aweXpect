@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Signaling;
@@ -44,6 +45,95 @@ public class EvaluationContextExtensionsTests
 			.IsLessThanOrEqualTo(RealTimeSystem.Instance.GetTimestamp())
 			.Because("only an evaluation of this library has a time system of its own");
 		await That(elapsed).IsGreaterThanOrEqualTo(TimeSpan.Zero);
+	}
+
+	[Test]
+	public async Task TryGetItem_BeyondTheLastItem_ShouldReturnFalse()
+	{
+		IEvaluationContext context = new Context();
+		IMaterializedEnumerable<int> materialized =
+			(IMaterializedEnumerable<int>)context.UseMaterializedEnumerable(ToEnumerable(2, 4));
+
+		bool result = materialized.TryGetItem(2, out int item);
+
+		await That(result).IsFalse();
+		await That(item).IsEqualTo(0);
+		await That(materialized.Count).IsEqualTo(2)
+			.Because("the source was read to its end while searching the item");
+	}
+
+	[Test]
+	public async Task TryGetItem_ForAnotherImplementation_ShouldEnumerateItUpToTheIndex()
+	{
+		ForeignMaterializedEnumerable materialized = new(2, 4, 6);
+
+		bool result = materialized.TryGetItem(1, out int item);
+
+		await That(result).IsTrue();
+		await That(item).IsEqualTo(4);
+	}
+
+	[Test]
+	public async Task TryGetItem_ShouldReadTheSourceOnlyUpToTheIndex()
+	{
+		IEvaluationContext context = new Context();
+		OneShotEnumerable source = new(2, 4, 6);
+		IMaterializedEnumerable<int> materialized =
+			(IMaterializedEnumerable<int>)context.UseMaterializedEnumerable(source);
+
+		bool result = materialized.TryGetItem(1, out int item);
+
+		await That(result).IsTrue();
+		await That(item).IsEqualTo(4);
+		await That(materialized.MaterializedItems).IsEqualTo([2, 4,])
+			.Because("only the items up to the index are read from the source");
+		await That(materialized.ToList()).IsEqualTo([2, 4, 6,])
+			.Because("an enumeration replays the read items and continues the source");
+		await That(source.Enumerations).IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task TryGetItem_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		IEvaluationContext context = new Context();
+		IMaterializedEnumerable<int> materialized =
+			(IMaterializedEnumerable<int>)context.UseMaterializedEnumerable(ToEnumerable(2, 4));
+
+		void Act() => materialized.TryGetItem(-1, out _);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("index").And
+			.WithMessage("The index must not be negative.").AsPrefix();
+	}
+
+	[Test]
+	public async Task TryGetItem_WhenMaterializedIsNull_ShouldThrowArgumentNullException()
+	{
+		IMaterializedEnumerable<int> materialized = null!;
+
+		void Act() => materialized.TryGetItem(0, out _);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("materialized").And
+			.WithMessage("The 'materialized' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task TryGetItem_WhenTheSourceThrows_ShouldThrowLikeAnEnumeration()
+	{
+		IEvaluationContext context = new Context();
+		InvalidOperationException exception = new("the source is broken");
+		IMaterializedEnumerable<int> materialized =
+			(IMaterializedEnumerable<int>)context.UseMaterializedEnumerable(new DisposeTrackingEnumerable(exception, 1));
+
+		Exception? fromTryGetItem = Catch(() => materialized.TryGetItem(1, out _));
+		Exception? fromEnumeration = Catch(() => _ = materialized.ToList());
+
+		await That(fromTryGetItem).Is<UserCodeException>()
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(fromEnumeration).IsSameAs(fromTryGetItem)
+			.Because("every further read throws the exception of the source again");
 	}
 
 #if NET8_0_OR_GREATER
@@ -508,6 +598,19 @@ public class EvaluationContextExtensionsTests
 			.WithParamName("amount");
 	}
 
+	private static Exception? Catch(Action action)
+	{
+		try
+		{
+			action();
+			return null;
+		}
+		catch (Exception exception)
+		{
+			return exception;
+		}
+	}
+
 	private static IEnumerable<T> ToEnumerable<T>(params T[] items)
 	{
 		foreach (T item in items)
@@ -536,6 +639,17 @@ public class EvaluationContextExtensionsTests
 		public override bool Equals(object? obj) => obj is AlwaysEqualEnumerable;
 
 		public override int GetHashCode() => 0;
+	}
+
+	private sealed class ForeignMaterializedEnumerable(params int[] items) : IMaterializedEnumerable<int>
+	{
+		public int? Count => null;
+
+		public IReadOnlyList<int> MaterializedItems => [];
+
+		public IEnumerator<int> GetEnumerator() => items.AsEnumerable().GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
 	private sealed class OneShotEnumerable(params int[] items) : IEnumerable<int>
