@@ -57,11 +57,15 @@ public abstract class ExpectationBuilder
 
 	private List<IBecauseReason>? _reasons;
 
+	private string? _subject;
+
 	/// <summary>
 	///     The subject contexts of the current subject and of the subject that the pending which node continues, or
 	///     <see langword="null" /> when none were added.
 	/// </summary>
 	private SubjectContextScopes? _subjectContexts;
+
+	private readonly string _subjectExpression;
 
 	private TimeSpan _timeout;
 
@@ -78,7 +82,7 @@ public abstract class ExpectationBuilder
 		ExpectationGrammars grammars = ExpectationGrammars.None)
 	{
 		AweXpectInitialization.EnsureInitialized();
-		Subject = subjectExpression.TrimCommonWhiteSpace();
+		_subjectExpression = subjectExpression;
 		ExpectationGrammars = grammars;
 	}
 
@@ -88,7 +92,7 @@ public abstract class ExpectationBuilder
 	private protected ExpectationBuilder()
 	{
 		AweXpectInitialization.EnsureInitialized();
-		Subject = "";
+		_subjectExpression = "";
 		_it = "";
 		ExpectationGrammars = ExpectationGrammars.None;
 	}
@@ -117,7 +121,11 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	public ExpectationGrammars ExpectationGrammars { get; private set; }
 
-	internal string Subject { get; }
+	/// <remarks>
+	///     The expression is only trimmed when it is read, e.g. for a failure message, because trimming a multi-line
+	///     expression costs more than a met expectation.
+	/// </remarks>
+	internal string Subject => _subject ??= _subjectExpression.TrimCommonWhiteSpace();
 
 	/// <summary>
 	///     Verifies that the subject is <see langword="true" />, when no expectation was added.
@@ -1281,11 +1289,19 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		{
 			AddOtherExceptions(_subjectSource.GetOtherExceptions(exception));
 			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
-			Tracing.WriteThrowingSubject(Subject);
+			if (IsTracing)
+			{
+				Tracing.WriteThrowingSubject(Subject);
+			}
+
 			return result;
 		}
 
-		Tracing.WriteSubject(Subject, data, timeout);
+		if (IsTracing)
+		{
+			Tracing.WriteSubject(Subject, data, timeout);
+		}
+
 		if (data is DelegateValue delegateValue)
 		{
 			AddOtherExceptions(delegateValue.OtherExceptions);

@@ -174,7 +174,11 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 		if (result.Outcome == Outcome.Success)
 		{
-			Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
+			if (ExpectationBuilder.IsTracing)
+			{
+				Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
+			}
+
 			return;
 		}
 
@@ -412,7 +416,11 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		switch (result.Outcome)
 		{
 			case Outcome.Success:
-				Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
+				if (ExpectationBuilder.IsTracing)
+				{
+					Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
+				}
+
 				return GetStoredValueOrDefault(result);
 			case Outcome.Undecided:
 				Fail.Inconclusive(await FromFailure(result));
