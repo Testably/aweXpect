@@ -46,8 +46,9 @@ public abstract partial class ThatDelegate
 				.AddConstraint((ExceptionType: exceptionType, Exactly: exactly, ThrowOptions: throwOptions),
 					static (state, it, grammars) => new DelegateThrowsWithinTimeoutConstraint(it, grammars,
 						state.ExceptionType, state.Exactly, state.ThrowOptions))
-				.ForWhich<DelegateValue, TException?>(d
-					=> IsExpectedException(d.Exception, exceptionType, exactly) ? d.Exception as TException : null)
+				.ForWhich<DelegateValue, TException?>(!exactly && exceptionType == typeof(TException)
+					? ExceptionOf<TException>.Accessor
+					: CreateExceptionAccessor<TException>(exceptionType, exactly))
 				.AddConstraint((_, _) => new DoNothingConstraint<TException>())
 				.And(" "),
 			throwOptions);
@@ -55,6 +56,24 @@ public abstract partial class ThatDelegate
 
 	private static bool IsExpectedException(Exception? exception, Type exceptionType, bool exactly)
 		=> exactly ? exception.IsExactlyOfType(exceptionType) : exception.IsOfType(exceptionType);
+
+	private static Func<DelegateValue, TException?> CreateExceptionAccessor<TException>(Type exceptionType,
+		bool exactly)
+		where TException : Exception
+		=> d => IsExpectedException(d.Exception, exceptionType, exactly) ? d.Exception as TException : null;
+
+	/// <summary>
+	///     The accessor of the thrown exception for the common <c>Throws&lt;TException&gt;()</c>, shared by all
+	///     expectations instead of a closure over the type for each one.
+	/// </summary>
+	/// <remarks>
+	///     A type argument is never an open generic type, so the type check is the one of
+	///     <see cref="IsExpectedException" />.
+	/// </remarks>
+	private static class ExceptionOf<TException> where TException : Exception
+	{
+		public static readonly Func<DelegateValue, TException?> Accessor = static d => d.Exception as TException;
+	}
 
 	private sealed class DoNothingConstraint<T>()
 		: ConstraintResult.WithValue<T>("it", ExpectationGrammars.None), IValueConstraint<T>

@@ -957,7 +957,7 @@ public sealed class WhichNodeTests
 		whichNode.AddNode(andNode);
 		StringBuilder sb = new();
 
-		Node result = whichNode.ReplaceRightMostOperand(_ => new DummyNode("replaced"));
+		Node result = whichNode.ReplaceRightMostOperand("replaced", (text, _) => new DummyNode(text));
 
 		result.AppendExpectation(sb);
 		await That(result).IsSameAs(whichNode);

@@ -59,9 +59,9 @@ internal abstract class JunctionNode : Node
 	}
 
 	/// <inheritdoc />
-	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
+	public override Node ReplaceRightMostOperand<TState>(TState state, Func<TState, Node, Node> replace)
 	{
-		Current = Current.ReplaceRightMostOperand(replace);
+		Current = Current.ReplaceRightMostOperand(state, replace);
 		return this;
 	}
 

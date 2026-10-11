@@ -64,15 +64,15 @@ internal class WhichNode<TSource, TMember> : Node
 	///     When the expectations on the member are combined with <c>And</c>/<c>Or</c>, a further continuation applies
 	///     to their right-most operand. Otherwise, it continues this node and projects from its member.
 	/// </remarks>
-	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
+	public override Node ReplaceRightMostOperand<TState>(TState state, Func<TState, Node, Node> replace)
 	{
 		if (_inner is JunctionNode or SubjectContextsNode { Inner: JunctionNode, })
 		{
-			_inner = _inner.ReplaceRightMostOperand(replace);
+			_inner = _inner.ReplaceRightMostOperand(state, replace);
 			return this;
 		}
 
-		return replace(this);
+		return replace(state, this);
 	}
 
 	/// <inheritdoc />
