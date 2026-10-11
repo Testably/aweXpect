@@ -49,6 +49,15 @@ internal abstract class ContainedItem<TItem>
 	public virtual bool? LookUpIn(object collection) => null;
 
 	/// <summary>
+	///     Returns an item that matches the items without awaiting anything, or <see langword="null" /> when the
+	///     comparison may have to be awaited.
+	/// </summary>
+	/// <remarks>
+	///     Asked once the subject is known, as the comparer of a set subject can decide the comparison.
+	/// </remarks>
+	public virtual SynchronouslyMatchedItem<TItem>? GetSynchronousItem() => this as SynchronouslyMatchedItem<TItem>;
+
+	/// <summary>
 	///     The expectation text of <c>Contains</c> for the <paramref name="quantifier" />.
 	/// </summary>
 	public abstract string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated);
@@ -199,6 +208,8 @@ internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TIt
 internal sealed class EqualStringItem(StringEqualityOptions options, string? expected)
 	: ExpectedItem<string?>(expected)
 {
+	private OrdinalStringItem? _ordinalItem;
+
 	/// <inheritdoc />
 	public override bool UsesDefaultEquality
 		=> Expected is not null && options.ComparesByOrdinalEquality;
@@ -221,6 +232,13 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 
 	/// <inheritdoc />
 	/// <remarks>
+	///     Without an option, the items are compared ordinally, which needs nothing to be awaited.
+	/// </remarks>
+	public override SynchronouslyMatchedItem<string?>? GetSynchronousItem()
+		=> options.ComparesByOrdinalEquality ? _ordinalItem ??= new OrdinalStringItem(this) : null;
+
+	/// <inheritdoc />
+	/// <remarks>
 	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
 	/// </remarks>
 	public override string GetItemExpectation()
@@ -231,6 +249,24 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
 		=> options.GetExpectation(Expected, grammars);
+
+	/// <summary>
+	///     The <paramref name="item" /> compared ordinally, like the options compare it without an option.
+	/// </summary>
+	private sealed class OrdinalStringItem(EqualStringItem item) : SynchronouslyMatchedItem<string?>
+	{
+		/// <inheritdoc />
+		public override bool IsMatch(string? value)
+			=> string.Equals(value, item.Expected);
+
+		/// <inheritdoc />
+		public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
+			=> item.GetExpectation(quantifier, grammars, isNegated);
+
+		/// <inheritdoc />
+		public override string GetHasItemExpectation(ExpectationGrammars grammars)
+			=> item.GetHasItemExpectation(grammars);
+	}
 }
 
 /// <summary>
@@ -267,6 +303,14 @@ internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> i
 		ContainedItem<TItem> evaluationItem = inner.ForEvaluation(context, cancellationToken);
 		return ReferenceEquals(evaluationItem, inner) ? this : evaluationItem;
 	}
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The comparer of the subject is called directly, so only the inner item can be matched synchronously, when the
+	///     subject has none.
+	/// </remarks>
+	public override SynchronouslyMatchedItem<TItem>? GetSynchronousItem()
+		=> _comparer is null ? inner.GetSynchronousItem() : null;
 
 	/// <inheritdoc />
 	public override void UseComparerOf(object collection)

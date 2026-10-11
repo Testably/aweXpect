@@ -21,7 +21,6 @@ namespace aweXpect;
 internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 {
 	private readonly ExpectedItem<TItem>? _expected;
-	private readonly SynchronouslyMatchedItem<TItem>? _predicate;
 	private object? _actual;
 	private int _count;
 	private ContainedItem<TItem> _evaluationItem;
@@ -40,7 +39,6 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		Item = item;
 		_evaluationItem = item;
 		_expected = item as ExpectedItem<TItem>;
-		_predicate = item as SynchronouslyMatchedItem<TItem>;
 		Quantifier = quantifier;
 	}
 
@@ -65,9 +63,9 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	protected abstract Type CollectionType { get; }
 
 	/// <summary>
-	///     Whether the predicate is synchronous, so that the items can be counted without awaiting it.
+	///     What the collection is searched for in the current evaluation.
 	/// </summary>
-	protected bool IsSynchronous => _predicate is not null;
+	protected ContainedItem<TItem> EvaluationItem => _evaluationItem;
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
@@ -89,12 +87,6 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 			Outcome = Outcome.FailureBothWays;
 		}
 	}
-
-	/// <summary>
-	///     Whether the <paramref name="item" /> matches the synchronous predicate.
-	/// </summary>
-	protected bool MatchesSynchronously(TItem item)
-		=> _predicate!.IsMatch(item);
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches.
@@ -250,8 +242,8 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
-		return IsSynchronous
-			? new ValueTask<ConstraintResult>(Count(materialized, cancellationToken))
+		return EvaluationItem.GetSynchronousItem() is { } synchronousItem
+			? new ValueTask<ConstraintResult>(Count(materialized, synchronousItem, cancellationToken))
 			: CountAsync(materialized, cancellationToken);
 	}
 
@@ -262,12 +254,13 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 		base.AppendContexts(contexts);
 	}
 
-	private ContainConstraint<TEnumerable, TItem> Count(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
+	private ContainConstraint<TEnumerable, TItem> Count(CollectionItems<TItem> materialized,
+		SynchronouslyMatchedItem<TItem> synchronousItem, CancellationToken cancellationToken)
 	{
 		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken) ||
-			    (MatchesSynchronously(item) && IsDecidedBy(materialized, item)))
+			    (synchronousItem.IsMatch(item) && IsDecidedBy(materialized, item)))
 			{
 				return this;
 			}
