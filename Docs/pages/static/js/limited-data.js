@@ -72,6 +72,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -86,7 +92,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -104,7 +111,8 @@ window.BENCHMARK_DATA = {
           12535.305913289389,
           12764.462727473332,
           13265.374138465295,
-          9438.285522460938
+          9438.285522460938,
+          12097.446114173303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -123,6 +131,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -153,7 +162,8 @@ window.BENCHMARK_DATA = {
           374195.22265625,
           392134.18125,
           377371.628515625,
-          293860.6474609375
+          293860.6474609375,
+          356747.362109375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -176,7 +186,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590225
+          590225,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -202,7 +213,8 @@ window.BENCHMARK_DATA = {
           18772.20353581355,
           20086.381243024553,
           19197.259187825523,
-          17536.11997680664
+          17536.11997680664,
+          18611.634877522785
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -214,6 +226,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -269,6 +282,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -276,7 +295,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -287,7 +307,8 @@ window.BENCHMARK_DATA = {
           306.9443253449031,
           283.9505867640177,
           262.74484459559125,
-          284.5397834437234
+          284.5397834437234,
+          345.01939748128257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -299,6 +320,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -322,7 +344,8 @@ window.BENCHMARK_DATA = {
           504.2283857890538,
           537.6015279633658,
           479.22045939309254,
-          582.8737354914348
+          582.8737354914348,
+          474.25586230414257
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -334,6 +357,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -357,7 +381,8 @@ window.BENCHMARK_DATA = {
           408.87290208680287,
           414.6734790166219,
           397.2279572804769,
-          406.0813612571129
+          406.0813612571129,
+          385.27157148948083
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -369,6 +394,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -388,12 +414,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "a1b234c6becec264c0e5affca08319172f105a7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:16:17 2026 \u002B0200",
-        "message": "fix!: do not offer a second \u0060Matching\u0060 on the result of \u0060HasSingle().Matching\u2026\u0060 (#1663)"
-      },
       {
         "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
         "author": "Valentin Breu\u00DF",
@@ -687,10 +707,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
-      "a1b234c6",
       "168dc965",
       "f21e6eab",
       "d98a48a7",
@@ -739,14 +764,14 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          121.97559043566386,
           146.34538300832114,
           75.11130221400943,
           75.87682268449238,
@@ -795,7 +820,8 @@ window.BENCHMARK_DATA = {
           145.90668115615844,
           163.39442869822184,
           137.40051256815593,
-          165.9204727013906
+          165.9204727013906,
+          139.6733043352763
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -812,46 +838,46 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          520,
+          528,
+          528,
+          528,
+          528,
+          528,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
+          544,
           512,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          520,
-          528,
-          528,
-          528,
-          528,
-          528,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
-          544,
           512,
           512,
           512,
@@ -871,7 +897,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          206.36891317367554,
           263.06252940495807,
           126.30781677563985,
           133.5051192442576,
@@ -920,7 +945,8 @@ window.BENCHMARK_DATA = {
           253.06234607696533,
           272.8674462182181,
           245.99453417460123,
-          319.2019171374185
+          319.2019171374185,
+          241.41593173833994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -996,7 +1022,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          200.6444193805967,
           257.78513463338214,
           118.24768235133244,
           123.74599652630943,
@@ -1045,7 +1070,8 @@ window.BENCHMARK_DATA = {
           245.82162682215372,
           252.99966198603312,
           244.07392279307047,
-          242.43157631556193
+          242.43157631556193,
+          294.8144802025386
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1192,6 +1218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -1206,7 +1238,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -1224,7 +1257,8 @@ window.BENCHMARK_DATA = {
           284.33359142450183,
           278.191194500242,
           273.1169457117716,
-          269.6064307873066
+          269.6064307873066,
+          267.1164376894633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1243,6 +1277,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -1273,7 +1308,8 @@ window.BENCHMARK_DATA = {
           545.3726666768392,
           563.3078155517578,
           586.2725223813738,
-          639.0722876957485
+          639.0722876957485,
+          497.47190316518146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1285,6 +1321,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -1322,7 +1359,8 @@ window.BENCHMARK_DATA = {
           339.0808546702067,
           355.15742444992065,
           364.86238646507263,
-          340.9181462605794
+          340.9181462605794,
+          332.3636480649312
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1334,6 +1372,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -1360,12 +1399,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "a1b234c6becec264c0e5affca08319172f105a7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:16:17 2026 \u002B0200",
-        "message": "fix!: do not offer a second \u0060Matching\u0060 on the result of \u0060HasSingle().Matching\u2026\u0060 (#1663)"
-      },
       {
         "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
         "author": "Valentin Breu\u00DF",
@@ -1659,10 +1692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
-      "a1b234c6",
       "168dc965",
       "f21e6eab",
       "d98a48a7",
@@ -1711,14 +1749,14 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          477.85231691996256,
           612.2908625284831,
           303.5208943230765,
           296.8572865486145,
@@ -1767,7 +1805,8 @@ window.BENCHMARK_DATA = {
           649.0716806139264,
           658.9432414599827,
           633.7696231433323,
-          576.9589465005057
+          576.9589465005057,
+          619.8607745170593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1784,7 +1823,6 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
-          840,
           856,
           856,
           856,
@@ -1824,6 +1862,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -1843,7 +1882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1118.0606801350912,
           1351.6633270263671,
           640.0229090963091,
           609.1682336330414,
@@ -1892,7 +1930,8 @@ window.BENCHMARK_DATA = {
           1393.0922468821207,
           1453.0168445587158,
           1373.5659450531007,
-          1493.8372756958008
+          1493.8372756958008,
+          1308.4317564646403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1968,7 +2007,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          532.8129401524861,
           655.5329192968516,
           352.2561849753062,
           306.9008693013872,
@@ -2017,7 +2055,8 @@ window.BENCHMARK_DATA = {
           660.1025011062623,
           648.3773095448812,
           625.6183510462444,
-          624.6077039082845
+          624.6077039082845,
+          652.4163558142526
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2094,12 +2133,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "a1b234c6becec264c0e5affca08319172f105a7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:16:17 2026 \u002B0200",
-        "message": "fix!: do not offer a second \u0060Matching\u0060 on the result of \u0060HasSingle().Matching\u2026\u0060 (#1663)"
-      },
-      {
         "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
@@ -2392,10 +2425,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
-      "a1b234c6",
       "168dc965",
       "f21e6eab",
       "d98a48a7",
@@ -2444,14 +2482,14 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          812.7235339028495,
           972.0514018195016,
           507.56434903826033,
           502.9044852623573,
@@ -2500,7 +2538,8 @@ window.BENCHMARK_DATA = {
           655.6204875310262,
           653.0624830722809,
           626.2280548095703,
-          577.4701204981122
+          577.4701204981122,
+          629.318281173706
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2517,7 +2556,6 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
-          1248,
           1264,
           1264,
           1264,
@@ -2557,6 +2595,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -2576,7 +2615,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16816.55473429362,
           27497.089080810547,
           10018.345930916923,
           9443.415021623883,
@@ -2625,7 +2663,8 @@ window.BENCHMARK_DATA = {
           27887.573141915458,
           28410.641943359376,
           27444.59106009347,
-          17684.85667855399
+          17684.85667855399,
+          26488.795467122396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2647,7 +2686,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33468,
@@ -2686,7 +2724,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2701,7 +2740,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          621.0810632024493,
           808.3331483840942,
           427.1614917755127,
           374.5448865890503,
@@ -2750,7 +2788,8 @@ window.BENCHMARK_DATA = {
           804.692634264628,
           826.4792725880941,
           794.8108036858695,
-          745.6506352057824
+          745.6506352057824,
+          801.1132623036702
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2827,12 +2866,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "a1b234c6becec264c0e5affca08319172f105a7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:16:17 2026 \u002B0200",
-        "message": "fix!: do not offer a second \u0060Matching\u0060 on the result of \u0060HasSingle().Matching\u2026\u0060 (#1663)"
-      },
-      {
         "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
@@ -3125,10 +3158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
-      "a1b234c6",
       "168dc965",
       "f21e6eab",
       "d98a48a7",
@@ -3177,14 +3215,14 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          586.6084758894784,
           774.0639625276838,
           365.76004629135133,
           355.55527383940563,
@@ -3233,7 +3271,8 @@ window.BENCHMARK_DATA = {
           744.3005462793203,
           743.0805713335673,
           768.1799621582031,
-          745.015421740214
+          745.015421740214,
+          763.5548663457234
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3250,7 +3289,6 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
           1816,
           1816,
           1816,
@@ -3290,6 +3328,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -3309,7 +3348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          53291.844130452475,
           84826.06088867187,
           28388.506831577844,
           28697.135393415178,
@@ -3358,7 +3396,8 @@ window.BENCHMARK_DATA = {
           82880.52755972055,
           84265.83816092355,
           85322.30723353794,
-          33565.46903991699
+          33565.46903991699,
+          81973.57697550456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3370,7 +3409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5256,
           5256,
@@ -3419,7 +3457,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3434,12 +3473,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "a1b234c6becec264c0e5affca08319172f105a7c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 5 19:16:17 2026 \u002B0200",
-        "message": "fix!: do not offer a second \u0060Matching\u0060 on the result of \u0060HasSingle().Matching\u2026\u0060 (#1663)"
-      },
       {
         "sha": "168dc965e6b1c84d256ac40eb02d77d52b142043",
         "author": "Valentin Breu\u00DF",
@@ -3733,10 +3766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
-      "a1b234c6",
       "168dc965",
       "f21e6eab",
       "d98a48a7",
@@ -3785,14 +3823,14 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          225.3275263150533,
           303.956152788798,
           135.53794468366183,
           136.48703560462366,
@@ -3841,7 +3879,8 @@ window.BENCHMARK_DATA = {
           183.5748676141103,
           191.85911434491476,
           162.5062539100647,
-          200.02734831663278
+          200.02734831663278,
+          184.53483346303304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3858,7 +3897,6 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
-          656,
           664,
           664,
           664,
@@ -3898,6 +3936,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -3917,7 +3956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15254.764650785006,
           30786.992837088448,
           9273.870933532715,
           9122.359176635742,
@@ -3966,7 +4004,8 @@ window.BENCHMARK_DATA = {
           32423.43391113281,
           32192.955029296874,
           31236.718094889322,
-          16281.876959664482
+          16281.876959664482,
+          31542.44803059896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3978,7 +4017,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5615,
           5615,
@@ -4021,6 +4059,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -4042,7 +4081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          197.15859258969624,
           259.8181400934855,
           119.45650717417399,
           124.34598207473755,
@@ -4091,7 +4129,8 @@ window.BENCHMARK_DATA = {
           255.7457534154256,
           258.7912476979769,
           261.0001422564189,
-          237.94517867905753
+          237.94517867905753,
+          234.97096369947707
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4238,6 +4277,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -4252,7 +4297,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -4270,7 +4316,8 @@ window.BENCHMARK_DATA = {
           619.9793544769287,
           470.3805774961199,
           451.62953694661456,
-          421.1136974266597
+          421.1136974266597,
+          433.5041737238566
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4291,6 +4338,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720
@@ -4319,7 +4367,8 @@ window.BENCHMARK_DATA = {
           373.8811431271689,
           433.2085972150167,
           411.77138430277506,
-          462.4986918449402
+          462.4986918449402,
+          370.6075694010808
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4331,6 +4380,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -4368,7 +4418,8 @@ window.BENCHMARK_DATA = {
           398.0087053934733,
           431.85279965400696,
           411.37439753214517,
-          388.1898558820997
+          388.1898558820997,
+          391.5098382142874
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4380,6 +4431,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -4477,6 +4529,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -4491,7 +4549,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -4509,7 +4568,8 @@ window.BENCHMARK_DATA = {
           1151.8307791392008,
           1070.1917322794595,
           1056.3045282363892,
-          1013.8042799631754
+          1013.8042799631754,
+          1059.1332497914632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4528,6 +4588,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          1720,
           1720,
           1720,
           1720,
@@ -4558,7 +4619,8 @@ window.BENCHMARK_DATA = {
           1887.3938435872396,
           2073.025442123413,
           1886.8613792419433,
-          2113.136282348633
+          2113.136282348633,
+          1786.9721809387206
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4570,6 +4632,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -4607,7 +4670,8 @@ window.BENCHMARK_DATA = {
           949.4310310999552,
           972.6625693003336,
           905.5249994141715,
-          881.8255934715271
+          881.8255934715271,
+          925.5686873118083
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4619,6 +4683,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -4716,6 +4781,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -4730,7 +4801,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -4748,7 +4820,8 @@ window.BENCHMARK_DATA = {
           12135.059914725167,
           12159.236760457357,
           12077.013885498047,
-          9942.863399799053
+          9942.863399799053,
+          12069.595923790564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4767,6 +4840,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -4797,7 +4871,8 @@ window.BENCHMARK_DATA = {
           42559.10313197545,
           42393.89460536412,
           41413.62630615234,
-          31695.344120570593
+          31695.344120570593,
+          40786.8328125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4817,6 +4892,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -4846,7 +4922,8 @@ window.BENCHMARK_DATA = {
           11270.076776776996,
           11256.76350402832,
           11269.664648873466,
-          9598.459203447614
+          9598.459203447614,
+          11268.596181597028
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4858,6 +4935,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -4955,6 +5033,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
         "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
+      },
+      {
+        "sha": "b18620093d67ea9b835638ceb506896563718acb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
+        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
       }
     ],
     "labels": [
@@ -4969,7 +5053,8 @@ window.BENCHMARK_DATA = {
       "bea504d5",
       "45e98efc",
       "d07cd823",
-      "fffb597a"
+      "fffb597a",
+      "b1862009"
     ],
     "datasets": [
       {
@@ -4987,7 +5072,8 @@ window.BENCHMARK_DATA = {
           23663.978812081474,
           23638.22805434007,
           23639.355893648586,
-          19387.11317007882
+          19387.11317007882,
+          23496.272271728514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5006,6 +5092,7 @@ window.BENCHMARK_DATA = {
           3064,
           3064,
           3064,
+          2640,
           2640,
           2640,
           2640,
@@ -5036,7 +5123,8 @@ window.BENCHMARK_DATA = {
           61104.8171648298,
           61753.93634033203,
           60793.590393066406,
-          45626.36217753092
+          45626.36217753092,
+          59158.46435546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5059,6 +5147,7 @@ window.BENCHMARK_DATA = {
           23554,
           23554,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -5085,7 +5174,8 @@ window.BENCHMARK_DATA = {
           22388.99493408203,
           22202.768191019695,
           22406.342309134347,
-          18875.248361440805
+          18875.248361440805,
+          22564.215334065757
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5097,6 +5187,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
