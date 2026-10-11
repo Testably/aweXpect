@@ -52,7 +52,7 @@ public static partial class ThatDictionary
 						.InvertIf(state.Negated)),
 			subject,
 			keys,
-			dictionary => new KeyedValues<TKey, TValue?>(keys
+			static (dictionary, keys) => new KeyedValues<TKey, TValue?>(keys
 				.Where(key => ContainsKey(dictionary, key))
 				.Select(key => new KeyValuePair<TKey, TValue?>(key,
 					TryLookUp(GetLookup(dictionary), key, out TValue? value) ? value : default)))

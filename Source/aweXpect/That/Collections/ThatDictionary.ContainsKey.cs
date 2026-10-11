@@ -29,7 +29,7 @@ public static partial class ThatDictionary
 						.InvertIf(state.Negated)),
 			subject,
 			expected,
-			f => TryLookUp(GetLookup(f), expected, out TValue? value) ? value : default
+			static (f, key) => TryLookUp(GetLookup(f), key, out TValue? value) ? value : default
 		);
 	}
 
