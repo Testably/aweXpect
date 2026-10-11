@@ -138,11 +138,14 @@ public abstract class Expectation
 					new ArgumentException("You must provide at least one expectation.", nameof(expectations)));
 			}
 
-			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			if (expectations.Any(expectation => expectation is null))
+			for (int i = 0; i < expectations.Length; i++)
 			{
-				throw Tracing.WriteException(
-					new ArgumentException("The 'expectations' cannot contain null.", nameof(expectations)));
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+				if (expectations[i] is null)
+				{
+					throw Tracing.WriteException(
+						new ArgumentException("The 'expectations' cannot contain null.", nameof(expectations)));
+				}
 			}
 
 			_expectations = expectations;
@@ -153,10 +156,31 @@ public abstract class Expectation
 		///     <para />
 		///     Will throw an exception, when the expectations are not met.
 		/// </summary>
+		/// <remarks>
+		///     Expectations that are met without waiting for anything complete right away, as starting the asynchronous
+		///     evaluation would take longer than the expectations themselves.
+		/// </remarks>
 		public TaskAwaiter GetAwaiter()
 		{
-			Task result = GetResultOrThrow();
-			return result.GetAwaiter();
+			ValueTask<Result> result;
+			try
+			{
+				result = GetResult(0);
+			}
+			catch (Exception exception)
+			{
+				result = new ValueTask<Result>(Task.FromException<Result>(exception));
+			}
+
+			if (!result.IsCompletedSuccessfully)
+			{
+				return GetResultOrThrow(result).GetAwaiter();
+			}
+
+			Result completed = result.Result;
+			return completed.ConstraintResult.Outcome == Outcome.Success
+				? EndEvaluation().GetAwaiter()
+				: GetResultOrThrow(new ValueTask<Result>(completed)).GetAwaiter();
 		}
 
 		/// <summary>
@@ -171,40 +195,86 @@ public abstract class Expectation
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 
 		/// <inheritdoc />
-		internal override async ValueTask<Result> GetResult(int index)
+		/// <remarks>
+		///     The members are only awaited from the first one that does not complete right away.
+		/// </remarks>
+		internal override ValueTask<Result> GetResult(int index)
 		{
 			(Expectation Expectation, Result Result)[] results = new (Expectation, Result)[_expectations.Length];
 			Exception? failureCause = null;
 			Outcome? outcome = null;
 			for (int i = 0; i < _expectations.Length; i++)
 			{
-				Expectation expectation = _expectations[i];
-				Result result = await expectation.GetResult(index);
-				// The combination is never negated, so an expectation that fails both ways only fails it.
-				Outcome current = result.ConstraintResult.Outcome == Outcome.FailureBothWays
-					? Outcome.Failure
-					: result.ConstraintResult.Outcome;
-				outcome = CheckOutcome(outcome, current);
-				index = result.Index;
-				if (current == Outcome.Failure)
+				ValueTask<Result> result = _expectations[i].GetResult(index);
+				if (!result.IsCompletedSuccessfully)
 				{
-					failureCause ??= result.ConstraintResult.FailureCause;
+					return GetResultAsync(result, i, results, failureCause, outcome);
 				}
 
-				results[i] = (expectation, result);
+				index = AddResult(i, result.Result, results, ref failureCause, ref outcome);
 			}
 
-			return new Result(index, GetSubjectLine(), outcome is Outcome.Failure or Outcome.Undecided
-				? new CombinationResult(outcome.Value, results, failureCause)
-				: new CombinationResult(Outcome.Success, results));
+			return new ValueTask<Result>(CreateResult(index, results, failureCause, outcome));
 		}
 
-		/// <inheritdoc />
-		internal override async Task EndEvaluation()
+		private async ValueTask<Result> GetResultAsync(ValueTask<Result> pending, int position,
+			(Expectation Expectation, Result Result)[] results, Exception? failureCause, Outcome? outcome)
 		{
-			foreach (Expectation expectation in _expectations)
+			Result result = await pending;
+			int index = AddResult(position, result, results, ref failureCause, ref outcome);
+			for (int i = position + 1; i < _expectations.Length; i++)
 			{
-				await expectation.EndEvaluation();
+				result = await _expectations[i].GetResult(index);
+				index = AddResult(i, result, results, ref failureCause, ref outcome);
+			}
+
+			return CreateResult(index, results, failureCause, outcome);
+		}
+
+		private int AddResult(int position, Result result, (Expectation Expectation, Result Result)[] results,
+			ref Exception? failureCause, ref Outcome? outcome)
+		{
+			// The combination is never negated, so an expectation that fails both ways only fails it.
+			Outcome current = result.ConstraintResult.Outcome == Outcome.FailureBothWays
+				? Outcome.Failure
+				: result.ConstraintResult.Outcome;
+			outcome = CheckOutcome(outcome, current);
+			if (current == Outcome.Failure)
+			{
+				failureCause ??= result.ConstraintResult.FailureCause;
+			}
+
+			results[position] = (_expectations[position], result);
+			return result.Index;
+		}
+
+		private Result CreateResult(int index, (Expectation Expectation, Result Result)[] results,
+			Exception? failureCause, Outcome? outcome)
+			=> new(index, GetSubjectLine(), outcome is Outcome.Failure or Outcome.Undecided
+				? new CombinationResult(outcome.Value, results, failureCause)
+				: new CombinationResult(Outcome.Success, results));
+
+		/// <inheritdoc />
+		internal override Task EndEvaluation()
+		{
+			for (int i = 0; i < _expectations.Length; i++)
+			{
+				Task endEvaluation = _expectations[i].EndEvaluation();
+				if (endEvaluation.Status != TaskStatus.RanToCompletion)
+				{
+					return EndEvaluationAsync(endEvaluation, i);
+				}
+			}
+
+			return Task.CompletedTask;
+		}
+
+		private async Task EndEvaluationAsync(Task pending, int position)
+		{
+			await pending;
+			for (int i = position + 1; i < _expectations.Length; i++)
+			{
+				await _expectations[i].EndEvaluation();
 			}
 		}
 
@@ -239,11 +309,11 @@ public abstract class Expectation
 			}
 		}
 
-		private async Task GetResultOrThrow()
+		private async Task GetResultOrThrow(ValueTask<Result> isMet)
 		{
 			try
 			{
-				await ThrowUnlessMet();
+				await ThrowUnlessMet(isMet);
 			}
 			finally
 			{
@@ -251,9 +321,9 @@ public abstract class Expectation
 			}
 		}
 
-		private async Task ThrowUnlessMet()
+		private async Task ThrowUnlessMet(ValueTask<Result> isMet)
 		{
-			Result result = await GetResult(0);
+			Result result = await isMet;
 			if (result.ConstraintResult.Outcome == Outcome.Success)
 			{
 				return;

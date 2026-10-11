@@ -352,6 +352,33 @@ public class ExpectTests
 	}
 
 	[Test]
+	public async Task ThatAll_WhenALaterMemberCompletesAsynchronously_ShouldNumberTheFollowingMembersInOrder()
+	{
+		TaskCompletionSource<int> source = new();
+
+		async Task Act()
+			=> await ThatAll(
+				That(true).IsTrue(),
+				That(source.Task).IsEqualTo(2),
+				That(3).IsEqualTo(4));
+
+		Task act = Act();
+		source.SetResult(1);
+
+		await That(async () => await act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True
+			              [02] Expected that source.Task is equal to 2
+			              [03] Expected that 3 is equal to 4
+			             but
+			              [02] it was 1, which differs by -1
+			              [03] it was 3, which differs by -1
+			             """)
+			.Because("the members after one that completes later are evaluated and numbered like the others");
+	}
+
+	[Test]
 	public async Task ThatAll_WhenAMemberExpectationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
 	{
 		MyClass expected = new()

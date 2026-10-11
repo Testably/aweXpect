@@ -979,6 +979,32 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Evaluates the expectation as the member of a combination, after the <paramref name="index" /> of the
+	///     previous member, and traces it when it is met.
+	/// </summary>
+	internal ValueTask<Expectation.Result> GetResult(int index)
+	{
+		ValueTask<ConstraintResult> isMet = IsMet(false);
+		if (!isMet.IsCompletedSuccessfully || IsTracing)
+		{
+			return GetResultAsync(isMet, index);
+		}
+
+		return new ValueTask<Expectation.Result>(new Expectation.Result(index + 1, Subject, isMet.Result, true));
+	}
+
+	private async ValueTask<Expectation.Result> GetResultAsync(ValueTask<ConstraintResult> isMet, int index)
+	{
+		ConstraintResult result = await isMet;
+		if (result.Outcome == Outcome.Success && IsTracing)
+		{
+			Tracing.WriteSuccess(Subject, result);
+		}
+
+		return new Expectation.Result(index + 1, Subject, result, true);
+	}
+
+	/// <summary>
 	///     Whether the reasons need not be appended to a met result, as nothing reads its expectation text.
 	/// </summary>
 	/// <remarks>
@@ -992,9 +1018,9 @@ public abstract class ExpectationBuilder
 			return false;
 		}
 
-		foreach (IBecauseReason reason in _reasons!)
+		for (int i = 0; i < _reasons!.Count; i++)
 		{
-			if (reason is not BecauseReason)
+			if (_reasons[i] is not BecauseReason)
 			{
 				return false;
 			}
