@@ -4572,6 +4572,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -5336,7 +5342,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -6104,7 +6111,8 @@ window.BENCHMARK_DATA = {
           120.11752031644185,
           147.36701199213664,
           131.3309901078542,
-          143.00601782401404
+          143.00601782401404,
+          68.91620492140451
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6870,6 +6878,7 @@ window.BENCHMARK_DATA = {
           424,
           424,
           424,
+          440,
           440,
           440,
           440,
@@ -7653,7 +7662,8 @@ window.BENCHMARK_DATA = {
           219.06145945617132,
           261.76065005574907,
           245.48879521233695,
-          292.7862355892475
+          292.7862355892475,
+          131.58712373461043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8426,6 +8436,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8483,7 +8494,8 @@ window.BENCHMARK_DATA = {
           184.38822765009743,
           215.1855592886607,
           221.2807400226593,
-          182.45491094589232
+          182.45491094589232,
+          105.92275467713674
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8495,6 +8507,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12661,6 +12674,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -13348,7 +13367,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -14039,7 +14059,8 @@ window.BENCHMARK_DATA = {
           104723.95944010417,
           113954.20565592448,
           109733.54926945613,
-          79593.53430175781
+          79593.53430175781,
+          56808.81092122396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14728,6 +14749,7 @@ window.BENCHMARK_DATA = {
           16424,
           16424,
           16424,
+          16440,
           16440,
           16440,
           16440,
@@ -15434,7 +15456,8 @@ window.BENCHMARK_DATA = {
           2355660.79140625,
           2630103.2174479165,
           2617797.808894231,
-          2095218.8783854167
+          2095218.8783854167,
+          1354987.0276041667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16130,7 +16153,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841609
+          4841609,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16187,7 +16211,8 @@ window.BENCHMARK_DATA = {
           191682.09075927734,
           204014.3314778646,
           198908.860546875,
-          184915.19741210938
+          184915.19741210938,
+          106902.2637491862
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16199,6 +16224,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20827,6 +20853,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -21591,7 +21623,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -22359,7 +22392,8 @@ window.BENCHMARK_DATA = {
           256.8581672668457,
           308.99919783274333,
           302.84284567832947,
-          274.5568029085795
+          274.5568029085795,
+          152.42978706359864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23125,6 +23159,7 @@ window.BENCHMARK_DATA = {
           616,
           616,
           616,
+          632,
           632,
           632,
           632,
@@ -23908,7 +23943,8 @@ window.BENCHMARK_DATA = {
           419.95667123794556,
           505.14649499257405,
           504.9392667770386,
-          532.6489288965861
+          532.6489288965861,
+          262.16747747148787
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24681,6 +24717,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24738,7 +24775,8 @@ window.BENCHMARK_DATA = {
           352.82310034434,
           397.04685672124225,
           403.0384665807088,
-          383.108530484713
+          383.108530484713,
+          218.13723373413086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24750,6 +24788,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -29378,6 +29417,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -30142,7 +30187,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -30910,7 +30956,8 @@ window.BENCHMARK_DATA = {
           134.65263926188152,
           143.54727857907613,
           143.75318296750388,
-          167.86962395906448
+          167.86962395906448,
+          85.4657245238622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31676,6 +31723,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544,
           544,
           544,
@@ -32459,7 +32507,8 @@ window.BENCHMARK_DATA = {
           216.3354002067021,
           244.9393288067409,
           243.4368403752645,
-          301.0225156466166
+          301.0225156466166,
+          142.64803654806954
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33232,6 +33281,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -33289,7 +33339,8 @@ window.BENCHMARK_DATA = {
           212.70499805041723,
           233.72915994326274,
           236.03266569284293,
-          221.5394665002823
+          221.5394665002823,
+          133.42354708451492
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33301,6 +33352,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -37929,6 +37981,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -38693,7 +38751,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -39461,7 +39520,8 @@ window.BENCHMARK_DATA = {
           238.04743067423502,
           262.3452370564143,
           262.103484026591,
-          257.66449553625927
+          257.66449553625927,
+          142.15612985537604
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40227,6 +40287,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          608,
           608,
           608,
           608,
@@ -41010,7 +41071,8 @@ window.BENCHMARK_DATA = {
           1085.5914348874774,
           1197.331703821818,
           1230.0358732859293,
-          1288.7780425207955
+          1288.7780425207955,
+          618.9136806215558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41783,6 +41845,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -41840,7 +41903,8 @@ window.BENCHMARK_DATA = {
           295.76509823117937,
           332.725138092041,
           346.4189646925245,
-          336.015711239406
+          336.015711239406,
+          170.9801745414734
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41852,6 +41916,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -46480,6 +46545,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -47244,7 +47315,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -48012,7 +48084,8 @@ window.BENCHMARK_DATA = {
           595.3918642316546,
           658.5875039418538,
           709.4810994466146,
-          567.9119215692792
+          567.9119215692792,
+          319.78174807475165
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48778,6 +48851,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896,
           896,
           896,
@@ -49561,7 +49635,8 @@ window.BENCHMARK_DATA = {
           1130.4489125569662,
           1426.0169359353872,
           1730.979863357544,
-          1472.4219537462507
+          1472.4219537462507,
+          653.8707575480144
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50334,6 +50409,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -50391,7 +50467,8 @@ window.BENCHMARK_DATA = {
           580.1355312892368,
           629.9172812143962,
           627.3235552469889,
-          613.8913120542254
+          613.8913120542254,
+          313.5640004793803
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50403,6 +50480,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -55031,6 +55109,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -55795,7 +55879,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -56563,7 +56648,8 @@ window.BENCHMARK_DATA = {
           920.6372468130929,
           1007.0624073028564,
           1060.3769185384115,
-          896.5114022663662
+          896.5114022663662,
+          501.74725475311277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57329,6 +57415,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304,
           1304,
           1304,
@@ -58112,7 +58199,8 @@ window.BENCHMARK_DATA = {
           23787.845112391882,
           26538.971545410157,
           27034.31483561198,
-          17750.907584635417
+          17750.907584635417,
+          9782.237326049804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58885,7 +58973,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58942,7 +59031,8 @@ window.BENCHMARK_DATA = {
           709.1366493361337,
           781.367879931132,
           742.5795537948609,
-          751.286527188619
+          751.286527188619,
+          381.7459143570491
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58954,6 +59044,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -59352,6 +59443,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -59411,7 +59508,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -59474,7 +59572,8 @@ window.BENCHMARK_DATA = {
           712.0842841466268,
           759.7327707926432,
           787.5936194828579,
-          713.5918260301862
+          713.5918260301862,
+          390.10694820540294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59535,6 +59634,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840,
           1840,
           1840,
@@ -59613,7 +59713,8 @@ window.BENCHMARK_DATA = {
           75639.69289456881,
           86196.58836669922,
           82570.19873046875,
-          32312.39946637835
+          32312.39946637835,
+          29732.30352376302
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59681,6 +59782,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -60037,6 +60139,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 10:51:34 2026 \u002B0200",
         "message": "perf: skip the failure texts of a met \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1789)"
+      },
+      {
+        "sha": "79d6813aeaac4319dfdcb670e428b84b6bd5693e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 10:52:06 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1790)"
       }
     ],
     "labels": [
@@ -60096,7 +60204,8 @@ window.BENCHMARK_DATA = {
       "5cf6a80d",
       "29e1127b",
       "77904862",
-      "c9eb2cef"
+      "c9eb2cef",
+      "79d6813a"
     ],
     "datasets": [
       {
@@ -60159,7 +60268,8 @@ window.BENCHMARK_DATA = {
           216.63132432790903,
           202.07457439104715,
           182.88593041102092,
-          200.87237639427184
+          200.87237639427184,
+          104.90384703023093
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60225,6 +60335,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          584,
           584,
           584,
           584
@@ -60298,7 +60409,8 @@ window.BENCHMARK_DATA = {
           30163.22892543248,
           32356.10744628906,
           32051.593680826823,
-          16588.627480643136
+          16588.627480643136,
+          10516.453231811523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60366,7 +60478,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60423,7 +60536,8 @@ window.BENCHMARK_DATA = {
           219.57049543062845,
           245.98374554316203,
           239.95667231877644,
-          237.77133469922202
+          237.77133469922202,
+          128.79864185651144
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60435,6 +60549,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
