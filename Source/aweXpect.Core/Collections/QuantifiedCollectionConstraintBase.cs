@@ -35,6 +35,8 @@ namespace aweXpect;
 public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	: ConstraintResult.WithNotNullValue<TValue>
 {
+	private bool? _couldShowMatchingItems;
+	private bool? _couldShowNotMatchingItems;
 	private ItemContexts _firstMatchingItem;
 	private ItemContexts _firstNotMatchingItem;
 	private bool _isCompleted;
@@ -107,7 +109,8 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// </summary>
 	/// <remarks>
 	///     The first item after a completed evaluation starts a new one, as the constraint can be evaluated again, e.g.
-	///     for each item of an outer collection.
+	///     for each item of an outer collection.<br />
+	///     Only the items of a kind that the quantifier could show are kept, as a met expectation shows none.
 	/// </remarks>
 	protected void Record(TItem item, bool isMatch)
 	{
@@ -123,12 +126,20 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 
 		if (isMatch)
 		{
-			(_matchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
+			if (CouldShowMatchingItems)
+			{
+				(_matchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
+			}
+
 			_matchingCount++;
 		}
 		else
 		{
-			(_notMatchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
+			if (CouldShowNotMatchingItems)
+			{
+				(_notMatchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
+			}
+
 			_notMatchingCount++;
 		}
 	}
@@ -164,13 +175,11 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 		int index = _matchingCount + _notMatchingCount - 1;
 		if (isMatch)
 		{
-			_firstMatchingItem.KeepFirst(itemResult, index,
-				CouldShow(EnumerableQuantifier.QuantifierContexts.MatchingItems));
+			_firstMatchingItem.KeepFirst(itemResult, index, CouldShowMatchingItems);
 		}
 		else
 		{
-			_firstNotMatchingItem.KeepFirst(itemResult, index,
-				CouldShow(EnumerableQuantifier.QuantifierContexts.NotMatchingItems));
+			_firstNotMatchingItem.KeepFirst(itemResult, index, CouldShowNotMatchingItems);
 		}
 	}
 
@@ -260,6 +269,18 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	}
 
 	/// <summary>
+	///     Whether the matching items could be shown as context, decided once per evaluation.
+	/// </summary>
+	private bool CouldShowMatchingItems
+		=> _couldShowMatchingItems ??= CouldShow(EnumerableQuantifier.QuantifierContexts.MatchingItems);
+
+	/// <summary>
+	///     Whether the not matching items could be shown as context, decided once per evaluation.
+	/// </summary>
+	private bool CouldShowNotMatchingItems
+		=> _couldShowNotMatchingItems ??= CouldShow(EnumerableQuantifier.QuantifierContexts.NotMatchingItems);
+
+	/// <summary>
 	///     Whether the items are shown as context, for the expectation or its negation, which is only known when the
 	///     failure message is created.
 	/// </summary>
@@ -301,6 +322,8 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 
 	private void Reset()
 	{
+		_couldShowMatchingItems = null;
+		_couldShowNotMatchingItems = null;
 		_firstMatchingItem = default;
 		_firstNotMatchingItem = default;
 		_isCompleted = false;
