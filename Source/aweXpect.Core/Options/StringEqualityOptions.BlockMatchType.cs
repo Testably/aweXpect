@@ -35,15 +35,16 @@ public partial class StringEqualityOptions
 	{
 		/// <summary>
 		///     Counts the non-overlapping occurrences of the <paramref name="expected" /> block in the
-		///     <paramref name="actual" /> lines.
+		///     <paramref name="actual" /> lines, up to the <paramref name="maximum" />.
 		/// </summary>
-		public static int CountOccurrences(string actual, string expected, IEqualityComparer<string> comparer)
+		public static int CountOccurrences(string actual, string expected, IEqualityComparer<string> comparer,
+			int maximum)
 		{
 			string[] actualLines = SplitLines(actual);
 			string[] expectedLines = SplitLines(expected);
 			int count = 0;
 			int index = 0;
-			while (index <= actualLines.Length - expectedLines.Length)
+			while (index <= actualLines.Length - expectedLines.Length && count < maximum)
 			{
 				if (MatchesAt(actualLines, index, expectedLines, comparer))
 				{

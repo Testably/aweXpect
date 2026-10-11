@@ -225,7 +225,29 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The <paramref name="expected" /> <see langword="string" /> is empty after the normalization.
 	/// </exception>
 	public ValueTask<int> CountOccurrences(string actual, string expected)
+		=> CountOccurrences(actual, expected, int.MaxValue);
+
+	/// <summary>
+	///     Counts how often the <paramref name="expected" /> <see langword="string" /> occurs
+	///     in the <paramref name="actual" /> <see langword="string" />, but at most <paramref name="maximum" /> times.
+	/// </summary>
+	/// <remarks>
+	///     The search stops at the <paramref name="maximum" />, so that an expectation which is decided by a number of
+	///     occurrences, e.g. at least one, does not search the rest of a long <paramref name="actual" /> string. The
+	///     occurrences are counted like by <see cref="CountOccurrences(string, string)" />.
+	/// </remarks>
+	/// <exception cref="ArgumentException">
+	///     The <paramref name="expected" /> <see langword="string" /> is empty after the normalization.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is not positive.</exception>
+	public ValueTask<int> CountOccurrences(string actual, string expected, int maximum)
 	{
+		if (maximum <= 0)
+		{
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(maximum),
+				"The maximum must be greater than zero."));
+		}
+
 		expected = NormalizeExpected(expected, (false, false));
 		Regex? regex = ValidatePattern(expected);
 		if (expected.Length == 0)
@@ -235,25 +257,26 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		actual = PadWithInnerWhiteSpace(Normalize(actual), expected, (false, false));
 
-		int? count = CountOccurrencesWithoutWindow(actual, expected, regex);
+		int? count = CountOccurrencesWithoutWindow(actual, expected, regex, maximum);
 		if (count is not null)
 		{
 			return new ValueTask<int>(count.Value);
 		}
 
-		return CountOccurrencesWithWindow(actual, expected);
+		return CountOccurrencesWithWindow(actual, expected, maximum);
 	}
 
 	/// <summary>
 	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern for
 	///     match types that cannot be counted with a window of the expected length, or returns <see langword="null" />.
 	/// </summary>
-	private int? CountOccurrencesWithoutWindow(string actual, string expected, Regex? regex)
+	private int? CountOccurrencesWithoutWindow(string actual, string expected, Regex? regex, int maximum)
 	{
 		// A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
 		if (_matchType is BlockMatchType)
 		{
-			return BlockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase));
+			return BlockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase),
+				maximum);
 		}
 
 		try
@@ -262,12 +285,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			// with a window of the expected length.
 			if (regex is not null)
 			{
-				return RegexMatchType.CountOccurrences(actual, regex);
+				return RegexMatchType.CountOccurrences(actual, regex, maximum);
 			}
 
 			if (_matchType is WildcardMatchType)
 			{
-				return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase);
+				return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase, maximum);
 			}
 		}
 		catch (RegexMatchTimeoutException exception)
@@ -286,17 +309,17 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     For the default match type without a comparer, a window equals the <paramref name="expected" /> string
 	///     exactly where an ordinal search finds it, so the windows are not copied.
 	/// </remarks>
-	private async ValueTask<int> CountOccurrencesWithWindow(string actual, string expected)
+	private async ValueTask<int> CountOccurrencesWithWindow(string actual, string expected, int maximum)
 	{
 		if (_matchType is ExactMatchType && _comparer is null)
 		{
 			return CountOrdinalOccurrences(actual, expected,
-				_ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+				_ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal, maximum);
 		}
 
 		int count = 0;
 		int index = 0;
-		while (index < actual.Length)
+		while (index < actual.Length && count < maximum)
 		{
 			if (await CompareWithMatchType(
 				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)), expected))
@@ -313,13 +336,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		return count;
 	}
 
-	private static int CountOrdinalOccurrences(string actual, string expected, StringComparison comparison)
+	private static int CountOrdinalOccurrences(string actual, string expected, StringComparison comparison,
+		int maximum)
 	{
 		int count = 0;
 		int index = actual.IndexOf(expected, 0, comparison);
-		while (index >= 0)
+		while (index >= 0 && ++count < maximum)
 		{
-			count++;
 			index = actual.IndexOf(expected, index + expected.Length, comparison);
 		}
 

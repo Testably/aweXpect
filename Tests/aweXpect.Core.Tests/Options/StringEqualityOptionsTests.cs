@@ -581,6 +581,63 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		[Arguments(null, "abababab", "ab")]
+		[Arguments("IgnoringCase", "abABabAB", "ab")]
+		[Arguments("Using", "abababab", "ab")]
+		[Arguments("AsRegex", "axayazaw", "a.")]
+		[Arguments("AsWildcard", "axayazaw", "a?")]
+		[Arguments("AsBlock", "a\na\na\na", "a")]
+		public async Task CountOccurrences_WithMaximum_ShouldStopAtTheMaximum(string? option, string actual,
+			string expected)
+		{
+			StringEqualityOptions sut = new("expected");
+			if (option is not null)
+			{
+				Change(sut, option, true);
+			}
+
+			int result = await sut.CountOccurrences(actual, expected, 2);
+			int total = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(2)
+				.Because("the search stops once the maximum number of occurrences is found");
+			await That(total).IsEqualTo(4);
+		}
+
+		[Test]
+		[Arguments(0)]
+		[Arguments(-1)]
+		public async Task CountOccurrences_WithMaximum_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int maximum)
+		{
+			StringEqualityOptions sut = new("expected");
+
+			void Act() => sut.CountOccurrences("abab", "ab", maximum).AsTask();
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must be greater than zero.").AsPrefix();
+		}
+
+		[Test]
+		[Arguments(null, "abababab", "ab")]
+		[Arguments("Using", "abababab", "ab")]
+		[Arguments("AsRegex", "axayazaw", "a.")]
+		[Arguments("AsBlock", "a\na\na\na", "a")]
+		public async Task CountOccurrences_WithMaximum_WhenThereAreFewerOccurrences_ShouldCountAll(string? option,
+			string actual, string expected)
+		{
+			StringEqualityOptions sut = new("expected");
+			if (option is not null)
+			{
+				Change(sut, option, true);
+			}
+
+			int result = await sut.CountOccurrences(actual, expected, 10);
+
+			await That(result).IsEqualTo(4);
+		}
+
+		[Test]
 		[Arguments("AsBlock", ExpectationGrammars.Active, "matches \"foo\" as block")]
 		[Arguments("AsBlock", ExpectationGrammars.Active | ExpectationGrammars.Plural, "match \"foo\" as block")]
 		[Arguments("AsBlock", ExpectationGrammars.Active | ExpectationGrammars.Negated,

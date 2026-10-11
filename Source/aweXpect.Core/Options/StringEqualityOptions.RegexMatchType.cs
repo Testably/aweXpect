@@ -139,16 +139,18 @@ public partial class StringEqualityOptions
 		}
 
 		/// <summary>
-		///     Counts the non-overlapping matches of the <paramref name="regex" /> in the <paramref name="actual" /> value.
+		///     Counts the non-overlapping matches of the <paramref name="regex" /> in the <paramref name="actual" /> value,
+		///     up to the <paramref name="maximum" />.
 		/// </summary>
 		/// <remarks>
 		///     Empty matches are not counted, because they do not cover anything in the <paramref name="actual" /> value,
-		///     consistent with an empty expected value which never occurs.
+		///     consistent with an empty expected value which never occurs. The matches are found one by one, so that no
+		///     match is searched after the <paramref name="maximum" />.
 		/// </remarks>
-		public static int CountOccurrences(string actual, Regex regex)
+		public static int CountOccurrences(string actual, Regex regex, int maximum)
 		{
 			int count = 0;
-			foreach (Match match in regex.Matches(actual))
+			for (Match match = regex.Match(actual); match.Success && count < maximum; match = match.NextMatch())
 			{
 				if (match.Length > 0)
 				{

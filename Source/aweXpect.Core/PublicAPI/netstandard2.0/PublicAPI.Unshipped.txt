@@ -1,2 +1,3 @@
 #nullable enable
+aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected, int maximum) -> System.Threading.Tasks.ValueTask<int>
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.TryGetItem<TItem>(this aweXpect.Core.EvaluationContext.IMaterializedEnumerable<TItem>! materialized, int index, out TItem item) -> bool
