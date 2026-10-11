@@ -35,6 +35,10 @@ public class TriggerEventFilter
 	/// <summary>
 	///     Checks if the provided <paramref name="parameters" /> match all registered predicates.
 	/// </summary>
+	/// <remarks>
+	///     A loop instead of <c>All</c>, as a lambda over the <paramref name="parameters" /> would allocate a closure for
+	///     every recorded event.
+	/// </remarks>
 	public bool IsMatch(object?[] parameters)
 	{
 		if (_predicates is null)
@@ -42,9 +46,9 @@ public class TriggerEventFilter
 			return true;
 		}
 
-		foreach (Func<object?[], bool> predicate in _predicates)
+		for (int i = 0; i < _predicates.Count; i++)
 		{
-			if (!predicate(parameters))
+			if (!_predicates[i](parameters))
 			{
 				return false;
 			}
