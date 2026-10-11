@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using aweXpect.Signaling;
 
@@ -63,6 +62,10 @@ public record SignalerOptions<TParameter> : SignalerOptions
 	/// <summary>
 	///     Checks if the <paramref name="parameter" /> matches all registered predicates.
 	/// </summary>
+	/// <remarks>
+	///     A loop instead of <c>All</c>, as a lambda over the <paramref name="parameter" /> would allocate a closure for
+	///     every signal.
+	/// </remarks>
 	public bool Matches(TParameter parameter)
 	{
 		if (_predicates is null)
@@ -70,7 +73,15 @@ public record SignalerOptions<TParameter> : SignalerOptions
 			return true;
 		}
 
-		return _predicates.All(predicate => predicate(parameter));
+		for (int i = 0; i < _predicates.Count; i++)
+		{
+			if (!_predicates[i](parameter))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/// <inheritdoc cref="object.ToString()" />
