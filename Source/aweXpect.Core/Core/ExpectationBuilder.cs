@@ -956,13 +956,13 @@ public abstract class ExpectationBuilder
 		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
 		ValueTask<ConstraintResult> isMet = StartEvaluation(context);
-		if (_reasons is not null || !isMet.IsCompletedSuccessfully)
+		if (!isMet.IsCompletedSuccessfully)
 		{
 			return CompleteEvaluation(isMet, endsWhenMet);
 		}
 
 		ConstraintResult result = isMet.Result;
-		if (result.Outcome != Outcome.Success)
+		if (result.Outcome != Outcome.Success || (_reasons is not null && !CanSkipReasonsOfMetResult(endsWhenMet)))
 		{
 			return CompleteEvaluation(new ValueTask<ConstraintResult>(result), endsWhenMet);
 		}
@@ -976,6 +976,31 @@ public abstract class ExpectationBuilder
 		return endEvaluation.Status == TaskStatus.RanToCompletion
 			? new ValueTask<ConstraintResult>(result)
 			: ReturnAfter(endEvaluation, result);
+	}
+
+	/// <summary>
+	///     Whether the reasons need not be appended to a met result, as nothing reads its expectation text.
+	/// </summary>
+	/// <remarks>
+	///     A combination can still fail a met member and a trace writes the expectation of a met one, and a reason that
+	///     must be awaited is awaited for a met expectation as well.
+	/// </remarks>
+	private bool CanSkipReasonsOfMetResult(bool endsWhenMet)
+	{
+		if (!endsWhenMet || IsTracing)
+		{
+			return false;
+		}
+
+		foreach (IBecauseReason reason in _reasons!)
+		{
+			if (reason is not BecauseReason)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation, bool endsWhenMet)
