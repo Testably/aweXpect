@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
-      {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          181.4545805624553,
           351.66029326121014,
           371.91328716278076,
           163.3961702823639,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           103.79578261375427,
           69.7014434848513,
           120.11752031644185,
-          147.36701199213664
+          147.36701199213664,
+          131.3309901078542
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,6 @@ window.BENCHMARK_DATA = {
         "data": [
           800,
           800,
-          800,
           392,
           392,
           392,
@@ -464,6 +463,7 @@ window.BENCHMARK_DATA = {
           424,
           424,
           424,
+          440,
           440,
           440,
           440,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          145.49324812207902,
           252.23526869501387,
           256.7717856725057,
           251.36319078717912,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           193.90913287230902,
           135.8589697519938,
           219.06145945617132,
-          261.76065005574907
+          261.76065005574907,
+          245.48879521233695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -649,7 +649,8 @@ window.BENCHMARK_DATA = {
           153.9961994489034,
           110.82983688797269,
           184.38822765009743,
-          215.1855592886607
+          215.1855592886607,
+          221.2807400226593
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -661,6 +662,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -717,12 +719,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
-      {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
@@ -1015,10 +1011,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -1067,14 +1068,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          148709.5198625837,
           290245.4733698918,
           287580.0322614397,
           164669.80224609375,
@@ -1123,7 +1124,8 @@ window.BENCHMARK_DATA = {
           81956.30396379743,
           59997.858577473955,
           104723.95944010417,
-          113954.20565592448
+          113954.20565592448,
+          109733.54926945613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1137,7 +1139,6 @@ window.BENCHMARK_DATA = {
         "data": [
           86138,
           86138,
-          86138,
           29440,
           29440,
           29440,
@@ -1179,6 +1180,7 @@ window.BENCHMARK_DATA = {
           16424,
           16424,
           16424,
+          16440,
           16440,
           16440,
           16440,
@@ -1199,7 +1201,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1295520.78984375,
           2303982.52421875,
           2703740.744270833,
           2558308.1489583333,
@@ -1248,7 +1249,8 @@ window.BENCHMARK_DATA = {
           1781619.519252232,
           1331497.33828125,
           2355660.79140625,
-          2630103.2174479165
+          2630103.2174479165,
+          2617797.808894231
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1260,7 +1262,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841647,
           4841651,
           4841651,
@@ -1308,6 +1309,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -1364,7 +1366,8 @@ window.BENCHMARK_DATA = {
           149215.22001953126,
           103256.24863688152,
           191682.09075927734,
-          204014.3314778646
+          204014.3314778646,
+          198908.860546875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1376,6 +1379,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1431,12 +1435,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
       {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
@@ -1730,10 +1728,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -1782,14 +1785,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          284.65417126814526,
           566.9924236297608,
           594.5345482145037,
           353.0453771523067,
@@ -1838,7 +1841,8 @@ window.BENCHMARK_DATA = {
           223.23441696166992,
           146.93372322718304,
           256.8581672668457,
-          308.99919783274333
+          308.99919783274333,
+          302.84284567832947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1852,7 +1856,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1104,
           1104,
-          1104,
           640,
           640,
           640,
@@ -1894,6 +1897,7 @@ window.BENCHMARK_DATA = {
           616,
           616,
           616,
+          632,
           632,
           632,
           632,
@@ -1914,7 +1918,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          268.01146796771457,
           491.15626989092146,
           488.9102769851685,
           468.2079619680132,
@@ -1963,7 +1966,8 @@ window.BENCHMARK_DATA = {
           391.89165725708006,
           273.0722014427185,
           419.95667123794556,
-          505.14649499257405
+          505.14649499257405,
+          504.9392667770386
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2079,7 +2083,8 @@ window.BENCHMARK_DATA = {
           302.34659611384075,
           206.35649002393086,
           352.82310034434,
-          397.04685672124225
+          397.04685672124225,
+          403.0384665807088
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2091,6 +2096,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2146,12 +2152,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
       {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
@@ -2445,10 +2445,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -2497,14 +2502,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          182.40172738295334,
           380.74375101498197,
           392.31012461980185,
           174.2242868423462,
@@ -2553,7 +2558,8 @@ window.BENCHMARK_DATA = {
           119.91555163065593,
           78.89571855862935,
           134.65263926188152,
-          143.54727857907613
+          143.54727857907613,
+          143.75318296750388
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2567,7 +2573,6 @@ window.BENCHMARK_DATA = {
         "data": [
           952,
           952,
-          952,
           496,
           496,
           496,
@@ -2609,6 +2614,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544,
           544,
           544,
@@ -2629,7 +2635,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          134.61963035265606,
           244.56347176233928,
           254.0459478378296,
           241.38362261454265,
@@ -2678,7 +2683,8 @@ window.BENCHMARK_DATA = {
           191.88036661148072,
           126.45058309237162,
           216.3354002067021,
-          244.9393288067409
+          244.9393288067409,
+          243.4368403752645
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2794,7 +2800,8 @@ window.BENCHMARK_DATA = {
           196.27047096888225,
           122.47751767294747,
           212.70499805041723,
-          233.72915994326274
+          233.72915994326274,
+          236.03266569284293
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2806,6 +2813,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2861,12 +2869,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
       {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
@@ -3160,10 +3162,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -3212,14 +3219,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          243.23858434813363,
           502.5803561528524,
           524.4031518055842,
           332.72294425964355,
@@ -3268,7 +3275,8 @@ window.BENCHMARK_DATA = {
           204.66171051661175,
           138.27861620585125,
           238.04743067423502,
-          262.3452370564143
+          262.3452370564143,
+          262.103484026591
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3282,7 +3290,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1080,
           1080,
-          1080,
           624,
           624,
           624,
@@ -3324,6 +3331,7 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
+          608,
           608,
           608,
           608,
@@ -3344,7 +3352,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          597.8788195610047,
           1152.8177640279134,
           1190.6806184132895,
           1280.5390829722087,
@@ -3393,7 +3400,8 @@ window.BENCHMARK_DATA = {
           935.7536647160848,
           646.8799695014953,
           1085.5914348874774,
-          1197.331703821818
+          1197.331703821818,
+          1230.0358732859293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3509,7 +3517,8 @@ window.BENCHMARK_DATA = {
           252.89316657611303,
           187.96807653563363,
           295.76509823117937,
-          332.725138092041
+          332.725138092041,
+          346.4189646925245
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3521,6 +3530,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3576,12 +3586,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
       {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
@@ -3875,10 +3879,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -3927,14 +3936,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1419.1521091461182,
           2781.446640777588,
           2727.2405586242676,
           2500.675132751465,
@@ -3983,7 +3992,8 @@ window.BENCHMARK_DATA = {
           503.2129665374756,
           345.8838263193766,
           595.3918642316546,
-          658.5875039418538
+          658.5875039418538,
+          709.4810994466146
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3997,7 +4007,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2896,
           2896,
-          2896,
           2576,
           2576,
           2576,
@@ -4039,6 +4048,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896,
           896,
           896,
@@ -4059,7 +4069,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          646.5440812792096,
           1316.2379275004068,
           1341.730094273885,
           1306.213110224406,
@@ -4108,7 +4117,8 @@ window.BENCHMARK_DATA = {
           1033.9537096659342,
           731.7685546875,
           1130.4489125569662,
-          1426.0169359353872
+          1426.0169359353872,
+          1730.979863357544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4224,7 +4234,8 @@ window.BENCHMARK_DATA = {
           517.6308202062335,
           343.8891352585384,
           580.1355312892368,
-          629.9172812143962
+          629.9172812143962,
+          627.3235552469889
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4236,6 +4247,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4291,12 +4303,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
       {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
@@ -4590,10 +4596,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -4642,14 +4653,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1690.9833320617677,
           3321.210398864746,
           3404.726574452718,
           3094.7631594340005,
@@ -4698,7 +4709,8 @@ window.BENCHMARK_DATA = {
           788.6019387563069,
           562.4833726565043,
           920.6372468130929,
-          1007.0624073028564
+          1007.0624073028564,
+          1060.3769185384115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4712,7 +4724,6 @@ window.BENCHMARK_DATA = {
         "data": [
           3176,
           3176,
-          3176,
           2816,
           2816,
           2816,
@@ -4754,6 +4765,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304,
           1304,
           1304,
@@ -4774,7 +4786,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10010.612716674805,
           20295.053096516927,
           26673.899533081054,
           26633.9291469029,
@@ -4823,7 +4834,8 @@ window.BENCHMARK_DATA = {
           15811.865844726562,
           10708.345770263672,
           23787.845112391882,
-          26538.971545410157
+          26538.971545410157,
+          27034.31483561198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4843,7 +4855,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33465,
@@ -4871,6 +4882,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
@@ -4939,7 +4951,8 @@ window.BENCHMARK_DATA = {
           596.6405504090445,
           401.6827799592699,
           709.1366493361337,
-          781.367879931132
+          781.367879931132,
+          742.5795537948609
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4951,6 +4964,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -5007,12 +5021,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
-      {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:16:59 2026 \u002B0200",
@@ -5305,10 +5313,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -5357,14 +5370,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2820.00571568807,
           5096.47492980957,
           5795.983270498423,
           5119.240317281087,
@@ -5413,7 +5426,8 @@ window.BENCHMARK_DATA = {
           521.4267307428213,
           369.14770089662994,
           712.0842841466268,
-          759.7327707926432
+          759.7327707926432,
+          787.5936194828579
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5427,7 +5441,6 @@ window.BENCHMARK_DATA = {
         "data": [
           7472,
           7472,
-          7472,
           7000,
           7000,
           7000,
@@ -5469,6 +5482,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840,
           1840,
           1840,
@@ -5489,7 +5503,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29120.87935093471,
           62192.45831298828,
           83824.33119710286,
           84180.45454624722,
@@ -5538,7 +5551,8 @@ window.BENCHMARK_DATA = {
           50964.05476888021,
           27934.408272879464,
           75639.69289456881,
-          86196.58836669922
+          86196.58836669922,
+          82570.19873046875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5550,7 +5564,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5252,
@@ -5599,6 +5612,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5614,12 +5628,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "62b5cca4a6d85a5cb82490c2f29792d22f24de66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 3 18:13:14 2026 \u002B0200",
-        "message": "refactor: write each collection constraint once for sync, non-generic and async subjects (#1576)"
-      },
       {
         "sha": "a42982477411f69fcf590605388ac190eb71c51e",
         "author": "Valentin Breu\u00DF",
@@ -5913,10 +5921,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 09:26:33 2026 \u002B0200",
         "message": "perf: skip the repeated check in \u0060Satisfies\u0060 and \u0060CompliesWith\u0060 without a timeout (#1782)"
+      },
+      {
+        "sha": "779048624672829223d4e1de669d23b41bf06597",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 09:39:04 2026 \u002B0200",
+        "message": "perf: speed up \u0060InAnyOrder()\u0060 for collections of equal items (#1783)"
       }
     ],
     "labels": [
-      "62b5cca4",
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
@@ -5965,14 +5978,14 @@ window.BENCHMARK_DATA = {
       "75406bf0",
       "fa595d47",
       "5cf6a80d",
-      "29e1127b"
+      "29e1127b",
+      "77904862"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          260.7688136100769,
           560.0543730417887,
           587.4366920471191,
           340.21241470745633,
@@ -6021,7 +6034,8 @@ window.BENCHMARK_DATA = {
           193.56110445658365,
           127.1776643594106,
           216.63132432790903,
-          202.07457439104715
+          202.07457439104715,
+          182.88593041102092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6035,7 +6049,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1176,
           1176,
-          1176,
           712,
           712,
           712,
@@ -6082,6 +6095,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          584,
           584
         ],
         "borderColor": "#63A2AC",
@@ -6097,7 +6111,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9445.914090983073,
           18669.087475585937,
           31424.79204450335,
           30653.864783653848,
@@ -6146,7 +6159,8 @@ window.BENCHMARK_DATA = {
           15129.55615234375,
           9928.43082784017,
           30163.22892543248,
-          32356.10744628906
+          32356.10744628906,
+          32051.593680826823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6158,7 +6172,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5614,
           5614,
@@ -6206,6 +6219,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614,
           5614
         ],
@@ -6262,7 +6276,8 @@ window.BENCHMARK_DATA = {
           183.17132539749144,
           119.09006812022282,
           219.57049543062845,
-          245.98374554316203
+          245.98374554316203,
+          239.95667231877644
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6274,6 +6289,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
