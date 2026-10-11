@@ -36,14 +36,14 @@ public partial class StringEqualityOptions
 		/// </summary>
 		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
 			=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
-				new Regex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline,
-					RegexTimeout));
+				GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
+					RegexOptions.Singleline));
 
 		/// <summary>
 		///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
 		/// </summary>
 		public static Regex CreateRegex(string expected, bool ignoreCase)
-			=> new(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline, RegexTimeout);
+			=> GetOrParseRegex(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline);
 
 		/// <summary>
 		///     Whether the <paramref name="actual" /> value matches the <paramref name="regex" /> from
