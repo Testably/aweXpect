@@ -1087,7 +1087,32 @@ public static partial class EquivalencyComparison
 	private static object? GetEntry(IDictionary dictionary, object key, string elementMemberPath)
 		=> UserCode.Invoke(static entry => entry.dictionary[entry.key], (dictionary, key), elementMemberPath);
 
-	private static object?[] ToArray(IEnumerable enumerable) => enumerable.Cast<object?>().ToArray();
+	/// <remarks>
+	///     An array of rank one and a list copy their items at once, as they know their count. Other collections are
+	///     enumerated, because their <c>CopyTo</c> could disagree with their enumeration.
+	/// </remarks>
+	private static object?[] ToArray(IEnumerable enumerable)
+	{
+		if (enumerable is Array { Rank: 1, } array)
+		{
+			return CopyItems(array);
+		}
+
+		if (enumerable is ICollection collection && enumerable.GetType() is { IsGenericType: true, } type &&
+		    type.GetGenericTypeDefinition() == typeof(List<>))
+		{
+			return CopyItems(collection);
+		}
+
+		return enumerable.Cast<object?>().ToArray();
+
+		static object?[] CopyItems(ICollection collection)
+		{
+			object?[] items = new object?[collection.Count];
+			collection.CopyTo(items, 0);
+			return items;
+		}
+	}
 
 	/// <remarks>
 	///     A <c>Memory&lt;T&gt;</c> or <c>ReadOnlyMemory&lt;T&gt;</c> is a sequence like an array, but implements no
