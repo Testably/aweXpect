@@ -106,6 +106,46 @@ public static class EvaluationContextExtensions
 #endif
 
 	/// <summary>
+	///     Gets the item at the <paramref name="index" /> of the <paramref name="materialized" /> sequence, and returns
+	///     <see langword="false" /> when it has fewer items.
+	/// </summary>
+	/// <remarks>
+	///     A sequence from <see cref="UseMaterializedEnumerable{TItem}(IEvaluationContext, IEnumerable{TItem})" /> reads
+	///     its source only as far as needed and without an enumerator, so that a loop over the positions is cheaper than
+	///     enumerating it. An exception of the source is thrown like by an enumeration. Another implementation is
+	///     enumerated up to the <paramref name="index" />.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">The <paramref name="materialized" /> sequence is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+	public static bool TryGetItem<TItem>(this IMaterializedEnumerable<TItem> materialized, int index, out TItem item)
+	{
+		materialized.ThrowIfNull();
+		if (index < 0)
+		{
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(index), "The index must not be negative."));
+		}
+
+		if (materialized is MaterializingEnumerable<TItem> materializing)
+		{
+			return materializing.TryGetItem(index, out item);
+		}
+
+		int position = 0;
+		foreach (TItem current in materialized)
+		{
+			if (position++ == index)
+			{
+				item = current;
+				return true;
+			}
+		}
+
+		item = default!;
+		return false;
+	}
+
+	/// <summary>
 	///     Gets the current timestamp on the clock of the evaluation, from which
 	///     <see cref="GetElapsedTime(IEvaluationContext, long)" /> measures.
 	/// </summary>

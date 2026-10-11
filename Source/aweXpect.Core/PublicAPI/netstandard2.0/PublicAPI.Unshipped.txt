@@ -1,1 +1,2 @@
 #nullable enable
+static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.TryGetItem<TItem>(this aweXpect.Core.EvaluationContext.IMaterializedEnumerable<TItem>! materialized, int index, out TItem item) -> bool
