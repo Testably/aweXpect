@@ -66,6 +66,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -79,7 +85,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -96,7 +103,8 @@ window.BENCHMARK_DATA = {
           6555.821635564168,
           12535.305913289389,
           12764.462727473332,
-          13265.374138465295
+          13265.374138465295,
+          9438.285522460938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -115,6 +123,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -143,7 +152,8 @@ window.BENCHMARK_DATA = {
           189413.85319010416,
           374195.22265625,
           392134.18125,
-          377371.628515625
+          377371.628515625,
+          293860.6474609375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -165,7 +175,8 @@ window.BENCHMARK_DATA = {
           590224,
           590292,
           590292,
-          590292
+          590292,
+          590225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -190,7 +201,8 @@ window.BENCHMARK_DATA = {
           12166.199898856026,
           18772.20353581355,
           20086.381243024553,
-          19197.259187825523
+          19197.259187825523,
+          17536.11997680664
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -202,6 +214,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -250,13 +263,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -266,7 +286,8 @@ window.BENCHMARK_DATA = {
           181.82756209373474,
           306.9443253449031,
           283.9505867640177,
-          262.74484459559125
+          262.74484459559125,
+          284.5397834437234
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -278,6 +299,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -299,7 +321,8 @@ window.BENCHMARK_DATA = {
           331.0620517730713,
           504.2283857890538,
           537.6015279633658,
-          479.22045939309254
+          479.22045939309254,
+          582.8737354914348
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -311,6 +334,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -332,7 +356,8 @@ window.BENCHMARK_DATA = {
           261.37859092439925,
           408.87290208680287,
           414.6734790166219,
-          397.2279572804769
+          397.2279572804769,
+          406.0813612571129
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -344,6 +369,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5005,6 +5031,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -5781,7 +5813,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -6561,7 +6594,8 @@ window.BENCHMARK_DATA = {
           102.63410041332244,
           145.90668115615844,
           163.39442869822184,
-          137.40051256815593
+          137.40051256815593,
+          165.9204727013906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7343,6 +7377,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512,
           512,
           512,
@@ -8134,7 +8169,8 @@ window.BENCHMARK_DATA = {
           183.83041546344757,
           253.06234607696533,
           272.8674462182181,
-          245.99453417460123
+          245.99453417460123,
+          319.2019171374185
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8327,6 +8363,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -8988,7 +9025,8 @@ window.BENCHMARK_DATA = {
           140.15554475784302,
           245.82162682215372,
           252.99966198603312,
-          244.07392279307047
+          244.07392279307047,
+          242.43157631556193
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9000,6 +9038,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9134,6 +9173,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -9147,7 +9192,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -9164,7 +9210,8 @@ window.BENCHMARK_DATA = {
           170.37307264123643,
           284.33359142450183,
           278.191194500242,
-          273.1169457117716
+          273.1169457117716,
+          269.6064307873066
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9183,6 +9230,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -9211,7 +9259,8 @@ window.BENCHMARK_DATA = {
           413.9302067756653,
           545.3726666768392,
           563.3078155517578,
-          586.2725223813738
+          586.2725223813738,
+          639.0722876957485
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9223,6 +9272,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9258,7 +9308,8 @@ window.BENCHMARK_DATA = {
           221.40054513726915,
           339.0808546702067,
           355.15742444992065,
-          364.86238646507263
+          364.86238646507263,
+          340.9181462605794
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9270,6 +9321,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -13938,6 +13990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -14714,7 +14772,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -15494,7 +15553,8 @@ window.BENCHMARK_DATA = {
           377.7996959319481,
           649.0716806139264,
           658.9432414599827,
-          633.7696231433323
+          633.7696231433323,
+          576.9589465005057
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16276,6 +16336,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -17067,7 +17128,8 @@ window.BENCHMARK_DATA = {
           915.3745296918429,
           1393.0922468821207,
           1453.0168445587158,
-          1373.5659450531007
+          1373.5659450531007,
+          1493.8372756958008
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17852,6 +17914,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -17921,7 +17984,8 @@ window.BENCHMARK_DATA = {
           409.44116151332855,
           660.1025011062623,
           648.3773095448812,
-          625.6183510462444
+          625.6183510462444,
+          624.6077039082845
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17933,6 +17997,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -22645,6 +22710,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -23421,7 +23492,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -24201,7 +24273,8 @@ window.BENCHMARK_DATA = {
           392.56831844036395,
           655.6204875310262,
           653.0624830722809,
-          626.2280548095703
+          626.2280548095703,
+          577.4701204981122
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24983,6 +25056,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -25774,7 +25848,8 @@ window.BENCHMARK_DATA = {
           11769.582413991293,
           27887.573141915458,
           28410.641943359376,
-          27444.59106009347
+          27444.59106009347,
+          17684.85667855399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26559,7 +26634,8 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26628,7 +26704,8 @@ window.BENCHMARK_DATA = {
           482.3008575439453,
           804.692634264628,
           826.4792725880941,
-          794.8108036858695
+          794.8108036858695,
+          745.6506352057824
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26640,6 +26717,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -27122,6 +27200,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -27193,7 +27277,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -27268,7 +27353,8 @@ window.BENCHMARK_DATA = {
           445.76871263980865,
           744.3005462793203,
           743.0805713335673,
-          768.1799621582031
+          768.1799621582031,
+          745.015421740214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27345,6 +27431,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -27431,7 +27518,8 @@ window.BENCHMARK_DATA = {
           31058.216958852914,
           82880.52755972055,
           84265.83816092355,
-          85322.30723353794
+          85322.30723353794,
+          33565.46903991699
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27511,7 +27599,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27939,6 +28028,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -28010,7 +28105,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -28085,7 +28181,8 @@ window.BENCHMARK_DATA = {
           120.64632336298625,
           183.5748676141103,
           191.85911434491476,
-          162.5062539100647
+          162.5062539100647,
+          200.02734831663278
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28162,6 +28259,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -28248,7 +28346,8 @@ window.BENCHMARK_DATA = {
           12654.644130452474,
           32423.43391113281,
           32192.955029296874,
-          31236.718094889322
+          31236.718094889322,
+          16281.876959664482
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28328,6 +28427,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -28397,7 +28497,8 @@ window.BENCHMARK_DATA = {
           147.67371101379393,
           255.7457534154256,
           258.7912476979769,
-          261.0001422564189
+          261.0001422564189,
+          237.94517867905753
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28409,6 +28510,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -28543,6 +28645,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -28556,7 +28664,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -28573,7 +28682,8 @@ window.BENCHMARK_DATA = {
           335.4380095163981,
           619.9793544769287,
           470.3805774961199,
-          451.62953694661456
+          451.62953694661456,
+          421.1136974266597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28594,6 +28704,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720
         ],
@@ -28620,7 +28731,8 @@ window.BENCHMARK_DATA = {
           263.01649208068847,
           373.8811431271689,
           433.2085972150167,
-          411.77138430277506
+          411.77138430277506,
+          462.4986918449402
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28632,6 +28744,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -28667,7 +28780,8 @@ window.BENCHMARK_DATA = {
           264.56047274271646,
           398.0087053934733,
           431.85279965400696,
-          411.37439753214517
+          411.37439753214517,
+          388.1898558820997
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28679,6 +28793,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -28769,6 +28884,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -28782,7 +28903,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -28799,7 +28921,8 @@ window.BENCHMARK_DATA = {
           640.7282141367594,
           1151.8307791392008,
           1070.1917322794595,
-          1056.3045282363892
+          1056.3045282363892,
+          1013.8042799631754
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28818,6 +28941,7 @@ window.BENCHMARK_DATA = {
           2168,
           2168,
           2168,
+          1720,
           1720,
           1720,
           1720,
@@ -28846,7 +28970,8 @@ window.BENCHMARK_DATA = {
           1279.0739683004526,
           1887.3938435872396,
           2073.025442123413,
-          1886.8613792419433
+          1886.8613792419433,
+          2113.136282348633
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28858,6 +28983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -28893,7 +29019,8 @@ window.BENCHMARK_DATA = {
           584.2220613039457,
           949.4310310999552,
           972.6625693003336,
-          905.5249994141715
+          905.5249994141715,
+          881.8255934715271
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28905,6 +29032,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -28995,6 +29123,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -29008,7 +29142,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -29025,7 +29160,8 @@ window.BENCHMARK_DATA = {
           7080.700775733361,
           12135.059914725167,
           12159.236760457357,
-          12077.013885498047
+          12077.013885498047,
+          9942.863399799053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29044,6 +29180,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -29072,7 +29209,8 @@ window.BENCHMARK_DATA = {
           23994.497277396065,
           42559.10313197545,
           42393.89460536412,
-          41413.62630615234
+          41413.62630615234,
+          31695.344120570593
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29092,6 +29230,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609
@@ -29119,7 +29258,8 @@ window.BENCHMARK_DATA = {
           6847.346667698452,
           11270.076776776996,
           11256.76350402832,
-          11269.664648873466
+          11269.664648873466,
+          9598.459203447614
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29131,6 +29271,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -29221,6 +29362,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:23:05 2026 \u002B0200",
         "message": "perf: read the exception of a faulted async delegate without rethrowing it (#1811)"
+      },
+      {
+        "sha": "fffb597ae3bac71aa2984bc664318187d6775482",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 16:29:33 2026 \u002B0200",
+        "message": "perf: find values by their hash code in \u0060InAnyOrder().IgnoringDuplicates()\u0060 (#1813)"
       }
     ],
     "labels": [
@@ -29234,7 +29381,8 @@ window.BENCHMARK_DATA = {
       "25bdf4e4",
       "bea504d5",
       "45e98efc",
-      "d07cd823"
+      "d07cd823",
+      "fffb597a"
     ],
     "datasets": [
       {
@@ -29251,7 +29399,8 @@ window.BENCHMARK_DATA = {
           14552.560348510742,
           23663.978812081474,
           23638.22805434007,
-          23639.355893648586
+          23639.355893648586,
+          19387.11317007882
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29270,6 +29419,7 @@ window.BENCHMARK_DATA = {
           3064,
           3064,
           3064,
+          2640,
           2640,
           2640,
           2640,
@@ -29298,7 +29448,8 @@ window.BENCHMARK_DATA = {
           33270.43501281738,
           61104.8171648298,
           61753.93634033203,
-          60793.590393066406
+          60793.590393066406,
+          45626.36217753092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29320,7 +29471,8 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29345,7 +29497,8 @@ window.BENCHMARK_DATA = {
           13545.327889578683,
           22388.99493408203,
           22202.768191019695,
-          22406.342309134347
+          22406.342309134347,
+          18875.248361440805
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29357,6 +29510,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
