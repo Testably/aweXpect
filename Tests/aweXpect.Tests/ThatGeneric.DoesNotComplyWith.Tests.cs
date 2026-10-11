@@ -453,7 +453,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "more",
-					             but it contained "more" once in "a subject with more …"
+					             but it contained "more" at least once in "a subject with more …"
 
 					             Actual:
 					             a subject with more than twenty characters

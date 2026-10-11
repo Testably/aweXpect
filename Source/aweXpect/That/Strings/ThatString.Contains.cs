@@ -76,6 +76,7 @@ public static partial class ThatString
 	{
 		private string? _actual;
 		private int _actualCount;
+		private bool _isFinished;
 		private bool _isNegated;
 
 		/// <inheritdoc />
@@ -87,7 +88,9 @@ public static partial class ThatString
 		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			_actual = actual;
-			_actualCount = await options.CountOccurrences(actual ?? string.Empty, expected);
+			int decisiveAmount = GetDecisiveAmount();
+			_actualCount = await options.CountOccurrences(actual ?? string.Empty, expected, decisiveAmount);
+			_isFinished = _actualCount < decisiveAmount;
 			if (actual is null)
 			{
 				Outcome = Outcome.FailureBothWays;
@@ -96,6 +99,26 @@ public static partial class ThatString
 
 			Outcome = quantifier.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			return this;
+		}
+
+		/// <summary>
+		///     The number of occurrences from which on no further occurrence can change the outcome, so that the rest of
+		///     the subject does not have to be searched.
+		/// </summary>
+		/// <remarks>
+		///     At an upper bound that includes the <see cref="Quantifier.DeterminableAmount" />, only one more occurrence
+		///     decides the outcome. The options validate the expected value while they count, so at least one occurrence
+		///     is searched for.
+		/// </remarks>
+		private int GetDecisiveAmount()
+		{
+			int amount = quantifier.DeterminableAmount;
+			if (quantifier.Check(amount, false) is null && amount < int.MaxValue)
+			{
+				return amount + 1;
+			}
+
+			return Math.Max(amount, 1);
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -143,7 +166,7 @@ public static partial class ThatString
 				{
 					stringBuilder.Append(it).Append(" contained ");
 					Formatter.Format(stringBuilder, expected);
-					stringBuilder.Append(' ').AppendOccurrences(_actualCount).Append(" in ");
+					stringBuilder.Append(_isFinished ? " " : " at least ").AppendOccurrences(_actualCount).Append(" in ");
 				}
 
 				Formatter.Format(stringBuilder, _actual);

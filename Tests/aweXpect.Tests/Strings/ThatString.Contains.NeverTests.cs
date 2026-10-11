@@ -33,7 +33,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "investigator",
-					             but it contained "investigator" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "investigator" at least once in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 

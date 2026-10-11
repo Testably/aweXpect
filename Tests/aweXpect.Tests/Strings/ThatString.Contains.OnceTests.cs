@@ -51,7 +51,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             contains "word" exactly once,
-					             but it contained "word" twice in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             but it contained "word" at least twice in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
 
