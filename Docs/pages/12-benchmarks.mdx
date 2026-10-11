@@ -90,8 +90,7 @@ await Assert.That(_albumSubject).IsEquivalentTo(_albumExpectation);
 
 <TabItem value="ItemsCount_AtLeast" label="Items count">
 
-Verifies that an `IEnumerable<int>` has at least the expected number of items (1,000 items in this benchmark).
-The sequence is lazy, so its count is only known after enumerating the items.
+Verifies that an `int[]` has at least the expected number of items (1,000 items in this benchmark).
 
 <BenchmarkResult name="ItemsCount_AtLeast" />
 
