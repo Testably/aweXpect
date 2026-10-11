@@ -20,13 +20,15 @@ namespace aweXpect;
 /// </remarks>
 internal readonly struct CollectionItems<TItem>
 {
+	private readonly bool _isMaterialized;
 	private readonly IEnumerable<TItem>? _typed;
 	private readonly IEnumerable? _untyped;
 
-	private CollectionItems(IEnumerable<TItem>? typed, IEnumerable? untyped)
+	private CollectionItems(IEnumerable<TItem>? typed, IEnumerable? untyped, bool isMaterialized = false)
 	{
 		_typed = typed;
 		_untyped = untyped;
+		_isMaterialized = isMaterialized;
 	}
 
 	/// <summary>
@@ -44,8 +46,9 @@ internal readonly struct CollectionItems<TItem>
 	/// </summary>
 	/// <remarks>
 	///     An array or a <see cref="List{T}" /> is enumerated without allocating an enumerator, as most subjects are one.
+	///     A sequence materialized by <see cref="Materialize{TEnumerable}" /> is read by position for the same reason.
 	/// </remarks>
-	public Enumerator GetEnumerator() => new(Items);
+	public Enumerator GetEnumerator() => new(Items, _isMaterialized);
 
 	/// <summary>
 	///     The items of the <paramref name="actual" /> subject without materializing them, e.g. for a collection that
@@ -72,7 +75,9 @@ internal readonly struct CollectionItems<TItem>
 		{
 			IEnumerable<TItem> typed = (IEnumerable<TItem>)actual!;
 			bool isKept = typed is not ICollection<TItem> && KnowsItsCount(typed);
-			return new CollectionItems<TItem>(isKept ? typed : context.UseMaterializedEnumerable(typed), null);
+			return isKept
+				? new CollectionItems<TItem>(typed, null)
+				: new CollectionItems<TItem>(context.UseMaterializedEnumerable(typed), null, true);
 		}
 
 		IEnumerable? untyped = actual.GetUntypedCount() is null ? context.UseMaterializedEnumerable(actual) : actual;
@@ -185,20 +190,31 @@ internal readonly struct CollectionItems<TItem>
 		private readonly TItem[]? _array;
 		private readonly IEnumerator<TItem>? _enumerator;
 		private readonly bool _isList;
+		private readonly IMaterializedEnumerable<TItem>? _materialized;
 		private List<TItem>.Enumerator _listEnumerator;
 		private int _index;
 
-		internal Enumerator(IEnumerable<TItem> items)
+		/// <remarks>
+		///     Only a sequence that aweXpect <paramref name="isMaterialized" /> itself is read by position, because
+		///     <see cref="EvaluationContextExtensions.TryGetItem{TItem}" /> enumerates any other
+		///     <see cref="IMaterializedEnumerable{T}" /> again for every item.
+		/// </remarks>
+		internal Enumerator(IEnumerable<TItem> items, bool isMaterialized)
 		{
 			_array = null;
 			_enumerator = null;
 			_isList = false;
+			_materialized = null;
 			_listEnumerator = default;
 			_index = -1;
 			Current = default!;
 			if (items is TItem[] array)
 			{
 				_array = array;
+			}
+			else if (isMaterialized && items is IMaterializedEnumerable<TItem> materialized)
+			{
+				_materialized = materialized;
 			}
 			else if (items is List<TItem> list)
 			{
@@ -236,6 +252,17 @@ internal readonly struct CollectionItems<TItem>
 				}
 
 				Current = _listEnumerator.Current;
+				return true;
+			}
+
+			if (_materialized is not null)
+			{
+				if (!_materialized.TryGetItem(++_index, out TItem materializedItem))
+				{
+					return false;
+				}
+
+				Current = materializedItem;
 				return true;
 			}
 
