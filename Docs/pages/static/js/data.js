@@ -24,13 +24,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -40,7 +47,8 @@ window.BENCHMARK_DATA = {
           12836.889825674203,
           13222.416271754673,
           10495.002156575521,
-          12761.611132108248
+          12761.611132108248,
+          7007.373010762532
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52,6 +60,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          4032,
           4032,
           4032,
           4032,
@@ -73,7 +82,8 @@ window.BENCHMARK_DATA = {
           374409.37545572914,
           382532.4231770833,
           294336.8800223214,
-          309036.89704241074
+          309036.89704241074,
+          187409.99231770833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -88,7 +98,8 @@ window.BENCHMARK_DATA = {
           590287,
           590292,
           590224,
-          590292
+          590292,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -106,7 +117,8 @@ window.BENCHMARK_DATA = {
           19419.396723429363,
           20312.683101109094,
           17760.76099068778,
-          17931.169439697267
+          17931.169439697267,
+          10557.885479518345
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -118,6 +130,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -159,13 +172,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -175,7 +195,8 @@ window.BENCHMARK_DATA = {
           22044.231294904435,
           22267.93892963116,
           18613.670900472007,
-          21211.297137920672
+          21211.297137920672,
+          14971.154263814291
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -187,6 +208,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          9592,
           9592,
           9592,
           9592,
@@ -208,7 +230,8 @@ window.BENCHMARK_DATA = {
           1796.3553591410318,
           1804.8023882548014,
           2094.0126187460764,
-          1937.8559629000151
+          1937.8559629000151,
+          967.6885364239032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -220,6 +243,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -241,7 +265,8 @@ window.BENCHMARK_DATA = {
           1697.752034847553,
           1705.5915941874187,
           2280.5935554504395,
-          1843.7720570197473
+          1843.7720570197473,
+          994.163479868571
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -253,6 +278,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -4872,6 +4898,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
@@ -5641,7 +5673,8 @@ window.BENCHMARK_DATA = {
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -6414,7 +6447,8 @@ window.BENCHMARK_DATA = {
           141.4626628081004,
           164.36755086580914,
           178.16398259798686,
-          149.4230346361796
+          149.4230346361796,
+          92.09907669287462
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7180,6 +7214,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544,
           544,
           544,
@@ -7973,7 +8008,8 @@ window.BENCHMARK_DATA = {
           245.0253323827471,
           292.4559158325195,
           313.91244951883954,
-          243.18680463518416
+          243.18680463518416,
+          147.03668247736417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8166,6 +8202,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -8813,7 +8850,8 @@ window.BENCHMARK_DATA = {
           239.25506162643433,
           263.9202355997903,
           237.01754932403566,
-          233.4705132842064
+          233.4705132842064,
+          147.38542197545368
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8825,6 +8863,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -8910,13 +8949,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -8926,7 +8972,8 @@ window.BENCHMARK_DATA = {
           345.19680611292523,
           294.4670040448507,
           293.9115686098734,
-          258.15258267947604
+          258.15258267947604,
+          163.601525919778
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8938,6 +8985,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          608,
           608,
           608,
           608,
@@ -8959,7 +9007,8 @@ window.BENCHMARK_DATA = {
           534.5129611151559,
           532.5699252348679,
           648.3111619949341,
-          510.0246894200643
+          510.0246894200643,
+          316.5562982899802
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8971,6 +9020,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -8992,7 +9042,8 @@ window.BENCHMARK_DATA = {
           333.64402395884196,
           347.73521010080975,
           338.2037599245707,
-          344.12981658715466
+          344.12981658715466,
+          190.8458044687907
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9004,6 +9055,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -13623,6 +13675,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
@@ -14392,7 +14450,8 @@ window.BENCHMARK_DATA = {
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -15165,7 +15224,8 @@ window.BENCHMARK_DATA = {
           661.8102690832956,
           683.081659243657,
           576.2982899347941,
-          627.9572465079171
+          627.9572465079171,
+          341.3065070424761
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15931,6 +15991,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896,
           896,
           896,
@@ -16724,7 +16785,8 @@ window.BENCHMARK_DATA = {
           1273.0741392771404,
           1370.1992055257163,
           1454.9722957611084,
-          1332.0978571573894
+          1332.0978571573894,
+          746.8850107192993
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17502,6 +17564,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -17564,7 +17627,8 @@ window.BENCHMARK_DATA = {
           623.5576110567365,
           672.1235249201457,
           621.1164381027222,
-          629.9775292323186
+          629.9775292323186,
+          366.1082080523173
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17576,6 +17640,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -22239,6 +22304,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
@@ -23008,7 +23079,8 @@ window.BENCHMARK_DATA = {
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -23781,7 +23853,8 @@ window.BENCHMARK_DATA = {
           1014.9841235024588,
           1088.6417965207781,
           870.4012481689454,
-          1006.2845067342122
+          1006.2845067342122,
+          566.3653113047282
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24547,6 +24620,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304,
           1304,
           1304,
@@ -25340,7 +25414,8 @@ window.BENCHMARK_DATA = {
           27072.115968831382,
           27906.213224283852,
           17623.03741455078,
-          19363.912045992336
+          19363.912045992336,
+          10944.914141845704
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26118,6 +26193,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -26180,7 +26256,8 @@ window.BENCHMARK_DATA = {
           753.1684947695051,
           850.9522219340007,
           723.5283984456744,
-          723.1027789433797
+          723.1027789433797,
+          444.03315149034773
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26192,6 +26269,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -26625,6 +26703,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
@@ -26689,7 +26773,8 @@ window.BENCHMARK_DATA = {
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -26757,7 +26842,8 @@ window.BENCHMARK_DATA = {
           717.9856726328532,
           793.373016016824,
           728.0096852620443,
-          677.8588190759931
+          677.8588190759931,
+          402.8931168556213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26818,6 +26904,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840,
           1840,
           1840,
@@ -26906,7 +26993,8 @@ window.BENCHMARK_DATA = {
           82956.58256835937,
           85194.58972981772,
           34076.88885498047,
-          59926.632983398435
+          59926.632983398435,
+          32037.00215657552
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26979,7 +27067,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27365,6 +27454,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
@@ -27429,7 +27524,8 @@ window.BENCHMARK_DATA = {
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -27497,7 +27593,8 @@ window.BENCHMARK_DATA = {
           195.21221709251404,
           186.61623595555622,
           209.69154957135518,
-          179.5712014266423
+          179.5712014266423,
+          119.93977559529819
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27563,6 +27660,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          584,
           584,
           584,
           584,
@@ -27646,7 +27744,8 @@ window.BENCHMARK_DATA = {
           32024.219323730467,
           32504.827705891927,
           16406.975264485678,
-          18368.450517926896
+          18368.450517926896,
+          10934.848035539899
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27719,7 +27818,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27781,7 +27881,8 @@ window.BENCHMARK_DATA = {
           245.19918336868287,
           250.1819934209188,
           238.0412252744039,
-          235.80043573379515
+          235.80043573379515,
+          133.22090535504478
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27793,6 +27894,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -27878,13 +27980,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -27894,7 +28003,8 @@ window.BENCHMARK_DATA = {
           619.0683628082276,
           646.3657181603568,
           511.58852250235424,
-          600.5068825208224
+          600.5068825208224,
+          327.77489624704634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27906,6 +28016,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          728,
           728,
           728,
           728,
@@ -27927,7 +28038,8 @@ window.BENCHMARK_DATA = {
           376.7006852149963,
           389.9646262804667,
           462.31690947214764,
-          372.8653973511287
+          372.8653973511287,
+          227.01778138478596
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27939,6 +28051,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -27960,7 +28073,8 @@ window.BENCHMARK_DATA = {
           404.0439930597941,
           419.9353549003601,
           392.52065215791976,
-          417.34871571858724
+          417.34871571858724,
+          226.67296517690022
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27972,6 +28086,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -28013,13 +28128,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -28029,7 +28151,8 @@ window.BENCHMARK_DATA = {
           1027.7238175710042,
           1074.380944115775,
           1017.3066056569418,
-          1021.8631283686711
+          1021.8631283686711,
+          572.6790697915213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28041,6 +28164,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2168,
           2168,
           2168,
           2168,
@@ -28062,7 +28186,8 @@ window.BENCHMARK_DATA = {
           1915.7398962974548,
           1914.2061210632323,
           2152.189163208008,
-          1830.9006284077961
+          1830.9006284077961,
+          1129.5604832512993
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28074,6 +28199,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -28095,7 +28221,8 @@ window.BENCHMARK_DATA = {
           956.1783354622977,
           916.2488430023193,
           932.6948055903117,
-          869.4494672921987
+          869.4494672921987,
+          527.6286060626691
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28107,6 +28234,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -28148,13 +28276,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -28164,7 +28299,8 @@ window.BENCHMARK_DATA = {
           13593.631301879883,
           13820.319644383022,
           11157.852619425455,
-          12161.19014798678
+          12161.19014798678,
+          7416.879830932618
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28176,6 +28312,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2360,
           2360,
           2360,
           2360,
@@ -28197,7 +28334,8 @@ window.BENCHMARK_DATA = {
           42531.71004231771,
           42031.99049886068,
           32374.797349196215,
-          33724.59740702311
+          33724.59740702311,
+          19892.586547851562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28209,6 +28347,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          18609,
           18609,
           18609,
           18609,
@@ -28230,7 +28369,8 @@ window.BENCHMARK_DATA = {
           11259.778454120342,
           11182.145147470328,
           9627.469880240304,
-          10518.905581883022
+          10518.905581883022,
+          6714.693571472168
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28242,6 +28382,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -28283,13 +28424,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:34:23 2026 \u002B0200",
         "message": "perf: trim the subject expression only when it is read (#1787)"
+      },
+      {
+        "sha": "d62d702f58ec0ecb8ff99a27a32cf5cf58225ce9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 11:52:28 2026 \u002B0200",
+        "message": "perf: share parsed regexes between expectations (#1788)"
       }
     ],
     "labels": [
       "16e103dc",
       "68b48fef",
       "bb7944b0",
-      "f81fa443"
+      "f81fa443",
+      "d62d702f"
     ],
     "datasets": [
       {
@@ -28299,7 +28447,8 @@ window.BENCHMARK_DATA = {
           23877.85376194545,
           24259.805905855617,
           19651.033197021483,
-          21156.631940569197
+          21156.631940569197,
+          12929.774574788411
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28311,6 +28460,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          3064,
           3064,
           3064,
           3064,
@@ -28332,7 +28482,8 @@ window.BENCHMARK_DATA = {
           62038.14596354167,
           61007.11339518229,
           46709.029811314176,
-          48864.6248953683
+          48864.6248953683,
+          28692.68379865374
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28346,6 +28497,7 @@ window.BENCHMARK_DATA = {
         "data": [
           23554,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -28365,7 +28517,8 @@ window.BENCHMARK_DATA = {
           22360.791755089394,
           22230.03127179827,
           18932.40057373047,
-          20613.838934762138
+          20613.838934762138,
+          13156.13920694987
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28377,6 +28530,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
