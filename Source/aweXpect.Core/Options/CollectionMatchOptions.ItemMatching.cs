@@ -37,14 +37,19 @@ public partial class CollectionMatchOptions
 		private List<(int Item, int Next, int Via)>? _itemPath;
 		private bool[]? _visitedExpected;
 
-		/// <param name="expected">The expected items.</param>
+		/// <param name="expected">The expected items, which an array of them is not copied for, as they are only read.</param>
 		/// <param name="isMatch">Compares an item at its index with an expected item.</param>
 		/// <param name="unmatchedItems">Receives the items that are unmatched for good, in the order of their index.</param>
 		public ItemMatching(IEnumerable<TExpected> expected, Func<int, TItem, TExpected, ValueTask<bool>> isMatch,
 			Dictionary<int, TItem> unmatchedItems)
 		{
-			_expected = expected.ToArray();
-			_itemOfExpected = Enumerable.Repeat(Unmatched, _expected.Length).ToArray();
+			_expected = expected as TExpected[] ?? expected.ToArray();
+			_itemOfExpected = new int[_expected.Length];
+			for (int i = 0; i < _itemOfExpected.Length; i++)
+			{
+				_itemOfExpected[i] = Unmatched;
+			}
+
 			_freeExpected = new FreeIndices(_expected.Length);
 			_isMatch = isMatch;
 			_unmatchedItems = unmatchedItems;
