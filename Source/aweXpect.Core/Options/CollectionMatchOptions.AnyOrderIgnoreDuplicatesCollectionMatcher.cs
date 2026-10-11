@@ -82,6 +82,17 @@ public partial class CollectionMatchOptions
 		private int _index;
 		private bool? _mergesEqualItems;
 		private List<T3> _missingItems = [];
+
+		/// <summary>
+		///     The missing expected values, when they are compared like <see cref="EqualityComparer{T}.Default" /> does,
+		///     so that each item finds the one it equals by its hash code.
+		/// </summary>
+		/// <remarks>
+		///     Equal values are then merged on both sides, so a value covers exactly the expected value it equals. The
+		///     <see cref="_missingItems" /> keep all expected values in their order, until a failure lists them.
+		/// </remarks>
+		private HashSet<T3>? _missingValues;
+
 		private int _totalExpectedCount;
 
 		/// <remarks>
@@ -105,6 +116,24 @@ public partial class CollectionMatchOptions
 
 		private int AdditionalItemCount => _additionalItems?.Count ?? 0;
 
+		private int MissingCount => _missingValues?.Count ?? _missingItems.Count;
+
+		/// <summary>
+		///     The missing expected items in their order.
+		/// </summary>
+		private List<T3> MissingItems
+		{
+			get
+			{
+				if (_missingValues is not null && _missingItems.Count != _missingValues.Count)
+				{
+					_missingItems = _missingItems.FindAll(_missingValues.Contains);
+				}
+
+				return _missingItems;
+			}
+		}
+
 		/// <inheritdoc />
 		/// <remarks>
 		///     Once all expected items are found, the containment relation is met, and properly met as soon as there is
@@ -112,11 +141,37 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		public bool IsDetermined
 			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
-			   _missingItems.Count == 0 &&
+			   MissingCount == 0 &&
 			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || AdditionalItemCount > 0);
 
-		public async ValueTask<(bool, string?)>
+		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			MergesEqualItems(options);
+			if (_missingValues is null)
+			{
+				return VerifyByComparing(it, value, options, maximumNumber);
+			}
+
+			int index = _index++;
+			if (!_uniqueItems.Add(value))
+			{
+				return new ValueTask<(bool, string?)>((false, null));
+			}
+
+			if (!_missingValues.Remove(value is T3 expectedValue ? expectedValue : default!) &&
+			    IsAdditionalItemRelevant())
+			{
+				AdditionalItems.Add(index, value);
+			}
+
+			return new ValueTask<(bool, string?)>(CountAdditionalDeviations() > 2L * maximumNumber
+				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
+				: (false, null));
+		}
+
+		private async ValueTask<(bool, string?)>
+			VerifyByComparing(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int index = _index++;
 			bool mergesEqualItems = MergesEqualItems(options) || IsIdenticalToEqualValues(value);
@@ -167,10 +222,10 @@ public partial class CollectionMatchOptions
 
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
-				errors.AddRange(MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations,
+				errors.AddRange(MissingItemsError(_totalExpectedCount, MissingItems, _equivalenceRelations,
 					_areExpectedItemsUnique, formatItem, options, maximumNumber));
 			}
-			else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
+			else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && MissingCount == 0)
 			{
 				errors.Add("contained all expected items");
 			}
@@ -270,6 +325,11 @@ public partial class CollectionMatchOptions
 			mergesEqualItems = CanMergeEqualItems<T, T2>(options);
 			_missingItems = _areExpectedValues ? GetExpectedValues(mergesEqualItems) : _expected.ToList();
 			_totalExpectedCount = _missingItems.Count;
+			if (_areExpectedValues && ComparesLikeDefaultEquality<T, T2>(options))
+			{
+				_missingValues = new HashSet<T3>(_missingItems);
+			}
+
 			_mergesEqualItems = mergesEqualItems;
 			return mergesEqualItems;
 		}
@@ -311,8 +371,8 @@ public partial class CollectionMatchOptions
 				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && AdditionalItemCount == 0
 				: AdditionalItemCount > 0;
 			bool hasMissingItemError = _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
-				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
-				: _missingItems.Count > 0;
+				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && MissingCount == 0
+				: MissingCount > 0;
 			return hasAdditionalItemError || hasMissingItemError;
 		}
 
@@ -321,11 +381,11 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		/// <remarks>
 		///     The search stops once the result no longer depends on it: the proper containment only needs one missing
-		///     item.
+		///     item. Values found by their hash code have no such item, as an item only equals the value it covered.
 		/// </remarks>
 		private async ValueTask CoverTheRemainingMissingItems(IOptionsEquality<T2> options)
 		{
-			if (_equivalenceRelations == EquivalenceRelations.IsContainedIn)
+			if (_equivalenceRelations == EquivalenceRelations.IsContainedIn || _missingValues is not null)
 			{
 				return;
 			}
@@ -398,7 +458,7 @@ public partial class CollectionMatchOptions
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not counted.
 		/// </summary>
 		private int CountMissingDeviations()
-			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : MissingCount;
 
 		private IEnumerable<string> GetDeviations()
 			=> AdditionalItemsError(AdditionalItems, CreateItemFormatter(), _dimensions);
@@ -410,14 +470,14 @@ public partial class CollectionMatchOptions
 			int maximumNumber)
 			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
 				? []
-				: MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations,
+				: MissingItemsError(_totalExpectedCount, MissingItems, _equivalenceRelations,
 					_areExpectedItemsUnique, formatItem, options, maximumNumber);
 
 		/// <summary>
 		///     An unexpected and a missing item that format equally differ only in their runtime type.
 		/// </summary>
 		private Func<object?, string> CreateItemFormatter()
-			=> GetItemFormatter(AdditionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
+			=> GetItemFormatter(AdditionalItems.Values.Cast<object?>(), MissingItems.Cast<object?>());
 
 		protected abstract ValueTask<bool>
 			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);

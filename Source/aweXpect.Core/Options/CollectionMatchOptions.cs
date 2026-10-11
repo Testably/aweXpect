@@ -582,6 +582,27 @@ public partial class CollectionMatchOptions(
 		   !typeof(T).IsAssignableFrom(typeof(DateTime));
 
 	/// <summary>
+	///     Whether the <paramref name="options" /> compare items of <typeparamref name="T" /> like
+	///     <see cref="EqualityComparer{T}.Default" /> does, so that an item can be found by its hash code instead of
+	///     comparing it with every expected item.
+	/// </summary>
+	/// <remarks>
+	///     Only ordinal string equality and the default equality of a primitive, an enum and a few framework values
+	///     are known to do so: the default equality of other types also checks the kind of a <see cref="DateTime" />
+	///     and calls <see cref="object.Equals(object)" /> and <see cref="object.GetHashCode()" /> of the caller, which
+	///     can throw or disagree with each other.
+	/// </remarks>
+	private static bool ComparesLikeDefaultEquality<T, T2>(IOptionsEquality<T2> options)
+		=> options switch
+		{
+			StringEqualityOptions { ComparesByOrdinalEquality: true, } => true,
+			ObjectEqualityOptions<T2> { UsesEqualsMatch: true, }
+				=> typeof(T).IsPrimitive || typeof(T).IsEnum || typeof(T) == typeof(decimal) ||
+				   typeof(T) == typeof(Guid) || typeof(T) == typeof(DateTimeOffset) || typeof(T) == typeof(TimeSpan),
+			_ => false,
+		};
+
+	/// <summary>
 	///     Whether the <paramref name="value" /> is identical to every value that it is equal to by
 	///     <see cref="object.Equals(object)" />, so that no comparison can tell them apart.
 	/// </summary>

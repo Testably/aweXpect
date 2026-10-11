@@ -20,24 +20,8 @@ public partial class CollectionMatchOptions
 			IOptionsEquality<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 
-		/// <remarks>
-		///     Only ordinal string equality and the default equality of a primitive, an enum and a few framework values
-		///     are known to compare like <see cref="EqualityComparer{T}.Default" />: the default equality of other types
-		///     also checks the kind of a <see cref="DateTime" /> and calls <see cref="object.Equals(object)" /> and
-		///     <see cref="object.GetHashCode()" /> of the caller, which can throw or disagree with each other.
-		/// </remarks>
 		protected override ExpectedItemCounts<T>? CountExpectedItems(T[] expected, IOptionsEquality<T2> options)
-			=> options switch
-			{
-				StringEqualityOptions { ComparesByOrdinalEquality: true, } => new ExpectedItemCounts<T>(expected),
-				ObjectEqualityOptions<T2> { UsesEqualsMatch: true, } when IsCountable()
-					=> new ExpectedItemCounts<T>(expected),
-				_ => null,
-			};
-
-		private static bool IsCountable()
-			=> typeof(T).IsPrimitive || typeof(T).IsEnum || typeof(T) == typeof(decimal) ||
-			   typeof(T) == typeof(Guid) || typeof(T) == typeof(DateTimeOffset) || typeof(T) == typeof(TimeSpan);
+			=> ComparesLikeDefaultEquality<T, T2>(options) ? new ExpectedItemCounts<T>(expected) : null;
 	}
 
 	private sealed class AnyOrderFromExpectationCollectionMatcher<T, T2>(
