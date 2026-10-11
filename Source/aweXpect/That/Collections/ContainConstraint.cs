@@ -257,6 +257,14 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	private ContainConstraint<TEnumerable, TItem> Count(CollectionItems<TItem> materialized,
 		SynchronouslyMatchedItem<TItem> synchronousItem, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		if (synchronousItem is IDirectlySearchedItem<TItem> directlySearchedItem &&
+		    materialized.TryGetSpan(out ReadOnlySpan<TItem> items))
+		{
+			return Search(materialized, items, directlySearchedItem);
+		}
+#endif
+
 		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken) ||
@@ -268,6 +276,29 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 
 		return Finish(materialized);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     An array or a list knows all its items, so the search cannot be canceled before their end.
+	/// </remarks>
+	private ContainConstraint<TEnumerable, TItem> Search(CollectionItems<TItem> materialized,
+		ReadOnlySpan<TItem> items, IDirectlySearchedItem<TItem> directlySearchedItem)
+	{
+		for (int index = directlySearchedItem.IndexIn(items);
+		     index >= 0;
+		     index = directlySearchedItem.IndexIn(items))
+		{
+			if (IsDecidedBy(materialized, items[index]))
+			{
+				return this;
+			}
+
+			items = items.Slice(index + 1);
+		}
+
+		return Finish(materialized);
+	}
+#endif
 
 	private async ValueTask<ConstraintResult> CountAsync(CollectionItems<TItem> materialized,
 		CancellationToken cancellationToken)
