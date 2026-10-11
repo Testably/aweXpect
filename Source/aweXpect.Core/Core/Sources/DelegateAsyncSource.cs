@@ -51,7 +51,17 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 				};
 			}
 
-			await task.AbandonOnCancellation(cancellationToken);
+			await task.WaitWithoutThrowing(cancellationToken);
+			if (task.IsFaulted)
+			{
+				return new DelegateValue(task.GetFirstException(out Exception[]? otherExceptions),
+					timeSystem.GetElapsedTime(startTimestamp))
+				{
+					OtherExceptions = otherExceptions,
+				};
+			}
+
+			await task;
 			return new DelegateValue(null, timeSystem.GetElapsedTime(startTimestamp));
 		}
 		catch (Exception ex)

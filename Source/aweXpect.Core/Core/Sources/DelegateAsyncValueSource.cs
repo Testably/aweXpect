@@ -34,7 +34,17 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 				};
 			}
 
-			TValue value = await task.AbandonOnCancellation(cancellationToken);
+			await task.WaitWithoutThrowing(cancellationToken);
+			if (task.IsFaulted)
+			{
+				return new DelegateValue<TValue>(default, task.GetFirstException(out Exception[]? otherExceptions),
+					timeSystem.GetElapsedTime(startTimestamp))
+				{
+					OtherExceptions = otherExceptions,
+				};
+			}
+
+			TValue value = await task;
 			return new DelegateValue<TValue>(value, null, timeSystem.GetElapsedTime(startTimestamp));
 		}
 		catch (Exception ex)
