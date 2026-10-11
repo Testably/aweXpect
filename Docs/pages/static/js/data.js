@@ -36,6 +36,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -44,7 +50,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -56,7 +63,8 @@ window.BENCHMARK_DATA = {
           10495.002156575521,
           12761.611132108248,
           7007.373010762532,
-          12983.394603474935
+          12983.394603474935,
+          10084.662989298502
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -68,6 +76,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          4032,
           4032,
           4032,
           4032,
@@ -93,7 +102,8 @@ window.BENCHMARK_DATA = {
           294336.8800223214,
           309036.89704241074,
           187409.99231770833,
-          359474.48984375
+          359474.48984375,
+          258528.38291015624
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -110,7 +120,8 @@ window.BENCHMARK_DATA = {
           590224,
           590292,
           590288,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -130,7 +141,8 @@ window.BENCHMARK_DATA = {
           17760.76099068778,
           17931.169439697267,
           10557.885479518345,
-          19355.007954915363
+          19355.007954915363,
+          14237.522770690917
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -142,6 +154,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -197,6 +210,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -205,7 +224,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -217,7 +237,8 @@ window.BENCHMARK_DATA = {
           18613.670900472007,
           21211.297137920672,
           14971.154263814291,
-          20524.094112141927
+          20524.094112141927,
+          16868.844968159992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -229,6 +250,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          9592,
           9592,
           9592,
           9592,
@@ -254,7 +276,8 @@ window.BENCHMARK_DATA = {
           2094.0126187460764,
           1937.8559629000151,
           967.6885364239032,
-          1776.432496770223
+          1776.432496770223,
+          1610.1938510894774
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -266,6 +289,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -291,7 +315,8 @@ window.BENCHMARK_DATA = {
           2280.5935554504395,
           1843.7720570197473,
           994.163479868571,
-          1687.0703859965006
+          1687.0703859965006,
+          1451.2873424802508
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -303,6 +328,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -4936,6 +4962,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -5707,7 +5739,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -6482,7 +6515,8 @@ window.BENCHMARK_DATA = {
           178.16398259798686,
           149.4230346361796,
           92.09907669287462,
-          159.01998606749945
+          159.01998606749945,
+          119.79168168703715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7248,6 +7282,7 @@ window.BENCHMARK_DATA = {
           528,
           528,
           528,
+          544,
           544,
           544,
           544,
@@ -8045,7 +8080,8 @@ window.BENCHMARK_DATA = {
           313.91244951883954,
           243.18680463518416,
           147.03668247736417,
-          255.07114610671997
+          255.07114610671997,
+          204.0382374048233
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8238,6 +8274,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -8889,7 +8926,8 @@ window.BENCHMARK_DATA = {
           237.01754932403566,
           233.4705132842064,
           147.38542197545368,
-          251.19252502123516
+          251.19252502123516,
+          202.0940637077604
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8901,6 +8939,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9000,6 +9039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -9008,7 +9053,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -9020,7 +9066,8 @@ window.BENCHMARK_DATA = {
           293.9115686098734,
           258.15258267947604,
           163.601525919778,
-          300.61422910690305
+          300.61422910690305,
+          202.27120525042216
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9032,6 +9079,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          608,
           608,
           608,
           608,
@@ -9057,7 +9105,8 @@ window.BENCHMARK_DATA = {
           648.3111619949341,
           510.0246894200643,
           316.5562982899802,
-          542.7052757898966
+          542.7052757898966,
+          412.9906762327467
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9069,6 +9118,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9094,7 +9144,8 @@ window.BENCHMARK_DATA = {
           338.2037599245707,
           344.12981658715466,
           190.8458044687907,
-          343.9997938156128
+          343.9997938156128,
+          276.31743211746215
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9106,6 +9157,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -13739,6 +13791,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -14510,7 +14568,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -15285,7 +15344,8 @@ window.BENCHMARK_DATA = {
           576.2982899347941,
           627.9572465079171,
           341.3065070424761,
-          651.3049010594685
+          651.3049010594685,
+          499.8275589261736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16051,6 +16111,7 @@ window.BENCHMARK_DATA = {
           880,
           880,
           880,
+          896,
           896,
           896,
           896,
@@ -16848,7 +16909,8 @@ window.BENCHMARK_DATA = {
           1454.9722957611084,
           1332.0978571573894,
           746.8850107192993,
-          1377.3765979494367
+          1377.3765979494367,
+          1093.4844435283117
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17628,6 +17690,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -17692,7 +17755,8 @@ window.BENCHMARK_DATA = {
           621.1164381027222,
           629.9775292323186,
           366.1082080523173,
-          645.6157728195191
+          645.6157728195191,
+          511.57717418670654
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17704,6 +17768,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -22381,6 +22446,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -23152,7 +23223,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -23927,7 +23999,8 @@ window.BENCHMARK_DATA = {
           870.4012481689454,
           1006.2845067342122,
           566.3653113047282,
-          1004.2887246449789
+          1004.2887246449789,
+          828.8989026387533
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24693,6 +24766,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1304,
           1304,
           1304,
           1304,
@@ -25490,7 +25564,8 @@ window.BENCHMARK_DATA = {
           17623.03741455078,
           19363.912045992336,
           10944.914141845704,
-          27059.849483235677
+          27059.849483235677,
+          16400.73519083659
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26270,6 +26345,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -26334,7 +26410,8 @@ window.BENCHMARK_DATA = {
           723.5283984456744,
           723.1027789433797,
           444.03315149034773,
-          795.810476175944
+          795.810476175944,
+          625.2940127690633
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26346,6 +26423,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -26793,6 +26871,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -26859,7 +26943,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -26929,7 +27014,8 @@ window.BENCHMARK_DATA = {
           728.0096852620443,
           677.8588190759931,
           402.8931168556213,
-          711.3378532273429
+          711.3378532273429,
+          561.8075871149699
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26990,6 +27076,7 @@ window.BENCHMARK_DATA = {
           1824,
           1824,
           1824,
+          1840,
           1840,
           1840,
           1840,
@@ -27082,7 +27169,8 @@ window.BENCHMARK_DATA = {
           34076.88885498047,
           59926.632983398435,
           32037.00215657552,
-          83777.21427408855
+          83777.21427408855,
+          51433.28704364483
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27157,7 +27245,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27555,6 +27644,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -27621,7 +27716,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -27691,7 +27787,8 @@ window.BENCHMARK_DATA = {
           209.69154957135518,
           179.5712014266423,
           119.93977559529819,
-          178.88042221750533
+          178.88042221750533,
+          156.0302222887675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27757,6 +27854,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          584,
           584,
           584,
           584,
@@ -27844,7 +27942,8 @@ window.BENCHMARK_DATA = {
           16406.975264485678,
           18368.450517926896,
           10934.848035539899,
-          30092.941772460938
+          30092.941772460938,
+          15035.3517964681
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27919,6 +28018,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -27983,7 +28083,8 @@ window.BENCHMARK_DATA = {
           238.0412252744039,
           235.80043573379515,
           133.22090535504478,
-          240.8700272242228
+          240.8700272242228,
+          183.7677354812622
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27995,6 +28096,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -28094,6 +28196,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -28102,7 +28210,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -28114,7 +28223,8 @@ window.BENCHMARK_DATA = {
           511.58852250235424,
           600.5068825208224,
           327.77489624704634,
-          611.9652239935739
+          611.9652239935739,
+          484.3638657251994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28126,6 +28236,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          728,
           728,
           728,
           728,
@@ -28151,7 +28262,8 @@ window.BENCHMARK_DATA = {
           462.31690947214764,
           372.8653973511287,
           227.01778138478596,
-          357.3124629020691
+          357.3124629020691,
+          307.95345500310265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28163,6 +28275,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -28188,7 +28301,8 @@ window.BENCHMARK_DATA = {
           392.52065215791976,
           417.34871571858724,
           226.67296517690022,
-          404.22499952316286
+          404.22499952316286,
+          345.89806168874105
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28200,6 +28314,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -28255,6 +28370,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -28263,7 +28384,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -28275,7 +28397,8 @@ window.BENCHMARK_DATA = {
           1017.3066056569418,
           1021.8631283686711,
           572.6790697915213,
-          1031.8272314071655
+          1031.8272314071655,
+          872.7421139399211
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28287,6 +28410,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2168,
           2168,
           2168,
           2168,
@@ -28312,7 +28436,8 @@ window.BENCHMARK_DATA = {
           2152.189163208008,
           1830.9006284077961,
           1129.5604832512993,
-          1873.955077234904
+          1873.955077234904,
+          1627.4117516108922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28324,6 +28449,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -28349,7 +28475,8 @@ window.BENCHMARK_DATA = {
           932.6948055903117,
           869.4494672921987,
           527.6286060626691,
-          886.0307658513387
+          886.0307658513387,
+          795.0054859161377
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28361,6 +28488,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -28416,6 +28544,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -28424,7 +28558,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -28436,7 +28571,8 @@ window.BENCHMARK_DATA = {
           11157.852619425455,
           12161.19014798678,
           7416.879830932618,
-          13758.310784476143
+          13758.310784476143,
+          9684.503852844238
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28448,6 +28584,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2360,
           2360,
           2360,
           2360,
@@ -28473,7 +28610,8 @@ window.BENCHMARK_DATA = {
           32374.797349196215,
           33724.59740702311,
           19892.586547851562,
-          41125.15801595052
+          41125.15801595052,
+          27674.64548746745
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28485,6 +28623,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          18609,
           18609,
           18609,
           18609,
@@ -28510,7 +28649,8 @@ window.BENCHMARK_DATA = {
           9627.469880240304,
           10518.905581883022,
           6714.693571472168,
-          11382.084618201623
+          11382.084618201623,
+          8296.059771024264
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28522,6 +28662,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -28577,6 +28718,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 11:53:02 2026 \u002B0200",
         "message": "perf: keep an \u0060Action\u0060 or \u0060Func\u003CTask\u003E\u0060 subject without a wrapping closure (#1785)"
+      },
+      {
+        "sha": "ad09d2cac018e26274c219bd0d2a03fbcf3809a0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 11 12:04:03 2026 \u002B0200",
+        "message": "perf: add \u0060Which\u0060 continuations without closures (#1791)"
       }
     ],
     "labels": [
@@ -28585,7 +28732,8 @@ window.BENCHMARK_DATA = {
       "bb7944b0",
       "f81fa443",
       "d62d702f",
-      "d79dbb79"
+      "d79dbb79",
+      "ad09d2ca"
     ],
     "datasets": [
       {
@@ -28597,7 +28745,8 @@ window.BENCHMARK_DATA = {
           19651.033197021483,
           21156.631940569197,
           12929.774574788411,
-          23753.03332737514
+          23753.03332737514,
+          16683.66478553185
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28609,6 +28758,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          3064,
           3064,
           3064,
           3064,
@@ -28634,7 +28784,8 @@ window.BENCHMARK_DATA = {
           46709.029811314176,
           48864.6248953683,
           28692.68379865374,
-          60304.13727678572
+          60304.13727678572,
+          39463.85021972656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28648,6 +28799,7 @@ window.BENCHMARK_DATA = {
         "data": [
           23554,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -28671,7 +28823,8 @@ window.BENCHMARK_DATA = {
           18932.40057373047,
           20613.838934762138,
           13156.13920694987,
-          22183.806962076822
+          22183.806962076822,
+          16107.392168317523
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28683,6 +28836,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
