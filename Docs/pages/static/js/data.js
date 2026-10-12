@@ -144,6 +144,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -170,7 +176,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -200,7 +207,8 @@ window.BENCHMARK_DATA = {
           12182.01574925014,
           12681.288461538461,
           5984.236339569092,
-          11949.23921421596
+          11949.23921421596,
+          11623.542176382882
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -219,6 +227,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -273,7 +282,8 @@ window.BENCHMARK_DATA = {
           363085.93411458336,
           375377.16248497594,
           159655.32875279017,
-          317734.1672200521
+          317734.1672200521,
+          308577.5917271205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -308,7 +318,8 @@ window.BENCHMARK_DATA = {
           590292,
           590287,
           590287,
-          590287
+          590287,
+          590289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -346,7 +357,8 @@ window.BENCHMARK_DATA = {
           19538.182954915366,
           20162.528875732423,
           9440.710860116142,
-          18363.406649780274
+          18363.406649780274,
+          18361.54359436035
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -358,6 +370,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -497,6 +510,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -516,7 +535,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -539,7 +559,8 @@ window.BENCHMARK_DATA = {
           256.69204835891725,
           257.66915973027545,
           131.9824100335439,
-          258.0647947629293
+          258.0647947629293,
+          246.7026915550232
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -551,6 +572,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -598,7 +620,8 @@ window.BENCHMARK_DATA = {
           475.57399603525795,
           469.1302090326945,
           241.21692763056075,
-          498.2196846008301
+          498.2196846008301,
+          497.0780179977417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,6 +633,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -657,7 +681,8 @@ window.BENCHMARK_DATA = {
           379.38167701448714,
           381.059750863484,
           192.78251388867696,
-          380.74772605896
+          380.74772605896,
+          368.0048128877367
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -669,6 +694,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5421,6 +5447,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -6210,7 +6242,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -7003,7 +7036,8 @@ window.BENCHMARK_DATA = {
           136.66892782847086,
           136.44867018063863,
           72.11893835238048,
-          150.34049289043134
+          150.34049289043134,
+          141.38922324180604
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7785,6 +7819,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512,
           512,
           512,
@@ -8602,7 +8637,8 @@ window.BENCHMARK_DATA = {
           242.6371172587077,
           236.74359079769678,
           126.05882253646851,
-          246.33579088846844
+          246.33579088846844,
+          243.99076585769654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8795,6 +8831,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9482,7 +9519,8 @@ window.BENCHMARK_DATA = {
           239.9085193020957,
           242.17698702445398,
           119.0864387512207,
-          232.082898412432
+          232.082898412432,
+          227.71358728408813
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9494,6 +9532,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9719,6 +9758,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -9745,7 +9790,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -9775,7 +9821,8 @@ window.BENCHMARK_DATA = {
           261.8913842950548,
           272.7045071919759,
           135.08511650562286,
-          255.8066055615743
+          255.8066055615743,
+          257.94263679640636
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9794,6 +9841,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -9848,7 +9896,8 @@ window.BENCHMARK_DATA = {
           497.91378231048583,
           500.0435712814331,
           261.60860800743103,
-          514.6204523086548
+          514.6204523086548,
+          499.4895736987774
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9860,6 +9909,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -9921,7 +9971,8 @@ window.BENCHMARK_DATA = {
           321.95204523631503,
           330.08429252184357,
           170.819456020991,
-          349.4351605415344
+          349.4351605415344,
+          324.75344533920287
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9933,6 +9984,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -14692,6 +14744,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -15481,7 +15539,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -16274,7 +16333,8 @@ window.BENCHMARK_DATA = {
           652.8251293182373,
           637.1459385326931,
           320.47928110758465,
-          667.6777394612631
+          667.6777394612631,
+          618.0697161129543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17056,6 +17116,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -17873,7 +17934,8 @@ window.BENCHMARK_DATA = {
           1272.8921439307076,
           1276.0757816314697,
           665.4013284683227,
-          1346.7087434132893
+          1346.7087434132893,
+          1313.1653299331665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18671,6 +18733,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -18753,7 +18816,8 @@ window.BENCHMARK_DATA = {
           620.2617315928142,
           642.2587559223175,
           340.3529185567583,
-          641.4606650034586
+          641.4606650034586,
+          655.496853574117
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18765,6 +18829,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -23568,6 +23633,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -24357,7 +24428,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -25150,7 +25222,8 @@ window.BENCHMARK_DATA = {
           615.9316425323486,
           638.4253363976112,
           318.76253509521484,
-          641.110576470693
+          641.110576470693,
+          640.1258394377572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25932,6 +26005,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -26749,7 +26823,8 @@ window.BENCHMARK_DATA = {
           27383.033630371094,
           27246.41230061849,
           10612.282083364633,
-          19659.251382010323
+          19659.251382010323,
+          19849.216607666014
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27547,6 +27622,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -27629,7 +27705,8 @@ window.BENCHMARK_DATA = {
           735.6649787267049,
           764.4799856458392,
           421.32443789641064,
-          728.7831924983433
+          728.7831924983433,
+          744.7731649398804
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -27641,6 +27718,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -28214,6 +28292,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -28298,7 +28382,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -28386,7 +28471,8 @@ window.BENCHMARK_DATA = {
           699.9839832442148,
           715.5047101293292,
           339.9446242014567,
-          689.3239906311035
+          689.3239906311035,
+          667.6952725137983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28463,6 +28549,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -28575,7 +28662,8 @@ window.BENCHMARK_DATA = {
           82843.45746663412,
           83770.81937662761,
           29237.640865071615,
-          62537.88469645182
+          62537.88469645182,
+          59897.9779296875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28668,6 +28756,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -29174,6 +29263,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -29258,7 +29353,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -29346,7 +29442,8 @@ window.BENCHMARK_DATA = {
           184.8453151498522,
           170.73029691832406,
           92.0068480509978,
-          179.0039890130361
+          179.0039890130361,
+          176.1348378291497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29423,6 +29520,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -29535,7 +29633,8 @@ window.BENCHMARK_DATA = {
           31177.921638997395,
           31070.30389404297,
           9778.957535879952,
-          18777.75156911214
+          18777.75156911214,
+          18174.20932515462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29628,6 +29727,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -29710,7 +29810,8 @@ window.BENCHMARK_DATA = {
           237.64518140043532,
           246.6287096463717,
           121.14518637316567,
-          232.7890521458217
+          232.7890521458217,
+          230.16809825897218
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29722,6 +29823,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -29947,6 +30049,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -29973,7 +30081,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -30003,7 +30112,8 @@ window.BENCHMARK_DATA = {
           404.9899142469679,
           364.02582801183064,
           171.6785787343979,
-          349.3536177476247
+          349.3536177476247,
+          341.167220558439
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30024,6 +30134,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -30076,7 +30187,8 @@ window.BENCHMARK_DATA = {
           352.65819464411055,
           357.75470205942787,
           210.7459820429484,
-          370.19369945526125
+          370.19369945526125,
+          380.7524107694626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30088,6 +30200,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -30149,7 +30262,8 @@ window.BENCHMARK_DATA = {
           385.6392926148006,
           384.44486538569134,
           195.38562648636955,
-          430.97812007023737
+          430.97812007023737,
+          418.06939381819507
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30161,6 +30275,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -30342,6 +30457,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -30368,7 +30489,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -30398,7 +30520,8 @@ window.BENCHMARK_DATA = {
           779.2139341990153,
           776.7095233281453,
           378.99411950792586,
-          755.0948428471883
+          755.0948428471883,
+          734.1968429565429
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30425,6 +30548,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -30471,7 +30595,8 @@ window.BENCHMARK_DATA = {
           2137.1713457743326,
           1851.6033934184484,
           929.7047791481018,
-          1908.2272229512532
+          1908.2272229512532,
+          1815.6569482258387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30483,6 +30608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -30544,7 +30670,8 @@ window.BENCHMARK_DATA = {
           895.8506848017374,
           904.096083132426,
           439.6358465353648,
-          964.4059581756592
+          964.4059581756592,
+          875.59688205719
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30556,6 +30683,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -30737,6 +30865,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -30763,7 +30897,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -30793,7 +30928,8 @@ window.BENCHMARK_DATA = {
           12208.455094473702,
           12157.254615783691,
           6144.8363282339915,
-          10765.741252354213
+          10765.741252354213,
+          10895.73141697475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30812,6 +30948,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -30866,7 +31003,8 @@ window.BENCHMARK_DATA = {
           41752.09412841797,
           42286.62405598958,
           18255.346239362443,
-          34423.131319173175
+          34423.131319173175,
+          33689.773603166854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30886,6 +31024,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -30939,7 +31078,8 @@ window.BENCHMARK_DATA = {
           11287.323557927059,
           11377.641211876502,
           6079.407038007464,
-          10506.115076700846
+          10506.115076700846,
+          10522.745786226713
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30951,6 +31091,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -31132,6 +31273,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 21:44:17 2026 \u002B0200",
         "message": "refactor: name the parameter of \u0060OrdinalStringItem.IsMatch\u0060 like the base declaration (#1825)"
+      },
+      {
+        "sha": "9900b5e4a0c3f56f023036eac33c21c3e426e725",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 12 22:15:10 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.4 to 0.50.5 (#1827)"
       }
     ],
     "labels": [
@@ -31158,7 +31305,8 @@ window.BENCHMARK_DATA = {
       "a3d03b7f",
       "8daee84c",
       "3fde3e5d",
-      "07040368"
+      "07040368",
+      "9900b5e4"
     ],
     "datasets": [
       {
@@ -31188,7 +31336,8 @@ window.BENCHMARK_DATA = {
           11656.340883695162,
           11547.400995890299,
           5846.882790120443,
-          10171.969947306316
+          10171.969947306316,
+          10166.200587972005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31215,6 +31364,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208,
@@ -31261,7 +31411,8 @@ window.BENCHMARK_DATA = {
           61196.80230243389,
           61356.25277005709,
           26563.8043082101,
-          49052.25335286458
+          49052.25335286458,
+          48436.79417724609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31295,6 +31446,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -31334,7 +31486,8 @@ window.BENCHMARK_DATA = {
           22322.84870323768,
           22271.094059535437,
           12266.409797159831,
-          20410.07602335612
+          20410.07602335612,
+          20387.048834228517
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31346,6 +31499,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
