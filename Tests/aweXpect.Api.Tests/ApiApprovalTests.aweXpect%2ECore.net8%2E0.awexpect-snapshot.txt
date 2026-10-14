@@ -664,6 +664,11 @@ namespace aweXpect.Core.Constraints
         IgnoreCompletely = 1,
         IgnoreResult = 2,
     }
+    public interface IAssertionFailureValues
+    {
+        string? ActualText { get; }
+        string? ExpectedText { get; }
+    }
     public interface IAsyncConstraint<in TValue> : aweXpect.Core.Constraints.IConstraint
     {
         System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TValue actual, System.Threading.CancellationToken cancellationToken);

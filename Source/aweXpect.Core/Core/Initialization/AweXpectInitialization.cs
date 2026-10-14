@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core.Adapters;
+using aweXpect.Core.Constraints;
 using aweXpect.Customization;
 
 namespace aweXpect.Core.Initialization;
@@ -78,9 +79,13 @@ internal static class AweXpectInitialization
 		///     The optional exception that caused the failure. When not <see langword="null" />, it is forwarded to the
 		///     test framework adapter as inner exception of the framework-specific assertion exception.
 		/// </param>
+		/// <param name="values">
+		///     The optional expected and actual values of the failure, which are attached to the exception under the
+		///     <c>assert.expected</c> and <c>assert.actual</c> keys that Microsoft.Testing.Platform reads.
+		/// </param>
 		[DoesNotReturn]
 		[StackTraceHidden]
-		public void Fail(string message, Exception? innerException = null)
+		public void Fail(string message, Exception? innerException = null, IAssertionFailureValues? values = null)
 		{
 			try
 			{
@@ -95,6 +100,12 @@ internal static class AweXpectInitialization
 			}
 			catch (Exception ex)
 			{
+				if (values is not null && (values.ExpectedText is not null || values.ActualText is not null))
+				{
+					ex.Data["assert.expected"] = values.ExpectedText;
+					ex.Data["assert.actual"] = values.ActualText;
+				}
+
 				Tracing.WriteException(ex);
 				throw;
 			}

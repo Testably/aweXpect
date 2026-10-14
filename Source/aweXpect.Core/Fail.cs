@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Initialization;
 
 namespace aweXpect;
@@ -78,6 +79,10 @@ public static class Fail
 	[DoesNotReturn]
 	public static void Inconclusive(string reason)
 		=> AweXpectInitialization.State.Value.Inconclusive(reason);
+
+	[DoesNotReturn]
+	internal static void Test(string reason, ConstraintResult failure)
+		=> AweXpectInitialization.State.Value.Fail(reason, failure.FailureCause, failure as IAssertionFailureValues);
 
 	private static void FailIf([DoesNotReturnIf(true)] bool condition, string reason, Exception? innerException)
 	{

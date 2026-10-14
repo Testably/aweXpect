@@ -187,7 +187,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 			Fail.Inconclusive(await FromFailure(result));
 		}
 
-		Fail.Test(await FromFailure(result), result.FailureCause);
+		Fail.Test(await FromFailure(result), result);
 	}
 
 	/// <summary>
@@ -427,7 +427,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 				break;
 			case Outcome.Failure:
 			case Outcome.FailureBothWays:
-				Fail.Test(await FromFailure(result), result.FailureCause);
+				Fail.Test(await FromFailure(result), result);
 				break;
 		}
 

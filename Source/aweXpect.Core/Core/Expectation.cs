@@ -392,7 +392,7 @@ public abstract class Expectation
 				Fail.Inconclusive(sb.ToString());
 			}
 
-			Fail.Test(sb.ToString(), result.ConstraintResult.FailureCause);
+			Fail.Test(sb.ToString(), result.ConstraintResult);
 		}
 
 		/// <remarks>
