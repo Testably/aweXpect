@@ -481,7 +481,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			ValueTask<StringMatchResult> result = _matchType.AreConsideredEqual(
 				PadWithInnerWhiteSpace(normalizedActual, normalizedExpected, GetAnchoredEdges()), normalizedExpected,
 				_ignoreCase, _comparer);
-			return result.IsCompletedSuccessfully && result.Result.IsEqual
+			if (!result.IsCompletedSuccessfully)
+			{
+				return "";
+			}
+
+			return result.Result.IsEqual
 				? Environment.NewLine + "(but the values match when ignoring the newline style)"
 				: "";
 		}

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Customization;
 using aweXpect.Options;
+#if NETFRAMEWORK
+using aweXpect.Core.Polyfills;
+#endif
 
 namespace aweXpect.Core.Tests.Options;
 
@@ -533,7 +536,7 @@ public sealed partial class StringEqualityOptionsTests
 		private sealed class CarriageReturnComparer : IEqualityComparer<string>
 		{
 			public bool Equals(string? x, string? y)
-				=> x!.IndexOf('\r') >= 0 && y!.IndexOf('\r') >= 0
+				=> x!.Contains('\r', StringComparison.Ordinal) && y!.Contains('\r', StringComparison.Ordinal)
 					? string.Equals(x, y, StringComparison.Ordinal)
 					: throw new InvalidOperationException("Only values with a carriage return are supported.");
 
