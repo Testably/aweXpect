@@ -1,3 +1,19 @@
 #nullable enable
 aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected, int maximum) -> System.Threading.Tasks.ValueTask<int>
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.TryGetItem<TItem>(this aweXpect.Core.EvaluationContext.IMaterializedEnumerable<TItem>! materialized, int index, out TItem item) -> bool
+aweXpect.Core.Extending.GenerateExpectationAttribute
+aweXpect.Core.Extending.GenerateExpectationAttribute.ExpectationText.get -> string!
+aweXpect.Core.Extending.GenerateExpectationAttribute.GenerateExpectationAttribute(string! name, string! expectationText) -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.Name.get -> string!
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedRemarks.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedRemarks.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedSummary.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedSummary.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.NullableOverload.get -> bool
+aweXpect.Core.Extending.GenerateExpectationAttribute.NullableOverload.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.Remarks.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.Remarks.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.Result.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.Result.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.Summary.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.Summary.set -> void

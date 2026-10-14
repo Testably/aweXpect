@@ -24,6 +24,7 @@ Keep your extensions trimmable and AOT compatible like aweXpect itself, as descr
 | [Customization values](./07-customization-values.md)                               | customization values of your own, with lifetimes                         |
 | [Initialization](./08-initialization.md)                                           | value formatters and test framework adapters                             |
 | [Native AOT for extensions](./09-native-aot.md)                                    | the metadata your expectations need under Native AOT                     |
+| [Generated expectations](./10-generated-expectations.md)                           | expectations generated from a method that checks a condition             |
 
 ## Your first expectation
 

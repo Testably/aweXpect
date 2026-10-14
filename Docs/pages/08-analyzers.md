@@ -195,6 +195,17 @@ The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
 [Native AOT and trimming](./03-how-it-works/08-native-aot.md#equivalency).
 
+## Expectation generator
+
+The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` that it
+cannot turn into an expectation, see [generated expectations](./11-extending/10-generated-expectations.md):
+
+| Rule           | Reported when                                                                                             |
+|----------------|-----------------------------------------------------------------------------------------------------------|
+| `aweXpect4001` | the class of the method is not a top-level, non-generic, `static partial` class                           |
+| `aweXpect4002` | the method, its parameters, the name or the expectation text are not supported, with the reason           |
+| `aweXpect4003` | the `Result` names no `static` method that returns a `string` and takes the subject                       |
+
 ## Test framework adapter
 
 The source generator warns with `aweXpect2002` when a test project on .NET 8 or later sets `<LangVersion>` below 9.

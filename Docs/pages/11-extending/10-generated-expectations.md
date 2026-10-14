@@ -1,0 +1,97 @@
+# Generated expectations
+
+An expectation that only checks a condition on its subject doesn't need a constraint class of its own: mark a
+`static` method that decides the condition with `[GenerateExpectation]` from `aweXpect.Core.Extending`, and the source
+generator in the `aweXpect.Core` package writes the extension methods, the constraint and its failure messages. It
+runs in every project that references `aweXpect.Core`, so an extension package can use it as well as a test project.
+
+```csharp no-compile
+using aweXpect.Core.Extending;
+
+public static partial class ThatTrack
+{
+    [GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}")]
+    private static bool IsLongerThan(Track track, TimeSpan minimum)
+        => track.Duration > minimum;
+}
+```
+
+```csharp no-compile
+Track track = new("Love Me Do", new TimeSpan(0, 2, 22));
+
+await Expect.That(track).IsLongerThan(TimeSpan.FromMinutes(2));
+await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
+```
+
+## The method
+
+- The method is `static` and returns `bool`, `Task<bool>` or `ValueTask<bool>`. Its first parameter is the subject,
+  the other parameters become the parameters of the expectation. An asynchronous method may end with a
+  `CancellationToken`, which receives the token of the evaluation.
+- It is declared in a top-level, non-generic, `static partial` class, which receives the generated extension methods.
+  The method itself can be `private`.
+- A reference type parameter that is not nullable is checked in the generated method, so `null` throws an
+  `ArgumentNullException` where the caller passes it.
+
+## Name and texts
+
+The `name` is the name of the expectation. A `{Not}` in it also generates the negated expectation, e.g.
+`"Is{Not}LongerThan"` generates `IsLongerThan` and `IsNotLongerThan`.
+
+The `expectationText` follows the [message conventions](./06-message-conventions.md). `{not}` is removed from the
+expectation and becomes "not" in its negation; it is required, because every expectation can be negated with
+`DoesNotComplyWith`, even one without a negated name. Any other placeholder, e.g. `{minimum}`, names a parameter, whose
+formatted value replaces it.
+
+The result after "but" shows the formatted subject. To describe it differently, name a `static` method that returns the
+text after the subject in `Result`. It takes the subject, optionally followed by the other parameters:
+
+```csharp no-compile
+[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}", Result = nameof(DescribeDuration))]
+private static bool IsLongerThan(Track track, TimeSpan minimum)
+    => track.Duration > minimum;
+
+private static string DescribeDuration(Track track)
+    => $"was {track.Duration:m\\:ss} long";
+```
+
+```
+Expected that track
+is longer than 3:00,
+but it was 2:22 long
+```
+
+The XML documentation is derived from the expectation text. `Summary`, `NegatedSummary`, `Remarks` and
+`NegatedRemarks` replace or extend it with XML documentation of your own.
+
+## `null` subjects
+
+The generated expectations follow the [rule for `null` subjects](./02-constraints-and-results.md#null-subjects), and
+the type of the subject parameter decides how:
+
+| Subject parameter                                    | Generated expectations                                                              |
+|------------------------------------------------------|-------------------------------------------------------------------------------------|
+| a reference type, e.g. `Track`                       | on `IThat<Track?>`; `null` fails the expectation and its negation                   |
+| a value type, e.g. `TimeSpan`                        | on `IThat<TimeSpan>` and on `IThat<TimeSpan?>`, where `null` fails both             |
+| a nullable type, e.g. `Track?` or `TimeSpan?`        | on `IThat<Track?>` or `IThat<TimeSpan?>`; the method decides about `null`           |
+| a nullable type with `[DisallowNull]`                | on the nullable type; `null` fails the expectation and its negation                 |
+
+Set `NullableOverload = false` to generate no overload on the nullable value type, e.g. when a separate class of yours
+already holds the expectations on it.
+
+An expectation that fails for a `null` subject is marked with [`[GuaranteesNotNull]`](./02-constraints-and-results.md#nullability-warnings).
+When the method decides about `null`, `[NotNullWhen]` on its subject parameter tells which of the two expectations
+guarantees a subject that is not `null`, like on `string.IsNullOrEmpty`:
+
+```csharp no-compile
+[GenerateExpectation("Is{Not}Untitled", "is {not} untitled")]
+private static bool IsUntitled([NotNullWhen(false)] Track? track)
+    => track is null || track.Title.Length == 0;
+```
+
+Here `IsNotUntitled()` fails for a `null` subject, so the subject cannot be `null` after it.
+
+## Diagnostics
+
+A method that the generator cannot turn into an expectation is reported as an error, see the
+[expectation generator](../08-analyzers.md#expectation-generator).
