@@ -21,3 +21,4 @@ aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedExpectationText.get 
 aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedExpectationText.set -> void
 aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.get -> string?
 aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.set -> void
+aweXpect.Options.StringEqualityOptions.GetOccurrenceDetails(string! actual, string! expected, int count) -> string!

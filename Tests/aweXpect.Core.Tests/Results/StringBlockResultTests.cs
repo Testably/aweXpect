@@ -44,7 +44,7 @@ public sealed class StringBlockResultTests
 			.WithMessage("""
 			             Expected that subject
 			             matches "a\nb" as block,
-			             but it was "  a\n  b\n  c"
+			             but it was "  a\n  b\n  c", which has 3 lines instead of 2
 			             """)
 			.Because("unlike Contains, the whole subject has to match the block");
 	}

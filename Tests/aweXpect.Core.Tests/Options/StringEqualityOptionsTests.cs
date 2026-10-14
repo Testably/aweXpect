@@ -871,7 +871,11 @@ public sealed partial class StringEqualityOptionsTests
 
 		[Test]
 		[Arguments("AsBlock", "bar", """
-		                             it had message "foo"
+		                             it had message "foo", which differs at index 0:
+		                                ↓ (actual)
+		                               "foo"
+		                               "bar"
+		                                ↑ (expected)
 		                             """)]
 		[Arguments("AsPrefix", "bar", """
 		                              it had message "foo", which differs at index 0:

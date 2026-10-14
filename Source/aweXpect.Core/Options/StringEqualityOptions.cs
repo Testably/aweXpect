@@ -267,6 +267,35 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
+	///     Describes where the first <paramref name="count" /> occurrences of the <paramref name="expected" />
+	///     <see langword="string" /> are in the <paramref name="actual" /> <see langword="string" />, or without an
+	///     occurrence, how it is missed, to extend a failure that reports the <paramref name="count" /> from
+	///     <see cref="CountOccurrences(string, string, int)" />.
+	/// </summary>
+	/// <remarks>
+	///     Only a block via <see cref="AsBlock()" /> has details, e.g. <c>" at lines 3-4"</c>, so the text is empty for
+	///     any other match type. It is also empty when a custom comparer throws, because the failure has to be reported
+	///     anyway.
+	/// </remarks>
+	public string GetOccurrenceDetails(string actual, string expected, int count)
+	{
+		if (_matchType is not BlockMatchType || expected.Length == 0)
+		{
+			return "";
+		}
+
+		try
+		{
+			return BlockMatchType.GetOccurrenceDetails(actual, expected, count,
+				_comparer ?? UseDefaultComparer(_ignoreCase));
+		}
+		catch (Exception) when (_comparer is not null)
+		{
+			return "";
+		}
+	}
+
+	/// <summary>
 	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern for
 	///     match types that cannot be counted with a window of the expected length, or returns <see langword="null" />.
 	/// </summary>
