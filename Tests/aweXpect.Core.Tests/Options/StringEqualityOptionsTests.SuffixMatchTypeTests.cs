@@ -362,5 +362,26 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo(expected);
 		}
+
+		[Test]
+		public async Task WhenOnlyTheNewlineStyleDiffers_ShouldHintAtIgnoringNewlineStyle()
+		{
+			string sut = "foo bar\r\nbaz";
+
+			async Task Act()
+				=> await That(sut).EndsWith("bar\nbaz");
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that sut
+				             ends with "bar\nbaz",
+				             but it was "foo bar\r\nbaz", which differs on line 1 and column 8:
+				                       ↓ (actual)
+				               "foo bar\r\nbaz"
+				                     "bar\nbaz"
+				                       ↑ (expected suffix)
+				             (but the values match when ignoring the newline style)
+				             """);
+		}
 	}
 }

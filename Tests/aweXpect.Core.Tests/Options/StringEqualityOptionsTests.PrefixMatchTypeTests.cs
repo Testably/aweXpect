@@ -319,5 +319,26 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo(expected);
 		}
+
+		[Test]
+		public async Task WhenOnlyTheNewlineStyleDiffers_ShouldHintAtIgnoringNewlineStyle()
+		{
+			string sut = "foo\r\nbar baz";
+
+			async Task Act()
+				=> await That(sut).StartsWith("foo\nbar");
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that sut
+				             starts with "foo\nbar",
+				             but it was "foo\r\nbar baz", which differs on line 1 and column 4:
+				                   ↓ (actual)
+				               "foo\r\nbar baz"
+				               "foo\nbar"
+				                   ↑ (expected prefix)
+				             (but the values match when ignoring the newline style)
+				             """);
+		}
 	}
 }

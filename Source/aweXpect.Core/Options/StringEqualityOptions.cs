@@ -438,13 +438,56 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		try
 		{
 			return _matchType.GetExtendedFailure(it, actual, expected, _ignoreCase,
-				_comparer ?? UseDefaultComparer(_ignoreCase), settings);
+				_comparer ?? UseDefaultComparer(_ignoreCase), settings) + GetNewlineStyleHint(actual, expected);
 		}
 		catch (Exception) when (_comparer is not null)
 		{
 			// The comparer of the caller answered for the values. To explain the failure it is called for parts of
 			// them, for which it may throw, so the failure is then reported without the difference.
 			return $"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+		}
+	}
+
+	/// <summary>
+	///     Returns a hint on a new line, when the already normalized <paramref name="actual" /> and
+	///     <paramref name="expected" /> values would match with <see cref="IgnoringNewlineStyle(bool)" />, otherwise an empty
+	///     string.
+	/// </summary>
+	/// <remarks>
+	///     The difference that is shown for such values points at the first <c>\r</c>, which does not reveal that the
+	///     newline style is the only difference.<br />
+	///     Only the match types that show this difference get the hint: a pattern matches newlines on its own terms, and
+	///     a block already ignores the newline style. A value without a <c>\r</c> is not changed by the normalization, so
+	///     this also gives no hint when the newline style is already ignored.<br />
+	///     The comparer of the caller may throw for the normalized values, which then get no hint.
+	/// </remarks>
+	private string GetNewlineStyleHint(string? actual, string? expected)
+	{
+		if (_matchType is not (ExactMatchType or PrefixMatchType or SuffixMatchType) ||
+		    actual is null || expected is null)
+		{
+			return "";
+		}
+
+		string normalizedActual = actual.RemoveNewlineStyle();
+		string normalizedExpected = expected.RemoveNewlineStyle();
+		if (ReferenceEquals(normalizedActual, actual) && ReferenceEquals(normalizedExpected, expected))
+		{
+			return "";
+		}
+
+		try
+		{
+			ValueTask<StringMatchResult> result = _matchType.AreConsideredEqual(
+				PadWithInnerWhiteSpace(normalizedActual, normalizedExpected, GetAnchoredEdges()), normalizedExpected,
+				_ignoreCase, _comparer);
+			return result.IsCompletedSuccessfully && result.Result.IsEqual
+				? Environment.NewLine + "(but the values match when ignoring the newline style)"
+				: "";
+		}
+		catch (UserCodeException)
+		{
+			return "";
 		}
 	}
 

@@ -504,6 +504,27 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task WhenOnlyTheNewlineStyleDiffers_ShouldNotHintAtIgnoringNewlineStyle()
+		{
+			string sut = "foo\r\nbar";
+
+			async Task Act()
+				=> await That(sut).IsEqualTo("foo\nbar").AsRegex();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that sut
+				             matches regex "foo\nbar",
+				             but it did not match:
+				               ↓ (actual)
+				               "foo\r\nbar"
+				               "foo\nbar"
+				               ↑ (regex pattern)
+				             """)
+				.Because("a pattern decides on its own how it matches a newline");
+		}
+
+		[Test]
 		public async Task WhenPatternIsInvalid_ShouldThrowArgumentException()
 		{
 			string sut = "foo";
