@@ -1,22 +1,24 @@
-﻿using aweXpect.SourceGenerators;
+﻿using aweXpect.Core.Extending;
 
 namespace aweXpect;
 
+public static partial class ThatChar
+{
 #if NET8_0_OR_GREATER
-[CreateExpectationOn<char>("Is{Not}AnAsciiDigit", "char.IsAsciiDigit({value})",
-	ExpectationText = "is {not} an ASCII digit",
-	Remarks = """
-	          This means that the specified Unicode character is categorized as an ASCII digit.<br />
-	          <seealso cref="char.IsAsciiDigit(char)" />
-	          """,
-	NegatedRemarks = """
-	                 This means that the specified Unicode character is not categorized as an ASCII digit.<br />
-	                 <seealso cref="char.IsAsciiDigit(char)" />
-	                 """
-)]
+	[GenerateExpectation("Is{Not}AnAsciiDigit", "is {not} an ASCII digit",
+		NullableOverload = false,
+		Remarks = """
+		          This means that the specified Unicode character is categorized as an ASCII digit.<br />
+		          <seealso cref="char.IsAsciiDigit(char)" />
+		          """,
+		NegatedRemarks = """
+		                 This means that the specified Unicode character is not categorized as an ASCII digit.<br />
+		                 <seealso cref="char.IsAsciiDigit(char)" />
+		                 """)]
+	private static bool IsAsciiDigit(char value) => char.IsAsciiDigit(value);
 #else
-[CreateExpectationOn<char>("Is{Not}AnAsciiDigit", "{value} is >= '0' and <= '9'",
-	ExpectationText = "is {not} an ASCII digit"
-)]
+	[GenerateExpectation("Is{Not}AnAsciiDigit", "is {not} an ASCII digit",
+		NullableOverload = false)]
+	private static bool IsAsciiDigit(char value) => value is >= '0' and <= '9';
 #endif
-public static partial class ThatChar;
+}

@@ -4,11 +4,13 @@
 		<Description>Assert unit tests in natural language using awesome expectations.</Description>
 	</PropertyGroup>
 
+	<!-- Unlike by default, the analyzers of aweXpect.Core reach the consumers, so that its expectation generator also runs in a project that only references aweXpect. -->
 	<ItemGroup Condition=" '$(Configuration)' != 'Debug' ">
-		<PackageReference Include="aweXpect.Core"/>
+		<PackageReference Include="aweXpect.Core" PrivateAssets="contentfiles;build"/>
 	</ItemGroup>
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj"/>
+		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj" PrivateAssets="contentfiles;build"/>
+		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 	</ItemGroup>
 
 	<ItemGroup>

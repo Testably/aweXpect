@@ -3,7 +3,8 @@
 An expectation that only checks a condition on its subject doesn't need a constraint class of its own: mark a
 `static` method that decides the condition with `[GenerateExpectation]` from `aweXpect.Core.Extending`, and the source
 generator in the `aweXpect.Core` package writes the extension methods, the constraint and its failure messages. It
-runs in every project that references `aweXpect.Core`, so an extension package can use it as well as a test project.
+runs in every project that references `aweXpect.Core`, directly or through `aweXpect`, so an extension package can use it
+as well as a test project.
 
 ```csharp no-compile
 using aweXpect.Core.Extending;

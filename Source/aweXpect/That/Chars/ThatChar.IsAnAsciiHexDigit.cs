@@ -1,22 +1,25 @@
-﻿using aweXpect.SourceGenerators;
+﻿using aweXpect.Core.Extending;
 
 namespace aweXpect;
 
+public static partial class ThatChar
+{
 #if NET8_0_OR_GREATER
-[CreateExpectationOn<char>("Is{Not}AnAsciiHexDigit", "char.IsAsciiHexDigit({value})",
-	ExpectationText = "is {not} an ASCII hex digit",
-	Remarks = """
-	          This means that the specified Unicode character is categorized as an ASCII hexadecimal digit.<br />
-	          <seealso cref="char.IsAsciiHexDigit(char)" />
-	          """,
-	NegatedRemarks = """
-	                 This means that the specified Unicode character is not categorized as an ASCII hexadecimal digit.<br />
-	                 <seealso cref="char.IsAsciiHexDigit(char)" />
-	                 """
-)]
+	[GenerateExpectation("Is{Not}AnAsciiHexDigit", "is {not} an ASCII hex digit",
+		NullableOverload = false,
+		Remarks = """
+		          This means that the specified Unicode character is categorized as an ASCII hexadecimal digit.<br />
+		          <seealso cref="char.IsAsciiHexDigit(char)" />
+		          """,
+		NegatedRemarks = """
+		                 This means that the specified Unicode character is not categorized as an ASCII hexadecimal digit.<br />
+		                 <seealso cref="char.IsAsciiHexDigit(char)" />
+		                 """)]
+	private static bool IsAsciiHexDigit(char value) => char.IsAsciiHexDigit(value);
 #else
-[CreateExpectationOn<char>("Is{Not}AnAsciiHexDigit", "{value} is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F'",
-	ExpectationText = "is {not} an ASCII hex digit"
-)]
+	[GenerateExpectation("Is{Not}AnAsciiHexDigit", "is {not} an ASCII hex digit",
+		NullableOverload = false)]
+	private static bool IsAsciiHexDigit(char value)
+		=> value is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F';
 #endif
-public static partial class ThatChar;
+}
