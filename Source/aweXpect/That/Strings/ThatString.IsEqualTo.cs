@@ -48,8 +48,15 @@ public static partial class ThatString
 		string? expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
-			IAsyncConstraint<string?>
+			IAsyncConstraint<string?>,
+			IAssertionFailureValues
 	{
+		/// <inheritdoc />
+		public string? ExpectedText => IsNegated ? null : expected;
+
+		/// <inheritdoc />
+		public string? ActualText => IsNegated ? null : Actual;
+
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
