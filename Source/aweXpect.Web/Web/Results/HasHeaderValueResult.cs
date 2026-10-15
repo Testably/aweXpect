@@ -52,19 +52,23 @@ public class HasHeaderValueResult<TType, TThat>
 	/// <summary>
 	///     Verifies that the header has exactly the <paramref name="expected" /> values in the same order.
 	/// </summary>
-	public AndOrResult<TType, TThat> WithValues(params string[] expected)
+	public StringCollectionMatchResult<TType, TThat> WithValues(params string[] expected)
 		=> WithValues((IEnumerable<string>)expected);
 
 	/// <summary>
 	///     Verifies that the header has exactly the <paramref name="expected" /> values in the same order.
 	/// </summary>
-	public AndOrResult<TType, TThat> WithValues(IEnumerable<string> expected)
+	public StringCollectionMatchResult<TType, TThat> WithValues(IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		_expectationBuilder.And("").AddConstraint((expected: expected.ToArray(), _headerValueAccessor),
+		StringEqualityOptions options = new(nameof(expected));
+		CollectionMatchOptions matchOptions = new();
+		_expectationBuilder.And("").AddConstraint(
+			(expected: expected.ToArray(), _headerValueAccessor, options, matchOptions),
 			static (state, it, grammars) => new WithHeaderValuesConstraint(
-				it, grammars, state.expected, state._headerValueAccessor));
-		return this;
+				it, grammars, state.expected, state._headerValueAccessor, state.options, state.matchOptions));
+		return new StringCollectionMatchResult<TType, TThat>(_expectationBuilder, _returnValue, options,
+			matchOptions);
 	}
 
 	/// <summary>
@@ -181,13 +185,15 @@ public class HasHeaderValueResult<TType, TThat>
 		string it,
 		ExpectationGrammars grammars,
 		string[] expected,
-		Func<TType, string?[]?> headerValueAccessor)
+		Func<TType, string?[]?> headerValueAccessor,
+		StringEqualityOptions options,
+		CollectionMatchOptions matchOptions)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
-			IValueConstraint<TType?>
+			IAsyncConstraint<TType?>
 	{
 		private string?[]? _headerValues;
 
-		public ConstraintResult IsMetBy(TType? actual)
+		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -197,7 +203,8 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 
 			_headerValues = headerValueAccessor(actual);
-			Outcome = _headerValues?.SequenceEqual(expected, StringComparer.Ordinal) == true
+			Outcome = _headerValues is not null &&
+			          await matchOptions.Matches(It, _headerValues, expected, options)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -207,10 +214,8 @@ public class HasHeaderValueResult<TType, TThat>
 		///     The text continues the one of the header, which carries the negation, like <c>WithValue</c> does.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(" whose values are equal to ");
-			Formatter.Format(stringBuilder, expected);
-		}
+			=> stringBuilder.Append(" whose values ").Append(matchOptions.GetExpectation(
+				Formatter.Format(expected, FormattingOptions.SingleLine) + options, ExpectationGrammars.Plural));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an "x-some-other-key" header whose values are equal to ["foo", "bar"],
+					             has an "x-some-other-key" header whose values are equal to collection ["foo", "bar"] in order,
 					             but it did not contain the expected header
 
 					             HTTP-Response:
@@ -58,7 +58,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an "x-my-header" header whose values are equal to ["foo", "bar"],
+					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
 					             but it had header values ["foo", "bar", "baz"]
 
 					             HTTP-Response:
@@ -83,7 +83,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an "x-my-header" header whose values are equal to ["foo", "bar"],
+					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
 					             but it had header values ["foo"]
 
 					             HTTP-Response:
@@ -106,7 +106,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an "x-my-header" header whose values are equal to ["foo", "bar"],
+					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
 					             but it had header values ["bar", "foo"]
 
 					             HTTP-Response:
@@ -117,6 +117,54 @@ public sealed partial class ThatHttpResponseMessage
 					                 Content-Length: 0
 					             """)
 					.Because("the values have to match in the order of the header");
+			}
+
+			[Fact]
+			public async Task InAnyOrder_WhenHeaderHasSameValuesInDifferentOrder_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithHeaders("x-my-header", "bar", "foo");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "bar").InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IgnoringCase_WhenHeaderValuesDifferInCasing_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithHeaders("x-my-header", "Foo", "Bar");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "bar").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IgnoringCaseInAnyOrder_WhenHeaderValuesDiffer_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithHeaders("x-my-header", "Bar", "Foo");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "baz").IgnoringCase().InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-my-header" header whose values are equal to collection ["foo", "baz"] ignoring case in any order,
+					             but it had header values ["Bar", "Foo"]
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 x-my-header: Bar
+					                 x-my-header: Foo
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 0
+					             """);
 			}
 
 			[Fact]
@@ -193,7 +241,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an "x-my-key" header whose values are equal to ["foo", "bar"],
+					             has an "x-my-key" header whose values are equal to collection ["foo", "bar"] in order,
 					             but it was <null>
 					             """);
 			}
@@ -240,7 +288,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have an "x-my-header" header whose values are equal to ["foo", "bar"],
+					             does not have an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
 					             but it did contain the "x-my-header" header: ["foo", "bar"] and had header values ["foo", "bar"]
 
 					             HTTP-Response:

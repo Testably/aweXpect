@@ -96,6 +96,11 @@ request.Headers.Add("Accept", ["application/json", "text/plain"]);
 await Expect.That(request).HasHeader("Accept").WithValues("application/json", "text/plain");
 ```
 
+`WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) and
+[collection options](https://docs.testably.org/aweXpect/collections/equality#equality) as comparing string collections,
+e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`.
+
 You can also add expectations on the header value or on all of its values:
 
 ```csharp
@@ -220,6 +225,11 @@ HttpResponseMessage response = await httpClient.GetAsync("https://music.example.
 
 await Expect.That(response).HasHeader("Vary").WithValues("Accept", "Accept-Encoding");
 ```
+
+`WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) and
+[collection options](https://docs.testably.org/aweXpect/collections/equality#equality) as comparing string collections,
+e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`.
 
 You can also add expectations on the header value or on all of its values:
 
@@ -405,7 +415,8 @@ Names and values are URL-decoded, and names are compared case-sensitively. `With
 [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings and requires the query
 parameter to occur exactly once. A query parameter that occurs several times can be verified with `WithValues`, which
-compares the values in the order in which they appear in the URI.
+compares the values in the order in which they appear in the URI, unless `InAnyOrder()` is specified. It supports the
+same options as comparing [string collections](https://docs.testably.org/aweXpect/collections/equality#equality).
 
 You can also add expectations on the value or on all values of the query parameter:
 

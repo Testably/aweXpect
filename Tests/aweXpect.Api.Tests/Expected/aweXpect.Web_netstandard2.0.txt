@@ -105,16 +105,16 @@ namespace aweXpect.Web.Results
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
         public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
-        public aweXpect.Results.AndOrResult<TType, TThat> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
-        public aweXpect.Results.AndOrResult<TType, TThat> WithValues(params string[] expected) { }
+        public aweXpect.Web.Results.StringCollectionMatchResult<TType, TThat> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
+        public aweXpect.Web.Results.StringCollectionMatchResult<TType, TThat> WithValues(params string[] expected) { }
     }
     public class HasQueryParameterValueResult : aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>>
     {
         public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
         public aweXpect.Results.StringEqualityResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValue(string? expected) { }
-        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
-        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(params string[] expected) { }
+        public aweXpect.Web.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
+        public aweXpect.Web.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(params string[] expected) { }
     }
     public class ProblemDetailsOptions
     {
@@ -159,6 +159,7 @@ namespace aweXpect.Web.Results
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }
     }
+    public class StringCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.StringCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions { }
 }
 namespace aweXpect.Web
 {

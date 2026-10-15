@@ -45,7 +45,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a query parameter "tag" whose values are equal to ["live", "remastered"],
+					             has a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
 					             but it was https://awexpect.com/tracks?page=2
 					             """);
 			}
@@ -95,10 +95,49 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a query parameter "tag" whose values are equal to ["remastered", "live"],
+					             has a query parameter "tag" whose values are equal to collection ["remastered", "live"] in order,
 					             but it had query parameter values ["live", "remastered"]
 					             """)
 					.Because("the values are compared in the order in which they appear in the URI");
+			}
+
+			[Fact]
+			public async Task InAnyOrder_WhenValuesAreInDifferentOrder_ShouldSucceed()
+			{
+				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
+
+				async Task Act()
+					=> await That(subject).HasQueryParameter("tag").WithValues("remastered", "live").InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IgnoringCase_WhenValuesDifferInCasing_ShouldSucceed()
+			{
+				Uri subject = new("https://awexpect.com/tracks?tag=Live&tag=Remastered");
+
+				async Task Act()
+					=> await That(subject).HasQueryParameter("tag").WithValues("live", "remastered").IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IgnoringCaseInAnyOrder_WhenValuesDiffer_ShouldFail()
+			{
+				Uri subject = new("https://awexpect.com/tracks?tag=Remastered&tag=Live");
+
+				async Task Act()
+					=> await That(subject).HasQueryParameter("tag").WithValues("live", "acoustic").IgnoringCase()
+						.InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a query parameter "tag" whose values are equal to collection ["live", "acoustic"] ignoring case in any order,
+					             but it had query parameter values ["Remastered", "Live"]
+					             """);
 			}
 
 			[Fact]
@@ -112,7 +151,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a query parameter "tag" whose values are equal to ["live"],
+					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
 					             but it had query parameter values ["live", "remastered"]
 					             """);
 			}
@@ -128,7 +167,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a query parameter "tag" whose values are equal to ["live", "remastered"],
+					             has a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
 					             but it had query parameter values ["live"]
 					             """);
 			}
@@ -144,7 +183,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a query parameter "tag" whose values are equal to ["live"],
+					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
 					             but it was <null>
 					             """);
 			}
@@ -160,7 +199,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a query parameter "tag" whose values are equal to ["live"],
+					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
 					             but it was relative
 					             """);
 			}
@@ -180,7 +219,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a query parameter "tag" whose values are equal to ["live", "remastered"],
+					             does not have a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
 					             but it was https://awexpect.com/tracks?tag=live&tag=remastered and had query parameter values ["live", "remastered"]
 					             """);
 			}

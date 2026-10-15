@@ -53,21 +53,24 @@ public class HasQueryParameterValueResult
 	///     Verifies that the values of the query parameter are equal to the <paramref name="expected" /> values in
 	///     the order in which they appear in the URI.
 	/// </summary>
-	public AndOrResult<Uri, IThat<Uri?>> WithValues(params string[] expected)
+	public StringCollectionMatchResult<Uri, IThat<Uri?>> WithValues(params string[] expected)
 		=> WithValues((IEnumerable<string>)expected);
 
 	/// <summary>
 	///     Verifies that the values of the query parameter are equal to the <paramref name="expected" /> values in
 	///     the order in which they appear in the URI.
 	/// </summary>
-	public AndOrResult<Uri, IThat<Uri?>> WithValues(IEnumerable<string> expected)
+	public StringCollectionMatchResult<Uri, IThat<Uri?>> WithValues(IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		string[] expectedValues = expected.ToArray();
-		_expectationBuilder.And("").AddConstraint((expectedValues, _name),
+		StringEqualityOptions options = new(nameof(expected));
+		CollectionMatchOptions matchOptions = new();
+		_expectationBuilder.And("").AddConstraint((expectedValues, _name, options, matchOptions),
 			static (state, it, grammars) => new WithValuesConstraint(
-				it, grammars, state.expectedValues, state._name));
-		return this;
+				it, grammars, state.expectedValues, state._name, state.options, state.matchOptions));
+		return new StringCollectionMatchResult<Uri, IThat<Uri?>>(_expectationBuilder, _returnValue, options,
+			matchOptions);
 	}
 
 	/// <summary>
@@ -179,13 +182,15 @@ public class HasQueryParameterValueResult
 		string it,
 		ExpectationGrammars grammars,
 		string[] expected,
-		string name)
+		string name,
+		StringEqualityOptions options,
+		CollectionMatchOptions matchOptions)
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
-			IValueConstraint<Uri?>
+			IAsyncConstraint<Uri?>
 	{
 		private string[]? _values;
 
-		public ConstraintResult IsMetBy(Uri? actual)
+		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual?.IsAbsoluteUri != true)
@@ -195,7 +200,7 @@ public class HasQueryParameterValueResult
 			}
 
 			_values = actual.GetQueryParameterValues(name);
-			Outcome = _values?.SequenceEqual(expected, StringComparer.Ordinal) == true
+			Outcome = _values is not null && await matchOptions.Matches(It, _values, expected, options)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -206,10 +211,8 @@ public class HasQueryParameterValueResult
 		///     subject, like the member expectations of <c>Whose</c> do.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(" whose values are equal to ");
-			Formatter.Format(stringBuilder, expected);
-		}
+			=> stringBuilder.Append(" whose values ").Append(matchOptions.GetExpectation(
+				Formatter.Format(expected, FormattingOptions.SingleLine) + options, ExpectationGrammars.Plural));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
