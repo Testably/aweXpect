@@ -40,6 +40,7 @@ Expectations for [`Uri`](#uri):
 | [`IsLoopback`](#kind)                    | `IsNotLoopback`             | references the local host                      |
 | [`IsUnc`](#kind)                         | `IsNotUnc`                  | a UNC path                                     |
 | [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
+| [`HasPort`](#port)                       | negated comparison          | has the expected port                          |
 | [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
 | [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
 | [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
@@ -372,6 +373,18 @@ You can verify that the `Uri` uses the default port of its scheme, or that it do
 ```csharp
 await Expect.That(new Uri("https://music.example.com/tracks/1")).HasDefaultPort();
 await Expect.That(new Uri("https://music.example.com:8443/tracks/1")).DoesNotHaveDefaultPort();
+```
+
+### Port
+
+You can verify the port of the `Uri`. Without an explicit port, it is the default port of the scheme:
+
+```csharp
+Uri uri = new("https://localhost:5001/health");
+
+await Expect.That(uri).HasPort().EqualTo(5001);
+await Expect.That(uri).HasPort().Between(5000).And(5999);
+await Expect.That(new Uri("http://localhost:4000/health")).HasPort(4000);
 ```
 
 ### Scheme
