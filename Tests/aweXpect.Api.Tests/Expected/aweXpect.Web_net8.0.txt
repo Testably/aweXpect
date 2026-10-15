@@ -47,6 +47,8 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasHost(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.HasQueryParameterValueResult HasQueryParameter(this aweXpect.Core.IThat<System.Uri?> source, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasScheme(this aweXpect.Core.IThat<System.Uri?> source) { }

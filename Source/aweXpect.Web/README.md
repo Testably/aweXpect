@@ -41,6 +41,7 @@ Expectations for [`Uri`](#uri):
 | [`IsUnc`](#kind)                         | `IsNotUnc`                  | a UNC path                                     |
 | [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
 | [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
+| [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
 | [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
 | [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
 
@@ -382,6 +383,17 @@ Uri uri = new("https://music.example.com/tracks/1");
 
 await Expect.That(uri).HasScheme().EqualTo("https");
 await Expect.That(uri).HasScheme().NotEqualTo("http");
+```
+
+### Host
+
+You can verify the host of the `Uri`:
+
+```csharp
+Uri uri = new("https://music.example.com/tracks/1");
+
+await Expect.That(uri).HasHost().EqualTo("music.example.com");
+await Expect.That(uri).HasHost().EndingWith(".example.com");
 ```
 
 ### Base URI
