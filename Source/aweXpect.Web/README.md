@@ -44,6 +44,7 @@ Expectations for [`Uri`](#uri):
 | [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
 | [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
 | [`HasPath`](#path)                       | negated comparison          | has the expected path                          |
+| [`HasFragment`](#fragment)               | negated comparison          | has the expected fragment                      |
 | [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
 | [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
 
@@ -420,6 +421,17 @@ Uri uri = new("https://music.example.com/tracks/1");
 await Expect.That(uri).HasPath().EqualTo("/tracks/1");
 await Expect.That(uri).HasPath().StartingWith("/tracks/");
 await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().EqualTo("/my song");
+```
+
+### Fragment
+
+You can verify the URL-decoded fragment of the `Uri`, without the leading `#`:
+
+```csharp
+Uri uri = new("https://music.example.com/tracks/1#lyrics");
+
+await Expect.That(uri).HasFragment().EqualTo("lyrics");
+await Expect.That(uri).HasFragment().NotEqualTo("credits");
 ```
 
 ### Base URI
