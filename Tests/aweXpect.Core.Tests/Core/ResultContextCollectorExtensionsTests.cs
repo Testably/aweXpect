@@ -950,6 +950,74 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Test]
+	public async Task AddStringDifferencesContext_ShouldListTheDifferentLines()
+	{
+		string subject = "a\nb\nc\nd\ne";
+		string expected = "X\nb\nc\nd\nY";
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, actual, result)
+				=> contexts.AddStringDifferencesContext(actual, expected, new StringEqualityOptions("expected"),
+					result.Grammars));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Differences:
+			               -  1        a
+			               +      1    X
+			                  2   2    b
+			                  3   3    c
+			                  4   4    d
+			               -  5        e
+			               +      5    Y
+			             """);
+	}
+
+	[Test]
+	public async Task AddStringDifferencesContext_WhenNegated_ShouldNotAddAContext()
+	{
+		string subject = "a\nb\nc\nd\ne";
+		string expected = "X\nb\nc\nd\nY";
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => it.ShowsContexts((contexts, actual, result)
+				=> contexts.AddStringDifferencesContext(actual, expected, new StringEqualityOptions("expected"),
+					result.Grammars), true));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not show contexts,
+			             but it did
+			             """);
+	}
+
+	[Test]
+	[Arguments("a\nb\nc", null)]
+	[Arguments(null, "a\nb\nc")]
+	[Arguments("a\nb\nc", "X\nb\nc")]
+	[Arguments("a b c", "X b Y")]
+	public async Task AddStringDifferencesContext_WhenNotDifferentInSeveralLines_ShouldNotAddAContext(
+		string? actual, string? expected)
+	{
+		async Task Act()
+			=> await That(1).ShowsContexts((contexts, _, result)
+				=> contexts.AddStringDifferencesContext(actual, expected, new StringEqualityOptions("expected"),
+					result.Grammars));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             shows contexts,
+			             but it did not
+			             """);
+	}
+
+	[Test]
 	[Arguments("")]
 	[Arguments(null)]
 	public async Task AddStringContext_WhenEmpty_ShouldNotAddAContext(string? value)

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
+using aweXpect.Customization;
 
 namespace aweXpect.Options;
 
@@ -526,6 +528,82 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		{
 			return "";
 		}
+	}
+
+	/// <summary>
+	///     Lists the lines that differ between the <paramref name="actual" /> and the <paramref name="expected" /> value,
+	///     when they are compared for equality, one of them has several lines and they differ in at least two places,
+	///     otherwise returns <see langword="null" />.
+	/// </summary>
+	/// <remarks>
+	///     The lines are compared with the options, so that lines which only differ in what the options ignore are
+	///     equal, but are shown as they are in the original values.<br />
+	///     A comparer of the caller defines when whole values are equal, which need not hold for their lines, so the
+	///     lines are then not listed.
+	/// </remarks>
+	internal string? GetLineDifferences(string actual, string expected)
+	{
+		if (_matchType is not ExactMatchType || _comparer is not null ||
+		    (!IsMultiLine(actual) && !IsMultiLine(expected)))
+		{
+			return null;
+		}
+
+		StringComparer comparer = UseDefaultComparer(_ignoreCase);
+		bool ignoreLineBreaks = _ignoreNewlineStyle || _ignoreIndentation;
+		return LineDifferences.Format(GetComparedLines(actual), GetComparedLines(expected),
+			(actualLine, expectedLine) => comparer.Equals(actualLine.ComparedText, expectedLine.ComparedText) &&
+			                              (ignoreLineBreaks ||
+			                               HaveSameLineBreak(actualLine, expectedLine)),
+			Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
+
+		static bool IsMultiLine(string value)
+			=> value.IndexOfAny(['\r', '\n',]) >= 0;
+
+		// The last line has no line break, so it equals a line with the same text whichever line break that has.
+		static bool HaveSameLineBreak(LineDifferences.Line actualLine, LineDifferences.Line expectedLine)
+			=> actualLine.LineBreak.Length == 0 || expectedLine.LineBreak.Length == 0 ||
+			   actualLine.LineBreak == expectedLine.LineBreak;
+	}
+
+	/// <summary>
+	///     Splits the <paramref name="value" /> into its lines and applies the options to each of them, like
+	///     <see cref="Normalize(string?)" /> applies them to the whole value.
+	/// </summary>
+	/// <remarks>
+	///     Removing the whitespace at the start or the end of the whole value removes the lines that consist only of
+	///     whitespace there, and the whitespace at the start of the first or at the end of the last remaining line.
+	/// </remarks>
+	private List<LineDifferences.Line> GetComparedLines(string value)
+	{
+		List<LineDifferences.Line> lines = LineDifferences.Split(value);
+		if (_ignoreIndentation)
+		{
+			lines.ForEach(line => line.ComparedText = line.ComparedText.TrimStart());
+		}
+
+		if (_ignoreLeadingWhiteSpace)
+		{
+			lines.RemoveRange(0, lines.TakeWhile(line => string.IsNullOrWhiteSpace(line.ComparedText)).Count());
+			if (lines.Count > 0)
+			{
+				lines[0].ComparedText = lines[0].ComparedText.TrimStart();
+			}
+		}
+
+		if (_ignoreTrailingWhiteSpace)
+		{
+			int count = Enumerable.Reverse(lines).TakeWhile(line => string.IsNullOrWhiteSpace(line.ComparedText))
+				.Count();
+			lines.RemoveRange(lines.Count - count, count);
+			if (lines.Count > 0)
+			{
+				lines[^1].ComparedText = lines[^1].ComparedText.TrimEnd();
+				lines[^1].LineBreak = "";
+			}
+		}
+
+		return lines;
 	}
 
 	/// <summary>

@@ -273,7 +273,7 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   cached delegate, as the same callback is only added once per subject.
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
-  `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`.
+  `AddStringContext`, `AddStringDifferencesContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`.
 
 ## Exceptions
 

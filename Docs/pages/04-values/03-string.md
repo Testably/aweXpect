@@ -36,6 +36,27 @@ await Expect.That(title).IsNotEqualTo("Let It Be");
 The comparison is ordinal and can be configured with the [string options](#string-options) or compare against a
 [pattern](#match-types).
 
+The failure message points at the first difference. When multi-line values differ in several places, a `Differences`
+context lists the changed lines with their line numbers in the actual and the expected value. Each difference is
+surrounded by one unchanged line, and differences that are close together are shown as one block:
+
+```text title="Failure message"
+Differences:
+     2   2    host = localhost
+  -  3        port = 8080
+  +      3    port = 8081
+     4   4    timeout = 30
+     5   5    [client]
+     6   6    retries = 3
+  -  7        verbose = true
+  -  8        log = file
+  +      7    log = console
+```
+
+Tabs and other invisible characters are shown as escape sequences. Lines that only differ in what the [string options](#string-options) ignore are not listed. At most
+`MaximumNumberOfCollectionItems` differences are listed (see [formatting](../03-how-it-works/07-configuration.md#formatting)).
+With a custom comparer (`Using(…)`), which compares whole values, no differences are listed.
+
 ## String options
 
 The expectations that compare the `string` with an expected string (`IsEqualTo`, `IsOneOf`, `StartsWith`, `EndsWith`,
