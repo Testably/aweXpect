@@ -14,6 +14,12 @@
 		<EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<!-- Only a build dependency for packing: the generator runs in the consuming projects, not in this one. -->
+		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" ReferenceOutputAssembly="false"/>
+		<None Include="$(MSBuildProjectDirectory)\..\aweXpect.Core.Generators\bin\$(Configuration)\netstandard2.0\aweXpect.Core.Generators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+	</ItemGroup>
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="System.Threading.Tasks.Extensions"/>
 	</ItemGroup>

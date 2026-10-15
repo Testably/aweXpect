@@ -16,6 +16,7 @@ Keep your extensions trimmable and AOT compatible like aweXpect itself, as descr
 
 | Page                                                                               | Topics                                                                   |
 |------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| [Generated expectations](./01-generated-expectations.md)                           | expectations generated from a method that checks a condition             |
 | [Constraints and results](./02-constraints-and-results.md)                         | constraints, result helpers, `null` subjects, negation, argument checks  |
 | [Options and match types](./03-options-and-match-types.md)                         | options of your own results, time tolerances, custom comparisons         |
 | [Collections and nested expectations](./04-collections-and-nested-expectations.md) | collection subjects, expectations on members and on collection items     |
@@ -44,12 +45,33 @@ The samples on this and the following pages verify tracks of the following type,
 public record Track(string Title, TimeSpan Duration);
 ```
 
+### Generated from a condition
+
+If you want to verify that a `Track` is radio friendly, i.e. that it lasts at most three minutes, the simplest way is a
+method that checks the condition, marked with `[GenerateExpectation]`:
+
+```csharp no-compile
+using aweXpect.Core.Extending;
+
+public static partial class ThatTrack
+{
+    [GenerateExpectation("Is{Not}RadioFriendly", "is {not} radio friendly")]
+    private static bool IsRadioFriendly(Track track)
+        => track.Duration <= TimeSpan.FromMinutes(3);
+}
+```
+
+The source generator in `aweXpect.Core` writes `IsRadioFriendly()` and `IsNotRadioFriendly()` with their failure
+messages, see [generated expectations](./01-generated-expectations.md).
+
+When an expectation needs more than a condition, e.g. options, a different result or a nested expectation, write it
+yourself as described in the rest of this section.
+
 ### Expectations
 
 You can extend the expectations for any types, by adding extension methods on `IThat<TType>`.
 
-If you want to verify that a `Track` is radio friendly, i.e. that it lasts at most three minutes, you specify the
-following method signature:
+To write `IsRadioFriendly` yourself, you specify the following method signature:
 
 ```csharp no-compile
 /// <summary>
