@@ -93,6 +93,13 @@ internal static class Checks
 		new("a null URI fails instead of throwing",
 			() => ShouldFail(async () => await That((Uri?)null).IsAbsolute(),
 				"is an absolute URI", "but it was <null>")),
+		new("a query parameter with the expected value passes",
+			() => ShouldPass(async () => await That(new Uri("https://awexpect.com/tracks?page=2&tag=a+b"))
+				.HasQueryParameter("tag").WithValue("a b"))),
+		new("a query parameter with a differing value fails and shows both",
+			() => ShouldFail(async () => await That(new Uri("https://awexpect.com/tracks?page=2"))
+					.HasQueryParameter("page").WithValue("3"),
+				"has a query parameter \"page\" whose value is equal to \"3\"", "but it had query parameter value \"2\"")),
 	];
 
 	private static HttpResponseMessage Response(HttpStatusCode statusCode, string? json = null, string? header = null)

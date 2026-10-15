@@ -33,15 +33,16 @@ Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 
 Expectations for [`Uri`](#uri):
 
-| Expectation                       | Negated                  | Summary                             |
-|-----------------------------------|--------------------------|-------------------------------------|
-| [`IsAbsolute`](#kind)             | `IsNotAbsolute`          | an absolute URI                     |
-| [`IsFile`](#kind)                 | `IsNotFile`              | a file URI                          |
-| [`IsLoopback`](#kind)             | `IsNotLoopback`          | references the local host           |
-| [`IsUnc`](#kind)                  | `IsNotUnc`               | a UNC path                          |
-| [`HasDefaultPort`](#default-port) | `DoesNotHaveDefaultPort` | uses the default port of its scheme |
-| [`HasScheme`](#scheme)            | negated comparison       | has the expected scheme             |
-| [`IsBaseOf`](#base-uri)           | `IsNotBaseOf`            | a base URI of the expected URI      |
+| Expectation                              | Negated                     | Summary                                        |
+|------------------------------------------|-----------------------------|------------------------------------------------|
+| [`IsAbsolute`](#kind)                    | `IsNotAbsolute`             | an absolute URI                                |
+| [`IsFile`](#kind)                        | `IsNotFile`                 | a file URI                                     |
+| [`IsLoopback`](#kind)                    | `IsNotLoopback`             | references the local host                      |
+| [`IsUnc`](#kind)                         | `IsNotUnc`                  | a UNC path                                     |
+| [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
+| [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
+| [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
+| [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
 
 When an expectation on a request or response fails, the failure message includes the formatted HTTP request and
 response.
@@ -369,6 +370,35 @@ await Expect.That(uri).IsNotBaseOf(new Uri("https://other.example.com/api/tracks
 
 Like `Uri.IsBaseOf`, only the part of the `Uri` up to its last `/` is considered, so `https://music.example.com/api`
 is also a base URI of `https://music.example.com/tracks/1`.
+
+### Query parameters
+
+You can verify that the `Uri` has a query parameter, optionally with the expected value, or that it does not have it:
+
+```csharp
+Uri uri = new("https://music.example.com/tracks?page=2&genre=Jazz");
+
+await Expect.That(uri).HasQueryParameter("page");
+await Expect.That(uri).HasQueryParameter("page").WithValue("2");
+await Expect.That(uri).HasQueryParameter("genre").WithValue("jazz").IgnoringCase();
+await Expect.That(uri).DoesNotHaveQueryParameter("token");
+```
+
+Names and values are URL-decoded, and names are compared case-sensitively. `WithValue` supports the same
+[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings and requires the query
+parameter to occur exactly once. A query parameter that occurs several times can be verified with `WithValues`, which
+compares the values in the order in which they appear in the URI.
+
+You can also add expectations on the value or on all values of the query parameter:
+
+```csharp
+Uri uri = new("https://music.example.com/tracks?tag=live&tag=remastered");
+
+await Expect.That(uri).HasQueryParameter("tag").WithValues("live", "remastered");
+await Expect.That(uri).HasQueryParameter("tag")
+    .WhoseValues(values => values.Contains("live"));
+```
 
 ## Customization
 

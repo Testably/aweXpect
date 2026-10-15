@@ -13,6 +13,16 @@ internal static class ThrowHelper
 		}
 	}
 
+	public static void ThrowIfNullOrWhiteSpace(string? value, string paramName)
+	{
+		ThrowIfNull(value, paramName);
+		if (string.IsNullOrWhiteSpace(value))
+		{
+			throw Tracing.WriteException(new ArgumentException($"The '{paramName}' cannot be empty or whitespace.",
+				paramName));
+		}
+	}
+
 	/// <summary>
 	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />, because the later
 	///     value would silently replace the earlier one.
