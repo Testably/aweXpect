@@ -766,7 +766,7 @@ public sealed partial class StringEqualityOptionsTests
 		private sealed class ThrowingForMultipleLinesComparer : IEqualityComparer<string>
 		{
 			public bool Equals(string? x, string? y)
-				=> x?.Contains("\n") == true || y?.Contains("\n") == true
+				=> x?.IndexOf('\n') >= 0 || y?.IndexOf('\n') >= 0
 					? throw new NotSupportedException("only single lines are supported")
 					: x == y;
 

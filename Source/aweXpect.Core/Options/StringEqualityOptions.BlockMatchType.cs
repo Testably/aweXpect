@@ -400,7 +400,7 @@ public partial class StringEqualityOptions
 		///     Formats the lines of a block of <paramref name="length" /> lines at each of the <paramref name="starts" />,
 		///     e.g. <c>lines 1-2 and 5-6</c>.
 		/// </summary>
-		private static string FormatLines(IReadOnlyList<int> starts, int length, bool isTruncated)
+		private static string FormatLines(List<int> starts, int length, bool isTruncated)
 		{
 			StringBuilder sb = new(starts.Count == 1 && length == 1 && !isTruncated ? "line " : "lines ");
 			for (int i = 0; i < starts.Count; i++)
