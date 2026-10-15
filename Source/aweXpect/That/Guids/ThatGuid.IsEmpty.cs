@@ -1,10 +1,11 @@
 ﻿using System;
-using aweXpect.SourceGenerators;
+using aweXpect.Core.Extending;
 
 namespace aweXpect;
 
-[CreateExpectationOn<Guid>("Is{Not}Empty", "{value} == Guid.Empty",
-	ExpectationText = "is {not} empty",
-	Using = ["System",]
-)]
-public static partial class ThatGuid;
+public static partial class ThatGuid
+{
+	[GenerateExpectation("Is{Not}Empty", "is {not} empty",
+		NullableOverload = false)]
+	private static bool IsEmptyGuid(Guid value) => value == Guid.Empty;
+}

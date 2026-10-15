@@ -1,16 +1,18 @@
-﻿using aweXpect.SourceGenerators;
+﻿using aweXpect.Core.Extending;
 
 namespace aweXpect;
 
-[CreateExpectationOn<char>("Is{Not}ANumber", "char.IsNumber({value})",
-	ExpectationText = "is {not} a number",
-	Remarks = """
-	          This means that the specified Unicode character is categorized as a number.<br />
-	          <seealso cref="char.IsNumber(char)" />
-	          """,
-	NegatedRemarks = """
-	                 This means that the specified Unicode character is not categorized as a number.<br />
-	                 <seealso cref="char.IsNumber(char)" />
-	                 """
-)]
-public static partial class ThatChar;
+public static partial class ThatChar
+{
+	[GenerateExpectation("Is{Not}ANumber", "is {not} a number",
+		NullableOverload = false,
+		Remarks = """
+		          This means that the specified Unicode character is categorized as a number.<br />
+		          <seealso cref="char.IsNumber(char)" />
+		          """,
+		NegatedRemarks = """
+		                 This means that the specified Unicode character is not categorized as a number.<br />
+		                 <seealso cref="char.IsNumber(char)" />
+		                 """)]
+	private static bool IsNumber(char value) => char.IsNumber(value);
+}
