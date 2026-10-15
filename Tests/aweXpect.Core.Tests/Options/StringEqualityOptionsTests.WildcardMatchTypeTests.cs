@@ -385,6 +385,27 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task WhenOnlyTheNewlineStyleDiffers_ShouldNotHintAtIgnoringNewlineStyle()
+		{
+			string sut = "foo\r\nbar";
+
+			async Task Act()
+				=> await That(sut).IsEqualTo("foo\nbar").AsWildcard();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that sut
+				             matches "foo\nbar",
+				             but it did not match:
+				               ↓ (actual)
+				               "foo\r\nbar"
+				               "foo\nbar"
+				               ↑ (wildcard pattern)
+				             """)
+				.Because("a pattern decides on its own how it matches a newline");
+		}
+
+		[Test]
 		public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			string sut = "foo";
