@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Results;
 
@@ -246,6 +247,44 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenALineOfTheClosestMatchDiffers_ShouldShowTheDifference()
+			{
+				string subject = "class C\n{\n    int x;\n    int y;\n}";
+				string expected = "{\n    int x;\n    int z;\n}";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "{\n    int x;\n    int z;\n}" as block at least once,
+					             but it did not contain "{\n    int x;\n    int z;\n}" in "class C\n{\n    int x;\n    int y;\n}", and the closest match at lines 2-5 differs on line 4 and column 9:
+					                                 ↓ (actual)
+					               "…int x;\n    int y;\n}"
+					               "…int x;\n    int z;\n}"
+					                                 ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenBlockHasMoreLinesThanTheSubject_ShouldCompareFromTheFirstLine()
+			{
+				string subject = "  a\n  b";
+				string expected = "a\nb\nc";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb\nc" as block at least once,
+					             but it did not contain "a\nb\nc" in "  a\n  b", which has 2 lines instead of at least 3
+					             """);
+			}
+
+			[Test]
 			public async Task WhenBlockIsIndentedAsAWhole_ShouldSucceed()
 			{
 				string subject = """
@@ -295,6 +334,23 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCaseInTheClosestMatch()
+			{
+				string subject = "  FOO\nbar";
+				string expected = "foo\nBAR";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock().IgnoringCase();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "foo\nBAR" as block ignoring case at least once,
+					             but it did not contain "foo\nBAR" in "  FOO\nbar", and the closest match at lines 1-2 has line 2 indented by "" instead of "  "
+					             """);
+			}
+
+			[Test]
 			public async Task WhenCombinedWithIgnoringIndentation_ShouldThrowInvalidOperationException()
 			{
 				string subject = "  foo\n  bar";
@@ -305,6 +361,50 @@ public sealed partial class ThatString
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("AsBlock cannot be combined with IgnoringIndentation.")
 					.Because("a block compares the lines on its own");
+			}
+
+			[Test]
+			public async Task WhenCombinedWithOtherExpectations_ShouldIndentTheDifference()
+			{
+				string subject = "class C\n{\n    int x;\n    int y;\n}";
+				string expected = "{\n    int x;\n    int z;\n}";
+
+				async Task Act()
+					=> await ThatAll(
+						That(subject).Contains(expected).AsBlock(),
+						That(subject).IsEmpty());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject contains "{\n    int x;\n    int z;\n}" as block at least once
+					              [02] Expected that subject is empty
+					             but
+					              [01] it did not contain "{\n    int x;\n    int z;\n}" in "class C\n{\n    int x;\n    int y;\n}", and the closest match at lines 2-5 differs on line 4 and column 9:
+					                                       ↓ (actual)
+					                     "…int x;\n    int y;\n}"
+					                     "…int x;\n    int z;\n}"
+					                                       ↑ (expected)
+					              [02] it was "class C\n{\n    int x;\n    int y;\n}"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenComparerThrowsWhileTheFailureIsExplained_ShouldNotExplainIt()
+			{
+				string subject = "    a\nb";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock().Using(new ThrowingForComparer("b"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb" as block using ThatString.Contains.AsBlockTests.ThrowingForComparer at least once,
+					             but it did not contain "a\nb" in "    a\nb"
+					             """)
+					.Because("counting never compares the second line, which does not have the indentation of the first");
 			}
 
 			[Test]
@@ -332,7 +432,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             contains "int Foo" as block at least once,
-					             but it did not contain "int Foo" in "public int Foo;"
+					             but it did not contain "int Foo" in "public int Foo;", only as part of line 1
 					             """);
 			}
 
@@ -349,7 +449,23 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             contains "a\nb" as block at least once,
-					             but it did not contain "a\nb" in "    a\nb"
+					             but it did not contain "a\nb" in "    a\nb", and the closest match at lines 1-2 has line 2 indented by "" instead of "    "
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).Contains("a\nb").AsBlock();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb" as block at least once,
+					             but it was <null>
 					             """);
 			}
 
@@ -366,6 +482,40 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenTheBlockOccursTooOften_ShouldNameTheLinesOfTheOccurrences()
+			{
+				string subject = "a\nb\nx\n  a\n  b\na\nb";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock().Twice();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb" as block exactly twice,
+					             but it contained "a\nb" at least 3 times in "a\nb\nx\n  a\n  b\na\nb" at lines 1-2, 4-5 and 6-7
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTheBlockOccursTooRarely_ShouldNameTheLinesOfTheOccurrences()
+			{
+				string subject = "a\nb\nx\n  a\n  b";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock().AtLeast(3);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb" as block at least 3 times,
+					             but it contained "a\nb" twice in "a\nb\nx\n  a\n  b" at lines 1-2 and 4-5
+					             """);
+			}
+
+			[Test]
 			public async Task WhenUsedWithDoesNotContain_ShouldFailWhenBlockIsContained()
 			{
 				string subject = "  a\n  b";
@@ -378,8 +528,18 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "a\nb" as block,
-					             but it contained "a\nb" at least once in "  a\n  b"
+					             but it contained "a\nb" at least once in "  a\n  b" at lines 1-2
 					             """);
+			}
+
+			private sealed class ThrowingForComparer(string value) : IEqualityComparer<string>
+			{
+				public bool Equals(string? x, string? y)
+					=> x == value || y == value
+						? throw new NotSupportedException($"cannot compare '{x}' and '{y}'")
+						: x == y;
+
+				public int GetHashCode(string obj) => obj.GetHashCode();
 			}
 		}
 

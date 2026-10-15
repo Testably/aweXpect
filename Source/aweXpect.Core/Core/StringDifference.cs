@@ -177,7 +177,7 @@ public sealed class StringDifference(
 		string visibleText = actual[trimStart..indexOfFirstMismatch];
 		whiteSpaceCountBeforeArrow += visibleText.Escape().Length - visibleText.Length;
 
-		int lineNumber = CountLineFeeds(actual, indexOfFirstMismatch);
+		int lineNumber = actual.CountLineFeeds(indexOfFirstMismatch);
 		if (settings is not null)
 		{
 			lineNumber += settings.IgnoredTrailingLines;
@@ -228,23 +228,6 @@ public sealed class StringDifference(
 		}
 
 		return sb.ToString();
-	}
-
-	/// <summary>
-	///     Counts the <c>\n</c> characters in the first <paramref name="length" /> characters of the
-	///     <paramref name="value" />.
-	/// </summary>
-	private static int CountLineFeeds(string value, int length)
-	{
-		int count = 0;
-		int index = value.IndexOf('\n', 0, length);
-		while (index >= 0)
-		{
-			count++;
-			index = value.IndexOf('\n', index + 1, length - index - 1);
-		}
-
-		return count;
 	}
 
 	/// <summary>
@@ -372,7 +355,7 @@ public sealed class StringDifference(
 			return 0;
 		}
 
-		StringComparison? comparison = GetComparison(comparer);
+		StringComparison? comparison = comparer.GetComparison();
 		int maxCommonLength = Math.Min(actualValue.Length, expectedValue.Length);
 		int min = 0;
 		int max = maxCommonLength + 1;
@@ -395,49 +378,6 @@ public sealed class StringDifference(
 		}
 
 		return fromEnd ? actualValue.Length - min - 1 : min;
-	}
-
-	/// <summary>
-	///     The comparison that decides like the <paramref name="comparer" />, when it is one of the ordinal or culture-aware
-	///     comparers of <see cref="StringComparer" />.
-	/// </summary>
-	/// <remarks>
-	///     A culture-aware comparer is recognized by its equality to the well-known comparer, which compares the culture
-	///     and the options, so that this does not call into a custom comparer.
-	/// </remarks>
-	private static StringComparison? GetComparison(IEqualityComparer<string> comparer)
-	{
-		if (ReferenceEquals(comparer, StringComparer.Ordinal))
-		{
-			return StringComparison.Ordinal;
-		}
-
-		if (ReferenceEquals(comparer, StringComparer.OrdinalIgnoreCase))
-		{
-			return StringComparison.OrdinalIgnoreCase;
-		}
-
-		if (StringComparer.InvariantCulture.Equals(comparer))
-		{
-			return StringComparison.InvariantCulture;
-		}
-
-		if (StringComparer.InvariantCultureIgnoreCase.Equals(comparer))
-		{
-			return StringComparison.InvariantCultureIgnoreCase;
-		}
-
-		if (StringComparer.CurrentCulture.Equals(comparer))
-		{
-			return StringComparison.CurrentCulture;
-		}
-
-		if (StringComparer.CurrentCultureIgnoreCase.Equals(comparer))
-		{
-			return StringComparison.CurrentCultureIgnoreCase;
-		}
-
-		return null;
 	}
 
 	/// <summary>

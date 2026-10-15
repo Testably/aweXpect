@@ -170,6 +170,8 @@ public static partial class ThatString
 				}
 
 				Formatter.Format(stringBuilder, _actual);
+				stringBuilder.Append(options.GetOccurrenceDetails(_actual, expected, _actualCount)
+					.Indent(indentation, false));
 			}
 		}
 

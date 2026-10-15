@@ -14,6 +14,23 @@ internal static class StringExtensions
 	private static readonly bool CanCheckNormalization = !"e\u0301".IsNormalized();
 
 	/// <summary>
+	///     Counts the <c>\n</c> characters in the first <paramref name="length" /> characters of the
+	///     <paramref name="value" />.
+	/// </summary>
+	public static int CountLineFeeds(this string value, int length)
+	{
+		int count = 0;
+		int index = value.IndexOf('\n', 0, length);
+		while (index >= 0)
+		{
+			count++;
+			index = value.IndexOf('\n', index + 1, length - index - 1);
+		}
+
+		return count;
+	}
+
+	/// <summary>
 	///     Makes line breaks, tabs, control characters and invisible characters in unquoted text visible as escape
 	///     sequences (<c>\n</c>, <c>\r</c>, <c>\t</c>, <c>\0</c> or <c>\uXXXX</c>).
 	/// </summary>
