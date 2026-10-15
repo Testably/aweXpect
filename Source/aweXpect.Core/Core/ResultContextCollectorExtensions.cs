@@ -191,6 +191,30 @@ public static class ResultContextCollectorExtensions
 		}
 	}
 
+	/// <summary>
+	///     Adds the "Differences" context, which lists the lines that differ between the <paramref name="actual" /> and
+	///     the <paramref name="expected" /> value, when they are compared for equality with the
+	///     <paramref name="options" />, one of them has several lines and they differ in at least two places.
+	/// </summary>
+	/// <param name="contexts">The collector to add the context to.</param>
+	/// <param name="actual">The actual value.</param>
+	/// <param name="expected">The expected value.</param>
+	/// <param name="options">The options with which the values are compared.</param>
+	/// <param name="grammars">The grammars of the result; a negated result adds no context.</param>
+	/// <remarks>
+	///     The failure message already shows the first difference, so the context adds the further ones. It lists at
+	///     most <see cref="AwexpectCustomization.FormattingCustomization.MaximumNumberOfCollectionItems" /> differences.
+	/// </remarks>
+	public static void AddStringDifferencesContext(this ResultContextCollector contexts, string? actual,
+		string? expected, StringEqualityOptions options, ExpectationGrammars grammars)
+	{
+		if (actual is not null && expected is not null && !grammars.IsNegated())
+		{
+			contexts.Add(new ResultContext.SyncCallback("Differences",
+				() => options.GetLineDifferences(actual, expected)));
+		}
+	}
+
 	private static bool IsShownCompletely(string value, ConstraintResult result)
 	{
 		// The formatter escapes line breaks and tabs before it shortens the value, which still shows it completely.
