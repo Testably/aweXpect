@@ -4,8 +4,11 @@
 		<TargetFrameworks>net8.0</TargetFrameworks>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\Source\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer"/>
 		<ProjectReference Include="..\..\Source\aweXpect.SourceGenerators\aweXpect.SourceGenerators.csproj"/>
