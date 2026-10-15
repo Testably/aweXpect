@@ -26,10 +26,12 @@ await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
 ## The method
 
 - The method is `static` and returns `bool`, `Task<bool>` or `ValueTask<bool>`. Its first parameter is the subject,
-  the other parameters become the parameters of the expectation. An asynchronous method may end with a
-  `CancellationToken`, which receives the token of the evaluation.
-- It is declared in a top-level, non-generic, `static partial` class, which receives the generated extension methods.
-  The method itself can be `private`.
+  the other parameters become the parameters of the expectation. The method may end with a `CancellationToken`,
+  which receives the token of the evaluation.
+- It is declared in a top-level, non-generic, `static partial` class that is not `file`-local, which receives the
+  generated extension methods. The method itself can be `private`.
+- The generated extension methods are `public`, unless the class, the subject or a parameter type is `internal`: then
+  they are `internal` as well.
 - A reference type parameter that is not nullable is checked in the generated method, so `null` throws an
   `ArgumentNullException` where the caller passes it.
 

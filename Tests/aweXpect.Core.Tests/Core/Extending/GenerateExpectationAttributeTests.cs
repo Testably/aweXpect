@@ -294,6 +294,34 @@ public sealed class GenerateExpectationAttributeTests
 	}
 
 	[Test]
+	public async Task SyncPredicate_ShouldReceiveTheCancellationTokenOfTheEvaluation()
+	{
+		Account subject = new("Alice", 1);
+		using CancellationTokenSource cts = new();
+
+		await That(subject).IsActive().WithCancellation(cts.Token);
+
+		await That(subject.ReceivedToken.CanBeCanceled).IsTrue()
+			.Because("the token of the evaluation is passed on to a synchronous predicate as well");
+	}
+
+	[Test]
+	public async Task SyncPredicate_WhenNegatedAndMet_ShouldFail()
+	{
+		Account subject = new("Alice", 1);
+
+		async Task Act()
+			=> await That(subject).IsNotActive();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not active,
+			             but it was Alice
+			             """);
+	}
+
+	[Test]
 	public async Task WhenArgumentIsNull_ShouldThrowArgumentNullException()
 	{
 		Account subject = new("Alice", 1);

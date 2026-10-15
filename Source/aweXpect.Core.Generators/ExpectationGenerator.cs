@@ -20,7 +20,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 	private static readonly DiagnosticDescriptor InvalidClass = new(
 		"aweXpect4001",
 		"The class cannot hold the generated expectation",
-		"'{0}' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class",
+		"'{0}' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local",
 		"aweXpect.Core.Generators",
 		DiagnosticSeverity.Error,
 		true,
@@ -99,7 +99,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 		bool isAsync = method.ReturnType.SpecialType != SpecialType.System_Boolean;
 		ImmutableArray<IParameterSymbol> parameters = method.Parameters;
-		bool passesCancellationToken = isAsync && parameters.Length > 1 &&
+		bool passesCancellationToken = parameters.Length > 1 &&
 		                               IsCancellationToken(parameters[parameters.Length - 1].Type);
 		IParameterSymbol subject = parameters[0];
 		List<IParameterSymbol> expectationParameters = parameters
@@ -111,6 +111,13 @@ public class ExpectationGenerator : IIncrementalGenerator
 		{
 			return Fail(InvalidMethod, location, methodName,
 				$"the parameter '{clash.Name}' would clash with the subject of the expectation");
+		}
+
+		if (parameters.Take(expectationParameters.Count + 1)
+			    .FirstOrDefault(p => GetAccessibility(p.Type) < Accessibility.Internal) is { } inaccessible)
+		{
+			return Fail(InvalidMethod, location, methodName,
+				$"the type of the parameter '{inaccessible.Name}' is not accessible outside of '{classSymbol.Name}'");
 		}
 
 		if (GetNameProblem(name, GetNamedArgument<string>(attribute, "NegatedName"),
@@ -154,6 +161,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			ns,
 			Escape(classSymbol.Name),
 			SyntaxFacts.GetText(classSymbol.DeclaredAccessibility),
+			GetMethodAccessibility(classSymbol, parameters.Take(expectationParameters.Count + 1)),
 			$"{classSymbol.ToDisplayString()}.{constraintPrefix}.g.cs",
 			Escape(method.Name),
 			positiveName,
@@ -226,7 +234,10 @@ public class ExpectationGenerator : IIncrementalGenerator
 	///     enough.
 	/// </remarks>
 	private static bool IsExtensionClass(INamedTypeSymbol classSymbol, SyntaxNode method)
-		=> classSymbol is { TypeKind: TypeKind.Class, IsStatic: true, ContainingType: null, Arity: 0, } &&
+		=> classSymbol is
+		   {
+			   TypeKind: TypeKind.Class, IsStatic: true, ContainingType: null, Arity: 0, IsFileLocal: false,
+		   } &&
 		   method.Parent is ClassDeclarationSyntax declaration &&
 		   declaration.Modifiers.Any(SyntaxKind.PartialKeyword);
 
@@ -272,6 +283,32 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 		return null;
 	}
+
+	/// <remarks>
+	///     The extension methods are public, unless the class or a type in their signature is only internal, which a
+	///     public method must not expose.
+	/// </remarks>
+	private static string GetMethodAccessibility(INamedTypeSymbol classSymbol, IEnumerable<IParameterSymbol> parameters)
+		=> classSymbol.DeclaredAccessibility == Accessibility.Public &&
+		   parameters.All(p => GetAccessibility(p.Type) == Accessibility.Public)
+			? "public"
+			: "internal";
+
+	/// <summary>
+	///     The accessibility of the <paramref name="type" />, limited by its containing types and its type arguments.
+	/// </summary>
+	private static Accessibility GetAccessibility(ITypeSymbol type)
+		=> type switch
+		{
+			IArrayTypeSymbol array => GetAccessibility(array.ElementType),
+			INamedTypeSymbol { TypeKind: not TypeKind.Error, } named => named.TypeArguments.Select(GetAccessibility)
+				.Append(named.DeclaredAccessibility)
+				.Append(named.ContainingType is { } containingType
+					? GetAccessibility(containingType)
+					: Accessibility.Public)
+				.Min(),
+			_ => Accessibility.Public,
+		};
 
 	private static bool IsBooleanTask(ITypeSymbol type)
 		=> type is INamedTypeSymbol { Arity: 1, ContainingNamespace: var ns, } named &&

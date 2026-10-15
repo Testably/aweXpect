@@ -20,6 +20,13 @@ internal static partial class ThatAccount
 		NegatedName = "DoesNotHaveOwner", NegatedExpectationText = "does not have owner {owner}")]
 	private static bool HasOwner(Account account, string owner) => account.Name == owner;
 
+	[GenerateExpectation("Is{Not}Active", "is {not} active")]
+	private static bool IsActive(Account account, CancellationToken cancellationToken)
+	{
+		account.ReceivedToken = cancellationToken;
+		return account.Level > 0;
+	}
+
 	[GenerateExpectation("Is{Not}AtLevel", "is {not} at level {level}", Result = nameof(DescribeLevel))]
 	private static bool IsAtLevel(Account account, int level) => account.Level == level;
 

@@ -9,7 +9,7 @@ namespace aweXpect.Core.Extending;
 /// <remarks>
 ///     The method returns <see langword="bool" />, <see cref="System.Threading.Tasks.Task{TResult}" /> or
 ///     <see cref="System.Threading.Tasks.ValueTask{TResult}" /> of <see langword="bool" />. Its first parameter is the
-///     subject, the other parameters become the parameters of the expectation. An asynchronous method may end with a
+///     subject, the other parameters become the parameters of the expectation. The method may end with a
 ///     <see cref="System.Threading.CancellationToken" />, which receives the token of the evaluation.
 ///     <para />
 ///     A <see langword="null" /> subject fails the expectation and its negation, unless the subject parameter is
@@ -18,7 +18,7 @@ namespace aweXpect.Core.Extending;
 ///     restores the failure for a <see langword="null" /> subject.
 ///     <para />
 ///     The method has to be declared in a top-level, non-generic, <see langword="static" /> <see langword="partial" />
-///     class, which receives the generated extension methods.
+///     class that is not <see langword="file" />-local, which receives the generated extension methods.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class GenerateExpectationAttribute(string name, string expectationText) : Attribute

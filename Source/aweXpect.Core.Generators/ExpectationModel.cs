@@ -16,6 +16,7 @@ internal sealed record ExpectationModel(
 	string? Namespace,
 	string ClassName,
 	string ClassAccessibility,
+	string MethodAccessibility,
 	string HintName,
 	string PredicateName,
 	string PositiveName,

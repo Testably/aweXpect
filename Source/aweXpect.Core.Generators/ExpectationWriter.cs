@@ -19,6 +19,7 @@ internal static class ExpectationWriter
 	private const string Outcome = "global::aweXpect.Core.Constraints.Outcome";
 	private const string StringBuilder = "global::System.Text.StringBuilder";
 	private const string ValueFormatters = "global::aweXpect.Formatting.ValueFormatters";
+	private const string ValueTask = "global::System.Threading.Tasks.ValueTask";
 
 	public static string Write(ExpectationModel model)
 	{
@@ -79,7 +80,7 @@ internal static class ExpectationWriter
 		string resultType =
 			$"global::aweXpect.Results.AndOrResult<{valueType}, global::aweXpect.Core.IThat<{overload.ThatType}>>";
 		AppendExpectationHeader(sb, model, overload, negated);
-		sb.Append("\tpublic static ").Append(resultType).Append(' ')
+		sb.Append('\t').Append(model.MethodAccessibility).Append(" static ").Append(resultType).Append(' ')
 			.Append(negated ? model.NegatedName : model.PositiveName)
 			.Append("(this global::aweXpect.Core.IThat<").Append(overload.ThatType).Append("> subject");
 		foreach (ParameterModel parameter in model.Parameters.Values)
@@ -167,7 +168,9 @@ internal static class ExpectationWriter
 			: $"global::{model.Namespace}.{model.ClassName}";
 		string fields = string.Concat(Enumerable.Range(0, model.Parameters.Count).Select(i => $", _p{i}"));
 		string helper = overload.FailsOnNull ? "WithNotNullValue" : "WithValue";
-		string constraintInterface = model.IsAsync ? "IAsyncConstraint" : "IValueConstraint";
+		string constraintInterface = model.IsAsync || model.PassesCancellationToken
+			? "IAsyncConstraint"
+			: "IValueConstraint";
 
 		sb.Append("\tprivate sealed class ").Append(overload.ConstraintName).Append(" : ")
 			.Append(ConstraintResult).Append('.').Append(helper).Append('<').Append(overload.ThatType).AppendLine(">,");
@@ -205,10 +208,19 @@ internal static class ExpectationWriter
 
 		string token = model.PassesCancellationToken ? ", cancellationToken" : "";
 		string call = $"{owner}.{model.PredicateName}({overload.SubjectArgument}{fields}{token})";
+		string returnValue = "this";
 		if (model.IsAsync)
 		{
 			call = $"await {call}.ConfigureAwait(false)";
-			sb.Append("\t\tpublic async global::System.Threading.Tasks.ValueTask<").Append(ConstraintResult)
+			sb.Append("\t\tpublic async ").Append(ValueTask).Append('<').Append(ConstraintResult)
+				.Append("> IsMetBy(").Append(overload.ThatType)
+				.AppendLine(" actual, global::System.Threading.CancellationToken cancellationToken)");
+		}
+		else if (model.PassesCancellationToken)
+		{
+			// Only the asynchronous constraint receives the token, so a synchronous predicate completes it at once.
+			returnValue = $"new {ValueTask}<{ConstraintResult}>(this)";
+			sb.Append("\t\tpublic ").Append(ValueTask).Append('<').Append(ConstraintResult)
 				.Append("> IsMetBy(").Append(overload.ThatType)
 				.AppendLine(" actual, global::System.Threading.CancellationToken cancellationToken)");
 		}
@@ -222,7 +234,7 @@ internal static class ExpectationWriter
 		sb.AppendLine("\t\t\tActual = actual;");
 		sb.Append("\t\t\tOutcome = ").Append(overload.FailsOnNull ? "!(actual is null) && " : "").Append(call)
 			.Append(" ? ").Append(Outcome).Append(".Success : ").Append(Outcome).AppendLine(".Failure;");
-		sb.AppendLine("\t\t\treturn this;");
+		sb.Append("\t\t\treturn ").Append(returnValue).AppendLine(";");
 		sb.AppendLine("\t\t}");
 		sb.AppendLine();
 

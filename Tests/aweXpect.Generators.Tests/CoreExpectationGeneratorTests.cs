@@ -38,6 +38,26 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task ClassIsFileLocal_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using aweXpect.Core.Extending;
+
+			namespace Lib;
+
+			file static partial class ThatSample
+			{
+				[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+				private static bool IsZero(int value) => value == 0;
+			}
+			""");
+
+		await ThatReports(result,
+			"aweXpect4001: 'Lib.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local");
+	}
+
+	[Test]
 	public async Task ClassIsGeneric_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -54,7 +74,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4001: 'Lib.ThatSample<T>' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class");
+			"aweXpect4001: 'Lib.ThatSample<T>' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local");
 	}
 
 	[Test]
@@ -77,7 +97,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4001: 'Lib.Outer.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class");
+			"aweXpect4001: 'Lib.Outer.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local");
 	}
 
 	[Test]
@@ -97,7 +117,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4001: 'Lib.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class");
+			"aweXpect4001: 'Lib.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local");
 	}
 
 	[Test]
@@ -117,7 +137,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4001: 'Lib.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class");
+			"aweXpect4001: 'Lib.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local");
 	}
 
 	[Test]
@@ -702,6 +722,24 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task SyncPredicate_ShouldPassTheCancellationToken()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static bool IsZero(int value, CancellationToken cancellationToken) => value == 0;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains("global::aweXpect.Core.Constraints.IAsyncConstraint<int>");
+		await That(result.Generated).Contains("global::Lib.ThatSample.IsZero(actual, cancellationToken)");
+		await That(result.Generated).DoesNotContain("async ")
+			.Because("the synchronous predicate completes the constraint at once");
+		await That(result.Generated).Contains(" IsZero(this global::aweXpect.Core.IThat<int> subject)")
+			.Because("the cancellation token is no parameter of the expectation");
+	}
+
+	[Test]
 	public async Task ValueType_ShouldAlsoExtendTheNullableType()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
@@ -765,6 +803,33 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenClassIsPublicAndSubjectTypeIsInternal_ShouldGenerateInternalExpectations()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using aweXpect.Core.Extending;
+
+			namespace Lib;
+
+			internal sealed class Track(int duration)
+			{
+				public int Duration { get; } = duration;
+			}
+
+			public static partial class ThatTrack
+			{
+				[GenerateExpectation("Is{Not}Long", "is {not} long")]
+				private static bool IsLong(Track track) => track.Duration > 1;
+			}
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains("public static partial class ThatTrack").Once();
+		await That(result.Generated).Contains("internal static global::aweXpect.Results.AndOrResult<").Exactly(2);
+		await That(result.Generated).DoesNotContain("public static global::aweXpect.Results.AndOrResult<");
+	}
+
+	[Test]
 	public async Task WhenOnlyTouched_ShouldReuseTheCachedExpectation()
 	{
 		GeneratorDriverRunResult result = GeneratorRunner.RunTwice(new ExpectationGenerator(),
@@ -788,6 +853,50 @@ public sealed class CoreExpectationGeneratorTests
 		await That(reasons).All()
 			.Satisfy(x => x is IncrementalStepRunReason.Cached or IncrementalStepRunReason.Unchanged)
 			.Because("the model is compared by value, so an unrelated edit does not regenerate the expectation");
+	}
+
+	[Test]
+	public async Task WhenParameterTypeArgumentIsInternal_ShouldGenerateInternalExpectations()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using System.Collections.Generic;
+			using System.Linq;
+			using aweXpect.Core.Extending;
+
+			namespace Lib;
+
+			internal enum Level
+			{
+				Low,
+				High,
+			}
+
+			public static partial class ThatSample
+			{
+				[GenerateExpectation("Is{Not}AnyOf", "is {not} any of {levels}")]
+				private static bool IsAnyOf(int value, IEnumerable<Level[]> levels) => levels.Any(x => x.Length == value);
+			}
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains("internal static global::aweXpect.Results.AndOrResult<").Exactly(4);
+		await That(result.Generated).DoesNotContain("public static global::aweXpect.Results.AndOrResult<");
+	}
+
+	[Test]
+	public async Task WhenParameterTypeIsPrivate_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			private sealed class Secret;
+
+			[GenerateExpectation("Is{Not}Secret", "is {not} secret {secret}")]
+			private static bool IsSecret(int value, Secret secret) => value == 0;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsSecret(int, ThatSample.Secret)' cannot generate an expectation, because the type of the parameter 'secret' is not accessible outside of 'ThatSample'");
 	}
 
 	private static GeneratorRunner.GeneratorResult Run(string source,
