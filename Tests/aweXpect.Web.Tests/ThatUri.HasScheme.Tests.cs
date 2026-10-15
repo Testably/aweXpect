@@ -23,6 +23,22 @@ public sealed partial class ThatUri
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).HasScheme().EqualTo("https");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme equal to "https",
+					             but it was relative
+					             """);
+			}
+
+			[Fact]
 			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -105,6 +121,23 @@ public sealed partial class ThatUri
 					             does not have scheme equal to "https",
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have scheme equal to "https",
+					             but it was relative
+					             """)
+					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
 			[Fact]

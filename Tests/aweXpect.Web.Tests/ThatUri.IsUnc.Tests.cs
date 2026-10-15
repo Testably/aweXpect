@@ -38,6 +38,22 @@ public sealed partial class ThatUri
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).IsUnc();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a UNC path,
+					             but it was relative
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNotUnc_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com");
@@ -81,6 +97,23 @@ public sealed partial class ThatUri
 					             is not a UNC path,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsUnc());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a UNC path,
+					             but it was relative
+					             """)
+					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
 			[Fact]

@@ -16,5 +16,5 @@ public static partial class ThatUri
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasScheme(this IThat<Uri?> source)
-		=> new(source, u => u?.Scheme, "scheme");
+		=> new(source.FailIfRelative(), u => u?.Scheme, "scheme");
 }

@@ -37,6 +37,22 @@ public sealed partial class ThatUri
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).HasDefaultPort();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has the default port for the used scheme,
+					             but it was relative
+					             """);
+			}
+
 			[Theory]
 			[InlineData("https://www.awexpect.com:80")]
 			[InlineData("http://www.example.com:443")]
@@ -86,6 +102,23 @@ public sealed partial class ThatUri
 					             does not have the default port for the used scheme,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasDefaultPort());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have the default port for the used scheme,
+					             but it was relative
+					             """)
+					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
 			[Theory]

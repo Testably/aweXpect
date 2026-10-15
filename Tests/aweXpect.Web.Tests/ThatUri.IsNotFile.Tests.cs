@@ -38,6 +38,22 @@ public sealed partial class ThatUri
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).IsNotFile();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a file URI,
+					             but it was relative
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsAFileUri_ShouldFail()
 			{
 				Uri subject = new("file://server/filename.ext");
@@ -81,6 +97,23 @@ public sealed partial class ThatUri
 					             is a file URI,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotFile());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a file URI,
+					             but it was relative
+					             """)
+					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
 			[Fact]
