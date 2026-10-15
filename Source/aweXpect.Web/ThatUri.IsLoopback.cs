@@ -18,7 +18,7 @@ public static partial class ThatUri
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Uri, IThat<Uri?>> IsLoopback(this IThat<Uri?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLoopbackConstraint(it, grammars)),
 			source);
 
@@ -30,7 +30,7 @@ public static partial class ThatUri
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Uri, IThat<Uri?>> IsNotLoopback(this IThat<Uri?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLoopbackConstraint(it, grammars).Invert()),
 			source);
 
@@ -41,12 +41,6 @@ public static partial class ThatUri
 		public ConstraintResult IsMetBy(Uri? actual)
 		{
 			Actual = actual;
-			if (actual?.IsAbsoluteUri == false)
-			{
-				Outcome = Outcome.FailureBothWays;
-				return this;
-			}
-
 			Outcome = actual?.IsLoopback == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -57,12 +51,6 @@ public static partial class ThatUri
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			if (Actual?.IsAbsoluteUri == false)
-			{
-				stringBuilder.Append("relative");
-				return;
-			}
-
 			Formatter.Format(stringBuilder, Actual);
 		}
 
