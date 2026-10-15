@@ -113,21 +113,10 @@ public class ExpectationGenerator : IIncrementalGenerator
 				$"the parameter '{clash.Name}' would clash with the subject of the expectation");
 		}
 
-		string positiveName = name.Replace("{Not}", "");
-		string? explicitNegatedName = GetNamedArgument<string>(attribute, "NegatedName");
-		string? negatedName = explicitNegatedName ??
-		                      (name.Contains("{Not}") ? name.Replace("{Not}", "Not") : null);
-		if (!SyntaxFacts.IsValidIdentifier(positiveName) ||
-		    (explicitNegatedName is null && negatedName is not null && !SyntaxFacts.IsValidIdentifier(negatedName)))
+		if (GetNameProblem(name, GetNamedArgument<string>(attribute, "NegatedName"),
+			    out string positiveName, out string? negatedName) is { } nameProblem)
 		{
-			return Fail(InvalidMethod, location, methodName, $"the name '{name}' is not a valid method name");
-		}
-
-		if (explicitNegatedName is not null &&
-		    (!SyntaxFacts.IsValidIdentifier(explicitNegatedName) || explicitNegatedName == positiveName))
-		{
-			return Fail(InvalidMethod, location, methodName,
-				$"the negated name '{explicitNegatedName}' is not a valid method name that differs from the name");
+			return Fail(InvalidMethod, location, methodName, nameProblem);
 		}
 
 		string? negatedExpectationText = GetNamedArgument<string>(attribute, "NegatedExpectationText");
@@ -137,11 +126,9 @@ public class ExpectationGenerator : IIncrementalGenerator
 				"the expectation text has no '{not}' and no negated expectation text is given");
 		}
 
-		List<string> parameterNames = expectationParameters.Select(p => p.Name).ToList();
-		if (!TryParseText(expectationText.Replace("{not}", "").Replace("  ", " ").Trim(), parameterNames,
-			    out EquatableArray<TextPart> positiveText, out string? unknownPlaceholder) ||
-		    !TryParseText(negatedExpectationText ?? expectationText.Replace("{not}", "not").Replace("  ", " ").Trim(),
-			    parameterNames, out EquatableArray<TextPart> negatedText, out unknownPlaceholder))
+		if (!TryParseTexts(expectationText, negatedExpectationText, expectationParameters.Select(p => p.Name).ToList(),
+			    out EquatableArray<TextPart> positiveText, out EquatableArray<TextPart> negatedText,
+			    out string? unknownPlaceholder))
 		{
 			return Fail(InvalidMethod, location, methodName,
 				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");
@@ -196,6 +183,37 @@ public class ExpectationGenerator : IIncrementalGenerator
 			resultTakesParameters,
 			GetOverloads(subject, constraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true)), null);
+	}
+
+	private static string? GetNameProblem(string name, string? explicitNegatedName, out string positiveName,
+		out string? negatedName)
+	{
+		positiveName = name.Replace("{Not}", "");
+		negatedName = explicitNegatedName ?? (name.Contains("{Not}") ? name.Replace("{Not}", "Not") : null);
+		if (!SyntaxFacts.IsValidIdentifier(positiveName) ||
+		    (explicitNegatedName is null && negatedName is not null && !SyntaxFacts.IsValidIdentifier(negatedName)))
+		{
+			return $"the name '{name}' is not a valid method name";
+		}
+
+		if (explicitNegatedName is not null &&
+		    (!SyntaxFacts.IsValidIdentifier(explicitNegatedName) || explicitNegatedName == positiveName))
+		{
+			return $"the negated name '{explicitNegatedName}' is not a valid method name that differs from the name";
+		}
+
+		return null;
+	}
+
+	private static bool TryParseTexts(string expectationText, string? negatedExpectationText,
+		List<string> parameterNames, out EquatableArray<TextPart> positiveText,
+		out EquatableArray<TextPart> negatedText, out string? unknownPlaceholder)
+	{
+		negatedText = default;
+		return TryParseText(expectationText.Replace("{not}", "").Replace("  ", " ").Trim(), parameterNames,
+			       out positiveText, out unknownPlaceholder) &&
+		       TryParseText(negatedExpectationText ?? expectationText.Replace("{not}", "not").Replace("  ", " ").Trim(),
+			       parameterNames, out negatedText, out unknownPlaceholder);
 	}
 
 	private static ExpectationResult Fail(DiagnosticDescriptor descriptor, Location location, string subject,

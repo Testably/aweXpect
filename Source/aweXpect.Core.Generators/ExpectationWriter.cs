@@ -78,6 +78,39 @@ internal static class ExpectationWriter
 		string valueType = negated ? overload.NegatedResultType : overload.PositiveResultType;
 		string resultType =
 			$"global::aweXpect.Results.AndOrResult<{valueType}, global::aweXpect.Core.IThat<{overload.ThatType}>>";
+		AppendExpectationHeader(sb, model, overload, negated);
+		sb.Append("\tpublic static ").Append(resultType).Append(' ')
+			.Append(negated ? model.NegatedName : model.PositiveName)
+			.Append("(this global::aweXpect.Core.IThat<").Append(overload.ThatType).Append("> subject");
+		foreach (ParameterModel parameter in model.Parameters.Values)
+		{
+			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
+				.Append(parameter.Name);
+		}
+
+		sb.AppendLine(")");
+		sb.AppendLine("\t{");
+		AppendNullChecks(sb, model);
+		string arguments = string.Concat(Enumerable.Range(0, model.Parameters.Count)
+			.Select(i => model.Parameters.Count == 1 ? ", __state" : $", __state.Item{i + 1}"));
+		string constraint = $"new {overload.ConstraintName}(__it, __grammars{arguments})";
+		if (negated)
+		{
+			constraint = $"global::aweXpect.Core.Constraints.ConstraintResultExtensions.Invert({constraint})";
+		}
+
+		sb.Append("\t\treturn new ").Append(resultType)
+			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(");
+		AppendConstraintArguments(sb, model, constraint);
+		sb.AppendLine("),");
+		sb.AppendLine("\t\t\tsubject);");
+		sb.AppendLine("\t}");
+		sb.AppendLine();
+	}
+
+	private static void AppendExpectationHeader(StringBuilder sb, ExpectationModel model, OverloadModel overload,
+		bool negated)
+	{
 		sb.AppendLine("\t/// <summary>");
 		AppendDocumentation(sb, (negated ? model.NegatedSummary : model.Summary) ??
 		                        $"Verifies that the subject {ToDocumentation(negated ? model.NegatedText : model.PositiveText, model)}.");
@@ -93,39 +126,24 @@ internal static class ExpectationWriter
 		{
 			sb.AppendLine("\t[global::aweXpect.Core.GuaranteesNotNull]");
 		}
+	}
 
-		sb.Append("\tpublic static ").Append(resultType).Append(' ')
-			.Append(negated ? model.NegatedName : model.PositiveName)
-			.Append("(this global::aweXpect.Core.IThat<").Append(overload.ThatType).Append("> subject");
-		foreach (ParameterModel parameter in model.Parameters.Values)
+	private static void AppendNullChecks(StringBuilder sb, ExpectationModel model)
+	{
+		foreach (string name in model.Parameters.Values.Where(p => p.RequiresNotNull).Select(p => p.Name))
 		{
-			sb.Append(", ").Append(parameter.IsParams ? "params " : "").Append(parameter.Type).Append(' ')
-				.Append(parameter.Name);
-		}
-
-		sb.AppendLine(")");
-		sb.AppendLine("\t{");
-		foreach (ParameterModel parameter in model.Parameters.Values.Where(p => p.RequiresNotNull))
-		{
-			string rawName = parameter.Name.TrimStart('@');
-			sb.Append("\t\tif (").Append(parameter.Name).AppendLine(" is null)");
+			string rawName = name.TrimStart('@');
+			sb.Append("\t\tif (").Append(name).AppendLine(" is null)");
 			sb.AppendLine("\t\t{");
 			sb.Append("\t\t\tthrow global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(\"")
 				.Append(rawName).Append("\", \"The '").Append(rawName).AppendLine("' cannot be null.\"));");
 			sb.AppendLine("\t\t}");
 			sb.AppendLine();
 		}
+	}
 
-		string arguments = string.Concat(Enumerable.Range(0, model.Parameters.Count)
-			.Select(i => model.Parameters.Count == 1 ? ", __state" : $", __state.Item{i + 1}"));
-		string constraint = $"new {overload.ConstraintName}(__it, __grammars{arguments})";
-		if (negated)
-		{
-			constraint = $"global::aweXpect.Core.Constraints.ConstraintResultExtensions.Invert({constraint})";
-		}
-
-		sb.Append("\t\treturn new ").Append(resultType)
-			.Append("(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint(");
+	private static void AppendConstraintArguments(StringBuilder sb, ExpectationModel model, string constraint)
+	{
 		switch (model.Parameters.Count)
 		{
 			case 0:
@@ -140,11 +158,6 @@ internal static class ExpectationWriter
 					.Append("), (__state, __it, __grammars) => ").Append(constraint);
 				break;
 		}
-
-		sb.AppendLine("),");
-		sb.AppendLine("\t\t\tsubject);");
-		sb.AppendLine("\t}");
-		sb.AppendLine();
 	}
 
 	private static void AppendConstraint(StringBuilder sb, ExpectationModel model, OverloadModel overload)
@@ -213,8 +226,8 @@ internal static class ExpectationWriter
 		sb.AppendLine("\t\t}");
 		sb.AppendLine();
 
-		AppendTextMethod(sb, "AppendNormalExpectation", model.PositiveText, model);
-		AppendTextMethod(sb, "AppendNegatedExpectation", model.NegatedText, model);
+		AppendTextMethod(sb, "AppendNormalExpectation", model.PositiveText);
+		AppendTextMethod(sb, "AppendNegatedExpectation", model.NegatedText);
 
 		sb.Append("\t\tprotected override void AppendNormalResult(").Append(StringBuilder)
 			.AppendLine(" stringBuilder, string? indentation = null)");
@@ -241,8 +254,7 @@ internal static class ExpectationWriter
 		sb.AppendLine("\t}");
 	}
 
-	private static void AppendTextMethod(StringBuilder sb, string name, EquatableArray<TextPart> parts,
-		ExpectationModel model)
+	private static void AppendTextMethod(StringBuilder sb, string name, EquatableArray<TextPart> parts)
 	{
 		sb.Append("\t\tprotected override void ").Append(name).Append('(').Append(StringBuilder)
 			.AppendLine(" stringBuilder, string? indentation = null)");
