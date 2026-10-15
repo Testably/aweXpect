@@ -43,6 +43,7 @@ Expectations for [`Uri`](#uri):
 | [`HasPort`](#port)                       | negated comparison          | has the expected port                          |
 | [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
 | [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
+| [`HasPath`](#path)                       | negated comparison          | has the expected path                          |
 | [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
 | [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
 
@@ -407,6 +408,18 @@ Uri uri = new("https://music.example.com/tracks/1");
 
 await Expect.That(uri).HasHost().EqualTo("music.example.com");
 await Expect.That(uri).HasHost().EndingWith(".example.com");
+```
+
+### Path
+
+You can verify the URL-decoded path of the `Uri`:
+
+```csharp
+Uri uri = new("https://music.example.com/tracks/1");
+
+await Expect.That(uri).HasPath().EqualTo("/tracks/1");
+await Expect.That(uri).HasPath().StartingWith("/tracks/");
+await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().EqualTo("/my song");
 ```
 
 ### Base URI
