@@ -24,19 +24,35 @@ namespace aweXpect.Core.Extending;
 public sealed class GenerateExpectationAttribute(string name, string expectationText) : Attribute
 {
 	/// <summary>
-	///     The name of the expectation. A <c>{Not}</c> in it also generates the negated expectation, e.g.
-	///     <c>"Is{Not}ActiveSince"</c> generates <c>IsActiveSince</c> and <c>IsNotActiveSince</c>.
+	///     The name of the expectation. A <c>{Not}</c> in it, or a <see cref="NegatedName" />, also generates the negated
+	///     expectation, e.g. <c>"Is{Not}ActiveSince"</c> generates <c>IsActiveSince</c> and <c>IsNotActiveSince</c>.
 	/// </summary>
 	public string Name { get; } = name;
+
+	/// <summary>
+	///     The name of the negated expectation, e.g. <c>DoesNotHaveTitle</c> for <c>HasTitle</c>, instead of the
+	///     <see cref="Name" /> with "Not" in place of <c>{Not}</c>.
+	/// </summary>
+	public string? NegatedName { get; set; }
 
 	/// <summary>
 	///     The text of the expectation in the failure message, e.g. <c>"is {not} active since {since}"</c>.
 	/// </summary>
 	/// <remarks>
-	///     <c>{not}</c> is removed from the expectation and becomes "not" in its negation, so it is required. Any other
-	///     placeholder names a parameter of the method, whose formatted value replaces it.
+	///     <c>{not}</c> is removed from the expectation and becomes "not" in its negation, so it is required unless a
+	///     <see cref="NegatedExpectationText" /> is given. Any other placeholder names a parameter of the method, whose
+	///     formatted value replaces it.
 	/// </remarks>
 	public string ExpectationText { get; } = expectationText;
+
+	/// <summary>
+	///     The text of the negated expectation in the failure message, e.g. <c>"does not have level {level}"</c>, instead
+	///     of the <see cref="ExpectationText" /> with "not" in place of <c>{not}</c>.
+	/// </summary>
+	/// <remarks>
+	///     Its placeholders name parameters of the method, like the ones of the <see cref="ExpectationText" />.
+	/// </remarks>
+	public string? NegatedExpectationText { get; set; }
 
 	/// <summary>
 	///     The name of a <see langword="static" /> method in the same class that describes the subject after "but", e.g.

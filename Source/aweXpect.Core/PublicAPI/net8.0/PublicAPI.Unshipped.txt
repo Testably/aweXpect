@@ -17,3 +17,7 @@ aweXpect.Core.Extending.GenerateExpectationAttribute.Result.get -> string?
 aweXpect.Core.Extending.GenerateExpectationAttribute.Result.set -> void
 aweXpect.Core.Extending.GenerateExpectationAttribute.Summary.get -> string?
 aweXpect.Core.Extending.GenerateExpectationAttribute.Summary.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedExpectationText.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedExpectationText.set -> void
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.get -> string?
+aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.set -> void

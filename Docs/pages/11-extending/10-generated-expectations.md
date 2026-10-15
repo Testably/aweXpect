@@ -35,13 +35,23 @@ await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
 
 ## Name and texts
 
-The `name` is the name of the expectation. A `{Not}` in it also generates the negated expectation, e.g.
-`"Is{Not}LongerThan"` generates `IsLongerThan` and `IsNotLongerThan`.
+The `name` is the name of the expectation. A `{Not}` in it, or a `NegatedName`, also generates the negated
+expectation, e.g. `"Is{Not}LongerThan"` generates `IsLongerThan` and `IsNotLongerThan`.
 
 The `expectationText` follows the [message conventions](./06-message-conventions.md). `{not}` is removed from the
-expectation and becomes "not" in its negation; it is required, because every expectation can be negated with
-`DoesNotComplyWith`, even one without a negated name. Any other placeholder, e.g. `{minimum}`, names a parameter, whose
+expectation and becomes "not" in its negation. Any other placeholder, e.g. `{minimum}`, names a parameter, whose
 formatted value replaces it.
+
+When "Not" and "not" in place of `{Not}` and `{not}` don't read well, give the negated name in `NegatedName` and the
+negated text in `NegatedExpectationText`, with the same placeholders. Every expectation can be negated with
+`DoesNotComplyWith`, even one without a negated name, so the text needs either `{not}` or a `NegatedExpectationText`:
+
+```csharp no-compile
+[GenerateExpectation("HasTitle", "has title {title}",
+    NegatedName = "DoesNotHaveTitle", NegatedExpectationText = "does not have title {title}")]
+private static bool HasTitle(Track track, string title)
+    => track.Title == title;
+```
 
 The result after "but" shows the formatted subject. To describe it differently, name a `static` method that returns the
 text after the subject in `Result`. It takes the subject, optionally followed by the other parameters:

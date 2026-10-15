@@ -130,7 +130,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the expectation text has no '{not}' for the negated expectation");
+			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the expectation text has no '{not}' and no negated expectation text is given");
 	}
 
 	[Test]
@@ -245,6 +245,79 @@ public sealed class CoreExpectationGeneratorTests
 
 		await ThatReports(result,
 			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the name 'Is {Not} Zero' is not a valid method name");
+	}
+
+	[Test]
+	public async Task NegatedExpectationText_ShouldReplaceTheDerivedText()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Has{Not}Level", "has level {level}", NullableOverload = false,
+				NegatedExpectationText = "does not have level {level}")]
+			private static bool HasLevel(int value, int level) => value == level;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains("Verb(Grammars, \"has level \", \"have level \")");
+		await That(result.Generated).Contains("Verb(Grammars, \"does not have level \", \"do not have level \")");
+		await That(result.Generated)
+			.Contains("Verifies that the subject does not have level <paramref name=\"level\" />.")
+			.Because("the documentation of the negated expectation is derived from its text");
+	}
+
+	[Test]
+	public async Task NegatedExpectationText_WithUnknownPlaceholder_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Has{Not}Level", "has level {level}",
+				NegatedExpectationText = "does not have level {other}")]
+			private static bool HasLevel(int value, int level) => value == level;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.HasLevel(int, int)' cannot generate an expectation, because the placeholder '{other}' names no parameter of the expectation");
+	}
+
+	[Test]
+	public async Task NegatedName_ShouldNameTheNegatedExpectation()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("HasLevel", "has level {level}", NullableOverload = false,
+				NegatedName = "DoesNotHaveLevel", NegatedExpectationText = "does not have level {level}")]
+			private static bool HasLevel(int value, int level) => value == level;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains(" HasLevel(this ").Once();
+		await That(result.Generated).Contains(" DoesNotHaveLevel(this ").Once();
+	}
+
+	[Test]
+	public async Task NegatedName_WhenEqualToTheName_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Has{Not}Level", "has {not} level {level}", NegatedName = "HasLevel")]
+			private static bool HasLevel(int value, int level) => value == level;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.HasLevel(int, int)' cannot generate an expectation, because the negated name 'HasLevel' is not a valid method name that differs from the name");
+	}
+
+	[Test]
+	public async Task NegatedName_WhenInvalid_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("HasLevel", "has {not} level {level}", NegatedName = "Does Not Have Level")]
+			private static bool HasLevel(int value, int level) => value == level;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.HasLevel(int, int)' cannot generate an expectation, because the negated name 'Does Not Have Level' is not a valid method name that differs from the name");
 	}
 
 	[Test]

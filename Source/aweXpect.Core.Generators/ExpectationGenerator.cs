@@ -114,24 +114,34 @@ public class ExpectationGenerator : IIncrementalGenerator
 		}
 
 		string positiveName = name.Replace("{Not}", "");
-		string? negatedName = name.Contains("{Not}") ? name.Replace("{Not}", "Not") : null;
+		string? explicitNegatedName = GetNamedArgument<string>(attribute, "NegatedName");
+		string? negatedName = explicitNegatedName ??
+		                      (name.Contains("{Not}") ? name.Replace("{Not}", "Not") : null);
 		if (!SyntaxFacts.IsValidIdentifier(positiveName) ||
-		    (negatedName is not null && !SyntaxFacts.IsValidIdentifier(negatedName)))
+		    (explicitNegatedName is null && negatedName is not null && !SyntaxFacts.IsValidIdentifier(negatedName)))
 		{
 			return Fail(InvalidMethod, location, methodName, $"the name '{name}' is not a valid method name");
 		}
 
-		if (!expectationText.Contains("{not}"))
+		if (explicitNegatedName is not null &&
+		    (!SyntaxFacts.IsValidIdentifier(explicitNegatedName) || explicitNegatedName == positiveName))
 		{
 			return Fail(InvalidMethod, location, methodName,
-				"the expectation text has no '{not}' for the negated expectation");
+				$"the negated name '{explicitNegatedName}' is not a valid method name that differs from the name");
+		}
+
+		string? negatedExpectationText = GetNamedArgument<string>(attribute, "NegatedExpectationText");
+		if (negatedExpectationText is null && !expectationText.Contains("{not}"))
+		{
+			return Fail(InvalidMethod, location, methodName,
+				"the expectation text has no '{not}' and no negated expectation text is given");
 		}
 
 		List<string> parameterNames = expectationParameters.Select(p => p.Name).ToList();
 		if (!TryParseText(expectationText.Replace("{not}", "").Replace("  ", " ").Trim(), parameterNames,
 			    out EquatableArray<TextPart> positiveText, out string? unknownPlaceholder) ||
-		    !TryParseText(expectationText.Replace("{not}", "not").Replace("  ", " ").Trim(), parameterNames,
-			    out EquatableArray<TextPart> negatedText, out unknownPlaceholder))
+		    !TryParseText(negatedExpectationText ?? expectationText.Replace("{not}", "not").Replace("  ", " ").Trim(),
+			    parameterNames, out EquatableArray<TextPart> negatedText, out unknownPlaceholder))
 		{
 			return Fail(InvalidMethod, location, methodName,
 				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");

@@ -16,6 +16,10 @@ internal sealed class Account(string name, int level)
 
 internal static partial class ThatAccount
 {
+	[GenerateExpectation("HasOwner", "has owner {owner}",
+		NegatedName = "DoesNotHaveOwner", NegatedExpectationText = "does not have owner {owner}")]
+	private static bool HasOwner(Account account, string owner) => account.Name == owner;
+
 	[GenerateExpectation("Is{Not}AtLevel", "is {not} at level {level}", Result = nameof(DescribeLevel))]
 	private static bool IsAtLevel(Account account, int level) => account.Level == level;
 

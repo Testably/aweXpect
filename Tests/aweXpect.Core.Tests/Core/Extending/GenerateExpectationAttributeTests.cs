@@ -78,6 +78,38 @@ public sealed class GenerateExpectationAttributeTests
 	}
 
 	[Test]
+	public async Task NegatedExpectationText_ShouldBeUsedForTheNegatedExpectation()
+	{
+		Account subject = new("Alice", 1);
+
+		async Task Act()
+			=> await That(subject).DoesNotHaveOwner("Alice");
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not have owner "Alice",
+			             but it was Alice
+			             """);
+	}
+
+	[Test]
+	public async Task NegatedExpectationText_WhenNegatedWithDoesNotComplyWith_ShouldBeUsed()
+	{
+		Account subject = new("Alice", 1);
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => it.HasOwner("Alice"));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not have owner "Alice",
+			             but it was Alice
+			             """);
+	}
+
+	[Test]
 	public async Task NotNullWhenFalse_WhenNegatedAndSubjectIsNull_ShouldFail()
 	{
 		Account? subject = null;
