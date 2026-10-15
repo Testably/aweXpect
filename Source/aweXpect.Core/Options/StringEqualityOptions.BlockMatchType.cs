@@ -88,12 +88,10 @@ public partial class StringEqualityOptions
 			bool canCompareAllWindows = (long)actualLines.Length * expectedLines.Length <= MaximumLineComparisons;
 			if (canCompareAllWindows)
 			{
-				for (int start = 0; start < windows; start++)
+				int start = IndexOfMatchIgnoringIndentation(actualLines, windows, expectedLines, comparer);
+				if (start >= 0)
 				{
-					if (MatchesIgnoringIndentation(actualLines, start, expectedLines, comparer))
-					{
-						return DescribeClosestMatch(actualLines, start, expectedLines, comparer);
-					}
+					return DescribeClosestMatch(actualLines, start, expectedLines, comparer);
 				}
 			}
 
@@ -113,6 +111,35 @@ public partial class StringEqualityOptions
 				return "";
 			}
 
+			int closestStart = IndexOfClosestMatch(actualLines, windows, expectedLines, comparer);
+			return closestStart < 0 ? "" : DescribeClosestMatch(actualLines, closestStart, expectedLines, comparer);
+		}
+
+		/// <summary>
+		///     The first of the <paramref name="windows" /> in which the content of every line matches when the indentation
+		///     is ignored, or <c>-1</c>.
+		/// </summary>
+		private static int IndexOfMatchIgnoringIndentation(string[] actualLines, int windows, string[] expectedLines,
+			IEqualityComparer<string> comparer)
+		{
+			for (int start = 0; start < windows; start++)
+			{
+				if (MatchesIgnoringIndentation(actualLines, start, expectedLines, comparer))
+				{
+					return start;
+				}
+			}
+
+			return -1;
+		}
+
+		/// <summary>
+		///     The first of the <paramref name="windows" /> with the most matching lines that are not blank, or <c>-1</c>
+		///     when no such line matches.
+		/// </summary>
+		private static int IndexOfClosestMatch(string[] actualLines, int windows, string[] expectedLines,
+			IEqualityComparer<string> comparer)
+		{
 			int closestStart = -1;
 			int closestScore = 0;
 			for (int start = 0; start < windows; start++)
@@ -125,7 +152,7 @@ public partial class StringEqualityOptions
 				}
 			}
 
-			return closestStart < 0 ? "" : DescribeClosestMatch(actualLines, closestStart, expectedLines, comparer);
+			return closestStart;
 		}
 
 		private static int FindOccurrences(string[] actualLines, string[] expectedLines,
@@ -168,9 +195,13 @@ public partial class StringEqualityOptions
 			}
 
 			string? mismatch = DescribeFirstMismatch(actualLines, 0, expectedLines, actualLines.Length, comparer);
-			return mismatch is null
-				? $", which has {actualLines.Length} {(actualLines.Length == 1 ? "line" : "lines")} instead of at least {expectedLines.Length}"
-				: $", which {mismatch}";
+			if (mismatch is not null)
+			{
+				return $", which {mismatch}";
+			}
+
+			string lines = actualLines.Length == 1 ? "line" : "lines";
+			return $", which has {actualLines.Length} {lines} instead of at least {expectedLines.Length}";
 		}
 
 		/// <summary>
