@@ -41,6 +41,7 @@ Expectations for [`Uri`](#uri):
 | [`IsUnc`](#kind)                  | `IsNotUnc`               | a UNC path                          |
 | [`HasDefaultPort`](#default-port) | `DoesNotHaveDefaultPort` | uses the default port of its scheme |
 | [`HasScheme`](#scheme)            | negated comparison       | has the expected scheme             |
+| [`IsBaseOf`](#base-uri)           | `IsNotBaseOf`            | a base URI of the expected URI      |
 
 When an expectation on a request or response fails, the failure message includes the formatted HTTP request and
 response.
@@ -354,6 +355,20 @@ Uri uri = new("https://music.example.com/tracks/1");
 await Expect.That(uri).HasScheme().EqualTo("https");
 await Expect.That(uri).HasScheme().NotEqualTo("http");
 ```
+
+### Base URI
+
+You can verify that the `Uri` is a base URI of another absolute URI, or that it is not:
+
+```csharp
+Uri uri = new("https://music.example.com/api/");
+
+await Expect.That(uri).IsBaseOf("https://music.example.com/api/tracks/1");
+await Expect.That(uri).IsNotBaseOf(new Uri("https://other.example.com/api/tracks/1"));
+```
+
+Like `Uri.IsBaseOf`, only the part of the `Uri` up to its last `/` is considered, so `https://music.example.com/api`
+is also a base URI of `https://music.example.com/tracks/1`.
 
 ## Customization
 

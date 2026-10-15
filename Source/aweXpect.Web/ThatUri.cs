@@ -3,6 +3,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Helpers;
 
 namespace aweXpect;
 
@@ -20,6 +21,16 @@ public static partial class ThatUri
 			.AddConstraint((it, grammars) => new FailIfRelativeConstraint(it, grammars))
 			.And("");
 		return source;
+	}
+
+	private static void ThrowIfNotAbsolute(Uri value, string paramName)
+	{
+		ThrowHelper.ThrowIfNull(value, paramName);
+		if (!value.IsAbsoluteUri)
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{paramName}' must be a valid absolute URI.", paramName));
+		}
 	}
 
 	private sealed class FailIfRelativeConstraint(string it, ExpectationGrammars grammars)

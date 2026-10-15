@@ -48,11 +48,19 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsAbsolute(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsBaseOf(this aweXpect.Core.IThat<System.Uri?> source, System.Uri expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsBaseOf(this aweXpect.Core.IThat<System.Uri?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsFile(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsLoopback(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotAbsolute(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotBaseOf(this aweXpect.Core.IThat<System.Uri?> source, System.Uri unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotBaseOf(this aweXpect.Core.IThat<System.Uri?> source, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotFile(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
