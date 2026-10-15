@@ -135,8 +135,8 @@ internal static class ExpectationWriter
 			string rawName = name.TrimStart('@');
 			sb.Append("\t\tif (").Append(name).AppendLine(" is null)");
 			sb.AppendLine("\t\t{");
-			sb.Append("\t\t\tthrow global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(\"")
-				.Append(rawName).Append("\", \"The '").Append(rawName).AppendLine("' cannot be null.\"));");
+			sb.Append("\t\t\tthrow global::aweXpect.Core.Tracing.WriteException(new global::System.ArgumentNullException(nameof(")
+				.Append(name).Append("), \"The '").Append(rawName).AppendLine("' cannot be null.\"));");
 			sb.AppendLine("\t\t}");
 			sb.AppendLine();
 		}

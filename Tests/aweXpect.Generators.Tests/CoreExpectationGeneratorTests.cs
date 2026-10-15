@@ -426,7 +426,7 @@ public sealed class CoreExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated).Contains("string @class)");
-		await That(result.Generated).Contains("new global::System.ArgumentNullException(\"class\", \"The 'class' cannot be null.\")");
+		await That(result.Generated).Contains("new global::System.ArgumentNullException(nameof(@class), \"The 'class' cannot be null.\")");
 		await That(result.Generated).Contains("<paramref name=\"class\" />");
 	}
 
