@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,6 +47,24 @@ public class HasHeaderValueResult<TType, TThat>
 			static (state, it, grammars) => new WithHeaderValueConstraint(
 				it, grammars, state.expected, state._headerValueAccessor, state.options));
 		return new StringEqualityResult<TType, TThat>(_expectationBuilder, _returnValue, options);
+	}
+
+	/// <summary>
+	///     Verifies that the header has exactly the <paramref name="expected" /> values in the same order.
+	/// </summary>
+	public AndOrResult<TType, TThat> WithValues(params string[] expected)
+		=> WithValues((IEnumerable<string>)expected);
+
+	/// <summary>
+	///     Verifies that the header has exactly the <paramref name="expected" /> values in the same order.
+	/// </summary>
+	public AndOrResult<TType, TThat> WithValues(IEnumerable<string> expected)
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		_expectationBuilder.And("").AddConstraint((expected: expected.ToArray(), _headerValueAccessor),
+			static (state, it, grammars) => new WithHeaderValuesConstraint(
+				it, grammars, state.expected, state._headerValueAccessor));
+		return this;
 	}
 
 	/// <summary>
@@ -155,5 +175,65 @@ public class HasHeaderValueResult<TType, TThat>
 		private void AppendValueFailure(StringBuilder stringBuilder)
 			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "header value", Grammars, _headerValues?[0],
 				expected));
+	}
+
+	private sealed class WithHeaderValuesConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		string[] expected,
+		Func<TType, string?[]?> headerValueAccessor)
+		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
+			IValueConstraint<TType?>
+	{
+		private string?[]? _headerValues;
+
+		public ConstraintResult IsMetBy(TType? actual)
+		{
+			Actual = actual;
+			if (actual is null)
+			{
+				Outcome = Outcome.Failure;
+				return this;
+			}
+
+			_headerValues = headerValueAccessor(actual);
+			Outcome = _headerValues?.SequenceEqual(expected, StringComparer.Ordinal) == true
+				? Outcome.Success
+				: Outcome.Failure;
+			return this;
+		}
+
+		/// <remarks>
+		///     The text continues the one of the header, which carries the negation, like <c>WithValue</c> does.
+		/// </remarks>
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(" whose values are equal to ");
+			Formatter.Format(stringBuilder, expected);
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (_headerValues is null)
+			{
+				stringBuilder.Append(It).Append(" did not contain the expected header");
+			}
+			else
+			{
+				AppendValuesFailure(stringBuilder);
+			}
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalExpectation(stringBuilder, indentation);
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendValuesFailure(stringBuilder);
+
+		private void AppendValuesFailure(StringBuilder stringBuilder)
+		{
+			stringBuilder.Append(It).Append(" had header values ");
+			Formatter.Format(stringBuilder, _headerValues);
+		}
 	}
 }

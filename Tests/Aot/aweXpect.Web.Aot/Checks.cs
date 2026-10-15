@@ -53,6 +53,10 @@ internal static class Checks
 		new("a present header with the expected value passes",
 			() => ShouldPass(async () => await That(Response(HttpStatusCode.OK, header: "x-track"))
 				.HasHeader("x-track").WithValue("42"))),
+		new("differing header values fail and show the actual values",
+			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, header: "x-track"))
+					.HasHeader("x-track").WithValues("42", "43"),
+				"whose values are equal to [\"42\", \"43\"]", "but it had header values [\"42\"]")),
 		new("a missing header fails and is named",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK)).HasHeader("x-track"),
 				"has an \"x-track\" header")),

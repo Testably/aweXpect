@@ -105,6 +105,8 @@ namespace aweXpect.Web.Results
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
         public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WithValues(params string[] expected) { }
     }
     public class HasQueryParameterValueResult : aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>>
     {

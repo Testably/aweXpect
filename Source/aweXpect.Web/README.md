@@ -87,6 +87,15 @@ await Expect.That(request).DoesNotHaveHeader("Authorization");
 `WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
 
+When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
+
+```csharp
+HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
+request.Headers.Add("Accept", ["application/json", "text/plain"]);
+
+await Expect.That(request).HasHeader("Accept").WithValues("application/json", "text/plain");
+```
+
 You can also add expectations on the header value or on all of its values:
 
 ```csharp
@@ -202,6 +211,14 @@ HttpResponseMessage response = await httpClient.GetAsync("https://music.example.
 await Expect.That(response).HasHeader("Cache-Control");
 await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
 await Expect.That(response).DoesNotHaveHeader("Set-Cookie");
+```
+
+When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
+
+await Expect.That(response).HasHeader("Vary").WithValues("Accept", "Accept-Encoding");
 ```
 
 You can also add expectations on the header value or on all of its values:
