@@ -167,6 +167,17 @@ internal static class ExpectationWriter
 			? $"global::{model.ClassName}"
 			: $"global::{model.Namespace}.{model.ClassName}";
 		string fields = string.Concat(Enumerable.Range(0, model.Parameters.Count).Select(i => $", _p{i}"));
+
+		AppendConstraintDeclaration(sb, model, overload);
+		AppendIsMetBy(sb, model, overload, owner, fields);
+		AppendTextMethod(sb, "AppendNormalExpectation", model.PositiveText);
+		AppendTextMethod(sb, "AppendNegatedExpectation", model.NegatedText);
+		AppendResultMethods(sb, model, overload, owner, fields);
+		sb.AppendLine("\t}");
+	}
+
+	private static void AppendConstraintDeclaration(StringBuilder sb, ExpectationModel model, OverloadModel overload)
+	{
 		string helper = overload.FailsOnNull ? "WithNotNullValue" : "WithValue";
 		string constraintInterface = model.IsAsync || model.PassesCancellationToken
 			? "IAsyncConstraint"
@@ -205,7 +216,11 @@ internal static class ExpectationWriter
 
 		sb.AppendLine("\t\t}");
 		sb.AppendLine();
+	}
 
+	private static void AppendIsMetBy(StringBuilder sb, ExpectationModel model, OverloadModel overload, string owner,
+		string fields)
+	{
 		string token = model.PassesCancellationToken ? ", cancellationToken" : "";
 		string call = $"{owner}.{model.PredicateName}({overload.SubjectArgument}{fields}{token})";
 		string returnValue = "this";
@@ -237,10 +252,11 @@ internal static class ExpectationWriter
 		sb.Append("\t\t\treturn ").Append(returnValue).AppendLine(";");
 		sb.AppendLine("\t\t}");
 		sb.AppendLine();
+	}
 
-		AppendTextMethod(sb, "AppendNormalExpectation", model.PositiveText);
-		AppendTextMethod(sb, "AppendNegatedExpectation", model.NegatedText);
-
+	private static void AppendResultMethods(StringBuilder sb, ExpectationModel model, OverloadModel overload,
+		string owner, string fields)
+	{
 		sb.Append("\t\tprotected override void AppendNormalResult(").Append(StringBuilder)
 			.AppendLine(" stringBuilder, string? indentation = null)");
 		sb.AppendLine("\t\t{");
@@ -266,7 +282,6 @@ internal static class ExpectationWriter
 		sb.Append("\t\tprotected override void AppendNegatedResult(").Append(StringBuilder)
 			.AppendLine(" stringBuilder, string? indentation = null)");
 		sb.AppendLine("\t\t\t=> AppendNormalResult(stringBuilder, indentation);");
-		sb.AppendLine("\t}");
 	}
 
 	private static void AppendTextMethod(StringBuilder sb, string name, EquatableArray<TextPart> parts)
