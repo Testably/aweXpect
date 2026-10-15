@@ -493,12 +493,39 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
-		public async Task GetOccurrenceDetails_WhenBlockIsLongerThanTheSubject_ShouldReturnEmpty()
+		public async Task GetOccurrenceDetails_WhenBlockIsLongerThanTheSubjectAndALineDiffers_ShouldShowTheDifference()
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
 
-			string result = sut.GetOccurrenceDetails("  a\n  b", "a\nb\nc", 0);
+			string result = sut.GetOccurrenceDetails("{\n  a;\n}", "{\n  a;\n  b;\n}", 0);
+
+			await That(result).StartsWith(", which differs on line 3 and column 1:");
+		}
+
+		[Test]
+		[Arguments("  a\n  b", "a\nb\nc", ", which has 2 lines instead of at least 3")]
+		[Arguments("a", "a\nb", ", which has 1 line instead of at least 2")]
+		[Arguments("  a\nb", "a\nb\nc", ", which has line 2 indented by \"\" instead of \"  \"")]
+		[Arguments("a\nb", "\nb\nc", ", which has \"a\" on line 1 instead of a blank line")]
+		public async Task GetOccurrenceDetails_WhenBlockIsLongerThanTheSubject_ShouldCompareFromTheFirstLine(
+			string actual, string expected, string expectedDetails)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock();
+
+			string result = sut.GetOccurrenceDetails(actual, expected, 0);
+
+			await That(result).IsEqualTo(expectedDetails);
+		}
+
+		[Test]
+		public async Task GetOccurrenceDetails_WhenCountIsPositiveWithoutAnOccurrence_ShouldReturnEmpty()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock();
+
+			string result = sut.GetOccurrenceDetails("x\ny", "a", 1);
 
 			await That(result).IsEmpty();
 		}
@@ -575,6 +602,17 @@ public sealed partial class StringEqualityOptionsTests
 			string result = sut.GetOccurrenceDetails("    a\nb", "a\nb", 0);
 
 			await That(result).IsEmpty();
+		}
+
+		[Test]
+		public async Task GetOccurrenceDetails_WhenCultureAwareComparerIsUsed_ShouldSearchInsideOfLines()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock().Using(StringComparer.InvariantCultureIgnoreCase);
+
+			string result = sut.GetOccurrenceDetails("public INT FOO;", "int foo", 0);
+
+			await That(result).IsEqualTo(", only as part of line 1");
 		}
 
 		[Test]
@@ -712,8 +750,31 @@ public sealed partial class StringEqualityOptionsTests
 		[Test]
 		[Arguments(49_998, false)]
 		[Arguments(49_999, true)]
-		public async Task GetOccurrenceDetails_WhenSubjectIsTooLong_ShouldReturnEmpty(int additionalLines,
-			bool expectEmpty)
+		public async Task GetOccurrenceDetails_WhenSubjectIsTooLong_ShouldNotSearchForAClosestMatch(
+			int additionalLines, bool expectEmpty)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock();
+			string actual = "a\nc" + string.Concat(Enumerable.Repeat("\nx", additionalLines));
+
+			string result = sut.GetOccurrenceDetails(actual, "a\nb", 0);
+
+			if (expectEmpty)
+			{
+				await That(result).IsEmpty()
+					.Because("at most 100000 lines of the subject times the lines of the block are compared");
+			}
+			else
+			{
+				await That(result).StartsWith(", and the closest match at lines 1-2 differs on line 2 and column 1:");
+			}
+		}
+
+		[Test]
+		[Arguments(49_998, ", and the closest match at lines 1-2 has line 2 indented by \"\" instead of \"    \"")]
+		[Arguments(49_999, ", only as part of lines 1-2")]
+		public async Task GetOccurrenceDetails_WhenSubjectIsTooLong_ShouldStillSearchInsideOfLines(
+			int additionalLines, string expectedDetails)
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.AsBlock();
@@ -721,10 +782,8 @@ public sealed partial class StringEqualityOptionsTests
 
 			string result = sut.GetOccurrenceDetails(actual, "a\nb", 0);
 
-			await That(result).IsEqualTo(expectEmpty
-					? ""
-					: ", and the closest match at lines 1-2 has line 2 indented by \"\" instead of \"    \"")
-				.Because("at most 100000 lines of the subject times the lines of the block are compared");
+			await That(result).IsEqualTo(expectedDetails)
+				.Because("only the comparison of every window with the block is limited");
 		}
 
 		[Test]

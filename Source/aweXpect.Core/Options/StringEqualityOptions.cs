@@ -273,9 +273,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     <see cref="CountOccurrences(string, string, int)" />.
 	/// </summary>
 	/// <remarks>
-	///     Only a block via <see cref="AsBlock()" /> has details, e.g. <c>" at lines 3-4"</c>, so the text is empty for
-	///     any other match type. It is also empty when a custom comparer throws, because the failure has to be reported
-	///     anyway.
+	///     The text starts with its own separator, e.g. <c>" at lines 3-4"</c> or <c>", and the closest match at …"</c>,
+	///     so it is appended directly after the formatted <paramref name="actual" /> <see langword="string" />.<br />
+	///     Only a block via <see cref="AsBlock()" /> has details, so the text is empty for any other match type. It is
+	///     also empty when a custom comparer throws, because the failure has to be reported anyway, or when a positive
+	///     <paramref name="count" /> is given for an <paramref name="actual" /> <see langword="string" /> without an
+	///     occurrence.
 	/// </remarks>
 	public string GetOccurrenceDetails(string actual, string expected, int count)
 	{

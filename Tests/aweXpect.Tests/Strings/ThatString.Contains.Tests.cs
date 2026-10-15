@@ -268,6 +268,23 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenBlockHasMoreLinesThanTheSubject_ShouldCompareFromTheFirstLine()
+			{
+				string subject = "  a\n  b";
+				string expected = "a\nb\nc";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb\nc" as block at least once,
+					             but it did not contain "a\nb\nc" in "  a\n  b", which has 2 lines instead of at least 3
+					             """);
+			}
+
+			[Test]
 			public async Task WhenBlockIsIndentedAsAWhole_ShouldSucceed()
 			{
 				string subject = """

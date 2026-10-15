@@ -62,7 +62,8 @@ public partial class StringEqualityOptions
 		///     The closest match is the first one in which the content of every line matches when the indentation is
 		///     ignored, else where the text of a block that is not blank occurs inside of lines, else the first window with
 		///     the most matching lines that are not blank. A subject that is too long to compare every window with the block
-		///     has no closest match.
+		///     is only searched for the text of the block. A subject with fewer lines than the block is compared with it from
+		///     its first line on.
 		/// </remarks>
 		public static string GetOccurrenceDetails(string actual, string expected, int count,
 			IEqualityComparer<string> comparer)
@@ -73,32 +74,43 @@ public partial class StringEqualityOptions
 			{
 				List<int> starts = [];
 				FindOccurrences(actualLines, expectedLines, comparer, Math.Min(count, MaximumListedOccurrences), starts);
-				return " at " + FormatLines(starts, expectedLines.Length, count > MaximumListedOccurrences);
+				return starts.Count == 0
+					? ""
+					: " at " + FormatLines(starts, expectedLines.Length, count > MaximumListedOccurrences);
 			}
 
 			int windows = actualLines.Length - expectedLines.Length + 1;
-			if (windows <= 0 || (long)actualLines.Length * expectedLines.Length > MaximumLineComparisons)
+			if (windows <= 0)
 			{
-				return "";
+				return DescribeShorterSubject(actualLines, expectedLines, comparer);
 			}
 
-			for (int start = 0; start < windows; start++)
+			bool canCompareAllWindows = (long)actualLines.Length * expectedLines.Length <= MaximumLineComparisons;
+			if (canCompareAllWindows)
 			{
-				if (MatchesIgnoringIndentation(actualLines, start, expectedLines, comparer))
+				for (int start = 0; start < windows; start++)
 				{
-					return DescribeClosestMatch(actualLines, start, expectedLines, comparer);
+					if (MatchesIgnoringIndentation(actualLines, start, expectedLines, comparer))
+					{
+						return DescribeClosestMatch(actualLines, start, expectedLines, comparer);
+					}
 				}
 			}
 
-			StringComparison? comparison = GetComparison(comparer);
+			StringComparison? comparison = comparer.GetComparison();
 			if (comparison is not null && !string.IsNullOrWhiteSpace(expected))
 			{
 				string text = string.Join("\n", actualLines);
 				int index = text.IndexOf(string.Join("\n", expectedLines), comparison.Value);
 				if (index >= 0)
 				{
-					return $", only as part of {FormatLines([CountLineFeeds(text, index),], expectedLines.Length, false)}";
+					return $", only as part of {FormatLines([text.CountLineFeeds(index),], expectedLines.Length, false)}";
 				}
+			}
+
+			if (!canCompareAllWindows)
+			{
+				return "";
 			}
 
 			int closestStart = -1;
@@ -142,6 +154,24 @@ public partial class StringEqualityOptions
 			IEqualityComparer<string> comparer)
 			=> ", and the closest match at " + FormatLines([start,], expectedLines.Length, false) + " " +
 			   DescribeFirstMismatch(actualLines, start, expectedLines, expectedLines.Length, comparer);
+
+		/// <summary>
+		///     Describes how the <paramref name="actualLines" />, which are fewer than the <paramref name="expectedLines" />,
+		///     differ from the start of the block, or else that the block does not fit into them.
+		/// </summary>
+		private static string DescribeShorterSubject(string[] actualLines, string[] expectedLines,
+			IEqualityComparer<string> comparer)
+		{
+			if (actualLines.Length == 0)
+			{
+				return "";
+			}
+
+			string? mismatch = DescribeFirstMismatch(actualLines, 0, expectedLines, actualLines.Length, comparer);
+			return mismatch is null
+				? $", which has {actualLines.Length} {(actualLines.Length == 1 ? "line" : "lines")} instead of at least {expectedLines.Length}"
+				: $", which {mismatch}";
+		}
 
 		/// <summary>
 		///     Describes the first of the <paramref name="length" /> lines from <paramref name="start" /> on, at which the
@@ -361,39 +391,6 @@ public partial class StringEqualityOptions
 			string indentation = GetIndentation(actualLine);
 			int length = indentation.Length - GetIndentation(expectedLine).Length;
 			return length > 0 ? indentation.Substring(0, length) : "";
-		}
-
-		/// <summary>
-		///     The comparison that decides like the <paramref name="comparer" />, so that the block can be searched inside of
-		///     the lines, or <see langword="null" /> for a custom comparer, which can only compare whole values.
-		/// </summary>
-		private static StringComparison? GetComparison(IEqualityComparer<string> comparer)
-		{
-			if (ReferenceEquals(comparer, StringComparer.Ordinal))
-			{
-				return StringComparison.Ordinal;
-			}
-
-			if (ReferenceEquals(comparer, StringComparer.OrdinalIgnoreCase))
-			{
-				return StringComparison.OrdinalIgnoreCase;
-			}
-
-			return null;
-		}
-
-		private static int CountLineFeeds(string value, int length)
-		{
-			int count = 0;
-			for (int i = 0; i < length; i++)
-			{
-				if (value[i] == '\n')
-				{
-					count++;
-				}
-			}
-
-			return count;
 		}
 
 		/// <summary>
