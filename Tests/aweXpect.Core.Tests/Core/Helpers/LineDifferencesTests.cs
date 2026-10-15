@@ -68,6 +68,43 @@ public class LineDifferencesTests
 		}
 
 		[Test]
+		public async Task WhenALineContainsATab_ShouldEscapeIt()
+		{
+			string actual = "a\tb\nc\nd\ne";
+			string expected = "a    b\nc\nd\nE";
+
+			string? result = Format(actual, expected);
+
+			await That(result).IsEqualTo("""
+			                               -  1        a\tb
+			                               +      1    a    b
+			                                  2   2    c
+			                                  3   3    d
+			                               -  4        e
+			                               +      4    E
+			                             """);
+		}
+
+		[Test]
+		public async Task WhenLinesOnlyDifferInTrailingSpaces_ShouldQuoteThemWithTheirLineBreak()
+		{
+			string actual = "a \nb\nc\nd\ne";
+			string expected = "a\nb\nc\nd\nE";
+
+			string? result = Format(actual, expected);
+
+			await That(result).IsEqualTo("""
+			                               -  1        "a \n"
+			                               +      1    "a\n"
+			                                  2   2    b
+			                                  3   3    c
+			                                  4   4    d
+			                               -  5        e
+			                               +      5    E
+			                             """);
+		}
+
+		[Test]
 		public async Task WhenLinesAreOnlyAddedOrRemoved_ShouldLeaveTheOtherLineNumberBlank()
 		{
 			string actual = "a\nb\nc\nd\ne\nf";

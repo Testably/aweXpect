@@ -194,7 +194,8 @@ public static class ResultContextCollectorExtensions
 	/// <summary>
 	///     Adds the "Differences" context, which lists the lines that differ between the <paramref name="actual" /> and
 	///     the <paramref name="expected" /> value, when they are compared for equality with the
-	///     <paramref name="options" />, one of them has several lines and they differ in at least two places.
+	///     <paramref name="options" /> without a custom comparer, one of them has several lines and they differ in at
+	///     least two places.
 	/// </summary>
 	/// <param name="contexts">The collector to add the context to.</param>
 	/// <param name="actual">The actual value.</param>
@@ -202,8 +203,8 @@ public static class ResultContextCollectorExtensions
 	/// <param name="options">The options with which the values are compared.</param>
 	/// <param name="grammars">The grammars of the result; a negated result adds no context.</param>
 	/// <remarks>
-	///     The failure message already shows the first difference, so the context adds the further ones. It lists at
-	///     most <see cref="AwexpectCustomization.FormattingCustomization.MaximumNumberOfCollectionItems" /> differences.
+	///     The context lists every difference, including the first one that the failure message already shows, but at
+	///     most <see cref="AwexpectCustomization.FormattingCustomization.MaximumNumberOfCollectionItems" /> of them.
 	/// </remarks>
 	public static void AddStringDifferencesContext(this ResultContextCollector contexts, string? actual,
 		string? expected, StringEqualityOptions options, ExpectationGrammars grammars)

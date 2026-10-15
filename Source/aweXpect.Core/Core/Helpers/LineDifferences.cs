@@ -46,7 +46,11 @@ internal static class LineDifferences
 	/// </summary>
 	/// <remarks>
 	///     A difference is a run of removed and added lines between two equal lines. Each difference is shown with one
-	///     equal line before and after it, and differences that are at most two equal lines apart are shown together.
+	///     equal line before and after it, and at most two equal lines between the shown lines are shown instead of
+	///     being omitted.<br />
+	///     The whitespace of a line is shown like the formatter shows it. A removed and an added line at the same
+	///     position of a difference, which would look the same as they only differ in their line break or in trailing
+	///     spaces, are quoted together with their line break.
 	/// </remarks>
 	public static string? Format(IReadOnlyList<Line> actual, IReadOnlyList<Line> expected,
 		Func<Line, Line, bool> areEqual, int maximumNumberOfDifferences)
@@ -133,7 +137,10 @@ internal static class LineDifferences
 			                 (row.Actual?.Number.ToString(CultureInfo.InvariantCulture).PadLeft(width) ?? blank) +
 			                 "   " +
 			                 (row.Expected?.Number.ToString(CultureInfo.InvariantCulture).PadLeft(width) ?? blank);
-			string text = (row.Actual ?? row.Expected)!.Text;
+			Line line = (row.Actual ?? row.Expected)!;
+			string text = row.IsQuoted
+				? "\"" + (line.Text + line.LineBreak).Escape() + "\""
+				: line.Text.DisplayWhitespace();
 			sb.Append(text.Length > 0 ? numbers + "    " + text : numbers.TrimEnd());
 		}
 	}
@@ -189,10 +196,28 @@ internal static class LineDifferences
 		{
 			if (start >= 0)
 			{
+				QuoteLinesThatLookTheSame(ordered, start, added);
 				ordered.AddRange(added);
 				added.Clear();
 				differences.Add((start, ordered.Count));
 				start = -1;
+			}
+		}
+	}
+
+	/// <summary>
+	///     Quotes each removed line from <paramref name="start" /> on in <paramref name="removed" /> together with the
+	///     added line at the same position, when both would look the same.
+	/// </summary>
+	private static void QuoteLinesThatLookTheSame(List<Edit> removed, int start, List<Edit> added)
+	{
+		for (int i = 0; i < added.Count && start + i < removed.Count; i++)
+		{
+			if (removed[start + i].Actual!.Text.DisplayWhitespace().TrimEnd(' ') ==
+			    added[i].Expected!.Text.DisplayWhitespace().TrimEnd(' '))
+			{
+				removed[start + i].IsQuoted = true;
+				added[i].IsQuoted = true;
 			}
 		}
 	}
@@ -293,7 +318,7 @@ internal static class LineDifferences
 	private static bool IsInsertion(int[] previous, int d, int k)
 		=> k == -d || (k != d && previous[k + d - 2] < previous[k + d]);
 
-	private static IEnumerable<Edit> Backtrack(Window window, List<int[]> trace)
+	private static List<Edit> Backtrack(Window window, List<int[]> trace)
 	{
 		List<Edit> reversed = [];
 		int x = window.ActualCount;
@@ -367,6 +392,7 @@ internal static class LineDifferences
 	{
 		public Line? Actual { get; } = actual;
 		public Line? Expected { get; } = expected;
+		public bool IsQuoted { get; set; }
 	}
 
 	/// <summary>

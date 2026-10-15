@@ -37,7 +37,8 @@ The comparison is ordinal and can be configured with the [string options](#strin
 [pattern](#match-types).
 
 The failure message points at the first difference. When multi-line values differ in several places, a `Differences`
-context lists each changed line with its line number in the actual and the expected value, and one line around it:
+context lists the changed lines with their line numbers in the actual and the expected value. Each difference is
+surrounded by one unchanged line, and differences that are close together are shown as one block:
 
 ```text title="Failure message"
 Differences:
@@ -52,8 +53,9 @@ Differences:
   +      7    log = console
 ```
 
-Lines that only differ in what the [string options](#string-options) ignore are not listed. At most
+Tabs and other invisible characters are shown as escape sequences. Lines that only differ in what the [string options](#string-options) ignore are not listed. At most
 `MaximumNumberOfCollectionItems` differences are listed (see [formatting](../03-how-it-works/07-configuration.md#formatting)).
+With a custom comparer (`Using(…)`), which compares whole values, no differences are listed.
 
 ## String options
 

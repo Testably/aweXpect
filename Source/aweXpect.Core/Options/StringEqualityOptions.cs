@@ -538,30 +538,24 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     The lines are compared with the options, so that lines which only differ in what the options ignore are
 	///     equal, but are shown as they are in the original values.<br />
-	///     The comparer of the caller is called for single lines, for which it may throw, so the lines are then not
-	///     listed.
+	///     A comparer of the caller defines when whole values are equal, which need not hold for their lines, so the
+	///     lines are then not listed.
 	/// </remarks>
 	internal string? GetLineDifferences(string actual, string expected)
 	{
-		if (_matchType is not ExactMatchType || (!IsMultiLine(actual) && !IsMultiLine(expected)))
+		if (_matchType is not ExactMatchType || _comparer is not null ||
+		    (!IsMultiLine(actual) && !IsMultiLine(expected)))
 		{
 			return null;
 		}
 
-		IEqualityComparer<string> comparer = _comparer ?? UseDefaultComparer(_ignoreCase);
+		StringComparer comparer = UseDefaultComparer(_ignoreCase);
 		bool ignoreLineBreaks = _ignoreNewlineStyle || _ignoreIndentation;
-		try
-		{
-			return LineDifferences.Format(GetComparedLines(actual), GetComparedLines(expected),
-				(actualLine, expectedLine) => comparer.Equals(actualLine.ComparedText, expectedLine.ComparedText) &&
-				                              (ignoreLineBreaks ||
-				                               HaveSameLineBreak(actualLine, expectedLine)),
-				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
-		}
-		catch (Exception) when (_comparer is not null)
-		{
-			return null;
-		}
+		return LineDifferences.Format(GetComparedLines(actual), GetComparedLines(expected),
+			(actualLine, expectedLine) => comparer.Equals(actualLine.ComparedText, expectedLine.ComparedText) &&
+			                              (ignoreLineBreaks ||
+			                               HaveSameLineBreak(actualLine, expectedLine)),
+			Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
 
 		static bool IsMultiLine(string value)
 			=> value.IndexOfAny(['\r', '\n',]) >= 0;

@@ -193,13 +193,13 @@ public sealed partial class ThatString
 					             (but the values match when ignoring the newline style)
 
 					             Differences:
-					               -  1        a
-					               +      1    a
+					               -  1        "a\r\n"
+					               +      1    "a\n"
 					                  2   2    b
 					                  3   3    c
 					                  4   4    d
-					               -  5        e
-					               +      5    e
+					               -  5        "e\r\n"
+					               +      5    "e\n"
 					                  6   6    f
 					             """);
 			}
@@ -359,18 +359,18 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenTheComparerThrowsForALine_ShouldNotListTheDifferences()
+			public async Task Using_ShouldNotListTheDifferences()
 			{
-				string subject = "a\nb\nc\nd\ne";
-				string expected = "X\nb\nc\nd\nY";
+				string subject = "ab\nc\nX\nde\nf";
+				string expected = "a\nbc\nY\nd\nef";
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(expected).Using(new MultiLineOnlyComparer());
+					=> await That(subject).IsEqualTo(expected).Using(new IgnoringLineBreaksComparer());
 
 				FailException exception = await That(Act).Throws<FailException>();
 
 				await That(exception.Message).DoesNotContain("Differences:")
-					.Because("the comparer throws for single lines");
+					.Because("the comparer compares whole values, which need not be equal line by line");
 			}
 
 			[Test]
@@ -472,20 +472,6 @@ public sealed partial class ThatString
 				FailException exception = await That(Act).Throws<FailException>();
 
 				await That(exception.Message).DoesNotContain("Differences:");
-			}
-
-			/// <summary>
-			///     Compares strings ordinally, but throws for a string without a line break, like a single line.
-			/// </summary>
-			private sealed class MultiLineOnlyComparer : IEqualityComparer<string>
-			{
-				public bool Equals(string? x, string? y)
-					=> x!.IndexOf('\n') >= 0 && y!.IndexOf('\n') >= 0
-						? string.Equals(x, y, StringComparison.Ordinal)
-						: throw new InvalidOperationException("not a multi-line value");
-
-				public int GetHashCode(string obj)
-					=> obj.GetHashCode();
 			}
 
 			/// <summary>
