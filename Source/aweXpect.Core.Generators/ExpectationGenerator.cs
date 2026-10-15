@@ -119,19 +119,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 			return Fail(InvalidMethod, location, methodName, nameProblem);
 		}
 
-		string? negatedExpectationText = GetNamedArgument<string>(attribute, "NegatedExpectationText");
-		if (negatedExpectationText is null && !expectationText.Contains("{not}"))
+		if (GetTextProblem(expectationText, GetNamedArgument<string>(attribute, "NegatedExpectationText"),
+			    expectationParameters.Select(p => p.Name).ToList(),
+			    out EquatableArray<TextPart> positiveText, out EquatableArray<TextPart> negatedText) is { } textProblem)
 		{
-			return Fail(InvalidMethod, location, methodName,
-				"the expectation text has no '{not}' and no negated expectation text is given");
-		}
-
-		if (!TryParseTexts(expectationText, negatedExpectationText, expectationParameters.Select(p => p.Name).ToList(),
-			    out EquatableArray<TextPart> positiveText, out EquatableArray<TextPart> negatedText,
-			    out string? unknownPlaceholder))
-		{
-			return Fail(InvalidMethod, location, methodName,
-				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");
+			return Fail(InvalidMethod, location, methodName, textProblem);
 		}
 
 		string? resultMethod = GetNamedArgument<string>(attribute, "Result");
@@ -205,15 +197,26 @@ public class ExpectationGenerator : IIncrementalGenerator
 		return null;
 	}
 
-	private static bool TryParseTexts(string expectationText, string? negatedExpectationText,
+	private static string? GetTextProblem(string expectationText, string? negatedExpectationText,
 		List<string> parameterNames, out EquatableArray<TextPart> positiveText,
-		out EquatableArray<TextPart> negatedText, out string? unknownPlaceholder)
+		out EquatableArray<TextPart> negatedText)
 	{
+		positiveText = default;
 		negatedText = default;
-		return TryParseText(expectationText.Replace("{not}", "").Replace("  ", " ").Trim(), parameterNames,
-			       out positiveText, out unknownPlaceholder) &&
-		       TryParseText(negatedExpectationText ?? expectationText.Replace("{not}", "not").Replace("  ", " ").Trim(),
-			       parameterNames, out negatedText, out unknownPlaceholder);
+		if (negatedExpectationText is null && !expectationText.Contains("{not}"))
+		{
+			return "the expectation text has no '{not}' and no negated expectation text is given";
+		}
+
+		if (!TryParseText(expectationText.Replace("{not}", "").Replace("  ", " ").Trim(), parameterNames,
+			    out positiveText, out string? unknownPlaceholder) ||
+		    !TryParseText(negatedExpectationText ?? expectationText.Replace("{not}", "not").Replace("  ", " ").Trim(),
+			    parameterNames, out negatedText, out unknownPlaceholder))
+		{
+			return $"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation";
+		}
+
+		return null;
 	}
 
 	private static ExpectationResult Fail(DiagnosticDescriptor descriptor, Location location, string subject,
