@@ -38,7 +38,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 	private static readonly DiagnosticDescriptor InvalidResult = new(
 		"aweXpect4003",
 		"The result method is not suitable",
-		"'{0}' names no static method that returns a string and takes the subject, optionally followed by the other parameters of '{1}'",
+		"'{0}' names no static method that returns a string and takes the subject, optionally followed by the other parameters of '{1}' and by the string 'it' and the ExpectationGrammars",
 		"aweXpect.Core.Generators",
 		DiagnosticSeverity.Error,
 		true,
@@ -127,10 +127,9 @@ public class ExpectationGenerator : IIncrementalGenerator
 		}
 
 		string? resultMethod = GetNamedArgument<string>(attribute, "Result");
-		bool resultTakesParameters = false;
+		ResultModel? result = null;
 		if (resultMethod is not null &&
-		    !TryFindResultMethod(classSymbol, resultMethod, subject, expectationParameters,
-			    out resultTakesParameters))
+		    !TryFindResultMethod(classSymbol, resultMethod, subject, expectationParameters, out result))
 		{
 			return Fail(InvalidResult, location, resultMethod, methodName);
 		}
@@ -171,8 +170,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 				.Select(p => new ParameterModel(Escape(p.Name), p.Type.ToDisplayString(TypeFormat), p.IsParams,
 					p.Type.IsReferenceType && p.NullableAnnotation == NullableAnnotation.NotAnnotated))
 				.ToImmutableArray()),
-			resultMethod is null ? null : Escape(resultMethod),
-			resultTakesParameters,
+			result,
 			GetOverloads(subject, constraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true)), null);
 	}
@@ -331,7 +329,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 	}
 
 	private static bool TryFindResultMethod(INamedTypeSymbol classSymbol, string name, IParameterSymbol subject,
-		List<IParameterSymbol> expectationParameters, out bool takesParameters)
+		List<IParameterSymbol> expectationParameters, out ResultModel? result)
 	{
 		foreach (IMethodSymbol candidate in classSymbol.GetMembers(name).OfType<IMethodSymbol>())
 		{
@@ -344,24 +342,31 @@ public class ExpectationGenerator : IIncrementalGenerator
 				continue;
 			}
 
-			if (candidate.Parameters.Length == 1)
+			List<IParameterSymbol> rest = candidate.Parameters.Skip(1).ToList();
+			bool takesItAndGrammars = rest.Count >= 2 &&
+			                          rest[rest.Count - 2].Type.SpecialType == SpecialType.System_String &&
+			                          IsExpectationGrammars(rest[rest.Count - 1].Type);
+			if (takesItAndGrammars)
 			{
-				takesParameters = false;
-				return true;
+				rest.RemoveRange(rest.Count - 2, 2);
 			}
 
-			if (candidate.Parameters.Length == expectationParameters.Count + 1 &&
-			    candidate.Parameters.Skip(1).Zip(expectationParameters,
-				    (a, b) => SymbolEqualityComparer.Default.Equals(a.Type, b.Type)).All(x => x))
+			if (rest.Count == 0 || (rest.Count == expectationParameters.Count &&
+			                        rest.Zip(expectationParameters,
+				                        (a, b) => SymbolEqualityComparer.Default.Equals(a.Type, b.Type)).All(x => x)))
 			{
-				takesParameters = true;
+				result = new ResultModel(Escape(name), rest.Count > 0, takesItAndGrammars);
 				return true;
 			}
 		}
 
-		takesParameters = false;
+		result = null;
 		return false;
 	}
+
+	private static bool IsExpectationGrammars(ITypeSymbol type)
+		=> type is { Name: "ExpectationGrammars", ContainingNamespace: var ns, } &&
+		   ns.ToDisplayString() == "aweXpect.Core";
 
 	private static EquatableArray<OverloadModel> GetOverloads(IParameterSymbol subject, string constraintPrefix,
 		bool nullableOverload)

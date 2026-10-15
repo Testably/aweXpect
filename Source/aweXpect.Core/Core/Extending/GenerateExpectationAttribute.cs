@@ -60,7 +60,10 @@ public sealed class GenerateExpectationAttribute(string name, string expectation
 	/// </summary>
 	/// <remarks>
 	///     The method returns a <see langword="string" /> and takes the subject, optionally followed by the other
-	///     parameters of the marked method. Without it, the result shows the formatted subject, e.g. "but it was …".
+	///     parameters of the marked method and by a <see langword="string" /> <c>it</c> and the
+	///     <see cref="ExpectationGrammars" />. With these two, the method describes the subject itself, e.g.
+	///     "they were activated on 2026-02-01" instead of "it was …". Without a result method, the result shows the
+	///     formatted subject, e.g. "but it was …".
 	/// </remarks>
 	public string? Result { get; set; }
 

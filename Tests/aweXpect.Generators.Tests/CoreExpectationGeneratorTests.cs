@@ -556,7 +556,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4003: 'Describe' names no static method that returns a string and takes the subject, optionally followed by the other parameters of 'ThatSample.IsEqual(int, int)'");
+			"aweXpect4003: 'Describe' names no static method that returns a string and takes the subject, optionally followed by the other parameters of 'ThatSample.IsEqual(int, int)' and by the string 'it' and the ExpectationGrammars");
 	}
 
 	[Test]
@@ -569,7 +569,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4003: 'Describe' names no static method that returns a string and takes the subject, optionally followed by the other parameters of 'ThatSample.IsZero(int)'");
+			"aweXpect4003: 'Describe' names no static method that returns a string and takes the subject, optionally followed by the other parameters of 'ThatSample.IsZero(int)' and by the string 'it' and the ExpectationGrammars");
 	}
 
 	[Test]
@@ -587,6 +587,70 @@ public sealed class CoreExpectationGeneratorTests
 		await That(result.Generated).Contains("global::Lib.ThatSample.Describe(Actual, _p0)");
 		await That(result.Generated).Contains("global::Lib.ThatSample.Describe(Actual.GetValueOrDefault(), _p0)")
 			.Because("the nullable overload only describes a subject that is not null");
+	}
+
+	[Test]
+	public async Task ResultMethodTakesOnlyTheGrammars_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero", Result = nameof(Describe))]
+			private static bool IsZero(int value) => value == 0;
+
+			private static string Describe(int value, aweXpect.Core.ExpectationGrammars grammars) => "was " + value;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4003: 'Describe' names no static method that returns a string and takes the subject, optionally followed by the other parameters of 'ThatSample.IsZero(int)' and by the string 'it' and the ExpectationGrammars");
+	}
+
+	[Test]
+	public async Task ResultMethodTakesItAndTheGrammars_ShouldNotPrependIt()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Equal", "is {not} equal to {expected}", Result = nameof(Describe))]
+			private static bool IsEqual(int value, int expected) => value == expected;
+
+			private static string Describe(int value, int expected, string it, aweXpect.Core.ExpectationGrammars grammars)
+				=> it + " was " + value;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("stringBuilder.Append(global::Lib.ThatSample.Describe(Actual, _p0, It, Grammars));");
+	}
+
+	[Test]
+	public async Task ResultMethodTakesItAndTheGrammarsWithoutTheParameters_ShouldPassOnlyThem()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Named", "is {not} named {name}", Result = nameof(Describe))]
+			private static bool IsNamed(string value, string name) => value == name;
+
+			private static string Describe(string value, string it, aweXpect.Core.ExpectationGrammars grammars)
+				=> it + " was " + value;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("stringBuilder.Append(global::Lib.ThatSample.Describe(Actual!, It, Grammars));");
+	}
+
+	[Test]
+	public async Task ResultMethodTakesOnlyIt_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero", Result = nameof(Describe))]
+			private static bool IsZero(int value) => value == 0;
+
+			private static string Describe(int value, string it) => it + " was " + value;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4003: 'Describe' names no static method that returns a string and takes the subject, optionally followed by the other parameters of 'ThatSample.IsZero(int)' and by the string 'it' and the ExpectationGrammars");
 	}
 
 	[Test]

@@ -246,6 +246,22 @@ public sealed class GenerateExpectationAttributeTests
 	}
 
 	[Test]
+	public async Task Result_WhenItTakesItAndTheGrammars_ShouldDescribeTheWholeSubject()
+	{
+		Account subject = new("Alice", 1);
+
+		async Task Act()
+			=> await That(subject).IsAtLeastLevel(2);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is at least level 2,
+			             but it was at level 1 instead of 2
+			             """);
+	}
+
+	[Test]
 	public async Task Result_WhenNegated_ShouldDescribeTheSubject()
 	{
 		Account subject = new("Alice", 1);

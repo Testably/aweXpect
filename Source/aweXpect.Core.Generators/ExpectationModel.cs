@@ -29,9 +29,13 @@ internal sealed record ExpectationModel(
 	bool IsAsync,
 	bool PassesCancellationToken,
 	EquatableArray<ParameterModel> Parameters,
-	string? ResultMethod,
-	bool ResultTakesParameters,
+	ResultModel? Result,
 	EquatableArray<OverloadModel> Overloads);
+
+/// <summary>
+///     The method that describes the subject after "but", and which of the optional arguments it takes.
+/// </summary>
+internal readonly record struct ResultModel(string Name, bool TakesParameters, bool TakesItAndGrammars);
 
 /// <summary>
 ///     A part of an expectation text: either literal text or the parameter at <see cref="ParameterIndex" />.

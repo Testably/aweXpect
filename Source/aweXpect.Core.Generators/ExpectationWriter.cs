@@ -232,7 +232,7 @@ internal static class ExpectationWriter
 		sb.Append("\t\tprotected override void AppendNormalResult(").Append(StringBuilder)
 			.AppendLine(" stringBuilder, string? indentation = null)");
 		sb.AppendLine("\t\t{");
-		if (model.ResultMethod is null)
+		if (model.Result is not { } result)
 		{
 			sb.Append("\t\t\tstringBuilder.Append(It).Append(").Append(GrammarsExtensions)
 				.AppendLine(".SubjectVerb(Grammars, It, \" was \", \" were \"));");
@@ -241,9 +241,12 @@ internal static class ExpectationWriter
 		}
 		else
 		{
-			sb.Append("\t\t\tstringBuilder.Append(It).Append(' ').Append(").Append(owner).Append('.')
-				.Append(model.ResultMethod).Append('(').Append(overload.ResultArgument)
-				.Append(model.ResultTakesParameters ? fields : "").AppendLine("));");
+			sb.Append(result.TakesItAndGrammars
+					? "\t\t\tstringBuilder.Append("
+					: "\t\t\tstringBuilder.Append(It).Append(' ').Append(")
+				.Append(owner).Append('.').Append(result.Name).Append('(').Append(overload.ResultArgument)
+				.Append(result.TakesParameters ? fields : "")
+				.Append(result.TakesItAndGrammars ? ", It, Grammars" : "").AppendLine("));");
 		}
 
 		sb.AppendLine("\t\t}");

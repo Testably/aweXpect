@@ -48,7 +48,14 @@ internal static partial class ThatAccount
 		return account.Level > 0;
 	}
 
+	[GenerateExpectation("Is{Not}AtLeastLevel", "is {not} at least level {minimum}",
+		Result = nameof(DescribeMinimumLevel))]
+	private static bool IsAtLeastLevel(Account account, int minimum) => account.Level >= minimum;
+
 	private static string DescribeLevel(Account account) => $"was at level {account.Level}";
+
+	private static string DescribeMinimumLevel(Account account, int minimum, string it, ExpectationGrammars grammars)
+		=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}at level {account.Level} instead of {minimum}";
 }
 
 internal static partial class ThatLuckyNumber

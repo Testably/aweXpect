@@ -71,6 +71,14 @@ is longer than 3:00,
 but it was 2:22 long
 ```
 
+To describe the subject itself, the method can end with a `string` and an `ExpectationGrammars` parameter. It then
+receives how the subject is referred to, e.g. "it", and returns the whole text after "but":
+
+```csharp no-compile
+private static string DescribeDuration(Track track, string it, ExpectationGrammars grammars)
+    => $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{track.Duration:m\\:ss} long";
+```
+
 The XML documentation is derived from the expectation text. `Summary`, `NegatedSummary`, `Remarks` and
 `NegatedRemarks` replace or extend it with XML documentation of your own.
 
