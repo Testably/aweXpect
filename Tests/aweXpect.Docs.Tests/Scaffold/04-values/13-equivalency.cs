@@ -11,6 +11,18 @@ internal static class Prelude
 	public static Playlist expectedPlaylist = new();
 	public static Track[] tracks = [];
 	public static ChartEntry[] chart = [];
+	public static ReleaseDto releaseDto = new();
+	public static Release release = new();
+}
+
+public class ReleaseDto
+{
+	public string ArtistName { get; set; } = "";
+}
+
+public class Release
+{
+	public Artist Artist { get; set; } = new();
 }
 
 public class ChartEntry
@@ -27,6 +39,7 @@ internal class Playlist : List<Track>
 public class Artist
 {
 	public DateTime BornOn { get; set; }
+	public string Name { get; set; } = "";
 }
 
 public class TrackId;

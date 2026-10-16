@@ -215,6 +215,10 @@ public static partial class EquivalencyComparison
 		private List<string>? _comparedPaths;
 		private HashSet<string>? _matchedNames;
 		private HashSet<string>? _namesToIgnore;
+		private object? _pendingExpected;
+		private List<ActiveMapping>? _pendingMappings;
+		private MemberMapping[]? _trackedMappings;
+		private bool _trackedMappingsHaveNames;
 		private MemberToIgnore[]? _trackedMembersToIgnore;
 
 		/// <summary>
@@ -356,11 +360,91 @@ public static partial class EquivalencyComparison
 			}
 
 			TrackMembersToIgnore(membersToIgnore);
+			TrackComparedPath(memberPath);
+		}
+
+		/// <summary>
+		///     Records the expected members of the <paramref name="mappings" /> by name, so that a failure can name the
+		///     ones that matched no member, and returns whether the compared member paths have to be recorded for them.
+		/// </summary>
+		/// <remarks>
+		///     They share the names with the members to ignore, as both name a member by the end of its path.
+		/// </remarks>
+		public bool TrackMappings(MemberMapping[] mappings)
+		{
+			if (!TracksIgnoredMembers || mappings.Length == 0)
+			{
+				return false;
+			}
+
+			if (ReferenceEquals(mappings, _trackedMappings))
+			{
+				return _trackedMappingsHaveNames;
+			}
+
+			_trackedMappings = mappings;
+			_trackedMappingsHaveNames = false;
+			foreach (MemberMapping mapping in mappings)
+			{
+				if (mapping.ExpectedName is { } name)
+				{
+					(_namesToIgnore ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase)).Add(name);
+					_trackedMappingsHaveNames = true;
+				}
+			}
+
+			return _trackedMappingsHaveNames;
+		}
+
+		/// <summary>
+		///     Records that the expected member of a mapping by the <paramref name="name" /> matched a member.
+		/// </summary>
+		public void TrackMatchedName(string name)
+		{
+			if (TracksIgnoredMembers)
+			{
+				(_matchedNames ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase)).Add(name);
+			}
+		}
+
+		/// <summary>
+		///     Records the <paramref name="memberPath" /> as a candidate for a name that matched no member.
+		/// </summary>
+		public void TrackComparedPath(string memberPath)
+		{
 			_comparedPaths ??= [];
 			if (_comparedPaths.Count < ComparedPathsToRemember)
 			{
 				_comparedPaths.Add(memberPath);
 			}
+		}
+
+		/// <summary>
+		///     Hands the <paramref name="mappings" /> that run through a member to the nested comparison of its
+		///     <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     The nested comparison takes them before it compares anything else, so a single slot is enough.
+		/// </remarks>
+		public void SetPendingMappings(object? expected, List<ActiveMapping>? mappings)
+		{
+			_pendingExpected = mappings is null ? null : expected;
+			_pendingMappings = mappings;
+		}
+
+		/// <summary>
+		///     Takes the mappings that were handed to the comparison of the <paramref name="expected" /> value.
+		/// </summary>
+		public List<ActiveMapping>? TakePendingMappings(object expected)
+		{
+			if (_pendingMappings is null || !ReferenceEquals(_pendingExpected, expected))
+			{
+				return null;
+			}
+
+			List<ActiveMapping> mappings = _pendingMappings;
+			SetPendingMappings(null, null);
+			return mappings;
 		}
 
 		/// <summary>
@@ -434,10 +518,16 @@ public static partial class EquivalencyComparison
 		///     Starts the nested comparison of the <paramref name="pair" />, unless it is equivalent without comparing
 		///     it: because it is already compared on the current path, or because it was found equivalent before.
 		/// </summary>
-		public bool TryEnter(ComparedPair pair, EquivalencyTypeOptions typeOptions, out ComparisonScope scope)
+		/// <remarks>
+		///     A pair with <paramref name="hasPendingMappings" /> reads members of an enclosing actual object, so its
+		///     result depends on the path, like with members to ignore.
+		/// </remarks>
+		public bool TryEnter(ComparedPair pair, EquivalencyTypeOptions typeOptions, bool hasPendingMappings,
+			out ComparisonScope scope)
 		{
 			scope = default;
-			if (_equivalentPairs is not null &&
+			if (!hasPendingMappings &&
+			    _equivalentPairs is not null &&
 			    _equivalentPairs.TryGetValue(new EquivalentPair(pair, typeOptions), out int equivalentDepth) &&
 			    Depth < equivalentDepth)
 			{
@@ -462,7 +552,7 @@ public static partial class EquivalencyComparison
 #endif
 			Depth++;
 			scope = new ComparisonScope(++_comparisons, _outermostDependency);
-			_outermostDependency = typeOptions.MembersToIgnore.Length > 0 ? 0 : int.MaxValue;
+			_outermostDependency = typeOptions.MembersToIgnore.Length > 0 || hasPendingMappings ? 0 : int.MaxValue;
 			return true;
 		}
 
