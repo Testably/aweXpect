@@ -343,14 +343,54 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalProperties_ShouldSucceed()
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalProperties_ShouldFail()
 			{
 				JsonElement subject = FromString("[1, 2, 3]");
 
 				async Task Act()
 					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringAdditionalProperties());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,],
+					             but it differed as $[2] had unexpected 3
+					             """)
+					.Because("ignoring additional properties does not affect the elements of arrays");
+			}
+
+			[Fact]
+			public async Task WhenNestedArrayContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldOnlyReportAdditionalProperties()
+			{
+				JsonElement subject = FromString("""{"id": 1, "items": ["A", "B", "C"]}""");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						items = new[] { "A", "B", },
+					}, o => o.IgnoringAdditionalArrayElements());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	items = new[] { "A", "B", },
+					             },
+					             but it differed as $.id had unexpected 1
+					             """)
+					.Because("ignoring additional array elements does not affect the properties of objects");
 			}
 
 			[Fact]
@@ -586,7 +626,20 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringArrayOrderAndAdditionalProperties_ShouldSucceed()
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[4, 3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 3,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow()
+					.Because("the expected elements must only be a subset of the subject in any order");
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringArrayOrderAndAdditionalProperties_ShouldFail()
 			{
 				JsonElement subject = FromString("[4, 3, 2, 1]");
 
@@ -594,18 +647,25 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).MatchesExactly([1, 3,],
 						o => o.IgnoringArrayOrder().IgnoringAdditionalProperties());
 
-				await That(Act).DoesNotThrow()
-					.Because("the expected elements must only be a subset of the subject in any order");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 3,],
+					             but it differed as
+					               $[0] had unexpected 4 and
+					               $[2] had unexpected 2
+					             """)
+					.Because("ignoring additional properties does not affect the elements of arrays");
 			}
 
 			[Fact]
-			public async Task WhenElementIsMissing_WhenIgnoringArrayOrderAndAdditionalProperties_ShouldOnlyReportMissingElement()
+			public async Task WhenElementIsMissing_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldOnlyReportMissingElement()
 			{
 				JsonElement subject = FromString("[4, 3, 2, 1]");
 
 				async Task Act()
 					=> await That(subject).MatchesExactly([1, 5,],
-						o => o.IgnoringArrayOrder().IgnoringAdditionalProperties());
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

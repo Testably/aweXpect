@@ -212,14 +212,32 @@ public sealed partial class ThatJsonString
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalProperties_ShouldSucceed()
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				string subject = "[1, 2, 3]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly([1, 2,],
+						o => o.IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalProperties_ShouldFail()
 			{
 				string subject = "[1, 2, 3]";
 
 				async Task Act()
 					=> await That(subject).IsValidJsonMatchingExactly([1, 2,], o => o.IgnoringAdditionalProperties());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it differed as $[2] had unexpected 3
+					             """)
+					.Because("ignoring additional properties does not affect the elements of arrays");
 			}
 
 			[Fact]

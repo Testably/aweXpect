@@ -423,6 +423,44 @@ public sealed partial class ThatJsonElement
 					             """);
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenMatchingArrayWithAdditionalElements_ShouldFailUnlessIgnoringAdditionalArrayElements(
+				bool ignoreAdditionalArrayElements)
+			{
+				JsonElement subject = FromString("{\"foo\": [1, 2, 3]}");
+
+				async Task Act()
+					=> await That(subject).IsObject(
+						o => o.With("foo").Matching(new[] { 1, 2, }),
+						o => o.IgnoringAdditionalArrayElements(ignoreAdditionalArrayElements));
+
+				await That(Act).Throws<XunitException>().OnlyIf(!ignoreAdditionalArrayElements)
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches new[] { 1, 2, },
+					             but it differed as $.foo[2] had unexpected 3
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMatchingArrayWithAdditionalObject_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": [{\"bar\": 1, \"baz\": 2}, {\"bar\": 2}]}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new[] { new { bar = 1, }, }));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches new[] { new { bar = 1, }, },
+					             but it differed as $.foo[1] had unexpected {"bar":2}
+					             """)
+					.Because("additional properties are ignored by default, but additional array elements are not");
+			}
+
 			[Fact]
 			public async Task WhenMatchingItIsOnNullProperty_ShouldFail()
 			{

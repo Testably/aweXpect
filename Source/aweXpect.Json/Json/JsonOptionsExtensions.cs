@@ -25,15 +25,34 @@ public static class JsonOptionsExtensions
 	}
 
 	/// <summary>
-	///     Ignores additional properties in the subject
+	///     Ignores additional properties of objects in the subject
 	///     when <paramref name="ignoreAdditionalProperties" /> is <see langword="true" />
 	/// </summary>
+	/// <remarks>
+	///     Additional elements of arrays are not affected, use <see cref="IgnoringAdditionalArrayElements" /> instead.
+	/// </remarks>
 	public static JsonOptions IgnoringAdditionalProperties(
 		this JsonOptions @this,
 		bool ignoreAdditionalProperties = true)
 		=> @this with
 		{
 			IgnoreAdditionalProperties = ignoreAdditionalProperties,
+		};
+
+	/// <summary>
+	///     Ignores additional elements of arrays in the subject
+	///     when <paramref name="ignoreAdditionalArrayElements" /> is <see langword="true" />
+	/// </summary>
+	/// <remarks>
+	///     Additional elements are those after the expected elements or, when the order of the elements is ignored, those
+	///     that are not paired with an expected element.
+	/// </remarks>
+	public static JsonOptions IgnoringAdditionalArrayElements(
+		this JsonOptions @this,
+		bool ignoreAdditionalArrayElements = true)
+		=> @this with
+		{
+			IgnoreAdditionalArrayElements = ignoreAdditionalArrayElements,
 		};
 
 	/// <summary>

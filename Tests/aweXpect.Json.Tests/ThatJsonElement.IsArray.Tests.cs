@@ -595,6 +595,40 @@ public sealed partial class ThatJsonElement
 					             but it differed as $[0].bar had unexpected 2
 					             """);
 			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task WithExpectations_ShouldConsiderIgnoreAdditionalArrayElements(
+				bool ignoreAdditionalArrayElements)
+			{
+				string json = "[[1, 2, 3], [4]]";
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsArray(o => o.At(0).Matching(new[] { 1, 2, }),
+						o => o.IgnoringAdditionalArrayElements(ignoreAdditionalArrayElements));
+
+				await That(Act).Throws<XunitException>().OnlyIf(!ignoreAdditionalArrayElements)
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] matches new[] { 1, 2, },
+					             but it differed as $[0][2] had unexpected 3
+					             """)
+					.Because("the positional members do not verify the length of the array, but the matched value does");
+			}
+
+			[Fact]
+			public async Task WithElements_ShouldNotVerifyAdditionalElements()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).IsArray(o => o.WithElements(1, 2));
+
+				await That(Act).DoesNotThrow()
+					.Because("the positional members only verify the elements at the given indices");
+			}
 		}
 
 		public sealed class WithNumberOfElementsTests

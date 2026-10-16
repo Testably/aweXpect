@@ -92,7 +92,7 @@ internal static class JsonElementValidator
 			await result.Compare(memberPath, actualArrayElement, expectedArrayElement, options, converter);
 		}
 
-		if (!options.IgnoreAdditionalProperties)
+		if (!options.IgnoreAdditionalArrayElements)
 		{
 			for (int index = expectedElement.GetArrayLength(); index < actualElement.GetArrayLength(); index++)
 			{
@@ -148,7 +148,7 @@ internal static class JsonElementValidator
 			result.AddError(path, $"had missing {Format(missingElement)}");
 		}
 
-		if (!options.IgnoreAdditionalProperties)
+		if (!options.IgnoreAdditionalArrayElements)
 		{
 			foreach (int index in unpairedIndices)
 			{

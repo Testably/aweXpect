@@ -20,9 +20,14 @@ public record JsonOptions
 	}
 
 	/// <summary>
-	///     Flag indicating, if the additional properties in the subject should be ignored.
+	///     Flag indicating, if the additional properties of objects in the subject should be ignored.
 	/// </summary>
 	public bool IgnoreAdditionalProperties { get; init; }
+
+	/// <summary>
+	///     Flag indicating, if the additional elements of arrays in the subject should be ignored.
+	/// </summary>
+	public bool IgnoreAdditionalArrayElements { get; init; }
 
 	/// <summary>
 	///     Flag indicating, if the order of the elements in arrays should be ignored.

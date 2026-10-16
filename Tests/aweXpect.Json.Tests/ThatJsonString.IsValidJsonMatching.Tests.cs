@@ -284,14 +284,54 @@ public sealed partial class ThatJsonString
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsAdditionalElements_ShouldSucceed()
+			public async Task WhenSubjectContainsAdditionalElements_ShouldFail()
 			{
 				string subject = "[1, 2, 3]";
 
 				async Task Act()
-					=> await That(subject).IsValidJsonMatching([1, 2,], o => o.IgnoringAdditionalProperties());
+					=> await That(subject).IsValidJsonMatching([1, 2,]);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it differed as $[2] had unexpected 3
+					             """)
+					.Because("additional array elements are only ignored with IgnoringAdditionalArrayElements");
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				string subject = "[1, 2, 3]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2,], o => o.IgnoringAdditionalArrayElements());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNestedArrayContainsAdditionalElements_ShouldFail()
+			{
+				string subject = """{"id": 1, "items": ["A", "B", "C"]}""";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						items = new[] { "A", "B", },
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	items = new[] { "A", "B", },
+					             },
+					             but it differed as $.items[2] had unexpected "C"
+					             """)
+					.Because("the additional property is ignored, but the additional array element is not");
 			}
 
 			[Fact]
@@ -311,23 +351,43 @@ public sealed partial class ThatJsonString
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			public async Task WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrder_ShouldFail()
 			{
 				string subject = "[3, 2, 1]";
 
 				async Task Act()
 					=> await That(subject).IsValidJsonMatching([1, 2,], o => o.IgnoringArrayOrder());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it differed as $[0] had unexpected 3
+					             """)
+					.Because("the unpaired element is an additional array element, which is not ignored");
 			}
 
 			[Fact]
-			public async Task WhenSubjectMissesExpectedElement_WhenIgnoringArrayOrder_ShouldFail()
+			public async Task
+				WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldSucceed()
 			{
 				string subject = "[3, 2, 1]";
 
 				async Task Act()
-					=> await That(subject).IsValidJsonMatching([1, 4,], o => o.IgnoringArrayOrder());
+					=> await That(subject).IsValidJsonMatching([1, 2,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectMissesExpectedElement_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldFail()
+			{
+				string subject = "[3, 2, 1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 4,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -342,9 +402,6 @@ public sealed partial class ThatJsonString
 				{
 					{
 						[], "[]"
-					},
-					{
-						[], "[\"foo\"]"
 					},
 					{
 						[
@@ -362,6 +419,9 @@ public sealed partial class ThatJsonString
 							"foo",
 						],
 						"[]", "as $[0] had missing \"foo\""
+					},
+					{
+						[], "[\"foo\"]", "as $[0] had unexpected \"foo\""
 					},
 					{
 						[

@@ -427,14 +427,153 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsAdditionalElements_ShouldSucceed()
+			public async Task WhenSubjectContainsAdditionalElements_ShouldFail()
+			{
+				JsonElement titles = FromString("[\"Let It Be\", \"Yesterday\", \"Hey Jude\"]");
+
+				async Task Act()
+					=> await That(titles).Matches(["Let It Be", "Yesterday"]);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that titles
+					             matches ["Let It Be", "Yesterday"],
+					             but it differed as $[2] had unexpected "Hey Jude"
+					             """)
+					.Because("additional array elements are only ignored with IgnoringAdditionalArrayElements");
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).Matches([1, 2,], o => o.IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenNotIgnoringAdditionalArrayElements_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).Matches([1, 2,], o => o.IgnoringAdditionalArrayElements(false));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,],
+					             but it differed as $[2] had unexpected 3
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalProperties_ShouldFail()
 			{
 				JsonElement subject = FromString("[1, 2, 3]");
 
 				async Task Act()
 					=> await That(subject).Matches([1, 2,], o => o.IgnoringAdditionalProperties());
 
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,],
+					             but it differed as $[2] had unexpected 3
+					             """)
+					.Because("ignoring additional properties does not affect the elements of arrays");
+			}
+
+			[Fact]
+			public async Task
+				WhenSubjectContainsAdditionalElements_WhenOnlyIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).Matches([1, 2,],
+						o => o.IgnoringAdditionalProperties(false).IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow()
+					.Because("additional array elements are ignored independently of additional properties");
+			}
+
+			[Fact]
+			public async Task WhenNestedArrayContainsAdditionalElements_ShouldFail()
+			{
+				JsonElement subject = FromString("""{"id": 1, "items": ["A", "B", "C"]}""");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						items = new[] { "A", "B", },
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	items = new[] { "A", "B", },
+					             },
+					             but it differed as $.items[2] had unexpected "C"
+					             """)
+					.Because("the additional property is ignored, but the additional array element is not");
+			}
+
+			[Fact]
+			public async Task WhenNestedArrayContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				JsonElement subject = FromString("""{"id": 1, "items": ["A", "B", "C"]}""");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						items = new[] { "A", "B", },
+					}, o => o.IgnoringAdditionalArrayElements());
+
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenObjectsInArrayContainAdditionalProperties_ShouldSucceed()
+			{
+				JsonElement subject = FromString("""[{"id": 1, "name": "foo"}, {"id": 2, "name": "bar"}]""");
+
+				async Task Act()
+					=> await That(subject).Matches(new[]
+					{
+						new { id = 1, },
+						new { id = 2, },
+					});
+
+				await That(Act).DoesNotThrow()
+					.Because("additional properties of objects in an array are still ignored");
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalObject_ShouldFail()
+			{
+				JsonElement subject = FromString("""[{"id": 1, "name": "foo"}, {"id": 2}]""");
+
+				async Task Act()
+					=> await That(subject).Matches(new[]
+					{
+						new { id = 1, },
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new[]
+					             {
+					             	new { id = 1, },
+					             },
+					             but it differed as $[1] had unexpected {"id":2}
+					             """);
 			}
 
 			[Fact]
@@ -454,24 +593,47 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
-			public async Task WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			public async Task WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrder_ShouldFail()
 			{
 				JsonElement subject = FromString("[4, 3, 2, 1]");
 
 				async Task Act()
 					=> await That(subject).Matches([1, 3,], o => o.IgnoringArrayOrder());
 
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 3,],
+					             but it differed as
+					               $[0] had unexpected 4 and
+					               $[2] had unexpected 2
+					             """)
+					.Because("the unpaired elements are additional array elements, which are not ignored");
+			}
+
+			[Fact]
+			public async Task
+				WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[4, 3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).Matches([1, 3,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
+
 				await That(Act).DoesNotThrow()
 					.Because("additional elements are ignored, so the expected elements are a subset in any order");
 			}
 
 			[Fact]
-			public async Task WhenSubjectMissesExpectedElements_WhenIgnoringArrayOrder_ShouldOnlyReportMissingElements()
+			public async Task
+				WhenSubjectMissesExpectedElements_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldOnlyReportMissingElements()
 			{
 				JsonElement subject = FromString("[4, 3, 2, 1]");
 
 				async Task Act()
-					=> await That(subject).Matches([5, 1, 6,], o => o.IgnoringArrayOrder());
+					=> await That(subject).Matches([5, 1, 6,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -495,7 +657,7 @@ public sealed partial class ThatJsonElement
 						{
 							foo = It.Is<int>().That.IsGreaterThan(2),
 						},
-					}, o => o.IgnoringArrayOrder());
+					}, o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -505,12 +667,6 @@ public sealed partial class ThatJsonElement
 				{
 					{
 						[], "[]"
-					},
-					{
-						[], "[\"foo\"]"
-					},
-					{
-						[], "[\"1\", \"2\"]"
 					},
 					{
 						[
@@ -528,6 +684,16 @@ public sealed partial class ThatJsonElement
 							"foo",
 						],
 						"[]", "as $[0] had missing \"foo\""
+					},
+					{
+						[], "[\"foo\"]", "as $[0] had unexpected \"foo\""
+					},
+					{
+						[], "[\"1\", \"2\"]", """
+						                     as
+						                       $[0] had unexpected "1" and
+						                       $[1] had unexpected "2"
+						                     """
 					},
 					{
 						[

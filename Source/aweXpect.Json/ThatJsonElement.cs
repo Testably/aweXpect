@@ -61,7 +61,7 @@ public static partial class ThatJsonElement
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("matches ", "match ")).Append(expectedExpression.TrimCommonWhiteSpace());
-			if (!options.IgnoreAdditionalProperties)
+			if (!options.IgnoreAdditionalProperties && !options.IgnoreAdditionalArrayElements)
 			{
 				stringBuilder.Append(" exactly");
 			}
@@ -84,7 +84,7 @@ public static partial class ThatJsonElement
 		{
 			stringBuilder.Append(Grammars.Verb("does not match ", "do not match "))
 				.Append(expectedExpression.TrimCommonWhiteSpace());
-			if (!options.IgnoreAdditionalProperties)
+			if (!options.IgnoreAdditionalProperties && !options.IgnoreAdditionalArrayElements)
 			{
 				stringBuilder.Append(" exactly");
 			}

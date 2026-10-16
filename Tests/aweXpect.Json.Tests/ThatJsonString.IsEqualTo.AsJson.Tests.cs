@@ -804,6 +804,82 @@ public sealed partial class ThatJsonString
 				}
 
 				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenSubjectHasMoreArrayItems_ShouldFailUnlessIgnoringAdditionalArrayElements(
+					bool ignoreAdditionalArrayElements)
+				{
+					string subject = """
+					                 {"foo": [1, 2, 3]}
+					                 """;
+					string expected = """
+					                  {"foo": [1, 2]}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.AsJson(o => o.IgnoringAdditionalArrayElements(ignoreAdditionalArrayElements));
+
+					await That(Act).Throws<XunitException>().OnlyIf(!ignoreAdditionalArrayElements)
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"foo": [1, 2]},
+						             but it differed as $.foo[2] had unexpected 3
+
+						             Actual:
+						             {"foo": [1, 2, 3]}
+
+						             Expected:
+						             {"foo": [1, 2]}
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectHasMoreArrayItems_WhenIgnoringAdditionalProperties_ShouldFail()
+				{
+					string subject = """
+					                 {"foo": [1, 2, 3], "bar": 1}
+					                 """;
+					string expected = """
+					                  {"foo": [1, 2]}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"foo": [1, 2]},
+						             but it differed as $.foo[2] had unexpected 3
+
+						             Actual:
+						             {"foo": [1, 2, 3], "bar": 1}
+
+						             Expected:
+						             {"foo": [1, 2]}
+						             """)
+						.Because("ignoring additional properties does not affect the elements of arrays");
+				}
+
+				[Fact]
+				public async Task WhenArrayElementsAreASubsetInAnyOrder_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldSucceed()
+				{
+					string subject = """
+					                 ["rock", "blues", "jazz"]
+					                 """;
+					string expected = """
+					                  ["jazz", "rock"]
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.AsJson(o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
 				[InlineData("foo",
 					"'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.")]
 				[InlineData("{\"foo\":{\"bar\":False}}",

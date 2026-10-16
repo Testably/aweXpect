@@ -81,7 +81,7 @@ public static partial class ThatJsonString
 		{
 			stringBuilder.Append(Grammars.Verb("is valid JSON which matches ", "are valid JSON which matches "))
 				.Append(expectedExpression.TrimCommonWhiteSpace());
-			if (!options.IgnoreAdditionalProperties)
+			if (!options.IgnoreAdditionalProperties && !options.IgnoreAdditionalArrayElements)
 			{
 				stringBuilder.Append(" exactly");
 			}
@@ -100,7 +100,7 @@ public static partial class ThatJsonString
 		{
 			stringBuilder.Append(Grammars.Verb("is not valid JSON which matches ", "are not valid JSON which matches "))
 				.Append(expectedExpression.TrimCommonWhiteSpace());
-			if (!options.IgnoreAdditionalProperties)
+			if (!options.IgnoreAdditionalProperties && !options.IgnoreAdditionalArrayElements)
 			{
 				stringBuilder.Append(" exactly");
 			}
