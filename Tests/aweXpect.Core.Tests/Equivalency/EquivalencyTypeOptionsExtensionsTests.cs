@@ -124,4 +124,23 @@ public sealed class EquivalencyTypeOptionsExtensionsTests
 		                              - map "Build" to "Revision"
 		                             """);
 	}
+
+	[Test]
+	public async Task ToString_WhenMappingForAType_ShouldListItBelowTheType()
+	{
+		EquivalencyOptions options = new EquivalencyOptions()
+			.For<Version>(o => o
+				.Mapping<Version, Version>(version => version.Major, version => version.Minor)
+				.Mapping("Build", "Revision"));
+
+		string result = options.ToString();
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - for Version:
+		                                - include public fields and properties
+		                                - map Version.Major to Version.Minor
+		                                - map "Build" to "Revision"
+		                             """);
+	}
 }

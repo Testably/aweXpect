@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,14 +24,12 @@ public static partial class EquivalencyComparison
 		EquivalencyTypeOptions typeOptions, List<ActiveMapping>? pendingMappings)
 	{
 		List<ActiveMapping>? mappings = null;
-		if (!ReferenceEquals(actual, NoActualObject))
+		if (typeOptions.MemberMappings.Length > 0 && !ReferenceEquals(actual, NoActualObject))
 		{
-			foreach (MemberMapping mapping in typeOptions.MemberMappings)
+			foreach (MemberMapping mapping in typeOptions.MemberMappings
+				         .Where(mapping => mapping.AppliesTo(actual, expected)))
 			{
-				if (mapping.AppliesTo(actual, expected))
-				{
-					(mappings ??= []).Add(new ActiveMapping(mapping, actual, 0));
-				}
+				(mappings ??= []).Add(new ActiveMapping(mapping, actual, 0));
 			}
 		}
 

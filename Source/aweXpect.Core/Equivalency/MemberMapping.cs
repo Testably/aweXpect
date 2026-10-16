@@ -63,7 +63,7 @@ internal abstract class MemberMapping(string[] actualPath, string[] expectedPath
 		private static string[] Split(string member, string paramName)
 		{
 			string[] names = member.Split('.');
-			if (Array.Exists(names, name => name.Length == 0 || name.IndexOf('[') >= 0))
+			if (Array.Exists(names, name => name.Length == 0 || name.Contains('[', StringComparison.Ordinal)))
 			{
 				throw Tracing.WriteException(new ArgumentException(
 					$"The '{paramName}' must be a member name or a dot-separated path of member names, e.g. \"Name\" or \"Artist.Name\", but was \"{member}\".",
