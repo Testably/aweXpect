@@ -151,6 +151,7 @@ public static partial class ThatDictionary
 			{
 				stringBuilder.Append(It).Append(" did not contain key ");
 				stringBuilder.Append(Formatter.Format(expected.Key).Indent(indentation, false));
+				stringBuilder.AppendClosestMatchHint(expected.Key, GetKeys(Actual));
 				return;
 			}
 

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Helpers;
+using aweXpect.Options;
 using aweXpect.SourceGenerators;
 
 namespace aweXpect;
@@ -91,6 +93,22 @@ public static partial class ThatDictionary
 		context.SetDictionary(dictionary);
 		context.AppendTo(contexts);
 	}
+
+	/// <summary>
+	///     The keys of the <paramref name="dictionary" />, to suggest the one that a missing key most likely meant.
+	/// </summary>
+	private static IEnumerable<TKey>? GetKeys<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>>? dictionary)
+		=> dictionary?.Select(static entry => entry.Key);
+
+	/// <summary>
+	///     The values of the <paramref name="dictionary" />, to suggest the one that a missing value most likely meant,
+	///     unless the <paramref name="options" /> match a pattern instead of a value.
+	/// </summary>
+	private static IEnumerable<TValue>? GetValuesForHint<TKey, TValue>(
+		IEnumerable<KeyValuePair<TKey, TValue>>? dictionary, IOptionsEquality<TValue> options)
+		=> options is StringEqualityOptions { InspectsSubject: false, }
+			? dictionary?.Select(static entry => entry.Value)
+			: null;
 
 	/// <summary>
 	///     Looks the <paramref name="key" /> up through the dictionary itself, so that its key comparer decides.

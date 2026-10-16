@@ -382,7 +382,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             has keys that contain "b" using the subject's StringComparer.OrdinalIgnoreCase at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "a"?)
 
 					             Collection (keys):
 					             [
@@ -403,7 +403,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             has keys that contain "A" at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "a"?)
 
 					             Collection (keys):
 					             [

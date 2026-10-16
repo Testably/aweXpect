@@ -714,7 +714,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that sut
 					             contains "GREEN" at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "green"?)
 
 					             Collection:
 					             [
@@ -992,7 +992,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains {Formatter.Format(match)} ignoring case at least once,
-					              but it did not contain it
+					              but it did not contain it (did you mean "foo"?)
 
 					              Collection:
 					              [

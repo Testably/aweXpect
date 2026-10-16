@@ -123,6 +123,11 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	}
 
 	/// <summary>
+	///     The items that were counted to their end, which an expected string that was not found is compared with.
+	/// </summary>
+	protected abstract IEnumerable<TItem>? GetFinishedItems();
+
+	/// <summary>
 	///     Determines the outcome after all items were counted.
 	/// </summary>
 	protected void Finish()
@@ -147,6 +152,10 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		else if (_isFinished && _count == 0)
 		{
 			stringBuilder.Append(It).Append(" did not contain it");
+			if (!_isNegated && _expected is { SuggestsClosestMatch: true, })
+			{
+				stringBuilder.AppendClosestMatchHint(_expected.Expected, GetFinishedItems());
+			}
 		}
 		else
 		{
@@ -216,6 +225,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	where TEnumerable : IEnumerable?
 {
 	private CollectionContext _collectionContext;
+	private CollectionItems<TItem> _finishedItems;
 
 	/// <inheritdoc />
 	protected override Type CollectionType => typeof(IEnumerable<TItem>);
@@ -342,9 +352,14 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	private ContainConstraint<TEnumerable, TItem> Finish(CollectionItems<TItem> items)
 	{
 		items.SetContext(ref _collectionContext);
+		_finishedItems = items;
 		Finish();
 		return this;
 	}
+
+	/// <inheritdoc />
+	protected override IEnumerable<TItem> GetFinishedItems()
+		=> _finishedItems.Items;
 }
 
 #if NET8_0_OR_GREATER
@@ -357,6 +372,7 @@ internal sealed class AsyncContainConstraint<TItem>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
+	private IEnumerable<TItem>? _finishedItems;
 
 	/// <inheritdoc />
 	protected override Type CollectionType => typeof(IAsyncEnumerable<TItem>);
@@ -402,9 +418,14 @@ internal sealed class AsyncContainConstraint<TItem>(
 		}
 
 		_collectionContext.Set(items, totalCount: totalCount);
+		_finishedItems = (materializedEnumerable as IMaterializedAsyncEnumerable<TItem>)?.MaterializedItems;
 		Finish();
 		return this;
 	}
+
+	/// <inheritdoc />
+	protected override IEnumerable<TItem>? GetFinishedItems()
+		=> _finishedItems;
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)

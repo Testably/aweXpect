@@ -165,6 +165,11 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 	public virtual bool UsesDefaultEquality => false;
 
 	/// <summary>
+	///     Whether a failure suggests the item of the collection that the expected string most likely meant.
+	/// </summary>
+	public virtual bool SuggestsClosestMatch => false;
+
+	/// <summary>
 	///     The item of the set <paramref name="collection" /> that <see cref="ContainedItem{TItem}.LookUpIn" /> found.
 	/// </summary>
 	public virtual TItem FoundIn(object collection) => Expected;
@@ -294,6 +299,13 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 		=> Expected is not null && options.ComparesByOrdinalEquality;
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     A pattern, e.g. a wildcard or a prefix, is not a value that could have been mistyped.
+	/// </remarks>
+	public override bool SuggestsClosestMatch
+		=> !options.InspectsSubject;
+
+	/// <inheritdoc />
 	public override ValueTask<bool> Matches(string? item)
 		=> options.AreConsideredEqual(item, Expected);
 
@@ -379,6 +391,10 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> inner) : ExpectedItem<TItem>(inner.Expected)
 {
 	private SubjectComparer<TSetItem>? _comparer;
+
+	/// <inheritdoc />
+	public override bool SuggestsClosestMatch
+		=> inner.SuggestsClosestMatch;
 
 	/// <inheritdoc />
 	public override ValueTask<bool> Matches(TItem item)
