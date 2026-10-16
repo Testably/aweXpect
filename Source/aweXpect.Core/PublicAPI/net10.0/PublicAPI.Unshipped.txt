@@ -94,3 +94,6 @@ aweXpect.Results.AllocatesResult<TResult>.Nothing() -> TResult
 aweXpect.Formatting.FormattingOptions.IsComplete.get -> bool
 aweXpect.Formatting.FormattingOptions.IsComplete.init -> void
 static aweXpect.Formatting.FormattingOptions.Complete.get -> aweXpect.Formatting.FormattingOptions!
+aweXpect.Equivalency.EquivalencyTypeOptionsExtensions
+static aweXpect.Equivalency.EquivalencyTypeOptionsExtensions.Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyOptions! options, System.Func<TActual, TExpected, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Equivalency.EquivalencyOptions!
+static aweXpect.Equivalency.EquivalencyTypeOptionsExtensions.Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyTypeOptions! options, System.Func<TActual, TExpected, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Equivalency.EquivalencyTypeOptions!
