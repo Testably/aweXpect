@@ -198,6 +198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -233,7 +239,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -272,7 +279,8 @@ window.BENCHMARK_DATA = {
           12739.56372833252,
           12853.199774605888,
           12404.724879338191,
-          12854.50207737514
+          12854.50207737514,
+          9026.947104820838
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -316,6 +324,7 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           3040,
+          3088,
           3088
         ],
         "borderColor": "#63A2AC",
@@ -363,7 +372,8 @@ window.BENCHMARK_DATA = {
           382770.1940104167,
           380122.59348958335,
           384998.83440290176,
-          382980.966796875
+          382980.966796875,
+          244252.46236979167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -407,7 +417,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590292
+          590292,
+          590289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -454,7 +465,8 @@ window.BENCHMARK_DATA = {
           20521.68983561198,
           21344.667835780554,
           19423.414180210657,
-          20083.921060415414
+          20083.921060415414,
+          14183.934397379557
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -466,6 +478,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -668,6 +681,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -696,7 +715,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -728,7 +748,8 @@ window.BENCHMARK_DATA = {
           284.4276827744075,
           291.3135716756185,
           317.3832711151668,
-          278.7273161570231
+          278.7273161570231,
+          208.46897268295288
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -740,6 +761,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -805,7 +827,8 @@ window.BENCHMARK_DATA = {
           541.3028927485149,
           531.4082317352295,
           531.2556179682414,
-          527.3487646738688
+          527.3487646738688,
+          413.80027470221887
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -817,6 +840,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -882,7 +906,8 @@ window.BENCHMARK_DATA = {
           415.39587087631224,
           411.7721193313599,
           411.1008774757385,
-          397.29562552769977
+          397.29562552769977,
+          285.29169902801516
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -894,6 +919,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5709,6 +5735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -6507,7 +6539,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -7309,7 +7342,8 @@ window.BENCHMARK_DATA = {
           160.0939512570699,
           156.080428870519,
           154.8452606201172,
-          149.11259651184082
+          149.11259651184082,
+          120.1696959177653
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8116,6 +8150,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536
         ],
         "borderColor": "#63A2AC",
@@ -8926,7 +8961,8 @@ window.BENCHMARK_DATA = {
           278.02962319056195,
           283.6781652768453,
           270.45749040750354,
-          261.14147764841715
+          261.14147764841715,
+          210.03958905537922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9119,6 +9155,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9824,7 +9861,8 @@ window.BENCHMARK_DATA = {
           259.3221680323283,
           270.17961083139693,
           254.06105597813925,
-          249.63227446873984
+          249.63227446873984,
+          177.41626545588176
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9836,6 +9874,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10124,6 +10163,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -10159,7 +10204,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -10198,7 +10244,8 @@ window.BENCHMARK_DATA = {
           293.5418609210423,
           292.64228715896604,
           284.72050285339355,
-          274.9257159868876
+          274.9257159868876,
+          209.01274215258084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10217,6 +10264,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10289,7 +10337,8 @@ window.BENCHMARK_DATA = {
           563.3769656499227,
           562.4461669286092,
           546.7849304199219,
-          498.7616994380951
+          498.7616994380951,
+          421.2854511578878
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10301,6 +10350,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -10380,7 +10430,8 @@ window.BENCHMARK_DATA = {
           358.03668546676636,
           357.91160236994426,
           355.100718720754,
-          324.0743795541617
+          324.0743795541617,
+          251.81303720474244
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10392,6 +10443,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15214,6 +15266,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -16012,7 +16070,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -16814,7 +16873,8 @@ window.BENCHMARK_DATA = {
           670.9337451934814,
           672.2860979715983,
           649.3445979436239,
-          668.6414373715719
+          668.6414373715719,
+          490.68322728474936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17596,6 +17656,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -18431,7 +18492,8 @@ window.BENCHMARK_DATA = {
           1454.4240715026856,
           1477.770088068644,
           1401.552971903483,
-          1529.7548483439855
+          1529.7548483439855,
+          1106.0817887624105
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19238,6 +19300,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -19329,7 +19392,8 @@ window.BENCHMARK_DATA = {
           646.9271059036255,
           662.902811731611,
           668.6551818847656,
-          635.5269638470241
+          635.5269638470241,
+          488.85442905426027
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19341,6 +19405,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -24207,6 +24272,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -25005,7 +25076,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -25807,7 +25879,8 @@ window.BENCHMARK_DATA = {
           714.2741416931152,
           655.9798580169678,
           660.4626406351725,
-          628.1816426595052
+          628.1816426595052,
+          508.0350049336751
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26589,6 +26662,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -27424,7 +27498,8 @@ window.BENCHMARK_DATA = {
           27657.670508248466,
           28537.617584228516,
           28539.752729143416,
-          27536.65915934245
+          27536.65915934245,
+          15998.21986694336
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28231,6 +28306,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -28322,7 +28398,8 @@ window.BENCHMARK_DATA = {
           799.3831445058187,
           809.9863120487759,
           815.4441024235317,
-          784.0968588420322
+          784.0968588420322,
+          586.7889182908194
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28334,6 +28411,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -28970,6 +29048,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -29063,7 +29147,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -29160,7 +29245,8 @@ window.BENCHMARK_DATA = {
           745.8418299811227,
           754.9811982374924,
           816.9865444183349,
-          730.8442955698285
+          730.8442955698285,
+          542.0618453979492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29237,6 +29323,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -29367,7 +29454,8 @@ window.BENCHMARK_DATA = {
           87061.8974609375,
           86238.60089518229,
           82774.30965482272,
-          83963.34209798177
+          83963.34209798177,
+          51145.20411028181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29469,7 +29557,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30029,6 +30118,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -30122,7 +30217,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -30219,7 +30315,8 @@ window.BENCHMARK_DATA = {
           190.91739013989766,
           182.13516891797383,
           197.2961763858795,
-          177.2695261331705
+          177.2695261331705,
+          147.19169441858926
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30296,6 +30393,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -30426,7 +30524,8 @@ window.BENCHMARK_DATA = {
           32461.7604288737,
           32547.027975899833,
           31733.089233398438,
-          31718.898799351282
+          31718.898799351282,
+          14262.032648359027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30528,7 +30627,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30619,7 +30719,8 @@ window.BENCHMARK_DATA = {
           257.5553312301636,
           267.13129625320437,
           254.05583359400433,
-          257.7866344085106
+          257.7866344085106,
+          182.73601034971384
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30631,6 +30732,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -30919,6 +31021,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -30954,7 +31062,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -30993,7 +31102,8 @@ window.BENCHMARK_DATA = {
           388.97821811040245,
           382.7760449409485,
           371.51588408152264,
-          394.759782409668
+          394.759782409668,
+          267.4871409336726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31014,6 +31124,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -31084,7 +31195,8 @@ window.BENCHMARK_DATA = {
           418.7032110850016,
           425.70691884358723,
           397.9347994486491,
-          424.26194454828897
+          424.26194454828897,
+          325.2118851457323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31096,6 +31208,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -31175,7 +31288,8 @@ window.BENCHMARK_DATA = {
           438.0070176124573,
           428.5001742839813,
           412.1928436415536,
-          429.35954801852887
+          429.35954801852887,
+          318.12597629002164
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31187,6 +31301,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -31431,6 +31546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -31466,7 +31587,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -31505,7 +31627,8 @@ window.BENCHMARK_DATA = {
           876.307579421997,
           828.1030775070191,
           817.2805114110311,
-          828.4492577870686
+          828.4492577870686,
+          598.9251449902853
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31532,6 +31655,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -31596,7 +31720,8 @@ window.BENCHMARK_DATA = {
           2064.3567354838056,
           2060.7341435750327,
           1975.3897729601179,
-          1998.4625478472028
+          1998.4625478472028,
+          1523.8900037912222
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31608,6 +31733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -31687,7 +31813,8 @@ window.BENCHMARK_DATA = {
           986.6771430969238,
           946.9142698287964,
           950.5793904622395,
-          907.5515675226848
+          907.5515675226848,
+          725.3409105936686
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31699,6 +31826,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -31943,6 +32071,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -31978,7 +32112,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -32017,7 +32152,8 @@ window.BENCHMARK_DATA = {
           12439.407955714634,
           12288.829588826497,
           12188.088536580404,
-          12333.795104980469
+          12333.795104980469,
+          8526.345937875602
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32036,6 +32172,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -32108,7 +32245,8 @@ window.BENCHMARK_DATA = {
           41321.58065359933,
           41558.22735159738,
           39963.73721110026,
-          40402.78737182617
+          40402.78737182617,
+          26568.207509358723
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32152,6 +32290,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -32199,7 +32338,8 @@ window.BENCHMARK_DATA = {
           11381.800954965445,
           11434.021187918526,
           11353.549744742257,
-          11309.382888793945
+          11309.382888793945,
+          8237.906922403972
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32211,6 +32351,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -32455,6 +32596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:03:00 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to v3.3.1 (#1844)"
+      },
+      {
+        "sha": "5c9b4b132b916041c672bca345be66fd9c7401fd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 21:03:40 2026 \u002B0200",
+        "message": "chore: fail the build on malformed release tags (#1843)"
       }
     ],
     "labels": [
@@ -32490,7 +32637,8 @@ window.BENCHMARK_DATA = {
       "2bdfbc60",
       "a0e3c315",
       "422ae04d",
-      "7dbe3889"
+      "7dbe3889",
+      "5c9b4b13"
     ],
     "datasets": [
       {
@@ -32529,7 +32677,8 @@ window.BENCHMARK_DATA = {
           11676.643701171875,
           11816.207595825195,
           11948.932791573661,
-          11776.999320983887
+          11776.999320983887,
+          7891.028594970703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32556,6 +32705,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208,
@@ -32620,7 +32770,8 @@ window.BENCHMARK_DATA = {
           59378.345275878906,
           60696.61522498498,
           59364.43751878005,
-          58566.32469889323
+          58566.32469889323,
+          37925.41348031851
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32663,6 +32814,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -32711,7 +32863,8 @@ window.BENCHMARK_DATA = {
           22236.573251577523,
           22709.777536245492,
           22251.639920748195,
-          22238.793221028645
+          22238.793221028645,
+          15820.927850341797
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32723,6 +32876,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
