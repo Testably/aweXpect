@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Snapshots.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="aweXpect"/>
+		<ProjectReference Include="..\..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+	</ItemGroup>
+
+</Project>
