@@ -373,6 +373,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	: CollectionMatchConstraintBase<TValue>(it, grammars, expected is null, failsForNullSubject, matchOptions)
 	where TItem : TMatch
 {
+	private IOptionsEquality<TMatch>? _evaluationOptions;
 	private ICollection<TItem>? _expectedItems;
 
 	// Not reset by Start, so that a sequence that is not a collection is enumerated once for all evaluations.
@@ -392,6 +393,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	protected override void Start()
 	{
 		base.Start();
+		_evaluationOptions = null;
 		_expectedItems = null;
 		SubjectComparer = null;
 		_materializedExpected ??= expected as ICollection<TItem>;
@@ -426,9 +428,12 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	///     The options to compare the items with during the evaluation in the <paramref name="context" />.
 	/// </summary>
 	protected IOptionsEquality<TMatch> GetItemOptions(IEvaluationContext context, CancellationToken cancellationToken)
-		=> options is ObjectEqualityOptions<TMatch> objectOptions
+	{
+		_evaluationOptions = options is ObjectEqualityOptions<TMatch> objectOptions
 			? objectOptions.ForEvaluation(context, cancellationToken)
 			: options;
+		return _evaluationOptions;
+	}
 
 	/// <summary>
 	///     Whether the comparison of the options was not changed, so that the comparer of a set subject may decide.
@@ -444,7 +449,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 			AppendExpectedItemsContext(contexts, expected, _expectedItems);
 		}
 
-		contexts.AddOptionsContexts(options);
+		contexts.AddOptionsContexts(_evaluationOptions ?? options);
 	}
 
 	/// <summary>

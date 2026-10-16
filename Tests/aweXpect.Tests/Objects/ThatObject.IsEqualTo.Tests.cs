@@ -92,6 +92,7 @@ public sealed partial class ThatObject
 					             Equivalency options:
 					              - include public fields and properties
 					              - ignore members: ["PlayCount"]
+					                "PlayCount" matched no member
 					             """)
 					.Because("the failure describes the options like IsEquivalentTo does");
 			}

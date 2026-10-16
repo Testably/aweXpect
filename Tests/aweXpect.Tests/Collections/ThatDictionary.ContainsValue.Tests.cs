@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Customization;
+using aweXpect.Equivalency;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -186,6 +187,44 @@ public sealed partial class ThatDictionary
 					=> await That(subject).ContainsValue(new MyClass(2)).Equivalent();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenValueIsNotEquivalent_WithAMemberToIgnoreThatMatchesNoMember_ShouldSuggestTheClosestMember()
+			{
+				Dictionary<string, MyClass> subject = new()
+				{
+					["a"] = new MyClass(1),
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsValue(new MyClass(2)).Equivalent(o => o.IgnoringMember("Valeu"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains value ThatDictionary.MyClass {
+					               Inner = <null>,
+					               Value = 2
+					             } using equivalency,
+					             but it did not contain value ThatDictionary.MyClass {
+					               Inner = <null>,
+					               Value = 2
+					             }
+
+					             Dictionary:
+					             {
+					               ["a"] = ThatDictionary.MyClass {
+					                 Inner = <null>,
+					                 Value = 1
+					               }
+					             }
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["Valeu"]
+					                "Valeu" matched no member (did you mean "Value"?)
+					             """);
 			}
 
 			[Test]

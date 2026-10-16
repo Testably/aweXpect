@@ -129,6 +129,7 @@ public static partial class ThatDictionary
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		private IOptionsEquality<TValue>? _evaluationOptions;
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
 
@@ -141,14 +142,14 @@ public static partial class ThatDictionary
 		{
 			Actual = actual;
 			options.ValidateExpectedItems(expected);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			if (actual is not null)
 			{
-				IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
 				_missingValues = [];
 				_existingValues = [];
 				foreach (TValue item in expected)
 				{
-					if (await ContainsValue(actual, item, evaluationOptions))
+					if (await ContainsValue(actual, item, _evaluationOptions))
 					{
 						_existingValues.Add(item);
 					}
@@ -173,7 +174,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
+			contexts.AddOptionsContexts(_evaluationOptions ?? options);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

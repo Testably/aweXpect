@@ -32,6 +32,8 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	bool expectUnique)
 	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
+	private IOptionsEquality<TMember>? _evaluationOptions;
+
 	/// <summary>
 	///     Whether the items are expected to be unique.
 	/// </summary>
@@ -55,7 +57,16 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		base.AppendContexts(contexts);
-		(options as ObjectEqualityOptions<TMember>)?.AppendContexts(contexts);
+		((_evaluationOptions ?? options) as ObjectEqualityOptions<TMember>)?.AppendContexts(contexts);
+	}
+
+	/// <summary>
+	///     Starts a new evaluation, whose contexts are those of the options until its items are compared.
+	/// </summary>
+	protected void Start()
+	{
+		StartEvaluation();
+		_evaluationOptions = null;
 	}
 
 	/// <summary>
@@ -63,7 +74,10 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	/// </summary>
 	protected OccurrenceCounter<TMember> CreateCounter(IEvaluationContext context,
 		CancellationToken cancellationToken)
-		=> new(options.ForEvaluation(context, cancellationToken), MemberHashing.For(options));
+	{
+		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		return new OccurrenceCounter<TMember>(_evaluationOptions, MemberHashing.For(options));
+	}
 
 	/// <summary>
 	///     Adds the member of the <paramref name="item" /> to the <paramref name="occurrences" />.
@@ -117,7 +131,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		StartEvaluation();
+		Start();
 		_collectionContext = default;
 		_itemType = null;
 		Actual = actual;
@@ -229,7 +243,7 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		StartEvaluation();
+		Start();
 		_collectionContext = default;
 		Actual = actual;
 		if (actual is null)

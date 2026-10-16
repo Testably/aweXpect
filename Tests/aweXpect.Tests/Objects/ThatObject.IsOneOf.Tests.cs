@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -90,6 +91,48 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
+			public async Task WhenComparingWithEquivalenceAgainstSeveralCandidates_AndOnlyTheFirstHasACloseMember_ShouldKeepTheSuggestion()
+			{
+				OuterClass subject = new()
+				{
+					Inner = new InnerClass
+					{
+						Value = "foo",
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsOneOf(new OuterClass
+					{
+						Inner = new InnerClass
+						{
+							Value = "bar",
+						},
+					}, new OuterClass()).Equivalent(o => o.IgnoringMember("Inner.Valeu"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to one of [ThatObject.OuterClass { Inner = ThatObject.InnerClass { Collection = <null>, Inner = <null>, IntValue = 0, Value = "bar" }, Value = <null> }, ThatObject.OuterClass { Inner = <null>, Value = <null> }],
+					             but it was ThatObject.OuterClass {
+					                 Inner = ThatObject.InnerClass {
+					                   Collection = <null>,
+					                   Inner = <null>,
+					                   IntValue = 0,
+					                   Value = "foo"
+					                 },
+					                 Value = <null>
+					               }
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["Inner.Valeu"]
+					                "Inner.Valeu" matched no member (did you mean "Inner.Value"?)
+					             """)
+					.Because("the second candidate has no inner value, which must not discard the suggestion of the first");
+			}
+
+			[Test]
 			public async Task WhenComparingWithEquivalenceAgainstSeveralCandidates_ShouldDescribeTheSubject()
 			{
 				object subject = new MyClass
@@ -118,6 +161,34 @@ public sealed partial class ThatObject
 					              - include public fields and properties
 					             """)
 					.Because("the differences to the last candidate would read as if it were the only expectation");
+			}
+
+			[Test]
+			public async Task WhenComparingWithEquivalenceAndAMemberToIgnoreMatchesNoMember_ShouldSuggestTheClosestMember()
+			{
+				object subject = new MyClass
+				{
+					Value = 1,
+				};
+				object[] expected = [new MyClass(),];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected).Equivalent(o => o.IgnoringMember("Valeu"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to one of [ThatObject.MyClass { Value = 0 }],
+					             but it was not:
+					               Property Value differed:
+					                   Actual: 1
+					                 Expected: 0
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["Valeu"]
+					                "Valeu" matched no member (did you mean "Value"?)
+					             """);
 			}
 
 			[Test]

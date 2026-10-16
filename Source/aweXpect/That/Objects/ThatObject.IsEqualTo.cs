@@ -128,21 +128,22 @@ public static partial class ThatObject
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 			IAsyncContextConstraint<TSubject>
 	{
+		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
 		private IObjectMatchResult? _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.ForEvaluation(context, cancellationToken)
-				.AreConsideredEqualWithExplanation(actual, expected);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
@@ -168,21 +169,22 @@ public static partial class ThatObject
 			IAsyncContextConstraint<T>
 		where T : struct
 	{
+		private ObjectEqualityOptions<T>? _evaluationOptions;
 		private IObjectMatchResult? _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.ForEvaluation(context, cancellationToken)
-				.AreConsideredEqualWithExplanation(actual, expected);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
@@ -208,21 +210,22 @@ public static partial class ThatObject
 			IAsyncContextConstraint<T?>
 		where T : struct
 	{
+		private ObjectEqualityOptions<T?>? _evaluationOptions;
 		private IObjectMatchResult? _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(T? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.ForEvaluation(context, cancellationToken)
-				.AreConsideredEqualWithExplanation(actual, expected);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -283,6 +284,82 @@ public sealed partial class ThatEnumerable
 						             Expected (item [1]):
 						             [1, 2]
 						             """);
+				}
+
+				[Test]
+				public async Task WhenItemsAreEquivalencyCompared_AndOnlyTheFirstHasACloseMember_ShouldKeepTheSuggestion()
+				{
+					InnerClass[] subject =
+					[
+						new()
+						{
+							Inner = new InnerClass
+							{
+								Value = "foo",
+							},
+						},
+						new(),
+					];
+					InnerClass expected = new()
+					{
+						Inner = new InnerClass
+						{
+							Value = "bar",
+						},
+					};
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.IsEquivalentTo(expected, o => o.IgnoringMember("Inner.Valeu")));
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equivalent to expected for all items,
+						             but none of 2 were
+
+						             Not matching items:
+						             [
+						               ThatEnumerable.InnerClass {
+						                 Collection = <null>,
+						                 Inner = ThatEnumerable.InnerClass {
+						                   Collection = <null>,
+						                   Inner = <null>,
+						                   Value = "foo"
+						                 },
+						                 Value = <null>
+						               },
+						               ThatEnumerable.InnerClass {
+						                 Collection = <null>,
+						                 Inner = <null>,
+						                 Value = <null>
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               ThatEnumerable.InnerClass {
+						                 Collection = <null>,
+						                 Inner = ThatEnumerable.InnerClass {
+						                   Collection = <null>,
+						                   Inner = <null>,
+						                   Value = "foo"
+						                 },
+						                 Value = <null>
+						               },
+						               ThatEnumerable.InnerClass {
+						                 Collection = <null>,
+						                 Inner = <null>,
+						                 Value = <null>
+						               }
+						             ]
+
+						             Equivalency options (item [0]):
+						              - include public fields and properties
+						              - ignore members: ["Inner.Valeu"]
+						                "Inner.Valeu" matched no member (did you mean "Inner.Value"?)
+						             """)
+						.Because("the second item has no inner value, which must not discard the suggestion of the first");
 				}
 
 				[Test]

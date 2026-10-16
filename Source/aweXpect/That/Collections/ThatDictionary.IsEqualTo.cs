@@ -122,6 +122,7 @@ public static partial class ThatDictionary
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		private IOptionsEquality<TValue>? _evaluationOptions;
 		private string? _failure;
 
 		/// <remarks>
@@ -133,6 +134,7 @@ public static partial class ThatDictionary
 		{
 			Actual = actual;
 			ValidateExpectedValues();
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
@@ -145,7 +147,6 @@ public static partial class ThatDictionary
 				return this;
 			}
 
-			IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			ValueLookup<TKey, TValue> tryGetValue = GetLookup(actual);
 			List<TKey>? missingKeys = null;
 			List<TKey>? collapsedKeys = null;
@@ -165,7 +166,7 @@ public static partial class ThatDictionary
 					(collapsedKeys ??= []).Add(pair.Key);
 				}
 
-				if (!await evaluationOptions.AreConsideredEqual(value!, pair.Value))
+				if (!await _evaluationOptions.AreConsideredEqual(value!, pair.Value))
 				{
 					(incorrectValues ??= []).Add(
 						$"contained key {Formatter.Format(pair.Key)} with value {Formatter.Format(value)} instead of {Formatter.Format(pair.Value)}");
@@ -195,7 +196,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
+			contexts.AddOptionsContexts(_evaluationOptions ?? options);
 		}
 
 		private void ValidateExpectedValues()

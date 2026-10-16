@@ -89,6 +89,8 @@ public static partial class ThatDictionary
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		private IOptionsEquality<TValue>? _evaluationOptions;
+
 		/// <remarks>
 		///     The expected value is validated first, so that an unusable pattern is rejected whichever entries the
 		///     subject has.
@@ -98,8 +100,8 @@ public static partial class ThatDictionary
 		{
 			Actual = actual;
 			options.ValidateExpectedItems([expected,]);
-			Outcome = actual is not null &&
-			          await ContainsValue(actual, expected, options.ForEvaluation(context, cancellationToken))
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			Outcome = actual is not null && await ContainsValue(actual, expected, _evaluationOptions)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -109,7 +111,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
+			contexts.AddOptionsContexts(_evaluationOptions ?? options);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
