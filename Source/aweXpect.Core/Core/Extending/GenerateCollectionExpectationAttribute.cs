@@ -8,10 +8,13 @@ namespace aweXpect.Core.Extending;
 /// </summary>
 /// <remarks>
 ///     The method follows the rules of <see cref="GenerateExpectationAttribute" />: it returns
-///     <see langword="bool" />, <see cref="System.Threading.Tasks.Task{TResult}" /> or
-///     <see cref="System.Threading.Tasks.ValueTask{TResult}" /> of <see langword="bool" />, its first parameter is the
-///     item, the other parameters become the parameters of the expectation, and it may end with a
-///     <see cref="System.Threading.CancellationToken" />. Both attributes can mark the same method.
+///     <see langword="bool" /> or a <see cref="PredicateResult" />, directly or as the result of a
+///     <see cref="System.Threading.Tasks.Task{TResult}" /> or <see cref="System.Threading.Tasks.ValueTask{TResult}" />,
+///     its first parameter is the item, the other parameters become the parameters of the expectation, and it may end
+///     with a <see cref="System.Threading.CancellationToken" />. Both attributes can mark the same method.
+///     <para />
+///     An item that the method cannot answer fails the expectation and its negation with the reason of the
+///     <see cref="PredicateResult" />, unless the items before already determine the outcome.
 ///     <para />
 ///     The expectation extends the elements that a quantifier like <c>All()</c> or <c>AtLeast(2)</c> selects, of every
 ///     kind of collection that can hold the item. A <see langword="null" /> item does not match, unless the item

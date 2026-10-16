@@ -48,8 +48,21 @@ internal static partial class ThatAccount
 		return account.Level > 5;
 	}
 
+	[GenerateCollectionExpectation("AreSenior", "is senior", "are senior")]
+	[GenerateExpectation("Is{Not}Senior", "is {not} senior")]
+	private static PredicateResult IsSenior(Account account)
+		=> account.Level < 0 ? PredicateResult.FailureBothWays("had no level") : account.Level > 3;
+
 	[GenerateExpectation("IsTheOwner", "is {not} the owner")]
 	private static bool IsTheOwner(Account account) => account.Name == "owner";
+
+	[GenerateCollectionExpectation("AreTrusted", "is trusted", "are trusted")]
+	[GenerateExpectation("Is{Not}Trusted", "is {not} trusted")]
+	private static async Task<PredicateResult> IsTrusted(Account account, CancellationToken cancellationToken)
+	{
+		await Task.Yield();
+		return account.Level < 0 ? PredicateResult.FailureBothWays("was locked") : account.Level > 1;
+	}
 
 	[GenerateCollectionExpectation("AreVerified", "is verified", "are verified")]
 	[GenerateExpectation("Is{Not}Verified", "is {not} verified")]
@@ -72,6 +85,11 @@ internal static partial class ThatAccount
 
 internal static partial class ThatLuckyNumber
 {
+	[GenerateCollectionExpectation("AreSquares", "is a square", "are squares")]
+	[GenerateExpectation("Is{Not}ASquare", "is {not} a square")]
+	private static PredicateResult IsASquare(int value)
+		=> value < 0 ? PredicateResult.FailureBothWays("was negative") : (int)Math.Sqrt(value) * (int)Math.Sqrt(value) == value;
+
 	[GenerateExpectation("Is{Not}AnyOf", "is {not} any of {values}")]
 	private static bool IsAnyOf(int value, params int[] values) => values.Contains(value);
 

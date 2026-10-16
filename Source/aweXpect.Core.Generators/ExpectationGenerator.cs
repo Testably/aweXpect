@@ -159,6 +159,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			GetNamedArgument<string>(attribute, "NegatedRemarks"),
 			signature.IsAsync,
 			signature.PassesCancellationToken,
+			signature.ReturnsPredicateResult,
 			classModel.Parameters,
 			result,
 			GetOverloads(signature.Subject, signature.ConstraintPrefix,
@@ -218,6 +219,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			GetNamedArgument<string>(attribute, "Remarks"),
 			GetPredicateKind(signature.Method.ReturnType),
 			signature.PassesCancellationToken,
+			signature.ReturnsPredicateResult,
 			GetItems(signature.Subject, signature.ConstraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
 			false), null);
@@ -329,9 +331,9 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 	private static PredicateKind GetPredicateKind(ITypeSymbol returnType)
 	{
-		if (returnType.SpecialType == SpecialType.System_Boolean)
+		if (!IsTask(returnType))
 		{
-			return PredicateKind.Boolean;
+			return PredicateKind.Synchronous;
 		}
 
 		return returnType.Name == "Task" ? PredicateKind.Task : PredicateKind.ValueTask;
@@ -361,9 +363,9 @@ public class ExpectationGenerator : IIncrementalGenerator
 			return "it is generic";
 		}
 
-		if (method.ReturnType.SpecialType != SpecialType.System_Boolean && !IsBooleanTask(method.ReturnType))
+		if (GetResultType(method.ReturnType) is null)
 		{
-			return "it returns neither bool nor Task<bool> nor ValueTask<bool>";
+			return "it returns neither bool nor PredicateResult, nor a Task or ValueTask of them";
 		}
 
 		if (method.Parameters.Length == 0)
@@ -408,11 +410,24 @@ public class ExpectationGenerator : IIncrementalGenerator
 			_ => Accessibility.Public,
 		};
 
-	private static bool IsBooleanTask(ITypeSymbol type)
+	/// <summary>
+	///     The <see langword="bool" /> or <c>PredicateResult</c> that the method returns, directly or as the result of a
+	///     <c>Task</c> or <c>ValueTask</c>, or <see langword="null" /> for any other return type.
+	/// </summary>
+	private static ITypeSymbol? GetResultType(ITypeSymbol returnType)
+	{
+		ITypeSymbol type = IsTask(returnType) ? ((INamedTypeSymbol)returnType).TypeArguments[0] : returnType;
+		return type.SpecialType == SpecialType.System_Boolean || IsPredicateResult(type) ? type : null;
+	}
+
+	private static bool IsTask(ITypeSymbol type)
 		=> type is INamedTypeSymbol { Arity: 1, ContainingNamespace: var ns, } named &&
 		   named.Name is "Task" or "ValueTask" &&
-		   ns.ToDisplayString() == "System.Threading.Tasks" &&
-		   named.TypeArguments[0].SpecialType == SpecialType.System_Boolean;
+		   ns.ToDisplayString() == "System.Threading.Tasks";
+
+	private static bool IsPredicateResult(ITypeSymbol? type)
+		=> type is { Name: "PredicateResult", ContainingNamespace: var ns, } &&
+		   ns.ToDisplayString() == "aweXpect.Core.Extending";
 
 	private static bool TryParseText(string text, List<string> parameterNames, out EquatableArray<TextPart> parts,
 		out string? unknownPlaceholder)
@@ -645,7 +660,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 		public INamedTypeSymbol Class { get; }
 		public string MethodName { get; }
 		public bool PassesCancellationToken { get; }
-		public bool IsAsync => Method.ReturnType.SpecialType != SpecialType.System_Boolean;
+		public bool IsAsync => IsTask(Method.ReturnType);
+		public bool ReturnsPredicateResult => IsPredicateResult(GetResultType(Method.ReturnType));
 		public IParameterSymbol Subject => Method.Parameters[0];
 
 		/// <summary>

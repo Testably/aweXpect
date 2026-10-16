@@ -129,6 +129,10 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 					[GenerateCollectionExpectation("AreOdd", "is odd", "are odd")]
 					private static ValueTask<bool> IsOdd([DisallowNull] int? value) => new ValueTask<bool>(value % 2 == 1);
+
+					[GenerateCollectionExpectation("AreKnown", "is known", "are known")]
+					private static Task<PredicateResult> IsKnown(string value)
+						=> Task.FromResult(value.Length == 0 ? PredicateResult.FailureBothWays("was empty") : true);
 				}
 			}
 			""", LanguageVersion.CSharp8);
@@ -146,7 +150,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because it returns neither bool nor Task<bool> nor ValueTask<bool>");
+			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because it returns neither bool nor PredicateResult, nor a Task or ValueTask of them");
 	}
 
 	[Test]
@@ -199,7 +203,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated)
-			.Contains("=> new global::System.Threading.Tasks.ValueTask<bool>(global::Lib.ThatSample.IsEmpty(item));")
+			.Contains("=> new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsEmpty(item));")
 			.Exactly(2);
 	}
 
@@ -215,7 +219,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await ThatCompiles(result);
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
 		await That(result.Generated)
-			.Contains("=> new global::System.Threading.Tasks.ValueTask<bool>(global::Lib.ThatSample.IsZero(item));")
+			.Contains("=> new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsZero(item));")
 			.Exactly(2);
 	}
 
@@ -300,6 +304,22 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatReports(result,
 			"aweXpect4002: 'ThatSample.IsEqual(int, int)' cannot generate an expectation, because the placeholder '{other}' names no parameter of the expectation");
+	}
+
+	[Test]
+	public async Task PredicateResult_ShouldBeWrapped()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreEmpty", "is empty", "are empty")]
+			private static PredicateResult IsEmpty(string value)
+				=> value.Length > 9 ? PredicateResult.FailureBothWays("was too long") : value.Length == 0;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(false) : new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(global::Lib.ThatSample.IsEmpty(item));")
+			.Exactly(2);
 	}
 
 	[Test]
@@ -397,7 +417,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
-	public async Task ValueTaskPredicate_ShouldBeReturnedDirectly()
+	public async Task ValueTaskOfBoolPredicate_ShouldBeAwaited()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
 			"""
@@ -406,7 +426,27 @@ public sealed class CoreCollectionExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
+		await That(result.Generated).Contains("protected override async global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult> IsMatch(").Exactly(2);
+		await That(result.Generated).Contains("=> await global::Lib.ThatSample.IsZero(item).ConfigureAwait(false);").Exactly(2)
+			.Because("only the awaited bool converts to a PredicateResult");
+	}
+
+	[Test]
+	public async Task ValueTaskOfPredicateResultPredicate_ShouldBeReturnedDirectly()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreZero", "is zero", "are zero")]
+			private static ValueTask<PredicateResult> IsZero(int value) => new(value == 0);
+			""");
+
+		await ThatCompiles(result);
 		await That(result.Generated).Contains("=> global::Lib.ThatSample.IsZero(item);").Exactly(2);
+		await That(result.Generated)
+			.Contains("=> item is null ? new global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult>(false) : global::Lib.ThatSample.IsZero(item.Value);")
+			.Exactly(2)
+			.Because("a null item of the nullable overload does not match");
+		await That(result.Generated).DoesNotContain("async ");
 	}
 
 	[Test]
@@ -422,7 +462,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int> elements)");
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
 		await That(result.Generated)
-			.Contains("item is null ? new global::System.Threading.Tasks.ValueTask<bool>(false) : new global::System.Threading.Tasks.ValueTask<bool>(global::Lib.ThatSample.IsZero(item.Value))")
+			.Contains("=> item is null ? false : await global::Lib.ThatSample.IsZero(item.Value).ConfigureAwait(false);")
 			.Exactly(2);
 	}
 

@@ -233,17 +233,23 @@ internal static class CollectionExpectationWriter
 		string fields = string.Concat(Enumerable.Range(0, classModel.Parameters.Count).Select(i => $", _p{i}"));
 		string token = model.PassesCancellationToken ? ", cancellationToken" : "";
 		string call = $"{owner}.{classModel.PredicateName}({item.ItemArgument}{fields}{token})";
+		string result = $"{ExpectationWriter.ValueTask}<{PredicateResult}>";
+		// An asynchronous bool is awaited, as only the result itself converts to a PredicateResult.
+		bool awaitsBool = model.PredicateKind != PredicateKind.Synchronous && !model.ReturnsPredicateResult;
 		string match = model.PredicateKind switch
 		{
-			PredicateKind.Boolean when item.FailsOnNull => $"new {ExpectationWriter.ValueTask}<bool>(!(item is null) && {call})",
-			PredicateKind.Boolean => $"new {ExpectationWriter.ValueTask}<bool>({call})",
-			PredicateKind.Task when item.FailsOnNull => $"item is null ? new {ExpectationWriter.ValueTask}<bool>(false) : new {ExpectationWriter.ValueTask}<bool>({call})",
-			PredicateKind.Task => $"new {ExpectationWriter.ValueTask}<bool>({call})",
-			_ when item.FailsOnNull => $"item is null ? new {ExpectationWriter.ValueTask}<bool>(false) : {call}",
+			_ when awaitsBool && item.FailsOnNull => $"item is null ? false : await {call}.ConfigureAwait(false)",
+			_ when awaitsBool => $"await {call}.ConfigureAwait(false)",
+			PredicateKind.Synchronous when item.FailsOnNull && !model.ReturnsPredicateResult
+				=> $"new {result}(!(item is null) && {call})",
+			PredicateKind.Synchronous or PredicateKind.Task when item.FailsOnNull
+				=> $"item is null ? new {result}(false) : new {result}({call})",
+			PredicateKind.Synchronous or PredicateKind.Task => $"new {result}({call})",
+			_ when item.FailsOnNull => $"item is null ? new {result}(false) : {call}",
 			_ => call,
 		};
-		sb.Append("\t\tprotected override ").Append(ExpectationWriter.ValueTask).Append("<bool> IsMatch(").Append(item.ItemType)
-			.AppendLine(" item, global::System.Threading.CancellationToken cancellationToken)");
+		sb.Append("\t\tprotected override ").Append(awaitsBool ? "async " : "").Append(result).Append(" IsMatch(")
+			.Append(item.ItemType).AppendLine(" item, global::System.Threading.CancellationToken cancellationToken)");
 		sb.Append("\t\t\t=> ").Append(match).AppendLine(";");
 		sb.AppendLine();
 	}

@@ -16,6 +16,8 @@ namespace aweXpect.Core.Extending;
 ///     collection that is enumerated synchronously, which classify every item with <see cref="IsMatch" />.
 /// </summary>
 /// <remarks>
+///     An item that the predicate cannot answer stops the evaluation, and the expectation and its negation fail with
+///     the reason, unless the items before already determine the outcome.<br />
 ///     A collection whose number of items is known is read to its end, so that the result counts all items, e.g. "but
 ///     only 2 of 5 were". Any other collection is only read until the outcome is determined.
 /// </remarks>
@@ -76,10 +78,10 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 				return this;
 			}
 
-			bool isMatch;
+			PredicateResult result;
 			try
 			{
-				isMatch = await IsMatch(item, cancellationToken);
+				result = await IsMatch(item, cancellationToken);
 			}
 			catch (Exception) when (hasItems && IsDetermined)
 			{
@@ -88,7 +90,14 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 			}
 
 			hasItems = true;
-			Record(item, isMatch);
+			if (result.Reason is { } reason)
+			{
+				Record(item, new PredicateResult.UnansweredItem(item, reason));
+				CompleteEarly();
+				return this;
+			}
+
+			Record(item, result.Outcome == Outcome.Success);
 			if (!readsAllItems && IsDetermined)
 			{
 				CompleteEarly();
@@ -101,9 +110,9 @@ public abstract class GeneratedCollectionConstraint<TCollection, TItem>(
 	}
 
 	/// <summary>
-	///     Whether the <paramref name="item" /> matches the expectation.
+	///     Whether the <paramref name="item" /> matches the expectation, or why that cannot be answered.
 	/// </summary>
-	protected abstract ValueTask<bool> IsMatch(TItem item, CancellationToken cancellationToken);
+	protected abstract ValueTask<PredicateResult> IsMatch(TItem item, CancellationToken cancellationToken);
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)

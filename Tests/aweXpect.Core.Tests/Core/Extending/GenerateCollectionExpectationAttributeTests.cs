@@ -424,6 +424,118 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			             """);
 	}
 
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task PredicateResult_WhenAnAsyncEnumerableItemFailsBothWays_ShouldFailWithTheReason()
+	{
+		IAsyncEnumerable<int> subject = ToAsyncEnumerable(4, -1, 9);
+
+		async Task Act()
+			=> await That(subject).All().AreSquares();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is a square for all items,
+			             but for the item at index 1, it was negative
+
+			             Collection:
+			             [4, -1, (… and maybe more)]
+			             """);
+	}
+#endif
+
+	[Test]
+	public async Task PredicateResult_WhenAnItemFailsBothWays_ShouldFailWithTheReason()
+	{
+		Account[] subject = [new("Alice", 5), new("Bob", -1), new("Carol", 5),];
+
+		async Task Act()
+			=> await That(subject).All().AreSenior();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is senior for all items,
+			             but for the item at index 1, it had no level
+
+			             Collection:
+			             [
+			               Alice,
+			               Bob,
+			               Carol
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenAnItemFailsBothWaysAndNegated_ShouldAlsoFail()
+	{
+		Account[] subject = [new("Alice", 1), new("Bob", -1),];
+
+		async Task Act()
+			=> await That(subject).None().AreSenior();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is senior for no items,
+			             but for the item at index 1, it had no level
+
+			             Collection:
+			             [
+			               Alice,
+			               Bob
+			             ]
+			             """)
+			.Because("an item that cannot be answered fails the expectation and its negation alike");
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenAsyncAndAnItemFailsBothWays_ShouldFailWithTheReason()
+	{
+		Account[] subject = [new("Alice", 5), new("Bob", -1),];
+
+		async Task Act()
+			=> await That(subject).All().AreTrusted();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is trusted for all items,
+			             but for the item at index 1, it was locked
+
+			             Collection:
+			             [
+			               Alice,
+			               Bob
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenOutcomeIsDeterminedBeforeTheItem_ShouldIgnoreIt()
+	{
+		int[] subject = [2, -1, 4,];
+
+		async Task Act()
+			=> await That(subject).All().AreSquares();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is a square for all items,
+			             but none of at least 1 were
+
+			             Not matching items:
+			             [2, (… and maybe more)]
+
+			             Collection:
+			             [2, -1, 4]
+			             """)
+			.Because("an item that cannot be answered does not change an outcome that the items before determine");
+	}
+
 	[Test]
 	public async Task PredicateThrowsAfterTheOutcomeIsDetermined_ShouldStopReadingTheItems()
 	{
