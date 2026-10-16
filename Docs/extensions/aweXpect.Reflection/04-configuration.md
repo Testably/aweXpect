@@ -4,6 +4,14 @@ All customizations live under `Customize.aweXpect.Reflection()`: the assembly ex
 aweXpect.Core, the others by this library. Every `Set(…)` returns a scope that restores the previous value when
 disposed.
 
+| Customization                                                              | Default                           | Summary                                                                                      |
+|----------------------------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
+| [`ExcludedAssemblyPrefixes`](#assembly-exclusions)                         | `System`, `Microsoft`, …          | assemblies excluded from `In.AllLoadedAssemblies()` and ignored by the `DependOnlyOn` family |
+| [`IncludedCompilerGeneratedMembers()`](#compiler-generated-members)        | `CompilerGeneratedMembers.None`   | the compiler-generated types and members included in the navigations                         |
+| [`IncludedSpecialNameMembers()`](#compiler-generated-members)              | `SpecialNameMembers.None`         | the operators and accessors included in `.Methods()`                                         |
+| [`DependencyResolver()`](#dependency-resolver)                             | built-in signature-level resolver | how the type-level dependency expectations determine the dependencies of a type              |
+| [`ExcludedAttributeTypes()`](./03-architecture-rules.md#type-dependencies) | none                              | additional compiler-emitted attributes that never count as dependencies                      |
+
 A value set on `Customize.aweXpect` applies to the current async flow only, e.g. a single test. To apply a
 customization to all tests, set it on `Customize.aweXpect.Global`, e.g. once in an assembly-level setup; a value set
 in the current async flow takes precedence over the global one:
@@ -122,7 +130,9 @@ public static IEnumerable<Type> GetUsedTypes(Type type)
 }
 ```
 
+:::warning[The resolver must be pure]
 Every resolver's output is normalized like the built-in's (array/by-ref/pointer element types and
 generic arguments are unwrapped, the result is de-duplicated) and cached per type for the lifetime of
 the resolver delegate, so a custom resolver needs no caching of its own. It must, however, be **pure**:
 deterministic for a given `Type` within its scope; that is what makes the caching safe.
+:::

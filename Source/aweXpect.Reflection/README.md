@@ -74,14 +74,32 @@ await Expect.That(In.AssemblyContaining<MyAggregate>()
 
 // Verify each serializable type has exactly one parameterless constructor
 await Expect.That(In.AllLoadedAssemblies()
-        .Types().With<SerializableAttribute>()
-        .WhichContainConstructors(c => c.WithoutParameters()).Exactly(1))
-    .AreClasses();
+        .Types().With<SerializableAttribute>())
+    .ContainConstructors(c => c.WithoutParameters()).Exactly(1);
 ```
 
-[Filters and expectations](../../Docs/extensions/aweXpect.Reflection/02-filters.md) documents the complete filter and expectation
-vocabulary: access modifiers, attributes, names and namespaces, type kinds, methods (return types,
-parameters, async, operators, …), properties, fields, events, constructors and assemblies.
+## Overview
+
+Each filter narrows a selection and its expectation counterpart verifies it, e.g. `.WhichArePublic()` and
+`.IsPublic()` (`.ArePublic()` for collections):
+
+| Topic                                                                 | Applies to                    | Filters / expectations                                                                                               |
+|-----------------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| [Access modifiers](../../Docs/extensions/aweXpect.Reflection/02-filters.md#access-modifiers)         | types and members             | `WhichArePublic` / `IsPublic`, `WhichAreInternal` / `IsInternal`, …                                                  |
+| [Attributes](../../Docs/extensions/aweXpect.Reflection/02-filters.md#attributes)                     | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
+| [Obsolete](../../Docs/extensions/aweXpect.Reflection/02-filters.md#obsolete)                         | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
+| [Names and namespaces](../../Docs/extensions/aweXpect.Reflection/02-filters.md#names-and-namespaces) | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WithinNamespace` / `IsWithinNamespace`                    |
+| [Types](../../Docs/extensions/aweXpect.Reflection/02-filters.md#types)                               | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
+| [Methods](../../Docs/extensions/aweXpect.Reflection/02-filters.md#methods)                           | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
+| [Operators](../../Docs/extensions/aweXpect.Reflection/02-filters.md#operators)                       | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
+| [Properties & Fields](../../Docs/extensions/aweXpect.Reflection/02-filters.md#properties--fields)    | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
+| [Events](../../Docs/extensions/aweXpect.Reflection/02-filters.md#events)                             | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
+| [Constructors](../../Docs/extensions/aweXpect.Reflection/02-filters.md#constructors)                 | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
+| [Assemblies](../../Docs/extensions/aweXpect.Reflection/02-filters.md#assemblies)                     | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
+
+The name filters and expectations accept the
+[string matching options](../../Docs/extensions/aweXpect.Reflection/02-filters.md#string-matching-options) like `AsPrefix()`, `AsSuffix()` or
+`AsWildcard()`. [Filters and expectations](../../Docs/extensions/aweXpect.Reflection/02-filters.md) documents the complete vocabulary.
 
 ## Architecture rules
 

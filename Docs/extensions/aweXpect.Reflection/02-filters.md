@@ -4,8 +4,25 @@ A **filter** (`.WhichAre…` / `.With…`) narrows a collection *before* you ver
 (`Expect.That(…).Is… / .Are… / .Has… / .Have…`) states the rule the subject must satisfy. They mirror
 each other: a filter has an `Is…`/`Are…` expectation counterpart for the same concept.
 
-The tables below pair them up. The **Filter** column is used inside `In.…`; the **Expect (single)**
-column applies to one subject; the **Expect (many)** column applies to a collection.
+| Section                                                     | Applies to                    | Filters / expectations                                                                                               |
+|-------------------------------------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| [Access modifiers](#access-modifiers)                       | types and members             | `WhichArePublic` / `IsPublic`, `WhichAreInternal` / `IsInternal`, …                                                  |
+| [Attributes](#attributes)                                   | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
+| [Obsolete](#obsolete)                                       | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
+| [Names and namespaces](#names-and-namespaces)               | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WithinNamespace` / `IsWithinNamespace`                    |
+| [Types](#types)                                             | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
+| [Methods](#methods)                                         | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
+| [Operators](#operators)                                     | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
+| [Properties & Fields](#properties--fields)                  | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
+| [Events](#events)                                           | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
+| [Constructors](#constructors)                               | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
+| [Assemblies](#assemblies)                                   | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
+| [Combining filters](#combining-filters)                     | filters                       | `OrWith<TAttribute>`, `OrReturn<T>`, `OrOfType<T>`                                                                   |
+| [String matching options](#string-matching-options)         | names and namespaces          | `AsPrefix`, `AsSuffix`, `AsWildcard`, `AsRegex`, `IgnoringCase`                                                      |
+| [Collections and quantifiers](#collections-and-quantifiers) | all subjects                  | `Satisfies`, `All().Satisfy`, `Any().Satisfy`                                                                        |
+
+The tables in the sections below pair them up. The **Filter** column is used inside `In.…`; the
+**Expect (single)** column applies to one subject; the **Expect (many)** column applies to a collection.
 
 The custom `.Which(…)` filter has a universal expectation counterpart that works for **every** subject kind
 (types, members and assemblies): use aweXpect's `.Satisfies(…)` on a single subject and `.All().Satisfy(…)`
@@ -249,9 +266,9 @@ _at least one_ matching member):
 await Expect.That(typeof(MyTests))
     .ContainsMethods(methods => methods.With<FactAttribute>().OrWith<TheoryAttribute>());
 
-// …with exactly two parameterless constructors
+// …with exactly one parameterless constructor
 await Expect.That(typeof(MyService))
-    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(2.Times());
+    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(1.Times());
 
 // Every type in a collection contains a matching property
 await Expect.That(types)
@@ -372,6 +389,7 @@ await Expect.That(typeof(MyMoney)).HasExplicitConversionOperator(typeof(MyMoney)
 `HasOperator` / conversion operators match operators declared on the type itself; pass `inherit: true` to also
 consider operators inherited from base types. Conversion source/target types are matched exactly.
 
+:::note[Operators are hidden by default]
 Operators are special-name members that are
 [hidden by default](./04-configuration.md#compiler-generated-members), so the
 plain `.Methods()` collection excludes them unless opted in via `IncludedSpecialNameMembers`. The
@@ -380,6 +398,7 @@ that configuration. The negative `.WhichAreNotOperators(Operator)` filter delibe
 operators: a "not this operator" filter over `.Methods()` is meant to narrow regular methods, and force-including
 every *other* operator would surprise more than help. If you want the other operators in that result, opt in via
 `IncludedSpecialNameMembers`.
+:::
 
 :::note[Negation]
 `IsNotAnOperator(Operator)`, `DoesNotHaveOperator(Operator)` / `DoNotHaveOperator(Operator)`

@@ -1,8 +1,8 @@
 # Selecting types and members
 
 Every expectation starts from a **selection**: the assemblies, types or members the rule applies to.
-This page covers the two entry points (`In` and `Types`) and navigating between assemblies, types and
-members.
+This page covers the two entry points ([`In`](#sources-the-in-helper) and [`Types`](#sources-the-types-helper))
+and [navigating](#navigating-to-members) between assemblies, types and members.
 
 ## Sources: the `In` helper
 
