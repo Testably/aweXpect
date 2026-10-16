@@ -46,11 +46,15 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> source, string subnet) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> source, string subnet) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
     }

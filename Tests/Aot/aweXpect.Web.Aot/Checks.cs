@@ -109,6 +109,11 @@ internal static class Checks
 		new("an IPv4-mapped address fails as IPv4",
 			() => ShouldFail(async () => await That(IPAddress.Parse("::ffff:10.0.0.1")).IsIPv4(),
 				"is an IPv4 address", "but it was ::ffff:10.0.0.1")),
+		new("an IPv4-mapped address in an IPv4 subnet passes",
+			() => ShouldPass(async () => await That(IPAddress.Parse("::ffff:10.0.0.1")).IsInSubnet("10.0.0.0/8"))),
+		new("an address outside the subnet fails",
+			() => ShouldFail(async () => await That(IPAddress.Parse("192.168.0.1")).IsInSubnet("10.0.0.0/8"),
+				"is in subnet 10.0.0.0/8", "but it was 192.168.0.1")),
 	];
 
 	private static HttpResponseMessage Response(HttpStatusCode statusCode, string? json = null, string? header = null)
