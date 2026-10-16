@@ -2,14 +2,15 @@
 
 Describes the possible expectations for delegates and the exceptions they throw.
 
-| Expectation                            | Negated                  | Summary                                                  |
-|----------------------------------------|--------------------------|----------------------------------------------------------|
-| [`Throws`](#thrown-exception)          | `DoesNotThrow`           | throws an exception                                      |
-| [`Throws<T>`](#specific-exception)     | `DoesNotThrow<T>`        | throws a `T` or a derived exception                      |
-| [`ThrowsExactly<T>`](#exact-exception) | `DoesNotThrowExactly<T>` | throws exactly a `T`                                     |
-| [`ExecutesIn`](#execution-time)        |                          | completes within the expected time                       |
-| [`Allocates`](#allocations)            |                          | allocates the expected number of bytes                   |
-| [`Eventually`](#eventually)            |                          | re-evaluates the delegate until the expectations are met |
+| Expectation                            | Negated                  | Summary                                                    |
+|----------------------------------------|--------------------------|------------------------------------------------------------|
+| [`Throws`](#thrown-exception)          | `DoesNotThrow`           | throws an exception                                        |
+| [`Throws<T>`](#specific-exception)     | `DoesNotThrow<T>`        | throws a `T` or a derived exception                        |
+| [`ThrowsExactly<T>`](#exact-exception) | `DoesNotThrowExactly<T>` | throws exactly a `T`                                       |
+| [`ExecutesIn`](#execution-time)        |                          | completes within the expected time                         |
+| [`Allocates`](#allocations)            |                          | allocates the expected number of bytes                     |
+| [`Eventually`](#eventually)            |                          | re-evaluates the delegate until the expectations are met   |
+| [`IsCollectedAfter`](#memory-leaks)    |                          | the returned object is garbage collected after the cleanup |
 
 A delegate can be any of the following. Each of them can also take a `CancellationToken` parameter (e.g.
 `Func<CancellationToken, Task>`), which is canceled when the expectation times out or is canceled:
@@ -456,3 +457,29 @@ await Expect.That(() => track.PlayCount).Eventually().IsGreaterThan(5);
 
 See [Eventually](../03-how-it-works/06-time-and-cancellation.md#eventually) for how long and how often the delegate is
 re-evaluated, and how exceptions, timeouts and cancellation are handled.
+
+## Memory leaks
+
+`IsCollectedAfter` verifies that the object a delegate creates is garbage collected after a cleanup, e.g. that a view
+model no longer listens to a long-lived message bus once it is disposed:
+
+```csharp
+MessageBus bus = new();
+
+await Expect.That(() => new ViewModel(bus)).IsCollectedAfter(vm => vm.Dispose())
+  .Because("the view model must unsubscribe from the bus when it is disposed");
+```
+
+aweXpect calls the delegate and the cleanup in a separate method that keeps only a weak reference to the object, and
+then forces full blocking garbage collections. The expectation fails with "it was still alive" when anything else still
+references the object, e.g. an event handler or a static collection that the cleanup did not remove. When no cleanup
+is needed, use `IsCollectedAfter(_ => { })`.
+
+An exception thrown by the delegate or by the cleanup fails the expectation, as does a delegate that returns `null`.
+An asynchronous delegate is awaited before the cleanup runs.
+
+:::note[Create the object inside the delegate]
+The delegate must create the object: when it returns an instance that the test also holds, e.g. in a local variable,
+this reference keeps the object alive. To check an object you only have a `WeakReference` to, use
+[`IsCollected`](../04-values/12-object.md#garbage-collection).
+:::

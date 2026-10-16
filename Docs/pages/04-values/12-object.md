@@ -15,6 +15,7 @@ Describes the possible expectations for any object.
 | [`Satisfies`](#condition)                                               | `DoesNotSatisfy`    | satisfies a predicate                                 |
 | [`CompliesWith`](#nested-expectation)                                   | `DoesNotComplyWith` | meets a nested expectation                            |
 | [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) |                     | a member meets a nested expectation                   |
+| [`IsCollected`](#garbage-collection)                                    | `IsNotCollected`    | the target of a `WeakReference` is garbage collected  |
 
 ## Equality
 
@@ -173,3 +174,28 @@ await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 
 `DoesNotComplyWith` succeeds when the nested expectation fails. Like `Satisfies`, `CompliesWith` can
 [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.
+
+## Garbage collection
+
+You can verify that the target of a `WeakReference` or `WeakReference<T>` is garbage collected or not:
+
+```csharp
+WeakReference released = new(new Album("Abbey Road"));
+Album album = new("Let It Be");
+WeakReference<Album> cached = new(album);
+
+await Expect.That(released).IsCollected();
+await Expect.That(cached).IsNotCollected()
+  .Because("the album is still in use");
+GC.KeepAlive(album);
+```
+
+Both force full blocking garbage collections before they check the target, and repeat them a few times, as
+finalizers can release further objects.
+
+:::warning[A reference held by the test keeps the target alive]
+A strong reference that the test itself still holds keeps the target alive, e.g. a local variable, which a Debug build
+keeps until the end of the method, even when it is no longer used. For an object the test creates itself, use
+[`IsCollectedAfter`](../06-behaviour/01-delegates.md#memory-leaks) instead, which creates the object where no
+reference to it remains.
+:::

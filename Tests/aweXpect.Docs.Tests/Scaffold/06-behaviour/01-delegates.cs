@@ -11,4 +11,28 @@ internal static class Prelude
 	{
 		public void Execute(Action action) => action();
 	}
+
+	public class MessageBus
+	{
+		public event EventHandler? MessageReceived;
+
+		public void Publish() => MessageReceived?.Invoke(this, EventArgs.Empty);
+	}
+
+	public sealed class ViewModel : IDisposable
+	{
+		private readonly MessageBus _bus;
+
+		public ViewModel(MessageBus bus)
+		{
+			_bus = bus;
+			_bus.MessageReceived += OnMessageReceived;
+		}
+
+		public void Dispose() => _bus.MessageReceived -= OnMessageReceived;
+
+		private void OnMessageReceived(object? sender, EventArgs e)
+		{
+		}
+	}
 }
