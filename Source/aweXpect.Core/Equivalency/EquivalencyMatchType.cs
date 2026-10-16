@@ -87,46 +87,60 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	}
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />
+	/// <remarks>
+	///     Only options that can ignore members by name track them, so that most comparisons of collection items stay
+	///     as they are.
+	/// </remarks>
 	public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		=> EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions, _evaluation, _cancellationToken);
+		=> CanIgnoreMembersByName(_equivalencyOptions)
+			? AreConsideredEqualTrackingMembersToIgnore(actual, expected)
+			: EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions, _evaluation,
+				_cancellationToken);
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
+	/// <remarks>
+	///     The items of a collection are compared one after the other with the same match type, so the members to
+	///     ignore of every failed comparison are kept.
+	/// </remarks>
 	public async ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
 		TExpected expected)
 	{
 		StringBuilder failureBuilder = FailureBuilder;
 		failureBuilder.Clear();
-		(_isMatch, Dictionary<string, string?>? unmatchedMembersToIgnore) =
-			await EquivalencyComparison.CompareExplaining(actual, expected, _equivalencyOptions, failureBuilder,
-				_evaluation, _cancellationToken);
-		if (unmatchedMembersToIgnore is not null)
-		{
-			KeepUnmatchedMembersToIgnore(unmatchedMembersToIgnore);
-		}
-
+		(_isMatch, _unmatchedMembersToIgnore) = await EquivalencyComparison.CompareExplaining(actual, expected,
+			_equivalencyOptions, failureBuilder, _evaluation, _cancellationToken, _unmatchedMembersToIgnore);
 		return this;
 	}
 
-	/// <remarks>
-	///     The items of a collection are compared one after the other with the same match type, so the members to
-	///     ignore of every failed comparison are kept, and a suggestion found for an item is not lost to a later item
-	///     without one.
-	/// </remarks>
-	private void KeepUnmatchedMembersToIgnore(Dictionary<string, string?> unmatchedMembersToIgnore)
+	private async ValueTask<bool> AreConsideredEqualTrackingMembersToIgnore<TActual, TExpected>(TActual actual,
+		TExpected expected)
 	{
-		if (_unmatchedMembersToIgnore is null)
+		(bool isEquivalent, _unmatchedMembersToIgnore) =
+			await EquivalencyComparison.IsEquivalentTrackingMembersToIgnore(actual, expected, _equivalencyOptions,
+				_evaluation, _cancellationToken, _unmatchedMembersToIgnore);
+		return isEquivalent;
+	}
+
+	/// <remarks>
+	///     The options registered for a type are only created during the comparison, so they may ignore members by
+	///     name as well.
+	/// </remarks>
+	private static bool CanIgnoreMembersByName(EquivalencyOptions equivalencyOptions)
+	{
+		if (equivalencyOptions.HasRegistrations)
 		{
-			_unmatchedMembersToIgnore = unmatchedMembersToIgnore;
-			return;
+			return true;
 		}
 
-		foreach (KeyValuePair<string, string?> unmatched in unmatchedMembersToIgnore)
+		foreach (MemberToIgnore memberToIgnore in equivalencyOptions.MembersToIgnore)
 		{
-			if (!_unmatchedMembersToIgnore.TryGetValue(unmatched.Key, out string? suggestion) || suggestion is null)
+			if (memberToIgnore is MemberToIgnore.ByName)
 			{
-				_unmatchedMembersToIgnore[unmatched.Key] = unmatched.Value;
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	/// <summary>

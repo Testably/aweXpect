@@ -15,6 +15,55 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyMatchTypeTests
 {
 	[Test]
+	public async Task AppendContexts_AfterAFailedDecidingComparison_ShouldNameTheMembersToIgnore()
+	{
+		EquivalencyMatchType sut = new(IgnoringMember("Valeu"));
+		await sut.AreConsideredEqual(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 2,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - ignore members: ["Valeu"]
+		                                "Valeu" matched no member (did you mean "Value"?)
+		                             """)
+			.Because("the items of a collection are compared without an explanation");
+	}
+
+	[Test]
+	public async Task AppendContexts_AfterAFailedDecidingComparisonWithRegisteredOptions_ShouldNameTheMembersToIgnore()
+	{
+		EquivalencyMatchType sut = new(new EquivalencyOptions().For<Dummy>(o => o with
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("Valeu"),],
+		}));
+		await sut.AreConsideredEqual(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 2,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - for EquivalencyMatchTypeTests.Dummy:
+		                                - include public fields and properties
+		                                - ignore members: ["Valeu"]
+		                                  "Valeu" matched no member (did you mean "Value"?)
+		                             """)
+			.Because("the options registered for a type are only known during the comparison");
+	}
+
+	[Test]
 	public async Task AppendContexts_AfterSeveralFailedComparisons_ShouldKeepTheSuggestionOfAnEarlierOne()
 	{
 		EquivalencyMatchType sut = new(IgnoringMember("Titel"));

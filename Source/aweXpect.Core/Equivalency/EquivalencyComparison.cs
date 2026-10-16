@@ -66,13 +66,13 @@ public static partial class EquivalencyComparison
 			IEvaluationContext? evaluation,
 			CancellationToken cancellationToken)
 		=> (await CompareExplaining(actual, expected, equivalencyOptions, failureBuilder, evaluation,
-			cancellationToken)).IsEquivalent;
+			cancellationToken, null)).IsEquivalent;
 
 	/// <summary>
 	///     Compares like
 	///     <see cref="Compare{TActual, TExpected}(TActual, TExpected, EquivalencyOptions, StringBuilder, IEvaluationContext?, CancellationToken)" />
-	///     and, when the objects are not equivalent, also returns the members to ignore by name that matched no
-	///     compared member, with the compared member each one most likely meant.
+	///     and, when the objects are not equivalent, adds the members to ignore by name that matched no compared
+	///     member to the <paramref name="unmatchedMembers" />, with the compared member each one most likely meant.
 	/// </summary>
 	internal static async ValueTask<(bool IsEquivalent, Dictionary<string, string?>? UnmatchedMembers)>
 		CompareExplaining<TActual, TExpected>(
@@ -81,7 +81,8 @@ public static partial class EquivalencyComparison
 			EquivalencyOptions equivalencyOptions,
 			StringBuilder failureBuilder,
 			IEvaluationContext? evaluation,
-			CancellationToken cancellationToken)
+			CancellationToken cancellationToken,
+			Dictionary<string, string?>? unmatchedMembers)
 	{
 		int start = failureBuilder.Length;
 		EquivalencyContext context = new(equivalencyOptions)
@@ -100,7 +101,43 @@ public static partial class EquivalencyComparison
 			MemberType.Value,
 			context);
 		JoinSingleLineEntries(failureBuilder, start);
-		return (result, result ? null : context.GetUnmatchedMembersToIgnore());
+		return (result, result ? unmatchedMembers : context.AddUnmatchedMembersToIgnore(unmatchedMembers));
+	}
+
+	/// <summary>
+	///     Decides like <see cref="IsEquivalent{TActual, TExpected}" /> and, when the objects are not equivalent, adds
+	///     the members to ignore by name that matched no compared member to the <paramref name="unmatchedMembers" />.
+	/// </summary>
+	/// <remarks>
+	///     The items of a collection are compared without an explanation, so the members to ignore that no item
+	///     matched are only known from these comparisons.
+	/// </remarks>
+	internal static async ValueTask<(bool IsEquivalent, Dictionary<string, string?>? UnmatchedMembers)>
+		IsEquivalentTrackingMembersToIgnore<TActual, TExpected>(
+			TActual actual,
+			TExpected expected,
+			EquivalencyOptions equivalencyOptions,
+			IEvaluationContext? evaluation,
+			CancellationToken cancellationToken,
+			Dictionary<string, string?>? unmatchedMembers)
+	{
+		EquivalencyContext context = new(equivalencyOptions)
+		{
+			IsDecidingOnly = true,
+			Evaluation = evaluation,
+			CancellationToken = cancellationToken,
+			TracksIgnoredMembers = true,
+		};
+		bool result = await Compare(
+			actual,
+			expected,
+			equivalencyOptions,
+			equivalencyOptions,
+			UnusedFailureBuilder,
+			"",
+			MemberType.Value,
+			context);
+		return (result, result ? unmatchedMembers : context.AddUnmatchedMembersToIgnore(unmatchedMembers));
 	}
 
 	/// <summary>
@@ -327,12 +364,15 @@ public static partial class EquivalencyComparison
 		}
 
 		/// <summary>
-		///     Returns each member to ignore by name that matched none of the compared members, with the compared
-		///     member it most likely meant, or <see langword="null" /> when every one matched.
+		///     Adds each member to ignore by name that matched none of the compared members to the
+		///     <paramref name="unmatched" /> ones, with the compared member it most likely meant.
 		/// </summary>
-		public Dictionary<string, string?>? GetUnmatchedMembersToIgnore()
+		/// <remarks>
+		///     A name that already has a suggestion keeps it, so the closest member is only searched until one is
+		///     found, however many items of a collection fail.
+		/// </remarks>
+		public Dictionary<string, string?>? AddUnmatchedMembersToIgnore(Dictionary<string, string?>? unmatched)
 		{
-			Dictionary<string, string?>? unmatched = null;
 			foreach (string name in _namesToIgnore ?? [])
 			{
 				if (_matchedNames?.Contains(name) == true)
@@ -340,10 +380,15 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
+				unmatched ??= new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+				if (unmatched.TryGetValue(name, out string? suggestion) && suggestion is not null)
+				{
+					continue;
+				}
+
 				int segments = name.Count(c => c == '.') + 1;
-				(unmatched ??= new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase))[name] =
-					ClosestMatch.Find(name,
-						(_comparedPaths ?? []).Select(path => GetLastSegments(path, segments)).Distinct());
+				unmatched[name] = ClosestMatch.Find(name,
+					(_comparedPaths ?? []).Select(path => GetLastSegments(path, segments)).Distinct());
 			}
 
 			return unmatched;
