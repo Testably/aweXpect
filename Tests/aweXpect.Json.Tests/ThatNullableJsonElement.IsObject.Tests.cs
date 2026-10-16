@@ -201,6 +201,83 @@ public sealed partial class ThatNullableJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenValueAtPathDiffers_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"tracks\": [{\"title\": \"Come Together\"}]}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.At("tracks[0].title").Matching("Something")));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class AtTests
+		{
+			[Fact]
+			public async Task WhenValueAtPathMatches_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"tracks\": [{\"title\": \"Come Together\"}]}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.At("tracks[0].title").Matching("Come Together"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIntermediatePropertyDoesNotExist_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"tracks\": [{\"title\": \"Come Together\"}]}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.At("artist.origin.city").Matching("Liverpool"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.artist.origin.city matches "Liverpool",
+					             but it differed as property $.artist did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.At("tracks[0].title").AString());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.tracks[0].title is a string,
+					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPathIsInvalid_ShouldThrowArgumentException()
+			{
+				JsonElement? subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.At("foo[").Matching(1));
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("path").And
+					.WithMessage("The path 'foo[' is invalid: the '[' at position 3 is not closed.").AsPrefix()
+					.Because("an invalid argument is thrown as it is instead of failing the expectation");
+			}
 		}
 
 		public sealed class WithTests

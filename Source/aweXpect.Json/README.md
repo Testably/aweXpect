@@ -367,6 +367,32 @@ await Expect.That(album).IsObject(o => o
     .With("tracks").AnArray(tracks => tracks.WithElements("Come Together", "Something")));
 ```
 
+You can address a nested value with a path relative to the object, instead of nesting `AnObject(…)` and
+`AnArray(…)`. The path is a property name, followed by any number of `.name` or zero-based `[index]` segments, and
+is written without a leading `$`. Wildcards, filters and recursive descent are not supported, and property names that
+contain `.`, `[` or `]` can only be addressed with `With(…)`. The addressed value supports the same expectations as
+`With(…)`:
+
+```csharp
+JsonElement album = JsonDocument.Parse(
+    """{"artist": {"origin": {"city": "Liverpool"}}, "tracks": [{"title": "Come Together"}]}""").RootElement;
+
+await Expect.That(album).IsObject(o => o
+    .At("artist.origin.city").Matching("Liverpool").And
+    .At("tracks[0].title").AString());
+```
+
+If the artist had no origin, the expectation would fail with the first segment that could not be reached:
+
+```text title="Failure message"
+Expected that album
+is an object and $.artist.origin.city matches "Liverpool" and $.tracks[0].title is a string,
+but it differed as property $.artist.origin did not exist
+
+JSON options:
+ - ignore additional properties
+```
+
 You can verify the kind of a property value without pinning the value itself with `AString()`, `ANumber()`,
 `ABoolean()` (`true` or `false`) and `Null()`. They are also available for array elements, e.g. `.At(0).AString()`:
 

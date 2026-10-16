@@ -83,28 +83,24 @@ internal class JsonValidation : IJsonObjectResult,
 		}
 
 		_currentPath.Push($"[{index}]");
-		JsonElement? currentElement = _currentElements.Peek();
-		if (currentElement == null)
-		{
-			_currentElements.Push(null);
-			return this;
-		}
-
-		if (currentElement.Value.ValueKind != JsonValueKind.Array)
-		{
-			_currentElements.Push(null);
-		}
-		else if (currentElement.Value.GetArrayLength() > index)
-		{
-			_currentElements.Push(currentElement.Value[index]);
-		}
-		else
-		{
-			_currentElements.Push(null);
-			_failures.Add($" index {CurrentPath} did not exist");
-		}
-
+		_currentElements.Push(GetElement(_currentElements.Peek(), index, CurrentPath));
 		return this;
+	}
+
+	private JsonElement? GetElement(JsonElement? array, int index, string path)
+	{
+		if (array is not { ValueKind: JsonValueKind.Array, })
+		{
+			return null;
+		}
+
+		if (array.Value.GetArrayLength() > index)
+		{
+			return array.Value[index];
+		}
+
+		_failures.Add($" index {path} did not exist");
+		return null;
 	}
 
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithElements(params object?[] expected)
@@ -344,35 +340,91 @@ internal class JsonValidation : IJsonObjectResult,
 		}
 
 		_currentPath.Push($".{propertyName}");
-		JsonElement? currentElement = _currentElements.Peek();
-		if (currentElement == null)
-		{
-			_currentElements.Push(null);
-			return this;
-		}
-
-		if (currentElement.Value.ValueKind != JsonValueKind.Object)
-		{
-			_currentElements.Push(null);
-			_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of an object");
-		}
-		else if (currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue) &&
-		         !IsAbsent(propertyValue))
-		{
-			_currentElements.Push(propertyValue);
-		}
-		else if (_options.TreatNullAsAbsent)
-		{
-			_currentElements.Push(null);
-			_isAbsentProperty = true;
-		}
-		else
-		{
-			_currentElements.Push(null);
-			_failures.Add($" property {CurrentPath} did not exist");
-		}
-
+		_currentElements.Push(GetProperty(_currentElements.Peek(), propertyName, CurrentPath));
 		return this;
+	}
+
+	IJsonPropertyResult<IJsonObjectResult> IJsonObjectResult.At(string path)
+	{
+		IReadOnlyList<JsonPathSegment> segments;
+		try
+		{
+			segments = JsonPathSegment.Parse(path);
+		}
+		catch (ArgumentException exception)
+		{
+			Own(exception);
+			throw;
+		}
+
+		StringBuilder pathBuilder = new(CurrentPath);
+		JsonElement? currentElement = _currentElements.Peek();
+		for (int i = 0; i < segments.Count - 1; i++)
+		{
+			string segmentPath = pathBuilder.Append(segments[i]).ToString();
+			JsonValueKind kind = segments[i + 1].PropertyName is null ? JsonValueKind.Array : JsonValueKind.Object;
+			currentElement = RequireKind(GetSegment(currentElement, segments[i], segmentPath), kind, segmentPath);
+		}
+
+		_currentPath.Push(string.Concat(segments));
+		_currentElements.Push(GetSegment(currentElement, segments[segments.Count - 1], CurrentPath));
+		return this;
+	}
+
+	private JsonElement? GetSegment(JsonElement? currentElement, JsonPathSegment segment, string path)
+		=> segment.PropertyName is null
+			? GetElement(currentElement, segment.Index, path)
+			: GetProperty(currentElement, segment.PropertyName, path);
+
+	private JsonElement? GetProperty(JsonElement? jsonObject, string propertyName, string path)
+	{
+		if (jsonObject == null)
+		{
+			return null;
+		}
+
+		if (jsonObject.Value.ValueKind != JsonValueKind.Object)
+		{
+			_failures.Add($" {path} was {Format(jsonObject.Value.ValueKind)} instead of an object");
+			return null;
+		}
+
+		if (jsonObject.Value.TryGetProperty(propertyName, out JsonElement propertyValue) && !IsAbsent(propertyValue))
+		{
+			return propertyValue;
+		}
+
+		if (_options.TreatNullAsAbsent)
+		{
+			_isAbsentProperty = true;
+			return null;
+		}
+
+		_failures.Add($" property {path} did not exist");
+		return null;
+	}
+
+	/// <summary>
+	///     Verifies that the <paramref name="element" /> in the middle of a path has the <paramref name="kind" /> that its
+	///     next segment requires, like <c>AnObject</c> or <c>AnArray</c> would, so that only the first segment that cannot
+	///     be reached is reported.
+	/// </summary>
+	private JsonElement? RequireKind(JsonElement? element, JsonValueKind kind, string path)
+	{
+		if (_isAbsentProperty)
+		{
+			_isAbsentProperty = false;
+			_failures.Add($" property {path} did not exist");
+			return null;
+		}
+
+		if (element != null && element.Value.ValueKind != kind)
+		{
+			_failures.Add($" {path} was {Format(element.Value.ValueKind)}");
+			return null;
+		}
+
+		return element;
 	}
 
 	IJsonObjectResult IJsonObjectResult.Without(string propertyName)

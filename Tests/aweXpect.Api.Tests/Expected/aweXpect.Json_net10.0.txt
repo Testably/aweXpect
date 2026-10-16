@@ -29,6 +29,7 @@ namespace aweXpect.Json
     public interface IJsonObjectResult
     {
         aweXpect.Json.IJsonObjectResult And { get; }
+        aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> At(string path);
         aweXpect.Json.IJsonObjectResult.IJsonObjectLengthResult With(int amount);
         aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> With(string propertyName);
         aweXpect.Json.IJsonObjectResult Without(string propertyName);
