@@ -32,6 +32,7 @@ internal class JsonValidation : IJsonObjectResult,
 	private readonly JsonValidation _root;
 	private readonly JsonValueKind _valueKind;
 	private int? _amount;
+	private bool _isAbsentProperty;
 	private Exception? _ownException;
 
 	public JsonValidation(JsonElement? element, JsonValueKind valueKind, JsonOptions options,
@@ -309,7 +310,7 @@ internal class JsonValidation : IJsonObjectResult,
 			return this;
 		}
 
-		int actualLength = currentElement.Value.EnumerateObject().Count();
+		int actualLength = currentElement.Value.EnumerateObject().Count(property => !IsAbsent(property.Value));
 		if (actualLength != _amount)
 		{
 			_failures.Add($" {CurrentPath} had {actualLength} {(actualLength == 1 ? "property" : "properties")}");
@@ -346,9 +347,15 @@ internal class JsonValidation : IJsonObjectResult,
 			_currentElements.Push(null);
 			_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)} instead of an object");
 		}
-		else if (currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue))
+		else if (currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue) &&
+		         !IsAbsent(propertyValue))
 		{
 			_currentElements.Push(propertyValue);
+		}
+		else if (_options.TreatNullAsAbsent)
+		{
+			_currentElements.Push(null);
+			_isAbsentProperty = true;
 		}
 		else
 		{
@@ -372,7 +379,8 @@ internal class JsonValidation : IJsonObjectResult,
 			.Append(grammars.IsNegated() ? " exists" : " does not exist"));
 		JsonElement? currentElement = _currentElements.Peek();
 		if (currentElement is { ValueKind: JsonValueKind.Object, } &&
-		    currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue))
+		    currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue) &&
+		    !IsAbsent(propertyValue))
 		{
 			_failures.Add($" {currentPath} was {JsonElementValidator.Format(propertyValue)}");
 		}
@@ -430,7 +438,7 @@ internal class JsonValidation : IJsonObjectResult,
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
 			.Append(grammars.IsNegated() ? " does not match " : " matches ")
 			.Append(doNotPopulateThisValue.TrimCommonWhiteSpace()));
-		JsonElement? currentElement = _currentElements.Pop();
+		JsonElement? currentElement = PopProperty(expected is null);
 		if (currentElement == null)
 		{
 			_currentPath.Pop();
@@ -448,7 +456,7 @@ internal class JsonValidation : IJsonObjectResult,
 	{
 		string currentPath = CurrentPath;
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
-		JsonElement? currentElement = _currentElements.Pop();
+		JsonElement? currentElement = PopProperty();
 
 		JsonValidation jsonValidation = new(_root, CurrentPath, currentElement, kind, _options, _context);
 		_expectationBuilder.Add(jsonValidation.GetExpectation);
@@ -476,7 +484,7 @@ internal class JsonValidation : IJsonObjectResult,
 		_expectationBuilder.Add((sb, grammars)
 			=> sb.Append(And(grammars)).Append(currentPath).Append(" is ")
 				.Append(Format(kind, grammars & ~ExpectationGrammars.Plural)));
-		JsonElement? currentElement = _currentElements.Pop();
+		JsonElement? currentElement = PopProperty();
 
 		if (currentElement != null && currentElement.Value.ValueKind != kind)
 		{
@@ -485,6 +493,27 @@ internal class JsonValidation : IJsonObjectResult,
 
 		_currentPath.Pop();
 		return this;
+	}
+
+	private bool IsAbsent(JsonElement propertyValue)
+		=> _options.TreatNullAsAbsent && propertyValue.ValueKind == JsonValueKind.Null;
+
+	/// <summary>
+	///     Pops the current element and reports a property that is absent, unless its absence is accepted.
+	/// </summary>
+	/// <remarks>
+	///     When <see langword="null" /> is treated as absent, the absence of a property is only reported here, because an
+	///     absent property is accepted when it is expected to be <see langword="null" />.
+	/// </remarks>
+	private JsonElement? PopProperty(bool isAbsenceAccepted = false)
+	{
+		if (_isAbsentProperty && !isAbsenceAccepted)
+		{
+			_failures.Add($" property {CurrentPath} did not exist");
+		}
+
+		_isAbsentProperty = false;
+		return _currentElements.Pop();
 	}
 
 	/// <summary>

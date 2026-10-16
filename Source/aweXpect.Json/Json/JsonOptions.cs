@@ -23,4 +23,9 @@ public record JsonOptions
 	///     Flag indicating, if the additional properties in the subject should be ignored.
 	/// </summary>
 	public bool IgnoreAdditionalProperties { get; init; }
+
+	/// <summary>
+	///     Flag indicating, if a property with the value <see langword="null" /> should be treated as if it was absent.
+	/// </summary>
+	public bool TreatNullAsAbsent { get; init; }
 }

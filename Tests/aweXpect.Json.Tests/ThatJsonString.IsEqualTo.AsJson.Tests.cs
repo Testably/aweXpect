@@ -555,6 +555,112 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenSubjectContainsAdditionalNullProperty_ShouldFailUnlessTreatingNullAsAbsent(
+					bool treatNullAsAbsent)
+				{
+					string subject = """
+					                 {"title": "Let It Be", "album": null}
+					                 """;
+					string expected = """
+					                  {"title": "Let It Be"}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.AsJson(o => o.TreatingNullAsAbsent(treatNullAsAbsent));
+
+					await That(Act).Throws<XunitException>().OnlyIf(!treatNullAsAbsent)
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"title": "Let It Be"},
+						             but it differed as $.album had unexpected <null>
+
+						             Actual:
+						             {"title": "Let It Be", "album": null}
+
+						             Expected:
+						             {"title": "Let It Be"}
+						             """);
+				}
+
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenSubjectMissesExpectedNullProperty_ShouldFailUnlessTreatingNullAsAbsent(
+					bool treatNullAsAbsent)
+				{
+					string subject = """
+					                 {"title": "Let It Be"}
+					                 """;
+					string expected = """
+					                  {"title": "Let It Be", "album": null}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.AsJson(o => o.TreatingNullAsAbsent(treatNullAsAbsent));
+
+					await That(Act).Throws<XunitException>().OnlyIf(!treatNullAsAbsent)
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"title": "Let It Be", "album": null},
+						             but it differed as $.album was missing
+
+						             Actual:
+						             {"title": "Let It Be"}
+
+						             Expected:
+						             {"title": "Let It Be", "album": null}
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenNestedNullPropertiesDiffer_WhenTreatingNullAsAbsent_ShouldSucceed()
+				{
+					string subject = """
+					                 {"foo": {"bar": null}, "items": [{"a": 1}, {"a": 2, "b": null}]}
+					                 """;
+					string expected = """
+					                  {"foo": {"baz": null}, "items": [{"a": 1, "b": null}, {"a": 2}]}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson(o => o.TreatingNullAsAbsent());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNullArrayElementsDiffer_WhenTreatingNullAsAbsent_ShouldFail()
+				{
+					string subject = """
+					                 {"foo": [1, null]}
+					                 """;
+					string expected = """
+					                  {"foo": [1]}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson(o => o.TreatingNullAsAbsent());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"foo": [1]},
+						             but it differed as $.foo[1] had unexpected <null>
+
+						             Actual:
+						             {"foo": [1, null]}
+
+						             Expected:
+						             {"foo": [1]}
+						             """)
+						.Because("null elements of an array are not affected by the option");
+				}
+
 				[Fact]
 				public async Task WhenSubjectHasFewerArrayItems_ShouldFail()
 				{
@@ -792,6 +898,25 @@ public sealed partial class ThatJsonString
 						             {}
 						             """)
 						.Because("a subject that is no JSON is not different from the unexpected JSON either");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsEquivalentWhenTreatingNullAsAbsent_ShouldFail()
+				{
+					string subject = "{\"foo\":null}";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("{}").AsJson(o => o.TreatingNullAsAbsent());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to {},
+						             but it was "{\"foo\":null}"
+
+						             Expected:
+						             {}
+						             """);
 				}
 
 				[Fact]

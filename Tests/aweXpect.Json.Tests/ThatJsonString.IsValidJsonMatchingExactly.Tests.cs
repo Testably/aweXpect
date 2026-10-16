@@ -366,6 +366,35 @@ public sealed partial class ThatJsonString
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectHasAdditionalNullProperty_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				string subject = "{\"foo\": null, \"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly(new
+					{
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyIsMissing_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				string subject = "{\"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly(new
+					{
+						foo = (string?)null,
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 	}
 }

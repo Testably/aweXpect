@@ -262,6 +262,48 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenPropertyIsExpectedNotToExistButIsNull_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.Without("foo"),
+						o => o.TreatingNullAsAbsent()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object or $.foo exists,
+					             but it was
+
+					             Actual:
+					             {
+					               "foo": null
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsExpectedToMatchNullButIsMissing_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.With("foo").Matching(null),
+						o => o.TreatingNullAsAbsent()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object or $.foo does not match null,
+					             but it was
+
+					             Actual:
+					             {}
+					             """);
+			}
 		}
 
 		public sealed class WithTests
@@ -435,6 +477,240 @@ public sealed partial class ThatJsonElement
 					             but it differed as property $.bar did not exist
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenMatchingNullOnMissingProperty_ShouldFail()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(null));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches null,
+					             but it differed as property $.foo did not exist
+					             """)
+					.Because("by default a missing property differs from a property with a null value");
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenMatchingNull_WhenTreatingNullAsAbsent_ShouldSucceed(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(null),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMatchingValueOnNullProperty_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches 1,
+					             but it differed as $.foo was <null> instead of 1
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenMatchingValue_WhenTreatingNullAsAbsent_ShouldFail(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(1),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches 1,
+					             but it differed as property $.foo did not exist
+					             """)
+					.Because("a property with a null value is treated as absent");
+			}
+
+			[Fact]
+			public async Task WhenMatchingItIsOnNullProperty_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(It.Is<string?>().That.IsNull()),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches It.Is<string?>().That.IsNull(),
+					             but it differed as property $.foo did not exist
+					             """)
+					.Because("only an expected null value accepts an absent property");
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenAnObject_WhenTreatingNullAsAbsent_ShouldFail(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AnObject(),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an object,
+					             but it differed as property $.foo did not exist
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAnObjectOnNullProperty_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AnObject());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an object,
+					             but it differed as $.foo was null
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenAnObjectWithExpectation_WhenTreatingNullAsAbsent_ShouldFail(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AnObject(f => f.With("bar").Matching(1)),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an object and $.foo.bar matches 1,
+					             but it differed as property $.foo did not exist
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenAnArray_WhenTreatingNullAsAbsent_ShouldFail(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AnArray(a => a.With(0).Elements()),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an array with 0 elements,
+					             but it differed as property $.foo did not exist
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAbsentPropertyIsCombinedWithOtherExpectations_WhenTreatingNullAsAbsent_ShouldListAllFailuresInOrder()
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"bar\": null, \"baz\": 3}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+							.With("foo").Matching(2).And
+							.With("bar").Matching(true).And
+							.With("baz").Matching(4),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches 2 and $.bar matches true and $.baz matches 4,
+					             but it differed as
+					               $.foo was 1 instead of 2 and
+					               property $.bar did not exist and
+					               $.baz was 3 instead of 4
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMatchingNullInNestedObject_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": 1}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AnObject(f => f.With("baz").Matching(null)),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMatchingObjectWithNullProperty_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": 1}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new
+						{
+							bar = 1,
+							baz = (int?)null,
+						}),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow()
+					.Because("the option also applies to the comparison of the matched value");
+			}
+
+			[Fact]
+			public async Task WhenMatchingObjectWithNullProperty_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": 1}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new
+					{
+						bar = 1,
+						baz = (int?)null,
+					}));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches new
+					             {
+					             	bar = 1,
+					             	baz = (int?)null,
+					             },
+					             but it differed as $.foo.baz was missing
+					             """);
+			}
 		}
 
 		public sealed class WithNumberOfPropertiesTests
@@ -487,6 +763,42 @@ public sealed partial class ThatJsonElement
 						.With(expected).Properties());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNull_ShouldCountIt()
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"bar\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With(1).Properties());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object with 1 property,
+					             but it differed as $ had 2 properties
+					             """);
+			}
+
+			[Theory]
+			[InlineData(1, true)]
+			[InlineData(2, false)]
+			public async Task WhenPropertyIsNull_WhenTreatingNullAsAbsent_ShouldNotCountIt(int expected, bool isMatch)
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"bar\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With(expected).Properties(), o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					.WithMessage("""
+					             Expected that subject
+					             is an object with 2 properties,
+					             but it differed as $ had 1 property
+					             """);
 			}
 		}
 
@@ -667,6 +979,48 @@ public sealed partial class ThatJsonElement
 					             but it differed as $.foo was <null>
 					             """)
 					.Because("a property with a null value exists");
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenPropertyIsNullOrMissing_WhenTreatingNullAsAbsent_ShouldSucceed(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"), o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyHasValue_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"), o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo does not exist,
+					             but it differed as $.foo was 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedPropertyIsNull_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"address\": {\"street\": \"Main\", \"internalId\": null}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+							.With("address").AnObject(a => a.Without("internalId")),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

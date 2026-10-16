@@ -209,6 +209,30 @@ public sealed partial class ThatJsonElement
 					              {json}
 					              """);
 			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task WhenSubjectHasAdditionalNullProperty_ShouldFailWhenTreatingNullAsAbsent(bool treatNullAsAbsent)
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(new object(),
+						o => o.TreatingNullAsAbsent(treatNullAsAbsent)));
+
+				await That(Act).Throws<XunitException>().OnlyIf(treatNullAsAbsent)
+					.WithMessage("""
+					             Expected that subject
+					             does not match new object() exactly,
+					             but it did
+
+					             Actual:
+					             {
+					               "foo": null
+					             }
+					             """);
+			}
 		}
 
 		public sealed class ArrayTests
@@ -301,6 +325,40 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringAdditionalProperties());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalNullElement_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, null]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1,], o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1,] exactly,
+					             but it differed as $[1] had unexpected <null>
+					             """)
+					.Because("null elements of an array are not affected by the option");
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsAdditionalNullElement_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("[1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, (int?)null,], o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, (int?)null,] exactly,
+					             but it differed as $[1] had missing <null>
+					             """)
+					.Because("null elements of an array are not affected by the option");
 			}
 
 			public static TheoryData<string[], string> MatchingArrayValues
@@ -448,6 +506,169 @@ public sealed partial class ThatJsonElement
 					{
 						bar = 2,
 					}, o => o.IgnoringAdditionalProperties());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasAdditionalNullProperty_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": null, \"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasAdditionalNonNullProperty_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	bar = 2,
+					             } exactly,
+					             but it differed as $.foo had unexpected 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyIsMissing_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = (string?)null,
+						bar = 2,
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = (string?)null,
+					             	bar = 2,
+					             } exactly,
+					             but it differed as $.foo was missing
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyIsMissing_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = (string?)null,
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyHasValue_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = (int?)null,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = (int?)null,
+					             } exactly,
+					             but it differed as $.foo was number 1 instead of <null>
+					             """)
+					.Because("only a missing property is treated like a property with a null value");
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNullInsteadOfValue_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = 2,
+					             } exactly,
+					             but it differed as $.foo was <null> instead of 2
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedNullPropertiesDiffer_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": null}, \"baz\": {}}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = new object(),
+						baz = new
+						{
+							bar = (int?)null,
+						},
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNullPropertiesOfObjectsInArrayDiffer_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"items\": [{\"a\": 1, \"b\": null}, {\"a\": 2}]}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						items = new object[]
+						{
+							new
+							{
+								a = 1,
+							},
+							new
+							{
+								a = 2,
+								b = (int?)null,
+							},
+						},
+					}, o => o.TreatingNullAsAbsent());
 
 				await That(Act).DoesNotThrow();
 			}

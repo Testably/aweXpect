@@ -483,6 +483,35 @@ public sealed partial class ThatNullableJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectHasAdditionalNullProperty_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"foo\": null, \"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyIsMissing_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = (string?)null,
+						bar = 2,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 	}
 }

@@ -145,6 +145,30 @@ matches new { title = "Let It Be" } exactly,
 but it differed as $.artist had unexpected "The Beatles"
 ```
 
+By default, a property with the value `null` differs from a missing property. With `TreatingNullAsAbsent()`, a
+property with the value `null` counts as absent, in both directions:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "album": null}""").RootElement;
+
+await Expect.That(track).MatchesExactly(new { title = "Let It Be" },
+    o => o.TreatingNullAsAbsent());
+await Expect.That(track).MatchesExactly(new { title = "Let It Be", artist = (string?)null },
+    o => o.TreatingNullAsAbsent());
+```
+
+Without the option, `MatchesExactly(new { title = "Let It Be" })` would fail with:
+
+```text title="Failure message"
+Expected that track
+matches new { title = "Let It Be" } exactly,
+but it differed as $.album had unexpected <null>
+```
+
+The option is available wherever `JsonOptions` are accepted, e.g. `IsEqualTo(expected).AsJson(o => o.TreatingNullAsAbsent())`,
+`IsValidJsonMatching`, [`IsObject`](#isobject) and [`IsArray`](#isarray). Elements of an array with the value `null`
+are not affected.
+
 You can verify that a `JsonElement` matches an expected array:
 
 ```csharp
@@ -213,7 +237,7 @@ await Expect.That(track).IsObject(o => o.With(2).Properties());
 ```
 
 You can verify that a JSON object does not contain a property. A property with the value `null` exists and fails
-the expectation:
+the expectation, unless `TreatingNullAsAbsent()` is set:
 
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
@@ -229,6 +253,28 @@ With `.Without("artist")` instead, the expectation would fail with:
 Expected that track
 is an object and $.title matches "Let It Be" and $.artist does not exist,
 but it differed as $.artist was "The Beatles"
+```
+
+With `TreatingNullAsAbsent()`, a property with the value `null` counts as absent for the whole expectation:
+`Without` accepts it, `With(…).Matching(null)` also accepts a missing property, every other expectation on the
+property fails as if it did not exist, and `With(…).Properties()` does not count it:
+
+```csharp
+JsonElement user = JsonDocument.Parse("""{"name": "John", "passwordHash": null}""").RootElement;
+
+await Expect.That(user).IsObject(o => o
+    .With("name").Matching("John").And
+    .Without("passwordHash"),
+    o => o.TreatingNullAsAbsent());
+```
+
+With `.With("passwordHash").Matching("8f14e4")` instead of `.Without("passwordHash")`, the expectation would fail
+with:
+
+```text title="Failure message"
+Expected that user
+is an object and $.name matches "John" and $.passwordHash matches "8f14e4",
+but it differed as property $.passwordHash did not exist
 ```
 
 ### IsArray

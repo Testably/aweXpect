@@ -632,6 +632,94 @@ public sealed partial class ThatJsonElement
 					             but it differed as $.foo had unexpected <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectHasAdditionalNullProperty_WhenNotIgnoringAdditionalProperties_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": null, \"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						bar = 2,
+					}, o => o.IgnoringAdditionalProperties(false).TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyIsMissing_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						foo = (string?)null,
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = (string?)null,
+					             },
+					             but it differed as $.foo was missing
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedNullPropertyIsMissing_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"bar\": 2}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						foo = (string?)null,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenItIsExpectsNullOnNullProperty_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						foo = It.Is<string?>().That.IsNull(),
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow()
+					.Because("the null property is still compared with the expectation for it");
+			}
+
+			[Fact]
+			public async Task WhenItIsExpectsNullOnMissingProperty_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("{}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						foo = It.Is<string?>().That.IsNull(),
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = It.Is<string?>().That.IsNull(),
+					             },
+					             but it differed as $.foo was missing
+					             """)
+					.Because("only an expected null value accepts a missing property");
+			}
 		}
 	}
 }

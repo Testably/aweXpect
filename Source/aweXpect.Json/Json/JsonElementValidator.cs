@@ -193,6 +193,11 @@ internal static class JsonElementValidator
 			string memberPath = path + "." + item.Name;
 			if (!actualElement.TryGetProperty(item.Name, out JsonElement property))
 			{
+				if (IsTreatedAsAbsent(item.Value, options))
+				{
+					continue;
+				}
+
 				result.AddError(memberPath, "was missing");
 				continue;
 			}
@@ -206,6 +211,7 @@ internal static class JsonElementValidator
 			{
 				string memberPath = path + "." + property.Name;
 				if (result.HasMemberError(memberPath) ||
+				    IsTreatedAsAbsent(property.Value, options) ||
 				    expectedElement.TryGetProperty(property.Name, out _))
 				{
 					continue;
@@ -217,6 +223,9 @@ internal static class JsonElementValidator
 
 		return result;
 	}
+
+	private static bool IsTreatedAsAbsent(JsonElement value, JsonOptions options)
+		=> options.TreatNullAsAbsent && value.ValueKind == JsonValueKind.Null;
 
 	private static JsonComparisonResult CompareJsonString(
 		this JsonComparisonResult result,

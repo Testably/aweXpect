@@ -27,7 +27,8 @@ public interface IJsonObjectResult
 	///     <paramref name="propertyName" />.
 	/// </summary>
 	/// <remarks>
-	///     A property with the value <see langword="null" /> exists and therefore fails the expectation.
+	///     A property with the value <see langword="null" /> exists and therefore fails the expectation, unless
+	///     <see cref="JsonOptionsExtensions.TreatingNullAsAbsent(JsonOptions, bool)" /> is set.
 	/// </remarks>
 	public IJsonObjectResult Without(string propertyName);
 

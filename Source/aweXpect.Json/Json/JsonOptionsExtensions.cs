@@ -35,4 +35,19 @@ public static class JsonOptionsExtensions
 		{
 			IgnoreAdditionalProperties = ignoreAdditionalProperties,
 		};
+
+	/// <summary>
+	///     Treats a property with the value <see langword="null" /> as if it was absent
+	///     when <paramref name="treatNullAsAbsent" /> is <see langword="true" />
+	/// </summary>
+	/// <remarks>
+	///     Elements of an array with the value <see langword="null" /> are not affected.
+	/// </remarks>
+	public static JsonOptions TreatingNullAsAbsent(
+		this JsonOptions @this,
+		bool treatNullAsAbsent = true)
+		=> @this with
+		{
+			TreatNullAsAbsent = treatNullAsAbsent,
+		};
 }

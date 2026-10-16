@@ -565,6 +565,20 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenElementsAreNull_WhenTreatingNullAsAbsent_ShouldCountThem()
+			{
+				JsonElement subject = FromString("[1, null]");
+
+				async Task Act()
+					=> await That(subject).IsArray(e => e
+							.With(2).Elements(),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow()
+					.Because("null elements of an array are not affected by the option");
+			}
 		}
 
 		public sealed class WithArraysTests
@@ -731,6 +745,25 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNullElementIsMissing_WhenTreatingNullAsAbsent_ShouldFail()
+			{
+				JsonElement subject = FromString("[1]");
+
+				async Task Act()
+					=> await That(subject).IsArray(e => e
+							.WithElements(1, null),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] matches 1 and $[1] matches <null>,
+					             but it differed as $[1] did not exist
+					             """)
+					.Because("null elements of an array are not affected by the option");
+			}
 		}
 
 		public sealed class WithObjectsTests
@@ -864,6 +897,49 @@ public sealed partial class ThatJsonElement
 					               $[0].foo was 1 and
 					               $[2].foo was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectingAbsentProperties_WhenTreatingNullAsAbsent_ShouldNotReportNullProperties()
+			{
+				JsonElement subject = FromString("""
+				                                 [
+				                                   {"foo":1},
+				                                   {"bar":2},
+				                                   {"foo":null}
+				                                 ]
+				                                 """);
+
+				async Task Act()
+					=> await That(subject).IsArray(e => e
+							.WithObjects(
+								o => o.Without("foo"),
+								o => o.Without("foo"),
+								o => o.Without("foo")),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] is an object and $[0].foo does not exist and $[1] is an object and $[1].foo does not exist and $[2] is an object and $[2].foo does not exist,
+					             but it differed as $[0].foo was 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMatchingNullOnMissingProperty_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[{\"foo\":1},{\"foo\":null},{}]");
+
+				async Task Act()
+					=> await That(subject).IsArray(e => e
+							.WithObjects(
+								o => o.With("foo").Matching(1),
+								o => o.With("foo").Matching(null),
+								o => o.With("foo").Matching(null)),
+						o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}
