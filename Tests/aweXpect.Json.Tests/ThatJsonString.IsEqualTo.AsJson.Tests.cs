@@ -448,6 +448,10 @@ public sealed partial class ThatJsonString
 				[InlineData("{ \"foo\": false }", "{  \"foo\": true  }", "$.foo was False instead of True")]
 				[InlineData("{ \"foo\": { \"bar\" : 1 } }", "{\"foo\":{\"bar\":2}}", "$.foo.bar was 1 instead of 2")]
 				[InlineData("{ \"foo\": [1, 3, 3] }", "{\"foo\":[1,2,3]}", "$.foo[1] was 3 instead of 2")]
+				[InlineData("{ \"foo\": 9007199254740993 }", "{  \"foo\": 9007199254740992  }",
+					"$.foo was 9007199254740993 instead of 9007199254740992")]
+				[InlineData("{ \"foo\": 1e-30 }", "{  \"foo\": 2e-30  }", "$.foo was 1e-30 instead of 2e-30")]
+				[InlineData("{ \"foo\": 1e400 }", "{  \"foo\": 2e400  }", "$.foo was 1e400 instead of 2e400")]
 				public async Task WhenPropertiesOfValuesHaveDifferentValue_ShouldFail(string subject, string expected,
 					string message)
 				{
@@ -662,6 +666,12 @@ public sealed partial class ThatJsonString
 				[Theory]
 				[InlineData("{ \"foo\": 2 }", "{  \"foo\": 2  }", "integer values are supported")]
 				[InlineData("{ \"foo\": 1.23 }", "{  \"foo\": 1.23  }", "floating values are supported")]
+				[InlineData("{ \"foo\": 9007199254740993 }", "{  \"foo\": 9007199254740993  }",
+					"integers beyond the precision of a double are supported")]
+				[InlineData("{ \"foo\": 1.0 }", "{  \"foo\": 1  }", "the notation of a number is ignored")]
+				[InlineData("{ \"foo\": 1.5e2 }", "{  \"foo\": 150  }", "the exponent notation is supported")]
+				[InlineData("{ \"foo\": 1e400 }", "{  \"foo\": 1e400  }",
+					"numbers beyond the range of a double are supported")]
 				[InlineData("{ \"foo\": \"bar\" }", "{  \"foo\": \"bar\"  }", "string values are supported")]
 				[InlineData("{ \"foo\": true }", "{  \"foo\": true  }", "boolean true is supported")]
 				[InlineData("{ \"foo\": false }", "{  \"foo\": false  }", "boolean false is supported")]

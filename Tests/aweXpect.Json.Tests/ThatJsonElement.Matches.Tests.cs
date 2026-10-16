@@ -132,6 +132,24 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Theory]
+			[InlineData("9007199254740993", 9007199254740993L, true)]
+			[InlineData("9007199254740993", 9007199254740992L, false)]
+			public async Task LongValue_ShouldSucceedWhenMatching(string json, long expected, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).Matches(expected);
+
+				await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches expected,
+					              but it differed as $ was {json} instead of {expected}
+					              """);
+			}
+
+			[Theory]
 			[InlineData("null", true)]
 			[InlineData("{}", false)]
 			public async Task NullValue_ShouldSucceedWhenMatching(string json, bool isMatch)

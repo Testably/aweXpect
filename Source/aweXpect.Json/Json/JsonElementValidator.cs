@@ -142,28 +142,36 @@ internal static class JsonElementValidator
 			return result;
 		}
 
-		if (actualElement.TryGetInt32(out int v1) && expectedElement.TryGetInt32(out int v2))
+		if (!AreEqualNumbers(actualElement, expectedElement))
 		{
-			if (v1 == v2)
-			{
-				return result;
-			}
-
-			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}");
-			return result;
-		}
-
-		if (actualElement.TryGetDouble(out double n1) && expectedElement.TryGetDouble(out double n2))
-		{
-			if (n1.Equals(n2))
-			{
-				return result;
-			}
-
 			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}");
 		}
 
 		return result;
+	}
+
+	/// <remarks>
+	///     Integers are compared exactly, as a <see langword="double" /> loses their precision above 2^53. Fractions are
+	///     compared with the precision of a <see langword="double" />, because an expected <see langword="double" /> is
+	///     serialized with 17 digits on .NET Framework (e.g. <c>42.1</c> as <c>42.100000000000001</c>).
+	///     Rounding is monotonic, so integers whose rounded <see langword="decimal" /> values differ are different.
+	///     Numbers outside the range of a <see langword="double" /> are compared by their text.
+	/// </remarks>
+	private static bool AreEqualNumbers(JsonElement actualElement, JsonElement expectedElement)
+	{
+		if (actualElement.TryGetDecimal(out decimal d1) && expectedElement.TryGetDecimal(out decimal d2) &&
+		    d1 != d2 && d1 == decimal.Truncate(d1) && d2 == decimal.Truncate(d2))
+		{
+			return false;
+		}
+
+		if (actualElement.TryGetDouble(out double n1) && expectedElement.TryGetDouble(out double n2) &&
+		    !double.IsInfinity(n1) && !double.IsInfinity(n2))
+		{
+			return n1.Equals(n2);
+		}
+
+		return actualElement.GetRawText() == expectedElement.GetRawText();
 	}
 
 	private static async Task<JsonComparisonResult> CompareJsonObject(
