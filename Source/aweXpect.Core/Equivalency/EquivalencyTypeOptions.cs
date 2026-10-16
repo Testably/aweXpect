@@ -42,6 +42,15 @@ public record EquivalencyTypeOptions
 	/// </summary>
 	public bool IgnoreCollectionOrder { get; init; }
 
+	/// <summary>
+	///     The predicates that decide whether an actual value is equivalent to an expected value of another type.
+	/// </summary>
+	/// <remarks>
+	///     The last one that applies to a pair decides, like the last registration of
+	///     <see cref="EquivalencyOptions.For{TMember}" />.
+	/// </remarks>
+	internal TypePairComparison[] TypePairComparisons { get; init; } = [];
+
 	internal void AppendOptions(StringBuilder sb, string indentation = "",
 		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore = null)
 	{
@@ -66,6 +75,13 @@ public record EquivalencyTypeOptions
 		if (IgnoreCollectionOrder)
 		{
 			sb.Append(indentation).AppendLine(" - ignore collection order");
+		}
+
+		foreach (TypePairComparison typePairComparison in TypePairComparisons)
+		{
+			sb.Append(indentation).Append(" - compare ");
+			typePairComparison.AppendTypes(sb);
+			sb.Append(" by ").AppendLine(typePairComparison.Description);
 		}
 
 		AppendMembersToIgnore(sb, indentation, "members",

@@ -28,13 +28,15 @@ public sealed class RequiresMemberMetadataTests
 		.Because("the reflection lookup must not silently degrade into an empty test set");
 
 	/// <remarks>
-	///     The equality members of the options types, property accessors and the context of the
-	///     <see cref="ResultContextCollectorExtensions" /> take an <see cref="EquivalencyOptions" /> as well, but only
+	///     The equality members of the options types, property accessors, the context of the
+	///     <see cref="ResultContextCollectorExtensions" /> and the options of the
+	///     <see cref="EquivalencyTypeOptionsExtensions" /> take an <see cref="EquivalencyOptions" /> as well, but only
 	///     carry it around, so they are not entry points.
 	/// </remarks>
 	private static IEnumerable<MethodInfo> EquivalencyEntryPoints()
 		=> typeof(EquivalencyComparison).Assembly.GetTypes()
-			.Where(type => (type.IsPublic || type.IsNestedPublic) && type != typeof(ResultContextCollectorExtensions))
+			.Where(type => (type.IsPublic || type.IsNestedPublic) && type != typeof(ResultContextCollectorExtensions) &&
+			               type != typeof(EquivalencyTypeOptionsExtensions))
 			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
 			                                    BindingFlags.DeclaredOnly))
 			.Where(method => !method.IsSpecialName &&

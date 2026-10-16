@@ -210,6 +210,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 | [`Ignoring`, `IgnoringFields`, `IgnoringProperties`](#ignoring-members-by-predicate) | ignores members by path and type                 |
 | [`IncludingFields`, `IncludingProperties`](#including-fields-and-properties)         | chooses which fields and properties are compared |
 | [`IgnoringCollectionOrder`](#ignoring-collection-order)                              | matches collection items without an order        |
+| [`Comparing<TActual, TExpected>`](#comparing-different-types-with-a-predicate)       | compares a pair of types with a predicate        |
 | [`For<T>`](#per-type-options-with-fort)                                              | applies options to members of type `T` only      |
 | [`ComparisonType`](#comparing-by-value-or-by-members)                                | compares a type by value or by its members       |
 | [`LimitingRecursionDepth`](#limiting-the-recursion-depth)                            | changes the maximum recursion depth of 100       |
@@ -292,6 +293,38 @@ The elements do not have to be comparable: each expected element is matched agai
 it, and every element can be matched only once, so `[1, 1, 2]` is not equivalent to `[1, 2, 2]`. When no such matching
 covers both collections, only the elements that were left over are reported, each against the leftover element it
 differs from the least.
+
+### Comparing different types with a predicate
+
+When the actual and the expected objects have different types whose members don't correspond by name, e.g. your
+tracks and the entries of a chart, let a predicate decide whether a pair is equivalent:
+
+```csharp
+await Expect.That(tracks).IsEquivalentTo(chart, o => o
+  .Comparing<Track, ChartEntry>((track, entry) => track.Title == entry.Song)
+  .IgnoringCollectionOrder());
+```
+
+The predicate applies wherever an actual `TActual` meets an expected `TExpected`, at any depth and also for derived
+types, and decides instead of the comparison by value or by members. A `null` value is never passed to it. A pair that
+doesn't match is reported with its path and the predicate:
+
+```text title="Failure message"
+Expected that tracks
+is equivalent to chart,
+but it was not:
+  Element [1] did not match (track, entry) => track.Title == entry.Song:
+      Actual: Track { IsPlayed = True, PlayCount = 42, Title = "Midnight Echo" }
+    Expected: ChartEntry { Plays = 42, Song = "Neon Skyline" }
+
+Equivalency options:
+ - include public fields and properties
+ - compare Track with ChartEntry by (track, entry) => track.Title == entry.Song
+```
+
+When several predicates apply to a pair, the one that was added last decides. Within
+[`For<T>`](#per-type-options-with-fort), a predicate only applies to values of type `T` and to the values nested in
+them.
 
 ### Per-type options with `For<T>`
 

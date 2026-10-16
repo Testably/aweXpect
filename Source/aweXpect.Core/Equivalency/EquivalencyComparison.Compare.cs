@@ -141,6 +141,23 @@ public static partial class EquivalencyComparison
 		}
 	}
 
+	private static void AppendPredicateDifference(StringBuilder failureBuilder, MemberType memberType,
+		MemberPath memberPath, object actual, object expected, TypePairComparison comparison,
+		EquivalencyContext context)
+	{
+		if (SkipsText(context))
+		{
+			return;
+		}
+
+		AppendEntry(failureBuilder, memberType, memberPath.ToString(), context);
+		failureBuilder.Append(" did not match ").Append(comparison.Description).AppendLine(":");
+		failureBuilder.Append("      Actual: ");
+		(string actualText, string expectedText) =
+			ValuePairFormatter.Format(actual, expected, FormattingOptions.SingleLine);
+		failureBuilder.Append(actualText).AppendLine().Append("    Expected: ").Append(expectedText);
+	}
+
 	private static void AppendDifferenceHeader(StringBuilder failureBuilder, MemberType memberType,
 		string memberPath, EquivalencyContext context)
 	{
@@ -597,6 +614,14 @@ public static partial class EquivalencyComparison
 			GetRegisteredOptions(actual.GetType(), equivalencyOptions, context);
 		EquivalencyTypeOptions? expectedOptions =
 			GetRegisteredOptions(expected.GetType(), equivalencyOptions, context);
+		EquivalencyTypeOptions pairOptions = expectedOptions ?? actualOptions ?? inheritedOptions;
+		if (pairOptions.TypePairComparisons.Length > 0 &&
+		    TryCompareByPredicate(actual, expected, pairOptions.TypePairComparisons, failureBuilder, memberPath,
+			    memberType, context, out isEquivalent))
+		{
+			return true;
+		}
+
 		if (IsComparedByValue(actual.GetType(), actualOptions ?? inheritedOptions, equivalencyOptions))
 		{
 			isEquivalent = CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
@@ -610,9 +635,57 @@ public static partial class EquivalencyComparison
 		}
 
 		isEquivalent = false;
-		typeOptions = expectedOptions ?? actualOptions ?? inheritedOptions;
+		typeOptions = pairOptions;
 		return false;
 	}
+
+	/// <summary>
+	///     Compares the values by the last of the <paramref name="comparisons" /> that applies to their types, or
+	///     returns <see langword="false" /> when none does.
+	/// </summary>
+	/// <remarks>
+	///     The comparisons are looked up in the options that the values would be compared by members with, so a
+	///     comparison of the enclosing options applies unless the type of a value has options of its own.
+	/// </remarks>
+	private static bool TryCompareByPredicate(
+		object actual,
+		object expected,
+		TypePairComparison[] comparisons,
+		StringBuilder failureBuilder,
+		MemberPath memberPath,
+		MemberType memberType,
+		EquivalencyContext context,
+		out bool isEquivalent)
+	{
+		for (int i = comparisons.Length - 1; i >= 0; i--)
+		{
+			TypePairComparison comparison = comparisons[i];
+			if (!comparison.AppliesTo(actual, expected))
+			{
+				continue;
+			}
+
+			isEquivalent = UserCode.Invoke(
+				static values => values.Comparison.Compare(values.Actual, values.Expected),
+				(Comparison: comparison, Actual: actual, Expected: expected, Path: memberPath, Type: memberType),
+				static values => GetComparisonThrower(values.Type, values.Path.ToString()));
+			if (!isEquivalent)
+			{
+				AppendPredicateDifference(failureBuilder, memberType, memberPath, actual, expected, comparison,
+					context);
+			}
+
+			return true;
+		}
+
+		isEquivalent = false;
+		return false;
+	}
+
+	private static string GetComparisonThrower(MemberType memberType, string memberPath)
+		=> string.IsNullOrEmpty(memberPath)
+			? "the comparison"
+			: $"the comparison of {GetMemberPath(memberType, memberPath)}";
 
 	/// <summary>
 	///     Compares two objects that are compared by their members, as dictionaries or as sequences. Two dictionaries
