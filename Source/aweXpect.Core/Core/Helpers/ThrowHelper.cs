@@ -25,6 +25,23 @@ internal static class ThrowHelper
 		}
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Rejects a negative number of bytes, because an allocation is never below zero.
+	/// </summary>
+	public static void ThrowIfBytesAreNegative(long bytes,
+		[CallerArgumentExpression(nameof(bytes))]
+		string? paramName = null)
+	{
+		if (bytes < 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
+				$"The {paramName} must not be negative."));
+		}
+	}
+#endif
+
 	/// <summary>
 	///     Rejects an exclusive <paramref name="maximum" /> of zero, so that a negated expectation cannot silently
 	///     succeed on a range that can never contain anything.

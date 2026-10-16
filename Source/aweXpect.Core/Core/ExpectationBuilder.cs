@@ -589,6 +589,17 @@ public abstract class ExpectationBuilder
 		_hasTimeout = true;
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Lets the subject measure its allocations according to the <paramref name="options" />.
+	/// </summary>
+	/// <returns>
+	///     <see langword="false" />, when the subject is no synchronous delegate, whose allocations can be measured.
+	/// </returns>
+	/// <exception cref="InvalidOperationException">The allocations are already measured.</exception>
+	internal virtual bool TryMeasureAllocations(Options.AllocationOptions options) => false;
+#endif
+
 	/// <summary>
 	///     Adds a <paramref name="reason" /> to the expectation.
 	/// </summary>
@@ -1294,6 +1305,20 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	{
 		_subjectSource = subjectSource;
 	}
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc />
+	internal override bool TryMeasureAllocations(Options.AllocationOptions options)
+	{
+		if (_subjectSource is not IAllocationMeasuringSource source)
+		{
+			return false;
+		}
+
+		source.MeasureAllocations(options);
+		return true;
+	}
+#endif
 
 	/// <inheritdoc />
 	/// <remarks>
