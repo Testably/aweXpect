@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using aweXpect.Formatting;
 using static aweXpect.Expect;
@@ -69,6 +70,20 @@ internal static class Checks
 		new("array elements compared with expected values fail loudly",
 			() => ShouldFailLoudly(async () => await That(Parse("[1, 2]"))
 				.IsArray(a => a.WithElements(1, 2)))),
+		new("a node with the expected structure passes",
+			() => ShouldPass(async () => await That(JsonNode.Parse("{\"a\": [1, 2]}"))
+				.IsObject(o => o.With("a").AnArray(a => a.With(2).Elements())))),
+		new("a null node fails as the JSON null",
+			() => ShouldFail(async () => await That((JsonNode?)null).IsObject(), "is an object", "but it was null")),
+		new("the elements of a node array fail with their JSON representation",
+			() => ShouldFail(async () => await That(new JsonArray("a", null)).IsArray().WhoseElements
+					.All().Satisfy(e => e.ValueKind == JsonValueKind.Number),
+				"whose elements satisfy", "  \"a\",", "  null")),
+		new("a node matching an expected object fails loudly",
+			() => ShouldFailLoudly(async () => await That(new JsonObject { ["a"] = 1, }).Matches(new
+			{
+				a = 1,
+			}))),
 		new("a serializable object fails loudly",
 			() => ShouldFailLoudly(async () => await That((object)new Dto { Name = "a", })
 				.IsJsonSerializable())),

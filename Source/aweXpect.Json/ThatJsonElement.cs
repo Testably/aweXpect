@@ -15,7 +15,7 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatJsonElement
 {
-	private sealed class MatchesConstraint(
+	internal sealed class MatchesConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		object? expected,
@@ -107,7 +107,7 @@ public static partial class ThatJsonElement
 	}
 
 
-	private sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
+	internal sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
 		: ConstraintResult.WithValue<JsonElement>(it, grammars),
 			IValueConstraint<JsonElement>
 	{

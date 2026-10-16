@@ -50,7 +50,7 @@ public static partial class ThatJsonElement
 			static element => element);
 	}
 
-	private sealed class IsArrayConstraint(
+	internal sealed class IsArrayConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		Func<IJsonArrayResult, IJsonArrayResult> expectation,

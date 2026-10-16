@@ -50,7 +50,7 @@ public static partial class ThatJsonElement
 			source);
 	}
 
-	private sealed class IsObjectConstraint(
+	internal sealed class IsObjectConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		Func<IJsonObjectResult, IJsonObjectResult> expectation,

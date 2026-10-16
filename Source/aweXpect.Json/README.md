@@ -25,6 +25,14 @@ Expectations for JSON strings and `System.Text.Json` for [aweXpect](https://gith
 | [`IsNumber`](#value-kinds)                              | `JsonElement` | a JSON number                                             |
 | [`IsBoolean`](#value-kinds)                             | `JsonElement` | a JSON boolean, i.e. `true` or `false`                    |
 | [`IsNull`](#value-kinds)                                | `JsonElement` | the JSON value `null`                                     |
+| [`Matches`](#jsonnode)                                  | `JsonNode`    | matches the expected value, additional properties allowed |
+| [`MatchesExactly`](#jsonnode)                           | `JsonNode`    | matches the expected value exactly                        |
+| [`IsObject`](#jsonnode)                                 | `JsonNode`    | a JSON object, optionally with expectations on it         |
+| [`IsArray`](#jsonnode)                                  | `JsonNode`    | a JSON array, optionally with expectations on it          |
+| [`IsArray().WhoseElements`](#jsonnode)                  | `JsonNode`    | collection expectations on the elements of a JSON array   |
+| [`IsString`](#jsonnode)                                 | `JsonNode`    | a JSON string                                             |
+| [`IsNumber`](#jsonnode)                                 | `JsonNode`    | a JSON number                                             |
+| [`IsBoolean`](#jsonnode)                                | `JsonNode`    | a JSON boolean, i.e. `true` or `false`                    |
 | [`IsJsonSerializable`](#json-serializable)              | `object`      | survives a round trip through the JSON serializer         |
 
 ## String comparison as JSON
@@ -625,6 +633,47 @@ but it was a string
 
 For a nullable `JsonElement?`, `IsNull()` is the general expectation of aweXpect that verifies that the subject itself
 is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but not a JSON-specific `IsNull()`.
+
+## `JsonNode`
+
+A [`JsonNode`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonnode) and its subtypes
+`JsonObject`, `JsonArray` and `JsonValue`, nullable or not, have the same expectations as a [`JsonElement`](#jsonelement):
+`Matches`, `MatchesExactly`, `IsObject`, `IsArray` (with `WhoseElements`), `IsString`, `IsNumber` and `IsBoolean`, with
+the same options and failure messages:
+
+```csharp
+JsonNode? track = JsonNode.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""");
+
+await Expect.That(track).Matches(new { title = "Let It Be" });
+await Expect.That(track).IsObject(o => o.With("artist").Matching("The Beatles"));
+
+JsonArray titles = new("Let It Be", "Yesterday");
+
+await Expect.That(titles).IsArray().WhoseElements.HasCount(2);
+```
+
+`MatchesExactly(new { title = "Let It Be" })` on the track would fail with:
+
+```text title="Failure message"
+Expected that track
+matches new { title = "Let It Be" } exactly,
+but it differed as $.artist had unexpected "The Beatles"
+```
+
+The node is verified in the state it has when the expectation is awaited, so changes made after `Expect.That(…)` are
+included.
+
+A `null` node is the JSON value `null`, as `JsonNode.Parse("null")` returns it. `Matches(null)` succeeds for it, while
+`IsObject()` would fail with:
+
+```text title="Failure message"
+Expected that node
+is an object,
+but it was null
+```
+
+Use the general `IsNull()` expectation of aweXpect to verify that a node is the JSON value `null`, so there is no
+JSON-specific `IsNull()` for a `JsonNode`.
 
 ## JSON serializable
 
