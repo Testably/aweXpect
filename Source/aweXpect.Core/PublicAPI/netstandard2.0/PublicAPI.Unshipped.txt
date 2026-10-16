@@ -50,3 +50,22 @@ static aweXpect.Core.Extending.PredicateResult.FailureBothWays(string! reason) -
 static aweXpect.Core.Extending.PredicateResult.implicit operator aweXpect.Core.Extending.PredicateResult(bool isMet) -> aweXpect.Core.Extending.PredicateResult
 aweXpect.Core.Extending.EvaluationCancellationTokenAttribute
 aweXpect.Core.Extending.EvaluationCancellationTokenAttribute.EvaluationCancellationTokenAttribute() -> void
+aweXpect.Options.IRelativeToleranceOptions<TTolerance>
+aweXpect.Options.IRelativeToleranceOptions<TTolerance>.UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance>! absoluteTolerance, string! unit) -> void
+aweXpect.Options.NumberTolerance<TNumber>.ToleranceFor(TNumber expected) -> TNumber?
+aweXpect.Options.NumberTolerance<TNumber>.UseRelativeTolerance(System.Func<TNumber, TNumber, TNumber>! absoluteTolerance, string! unit) -> void
+aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance>! absoluteTolerance, string! unit) -> void
+aweXpect.Results.IWithinToleranceResult<TResult, TTolerance>
+aweXpect.Results.IWithinToleranceResult<TResult, TTolerance>.Result.get -> TResult
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.Within(TType tolerance) -> aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.WithinResult!
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.WithinResult
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+aweXpect.Results.NumberToleranceResult<TType, TThat>.Within(TType tolerance) -> aweXpect.Results.NumberToleranceResult<TType, TThat>.WithinResult!
+aweXpect.Results.NumberToleranceResult<TType, TThat>.WithinResult
+aweXpect.Results.NumberToleranceResult<TType, TThat>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.WithinResult!
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.WithinResult
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
+static aweXpect.ToleranceExtensions.Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, decimal>! result) -> TResult
+static aweXpect.ToleranceExtensions.Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, double>! result) -> TResult
+static aweXpect.ToleranceExtensions.Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, float>! result) -> TResult
