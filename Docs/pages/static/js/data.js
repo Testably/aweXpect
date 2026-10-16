@@ -210,6 +210,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -247,7 +253,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -288,7 +295,8 @@ window.BENCHMARK_DATA = {
           12404.724879338191,
           12854.50207737514,
           9026.947104820838,
-          6861.284078470866
+          6861.284078470866,
+          12421.406861525316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -334,7 +342,8 @@ window.BENCHMARK_DATA = {
           3040,
           3088,
           3088,
-          3088
+          3088,
+          3096
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -383,7 +392,8 @@ window.BENCHMARK_DATA = {
           384998.83440290176,
           382980.966796875,
           244252.46236979167,
-          205385.36598557694
+          205385.36598557694,
+          378961.86875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -429,7 +439,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590289,
-          590226
+          590226,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -478,7 +489,8 @@ window.BENCHMARK_DATA = {
           19423.414180210657,
           20083.921060415414,
           14183.934397379557,
-          12472.836968994141
+          12472.836968994141,
+          20068.747473580497
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -490,6 +502,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -706,6 +719,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -736,7 +755,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -770,7 +790,8 @@ window.BENCHMARK_DATA = {
           317.3832711151668,
           278.7273161570231,
           208.46897268295288,
-          207.12579550743104
+          207.12579550743104,
+          319.7000914255778
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -782,6 +803,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -851,7 +873,8 @@ window.BENCHMARK_DATA = {
           531.2556179682414,
           527.3487646738688,
           413.80027470221887,
-          378.2134840965271
+          378.2134840965271,
+          519.9569649378459
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -863,6 +886,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -932,7 +956,8 @@ window.BENCHMARK_DATA = {
           411.1008774757385,
           397.29562552769977,
           285.29169902801516,
-          289.82909094492595
+          289.82909094492595,
+          407.7315179824829
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -944,6 +969,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5773,6 +5799,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -6573,7 +6605,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -7377,7 +7410,8 @@ window.BENCHMARK_DATA = {
           154.8452606201172,
           149.11259651184082,
           120.1696959177653,
-          104.08127458890279
+          104.08127458890279,
+          174.27535274823506
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8184,6 +8218,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536
@@ -8998,7 +9033,8 @@ window.BENCHMARK_DATA = {
           270.45749040750354,
           261.14147764841715,
           210.03958905537922,
-          196.98380131721495
+          196.98380131721495,
+          260.67188380559287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9191,6 +9227,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9900,7 +9937,8 @@ window.BENCHMARK_DATA = {
           254.06105597813925,
           249.63227446873984,
           177.41626545588176,
-          154.8402912457784
+          154.8402912457784,
+          252.18514610926312
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9912,6 +9950,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10214,6 +10253,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -10251,7 +10296,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -10292,7 +10338,8 @@ window.BENCHMARK_DATA = {
           284.72050285339355,
           274.9257159868876,
           209.01274215258084,
-          182.34853585561117
+          182.34853585561117,
+          298.23871854373385
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10311,6 +10358,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10387,7 +10435,8 @@ window.BENCHMARK_DATA = {
           546.7849304199219,
           498.7616994380951,
           421.2854511578878,
-          393.68072278683
+          393.68072278683,
+          589.0532191594442
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10399,6 +10448,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -10482,7 +10532,8 @@ window.BENCHMARK_DATA = {
           355.100718720754,
           324.0743795541617,
           251.81303720474244,
-          227.4628293434779
+          227.4628293434779,
+          360.1869178158896
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10494,6 +10545,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15330,6 +15382,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -16130,7 +16188,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -16934,7 +16993,8 @@ window.BENCHMARK_DATA = {
           649.3445979436239,
           668.6414373715719,
           490.68322728474936,
-          397.2413293031546
+          397.2413293031546,
+          659.90538753782
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17743,7 +17803,8 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864
+          864,
+          872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18555,7 +18616,8 @@ window.BENCHMARK_DATA = {
           1401.552971903483,
           1529.7548483439855,
           1106.0817887624105,
-          956.4516964594524
+          956.4516964594524,
+          1503.5793655940465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19364,6 +19426,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -19457,7 +19520,8 @@ window.BENCHMARK_DATA = {
           668.6551818847656,
           635.5269638470241,
           488.85442905426027,
-          420.7603173596518
+          420.7603173596518,
+          779.9199893315633
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19469,6 +19533,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -24349,6 +24414,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -25149,7 +25220,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -25953,7 +26025,8 @@ window.BENCHMARK_DATA = {
           660.4626406351725,
           628.1816426595052,
           508.0350049336751,
-          393.09915994008384
+          393.09915994008384,
+          653.0178367614747
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26762,7 +26835,8 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912
+          912,
+          920
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27574,7 +27648,8 @@ window.BENCHMARK_DATA = {
           28539.752729143416,
           27536.65915934245,
           15998.21986694336,
-          11981.575541178385
+          11981.575541178385,
+          28045.679953438896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28383,7 +28458,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28476,7 +28552,8 @@ window.BENCHMARK_DATA = {
           815.4441024235317,
           784.0968588420322,
           586.7889182908194,
-          519.8414870580037
+          519.8414870580037,
+          952.3073452631633
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28488,6 +28565,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -29138,6 +29216,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -29233,7 +29317,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -29332,7 +29417,8 @@ window.BENCHMARK_DATA = {
           816.9865444183349,
           730.8442955698285,
           542.0618453979492,
-          511.9858414967855
+          511.9858414967855,
+          765.6373788197835
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29409,6 +29495,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -29543,7 +29630,8 @@ window.BENCHMARK_DATA = {
           82774.30965482272,
           83963.34209798177,
           51145.20411028181,
-          31958.795033772785
+          31958.795033772785,
+          86892.4383219401
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29647,7 +29735,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30219,6 +30308,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -30314,7 +30409,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -30413,7 +30509,8 @@ window.BENCHMARK_DATA = {
           197.2961763858795,
           177.2695261331705,
           147.19169441858926,
-          133.23548081715902
+          133.23548081715902,
+          193.24924760205406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30490,6 +30587,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -30624,7 +30722,8 @@ window.BENCHMARK_DATA = {
           31733.089233398438,
           31718.898799351282,
           14262.032648359027,
-          13757.90241800944
+          13757.90241800944,
+          32224.892517089844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30728,6 +30827,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -30821,7 +30921,8 @@ window.BENCHMARK_DATA = {
           254.05583359400433,
           257.7866344085106,
           182.73601034971384,
-          148.93192338943481
+          148.93192338943481,
+          262.45795218149823
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30833,6 +30934,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -31135,6 +31237,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -31172,7 +31280,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -31213,7 +31322,8 @@ window.BENCHMARK_DATA = {
           371.51588408152264,
           394.759782409668,
           267.4871409336726,
-          246.2678359576634
+          246.2678359576634,
+          375.8416256268819
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31234,6 +31344,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -31308,7 +31419,8 @@ window.BENCHMARK_DATA = {
           397.9347994486491,
           424.26194454828897,
           325.2118851457323,
-          301.7702502250671
+          301.7702502250671,
+          396.90675279072354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31320,6 +31432,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -31403,7 +31516,8 @@ window.BENCHMARK_DATA = {
           412.1928436415536,
           429.35954801852887,
           318.12597629002164,
-          270.1760391553243
+          270.1760391553243,
+          426.20220750172933
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31415,6 +31529,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -31673,6 +31788,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -31710,7 +31831,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -31751,7 +31873,8 @@ window.BENCHMARK_DATA = {
           817.2805114110311,
           828.4492577870686,
           598.9251449902853,
-          592.0035296122234
+          592.0035296122234,
+          852.2483039220174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31778,6 +31901,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -31846,7 +31970,8 @@ window.BENCHMARK_DATA = {
           1975.3897729601179,
           1998.4625478472028,
           1523.8900037912222,
-          1451.777178700765
+          1451.777178700765,
+          1990.7309013366698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31858,6 +31983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -31941,7 +32067,8 @@ window.BENCHMARK_DATA = {
           950.5793904622395,
           907.5515675226848,
           725.3409105936686,
-          621.4610689603365
+          621.4610689603365,
+          966.7443075815837
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31953,6 +32080,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -32211,6 +32339,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -32248,7 +32382,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -32289,7 +32424,8 @@ window.BENCHMARK_DATA = {
           12188.088536580404,
           12333.795104980469,
           8526.345937875602,
-          7079.729796091716
+          7079.729796091716,
+          12300.737869262695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32308,6 +32444,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -32384,7 +32521,8 @@ window.BENCHMARK_DATA = {
           39963.73721110026,
           40402.78737182617,
           26568.207509358723,
-          22978.51051940918
+          22978.51051940918,
+          41087.26018582858
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32430,7 +32568,8 @@ window.BENCHMARK_DATA = {
           18394,
           18609,
           18609,
-          18608
+          18608,
+          18394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32479,7 +32618,8 @@ window.BENCHMARK_DATA = {
           11353.549744742257,
           11309.382888793945,
           8237.906922403972,
-          6794.341003417969
+          6794.341003417969,
+          11474.479409437914
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32491,6 +32631,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -32749,6 +32890,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
         "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
+      },
+      {
+        "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
+        "message": "fix: append the equivalency contexts of the evaluation that was compared (#1846)"
       }
     ],
     "labels": [
@@ -32786,7 +32933,8 @@ window.BENCHMARK_DATA = {
       "422ae04d",
       "7dbe3889",
       "5c9b4b13",
-      "4e4171de"
+      "4e4171de",
+      "f0e1ed5e"
     ],
     "datasets": [
       {
@@ -32827,7 +32975,8 @@ window.BENCHMARK_DATA = {
           11948.932791573661,
           11776.999320983887,
           7891.028594970703,
-          7041.386879475912
+          7041.386879475912,
+          11663.701488201435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32854,6 +33003,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208,
@@ -32922,7 +33072,8 @@ window.BENCHMARK_DATA = {
           59364.43751878005,
           58566.32469889323,
           37925.41348031851,
-          32192.377535306492
+          32192.377535306492,
+          61600.718985421314
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32968,7 +33119,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33017,7 +33169,8 @@ window.BENCHMARK_DATA = {
           22251.639920748195,
           22238.793221028645,
           15820.927850341797,
-          13507.326941172281
+          13507.326941172281,
+          22521.69926234654
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33029,6 +33182,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
