@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using aweXpect.Customization;
 using aweXpect.Json;
 
@@ -11,6 +12,8 @@ namespace aweXpect.Formatting;
 /// </summary>
 public static class JsonFormatting
 {
+	private static int _isValueFormatterRegistered;
+
 	/// <summary>
 	///     Returns the according to the <paramref name="options" /> formatted <paramref name="value" />.
 	/// </summary>
@@ -47,6 +50,25 @@ public static class JsonFormatting
 		}
 	}
 
+	/// <summary>
+	///     Registers the formatting of <see cref="JsonElement" /> for values that aweXpect formats as
+	///     <see langword="object" />, e.g. the items of a collection, once per process.
+	/// </summary>
+	/// <remarks>
+	///     Without it, aweXpect formats a <see cref="JsonElement" /> with its <see cref="JsonElement.ToString()" />,
+	///     which omits the quotes of strings and writes <see langword="null" /> as an empty string.
+	///     <para />
+	///     The element is written in a single line, like the raw text of an array or object that
+	///     <see cref="JsonElement.ToString()" /> returns.
+	/// </remarks>
+	internal static void RegisterValueFormatter()
+	{
+		if (Interlocked.Exchange(ref _isValueFormatterRegistered, 1) == 0)
+		{
+			ValueFormatter.Register(new JsonElementValueFormatter());
+		}
+	}
+
 	/// <remarks>
 	///     Writes the element directly with the writer settings of the customized serializer options, because
 	///     serializing it with options that have no type info resolver requires reflection.
@@ -71,5 +93,19 @@ public static class JsonFormatting
 		}
 
 		return Encoding.UTF8.GetString(stream.GetBuffer(), 0, (int)stream.Length);
+	}
+
+	private sealed class JsonElementValueFormatter : IValueFormatter
+	{
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (value is not JsonElement jsonElement)
+			{
+				return false;
+			}
+
+			stringBuilder.Append(Write(jsonElement, FormattingOptions.SingleLine));
+			return true;
+		}
 	}
 }

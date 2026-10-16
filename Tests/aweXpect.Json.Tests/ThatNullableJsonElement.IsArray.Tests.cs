@@ -339,6 +339,163 @@ public sealed partial class ThatNullableJsonElement
 			}
 		}
 
+		public sealed class WhoseElementsTests
+		{
+			[Fact]
+			public async Task AtLeast_WhenEnoughElementsComply_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("[{\"title\": \"Hey Jude\"}, \"Yesterday\"]");
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.AtLeast(1).ComplyWith(t => t.IsObject());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AtLeast_WhenTooFewElementsComply_ShouldFail()
+			{
+				JsonElement? subject = FromString("[{\"title\": \"Hey Jude\"}, \"Yesterday\"]");
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.AtLeast(2).ComplyWith(t => t.IsObject());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array whose elements are objects for at least 2 items,
+					             but only 1 of 2 were
+
+					             Not matching items (elements):
+					             [
+					               "Yesterday"
+					             ]
+
+					             Collection (elements):
+					             [
+					               {"title":"Hey Jude"},
+					               "Yesterday"
+					             ]
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("2", "a number")]
+			[InlineData("\"foo\"", "a string")]
+			public async Task WhenJsonIsNoArray_ShouldOnlyFailWithIsArray(string json, string kindString)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.HasCount(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an array whose elements have exactly 2 items,
+					              but it was {kindString}
+					              """)
+					.Because("the elements are only accessed when the subject is an array");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldOnlyFailWithIsArray()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsArray().WhoseElements.HasCount(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array whose elements have exactly 2 items,
+					             but it was <null>
+					             """)
+					.Because("the elements are only accessed when the subject is an array");
+			}
+
+			[Fact]
+			public async Task WithExpectation_WhenElementsDoNotComply_ShouldFail()
+			{
+				JsonElement? subject = FromString("[2, 1]");
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a.With(2).Elements(), o => o.IgnoringArrayOrder())
+						.WhoseElements.Contains(e => e.GetInt32() == 3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array with 2 elements whose elements contain an item matching e => e.GetInt32() == 3 at least once,
+					             but elements did not contain it
+
+					             Collection (elements):
+					             [
+					               2,
+					               1
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WithExpectation_WhenSubjectIsNull_ShouldOnlyFailWithIsArray()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a.With(2).Elements())
+						.WhoseElements.Contains(e => e.GetInt32() == 3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array with 2 elements whose elements contain an item matching e => e.GetInt32() == 3 at least once,
+					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+		}
+
+		public sealed class WhoseElementsNegatedTests
+		{
+			[Fact]
+			public async Task WhenElementsMeetTheExpectation_ShouldFail()
+			{
+				JsonElement? subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray().WhoseElements.HasCount(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an array whose elements have exactly 2 items,
+					             but it was
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray().WhoseElements.HasCount(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an array whose elements have exactly 2 items,
+					             but it was <null>
+					             """)
+					.Because("a null subject fails IsArray also when it is negated");
+			}
+		}
+
 		public sealed class WithNumberOfElementsTests
 		{
 			[Fact]

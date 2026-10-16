@@ -30,6 +30,10 @@ internal static class Checks
 		new("an array with a differing length fails and names it",
 			() => ShouldFail(async () => await That(Parse("[1, 2]")).IsArray(a => a.With(3).Elements()),
 				"$ had 2 elements")),
+		new("the elements of an array fail with their JSON representation",
+			() => ShouldFail(async () => await That(Parse("[\"a\", null]")).IsArray().WhoseElements
+					.All().Satisfy(e => e.ValueKind == JsonValueKind.String),
+				"whose elements satisfy", "  \"a\",", "  null")),
 		new("a parsed JSON string is inspected with Which",
 			() => ShouldFail(async () => await That("[1]").IsValidJson().Which(e => e.IsObject()),
 				"is an object")),

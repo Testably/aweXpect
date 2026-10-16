@@ -20,6 +20,7 @@ Expectations for JSON strings and `System.Text.Json` for [aweXpect](https://gith
 | [`MatchesExactly`](#matches)                            | `JsonElement` | matches the expected value exactly                        |
 | [`IsObject`](#isobject)                                 | `JsonElement` | a JSON object, optionally with expectations on it         |
 | [`IsArray`](#isarray)                                   | `JsonElement` | a JSON array, optionally with expectations on it          |
+| [`IsArray().WhoseElements`](#isarray)                   | `JsonElement` | collection expectations on the elements of a JSON array   |
 | [`IsString`](#value-kinds)                              | `JsonElement` | a JSON string                                             |
 | [`IsNumber`](#value-kinds)                              | `JsonElement` | a JSON number                                             |
 | [`IsBoolean`](#value-kinds)                             | `JsonElement` | a JSON boolean, i.e. `true` or `false`                    |
@@ -451,6 +452,63 @@ await Expect.That(tracks).IsArray(a => a
         null,
         track => track.With(2).Properties()));
 ```
+
+You can verify the elements of an array regardless of their position with `WhoseElements`. It provides all
+collection expectations of aweXpect, e.g. `All()`, `AtLeast(…)`, `AtMost(…)`, `Exactly(…)`, `Between(…).And(…)` and
+`None()` with `ComplyWith(…)` or `Satisfy(…)`, as well as `Contains(…)`, `HasCount(…)` and `IsEmpty()`:
+
+```csharp
+JsonElement tracks = JsonDocument.Parse(
+    """
+    [
+      {"title": "Let It Be", "artist": "The Beatles", "durationSeconds": 243},
+      {"title": "Yesterday", "artist": "The Beatles", "durationSeconds": 125},
+      {"title": "Hey Jude", "artist": "The Beatles", "durationSeconds": 431}
+    ]
+    """).RootElement;
+
+await Expect.That(tracks).IsArray().WhoseElements
+    .All().ComplyWith(t => t.Matches(new { artist = "The Beatles" }));
+
+await Expect.That(tracks).IsArray().WhoseElements
+    .AtLeast(2).ComplyWith(t => t.IsObject(o => o.With("durationSeconds").ANumber()));
+
+await Expect.That(tracks).IsArray().WhoseElements
+    .Contains([t => t.Matches(new { title = "Hey Jude" })]);
+
+await Expect.That(tracks).IsArray().WhoseElements
+    .Contains(t => t.GetProperty("durationSeconds").GetInt32() > 400);
+
+await Expect.That(tracks).IsArray().WhoseElements.HasCount(3);
+```
+
+If "Yesterday" was by "Paul McCartney" instead, the first expectation would fail with:
+
+```text title="Failure message"
+Expected that tracks
+is an array whose elements match new { artist = "The Beatles" } for all items,
+but only 2 of 3 did
+
+Not matching items (elements):
+[
+  {"title":"Yesterday","artist":"Paul McCartney","durationSeconds":125}
+]
+
+Collection (elements):
+[
+  {"title":"Let It Be","artist":"The Beatles","durationSeconds":243},
+  {"title":"Yesterday","artist":"Paul McCartney","durationSeconds":125},
+  {"title":"Hey Jude","artist":"The Beatles","durationSeconds":431}
+]
+
+JSON options (elements[1]):
+ - ignore additional properties
+```
+
+A `JsonElement` has no value equality, so value-based expectations on the elements, like `Contains(someElement)` or
+`AreEqualTo(…)`, are not useful. Use expectations like `ComplyWith(e => e.Matches(…))`, `Contains([e => e.Matches(…)])`
+or predicates like `Contains(e => …)` instead. A single lambda in `Contains(e => …)` is such a predicate on the
+`JsonElement`, so pass expectations on an element as a collection.
 
 ### Value kinds
 

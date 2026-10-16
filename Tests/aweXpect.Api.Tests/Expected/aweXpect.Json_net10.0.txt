@@ -85,8 +85,8 @@ namespace aweXpect
     }
     public static class ThatJsonElement
     {
-        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source) { }
-        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source, System.Func<aweXpect.Json.IJsonArrayResult, aweXpect.Json.IJsonArrayResult> expectation, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
+        public static aweXpect.Results.IsArrayResult<System.Text.Json.JsonElement> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source) { }
+        public static aweXpect.Results.IsArrayResult<System.Text.Json.JsonElement> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source, System.Func<aweXpect.Json.IJsonArrayResult, aweXpect.Json.IJsonArrayResult> expectation, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNull(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source) { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsNumber(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source) { }
@@ -125,9 +125,9 @@ namespace aweXpect
     public static class ThatNullableJsonElement
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement?, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> source) { }
+        public static aweXpect.Results.IsArrayResult<System.Text.Json.JsonElement?> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement?, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> source, System.Func<aweXpect.Json.IJsonArrayResult, aweXpect.Json.IJsonArrayResult> expectation, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
+        public static aweXpect.Results.IsArrayResult<System.Text.Json.JsonElement?> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> source, System.Func<aweXpect.Json.IJsonArrayResult, aweXpect.Json.IJsonArrayResult> expectation, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement?, aweXpect.Core.IThat<System.Text.Json.JsonElement?>> IsBoolean(this aweXpect.Core.IThat<System.Text.Json.JsonElement?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -150,6 +150,10 @@ namespace aweXpect
 }
 namespace aweXpect.Results
 {
+    public class IsArrayResult<TType> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TType>>
+    {
+        public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>> WhoseElements { get; }
+    }
     public class JsonWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
     {
         public JsonWhichResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<string?> returnValue, System.Text.Json.JsonDocumentOptions options) { }
