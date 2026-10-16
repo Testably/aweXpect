@@ -1033,6 +1033,56 @@ public sealed partial class ThatString
 			}
 		}
 
+		public sealed class NormalizingWhiteSpaceTests
+		{
+			[Test]
+			public async Task WhenAsBlock_ShouldThrowInvalidOperationException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).Contains("foo").NormalizingWhiteSpace().AsBlock();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsBlock cannot be combined with NormalizingWhiteSpace.")
+					.Because("a block compares the lines, which the normalization joins");
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNotFound_ShouldFail()
+			{
+				string subject = "SELECT *\n  FROM t\n  WHERE x = 1";
+
+				async Task Act()
+					=> await That(subject).Contains("FROM  t  WHERE y").NormalizingWhiteSpace();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "FROM  t  WHERE y" normalizing whitespace at least once,
+					             but it did not contain "FROM  t  WHERE y" in "SELECT *\n  FROM t\n  WHERE x = 1"
+					             """)
+					.Because("the failure shows the original values");
+			}
+
+			[Test]
+			[Arguments("FROM t WHERE", 1)]
+			[Arguments(" t\tWHERE x ", 1)]
+			[Arguments("t WHERE x = 1 ", 1)]
+			[Arguments("tWHERE", 0)]
+			[Arguments(" FROM ", 1)]
+			public async Task WhenSubjectHasOtherWhiteSpace_ShouldFindTheOccurrences(string expected, int count)
+			{
+				string subject = "SELECT *\n  FROM t\n  WHERE x = 1";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Exactly(count).NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow()
+					.Because("whitespace at an inner end of the expected value only has to match whitespace in the subject");
+			}
+		}
+
 		public sealed class UsingTests
 		{
 			[Test]

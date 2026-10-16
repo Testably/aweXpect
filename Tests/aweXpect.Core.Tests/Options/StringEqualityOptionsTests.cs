@@ -215,6 +215,61 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		[Arguments("Exact", "SELECT  *\r\n  FROM t", "SELECT * FROM t", true)]
+		[Arguments("Exact", " a\tb\n", "a b", true)]
+		[Arguments("Exact", "a  b", "a  b", true)]
+		[Arguments("Exact", "", " \t ", true)]
+		[Arguments("Exact", "ab", "a b", false)]
+		[Arguments("Exact", "a b", "ab", false)]
+		[Arguments("Exact", null, " ", false)]
+		[Arguments("AsPrefix", "SELECT * FROM t", "SELECT  *", true)]
+		[Arguments("AsPrefix", "  SELECT", "SELECT ", true)]
+		[Arguments("AsPrefix", "SELECT\n*", "SELECT ", true)]
+		[Arguments("AsPrefix", "SELECTED", "SELECT ", false)]
+		[Arguments("AsSuffix", "x = 1", "  =  1", true)]
+		[Arguments("AsSuffix", "=1 ", " =1", true)]
+		[Arguments("AsSuffix", "x=1", " =1", false)]
+		[Arguments("Containing", "a  b\n c", "b c", true)]
+		[Arguments("Containing", "a\tbc", " b", true)]
+		[Arguments("Containing", "abc", " b", false)]
+		[Arguments("AsWildcard", "SELECT  *\n  FROM t", "SELECT * FROM *", true)]
+		[Arguments("AsWildcard", "SELECT *FROM t", "SELECT * FROM *", false)]
+		[Arguments("AsRegex", "a  \n b", "^a b$", true)]
+		[Arguments("AsRegex", "a\nb", @"a\nb", false)]
+		public async Task AreConsideredEqual_WhenWhiteSpaceIsNormalized_ShouldCompareTheCollapsedValues(
+			string matchType, string? actual, string expected, bool isEqual)
+		{
+			StringEqualityOptions sut = WithMatchType(matchType);
+			sut.NormalizingWhiteSpace();
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(isEqual)
+				.Because("every run of whitespace counts as a single space, and the whitespace of the expected value at an "
+				         + "inner end has to match whitespace in the subject, unless it reaches the end of the subject");
+		}
+
+		[Test]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		public async Task AreConsideredEqual_WhenWhiteSpaceIsNormalized_ShouldSupersedeTheOtherWhiteSpaceOptions(
+			string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			Change(sut, option, true);
+			sut.NormalizingWhiteSpace();
+
+			bool isEqual = await sut.AreConsideredEqual("  a \r\n\t b  ", "a b");
+			bool isEqualWithoutWhiteSpace = await sut.AreConsideredEqual("a  b", "ab");
+
+			await That(isEqual).IsTrue();
+			await That(isEqualWithoutWhiteSpace).IsFalse()
+				.Because("the other whitespace options only remove whitespace that the normalization collapses anyway");
+		}
+
+		[Test]
 		[Arguments("foo", "foo", true)]
 		[Arguments("foo", "FOO", false)]
 		[Arguments("foo", " foo", false)]
@@ -263,6 +318,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task AsBlock_WhenALineOptionIsSpecified_ShouldThrowInvalidOperationException(string option)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -344,6 +400,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.Using))]
 		public async Task ComparesByOrdinalEquality_WhenTheComparisonIsChanged_ShouldBeFalse(string option)
 		{
@@ -359,6 +416,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task ComparesByOrdinalEquality_WhenTheOptionIsDisabled_ShouldBeTrue(string option)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -578,6 +636,25 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsEqualTo(expectedCount)
 				.Because("the whitespace of the expected value is only optional where it reaches an edge of the subject, "
 				         + "and whitespace alone never occurs at an edge");
+		}
+
+		[Test]
+		[Arguments("a  b\na b", "a b", 2)]
+		[Arguments("a\tb", "a  b", 1)]
+		[Arguments("x ab", " ab ", 1)]
+		[Arguments("ab", "a b", 0)]
+		[Arguments("a \n b", " ", 1)]
+		[Arguments(" ab ", "\t", 0)]
+		public async Task CountOccurrences_WhenWhiteSpaceIsNormalized_ShouldCountTheOccurrencesInTheCollapsedValue(
+			string actual, string expected, int expectedCount)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.NormalizingWhiteSpace();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("both values are collapsed once as a whole, and whitespace alone never occurs at an edge");
 		}
 
 		[Test]
@@ -838,6 +915,34 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		[Arguments(null)]
+		[Arguments(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		public async Task GetExtendedFailure_WhenWhiteSpaceIsNormalized_ShouldReportThePositionInTheNormalizedValues(
+			string? option)
+		{
+			StringEqualityOptions sut = new("expected");
+			if (option is not null)
+			{
+				Change(sut, option, true);
+			}
+
+			sut.NormalizingWhiteSpace();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "\n  a  b\n  c", "a b  d");
+
+			await That(result).IsEqualTo("""
+			                             it was "a b c", which differs at index 4:
+			                                    ↓ (actual)
+			                               "a b c"
+			                               "a b d"
+			                                    ↑ (expected)
+			                             """).IgnoringNewlineStyle()
+				.Because("collapsed whitespace cannot be mapped back to the original lines and columns, so the shown "
+				         + "values and the position both refer to the normalized values");
+		}
+
+		[Test]
 		public async Task GetExtendedMemberFailure_Negated_ShouldStateTheValueOfTheMember()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -1042,6 +1147,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task IgnoringOption_WhenMatchingAsBlock_ShouldThrowInvalidOperationException(string option)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -1060,6 +1166,7 @@ public sealed partial class StringEqualityOptionsTests
 		[Arguments(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[Arguments(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		[Arguments(nameof(StringEqualityOptions.NormalizingWhiteSpace))]
 		public async Task IgnoringOption_WhenSpecifiedTwice_ShouldThrowInvalidOperationException(string option)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -1249,6 +1356,26 @@ public sealed partial class StringEqualityOptionsTests
 			string result = sut.ToString();
 
 			await That(result).IsEqualTo(" ignoring whitespace and newline style");
+		}
+
+		[Test]
+		[Arguments(null, " normalizing whitespace")]
+		[Arguments("AsRegex", " as regex normalizing whitespace")]
+		[Arguments("IgnoringCase", " ignoring case and normalizing whitespace")]
+		[Arguments("IgnoringNewlineStyle", " ignoring newline style and normalizing whitespace")]
+		public async Task ToString_WhenWhiteSpaceIsNormalized_ShouldIncludeOptions(string? option, string expected)
+		{
+			StringEqualityOptions sut = new("expected");
+			if (option is not null)
+			{
+				Change(sut, option, true);
+			}
+
+			sut.NormalizingWhiteSpace();
+
+			string result = sut.ToString();
+
+			await That(result).IsEqualTo(expected);
 		}
 
 		[Test]
@@ -1545,6 +1672,9 @@ public sealed partial class StringEqualityOptionsTests
 					break;
 				case "IgnoringTrailingWhiteSpace":
 					options.IgnoringTrailingWhiteSpace(enable);
+					break;
+				case "NormalizingWhiteSpace":
+					options.NormalizingWhiteSpace(enable);
 					break;
 				case "Using":
 					options.Using(StringComparer.Ordinal);

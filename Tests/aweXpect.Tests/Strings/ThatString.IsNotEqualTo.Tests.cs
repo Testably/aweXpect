@@ -246,5 +246,38 @@ public sealed partial class ThatString
 					              """);
 			}
 		}
+
+		public sealed class NormalizingWhiteSpaceTests
+		{
+			[Test]
+			public async Task WhenStringsDifferInMoreThanWhiteSpace_ShouldSucceed()
+			{
+				string subject = "foo bar";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("foobar").NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			[AutoArguments("foo  bar", "foo bar")]
+			[AutoArguments(" foo\r\n\tbar ", "foo bar")]
+			[AutoArguments("foo bar", "foo\n\n bar")]
+			public async Task WhenStringsDifferOnlyInWhiteSpace_ShouldFail(
+				string subject, string unexpected)
+			{
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).NormalizingWhiteSpace();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not equal to "{unexpected.DisplayWhitespace()}" normalizing whitespace,
+					              but it was "{subject.DisplayWhitespace()}"
+					              """)
+					.Because("a negated failure shows the original subject");
+			}
+		}
 	}
 }

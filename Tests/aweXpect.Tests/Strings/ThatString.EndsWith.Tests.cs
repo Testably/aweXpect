@@ -104,6 +104,41 @@ public sealed partial class ThatString
 
 			[Test]
 			public async Task
+				NormalizingWhiteSpace_WhenSuffixStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "RoadAbbey";
+
+				async Task Act()
+					=> await That(subject).EndsWith("\n\tAbbey").NormalizingWhiteSpace();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with "\n\tAbbey" normalizing whitespace,
+					             but it was "RoadAbbey", which differs at index 3:
+					                   ↓ (actual)
+					               "RoadAbbey"
+					                  " Abbey"
+					                   ↑ (expected suffix)
+					             """)
+					.Because("the whitespace at the inner end of the suffix has to match whitespace in the subject");
+			}
+
+			[Test]
+			[Arguments("SELECT *\n  FROM  t\n", "FROM t")]
+			[Arguments("x\t=\t1", "  =  1")]
+			[Arguments("1", "\n 1")]
+			public async Task NormalizingWhiteSpace_WhenSubjectEndsWithNormalizedSuffix_ShouldSucceed(
+				string subject, string expected)
+			{
+				async Task Act()
+					=> await That(subject).EndsWith(expected).NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task
 				Using_WhenSubjectEndsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
 				string subject = "some arbitrary text";

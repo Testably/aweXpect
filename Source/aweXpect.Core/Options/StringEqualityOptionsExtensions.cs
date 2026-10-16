@@ -87,6 +87,24 @@ public static class StringEqualityOptionsExtensions
 	}
 
 	/// <summary>
+	///     Normalizes the whitespace when comparing <see langword="string" />s,
+	///     according to the <paramref name="normalizeWhiteSpace" /> parameter.
+	/// </summary>
+	/// <remarks>
+	///     Enabling this option will replace every run of whitespace, including line breaks, with a single space and
+	///     remove the whitespace at the start and the end of the strings before comparing them.<br />
+	///     Note:<br />
+	///     The failure message shows the strings with normalized whitespace, and the position of the first mismatch
+	///     refers to them.
+	/// </remarks>
+	public static TResult NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true)
+		where TResult : IOptionsProvider<StringEqualityOptions>
+	{
+		result.Options.NormalizingWhiteSpace(normalizeWhiteSpace);
+		return result;
+	}
+
+	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="string" />s.
 	/// </summary>
 	public static TResult Using<TResult>(this TResult result, IEqualityComparer<string> comparer)

@@ -130,6 +130,41 @@ public sealed partial class ThatString
 
 			[Test]
 			public async Task
+				NormalizingWhiteSpace_WhenPrefixEndsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "AbbeyRoad";
+
+				async Task Act()
+					=> await That(subject).StartsWith("Abbey\t").NormalizingWhiteSpace();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with "Abbey\t" normalizing whitespace,
+					             but it was "AbbeyRoad", which differs at index 5:
+					                     ↓ (actual)
+					               "AbbeyRoad"
+					               "Abbey "
+					                     ↑ (expected prefix)
+					             """)
+					.Because("the whitespace at the inner end of the prefix has to match whitespace in the subject");
+			}
+
+			[Test]
+			[Arguments("  SELECT  *\n  FROM t", "SELECT * FROM")]
+			[Arguments("SELECT\t*", "SELECT  ")]
+			[Arguments("SELECT", "SELECT \n")]
+			public async Task NormalizingWhiteSpace_WhenSubjectStartsWithNormalizedPrefix_ShouldSucceed(
+				string subject, string expected)
+			{
+				async Task Act()
+					=> await That(subject).StartsWith(expected).NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task
 				Using_WhenSubjectStartsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
 				string subject = "some arbitrary text";
@@ -221,6 +256,20 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
 					.WithParamName("expected")
 					.Because("the prefix is empty once the leading whitespace is ignored");
+			}
+
+			[Test]
+			public async Task WhenExpectedIsWhiteSpaceAndWhiteSpaceIsNormalized_ShouldThrowArgumentException()
+			{
+				string subject = " text";
+
+				async Task Act()
+					=> await That(subject).StartsWith(" \t").NormalizingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the prefix is empty once its whitespace is normalized");
 			}
 
 			[Test]

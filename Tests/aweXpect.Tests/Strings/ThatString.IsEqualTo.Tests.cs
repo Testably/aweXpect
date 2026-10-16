@@ -770,5 +770,113 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NormalizingWhiteSpaceTests
+		{
+			[Test]
+			public async Task ShouldShowTheNormalizedValuesAndTheOriginalSubject()
+			{
+				string subject = "SELECT  *\n  FROM t\n  WHERE x = 2";
+				string expected = "SELECT * FROM t WHERE x = 1";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).NormalizingWhiteSpace();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to "SELECT * FROM t WHERE x = 1" normalizing whitespace,
+					              but it was "SELECT * FROM t WHERE x = 2", which differs at index 26:
+					                              ↓ (actual)
+					                "…t WHERE x = 2"
+					                "…t WHERE x = 1"
+					                              ↑ (expected)
+
+					              Actual:
+					              {subject}
+					              """)
+					.Because("the normalized values join the lines, so they are not listed as differences");
+			}
+
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
+			public async Task WhenDisabled_ShouldCompareTheWhiteSpace(bool normalizeWhiteSpace)
+			{
+				string subject = "a  b";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("a b").NormalizingWhiteSpace(normalizeWhiteSpace);
+
+				await That(Act).Throws<FailException>().OnlyIf(!normalizeWhiteSpace)
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "a b",
+					             but it was "a  b", which differs at index 2:
+					                  ↓ (actual)
+					               "a  b"
+					               "a b"
+					                  ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("foo").NormalizingWhiteSpace().NormalizingWhiteSpace();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("NormalizingWhiteSpace cannot be specified more than once.");
+			}
+
+			[Test]
+			[AutoArguments("SELECT  *\r\n  FROM t\n\tWHERE x = 1", "SELECT * FROM t WHERE x = 1")]
+			[AutoArguments("  foo   bar  ", "foo bar")]
+			[AutoArguments("foo bar", "\tfoo\n\nbar\t")]
+			[AutoArguments("foo bar", "foo bar")]
+			[AutoArguments(" \t\n", "")]
+			public async Task WhenStringsDifferOnlyInWhiteSpace_ShouldSucceed(string subject, string expected)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUsedAsWildcard_ShouldNormalizeThePatternAsWell()
+			{
+				string subject = "SELECT *\n  FROM t\n  WHERE x = 1";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("SELECT *  FROM t  WHERE *").AsWildcard().NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenWhiteSpaceIsMissing_ShouldFail()
+			{
+				string subject = "ab";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("a b").NormalizingWhiteSpace();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "a b" normalizing whitespace,
+					             but it was "ab", which differs at index 1:
+					                 ↓ (actual)
+					               "ab"
+					               "a b"
+					                 ↑ (expected)
+					             """)
+					.Because("a run of whitespace is collapsed to a single space, but not removed");
+			}
+		}
 	}
 }

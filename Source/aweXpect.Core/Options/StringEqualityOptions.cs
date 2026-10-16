@@ -31,6 +31,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private bool _isIgnoreLeadingWhiteSpaceSpecified;
 	private bool _isIgnoreNewlineStyleSpecified;
 	private bool _isIgnoreTrailingWhiteSpaceSpecified;
+	private bool _isNormalizeWhiteSpaceSpecified;
+	private bool _normalizeWhiteSpace;
 
 	/// <summary>
 	///     The first specified option that changes the lines, which <see cref="AsBlock()" /> cannot honour.
@@ -73,7 +75,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </remarks>
 	public bool ComparesByOrdinalEquality
 		=> _matchType is ExactMatchType && _comparer is null && !_ignoreCase && !_ignoreLeadingWhiteSpace &&
-		   !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle && !_ignoreIndentation;
+		   !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle && !_ignoreIndentation && !_normalizeWhiteSpace;
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -539,11 +541,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The lines are compared with the options, so that lines which only differ in what the options ignore are
 	///     equal, but are shown as they are in the original values.<br />
 	///     A comparer of the caller defines when whole values are equal, which need not hold for their lines, so the
-	///     lines are then not listed.
+	///     lines are then not listed. Neither are they when the whitespace is normalized, which joins all lines.
 	/// </remarks>
 	internal string? GetLineDifferences(string actual, string expected)
 	{
-		if (_matchType is not ExactMatchType || _comparer is not null ||
+		if (_matchType is not ExactMatchType || _comparer is not null || _normalizeWhiteSpace ||
 		    (!IsMultiLine(actual) && !IsMultiLine(expected)))
 		{
 			return null;
@@ -737,6 +739,34 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		return this;
 	}
 
+	/// <summary>
+	///     Normalizes the whitespace when comparing <see langword="string" />s,
+	///     according to the <paramref name="normalizeWhiteSpace" /> parameter.
+	/// </summary>
+	/// <remarks>
+	///     Enabling this option will replace every run of whitespace, including line breaks, with a single space and
+	///     remove the whitespace at the start and the end of the strings before comparing them, which makes
+	///     <see cref="IgnoringIndentation(bool)" />, <see cref="IgnoringNewlineStyle(bool)" />,
+	///     <see cref="IgnoringLeadingWhiteSpace(bool)" /> and <see cref="IgnoringTrailingWhiteSpace(bool)" /> redundant.<br />
+	///     Any Unicode whitespace counts, e.g. also a tab or a non-breaking space.<br />
+	///     The expected value is transformed as well, which also applies to wildcard and regex patterns. A prefix, suffix
+	///     or substring keeps the whitespace at its inner end, which then has to match whitespace in the subject, unless
+	///     that end reaches the corresponding end of the subject.<br />
+	///     Note:<br />
+	///     The failure message shows the strings with normalized whitespace, and the position of the first mismatch
+	///     refers to them.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The whitespace normalization is already specified, or the expected value is matched as a block via
+	///     <see cref="AsBlock()" />.
+	/// </exception>
+	public StringEqualityOptions NormalizingWhiteSpace(bool normalizeWhiteSpace = true)
+	{
+		SpecifyLineOption(ref _isNormalizeWhiteSpaceSpecified, nameof(NormalizingWhiteSpace));
+		_normalizeWhiteSpace = normalizeWhiteSpace;
+		return this;
+	}
+
 	/// <inheritdoc />
 	public override string ToString() => _matchType.GetTypeString() + GetOptionString();
 
@@ -837,12 +867,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private string? NormalizeExpected(string? expected, (bool IsStartAnchored, bool IsEndAnchored) anchoredEdges)
 	{
 		expected = NormalizeLines(expected);
-		if (_ignoreLeadingWhiteSpace && anchoredEdges.IsStartAnchored)
+		if (IsLeadingWhiteSpaceIgnored && anchoredEdges.IsStartAnchored)
 		{
 			expected = expected?.TrimStart();
 		}
 
-		if (_ignoreTrailingWhiteSpace && anchoredEdges.IsEndAnchored)
+		if (IsTrailingWhiteSpaceIgnored && anchoredEdges.IsEndAnchored)
 		{
 			expected = expected?.TrimEnd();
 		}
@@ -880,10 +910,10 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private string? PadWithInnerWhiteSpace(string? actual, string expected,
 		(bool IsStartAnchored, bool IsEndAnchored) anchoredEdges)
 	{
-		int leading = _ignoreLeadingWhiteSpace && !anchoredEdges.IsStartAnchored
+		int leading = IsLeadingWhiteSpaceIgnored && !anchoredEdges.IsStartAnchored
 			? expected.Length - expected.TrimStart().Length
 			: 0;
-		int trailing = _ignoreTrailingWhiteSpace && !anchoredEdges.IsEndAnchored
+		int trailing = IsTrailingWhiteSpaceIgnored && !anchoredEdges.IsEndAnchored
 			? expected.Length - expected.TrimEnd().Length
 			: 0;
 		if (actual is null || leading + trailing == 0 ||
@@ -905,11 +935,17 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     Removing the indentation also normalizes the newline style, so it supersedes
-	///     <see cref="IgnoringNewlineStyle(bool)" />.
+	///     <see cref="IgnoringNewlineStyle(bool)" />. Collapsing the whitespace replaces every line break and the
+	///     indentation, so it supersedes both.
 	/// </remarks>
 	[return: NotNullIfNotNull(nameof(value))]
 	private string? NormalizeLines(string? value)
 	{
+		if (_normalizeWhiteSpace)
+		{
+			return value.CollapseWhiteSpace();
+		}
+
 		if (_ignoreIndentation)
 		{
 			return value.RemoveIndentation();
@@ -924,18 +960,22 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	[return: NotNullIfNotNull(nameof(value))]
 	private string? TrimWhiteSpace(string? value)
 	{
-		if (_ignoreLeadingWhiteSpace)
+		if (IsLeadingWhiteSpaceIgnored)
 		{
 			value = value?.TrimStart();
 		}
 
-		if (_ignoreTrailingWhiteSpace)
+		if (IsTrailingWhiteSpaceIgnored)
 		{
 			value = value?.TrimEnd();
 		}
 
 		return value;
 	}
+
+	private bool IsLeadingWhiteSpaceIgnored => _ignoreLeadingWhiteSpace || _normalizeWhiteSpace;
+
+	private bool IsTrailingWhiteSpaceIgnored => _ignoreTrailingWhiteSpace || _normalizeWhiteSpace;
 
 	/// <summary>
 	///     Counts the lines and the columns in the last of these lines that are covered by the leading whitespace
@@ -972,11 +1012,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     The table is indexed by the line number of the value returned by <see cref="NormalizeLines" />, so that a
 	///     position in the normalized value can be mapped back to the position in the original
-	///     <paramref name="value" />.
+	///     <paramref name="value" />.<br />
+	///     Collapsed whitespace cannot be mapped back by lines and columns, so with normalized whitespace the reported
+	///     positions refer to the normalized value.
 	/// </remarks>
 	private int[]? GetIgnoredColumnsPerLine(string? value)
 	{
-		if (value is null || (!_ignoreIndentation && !_ignoreLeadingWhiteSpace))
+		if (value is null || _normalizeWhiteSpace || (!_ignoreIndentation && !_ignoreLeadingWhiteSpace))
 		{
 			return null;
 		}
@@ -1002,7 +1044,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		if (!_ignoreLeadingWhiteSpace && !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle &&
 		    !_ignoreIndentation)
 		{
-			return initialString;
+			return WithNormalizedWhiteSpace(initialString);
 		}
 
 		List<string> tokens = [];
@@ -1050,7 +1092,19 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			sb.Append(' ').Append(tokens[i]);
 		}
 
-		return sb.ToString();
+		return WithNormalizedWhiteSpace(sb.ToString());
+	}
+
+	private string WithNormalizedWhiteSpace(string optionString)
+	{
+		if (!_normalizeWhiteSpace)
+		{
+			return optionString;
+		}
+
+		return optionString.Length == 0
+			? " normalizing whitespace"
+			: optionString + " and normalizing whitespace";
 	}
 
 	/// <summary>

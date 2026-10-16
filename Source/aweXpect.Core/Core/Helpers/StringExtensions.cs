@@ -190,6 +190,53 @@ internal static class StringExtensions
 			.Replace("\r", "\n", StringComparison.Ordinal);
 	}
 
+	/// <summary>
+	///     Replaces every run of whitespace, including line breaks, with a single space.
+	/// </summary>
+	/// <remarks>
+	///     A value in which every whitespace is already a single space is returned unchanged, without allocating.
+	/// </remarks>
+	[return: NotNullIfNotNull(nameof(value))]
+	public static string? CollapseWhiteSpace(this string? value)
+	{
+		if (value == null || !HasWhiteSpaceToCollapse(value))
+		{
+			return value;
+		}
+
+		StringBuilder sb = new(value.Length);
+		bool isInWhiteSpace = false;
+		foreach (char c in value)
+		{
+			if (!char.IsWhiteSpace(c))
+			{
+				sb.Append(c);
+				isInWhiteSpace = false;
+			}
+			else if (!isInWhiteSpace)
+			{
+				sb.Append(' ');
+				isInWhiteSpace = true;
+			}
+		}
+
+		return sb.ToString();
+	}
+
+	private static bool HasWhiteSpaceToCollapse(string value)
+	{
+		for (int i = 0; i < value.Length; i++)
+		{
+			if (char.IsWhiteSpace(value[i]) &&
+			    (value[i] != ' ' || (i + 1 < value.Length && char.IsWhiteSpace(value[i + 1]))))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static string SubstringUntilFirst(this string name, char c)
 	{
 		int index = name.IndexOf(c);
