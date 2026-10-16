@@ -201,11 +201,11 @@ public sealed partial class ThatDelegateTests
 			int cleanupCalls = 0;
 
 			async Task Act()
-				=> await That(() => (Subscriber?)null).IsCollectedAfter(_ => cleanupCalls++);
+				=> await That(() => (Subscriber)null!).IsCollectedAfter(_ => cleanupCalls++);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
-				             Expected that () => (Subscriber?)null
+				             Expected that () => (Subscriber)null!
 				             is collected after _ => cleanupCalls++,
 				             but it returned <null>
 				             """);

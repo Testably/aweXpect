@@ -152,9 +152,11 @@ public abstract partial class ThatDelegate
 		{
 			for (int attempt = 0; attempt < MaxCollectionAttempts && reference.IsAlive; attempt++)
 			{
+#pragma warning disable S1215 // "GC.Collect" should not be called
 				GC.Collect();
 				GC.WaitForPendingFinalizers();
 				GC.Collect();
+#pragma warning restore S1215 // "GC.Collect" should not be called
 			}
 
 			return !reference.IsAlive;
