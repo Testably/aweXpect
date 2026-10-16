@@ -13,7 +13,7 @@ public sealed class CoreExpectationGeneratorTests
 		GeneratorRunner.GeneratorResult result = RunOn(
 			"""
 			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
-			private static Task<bool> IsZero(int value, CancellationToken cancellationToken) => Task.FromResult(value == 0);
+			private static Task<bool> IsZero(int value, [EvaluationCancellationToken] CancellationToken cancellationToken) => Task.FromResult(value == 0);
 			""");
 
 		await ThatCompiles(result);
@@ -141,6 +141,61 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task EvaluationCancellationToken_BeforeAParamsParameter_ShouldBePassedAtItsPosition()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}AnyOf", "is {not} any of {values}", NullableOverload = false)]
+			private static bool IsAnyOf(int value, [EvaluationCancellationToken] CancellationToken cancellationToken,
+				params int[] values) => Array.IndexOf(values, value) >= 0;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated).Contains(" IsAnyOf(this global::aweXpect.Core.IThat<int> subject, params int[] values)");
+		await That(result.Generated).Contains("global::Lib.ThatSample.IsAnyOf(actual, cancellationToken, _p0)");
+	}
+
+	[Test]
+	public async Task EvaluationCancellationToken_OnAnotherType_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static bool IsZero(int value, [EvaluationCancellationToken] int other) => value == 0;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsZero(int, int)' cannot generate an expectation, because the parameter 'other' is marked with [EvaluationCancellationToken], but is no CancellationToken");
+	}
+
+	[Test]
+	public async Task EvaluationCancellationToken_OnMoreThanOneParameter_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static bool IsZero(int value, [EvaluationCancellationToken] CancellationToken first,
+				[EvaluationCancellationToken] CancellationToken second) => value == 0;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsZero(int, CancellationToken, CancellationToken)' cannot generate an expectation, because more than one parameter is marked with [EvaluationCancellationToken]");
+	}
+
+	[Test]
+	public async Task EvaluationCancellationToken_OnTheSubject_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}None", "is {not} none")]
+			private static bool IsNone([EvaluationCancellationToken] CancellationToken value) => value == CancellationToken.None;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsNone(CancellationToken)' cannot generate an expectation, because the subject cannot be marked with [EvaluationCancellationToken]");
+	}
+
+	[Test]
 	public async Task ExpectationTextHasNoNot_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
@@ -177,7 +232,7 @@ public sealed class CoreExpectationGeneratorTests
 					private static bool IsEmpty([NotNullWhen(false)] string? value) => value == "";
 
 					[GenerateExpectation("Is{Not}Ready", "is {not} ready")]
-					private static Task<bool> IsReady(string value, CancellationToken cancellationToken) => Task.FromResult(true);
+					private static Task<bool> IsReady(string value, [EvaluationCancellationToken] CancellationToken cancellationToken) => Task.FromResult(true);
 
 					[GenerateExpectation("Is{Not}Known", "is {not} known")]
 					private static PredicateResult IsKnown(string value)
@@ -822,7 +877,7 @@ public sealed class CoreExpectationGeneratorTests
 		GeneratorRunner.GeneratorResult result = RunOn(
 			"""
 			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
-			private static bool IsZero(int value, CancellationToken cancellationToken) => value == 0;
+			private static bool IsZero(int value, [EvaluationCancellationToken] CancellationToken cancellationToken) => value == 0;
 			""");
 
 		await ThatCompiles(result);
@@ -832,6 +887,23 @@ public sealed class CoreExpectationGeneratorTests
 			.Because("the synchronous predicate completes the constraint at once");
 		await That(result.Generated).Contains(" IsZero(this global::aweXpect.Core.IThat<int> subject)")
 			.Because("the cancellation token is no parameter of the expectation");
+	}
+
+	[Test]
+	public async Task UnmarkedCancellationToken_ShouldBeAParameterOfTheExpectation()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}CanceledBy", "is {not} canceled by {token}")]
+			private static bool IsCanceledBy(string value, CancellationToken token) => token.IsCancellationRequested;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains(" IsCanceledBy(this global::aweXpect.Core.IThat<string?> subject, global::System.Threading.CancellationToken token)");
+		await That(result.Generated).Contains("global::Lib.ThatSample.IsCanceledBy(actual, _p0)");
+		await That(result.Generated).Contains("global::aweXpect.Core.Constraints.IValueConstraint<string?>")
+			.Because("only a marked token makes the constraint receive the token of the evaluation");
 	}
 
 	[Test]

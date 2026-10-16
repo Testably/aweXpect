@@ -23,7 +23,7 @@ internal static partial class ThatAccount
 
 	[GenerateCollectionExpectation("AreActive", "is active", "are active")]
 	[GenerateExpectation("Is{Not}Active", "is {not} active")]
-	private static bool IsActive(Account account, CancellationToken cancellationToken)
+	private static bool IsActive(Account account, [EvaluationCancellationToken] CancellationToken cancellationToken)
 	{
 		account.ReceivedToken = cancellationToken;
 		return account.Level > 0;
@@ -34,6 +34,14 @@ internal static partial class ThatAccount
 
 	[GenerateExpectation("Is{Not}Named", "is {not} named {name}")]
 	private static bool IsNamed(Account account, string name) => account.Name == name;
+
+	[GenerateExpectation("Is{Not}NamedAnyOf", "is {not} named any of {names}")]
+	private static bool IsNamedAnyOf(Account account,
+		[EvaluationCancellationToken] CancellationToken cancellationToken, params string[] names)
+	{
+		account.ReceivedToken = cancellationToken;
+		return names.Contains(account.Name);
+	}
 
 	[GenerateCollectionExpectation("AreNullOrUnnamed", "is null or unnamed", "are null or unnamed")]
 	[GenerateExpectation("Is{Not}NullOrUnnamed", "is {not} null or unnamed")]
@@ -58,7 +66,7 @@ internal static partial class ThatAccount
 
 	[GenerateCollectionExpectation("AreTrusted", "is trusted", "are trusted")]
 	[GenerateExpectation("Is{Not}Trusted", "is {not} trusted")]
-	private static async Task<PredicateResult> IsTrusted(Account account, CancellationToken cancellationToken)
+	private static async Task<PredicateResult> IsTrusted(Account account, [EvaluationCancellationToken] CancellationToken cancellationToken)
 	{
 		await Task.Yield();
 		return account.Level < 0 ? PredicateResult.FailureBothWays("was locked") : account.Level > 1;
@@ -66,7 +74,7 @@ internal static partial class ThatAccount
 
 	[GenerateCollectionExpectation("AreVerified", "is verified", "are verified")]
 	[GenerateExpectation("Is{Not}Verified", "is {not} verified")]
-	private static async Task<bool> IsVerified(Account account, CancellationToken cancellationToken)
+	private static async Task<bool> IsVerified(Account account, [EvaluationCancellationToken] CancellationToken cancellationToken)
 	{
 		await Task.Yield();
 		account.ReceivedToken = cancellationToken;

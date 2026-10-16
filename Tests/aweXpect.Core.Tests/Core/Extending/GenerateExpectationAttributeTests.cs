@@ -78,6 +78,34 @@ public sealed class GenerateExpectationAttributeTests
 	}
 
 	[Test]
+	public async Task EvaluationCancellationToken_BeforeAParamsParameter_ShouldReceiveTheToken()
+	{
+		Account subject = new("Alice", 1);
+		using CancellationTokenSource cts = new();
+
+		await That(subject).IsNamedAnyOf("Bob", "Alice").WithCancellation(cts.Token);
+
+		await That(subject.ReceivedToken.CanBeCanceled).IsTrue()
+			.Because("the marked parameter receives the token of the evaluation, wherever it is");
+	}
+
+	[Test]
+	public async Task EvaluationCancellationToken_BeforeAParamsParameter_WhenNotMet_ShouldFormatTheValues()
+	{
+		Account subject = new("Alice", 1);
+
+		async Task Act()
+			=> await That(subject).IsNamedAnyOf("Bob", "Carol");
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is named any of ["Bob", "Carol"],
+			             but it was Alice
+			             """);
+	}
+
+	[Test]
 	public async Task NegatedExpectationText_ShouldBeUsedForTheNegatedExpectation()
 	{
 		Account subject = new("Alice", 1);

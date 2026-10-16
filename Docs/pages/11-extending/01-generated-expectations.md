@@ -28,8 +28,17 @@ await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
 
 - The method is `static` and returns `bool`, `Task<bool>` or `ValueTask<bool>`, or a `PredicateResult` instead of the
   `bool` when it [cannot always answer](#questions-that-cannot-be-answered). Its first parameter is the subject, the
-  other parameters become the parameters of the expectation. The method may end with a `CancellationToken`, which
-  receives the token of the evaluation.
+  other parameters become the parameters of the expectation.
+- A `CancellationToken` parameter marked with `[EvaluationCancellationToken]` receives the token of the evaluation
+  and is no parameter of the expectation. It can be at any position after the subject, e.g. before a `params`
+  parameter. A `CancellationToken` parameter that is not marked is a parameter of the expectation like any other.
+
+  ```csharp no-compile
+  [GenerateExpectation("Is{Not}OneOf", "is {not} one of {titles}")]
+  private static async Task<bool> IsOneOf(Track track,
+      [EvaluationCancellationToken] CancellationToken cancellationToken, params string[] titles)
+      => titles.Contains(await LookUpTitle(track, cancellationToken));
+  ```
 - It is declared in a top-level, non-generic, `static partial` class that is not `file`-local, which receives the
   generated extension methods. The method itself can be `private`.
 - The generated extension methods are `public`, unless the class, the subject or a parameter type is `internal`: then
