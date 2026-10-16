@@ -6,6 +6,19 @@
 public record FormattingOptions
 {
 	/// <summary>
+	///     Format the objects completely on a single line.
+	/// </summary>
+	/// <remarks>
+	///     Use <see langword="with" /> to combine it with other options, e.g.
+	///     <c>FormattingOptions.Indented() with { IsComplete = true }</c>.
+	/// </remarks>
+	public static FormattingOptions Complete { get; } = new()
+	{
+		UseLineBreaks = false,
+		IsComplete = true,
+	};
+
+	/// <summary>
 	///     Format the objects on multiple lines.
 	/// </summary>
 	public static FormattingOptions MultipleLines { get; } = new()
@@ -54,6 +67,19 @@ public record FormattingOptions
 	///     that more items may follow.
 	/// </remarks>
 	public int? TotalItemCount { get; init; }
+
+	/// <summary>
+	///     Flag indicating if the objects should be formatted completely, without shortening them for a failure message.
+	/// </summary>
+	/// <remarks>
+	///     Neither the <c>MaximumNumberOfCollectionItems</c> nor the <c>MaximumStringLength</c> of the formatting
+	///     customization applies, nor the limits on how deeply and how many nested objects, collections and tuples are
+	///     written. An object or collection that contains itself is still written as <c>*recursive*</c> where it repeats,
+	///     and a value that is nested too deeply for the remaining stack throws an
+	///     <see cref="System.InsufficientExecutionStackException" /> instead of being shortened. The items of a
+	///     collection are written in the order it enumerates them, so an endless sequence never completes.
+	/// </remarks>
+	public bool IsComplete { get; init; }
 
 	/// <summary>
 	///     Format the objects on multiple lines with the given <paramref name="indentation" />.

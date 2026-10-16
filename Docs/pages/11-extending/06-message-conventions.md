@@ -137,6 +137,7 @@ The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` put
 own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and
 `FormattingOptions.Indented(indentation)` indents the following lines. Without options, an object that is not an item
 of a collection puts each member on its own line; `FormattingOptions.SingleLine` keeps it on one line as in the table.
+`FormattingOptions.Complete`, or `IsComplete = true` on any other options, writes the value without shortening it.
 Register an `IValueFormatter` to format your own types, see [value formatters](./08-initialization.md#value-formatters).
 
 <details>
@@ -153,7 +154,9 @@ nested collection per dimension, e.g. `[[1, 2], [3, 4]]` for an `int[2,2]`.
 Nested objects, collections and tuples are written up to 20 levels deep and up to 1000 of them per value. Beyond that,
 their content is left out as `{ … }`, `[ … ]` or `( … )`, so that a long chain or a graph that shares its nodes on
 every level neither overflows the stack nor grows without bound. An object or collection that contains itself is
-written as `{ *recursive* }` or `[ *recursive* ]` where it repeats.
+written as `{ *recursive* }` or `[ *recursive* ]` where it repeats. Complete options lift these limits and those of the
+[formatting settings](../03-how-it-works/07-configuration.md#formatting); a value that is nested too deeply for the
+remaining stack then throws an `InsufficientExecutionStackException` instead.
 
 </details>
 

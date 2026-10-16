@@ -74,3 +74,6 @@ static aweXpect.StringEqualityOptionsExtensions.NormalizingWhiteSpace<TResult>(t
 aweXpect.Core.Extending.ClosestMatch
 static aweXpect.Core.Extending.ClosestMatch.AppendHint(System.Text.StringBuilder! stringBuilder, string! value, System.Collections.Generic.IEnumerable<string!>! candidates) -> void
 static aweXpect.Core.Extending.ClosestMatch.Find(string! value, System.Collections.Generic.IEnumerable<string!>! candidates) -> string?
+aweXpect.Formatting.FormattingOptions.IsComplete.get -> bool
+aweXpect.Formatting.FormattingOptions.IsComplete.init -> void
+static aweXpect.Formatting.FormattingOptions.Complete.get -> aweXpect.Formatting.FormattingOptions!

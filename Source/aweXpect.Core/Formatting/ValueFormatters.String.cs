@@ -29,7 +29,7 @@ public static partial class ValueFormatters
 		}
 
 		string formattedValue =
-			$"\"{value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape()}\"";
+			$"\"{TruncateUnlessComplete(value, options).Escape()}\"";
 		return options?.IncludeType == true ? $"string {formattedValue}" : formattedValue;
 	}
 
@@ -64,7 +64,12 @@ public static partial class ValueFormatters
 		}
 
 		stringBuilder.Append('\"');
-		stringBuilder.Append(value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape());
+		stringBuilder.Append(TruncateUnlessComplete(value, options).Escape());
 		stringBuilder.Append('\"');
 	}
+
+	private static string TruncateUnlessComplete(string value, FormattingOptions? options)
+		=> options?.IsComplete == true
+			? value
+			: value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get());
 }

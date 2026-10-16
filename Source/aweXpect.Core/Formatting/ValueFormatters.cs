@@ -9,6 +9,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core.Helpers;
 
@@ -27,6 +28,9 @@ public static partial class ValueFormatters
 
 	private const int MaximumDepth = 20;
 	private const int MaximumNumberOfWrittenContents = 1000;
+
+	private const string InsufficientStackMessage =
+		"The value is nested too deeply to be formatted completely on the remaining stack.";
 
 	/// <summary>
 	///     Fallback for formatting arbitrary objects.
@@ -185,13 +189,48 @@ public static partial class ValueFormatters
 	/// <remarks>
 	///     A deep graph without a cycle, like a long linked list, would otherwise overflow the stack and end the whole
 	///     test run, and a graph that references the same node twice on every level doubles the written nodes per level.
+	///     Complete output must not leave anything out, so it only guards the stack, by throwing.
 	/// </remarks>
-	private static bool EnterContent(FormattingContext context)
+	private static bool EnterContent(FormattingContext context, FormattingOptions? options)
 	{
 		context.Depth++;
+		if (options?.IsComplete == true)
+		{
+			EnsureSufficientStack();
+			return true;
+		}
+
 		return context.Depth <= MaximumDepth &&
 		       ++context.NumberOfWrittenContents <= MaximumNumberOfWrittenContents;
 	}
+
+	private static void EnsureSufficientStack()
+	{
+#if NET8_0_OR_GREATER
+		if (!RuntimeHelpers.TryEnsureSufficientExecutionStack())
+		{
+			throw new InsufficientExecutionStackException(InsufficientStackMessage);
+		}
+#else
+		try
+		{
+			RuntimeHelpers.EnsureSufficientExecutionStack();
+		}
+		catch (InsufficientExecutionStackException exception)
+		{
+			throw new InsufficientExecutionStackException(InsufficientStackMessage, exception);
+		}
+#endif
+	}
+
+	/// <summary>
+	///     Whether an <paramref name="exception" /> of code of the caller is written as a placeholder instead of thrown.
+	/// </summary>
+	/// <remarks>
+	///     Complete output must not replace a nested value that is too deep for the stack with a placeholder.
+	/// </remarks>
+	private static bool IsWrittenAsPlaceholder(Exception exception, FormattingOptions? options)
+		=> options?.IsComplete != true || exception is not InsufficientExecutionStackException;
 
 	/// <summary>
 	///     The placeholder for a value that could not be formatted, because code of the caller threw the
@@ -317,7 +356,7 @@ public static partial class ValueFormatters
 				}
 			}
 		}
-		catch (Exception exception)
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options))
 		{
 			stringBuilder.Length = length;
 			stringBuilder.Append(FormatThrownException("the formatter", exception));
