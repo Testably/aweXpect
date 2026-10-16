@@ -519,7 +519,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values contain "baz" at least once,
-					             but values of keys [1, 2] did not contain it
+					             but values of keys [1, 2] did not contain it (did you mean "bar"?)
 
 					             Collection (values of keys [1, 2]):
 					             [

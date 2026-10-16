@@ -42,7 +42,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["b"] = 1,
-					             but it did not contain key "b"
+					             but it did not contain key "b" (did you mean "a"?)
 
 					             Dictionary:
 					             {["a"] = 1}

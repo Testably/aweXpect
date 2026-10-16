@@ -64,6 +64,7 @@ public static partial class ThatDictionary
 		{
 			stringBuilder.Append(It).Append(" did not contain key ");
 			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
+			stringBuilder.AppendClosestMatchHint(expected, GetKeys(Actual));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

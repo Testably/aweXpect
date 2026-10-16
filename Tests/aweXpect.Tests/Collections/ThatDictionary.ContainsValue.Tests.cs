@@ -57,7 +57,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value "BAZ" ignoring case,
-					             but it did not contain value "BAZ"
+					             but it did not contain value "BAZ" (did you mean "bar"?)
 
 					             Dictionary:
 					             {

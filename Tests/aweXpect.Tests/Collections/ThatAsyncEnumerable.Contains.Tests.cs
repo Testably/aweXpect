@@ -426,7 +426,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that sut
 					             contains "GREEN" at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "green"?)
 
 					             Collection:
 					             [

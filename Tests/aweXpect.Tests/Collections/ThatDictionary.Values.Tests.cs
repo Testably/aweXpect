@@ -186,7 +186,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             has values that contain "baz" at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "bar"?)
 
 					             Collection (values):
 					             [

@@ -303,7 +303,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "LET IT BE" using the subject's StringComparer.Ordinal at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "Let It Be"?)
 
 					             Collection:
 					             [
@@ -376,7 +376,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "A" at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "a"?)
 
 					             Collection:
 					             [
@@ -589,7 +589,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "A" using the subject's StringComparer.Ordinal at least once,
-					             but it did not contain it
+					             but it did not contain it (did you mean "a"?)
 
 					             Collection:
 					             [
@@ -620,7 +620,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains "b" using the subject's StringComparer.{comparerName} at least once,
-					              but it did not contain it
+					              but it did not contain it (did you mean "a"?)
 
 					              Collection:
 					              [

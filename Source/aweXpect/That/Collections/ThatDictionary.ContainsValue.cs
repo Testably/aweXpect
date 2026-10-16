@@ -123,6 +123,7 @@ public static partial class ThatDictionary
 		{
 			stringBuilder.Append(It).Append(" did not contain value ");
 			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
+			stringBuilder.AppendClosestMatchHint(expected, GetValuesForHint(Actual, options));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

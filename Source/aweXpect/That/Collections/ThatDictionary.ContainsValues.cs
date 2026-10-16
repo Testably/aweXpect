@@ -188,8 +188,7 @@ public static partial class ThatDictionary
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" did not contain ");
-			stringBuilder.Append(Formatter.Format(_missingValues, FormattingOptions.MultipleLines)
-				.Indent(indentation, false));
+			stringBuilder.AppendWithClosestMatchHints(_missingValues, GetValuesForHint(Actual, options), indentation);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
