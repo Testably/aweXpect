@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
@@ -13,6 +14,55 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyMatchTypeTests
 {
+	[Test]
+	public async Task AppendContexts_AfterSeveralFailedComparisons_ShouldKeepTheSuggestionOfAnEarlierOne()
+	{
+		EquivalencyMatchType sut = new(IgnoringMember("Titel"));
+		await sut.AreConsideredEqualWithExplanation(new Album
+		{
+			Title = "Abbey Road",
+		}, new Album
+		{
+			Title = "Let It Be",
+		});
+		await sut.AreConsideredEqualWithExplanation(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 2,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - ignore members: ["Titel"]
+		                                "Titel" matched no member (did you mean "Title"?)
+		                             """)
+			.Because("the items of a collection are compared with the same match type, and a later item without a close member must not hide the suggestion for an earlier one");
+	}
+
+	[Test]
+	public async Task AppendContexts_WhenEquivalent_ShouldNotNameTheMembersToIgnore()
+	{
+		EquivalencyMatchType sut = new(IgnoringMember("Valeu"));
+		await sut.AreConsideredEqualWithExplanation(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 1,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - ignore members: ["Valeu"]
+		                             """);
+	}
+
 	[Test]
 	public async Task AreConsideredEqualWithExplanation_ShouldReturnTheMatchTypeItself()
 	{
@@ -67,6 +117,35 @@ public sealed class EquivalencyMatchTypeTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("equivalencyOptions").And
 			.WithMessage("The 'equivalencyOptions' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task ForEvaluation_ShouldKeepTheMembersToIgnoreOfItsOwnComparisons()
+	{
+		EquivalencyMatchType sut = new(IgnoringMember("Valeu"));
+		EquivalencyMatchType evaluation =
+			sut.ForEvaluation(new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+		await evaluation.AreConsideredEqualWithExplanation(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 2,
+		});
+
+		string? result = await ContextOf(evaluation);
+		string? sourceResult = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - ignore members: ["Valeu"]
+		                                "Valeu" matched no member (did you mean "Value"?)
+		                             """);
+		await That(sourceResult).IsEqualTo("""
+		                                    - include public fields and properties
+		                                    - ignore members: ["Valeu"]
+		                                   """)
+			.Because("each evaluation keeps the members to ignore of its own comparisons");
 	}
 
 	[Test]
@@ -205,6 +284,37 @@ public sealed class EquivalencyMatchTypeTests
 	}
 
 	[Test]
+	public async Task WhenNotEquivalent_AndANameToIgnoreMatchesNoMember_ShouldNameItBelowTheOptions()
+	{
+		Dummy subject = new()
+		{
+			Value = 1,
+		};
+		Dummy expected = new()
+		{
+			Value = 2,
+		};
+
+		async Task Act()
+			=> await That(subject).IsEquivalentToUsingMatchType(expected, IgnoringMember("Valeu"));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equivalent to expected,
+			             but it was not:
+			               Property Value differed:
+			                   Actual: 1
+			                 Expected: 2
+
+			             Equivalency options:
+			              - include public fields and properties
+			              - ignore members: ["Valeu"]
+			                "Valeu" matched no member (did you mean "Value"?)
+			             """);
+	}
+
+	[Test]
 	public async Task WhenNotEquivalent_InACombination_ShouldShiftTheDifferencesUnderTheEntry()
 	{
 		Dummy subject = new()
@@ -266,6 +376,19 @@ public sealed class EquivalencyMatchTypeTests
 			.Because("the failure is the same as the one of the built-in expectation");
 	}
 
+	private static async Task<string?> ContextOf(EquivalencyMatchType matchType)
+	{
+		ResultContextCollector contexts = new();
+		matchType.AppendContexts(contexts);
+		return await contexts.Entries.Single().Context.GetContent();
+	}
+
+	private static EquivalencyOptions IgnoringMember(string memberName)
+		=> new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName(memberName),],
+		};
+
 	private static async Task<string> MessageOf(Func<Task> act)
 	{
 		try
@@ -278,6 +401,11 @@ public sealed class EquivalencyMatchTypeTests
 		}
 
 		throw new InvalidOperationException("The expectation did not fail.");
+	}
+
+	public sealed class Album
+	{
+		public string? Title { get; set; }
 	}
 
 	public sealed class Dummy
@@ -294,10 +422,11 @@ internal static class EquivalencyMatchTypeTestExtensions
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentToUsingMatchType<TSubject, TExpected>(
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected expected,
+		EquivalencyOptions? equivalencyOptions = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEquivalentToConstraint<TSubject, TExpected>(it, grammars, expected,
-					expected is null ? null : doNotPopulateThisValue, CreateOptions<TSubject>())),
+					expected is null ? null : doNotPopulateThisValue, CreateOptions<TSubject>(equivalencyOptions))),
 			subject);
 
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentToUsingMatchType<TSubject, TExpected>(
@@ -310,11 +439,13 @@ internal static class EquivalencyMatchTypeTestExtensions
 					unexpected is null ? null : doNotPopulateThisValue, CreateOptions<TSubject>()).Invert()),
 			subject);
 
-	private static ObjectEqualityOptions<TSubject> CreateOptions<TSubject>()
+	private static ObjectEqualityOptions<TSubject> CreateOptions<TSubject>(
+		EquivalencyOptions? equivalencyOptions = null)
 	{
 		ObjectEqualityOptions<TSubject> options = new();
 		options.SetMatchType(
-			new EquivalencyMatchType(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get()),
+			new EquivalencyMatchType(equivalencyOptions
+			                         ?? Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get()),
 			"Equivalent");
 		return options;
 	}

@@ -65,8 +65,31 @@ public static partial class EquivalencyComparison
 			StringBuilder failureBuilder,
 			IEvaluationContext? evaluation,
 			CancellationToken cancellationToken)
+		=> (await CompareExplaining(actual, expected, equivalencyOptions, failureBuilder, evaluation,
+			cancellationToken)).IsEquivalent;
+
+	/// <summary>
+	///     Compares like
+	///     <see cref="Compare{TActual, TExpected}(TActual, TExpected, EquivalencyOptions, StringBuilder, IEvaluationContext?, CancellationToken)" />
+	///     and, when the objects are not equivalent, also returns the members to ignore by name that matched no
+	///     compared member, with the compared member each one most likely meant.
+	/// </summary>
+	internal static async ValueTask<(bool IsEquivalent, Dictionary<string, string?>? UnmatchedMembers)>
+		CompareExplaining<TActual, TExpected>(
+			TActual actual,
+			TExpected expected,
+			EquivalencyOptions equivalencyOptions,
+			StringBuilder failureBuilder,
+			IEvaluationContext? evaluation,
+			CancellationToken cancellationToken)
 	{
 		int start = failureBuilder.Length;
+		EquivalencyContext context = new(equivalencyOptions)
+		{
+			Evaluation = evaluation,
+			CancellationToken = cancellationToken,
+			TracksIgnoredMembers = true,
+		};
 		bool result = await Compare(
 			actual,
 			expected,
@@ -75,13 +98,9 @@ public static partial class EquivalencyComparison
 			failureBuilder,
 			"",
 			MemberType.Value,
-			new EquivalencyContext(equivalencyOptions)
-			{
-				Evaluation = evaluation,
-				CancellationToken = cancellationToken,
-			});
+			context);
 		JoinSingleLineEntries(failureBuilder, start);
-		return result;
+		return (result, result ? null : context.GetUnmatchedMembersToIgnore());
 	}
 
 	/// <summary>
@@ -149,6 +168,17 @@ public static partial class EquivalencyComparison
 		///     remembering every pair would cost memory in each comparison, most of which never reach a pair twice.
 		/// </remarks>
 		private const int ComparisonsToRemember = 64;
+
+		/// <summary>
+		///     The number of compared member paths that are kept as candidates for a member to ignore that matched
+		///     none.
+		/// </summary>
+		private const int ComparedPathsToRemember = 1000;
+
+		private List<string>? _comparedPaths;
+		private HashSet<string>? _matchedNames;
+		private HashSet<string>? _namesToIgnore;
+		private MemberToIgnore[]? _trackedMembersToIgnore;
 
 		/// <summary>
 		///     The pairs that are compared on the current path, with their <see cref="Depth" />, to catch recursions.
@@ -229,6 +259,16 @@ public static partial class EquivalencyComparison
 		public bool IsCountingOnly { get; set; }
 
 		/// <summary>
+		///     Whether the comparison tracks which members to ignore by name matched a compared member, so that a
+		///     failure can name the ones that matched none.
+		/// </summary>
+		/// <remarks>
+		///     A misspelled name ignores nothing without any notice, so the difference it was meant to hide is reported
+		///     without a reason.
+		/// </remarks>
+		public bool TracksIgnoredMembers { get; set; }
+
+		/// <summary>
 		///     The evaluation that the comparison is part of, or <see langword="null" /> outside an evaluation.
 		/// </summary>
 		public IEvaluationContext? Evaluation { get; set; }
@@ -248,6 +288,102 @@ public static partial class EquivalencyComparison
 		/// </remarks>
 		public ConcurrentDictionary<Type, EquivalencyTypeOptions?> RegisteredOptions
 			=> _registeredOptions ??= RegisteredOptionsCache.GetOrCreateValue(equivalencyOptions);
+
+		/// <summary>
+		///     Records that the <paramref name="memberToIgnore" /> out of the <paramref name="membersToIgnore" />
+		///     matched a member.
+		/// </summary>
+		public void TrackIgnoredMember(MemberToIgnore[] membersToIgnore, MemberToIgnore memberToIgnore)
+		{
+			if (!TracksIgnoredMembers)
+			{
+				return;
+			}
+
+			TrackMembersToIgnore(membersToIgnore);
+			if (memberToIgnore is MemberToIgnore.ByName byName)
+			{
+				(_matchedNames ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase)).Add(byName.MemberName);
+			}
+		}
+
+		/// <summary>
+		///     Records that the member at the <paramref name="memberPath" /> was compared, because none of the
+		///     <paramref name="membersToIgnore" /> matched it.
+		/// </summary>
+		public void TrackComparedMember(MemberToIgnore[] membersToIgnore, string memberPath)
+		{
+			if (!TracksIgnoredMembers)
+			{
+				return;
+			}
+
+			TrackMembersToIgnore(membersToIgnore);
+			_comparedPaths ??= [];
+			if (_comparedPaths.Count < ComparedPathsToRemember)
+			{
+				_comparedPaths.Add(memberPath);
+			}
+		}
+
+		/// <summary>
+		///     Returns each member to ignore by name that matched none of the compared members, with the compared
+		///     member it most likely meant, or <see langword="null" /> when every one matched.
+		/// </summary>
+		public Dictionary<string, string?>? GetUnmatchedMembersToIgnore()
+		{
+			Dictionary<string, string?>? unmatched = null;
+			foreach (string name in _namesToIgnore ?? [])
+			{
+				if (_matchedNames?.Contains(name) == true)
+				{
+					continue;
+				}
+
+				int segments = name.Count(c => c == '.') + 1;
+				(unmatched ??= new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase))[name] =
+					ClosestMatch.Find(name,
+						(_comparedPaths ?? []).Select(path => GetLastSegments(path, segments)).Distinct());
+			}
+
+			return unmatched;
+		}
+
+		/// <remarks>
+		///     The members to ignore of a type are the same array for each of its members, so they are only collected
+		///     when another type is compared.
+		/// </remarks>
+		private void TrackMembersToIgnore(MemberToIgnore[] membersToIgnore)
+		{
+			if (ReferenceEquals(membersToIgnore, _trackedMembersToIgnore))
+			{
+				return;
+			}
+
+			_trackedMembersToIgnore = membersToIgnore;
+			foreach (MemberToIgnore memberToIgnore in membersToIgnore)
+			{
+				if (memberToIgnore is MemberToIgnore.ByName byName)
+				{
+					(_namesToIgnore ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase)).Add(byName.MemberName);
+				}
+			}
+		}
+
+		private static string GetLastSegments(string memberPath, int segments)
+		{
+			int start = memberPath.Length;
+			for (int i = 0; i < segments && start > 0; i++)
+			{
+				start = memberPath.LastIndexOf('.', start - 1);
+				if (start < 0)
+				{
+					return memberPath;
+				}
+			}
+
+			return memberPath.Substring(start + 1);
+		}
 
 		/// <summary>
 		///     Starts the nested comparison of the <paramref name="pair" />, unless it is equivalent without comparing

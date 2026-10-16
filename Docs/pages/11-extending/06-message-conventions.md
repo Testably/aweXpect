@@ -92,6 +92,16 @@ in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own pa
 - Add a detail after a comma: `, which differs at index 12`, `, which differs by 2`.
 - Put longer information, such as the items of a collection, in a context below the message instead (see
   [contexts](#contexts)).
+- When a name was not found, suggest the one that was most likely meant with `ClosestMatch.AppendHint` from
+  `aweXpect.Core.Extending`. It appends ` (did you mean "Username"?)` only when a single candidate is close enough:
+
+  ```csharp
+  stringBuilder.Append(It).Append(" did not contain key ");
+  Formatter.Format(stringBuilder, expected);
+  ClosestMatch.AppendHint(stringBuilder, expected, actual.Keys);
+  ```
+
+  `ClosestMatch.Find` returns that candidate, or `null`, for your own wording.
 
 Some results are written for you:
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	private readonly IEvaluationContext? _evaluation;
 	private StringBuilder? _failureBuilder;
 	private bool _isMatch;
+	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 
 	/// <summary>
 	///     Compares with the <paramref name="equivalencyOptions" />.
@@ -94,9 +96,37 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	{
 		StringBuilder failureBuilder = FailureBuilder;
 		failureBuilder.Clear();
-		_isMatch = await EquivalencyComparison.Compare(actual, expected, _equivalencyOptions, failureBuilder,
-			_evaluation, _cancellationToken);
+		(_isMatch, Dictionary<string, string?>? unmatchedMembersToIgnore) =
+			await EquivalencyComparison.CompareExplaining(actual, expected, _equivalencyOptions, failureBuilder,
+				_evaluation, _cancellationToken);
+		if (unmatchedMembersToIgnore is not null)
+		{
+			KeepUnmatchedMembersToIgnore(unmatchedMembersToIgnore);
+		}
+
 		return this;
+	}
+
+	/// <remarks>
+	///     The items of a collection are compared one after the other with the same match type, so the members to
+	///     ignore of every failed comparison are kept, and a suggestion found for an item is not lost to a later item
+	///     without one.
+	/// </remarks>
+	private void KeepUnmatchedMembersToIgnore(Dictionary<string, string?> unmatchedMembersToIgnore)
+	{
+		if (_unmatchedMembersToIgnore is null)
+		{
+			_unmatchedMembersToIgnore = unmatchedMembersToIgnore;
+			return;
+		}
+
+		foreach (KeyValuePair<string, string?> unmatched in unmatchedMembersToIgnore)
+		{
+			if (!_unmatchedMembersToIgnore.TryGetValue(unmatched.Key, out string? suggestion) || suggestion is null)
+			{
+				_unmatchedMembersToIgnore[unmatched.Key] = unmatched.Value;
+			}
+		}
 	}
 
 	/// <summary>
@@ -120,7 +150,18 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 
 	/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 	public void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddEquivalencyContext(_equivalencyOptions);
+	{
+		if (_unmatchedMembersToIgnore is null)
+		{
+			contexts.AddEquivalencyContext(_equivalencyOptions);
+			return;
+		}
+
+		Dictionary<string, string?> unmatchedMembersToIgnore = new(_unmatchedMembersToIgnore,
+			StringComparer.OrdinalIgnoreCase);
+		contexts.Add(new ResultContext.SyncCallback("Equivalency options",
+			() => _equivalencyOptions.ToString(unmatchedMembersToIgnore), int.MinValue));
+	}
 
 	/// <inheritdoc />
 	public override string ToString() => " using equivalency";

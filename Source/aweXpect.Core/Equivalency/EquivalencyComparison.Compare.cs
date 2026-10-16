@@ -278,8 +278,8 @@ public static partial class EquivalencyComparison
 	///     The <paramref name="memberPath" /> is only joined when a rule applies to the member, as most comparisons have no
 	///     rule at all.
 	/// </remarks>
-	private static bool IsIgnored(MemberToIgnore[] membersToIgnore, MemberType memberType, MemberPath memberPath,
-		Type type)
+	private static bool IsIgnored(EquivalencyContext context, MemberToIgnore[] membersToIgnore, MemberType memberType,
+		MemberPath memberPath, Type type)
 	{
 		string? path = null;
 #pragma warning disable S3267 // Every compared member is checked, so Any with a closure is avoided here
@@ -288,10 +288,16 @@ public static partial class EquivalencyComparison
 			if (AppliesTo(memberToIgnore, memberType) &&
 			    memberToIgnore.IgnoreMember(path ??= memberPath.ToString(), type))
 			{
+				context.TrackIgnoredMember(membersToIgnore, memberToIgnore);
 				return true;
 			}
 		}
 #pragma warning restore S3267
+
+		if (path is not null)
+		{
+			context.TrackComparedMember(membersToIgnore, path);
+		}
 
 		return false;
 	}
@@ -350,7 +356,7 @@ public static partial class EquivalencyComparison
 		actualValue = null;
 		expectedValue = null;
 		isEquivalent = true;
-		if (IsIgnored(typeOptions.MembersToIgnore, memberType, memberPath, member.Expected.DeclaredType))
+		if (IsIgnored(context, typeOptions.MembersToIgnore, memberType, memberPath, member.Expected.DeclaredType))
 		{
 			return false;
 		}
@@ -1001,7 +1007,7 @@ public static partial class EquivalencyComparison
 				{
 					string elementMemberPath = GetKeyPath(memberPath, key);
 					object? actualObject = GetEntry(actual, key, elementMemberPath);
-					if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+					if (IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 						    actualObject?.GetType() ?? typeof(object)))
 					{
 						continue;
@@ -1043,7 +1049,7 @@ public static partial class EquivalencyComparison
 			if (!isMatched)
 			{
 				object? expectedObject = GetEntry(expected, key, elementMemberPath);
-				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+				if (IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 					    expectedObject?.GetType() ?? typeof(object)))
 				{
 					continue;
@@ -1055,7 +1061,7 @@ public static partial class EquivalencyComparison
 			}
 
 			object? actualObject = GetEntry(actual, key, elementMemberPath);
-			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+			if (IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    actualObject?.GetType() ?? typeof(object)))
 			{
 				continue;
@@ -1253,7 +1259,7 @@ public static partial class EquivalencyComparison
 		{
 			MemberPath elementMemberPath = GetElementPath(memberPath, i, dimensions);
 			object? actualObject = actualObjects[i];
-			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+			if (IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    actualObject?.GetType() ?? typeof(object)))
 			{
 				continue;
@@ -1275,7 +1281,7 @@ public static partial class EquivalencyComparison
 			{
 				string elementMemberPath = $"{memberPath}[{i}]";
 				object? expectedObject = expectedObjects[i];
-				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+				if (IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 					    expectedObject?.GetType() ?? typeof(object)))
 				{
 					continue;
@@ -1292,7 +1298,7 @@ public static partial class EquivalencyComparison
 			{
 				string elementMemberPath = $"{memberPath}[{i}]";
 				object? actualObject = actualObjects[i];
-				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+				if (IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 					    actualObject?.GetType() ?? typeof(object)))
 				{
 					continue;
@@ -1333,8 +1339,8 @@ public static partial class EquivalencyComparison
 			EquivalencyTypeOptions typeOptions,
 			EquivalencyContext context)
 	{
-		int[] actualIndices = GetIndicesToCompare(actualObjects, memberPath, dimensions, typeOptions);
-		int[] expectedIndices = GetIndicesToCompare(expectedObjects, memberPath, dimensions, typeOptions);
+		int[] actualIndices = GetIndicesToCompare(actualObjects, memberPath, dimensions, typeOptions, context);
+		int[] expectedIndices = GetIndicesToCompare(expectedObjects, memberPath, dimensions, typeOptions, context);
 		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, dimensions,
 			itemComparer, memberPath, options, typeOptions, context);
 		await matcher.MatchAll();
@@ -1382,7 +1388,7 @@ public static partial class EquivalencyComparison
 	///     has to find a counterpart nor can it be reported as superfluous.
 	/// </remarks>
 	private static int[] GetIndicesToCompare(object?[] objects, string memberPath, int[]? dimensions,
-		EquivalencyTypeOptions typeOptions)
+		EquivalencyTypeOptions typeOptions, EquivalencyContext context)
 	{
 		if (typeOptions.MembersToIgnore.Length == 0)
 		{
@@ -1400,7 +1406,7 @@ public static partial class EquivalencyComparison
 		{
 			object? element = objects[i];
 			MemberPath elementMemberPath = GetElementPath(memberPath, i, dimensions);
-			if (!IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
+			if (!IsIgnored(context, typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    element?.GetType() ?? typeof(object)))
 			{
 				indices.Add(i);

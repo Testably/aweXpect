@@ -42,7 +42,8 @@ public record EquivalencyTypeOptions
 	/// </summary>
 	public bool IgnoreCollectionOrder { get; init; }
 
-	internal void AppendOptions(StringBuilder sb, string indentation = "")
+	internal void AppendOptions(StringBuilder sb, string indentation = "",
+		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore = null)
 	{
 		sb.Append(indentation).Append(" - include ").Append(GetVisibilities(Fields)).Append(" fields and");
 
@@ -70,6 +71,7 @@ public record EquivalencyTypeOptions
 		AppendMembersToIgnore(sb, indentation, "members",
 			MembersToIgnore.Where(x
 				=> x is not MemberToIgnore.ByFieldPredicate and not MemberToIgnore.ByPropertyPredicate));
+		AppendUnmatchedMembersToIgnore(sb, indentation, unmatchedMembersToIgnore);
 		AppendMembersToIgnore(sb, indentation, "fields",
 			MembersToIgnore.Where(x => x is MemberToIgnore.ByFieldPredicate));
 		AppendMembersToIgnore(sb, indentation, "properties",
@@ -101,5 +103,31 @@ public record EquivalencyTypeOptions
 		sb.Append(indentation).Append(" - ignore ").Append(kind).Append(": ");
 		Formatter.Format(sb, members, FormattingOptions.SingleLine);
 		sb.AppendLine();
+	}
+
+	private void AppendUnmatchedMembersToIgnore(StringBuilder sb, string indentation,
+		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
+	{
+		if (unmatchedMembersToIgnore is null)
+		{
+			return;
+		}
+
+		foreach (MemberToIgnore memberToIgnore in MembersToIgnore)
+		{
+			if (memberToIgnore is MemberToIgnore.ByName byName &&
+			    unmatchedMembersToIgnore.TryGetValue(byName.MemberName, out string? suggestion))
+			{
+				sb.Append(indentation).Append("   ");
+				Formatter.Format(sb, byName.MemberName);
+				sb.Append(" matched no member");
+				if (suggestion is not null)
+				{
+					ClosestMatch.AppendHint(sb, byName.MemberName, [suggestion,]);
+				}
+
+				sb.AppendLine();
+			}
+		}
 	}
 }
