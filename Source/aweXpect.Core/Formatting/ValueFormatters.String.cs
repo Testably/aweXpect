@@ -72,4 +72,13 @@ public static partial class ValueFormatters
 		=> options?.IsComplete == true
 			? value
 			: value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get());
+
+	/// <remarks>
+	///     Complete output escapes the backslashes of unquoted text as well, so that an escaped line break cannot be
+	///     mistaken for a backslash followed by an <c>n</c>.
+	/// </remarks>
+	private static string EscapeUnquoted(string value, FormattingOptions? options)
+		=> options?.IsComplete == true
+			? value.Escape('\\')
+			: value.DisplayWhitespace();
 }

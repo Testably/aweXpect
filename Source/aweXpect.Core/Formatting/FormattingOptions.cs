@@ -76,8 +76,11 @@ public record FormattingOptions
 	///     customization applies, nor the limits on how deeply and how many nested objects, collections and tuples are
 	///     written. An object or collection that contains itself is still written as <c>*recursive*</c> where it repeats,
 	///     and a value that is nested too deeply for the remaining stack throws an
-	///     <see cref="System.InsufficientExecutionStackException" /> instead of being shortened. The items of a
-	///     collection are written in the order it enumerates them, so an endless sequence never completes.
+	///     <see cref="System.InsufficientExecutionStackException" /> instead of being shortened. A member, enumeration,
+	///     <see cref="object.ToString()" /> or formatter that throws is still written as a placeholder that names the
+	///     exception. Backslashes in unquoted text, like an exception message, are escaped as well, so that an escaped
+	///     line break cannot be mistaken for a backslash followed by an <c>n</c>. The items of a collection are written
+	///     in the order it enumerates them, so an endless sequence never completes.
 	/// </remarks>
 	public bool IsComplete { get; init; }
 

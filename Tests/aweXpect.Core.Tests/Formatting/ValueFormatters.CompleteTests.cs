@@ -70,6 +70,27 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenCollectionIsTooDeepForTheStack_ShouldThrowInsteadOfShortening()
+		{
+			List<object> value = [];
+			List<object> current = value;
+			for (int i = 1; i < 100_000; i++)
+			{
+				List<object> next = [];
+				current.Add(next);
+				current = next;
+			}
+
+			void Act() => Formatter.Format(value, FormattingOptions.Complete);
+
+			await That(Act).Throws<InsufficientExecutionStackException>()
+				.WithMessage(
+					"The value is nested too deeply to be formatted completely on the remaining stack at a depth of *.")
+				.AsWildcard()
+				.Because("the enumeration must not write a too deep collection as a placeholder");
+		}
+
+		[Test]
 		public async Task WhenCustomFormatterIsRegistered_ShouldReceiveTheOptions()
 		{
 			using IDisposable _ = ValueFormatter.Register(new TaggedFormatter());
@@ -79,6 +100,50 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo("Tagged(IsComplete=True, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])")
 				.Because("a custom formatter receives the options and passes them on to the nested values");
+		}
+
+		[Test]
+		public async Task WhenCustomFormatterIsTooDeepForTheStack_ShouldThrowInsteadOfShortening()
+		{
+			using IDisposable _ = ValueFormatter.Register(new BoxedFormatter());
+			Boxed value = new(null);
+			for (int i = 1; i < 100_000; i++)
+			{
+				value = new Boxed(value);
+			}
+
+			void Act() => Formatter.Format(value, FormattingOptions.Complete);
+
+			await That(Act).Throws<InsufficientExecutionStackException>()
+				.WithMessage(
+					"The value is nested too deeply to be formatted completely on the remaining stack at a depth of *.")
+				.AsWildcard()
+				.Because("a custom formatter must not write a too deep value as a placeholder");
+		}
+
+		[Test]
+		public async Task WhenExceptionMessageContainsABackslash_ShouldEscapeIt()
+		{
+			InvalidOperationException lineBreak = new("a\nb");
+			InvalidOperationException backslash = new("a\\nb");
+
+			string lineBreakResult = Formatter.Format(lineBreak, FormattingOptions.Complete);
+			string backslashResult = Formatter.Format(backslash, FormattingOptions.Complete);
+
+			await That(lineBreakResult).IsEqualTo("InvalidOperationException: a\\nb");
+			await That(backslashResult).IsEqualTo("InvalidOperationException: a\\\\nb")
+				.Because("complete output must tell a line break from a backslash followed by an n");
+		}
+
+		[Test]
+		public async Task WhenExceptionMessageContainsABackslash_WithoutCompleteOption_ShouldKeepIt()
+		{
+			InvalidOperationException value = new("C:\\temp");
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo("InvalidOperationException: C:\\temp")
+				.Because("failure messages keep the backslashes of unquoted text, which often holds a path");
 		}
 
 		[Test]
@@ -143,7 +208,9 @@ public partial class ValueFormatters
 			void Act() => Formatter.Format(value, FormattingOptions.Complete);
 
 			await That(Act).Throws<InsufficientExecutionStackException>()
-				.WithMessage("The value is nested too deeply to be formatted completely on the remaining stack.")
+				.WithMessage(
+					"The value is nested too deeply to be formatted completely on the remaining stack at a depth of *.")
+				.AsWildcard()
 				.Because("complete output must neither overflow the stack nor leave out the deepest levels");
 		}
 
@@ -190,6 +257,17 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(
 				"ValueFormatters.CompleteTests.Wrapper { Inner = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }");
+		}
+
+		[Test]
+		public async Task WhenObjectRendersItselfWithABackslash_ShouldEscapeIt()
+		{
+			Rendered value = new("a\\nb");
+
+			string result = Formatter.Format(value, FormattingOptions.Complete);
+
+			await That(result).IsEqualTo("a\\\\nb")
+				.Because("complete output must tell a line break from a backslash followed by an n");
 		}
 
 		[Test]
@@ -267,6 +345,26 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("int[] [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]");
 		}
 
+		private sealed class Boxed(Boxed? inner)
+		{
+			public Boxed? Inner { get; } = inner;
+		}
+
+		private sealed class BoxedFormatter : IValueFormatter
+		{
+			public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+			{
+				if (value is not Boxed boxed)
+				{
+					return false;
+				}
+
+				stringBuilder.Append("Boxed");
+				Formatter.Format(stringBuilder, new[] { boxed.Inner, }, options);
+				return true;
+			}
+		}
+
 		private sealed class LinkedNode
 		{
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
@@ -284,6 +382,11 @@ public partial class ValueFormatters
 
 				return root;
 			}
+		}
+
+		private sealed class Rendered(string rendering)
+		{
+			public override string ToString() => rendering;
 		}
 
 		private sealed class SelfNode

@@ -29,9 +29,6 @@ public static partial class ValueFormatters
 	private const int MaximumDepth = 20;
 	private const int MaximumNumberOfWrittenContents = 1000;
 
-	private const string InsufficientStackMessage =
-		"The value is nested too deeply to be formatted completely on the remaining stack.";
-
 	/// <summary>
 	///     Fallback for formatting arbitrary objects.
 	/// </summary>
@@ -196,7 +193,7 @@ public static partial class ValueFormatters
 		context.Depth++;
 		if (options?.IsComplete == true)
 		{
-			EnsureSufficientStack();
+			EnsureSufficientStack(context.Depth);
 			return true;
 		}
 
@@ -204,12 +201,12 @@ public static partial class ValueFormatters
 		       ++context.NumberOfWrittenContents <= MaximumNumberOfWrittenContents;
 	}
 
-	private static void EnsureSufficientStack()
+	private static void EnsureSufficientStack(int depth)
 	{
 #if NET8_0_OR_GREATER
 		if (!RuntimeHelpers.TryEnsureSufficientExecutionStack())
 		{
-			throw new InsufficientExecutionStackException(InsufficientStackMessage);
+			throw new InsufficientExecutionStackException(GetInsufficientStackMessage(depth));
 		}
 #else
 		try
@@ -218,10 +215,13 @@ public static partial class ValueFormatters
 		}
 		catch (InsufficientExecutionStackException exception)
 		{
-			throw new InsufficientExecutionStackException(InsufficientStackMessage, exception);
+			throw new InsufficientExecutionStackException(GetInsufficientStackMessage(depth), exception);
 		}
 #endif
 	}
+
+	private static string GetInsufficientStackMessage(int depth)
+		=> $"The value is nested too deeply to be formatted completely on the remaining stack at a depth of {depth}.";
 
 	/// <summary>
 	///     Whether an <paramref name="exception" /> of code of the caller is written as a placeholder instead of thrown.

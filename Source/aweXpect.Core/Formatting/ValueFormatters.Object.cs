@@ -89,7 +89,7 @@ public static partial class ValueFormatters
 		}
 		else
 		{
-			stringBuilder.Append(toString.DisplayWhitespace());
+			stringBuilder.Append(EscapeUnquoted(toString, options));
 		}
 	}
 

@@ -61,7 +61,7 @@ public static partial class ValueFormatters
 		}
 		else
 		{
-			stringBuilder.Append(TruncateUnlessComplete(message, options).DisplayWhitespace());
+			stringBuilder.Append(EscapeUnquoted(TruncateUnlessComplete(message, options), options));
 		}
 	}
 }
