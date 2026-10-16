@@ -227,16 +227,6 @@ culture (e.g. `"Prices[1.5]"`).
 The name must cover whole segments at the end of the member path, so `"Name"` ignores every member called `Name` at any
 depth, while `"ame"` or `"t.Name"` ignore nothing.
 
-When the objects are not equivalent, a name that matched no compared member is named below the options, with the
-member that was most likely meant:
-
-```text title="Failure message"
-Equivalency options:
- - include public fields and properties
- - ignore members: ["Titel"]
-   "Titel" matched no member (did you mean "Title"?)
-```
-
 ### Ignoring members by predicate
 
 There are three overloads of `Ignoring`, depending on which information you need:
