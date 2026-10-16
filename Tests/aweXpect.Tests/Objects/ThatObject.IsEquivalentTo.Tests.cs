@@ -601,6 +601,7 @@ public sealed partial class ThatObject
 					             Equivalency options:
 					              - include public fields and properties
 					              - ignore members: ["Inner.Inner.Collection.[3]"]
+					                "Inner.Inner.Collection.[3]" matched no member (did you mean "Inner.Inner.Collection[3]"?)
 					             """);
 			}
 

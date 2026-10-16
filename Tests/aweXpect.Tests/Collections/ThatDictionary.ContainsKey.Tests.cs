@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core;
+using aweXpect.Equivalency;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -137,6 +138,34 @@ public sealed partial class ThatDictionary
 					               "bar"
 					               "foo"
 					                ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenKeyExists_ButValueIsNotEquivalent_ShouldSuggestTheClosestMemberToIgnore()
+			{
+				Dictionary<int, MyClass> subject = new()
+				{
+					[1] = new MyClass(1),
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsKey(1).WhoseValue
+						.IsEquivalentTo(new MyClass(2), o => o.IgnoringMember("Valeu"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains key 1 whose value is equivalent to new MyClass(2),
+					             but value of key 1 was not:
+					               Property Value differed:
+					                   Actual: 1
+					                 Expected: 2
+
+					             Equivalency options (value of key 1):
+					              - include public fields and properties
+					              - ignore members: ["Valeu"]
+					                "Valeu" matched no member (did you mean "Value"?)
 					             """);
 			}
 

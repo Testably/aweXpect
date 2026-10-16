@@ -76,6 +76,7 @@ public static partial class ThatObject
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>
 	{
+		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
 		private IObjectMatchResult? _matchResult;
 
 		/// <remarks>
@@ -86,10 +87,10 @@ public static partial class ThatObject
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			ObjectEqualityOptions<TSubject> evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			foreach (TExpected? value in expected)
 			{
-				_matchResult = await evaluationOptions.AreConsideredEqualWithExplanation(actual, value);
+				_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, value);
 				if (_matchResult.IsMatch)
 				{
 					Outcome = Outcome.Success;
@@ -105,7 +106,7 @@ public static partial class ThatObject
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		/// <remarks>

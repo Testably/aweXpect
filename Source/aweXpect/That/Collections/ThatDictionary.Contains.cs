@@ -105,6 +105,7 @@ public static partial class ThatDictionary
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private TValue? _actualValue;
+		private IOptionsEquality<TValue>? _evaluationOptions;
 		private bool _hasKey;
 
 		/// <remarks>
@@ -116,6 +117,7 @@ public static partial class ThatDictionary
 		{
 			Actual = actual;
 			options.ValidateExpectedItems([expected.Value,]);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -123,8 +125,7 @@ public static partial class ThatDictionary
 			}
 
 			_hasKey = TryLookUp(GetLookup(actual), expected.Key, out _actualValue);
-			Outcome = _hasKey && await options.ForEvaluation(context, cancellationToken)
-				.AreConsideredEqual(_actualValue!, expected.Value)
+			Outcome = _hasKey && await _evaluationOptions.AreConsideredEqual(_actualValue!, expected.Value)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -134,7 +135,7 @@ public static partial class ThatDictionary
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
+			contexts.AddOptionsContexts(_evaluationOptions ?? options);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

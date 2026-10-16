@@ -180,6 +180,7 @@ several lines, indent the lines after the first by the `indentation`, e.g. with
 An `ObjectEqualityOptions<T>` compares like `IsEquivalentTo` with
 `SetMatchType(new EquivalencyMatchType(options), "Equivalent")`. A constraint compares with the options that
 `ForEvaluation(context, cancellationToken)` returns for its evaluation, so that the timeout and the cancellation of the
-evaluation also end the expectations of an `It.Is…` in the expected object.
+evaluation also end the expectations of an `It.Is…` in the expected object. It also appends its contexts from these
+options, as only they know what the comparisons found, e.g. a member to ignore that matched no member.
 
 </details>

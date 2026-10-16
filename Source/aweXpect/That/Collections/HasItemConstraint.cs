@@ -58,7 +58,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> Item.AppendContexts(contexts);
+		=> _evaluationItem.AppendContexts(contexts);
 
 	/// <summary>
 	///     Starts a new evaluation in the <paramref name="context" />, which fails unless an item at the index matches.

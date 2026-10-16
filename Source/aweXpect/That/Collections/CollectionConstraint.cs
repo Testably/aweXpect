@@ -53,7 +53,7 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		base.AppendContexts(contexts);
-		condition.AppendContexts(contexts);
+		(_evaluationCondition ?? condition).AppendContexts(contexts);
 	}
 
 	/// <summary>

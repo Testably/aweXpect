@@ -173,7 +173,8 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 		IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
 		return ReferenceEquals(evaluationOptions, options)
 			? this
-			: new ElementEqualTo<TItem, TValue>(evaluationOptions, expected, contextOptions);
+			: new ElementEqualTo<TItem, TValue>(evaluationOptions, expected,
+				contextOptions is null ? null : evaluationOptions as ObjectEqualityOptions<TValue>);
 	}
 
 	/// <inheritdoc />

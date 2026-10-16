@@ -69,7 +69,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> Item.AppendContexts(contexts);
+		=> _evaluationItem.AppendContexts(contexts);
 
 	/// <summary>
 	///     Starts a new evaluation of the <paramref name="actual" /> subject in the <paramref name="context" />.

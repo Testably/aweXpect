@@ -40,7 +40,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddOptionsContexts(options);
+		=> contexts.AddOptionsContexts(_evaluationOptions ?? options);
 
 	/// <summary>
 	///     Starts a new evaluation in the <paramref name="context" />.
