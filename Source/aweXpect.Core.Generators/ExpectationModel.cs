@@ -29,6 +29,7 @@ internal sealed record ExpectationModel(
 	string? NegatedRemarks,
 	bool IsAsync,
 	bool PassesCancellationToken,
+	bool ReturnsPredicateResult,
 	EquatableArray<ParameterModel> Parameters,
 	ResultModel? Result,
 	EquatableArray<OverloadModel> Overloads);
@@ -43,8 +44,9 @@ internal sealed record ExpectationModel(
 /// <param name="Verb">The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".</param>
 /// <param name="Summary">The XML documentation of the summary, if given.</param>
 /// <param name="Remarks">The XML documentation of the remarks, if given.</param>
-/// <param name="PredicateKind">What the predicate returns.</param>
+/// <param name="PredicateKind">How the predicate returns its result.</param>
 /// <param name="PassesCancellationToken">Whether the predicate ends with a cancellation token.</param>
+/// <param name="ReturnsPredicateResult">Whether the predicate returns a <c>PredicateResult</c> instead of a <see langword="bool" />.</param>
 /// <param name="Items">The item types whose collections are extended.</param>
 /// <param name="SupportsAsyncEnumerables">Whether the referenced aweXpect.Core supports <c>IAsyncEnumerable</c>.</param>
 internal sealed record CollectionExpectationModel(
@@ -57,6 +59,7 @@ internal sealed record CollectionExpectationModel(
 	string? Remarks,
 	PredicateKind PredicateKind,
 	bool PassesCancellationToken,
+	bool ReturnsPredicateResult,
 	EquatableArray<ItemModel> Items,
 	bool SupportsAsyncEnumerables);
 
@@ -75,11 +78,11 @@ internal sealed record ClassModel(
 	EquatableArray<ParameterModel> Parameters);
 
 /// <summary>
-///     What the marked method returns.
+///     How the marked method returns its result.
 /// </summary>
 internal enum PredicateKind
 {
-	Boolean,
+	Synchronous,
 	Task,
 	ValueTask,
 }

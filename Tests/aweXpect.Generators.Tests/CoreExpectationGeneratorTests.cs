@@ -179,6 +179,10 @@ public sealed class CoreExpectationGeneratorTests
 					[GenerateExpectation("Is{Not}Ready", "is {not} ready")]
 					private static Task<bool> IsReady(string value, CancellationToken cancellationToken) => Task.FromResult(true);
 
+					[GenerateExpectation("Is{Not}Known", "is {not} known")]
+					private static PredicateResult IsKnown(string value)
+						=> value.Length == 0 ? PredicateResult.FailureBothWays("was empty") : true;
+
 					private static string Describe(string value) => "was " + value;
 				}
 			}
@@ -227,6 +231,21 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task MethodReturnsATaskOfAnotherNamespace_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			private sealed class Task<T>;
+
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static Task<bool> IsZero(int value) => new();
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because it returns neither bool nor PredicateResult, nor a Task or ValueTask of them");
+	}
+
+	[Test]
 	public async Task MethodReturnsNoBoolean_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
@@ -236,7 +255,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatReports(result,
-			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because it returns neither bool nor Task<bool> nor ValueTask<bool>");
+			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because it returns neither bool nor PredicateResult, nor a Task or ValueTask of them");
 	}
 
 	[Test]
@@ -513,6 +532,69 @@ public sealed class CoreExpectationGeneratorTests
 
 		await ThatReports(result,
 			"aweXpect4002: 'ThatSample.IsEqual(int, int)' cannot generate an expectation, because the placeholder '{other}' names no parameter of the expectation");
+	}
+
+	[Test]
+	public async Task PredicateResult_ShouldSetTheOutcomeAndTheReason()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero", NullableOverload = false)]
+			private static PredicateResult IsZero(int value)
+				=> value < 0 ? PredicateResult.FailureBothWays("was negative") : value == 0;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+						global::aweXpect.Core.Extending.PredicateResult result = global::Lib.ThatSample.IsZero(actual);
+						_reason = result.Reason;
+						Outcome = result.Outcome;
+			""");
+		await ThatContainsLines(result,
+			"""
+						if (!(_reason is null))
+						{
+							stringBuilder.Append(It).Append(' ').Append(_reason);
+							return;
+						}
+			""");
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenAsync_ShouldAwaitIt()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero", NullableOverload = false)]
+			private static ValueTask<PredicateResult> IsZero(int value) => new(value == 0);
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains("global::aweXpect.Core.Extending.PredicateResult result = await global::Lib.ThatSample.IsZero(actual).ConfigureAwait(false);");
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenSubjectFailsOnNull_ShouldNotCallThePredicateForNull()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation("Is{Not}Zero", "is {not} zero")]
+			private static PredicateResult IsZero(int value) => value == 0;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+						if (actual is null)
+						{
+							Outcome = global::aweXpect.Core.Constraints.Outcome.Failure;
+							return this;
+						}
+
+						global::aweXpect.Core.Extending.PredicateResult result = global::Lib.ThatSample.IsZero(actual.Value);
+			""");
 	}
 
 	[Test]

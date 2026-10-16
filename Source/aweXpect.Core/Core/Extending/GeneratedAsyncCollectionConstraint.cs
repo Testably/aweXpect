@@ -14,6 +14,8 @@ namespace aweXpect.Core.Extending;
 ///     <see cref="IAsyncEnumerable{T}" />, which classify every item with <see cref="IsMatch" />.
 /// </summary>
 /// <remarks>
+///     An item that the predicate cannot answer stops the evaluation, and the expectation and its negation fail with
+///     the reason, unless the items before already determine the outcome.<br />
 ///     The items are only read until the outcome is determined.
 /// </remarks>
 /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
@@ -47,7 +49,15 @@ public abstract class GeneratedAsyncCollectionConstraint<TItem>(
 		{
 			await foreach (TItem item in items)
 			{
-				Record(item, await IsMatch(item, cancellationToken));
+				PredicateResult result = await IsMatch(item, cancellationToken);
+				if (result.Reason is { } reason)
+				{
+					Record(item, new PredicateResult.UnansweredItem(item, reason));
+					CompleteEarly();
+					return this;
+				}
+
+				Record(item, result.Outcome == Outcome.Success);
 				if (IsDetermined)
 				{
 					CompleteEarly();
@@ -66,9 +76,9 @@ public abstract class GeneratedAsyncCollectionConstraint<TItem>(
 	}
 
 	/// <summary>
-	///     Whether the <paramref name="item" /> matches the expectation.
+	///     Whether the <paramref name="item" /> matches the expectation, or why that cannot be answered.
 	/// </summary>
-	protected abstract ValueTask<bool> IsMatch(TItem item, CancellationToken cancellationToken);
+	protected abstract ValueTask<PredicateResult> IsMatch(TItem item, CancellationToken cancellationToken);
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)

@@ -230,6 +230,120 @@ public sealed class GenerateExpectationAttributeTests
 	}
 
 	[Test]
+	public async Task PredicateResult_WhenAsyncAndFailureBothWays_ShouldFailWithTheReason()
+	{
+		Account subject = new("Alice", -1);
+
+		async Task Act()
+			=> await That(subject).IsNotTrusted();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not trusted,
+			             but it was locked
+			             """);
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenFailureBothWays_ShouldFailWithTheReason()
+	{
+		Account subject = new("Alice", -1);
+
+		async Task Act()
+			=> await That(subject).IsSenior();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is senior,
+			             but it had no level
+			             """);
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenFailureBothWaysAndNegated_ShouldAlsoFail()
+	{
+		Account subject = new("Alice", -1);
+
+		async Task Act()
+			=> await That(subject).IsNotSenior();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not senior,
+			             but it had no level
+			             """)
+			.Because("a question that cannot be answered fails the expectation and its negation alike");
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenMet_ShouldSucceed()
+	{
+		Account subject = new("Alice", 5);
+
+		async Task Act()
+			=> await That(subject).IsSenior();
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenNotMet_ShouldDescribeTheSubject()
+	{
+		Account subject = new("Alice", 1);
+
+		async Task Act()
+			=> await That(subject).IsSenior();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is senior,
+			             but it was Alice
+			             """);
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenSubjectIsNull_ShouldFail()
+	{
+		int? subject = null;
+
+		async Task Act()
+			=> await That(subject).IsNotASquare();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not a square,
+			             but it was <null>
+			             """);
+	}
+
+	[Test]
+	public async Task PredicateResult_WhenUsedOnItems_ShouldFailWithTheReasonOfTheItem()
+	{
+		Account[] subject = [new("Alice", 5), new("Bob", -1),];
+
+		async Task Act()
+			=> await That(subject).All().ComplyWith(x => x.IsSenior());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is senior for all items,
+			             but for the item at index 1, it had no level
+
+			             Collection:
+			             [
+			               Alice,
+			               Bob
+			             ]
+			             """);
+	}
+
+	[Test]
 	public async Task Result_ShouldDescribeTheSubject()
 	{
 		Account subject = new("Alice", 1);

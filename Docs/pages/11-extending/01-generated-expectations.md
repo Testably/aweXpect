@@ -26,9 +26,10 @@ await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
 
 ## The method
 
-- The method is `static` and returns `bool`, `Task<bool>` or `ValueTask<bool>`. Its first parameter is the subject,
-  the other parameters become the parameters of the expectation. The method may end with a `CancellationToken`,
-  which receives the token of the evaluation.
+- The method is `static` and returns `bool`, `Task<bool>` or `ValueTask<bool>`, or a `PredicateResult` instead of the
+  `bool` when it [cannot always answer](#questions-that-cannot-be-answered). Its first parameter is the subject, the
+  other parameters become the parameters of the expectation. The method may end with a `CancellationToken`, which
+  receives the token of the evaluation.
 - It is declared in a top-level, non-generic, `static partial` class that is not `file`-local, which receives the
   generated extension methods. The method itself can be `private`.
 - The generated extension methods are `public`, unless the class, the subject or a parameter type is `internal`: then
@@ -112,6 +113,29 @@ private static bool IsUntitled([NotNullWhen(false)] Track? track)
 
 Here `IsNotUntitled()` fails for a `null` subject, so the subject cannot be `null` after it.
 
+## Questions that cannot be answered
+
+When the method cannot decide for some subjects, e.g. a track without a duration, it returns a `PredicateResult`. A
+`bool` converts implicitly, so only that case needs `PredicateResult.FailureBothWays` with the reason, which follows
+"it" in the failure message:
+
+```csharp no-compile
+[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}")]
+private static PredicateResult IsLongerThan(Track track, TimeSpan minimum)
+    => track.Duration <= TimeSpan.Zero
+        ? PredicateResult.FailureBothWays("had no duration")
+        : track.Duration > minimum;
+```
+
+```
+Expected that track
+is not longer than 3:00,
+but it had no duration
+```
+
+The expectation and its negation fail alike, as negating a question that cannot be answered does not make it true.
+The `Result` method still describes a subject that the method decided about.
+
 ## Collections
 
 `[GenerateCollectionExpectation]` generates an expectation on the items of a collection from the same kind of method,
@@ -151,6 +175,8 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
   the collections of strings.
 - A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
   `NullableOverload` work like for a subject.
+- An item that the method [cannot answer](#questions-that-cannot-be-answered) fails the expectation and its negation,
+  e.g. "but for the item at index 1, it had no duration", unless the items before already determine the outcome.
 - `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.
 
 ## Diagnostics

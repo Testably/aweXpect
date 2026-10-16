@@ -23,8 +23,8 @@ aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.get -> string?
 aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.set -> void
 aweXpect.Options.StringEqualityOptions.GetOccurrenceDetails(string! actual, string! expected, int count) -> string!
 static aweXpect.Core.ResultContextCollectorExtensions.AddStringDifferencesContext(this aweXpect.Core.ResultContextCollector! contexts, string? actual, string? expected, aweXpect.Options.StringEqualityOptions! options, aweXpect.Core.ExpectationGrammars grammars) -> void
-abstract aweXpect.Core.Extending.GeneratedAsyncCollectionConstraint<TItem>.IsMatch(TItem item, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<bool>
-abstract aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.IsMatch(TItem item, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<bool>
+abstract aweXpect.Core.Extending.GeneratedAsyncCollectionConstraint<TItem>.IsMatch(TItem item, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult>
+abstract aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.IsMatch(TItem item, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult>
 aweXpect.Core.Extending.GenerateCollectionExpectationAttribute
 aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.ExpectationText.get -> string?
 aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.GenerateCollectionExpectationAttribute(string! name, string! expectationText, string! pluralExpectationText) -> void
@@ -47,3 +47,9 @@ override aweXpect.Core.Extending.GeneratedAsyncCollectionConstraint<TItem>.Appen
 override aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
 override aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 override aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+aweXpect.Core.Extending.PredicateResult
+aweXpect.Core.Extending.PredicateResult.PredicateResult() -> void
+aweXpect.Core.Extending.PredicateResult.Outcome.get -> aweXpect.Core.Constraints.Outcome
+aweXpect.Core.Extending.PredicateResult.Reason.get -> string?
+static aweXpect.Core.Extending.PredicateResult.FailureBothWays(string! reason) -> aweXpect.Core.Extending.PredicateResult
+static aweXpect.Core.Extending.PredicateResult.implicit operator aweXpect.Core.Extending.PredicateResult(bool isMet) -> aweXpect.Core.Extending.PredicateResult

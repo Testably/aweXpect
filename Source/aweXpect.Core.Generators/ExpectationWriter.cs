@@ -17,6 +17,7 @@ internal static class ExpectationWriter
 	internal const string Grammars = "global::aweXpect.Core.ExpectationGrammars";
 	internal const string GrammarsExtensions = "global::aweXpect.Core.ExpectationGrammarsExtensions";
 	private const string Outcome = "global::aweXpect.Core.Constraints.Outcome";
+	internal const string PredicateResult = "global::aweXpect.Core.Extending.PredicateResult";
 	internal const string StringBuilder = "global::System.Text.StringBuilder";
 	internal const string ValueFormatters = "global::aweXpect.Formatting.ValueFormatters";
 	internal const string ValueTask = "global::System.Threading.Tasks.ValueTask";
@@ -194,7 +195,12 @@ internal static class ExpectationWriter
 				.AppendLine(";");
 		}
 
-		if (model.Parameters.Count > 0)
+		if (model.ReturnsPredicateResult)
+		{
+			sb.AppendLine("\t\tprivate string? _reason;");
+		}
+
+		if (model.Parameters.Count > 0 || model.ReturnsPredicateResult)
 		{
 			sb.AppendLine();
 		}
@@ -247,11 +253,38 @@ internal static class ExpectationWriter
 
 		sb.AppendLine("\t\t{");
 		sb.AppendLine("\t\t\tActual = actual;");
-		sb.Append("\t\t\tOutcome = ").Append(overload.FailsOnNull ? "!(actual is null) && " : "").Append(call)
-			.Append(" ? ").Append(Outcome).Append(".Success : ").Append(Outcome).AppendLine(".Failure;");
+		if (model.ReturnsPredicateResult)
+		{
+			AppendPredicateResult(sb, overload, call, returnValue);
+		}
+		else
+		{
+			sb.Append("\t\t\tOutcome = ").Append(overload.FailsOnNull ? "!(actual is null) && " : "").Append(call)
+				.Append(" ? ").Append(Outcome).Append(".Success : ").Append(Outcome).AppendLine(".Failure;");
+		}
+
 		sb.Append("\t\t\treturn ").Append(returnValue).AppendLine(";");
 		sb.AppendLine("\t\t}");
 		sb.AppendLine();
+	}
+
+	private static void AppendPredicateResult(StringBuilder sb, OverloadModel overload, string call,
+		string returnValue)
+	{
+		sb.AppendLine("\t\t\t_reason = null;");
+		if (overload.FailsOnNull)
+		{
+			sb.AppendLine("\t\t\tif (actual is null)");
+			sb.AppendLine("\t\t\t{");
+			sb.Append("\t\t\t\tOutcome = ").Append(Outcome).AppendLine(".Failure;");
+			sb.Append("\t\t\t\treturn ").Append(returnValue).AppendLine(";");
+			sb.AppendLine("\t\t\t}");
+			sb.AppendLine();
+		}
+
+		sb.Append("\t\t\t").Append(PredicateResult).Append(" result = ").Append(call).AppendLine(";");
+		sb.AppendLine("\t\t\t_reason = result.Reason;");
+		sb.AppendLine("\t\t\tOutcome = result.Outcome;");
 	}
 
 	private static void AppendResultMethods(StringBuilder sb, ExpectationModel model, OverloadModel overload,
@@ -260,6 +293,16 @@ internal static class ExpectationWriter
 		sb.Append("\t\tprotected override void AppendNormalResult(").Append(StringBuilder)
 			.AppendLine(" stringBuilder, string? indentation = null)");
 		sb.AppendLine("\t\t{");
+		if (model.ReturnsPredicateResult)
+		{
+			sb.AppendLine("\t\t\tif (!(_reason is null))");
+			sb.AppendLine("\t\t\t{");
+			sb.AppendLine("\t\t\t\tstringBuilder.Append(It).Append(' ').Append(_reason);");
+			sb.AppendLine("\t\t\t\treturn;");
+			sb.AppendLine("\t\t\t}");
+			sb.AppendLine();
+		}
+
 		if (model.Result is not { } result)
 		{
 			sb.Append("\t\t\tstringBuilder.Append(It).Append(").Append(GrammarsExtensions)
