@@ -80,3 +80,14 @@ static aweXpect.StringEqualityOptionsExtensions.NormalizingWhiteSpace<TResult>(t
 aweXpect.Core.Extending.ClosestMatch
 static aweXpect.Core.Extending.ClosestMatch.AppendHint(System.Text.StringBuilder! stringBuilder, string! value, System.Collections.Generic.IEnumerable<string!>! candidates) -> void
 static aweXpect.Core.Extending.ClosestMatch.Find(string! value, System.Collections.Generic.IEnumerable<string!>! candidates) -> string?
+aweXpect.Delegates.ThatDelegate.WithoutValue.Allocates() -> aweXpect.Results.AllocatesResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue!>!>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.Allocates() -> aweXpect.Results.AllocatesResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>!>!>!
+aweXpect.Results.AllocatesResult<TResult>
+aweXpect.Results.AllocatesResult<TResult>.AfterWarmUp() -> aweXpect.Results.AllocatesResult<TResult>!
+aweXpect.Results.AllocatesResult<TResult>.AllowingExceptions(bool allowExceptions = true) -> aweXpect.Results.AllocatesResult<TResult>!
+aweXpect.Results.AllocatesResult<TResult>.AtLeast(long minimum) -> TResult
+aweXpect.Results.AllocatesResult<TResult>.AtMost(long maximum) -> TResult
+aweXpect.Results.AllocatesResult<TResult>.Between(long minimum) -> aweXpect.Results.AllocatesResult<TResult>.BetweenResult!
+aweXpect.Results.AllocatesResult<TResult>.BetweenResult
+aweXpect.Results.AllocatesResult<TResult>.BetweenResult.And(long maximum) -> TResult
+aweXpect.Results.AllocatesResult<TResult>.Nothing() -> TResult

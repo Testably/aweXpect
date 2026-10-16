@@ -14,14 +14,15 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 {
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
-	internal static string FormatForMessage(Exception? exception, string? indentation, string relation = "")
+	internal static string FormatForMessage(Exception? exception, string? indentation, string relation = "",
+		string suffix = "")
 	{
 		if (exception is null)
 		{
 			return "<null>";
 		}
 
-		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn();
+		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn() + suffix;
 		string exceptionMessage = ValueFormatters.GetMessage(exception);
 		if (!string.IsNullOrEmpty(exceptionMessage))
 		{

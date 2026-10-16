@@ -8,6 +8,7 @@ Describes the possible expectations for delegates and the exceptions they throw.
 | [`Throws<T>`](#specific-exception)     | `DoesNotThrow<T>`        | throws a `T` or a derived exception                      |
 | [`ThrowsExactly<T>`](#exact-exception) | `DoesNotThrowExactly<T>` | throws exactly a `T`                                     |
 | [`ExecutesIn`](#execution-time)        |                          | completes within the expected time                       |
+| [`Allocates`](#allocations)            |                          | allocates the expected number of bytes                   |
 | [`Eventually`](#eventually)            |                          | re-evaluates the delegate until the expectations are met |
 
 A delegate can be any of the following. Each of them can also take a `CancellationToken` parameter (e.g.
@@ -352,6 +353,94 @@ specified.
 With `AtMost(…)`, a delegate that throws immediately also passes. If the delegate is expected to throw, use
 `Throws<TException>().Within(…)` instead.
 :::
+
+## Allocations
+
+You can verify how many bytes a synchronous delegate allocates:
+
+```csharp
+string[] playlist = ["Yesterday", "Let It Be", "Help!"];
+
+int CountLongTitles()
+{
+  int count = 0;
+  foreach (string title in playlist)
+  {
+    if (title.Length > 5)
+    {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+string JoinTitles() => string.Join(", ", playlist);
+
+await Expect.That(CountLongTitles).Allocates().Nothing()
+  .Because("counting the titles must not allocate");
+await Expect.That(JoinTitles).Allocates().AtMost(1024)
+  .Because("joining the titles should only allocate the joined string");
+await Expect.That(JoinTitles).Allocates().AtLeast(16);
+await Expect.That(JoinTitles).Allocates().Between(16).And(1024);
+```
+
+`Nothing()` is the shorthand for `AtMost(0)`. There is no expectation on an exact number of bytes, because the size of
+an object changes between runtime versions and platforms, so prefer bounds with some margin.
+
+The bytes are read with `GC.GetAllocatedBytesForCurrentThread()` directly before and after a single invocation of the
+delegate, so the expectation only counts what the delegate allocates on the current thread. Allocations on other
+threads, e.g. of a started task, are not included.
+
+:::warning[.NET 8 or later, synchronous delegates only]
+`Allocates()` is only available on .NET 8 or later. It supports `Action`, `Func<T>` and their variants with a
+`CancellationToken`. An asynchronous delegate can continue on another thread after an `await`, whose allocations would
+be missed, so `Allocates()` throws a `NotSupportedException` for an asynchronous delegate or a task.
+:::
+
+Like for the [execution time](#execution-time), a delegate that throws an exception fails the expectation, unless
+`AllowingExceptions()` is specified. The measured bytes then include the exception and the stack trace the runtime
+captured for it:
+
+```csharp
+void Reject() => throw new ArgumentException("The track is unknown.");
+
+await Expect.That(Reject).Allocates().AllowingExceptions().AtMost(10_000)
+  .Because("rejecting a track should not allocate more than the exception");
+```
+
+The delegate is invoked once for all expectations on it, so it can be combined with other delegate expectations, e.g.
+`Expect.That(JoinTitles).Allocates().AtMost(1024).And.ExecutesIn().AtMost(…)`. `Allocates()` can only be specified
+once per expectation.
+
+### Warm-up
+
+The first invocation of a delegate can include one-time allocations, e.g. of static constructors, lazy caches or
+pools. `AfterWarmUp()` invokes the delegate once before the measured invocation, so that they are not counted:
+
+```csharp
+Dictionary<int, string> titles = new();
+
+string GetTitle(int track)
+{
+  if (!titles.TryGetValue(track, out string? title))
+  {
+    title = $"Track {track}";
+    titles[track] = title;
+  }
+
+  return title;
+}
+
+await Expect.That(() => GetTitle(7)).Allocates().AfterWarmUp().Nothing()
+  .Because("the title is cached after the first call");
+```
+
+The delegate then runs twice, and the other expectations on it, e.g. on the execution time, see the measured second
+invocation. Without `AfterWarmUp()`, the delegate runs exactly once.
+
+An exception in the warm-up fails the expectation like one in the measured invocation, which is then skipped. With
+`AllowingExceptions()`, it is ignored and the second invocation is measured.
 
 ## Eventually
 

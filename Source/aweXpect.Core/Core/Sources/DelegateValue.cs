@@ -125,6 +125,19 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	/// </remarks>
 	internal DelegateValue? LateResult { get; init; }
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     The bytes the delegate allocated on its thread, which are only measured for an allocation expectation.
+	/// </summary>
+	internal long AllocatedBytes { get; init; }
+
+	/// <summary>
+	///     Flag, indicating if the <see cref="Exception" /> was thrown in the warm-up before the allocations were
+	///     measured.
+	/// </summary>
+	internal bool IsWarmUpException { get; init; }
+#endif
+
 	internal virtual DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception, bool hasReturned)
 		=> new(exception, Duration)
 		{
