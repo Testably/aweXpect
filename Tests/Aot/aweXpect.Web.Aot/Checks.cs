@@ -104,6 +104,11 @@ internal static class Checks
 			() => ShouldFail(async () => await That(new Uri("https://awexpect.com/tracks?page=2"))
 					.HasQueryParameter("page").WithValue("3"),
 				"has a query parameter \"page\" whose value is equal to \"3\"", "but it had query parameter value \"2\"")),
+		new("an IPv4 loopback address passes",
+			() => ShouldPass(async () => await That(IPAddress.Loopback).IsIPv4().And.IsLoopback())),
+		new("an IPv4-mapped address fails as IPv4",
+			() => ShouldFail(async () => await That(IPAddress.Parse("::ffff:10.0.0.1")).IsIPv4(),
+				"is an IPv4 address", "but it was ::ffff:10.0.0.1")),
 	];
 
 	private static HttpResponseMessage Response(HttpStatusCode statusCode, string? json = null, string? header = null)

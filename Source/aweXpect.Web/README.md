@@ -6,7 +6,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Web&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_aweXpect.Web)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect.Web%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect.Web/main)
 
-Expectations for `HttpRequestMessage`, `HttpResponseMessage` and `Uri` for
+Expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress` for
 [aweXpect](https://github.com/Testably/aweXpect).
 
 ## Overview
@@ -47,6 +47,14 @@ Expectations for [`Uri`](#uri):
 | [`HasFragment`](#fragment)               | negated comparison          | has the expected fragment                      |
 | [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
 | [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
+
+Expectations for [`IPAddress`](#ipaddress):
+
+| Expectation                   | Negated         | Summary            |
+|-------------------------------|-----------------|--------------------|
+| [`IsIPv4`](#address-kind)     | `IsNotIPv4`     | an IPv4 address    |
+| [`IsIPv6`](#address-kind)     | `IsNotIPv6`     | an IPv6 address    |
+| [`IsLoopback`](#address-kind) | `IsNotLoopback` | a loopback address |
 
 When an expectation on a request or response fails, the failure message includes the formatted HTTP request and
 response.
@@ -476,6 +484,34 @@ Uri uri = new("https://music.example.com/tracks?tag=live&tag=remastered");
 await Expect.That(uri).HasQueryParameter("tag").WithValues("live", "remastered");
 await Expect.That(uri).HasQueryParameter("tag")
     .WhoseValues(values => values.Contains("live"));
+```
+
+## `IPAddress`
+
+### Address kind
+
+You can verify what kind of address the `IPAddress` is, or that it is not:
+
+```csharp
+IPAddress address = IPAddress.Parse("10.0.0.1");
+
+await Expect.That(address).IsIPv4();
+await Expect.That(address).IsNotIPv6();
+await Expect.That(address).IsNotLoopback();
+```
+
+The address family decides between IPv4 and IPv6, so an IPv4-mapped address like `::ffff:10.0.0.1` is an IPv6 address:
+
+```csharp
+IPAddress address = IPAddress.Parse("::ffff:10.0.0.1");
+
+await Expect.That(address).IsIPv4();
+```
+
+```text title="Failure message"
+Expected that address
+is an IPv4 address,
+but it was ::ffff:10.0.0.1
 ```
 
 ## Customization

@@ -39,6 +39,21 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
     }
+    public static class ThatIPAddress
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+    }
     public static class ThatUri
     {
         [aweXpect.Core.GuaranteesNotNull]
