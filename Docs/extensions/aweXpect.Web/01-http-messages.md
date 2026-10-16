@@ -1,5 +1,27 @@
 # HTTP requests and responses
 
+Describes the possible expectations for `HttpRequestMessage` and `HttpResponseMessage`.
+
+Expectations for [`HttpRequestMessage`](#httprequestmessage):
+
+| Expectation                      | Negated             | Summary                               |
+|----------------------------------|---------------------|---------------------------------------|
+| [`HasMethod`](#method)           |                     | has the expected HTTP method          |
+| [`HasRequestUri`](#request-uri)  |                     | has the expected request URI          |
+| [`HasHeader`](#request-headers)  | `DoesNotHaveHeader` | has a header, optionally with a value |
+| [`HasContent`](#request-content) |                     | has the expected string content       |
+
+Expectations for [`HttpResponseMessage`](#httpresponsemessage):
+
+| Expectation                                    | Negated                       | Summary                                         |
+|------------------------------------------------|-------------------------------|-------------------------------------------------|
+| [`HasStatusCode`](#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
+| [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
+| [`HasContentType`](#content-type)              |                               | has the expected media type                     |
+| [`HasContent`](#response-content)              |                               | has the expected string content                 |
+| [`HasProblemDetailsContent`](#problem-details) |                               | has a `ProblemDetails` content                  |
+| [`HasRequestMessage`](#request-message)        |                               | the request message meets nested expectations   |
+
 ## `HttpRequestMessage`
 
 ### Method
@@ -206,11 +228,15 @@ await Expect.That(response).HasContentType("application/json");
 await Expect.That(response).HasContentType("application/*").AsWildcard();
 ```
 
+For example, expecting plain text from an endpoint that returns JSON
+
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
 
 await Expect.That(response).HasContentType("text/plain");
 ```
+
+fails with the difference, the request and the response:
 
 ```text title="Failure message"
 Expected that response

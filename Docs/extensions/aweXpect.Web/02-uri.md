@@ -1,5 +1,22 @@
 # URIs
 
+Describes the possible expectations for `Uri`.
+
+| Expectation                              | Negated                     | Summary                                        |
+|------------------------------------------|-----------------------------|------------------------------------------------|
+| [`IsAbsolute`](#kind)                    | `IsNotAbsolute`             | an absolute URI                                |
+| [`IsFile`](#kind)                        | `IsNotFile`                 | a file URI                                     |
+| [`IsLoopback`](#kind)                    | `IsNotLoopback`             | references the local host                      |
+| [`IsUnc`](#kind)                         | `IsNotUnc`                  | a UNC path                                     |
+| [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
+| [`HasPort`](#port)                       | negated comparison          | has the expected port                          |
+| [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
+| [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
+| [`HasPath`](#path)                       | negated comparison          | has the expected path                          |
+| [`HasFragment`](#fragment)               | negated comparison          | has the expected fragment                      |
+| [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
+| [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
+
 ## Kind
 
 You can verify what kind of URI the `Uri` is, or that it is not:
@@ -13,11 +30,15 @@ await Expect.That(uri).IsNotLoopback();
 await Expect.That(uri).IsNotUnc();
 ```
 
+For example, a relative URI is not absolute, so
+
 ```csharp
 Uri uri = new("/tracks/1", UriKind.Relative);
 
 await Expect.That(uri).IsAbsolute();
 ```
+
+fails with:
 
 ```text title="Failure message"
 Expected that uri
@@ -102,8 +123,10 @@ await Expect.That(uri).IsBaseOf("https://music.example.com/api/tracks/1");
 await Expect.That(uri).IsNotBaseOf(new Uri("https://other.example.com/api/tracks/1"));
 ```
 
+:::note
 Like `Uri.IsBaseOf`, only the part of the `Uri` up to its last `/` is considered, so `https://music.example.com/api`
 is also a base URI of `https://music.example.com/tracks/1`.
+:::
 
 ## Query parameters
 
