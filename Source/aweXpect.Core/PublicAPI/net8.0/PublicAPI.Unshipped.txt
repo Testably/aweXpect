@@ -97,4 +97,5 @@ static aweXpect.Formatting.FormattingOptions.Complete.get -> aweXpect.Formatting
 aweXpect.Equivalency.EquivalencyTypeOptionsExtensions
 static aweXpect.Equivalency.EquivalencyTypeOptionsExtensions.Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyOptions! options, System.Func<TActual, TExpected, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Equivalency.EquivalencyOptions!
 static aweXpect.Equivalency.EquivalencyTypeOptionsExtensions.Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyTypeOptions! options, System.Func<TActual, TExpected, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Equivalency.EquivalencyTypeOptions!
-aweXpect.Delegates.ThatDelegate.WithValue<T>.IsCollectedAfter(System.Action<T>! cleanup, string! doNotPopulateThisValue = "") -> aweXpect.Results.ExpectationResult!
+aweXpect.ThatDelegateExtensions
+static aweXpect.ThatDelegateExtensions.IsCollectedAfter<T>(this aweXpect.Delegates.ThatDelegate.WithValue<T!>! source, System.Action<T!>! cleanup, string! doNotPopulateThisValue = "") -> aweXpect.Results.ExpectationResult!

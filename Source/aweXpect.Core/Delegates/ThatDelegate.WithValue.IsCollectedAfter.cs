@@ -16,30 +16,18 @@ public abstract partial class ThatDelegate
 {
 	public sealed partial class WithValue<T>
 	{
-		/// <summary>
-		///     Verifies that the object returned by the delegate is garbage collected after the <paramref name="cleanup" />
-		///     ran on it.
-		/// </summary>
 		/// <remarks>
-		///     The delegate and the <paramref name="cleanup" /> run in a separate method that keeps only a weak reference to
-		///     the object, before full blocking garbage collections are forced. The expectation fails when anything else
-		///     still references the object afterward, e.g. an event handler or a static collection that the
-		///     <paramref name="cleanup" /> did not remove.
-		///     <para />
-		///     An exception thrown by the delegate or by the <paramref name="cleanup" /> fails the expectation, as does a
-		///     delegate that returns <see langword="null" />.
+		///     Only offered through <see cref="ThatDelegateExtensions.IsCollectedAfter{T}" />, which restricts the
+		///     returned object to a reference type, as a boxed value is always collectable.
 		/// </remarks>
-		/// <exception cref="ArgumentNullException">The <paramref name="cleanup" /> is <see langword="null" />.</exception>
-		[GuaranteesNotNull]
-		public ExpectationResult IsCollectedAfter(Action<T> cleanup,
-			[CallerArgumentExpression("cleanup")] string doNotPopulateThisValue = "")
+		internal ExpectationResult IsCollectedAfterCore(Action<T> cleanup, string cleanupExpression)
 		{
 			cleanup.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = new ExpectationBuilder<DelegateValue<CleanedUpObject>>(
 				CreateCleanedUpObjectSource(cleanup), _expectationBuilder.Subject);
-			return new ExpectationResult(expectationBuilder.AddConstraint(doNotPopulateThisValue.TrimCommonWhiteSpace(),
-				static (cleanupExpression, it, grammars)
-					=> new IsCollectedAfterConstraint(it, grammars, cleanupExpression)));
+			return new ExpectationResult(expectationBuilder.AddConstraint(cleanupExpression.TrimCommonWhiteSpace(),
+				static (expression, it, grammars)
+					=> new IsCollectedAfterConstraint(it, grammars, expression)));
 		}
 
 		/// <remarks>
@@ -206,6 +194,6 @@ public abstract partial class ThatDelegate
 
 		public override ConstraintResult Negate()
 			=> throw Tracing.WriteException(
-				new NotSupportedException($"Negation of {nameof(ThatDelegate.WithValue<object>.IsCollectedAfter)} is not supported."));
+				new NotSupportedException($"Negation of {nameof(ThatDelegateExtensions.IsCollectedAfter)} is not supported."));
 	}
 }

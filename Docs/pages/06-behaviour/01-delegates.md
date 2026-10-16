@@ -476,7 +476,8 @@ references the object, e.g. an event handler or a static collection that the cle
 is needed, use `IsCollectedAfter(_ => { })`.
 
 An exception thrown by the delegate or by the cleanup fails the expectation, as does a delegate that returns `null`.
-An asynchronous delegate is awaited before the cleanup runs.
+An asynchronous delegate is awaited before the cleanup runs. The delegate must return a reference type, as a boxed
+value is always collectable.
 
 :::note[Create the object inside the delegate]
 The delegate must create the object: when it returns an instance that the test also holds, e.g. in a local variable,
