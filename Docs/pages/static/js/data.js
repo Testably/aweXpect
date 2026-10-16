@@ -180,6 +180,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -212,7 +218,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -248,7 +255,8 @@ window.BENCHMARK_DATA = {
           12888.811553955078,
           12298.845332554409,
           12321.403668917143,
-          12739.56372833252
+          12739.56372833252,
+          12853.199774605888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -267,6 +275,7 @@ window.BENCHMARK_DATA = {
           4032,
           4032,
           4032,
+          3040,
           3040,
           3040,
           3040,
@@ -333,7 +342,8 @@ window.BENCHMARK_DATA = {
           368110.163671875,
           384012.82955729164,
           397864.484375,
-          382770.1940104167
+          382770.1940104167,
+          380122.59348958335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -371,6 +381,7 @@ window.BENCHMARK_DATA = {
           590287,
           590289,
           590288,
+          590292,
           590292,
           590292,
           590292,
@@ -418,7 +429,8 @@ window.BENCHMARK_DATA = {
           18980.742385864258,
           19042.237154447117,
           21116.43603046124,
-          20521.68983561198
+          20521.68983561198,
+          21344.667835780554
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -430,6 +442,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -611,6 +624,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -636,7 +655,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -665,7 +685,8 @@ window.BENCHMARK_DATA = {
           296.1229983965556,
           307.3377506392343,
           278.596475537618,
-          284.4276827744075
+          284.4276827744075,
+          291.3135716756185
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -677,6 +698,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -736,7 +758,8 @@ window.BENCHMARK_DATA = {
           498.25999177296956,
           539.5091660181681,
           553.0743922551472,
-          541.3028927485149
+          541.3028927485149,
+          531.4082317352295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -748,6 +771,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -807,7 +831,8 @@ window.BENCHMARK_DATA = {
           378.3369662920634,
           415.2095700105031,
           391.79725319544474,
-          415.39587087631224
+          415.39587087631224,
+          411.7721193313599
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -819,6 +844,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5613,6 +5639,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -6408,7 +6440,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -7207,7 +7240,8 @@ window.BENCHMARK_DATA = {
           143.69368515695845,
           152.9959575812022,
           147.40461310318537,
-          160.0939512570699
+          160.0939512570699,
+          156.080428870519
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7989,6 +8023,7 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
+          512,
           512,
           512,
           512,
@@ -8818,7 +8853,8 @@ window.BENCHMARK_DATA = {
           248.05553178787233,
           276.9993709564209,
           251.96443843841553,
-          278.02962319056195
+          278.02962319056195,
+          283.6781652768453
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9011,6 +9047,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9710,7 +9747,8 @@ window.BENCHMARK_DATA = {
           247.78010574976602,
           257.40030486243114,
           241.21855918566385,
-          259.3221680323283
+          259.3221680323283,
+          270.17961083139693
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9722,6 +9760,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -9989,6 +10028,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -10021,7 +10066,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -10057,7 +10103,8 @@ window.BENCHMARK_DATA = {
           274.62947171529134,
           279.72386166254677,
           290.6118100484212,
-          293.5418609210423
+          293.5418609210423,
+          292.64228715896604
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10076,6 +10123,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10142,7 +10190,8 @@ window.BENCHMARK_DATA = {
           536.8742120606559,
           575.2759710039411,
           518.5619918187459,
-          563.3769656499227
+          563.3769656499227,
+          562.4461669286092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10154,6 +10203,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -10227,7 +10277,8 @@ window.BENCHMARK_DATA = {
           338.96226790746056,
           354.99506858189903,
           343.27590212455164,
-          358.03668546676636
+          358.03668546676636,
+          357.91160236994426
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10239,6 +10290,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15040,6 +15092,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -15835,7 +15893,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -16634,7 +16693,8 @@ window.BENCHMARK_DATA = {
           626.8355126063029,
           666.8801638921102,
           649.6730191367013,
-          670.9337451934814
+          670.9337451934814,
+          672.2860979715983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17416,6 +17476,7 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
+          864,
           864,
           864,
           864,
@@ -18245,7 +18306,8 @@ window.BENCHMARK_DATA = {
           1360.0895173390707,
           1374.4317024230957,
           1414.0487094606672,
-          1454.4240715026856
+          1454.4240715026856,
+          1477.770088068644
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19049,6 +19111,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -19137,7 +19200,8 @@ window.BENCHMARK_DATA = {
           656.6519642557416,
           666.5475086847941,
           661.9145623524984,
-          646.9271059036255
+          646.9271059036255,
+          662.902811731611
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19149,6 +19213,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -23994,6 +24059,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -24789,7 +24860,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -25588,7 +25660,8 @@ window.BENCHMARK_DATA = {
           631.3592039516994,
           663.199578221639,
           640.5259014129639,
-          714.2741416931152
+          714.2741416931152,
+          655.9798580169678
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26370,6 +26443,7 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
+          912,
           912,
           912,
           912,
@@ -27199,7 +27273,8 @@ window.BENCHMARK_DATA = {
           27649.508286539713,
           28897.209222412108,
           28236.97192600795,
-          27657.670508248466
+          27657.670508248466,
+          28537.617584228516
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28003,6 +28078,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -28091,7 +28167,8 @@ window.BENCHMARK_DATA = {
           784.232246907552,
           828.8100996751052,
           804.0940962571365,
-          799.3831445058187
+          799.3831445058187,
+          809.9863120487759
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28103,6 +28180,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -28718,6 +28796,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -28808,7 +28892,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -28902,7 +28987,8 @@ window.BENCHMARK_DATA = {
           707.1341960906982,
           745.0663728078206,
           781.1513720239911,
-          745.8418299811227
+          745.8418299811227,
+          754.9811982374924
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28979,6 +29065,7 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
+          1848,
           1848,
           1848,
           1848,
@@ -29103,7 +29190,8 @@ window.BENCHMARK_DATA = {
           84553.65392252603,
           85794.5387398856,
           84552.96104213169,
-          87061.8974609375
+          87061.8974609375,
+          86238.60089518229
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29199,6 +29287,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -29744,6 +29833,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -29834,7 +29929,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -29928,7 +30024,8 @@ window.BENCHMARK_DATA = {
           173.08167171478271,
           193.6358285744985,
           200.20565163294475,
-          190.91739013989766
+          190.91739013989766,
+          182.13516891797383
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30005,6 +30102,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -30129,7 +30227,8 @@ window.BENCHMARK_DATA = {
           31431.654361979166,
           33584.32906901042,
           33548.90968976702,
-          32461.7604288737
+          32461.7604288737,
+          32547.027975899833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30228,6 +30327,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -30316,7 +30416,8 @@ window.BENCHMARK_DATA = {
           245.16647965113322,
           262.4702179590861,
           247.07562477248055,
-          257.5553312301636
+          257.5553312301636,
+          267.13129625320437
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30328,6 +30429,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -30595,6 +30697,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -30627,7 +30735,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -30663,7 +30772,8 @@ window.BENCHMARK_DATA = {
           389.16418634142195,
           401.5640390396118,
           380.63341496785483,
-          388.97821811040245
+          388.97821811040245,
+          382.7760449409485
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30684,6 +30794,7 @@ window.BENCHMARK_DATA = {
           728,
           696,
           696,
+          720,
           720,
           720,
           720,
@@ -30748,7 +30859,8 @@ window.BENCHMARK_DATA = {
           381.97519693374636,
           421.9058585166931,
           414.02937542597454,
-          418.7032110850016
+          418.7032110850016,
+          425.70691884358723
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30760,6 +30872,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -30833,7 +30946,8 @@ window.BENCHMARK_DATA = {
           412.471773815155,
           419.8807009379069,
           441.2362779935201,
-          438.0070176124573
+          438.0070176124573,
+          428.5001742839813
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30845,6 +30959,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -31068,6 +31183,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -31100,7 +31221,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -31136,7 +31258,8 @@ window.BENCHMARK_DATA = {
           783.7776091257731,
           862.7501062665667,
           813.3822163899739,
-          876.307579421997
+          876.307579421997,
+          828.1030775070191
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31163,6 +31286,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -31221,7 +31345,8 @@ window.BENCHMARK_DATA = {
           1908.4825230916342,
           2066.58136338454,
           1979.2623573303222,
-          2064.3567354838056
+          2064.3567354838056,
+          2060.7341435750327
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31233,6 +31358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -31306,7 +31432,8 @@ window.BENCHMARK_DATA = {
           920.7938888549804,
           996.7056336036095,
           925.832104410444,
-          986.6771430969238
+          986.6771430969238,
+          946.9142698287964
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31318,6 +31445,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -31541,6 +31669,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -31573,7 +31707,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -31609,7 +31744,8 @@ window.BENCHMARK_DATA = {
           12454.92098083496,
           12259.216873168945,
           12044.424795968192,
-          12439.407955714634
+          12439.407955714634,
+          12288.829588826497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31628,6 +31764,7 @@ window.BENCHMARK_DATA = {
           2360,
           2360,
           2360,
+          1720,
           1720,
           1720,
           1720,
@@ -31694,7 +31831,8 @@ window.BENCHMARK_DATA = {
           41100.62408883231,
           41018.69631253756,
           43037.572583879744,
-          41321.58065359933
+          41321.58065359933,
+          41558.22735159738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31714,6 +31852,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -31779,7 +31918,8 @@ window.BENCHMARK_DATA = {
           11491.616203894982,
           11411.021330515543,
           11300.364144461495,
-          11381.800954965445
+          11381.800954965445,
+          11434.021187918526
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31791,6 +31931,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -32014,6 +32155,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 15 20:40:47 2026 \u002B0200",
         "message": "refactor: generate the built-in predicate expectations with \u0060[GenerateExpectation]\u0060 (#1831)"
+      },
+      {
+        "sha": "a0e3c315498c4007a0e7a246be656a9b143293aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 16 10:44:43 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.3.0 (#1838)"
       }
     ],
     "labels": [
@@ -32046,7 +32193,8 @@ window.BENCHMARK_DATA = {
       "8dd735ea",
       "126a8c85",
       "a2240239",
-      "2bdfbc60"
+      "2bdfbc60",
+      "a0e3c315"
     ],
     "datasets": [
       {
@@ -32082,7 +32230,8 @@ window.BENCHMARK_DATA = {
           11715.781770978656,
           11705.306462214543,
           11582.001593017578,
-          11676.643701171875
+          11676.643701171875,
+          11816.207595825195
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32109,6 +32258,7 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
+          2208,
           2208,
           2208,
           2208,
@@ -32167,7 +32317,8 @@ window.BENCHMARK_DATA = {
           59375.304225376676,
           60010.577915736605,
           60387.97832312951,
-          59378.345275878906
+          59378.345275878906,
+          60696.61522498498
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32208,7 +32359,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32252,7 +32404,8 @@ window.BENCHMARK_DATA = {
           22430.044335501534,
           22432.42227390834,
           22265.200840876652,
-          22236.573251577523
+          22236.573251577523,
+          22709.777536245492
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32264,6 +32417,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
