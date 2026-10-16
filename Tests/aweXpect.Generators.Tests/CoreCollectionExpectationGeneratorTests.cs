@@ -46,7 +46,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		GeneratorRunner.GeneratorResult result = RunOn(
 			"""
 			[GenerateCollectionExpectation("AreZero", "is zero", "are zero", NullableOverload = false)]
-			private static bool IsZero(int value, CancellationToken cancellationToken) => value == 0;
+			private static bool IsZero(int value, [EvaluationCancellationToken] CancellationToken cancellationToken) => value == 0;
 			""");
 
 		await ThatCompiles(result);
@@ -73,6 +73,22 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatReports(result,
 			"aweXpect4001: 'Lib.ThatSample' cannot hold the generated expectation, because extension methods need a top-level, non-generic, static partial class that is not file-local");
+	}
+
+	[Test]
+	public async Task EvaluationCancellationToken_BeforeAParamsParameter_ShouldBePassedAtItsPosition()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreAnyOf", "is any of {values}", "are any of {values}", NullableOverload = false)]
+			private static bool IsAnyOf(int value, [EvaluationCancellationToken] CancellationToken cancellationToken,
+				params int[] values) => Array.IndexOf(values, value) >= 0;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains(" AreAnyOf(this global::aweXpect.IEnumerableElements<int> elements, params int[] values)");
+		await That(result.Generated).Contains("global::Lib.ThatSample.IsAnyOf(item, cancellationToken, _p0)").Exactly(2);
 	}
 
 	[Test]
@@ -125,7 +141,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 					private static bool IsEmpty(string? value) => value == "";
 
 					[GenerateCollectionExpectation("AreReady", "is ready", "are ready")]
-					private static Task<bool> IsReady(string value, CancellationToken cancellationToken) => Task.FromResult(true);
+					private static Task<bool> IsReady(string value, [EvaluationCancellationToken] CancellationToken cancellationToken) => Task.FromResult(true);
 
 					[GenerateCollectionExpectation("AreOdd", "is odd", "are odd")]
 					private static ValueTask<bool> IsOdd([DisallowNull] int? value) => new ValueTask<bool>(value % 2 == 1);

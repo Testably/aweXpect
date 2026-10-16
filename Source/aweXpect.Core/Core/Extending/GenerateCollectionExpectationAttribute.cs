@@ -10,8 +10,9 @@ namespace aweXpect.Core.Extending;
 ///     The method follows the rules of <see cref="GenerateExpectationAttribute" />: it returns
 ///     <see langword="bool" /> or a <see cref="PredicateResult" />, directly or as the result of a
 ///     <see cref="System.Threading.Tasks.Task{TResult}" /> or <see cref="System.Threading.Tasks.ValueTask{TResult}" />,
-///     its first parameter is the item, the other parameters become the parameters of the expectation, and it may end
-///     with a <see cref="System.Threading.CancellationToken" />. Both attributes can mark the same method.
+///     its first parameter is the item, and the other parameters become the parameters of the expectation, except for
+///     a <see cref="System.Threading.CancellationToken" /> marked with
+///     <see cref="EvaluationCancellationTokenAttribute" />. Both attributes can mark the same method.
 ///     <para />
 ///     An item that the method cannot answer fails the expectation and its negation with the reason of the
 ///     <see cref="PredicateResult" />, unless the items before already determine the outcome.

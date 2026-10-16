@@ -170,7 +170,7 @@ internal static class ExpectationWriter
 		string fields = string.Concat(Enumerable.Range(0, model.Parameters.Count).Select(i => $", _p{i}"));
 
 		AppendConstraintDeclaration(sb, model, overload);
-		AppendIsMetBy(sb, model, overload, owner, fields);
+		AppendIsMetBy(sb, model, overload, owner);
 		AppendTextMethod(sb, "AppendNormalExpectation", model.PositiveText);
 		AppendTextMethod(sb, "AppendNegatedExpectation", model.NegatedText);
 		AppendResultMethods(sb, model, overload, owner, fields);
@@ -224,11 +224,10 @@ internal static class ExpectationWriter
 		sb.AppendLine();
 	}
 
-	private static void AppendIsMetBy(StringBuilder sb, ExpectationModel model, OverloadModel overload, string owner,
-		string fields)
+	private static void AppendIsMetBy(StringBuilder sb, ExpectationModel model, OverloadModel overload, string owner)
 	{
-		string token = model.PassesCancellationToken ? ", cancellationToken" : "";
-		string call = $"{owner}.{model.PredicateName}({overload.SubjectArgument}{fields}{token})";
+		string call = $"{owner}.{model.PredicateName}({overload.SubjectArgument}"
+		              + $"{GetArguments(model.Parameters.Count, model.CancellationTokenIndex)})";
 		string returnValue = "this";
 		if (model.IsAsync)
 		{
@@ -389,6 +388,21 @@ internal static class ExpectationWriter
 		{
 			sb.Append("\t///     ").AppendLine(line.Trim());
 		}
+	}
+
+	/// <summary>
+	///     The arguments of the predicate after the subject: the fields of the parameters, with the cancellation token of
+	///     the evaluation at its position.
+	/// </summary>
+	internal static string GetArguments(int parameterCount, int cancellationTokenIndex)
+	{
+		List<string> arguments = Enumerable.Range(0, parameterCount).Select(i => $"_p{i}").ToList();
+		if (cancellationTokenIndex >= 0)
+		{
+			arguments.Insert(cancellationTokenIndex, "cancellationToken");
+		}
+
+		return string.Concat(arguments.Select(argument => ", " + argument));
 	}
 
 	internal static string EscapeXml(string text)

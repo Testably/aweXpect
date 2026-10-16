@@ -16,6 +16,8 @@ public class ExpectationGenerator : IIncrementalGenerator
 {
 	private const string Attribute = "aweXpect.Core.Extending.GenerateExpectationAttribute";
 	private const string CollectionAttribute = "aweXpect.Core.Extending.GenerateCollectionExpectationAttribute";
+	private const string TokenAttribute = "aweXpect.Core.Extending.EvaluationCancellationTokenAttribute";
+	private const string TokenAttributeName = "EvaluationCancellationToken";
 	private const string HelpLink = "https://docs.testably.org/aweXpect/analyzers#expectation-generator";
 
 	private static readonly DiagnosticDescriptor InvalidClass = new(
@@ -158,7 +160,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			GetNamedArgument<string>(attribute, "Remarks"),
 			GetNamedArgument<string>(attribute, "NegatedRemarks"),
 			signature.IsAsync,
-			signature.PassesCancellationToken,
+			signature.CancellationTokenIndex,
 			signature.ReturnsPredicateResult,
 			classModel.Parameters,
 			result,
@@ -218,7 +220,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			GetNamedArgument<string>(attribute, "Summary"),
 			GetNamedArgument<string>(attribute, "Remarks"),
 			GetPredicateKind(signature.Method.ReturnType),
-			signature.PassesCancellationToken,
+			signature.CancellationTokenIndex,
 			signature.ReturnsPredicateResult,
 			GetItems(signature.Subject, signature.ConstraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
@@ -235,6 +237,32 @@ public class ExpectationGenerator : IIncrementalGenerator
 				.ConstructorArguments.ElementAtOrDefault(1).Value is string text
 			? text.Replace("{not}", "").Replace("  ", " ").Trim()
 			: null;
+
+	private static bool IsCancellationToken(ITypeSymbol type)
+		=> type is { Name: "CancellationToken", ContainingNamespace: var ns, } &&
+		   ns.ToDisplayString() == "System.Threading";
+
+	private static string? GetTokenProblem(List<IParameterSymbol> markedTokens)
+	{
+		if (markedTokens.Count > 1)
+		{
+			return $"more than one parameter is marked with [{TokenAttributeName}]";
+		}
+
+		if (markedTokens.FirstOrDefault() is not { } token)
+		{
+			return null;
+		}
+
+		if (token.Ordinal == 0)
+		{
+			return $"the subject cannot be marked with [{TokenAttributeName}]";
+		}
+
+		return IsCancellationToken(token.Type)
+			? null
+			: $"the parameter '{token.Name}' is marked with [{TokenAttributeName}], but is no CancellationToken";
+	}
 
 	/// <summary>
 	///     Checks the class, the method and its parameters, which both attributes require alike.
@@ -254,6 +282,11 @@ public class ExpectationGenerator : IIncrementalGenerator
 		if (GetMethodProblem(method) is { } methodProblem)
 		{
 			return new Problem(InvalidMethod, location, methodName, methodProblem);
+		}
+
+		if (GetTokenProblem(signature.MarkedTokens) is { } tokenProblem)
+		{
+			return new Problem(InvalidMethod, location, methodName, tokenProblem);
 		}
 
 		if (signature.ExpectationParameters.FirstOrDefault(p => p.Name == "subject") is { } clash)
@@ -643,13 +676,16 @@ public class ExpectationGenerator : IIncrementalGenerator
 			Class = classSymbol;
 			MethodName = methodName;
 			ImmutableArray<IParameterSymbol> parameters = method.Parameters;
-			PassesCancellationToken = parameters.Length > 1 &&
-			                          IsCancellationToken(parameters[parameters.Length - 1].Type);
+			MarkedTokens = parameters
+				.Where(p => p.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == TokenAttribute))
+				.ToList();
+			IParameterSymbol? token = MarkedTokens.Count == 1 && MarkedTokens[0].Ordinal > 0 ? MarkedTokens[0] : null;
+			CancellationTokenIndex = token is null ? -1 : token.Ordinal - 1;
 			ExpectationParameters = parameters
 				.Skip(1)
-				.Take(parameters.Length - (PassesCancellationToken ? 2 : 1))
+				.Where(p => !SymbolEqualityComparer.Default.Equals(p, token))
 				.ToList();
-			SignatureParameters = parameters.Take(ExpectationParameters.Count + 1).ToList();
+			SignatureParameters = parameters.Take(1).Concat(ExpectationParameters).ToList();
 			int overloadIndex = classSymbol.GetMembers(method.Name).OfType<IMethodSymbol>().ToList()
 				.FindIndex(m => SymbolEqualityComparer.Default.Equals(m, method));
 			ConstraintPrefix = overloadIndex > 0 ? $"{method.Name}_{overloadIndex}" : method.Name;
@@ -659,7 +695,17 @@ public class ExpectationGenerator : IIncrementalGenerator
 		public Location Location { get; }
 		public INamedTypeSymbol Class { get; }
 		public string MethodName { get; }
-		public bool PassesCancellationToken { get; }
+		/// <summary>
+		///     The parameters marked with the <c>EvaluationCancellationTokenAttribute</c>.
+		/// </summary>
+		public List<IParameterSymbol> MarkedTokens { get; }
+
+		/// <summary>
+		///     The position of the evaluation cancellation token among the arguments after the subject, or <c>-1</c>
+		///     without one.
+		/// </summary>
+		public int CancellationTokenIndex { get; }
+
 		public bool IsAsync => IsTask(Method.ReturnType);
 		public bool ReturnsPredicateResult => IsPredicateResult(GetResultType(Method.ReturnType));
 		public IParameterSymbol Subject => Method.Parameters[0];
@@ -721,9 +767,5 @@ public class ExpectationGenerator : IIncrementalGenerator
 			   parameters.All(p => GetAccessibility(p.Type) == Accessibility.Public)
 				? "public"
 				: "internal";
-
-		private static bool IsCancellationToken(ITypeSymbol type)
-			=> type is { Name: "CancellationToken", ContainingNamespace: var ns, } &&
-			   ns.ToDisplayString() == "System.Threading";
 	}
 }

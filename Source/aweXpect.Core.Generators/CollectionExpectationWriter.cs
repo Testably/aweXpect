@@ -230,9 +230,8 @@ internal static class CollectionExpectationWriter
 		string owner = classModel.Namespace is null
 			? $"global::{classModel.ClassName}"
 			: $"global::{classModel.Namespace}.{classModel.ClassName}";
-		string fields = string.Concat(Enumerable.Range(0, classModel.Parameters.Count).Select(i => $", _p{i}"));
-		string token = model.PassesCancellationToken ? ", cancellationToken" : "";
-		string call = $"{owner}.{classModel.PredicateName}({item.ItemArgument}{fields}{token})";
+		string call = $"{owner}.{classModel.PredicateName}({item.ItemArgument}"
+		              + $"{GetArguments(classModel.Parameters.Count, model.CancellationTokenIndex)})";
 		string result = $"{ExpectationWriter.ValueTask}<{PredicateResult}>";
 		// An asynchronous bool is awaited, as only the result itself converts to a PredicateResult.
 		bool awaitsBool = model.PredicateKind != PredicateKind.Synchronous && !model.ReturnsPredicateResult;

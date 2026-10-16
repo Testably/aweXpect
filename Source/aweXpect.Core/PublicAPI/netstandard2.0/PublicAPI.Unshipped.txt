@@ -48,3 +48,5 @@ aweXpect.Core.Extending.PredicateResult.Outcome.get -> aweXpect.Core.Constraints
 aweXpect.Core.Extending.PredicateResult.Reason.get -> string?
 static aweXpect.Core.Extending.PredicateResult.FailureBothWays(string! reason) -> aweXpect.Core.Extending.PredicateResult
 static aweXpect.Core.Extending.PredicateResult.implicit operator aweXpect.Core.Extending.PredicateResult(bool isMet) -> aweXpect.Core.Extending.PredicateResult
+aweXpect.Core.Extending.EvaluationCancellationTokenAttribute
+aweXpect.Core.Extending.EvaluationCancellationTokenAttribute.EvaluationCancellationTokenAttribute() -> void

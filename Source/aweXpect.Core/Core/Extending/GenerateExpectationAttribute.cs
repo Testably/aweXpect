@@ -10,8 +10,9 @@ namespace aweXpect.Core.Extending;
 ///     The method returns <see langword="bool" /> or a <see cref="PredicateResult" />, which can also tell that the
 ///     question cannot be answered, directly or as the result of a <see cref="System.Threading.Tasks.Task{TResult}" />
 ///     or <see cref="System.Threading.Tasks.ValueTask{TResult}" />. Its first parameter is the subject, the other
-///     parameters become the parameters of the expectation. The method may end with a
-///     <see cref="System.Threading.CancellationToken" />, which receives the token of the evaluation.
+///     parameters become the parameters of the expectation, except for a
+///     <see cref="System.Threading.CancellationToken" /> marked with <see cref="EvaluationCancellationTokenAttribute" />,
+///     which receives the token of the evaluation.
 ///     <para />
 ///     A <see langword="null" /> subject fails the expectation and its negation, unless the subject parameter is
 ///     nullable: then the method decides, and <c>[NotNullWhen]</c> on the parameter tells which of the expectations

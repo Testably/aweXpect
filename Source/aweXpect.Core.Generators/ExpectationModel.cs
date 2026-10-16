@@ -28,11 +28,14 @@ internal sealed record ExpectationModel(
 	string? Remarks,
 	string? NegatedRemarks,
 	bool IsAsync,
-	bool PassesCancellationToken,
+	int CancellationTokenIndex,
 	bool ReturnsPredicateResult,
 	EquatableArray<ParameterModel> Parameters,
 	ResultModel? Result,
-	EquatableArray<OverloadModel> Overloads);
+	EquatableArray<OverloadModel> Overloads)
+{
+	public bool PassesCancellationToken => CancellationTokenIndex >= 0;
+}
 
 /// <summary>
 ///     The collection expectation that a method marked with <c>GenerateCollectionExpectationAttribute</c> yields.
@@ -45,7 +48,7 @@ internal sealed record ExpectationModel(
 /// <param name="Summary">The XML documentation of the summary, if given.</param>
 /// <param name="Remarks">The XML documentation of the remarks, if given.</param>
 /// <param name="PredicateKind">How the predicate returns its result.</param>
-/// <param name="PassesCancellationToken">Whether the predicate ends with a cancellation token.</param>
+/// <param name="CancellationTokenIndex">The position of the evaluation cancellation token among the arguments after the item, or <c>-1</c> without one.</param>
 /// <param name="ReturnsPredicateResult">Whether the predicate returns a <c>PredicateResult</c> instead of a <see langword="bool" />.</param>
 /// <param name="Items">The item types whose collections are extended.</param>
 /// <param name="SupportsAsyncEnumerables">Whether the referenced aweXpect.Core supports <c>IAsyncEnumerable</c>.</param>
@@ -58,10 +61,13 @@ internal sealed record CollectionExpectationModel(
 	string? Summary,
 	string? Remarks,
 	PredicateKind PredicateKind,
-	bool PassesCancellationToken,
+	int CancellationTokenIndex,
 	bool ReturnsPredicateResult,
 	EquatableArray<ItemModel> Items,
-	bool SupportsAsyncEnumerables);
+	bool SupportsAsyncEnumerables)
+{
+	public bool PassesCancellationToken => CancellationTokenIndex >= 0;
+}
 
 /// <summary>
 ///     The parts of a generated file that only depend on the class and the signature of the marked method.
