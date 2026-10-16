@@ -111,6 +111,9 @@ public sealed partial class ThatNullableJsonElement
 					               2,
 					               3
 					             ]
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -176,6 +179,9 @@ public sealed partial class ThatNullableJsonElement
 					             is an array,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -212,6 +218,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              is an object and $.foo is an array and $.foo[0] matches null,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -231,6 +240,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              is an object and $.foo is an array with 0 elements,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -250,6 +262,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              is an object and $.foo is an array,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -298,6 +313,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              is an array and $[0] matches true,
 					              but it was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -314,6 +332,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an array and $[0] matches true,
 					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}
@@ -335,6 +356,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo is an array with 1 element,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -352,6 +376,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an array with 3 elements,
 					             but it differed as $ had 2 elements
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -388,6 +415,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo is an array and $.foo[0] is an array with 0 elements,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -405,6 +435,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an array and $[0] is an array and $[0][0] matches 1 and $[2] is an array and $[2][0] matches 2,
 					             but it differed as $[2][0] was 3 instead of 2
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -434,6 +467,9 @@ public sealed partial class ThatNullableJsonElement
 					             but it differed as
 					               $[1][0] was 3 instead of 2 and
 					               $[2][0] was 2 instead of 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -477,6 +513,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo is an array and $.foo[0] matches 2 and $.foo[1] matches 3,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -500,6 +539,9 @@ public sealed partial class ThatNullableJsonElement
 					             but it differed as
 					               $[1] was <null> instead of True and
 					               $[2] was boolean True instead of <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -537,6 +579,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo is an array and $.foo[0] is an object with 0 properties,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -554,6 +599,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an array and $[0] is an object with 0 properties and $[2] is an object with 0 properties,
 					             but it differed as $[2] had 1 property
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -583,6 +631,9 @@ public sealed partial class ThatNullableJsonElement
 					             but it differed as
 					               property $[1].bar did not exist and
 					               property $[2].foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 

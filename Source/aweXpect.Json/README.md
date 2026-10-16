@@ -125,6 +125,9 @@ await Expect.That(track).IsValidJsonMatchingExactly(new { title = "Let It Be", a
 Expected that track
 is valid JSON which matches new { title = "Yesterday" },
 but it differed as $.title was "Let It Be" instead of "Yesterday"
+
+JSON options:
+ - ignore additional properties
 ```
 
 ## `JsonElement`
@@ -189,6 +192,9 @@ Unlike additional properties, additional array elements are not ignored by `Matc
 Expected that titles
 matches ["Let It Be", "Yesterday"],
 but it differed as $[2] had unexpected "Hey Jude"
+
+JSON options:
+ - ignore additional properties
 ```
 
 With `IgnoringAdditionalArrayElements()`, the additional elements of all compared arrays, also nested ones, are
@@ -226,6 +232,9 @@ but it differed as
   $ had missing "Help!" and
   $[0] had unexpected "Let It Be" and
   $[1] had unexpected "Yesterday"
+
+JSON options:
+ - ignore array order
 ```
 
 When exactly one element remains unpaired on each side, they are compared with each other instead, e.g.
@@ -233,6 +242,10 @@ When exactly one element remains unpaired on each side, they are compared with e
 elements only have to be contained in the subject in any order. The pairing is greedy, so overlapping `It.Is…`
 expectations can fail, although another pairing would succeed. The positional members of [`IsArray`](#isarray) (`At`,
 `WithElements`, `WithArrays` and `WithObjects`) still verify the element at each index.
+
+The failure message lists the active options in a "JSON options" context, like in the example above, and omits it when
+no option is active. As `Matches`, `IsValidJsonMatching`, [`IsObject`](#isobject) and [`IsArray`](#isarray) ignore
+additional properties by default, their failures list `ignore additional properties`.
 
 You can also verify that a `JsonElement` matches a primitive value:
 
@@ -261,6 +274,9 @@ With `.With("artist").Matching("The Rolling Stones")` instead, the expectation w
 Expected that track
 is an object and $.title matches "Let It Be" and $.artist matches "The Rolling Stones",
 but it differed as $.artist was "The Beatles" instead of "The Rolling Stones"
+
+JSON options:
+ - ignore additional properties
 ```
 
 You can verify that a property is another object, recursively:
@@ -304,6 +320,9 @@ If the duration was the string `"243"` instead, the expectation would fail with:
 Expected that track
 is an object and $.title is a string and $.durationSeconds is a number and $.explicit is a boolean and $.label is null,
 but it differed as $.durationSeconds was a string
+
+JSON options:
+ - ignore additional properties
 ```
 
 You can verify the number of properties in a JSON object:
@@ -331,6 +350,9 @@ With `.Without("artist")` instead, the expectation would fail with:
 Expected that track
 is an object and $.title matches "Let It Be" and $.artist does not exist,
 but it differed as $.artist was "The Beatles"
+
+JSON options:
+ - ignore additional properties
 ```
 
 With `TreatingNullAsAbsent()`, a property with the value `null` counts as absent for the whole expectation:
@@ -353,6 +375,10 @@ with:
 Expected that user
 is an object and $.name matches "John" and $.passwordHash matches "8f14e4",
 but it differed as property $.passwordHash did not exist
+
+JSON options:
+ - ignore additional properties
+ - treat null as absent
 ```
 
 ### IsArray
@@ -389,6 +415,9 @@ With `WithElements("Let It Be", "Hey Jude")` instead, the expectation would fail
 Expected that titles
 is an array and $[0] matches "Let It Be" and $[1] matches "Hey Jude",
 but it differed as $[1] was "Yesterday" instead of "Hey Jude"
+
+JSON options:
+ - ignore additional properties
 ```
 
 You can match nested arrays recursively (use `null` to skip an element):

@@ -36,6 +36,9 @@ public sealed partial class ThatNullableJsonElement
 					             is an object,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -89,6 +92,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              is an object and $.foo matches true,
 					              but it was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -121,6 +127,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo matches true,
 					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}
@@ -155,6 +164,9 @@ public sealed partial class ThatNullableJsonElement
 					               "foo": 21,
 					               "bar": []
 					             }
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -206,6 +218,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo matches 2,
 					             but it differed as $.foo was 1 instead of 2
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -253,6 +268,9 @@ public sealed partial class ThatNullableJsonElement
 					             but it differed as
 					               $.foo was 1 instead of 2 and
 					               $.bar was 2 instead of 1
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -276,6 +294,9 @@ public sealed partial class ThatNullableJsonElement
 					               $.foo was 1 instead of 2 and
 					               $.bar.baz was 1 instead of 3 and
 					               $.bar.bat was 2 instead of 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -292,6 +313,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.bar matches true,
 					             but it differed as property $.bar did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -319,6 +343,10 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.bar matches true,
 					             but it differed as property $.bar did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 		}
@@ -361,6 +389,9 @@ public sealed partial class ThatNullableJsonElement
 					               $.name was null and
 					               $.active was a number and
 					               $.deletedAt was an object
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -377,6 +408,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo is a string,
 					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}
@@ -398,6 +432,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object with 1 property,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -415,6 +452,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object with 3 properties,
 					             but it differed as $ had 2 properties
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -460,6 +500,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo matches 1 and $.bar does not exist,
 					             but it differed as $.bar was "baz"
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -476,6 +519,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo does not exist,
 					             but it differed as $.foo was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("a property with a null value exists");
 			}
@@ -504,6 +550,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             is an object and $.foo does not exist,
 					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}

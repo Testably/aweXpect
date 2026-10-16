@@ -66,6 +66,9 @@ public class JsonFormattingTests
 				             {
 				               "foo": 1
 				             }
+
+				             JSON options:
+				              - ignore additional properties
 				             """);
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -77,6 +80,9 @@ public class JsonFormattingTests
 				             {
 				               "foo": 1
 				             }
+
+				             JSON options:
+				              - ignore additional properties
 				             """)
 				.Because("options that were already used for serialization are read-only and must still format");
 		}

@@ -348,6 +348,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches [1, 2,],
 					             but it differed as $[2] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("ignoring additional properties does not affect the elements of arrays");
 			}
@@ -380,6 +383,9 @@ public sealed partial class ThatNullableJsonElement
 					               $ had missing 5 and
 					               $[1] had unexpected 2 and
 					               $[2] had unexpected 3
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 

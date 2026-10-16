@@ -144,6 +144,9 @@ public sealed partial class ThatJsonString
 					             Expected that subject
 					             is valid JSON which matches [1, 3,],
 					             but it differed as $[1] was 2 instead of 3
+
+					             JSON options (it):
+					              - ignore additional properties
 					             """);
 			}
 

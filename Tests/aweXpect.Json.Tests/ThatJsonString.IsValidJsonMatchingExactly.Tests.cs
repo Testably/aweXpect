@@ -236,6 +236,9 @@ public sealed partial class ThatJsonString
 					             Expected that subject
 					             is valid JSON which matches [1, 2,],
 					             but it differed as $[2] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("ignoring additional properties does not affect the elements of arrays");
 			}
@@ -264,6 +267,9 @@ public sealed partial class ThatJsonString
 					             Expected that subject
 					             is valid JSON which matches [1, 2,] exactly,
 					             but it differed as $[0] had unexpected 3
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 

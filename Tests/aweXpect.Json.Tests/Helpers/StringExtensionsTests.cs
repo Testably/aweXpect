@@ -22,6 +22,9 @@ public class StringExtensionsTests
 				               Expected that "1"
 				               is valid JSON which matches {{input}},
 				               but it differed as $ was 1 instead of 2
+
+				               JSON options:
+				                - ignore additional properties
 				               """);
 		}
 
@@ -46,6 +49,9 @@ public class StringExtensionsTests
 
 				             baz,
 				             but it differed as $ was 1 instead of 2
+
+				             JSON options:
+				              - ignore additional properties
 				             """);
 		}
 
@@ -62,6 +68,9 @@ public class StringExtensionsTests
 				             Expected that "1"
 				             is valid JSON which matches ,
 				             but it differed as $ was 1 instead of 2
+
+				             JSON options:
+				              - ignore additional properties
 				             """);
 		}
 
@@ -84,6 +93,9 @@ public class StringExtensionsTests
 				                 bar
 				             	baz,
 				             but it differed as $ was 1 instead of 2
+
+				             JSON options:
+				              - ignore additional properties
 				             """);
 		}
 
@@ -108,6 +120,9 @@ public class StringExtensionsTests
 				             baz
 				              bay,
 				             but it differed as $ was 1 instead of 2
+
+				             JSON options:
+				              - ignore additional properties
 				             """);
 		}
 
@@ -124,6 +139,9 @@ public class StringExtensionsTests
 				               Expected that "1"
 				               is valid JSON which matches {{input}},
 				               but it differed as $ was 1 instead of 2
+
+				               JSON options:
+				                - ignore additional properties
 				               """);
 		}
 
@@ -144,6 +162,9 @@ public class StringExtensionsTests
 				             is valid JSON which matches foo
 				             bar,
 				             but it differed as $ was 1 instead of 2
+
+				             JSON options:
+				              - ignore additional properties
 				             """);
 		}
 	}

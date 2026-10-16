@@ -14,6 +14,10 @@ public static class JsonExtensions
 	/// <summary>
 	///     Interpret the <see cref="string" /> as JSON.
 	/// </summary>
+	/// <remarks>
+	///     The active <paramref name="options" /> are listed in the "JSON options" context of every failure on the
+	///     subject, as the string comparison offers no way to add a context only to its own failure.
+	/// </remarks>
 	public static TResult AsJson<TResult>(
 		this TResult result,
 		Func<JsonOptions, JsonOptions>? options = null)
@@ -21,6 +25,11 @@ public static class JsonExtensions
 	{
 		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
 		result.Options.SetMatchType(new JsonMatchType(jsonOptions), nameof(AsJson));
+		if (result is IOptionsProvider<ExpectationBuilder> expectationBuilder)
+		{
+			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => jsonOptions.AddContext(contexts));
+		}
+
 		return result;
 	}
 }

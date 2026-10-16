@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 namespace aweXpect.Json;
@@ -38,4 +40,44 @@ public record JsonOptions
 	///     Flag indicating, if a property with the value <see langword="null" /> should be treated as if it was absent.
 	/// </summary>
 	public bool TreatNullAsAbsent { get; init; }
+
+	/// <summary>
+	///     Adds the "JSON options" context, which lists the active options, to the <paramref name="contexts" /> of a
+	///     failed comparison, unless no option is active.
+	/// </summary>
+	/// <remarks>
+	///     The context comes last, like the "Equivalency options" of aweXpect.
+	/// </remarks>
+	internal void AddContext(ResultContextCollector contexts)
+	{
+		StringBuilder sb = new();
+		AppendOptions(sb);
+		if (sb.Length > 0)
+		{
+			contexts.Add(new ResultContext.Fixed("JSON options", sb.ToString().TrimEnd(), int.MinValue));
+		}
+	}
+
+	private void AppendOptions(StringBuilder sb)
+	{
+		if (IgnoreAdditionalProperties)
+		{
+			sb.AppendLine(" - ignore additional properties");
+		}
+
+		if (IgnoreAdditionalArrayElements)
+		{
+			sb.AppendLine(" - ignore additional array elements");
+		}
+
+		if (IgnoreArrayOrder)
+		{
+			sb.AppendLine(" - ignore array order");
+		}
+
+		if (TreatNullAsAbsent)
+		{
+			sb.AppendLine(" - treat null as absent");
+		}
+	}
 }

@@ -657,6 +657,9 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             {"foo": [1]}
+
+						             JSON options:
+						              - treat null as absent
 						             """)
 						.Because("null elements of an array are not affected by the option");
 				}
@@ -722,6 +725,9 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             ["jazz", "rock", "pop", "soul"]
+
+						             JSON options:
+						              - ignore array order
 						             """);
 				}
 
@@ -767,6 +773,9 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             [1,2,3,4]
+
+						             JSON options:
+						              - ignore additional properties
 						             """);
 				}
 
@@ -858,6 +867,9 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             {"foo": [1, 2]}
+
+						             JSON options:
+						              - ignore additional properties
 						             """)
 						.Because("ignoring additional properties does not affect the elements of arrays");
 				}
@@ -904,6 +916,9 @@ public sealed partial class ThatJsonString
 
 						               Expected:
 						               {}
+
+						               JSON options:
+						                - ignore additional properties
 						               """);
 				}
 
@@ -1072,6 +1087,9 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             {}
+
+						             JSON options:
+						              - treat null as absent
 						             """);
 				}
 
@@ -1091,6 +1109,9 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             [2,1]
+
+						             JSON options:
+						              - ignore array order
 						             """);
 				}
 

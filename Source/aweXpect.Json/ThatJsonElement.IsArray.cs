@@ -78,6 +78,8 @@ public static partial class ThatJsonElement
 				contexts.Add(new ResultContext.SyncCallback("Actual",
 					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
 			}
+
+			options.AddContext(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

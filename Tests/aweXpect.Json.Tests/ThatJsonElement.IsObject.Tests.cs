@@ -36,6 +36,9 @@ public sealed partial class ThatJsonElement
 					             is an object,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -54,6 +57,9 @@ public sealed partial class ThatJsonElement
 					             is an object and $.foo is an object,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -105,6 +111,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo matches true,
 					              but it was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -121,6 +130,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             whose Items are objects and $.foo matches 1,
 					             but Items were an array
+
+					             JSON options (Items):
+					              - ignore additional properties
 					             """)
 					.Because("the plural member is the subject of the result");
 			}
@@ -146,6 +158,9 @@ public sealed partial class ThatJsonElement
 					             {
 					               "bar": []
 					             }
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -177,6 +192,9 @@ public sealed partial class ThatJsonElement
 					               "foo": 21,
 					               "bar": []
 					             }
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -213,6 +231,9 @@ public sealed partial class ThatJsonElement
 					             is not an object,
 					             but the expectation did throw an InvalidOperationException:
 					               Yesterday
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("an expectation that throws answered nothing, so its negation must not be met either");
 			}
@@ -256,6 +277,9 @@ public sealed partial class ThatJsonElement
 					               "active": false,
 					               "deletedAt": null
 					             }
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -290,6 +314,9 @@ public sealed partial class ThatJsonElement
 					             {
 					               "foo": 1
 					             }
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -323,6 +350,10 @@ public sealed partial class ThatJsonElement
 					             {
 					               "foo": null
 					             }
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -343,6 +374,10 @@ public sealed partial class ThatJsonElement
 
 					             Actual:
 					             {}
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 		}
@@ -365,6 +400,9 @@ public sealed partial class ThatJsonElement
 					              [01] it differed as
 					                     $.foo was 1 instead of 2 and
 					                     $.bar was 2 instead of 1
+
+					             [01] JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("every line of the failures belongs to the nested result");
 			}
@@ -398,6 +436,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches 2,
 					             but it differed as $.foo was 1 instead of 2
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -420,6 +461,9 @@ public sealed partial class ThatJsonElement
 					             but it differed as
 					               $.foo[0] was 1 instead of 2 and
 					               $.foo[1] was 2 instead of 1
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -441,6 +485,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches new[] { 1, 2, },
 					             but it differed as $.foo[2] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -457,6 +504,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches new[] { new { bar = 1, }, },
 					             but it differed as $.foo[1] had unexpected {"bar":2}
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("additional properties are ignored by default, but additional array elements are not");
 			}
@@ -474,6 +524,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches It.Is<string>().That.StartsWith("a"),
 					             but it differed as $.foo was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("a null value has no content that could start with the prefix");
 			}
@@ -489,7 +542,12 @@ public sealed partial class ThatJsonElement
 						.WithTimeout(TimeSpan.FromMilliseconds(100));
 
 				await That(Act).Throws<XunitException>().Within(TimeSpan.FromSeconds(10))
-					.WithMessage("*but it did not finish within 0:00.100").AsWildcard()
+					.WithMessage("""
+					             *but it did not finish within 0:00.100
+
+					             JSON options:
+					              - ignore additional properties
+					             """).AsWildcard()
 					.Because("the nested expectation must be canceled by the timeout of the evaluation");
 			}
 
@@ -537,6 +595,9 @@ public sealed partial class ThatJsonElement
 					             but it differed as
 					               $.foo was 1 instead of 2 and
 					               $.bar was 2 instead of 1
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -560,6 +621,9 @@ public sealed partial class ThatJsonElement
 					               $.foo was 1 instead of 2 and
 					               $.bar.baz was 1 instead of 3 and
 					               $.bar.bat was 2 instead of 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -576,6 +640,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.bar matches true,
 					             but it differed as property $.bar did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -592,6 +659,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches null,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("by default a missing property differs from a property with a null value");
 			}
@@ -623,6 +693,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches 1,
 					             but it differed as $.foo was <null> instead of 1
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -642,6 +715,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches 1,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """)
 					.Because("a property with a null value is treated as absent");
 			}
@@ -660,6 +737,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo matches It.Is<string?>().That.IsNull(),
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """)
 					.Because("only an expected null value accepts an absent property");
 			}
@@ -680,6 +761,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -696,6 +781,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object,
 					             but it differed as $.foo was null
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -715,6 +803,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object and $.foo.bar matches 1,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -734,6 +826,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an array with 0 elements,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -757,6 +853,10 @@ public sealed partial class ThatJsonElement
 					               $.foo was 1 instead of 2 and
 					               property $.bar did not exist and
 					               $.baz was 3 instead of 4
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -810,6 +910,9 @@ public sealed partial class ThatJsonElement
 					             	baz = (int?)null,
 					             },
 					             but it differed as $.foo.baz was missing
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}
@@ -856,6 +959,9 @@ public sealed partial class ThatJsonElement
 					               $.name was a number and
 					               $.active was a string and
 					               $.deletedAt was false
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -878,6 +984,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo is a string,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -900,6 +1009,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo is a number,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -921,6 +1033,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo is a boolean,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -943,6 +1058,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo is null,
 					              but it differed as $.foo was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -959,6 +1077,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.bar is null,
 					             but it differed as property $.bar did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("a missing property is not a property with a null value");
 			}
@@ -992,6 +1113,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is a string,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -1011,6 +1136,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object and $.foo.bar is an object and $.foo.bar.baz is a number,
 					             but it differed as $.foo.bar.baz was a string
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1029,6 +1157,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo is a string,
 					              but it was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 		}
@@ -1050,6 +1181,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object with 1 property,
 					             but it differed as property $.foo did not exist
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1067,6 +1201,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object with 3 properties,
 					             but it differed as $ had 2 properties
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1099,6 +1236,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object with 1 property,
 					             but it differed as $ had 2 properties
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1118,6 +1258,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object with 2 properties,
 					             but it differed as $ had 1 property
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 		}
@@ -1143,6 +1287,9 @@ public sealed partial class ThatJsonElement
 					               $.foo was 1 instead of 2 and
 					               $.bar was 2 and
 					               $.baz was 3 instead of 4
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1161,6 +1308,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo does not exist,
 					              but it was {kindString}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -1178,6 +1328,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.address is an object and $.address.internalId does not exist,
 					             but it differed as $.address.internalId was 42
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1208,6 +1361,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo is an object and $.foo.bar does not exist,
 					             but it differed as $.foo was a number
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1249,6 +1405,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.name matches "John" and $.passwordHash does not exist,
 					             but it differed as $.passwordHash was "8f14e4"
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1265,6 +1424,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo does not exist,
 					             but it differed as $.foo was 2
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1281,6 +1443,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo does not exist,
 					             but it differed as $.foo was {"bar":[1,2]}
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -1297,6 +1462,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo does not exist,
 					             but it differed as $.foo was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("a property with a null value exists");
 			}
@@ -1327,6 +1495,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo does not exist,
 					             but it differed as $.foo was 1
+
+					             JSON options:
+					              - ignore additional properties
+					              - treat null as absent
 					             """);
 			}
 
@@ -1356,6 +1528,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             is an object and $.foo.bar does not exist,
 					             but it differed as $.foo.bar was 1
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("the property name is no path");
 			}

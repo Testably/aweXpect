@@ -232,6 +232,9 @@ public sealed partial class ThatJsonElement
 					             {
 					               "foo": null
 					             }
+
+					             JSON options:
+					              - treat null as absent
 					             """);
 			}
 
@@ -257,6 +260,9 @@ public sealed partial class ThatJsonElement
 					               1,
 					               2
 					             ]
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 		}
@@ -366,6 +372,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1, 2,],
 					             but it differed as $[2] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("ignoring additional properties does not affect the elements of arrays");
 			}
@@ -389,6 +398,9 @@ public sealed partial class ThatJsonElement
 					             	items = new[] { "A", "B", },
 					             },
 					             but it differed as $.id had unexpected 1
+
+					             JSON options:
+					              - ignore additional array elements
 					             """)
 					.Because("ignoring additional array elements does not affect the properties of objects");
 			}
@@ -406,6 +418,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1,] exactly,
 					             but it differed as $[1] had unexpected <null>
+
+					             JSON options:
+					              - treat null as absent
 					             """)
 					.Because("null elements of an array are not affected by the option");
 			}
@@ -423,6 +438,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1, (int?)null,] exactly,
 					             but it differed as $[1] had missing <null>
+
+					             JSON options:
+					              - treat null as absent
 					             """)
 					.Because("null elements of an array are not affected by the option");
 			}
@@ -494,6 +512,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1, 1,] exactly,
 					             but it differed as $[1] was 2 instead of 1
+
+					             JSON options:
+					              - ignore array order
 					             """)
 					.Because("each element of the subject can only be paired with one expected element");
 			}
@@ -511,6 +532,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1, 2, 3,] exactly,
 					             but it differed as $[1] was 2 instead of 3
+
+					             JSON options:
+					              - ignore array order
 					             """)
 					.Because("the single unpaired elements are compared with each other");
 			}
@@ -533,6 +557,9 @@ public sealed partial class ThatJsonElement
 					               $ had missing "Help!" and
 					               $[0] had unexpected "Let It Be" and
 					               $[1] had unexpected "Yesterday"
+
+					             JSON options:
+					              - ignore array order
 					             """)
 					.Because("missing elements have no index in the subject, while unexpected elements keep theirs");
 			}
@@ -551,6 +578,9 @@ public sealed partial class ThatJsonElement
 					             Expected that titles
 					             matches ["Hey Jude", "Let It Be", "Something",] exactly,
 					             but it differed as $[1] was "Yesterday" instead of "Something"
+
+					             JSON options:
+					              - ignore array order
 					             """)
 					.Because("the only unpaired elements on both sides are compared with each other");
 			}
@@ -570,6 +600,9 @@ public sealed partial class ThatJsonElement
 					             but it differed as
 					               $ had missing 3 and
 					               $ had missing 4
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -586,6 +619,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1, 2,] exactly,
 					             but it differed as $[0] had unexpected 3
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -606,6 +642,9 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              matches [1,] exactly,
 					              but it differed as {errorMessage}
+
+					              JSON options:
+					               - ignore array order
 					              """);
 			}
 
@@ -622,6 +661,9 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches Array.Empty<int>() exactly,
 					             but it differed as $[0] had unexpected 1
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -654,6 +696,10 @@ public sealed partial class ThatJsonElement
 					             but it differed as
 					               $[0] had unexpected 4 and
 					               $[2] had unexpected 2
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore array order
 					             """)
 					.Because("ignoring additional properties does not affect the elements of arrays");
 			}
@@ -672,6 +718,10 @@ public sealed partial class ThatJsonElement
 					             Expected that subject
 					             matches [1, 5,],
 					             but it differed as $ had missing 5
+
+					             JSON options:
+					              - ignore additional array elements
+					              - ignore array order
 					             """);
 			}
 
@@ -711,6 +761,9 @@ public sealed partial class ThatJsonElement
 					             	new[] { 2, 5, },
 					             } exactly,
 					             but it differed as $[0][0] was 1 instead of 5
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -784,6 +837,9 @@ public sealed partial class ThatJsonElement
 					             	},
 					             } exactly,
 					             but it differed as $[0].name was "foo" instead of "baz"
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -838,6 +894,9 @@ public sealed partial class ThatJsonElement
 					               $ had missing {"id":5} and
 					               $[0] had unexpected {"id":1} and
 					               $[2] had unexpected {"id":3}
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -887,6 +946,9 @@ public sealed partial class ThatJsonElement
 					               $.foo.bar had missing 4 and
 					               $.foo.bar[0] had unexpected 1 and
 					               $.foo.bar[1] had unexpected 2
+
+					             JSON options:
+					              - ignore array order
 					             """);
 			}
 
@@ -940,6 +1002,9 @@ public sealed partial class ThatJsonElement
 					             	1,
 					             } exactly,
 					             but it differed as $[1] was 2 instead of 1
+
+					             JSON options:
+					              - ignore array order
 					             """)
 					.Because("the greedy pairing pairs the first element with the expectation, although only the other pairing succeeds");
 			}
@@ -969,6 +1034,9 @@ public sealed partial class ThatJsonElement
 					               "foo"
 					               "x"
 					                ↑ (expected prefix)
+
+					             JSON options:
+					              - ignore array order
 					             """)
 					.Because("the failures of the candidates that were not paired must not be reported");
 			}
@@ -1155,6 +1223,9 @@ public sealed partial class ThatJsonElement
 					             	bar = 2,
 					             } exactly,
 					             but it differed as $.foo had unexpected 1
+
+					             JSON options:
+					              - treat null as absent
 					             """);
 			}
 
@@ -1216,6 +1287,9 @@ public sealed partial class ThatJsonElement
 					             	foo = (int?)null,
 					             } exactly,
 					             but it differed as $.foo was number 1 instead of <null>
+
+					             JSON options:
+					              - treat null as absent
 					             """)
 					.Because("only a missing property is treated like a property with a null value");
 			}
@@ -1239,6 +1313,9 @@ public sealed partial class ThatJsonElement
 					             	foo = 2,
 					             } exactly,
 					             but it differed as $.foo was <null> instead of 2
+
+					             JSON options:
+					              - treat null as absent
 					             """);
 			}
 

@@ -77,6 +77,9 @@ public static partial class ThatJsonString
 			return true;
 		}
 
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AddContext(contexts);
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is valid JSON which matches ", "are valid JSON which matches "))

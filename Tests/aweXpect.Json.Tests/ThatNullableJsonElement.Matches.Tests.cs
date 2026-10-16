@@ -26,6 +26,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              matches expected,
 					              but it differed as $ was {subject} instead of {expected}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -62,6 +65,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              matches expected,
 					              but it differed as $ was {json} instead of {expected}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -80,6 +86,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              matches null,
 					              but it differed as $ was object {json} instead of <null>
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -98,6 +107,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              matches expected,
 					              but it differed as $ was {json} instead of "{expected}"
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -126,6 +138,9 @@ public sealed partial class ThatNullableJsonElement
 					               1,
 					               2
 					             ]
+
+					             JSON options (Items[1]):
+					              - ignore additional properties
 					             """)
 					.Because("the items are the plural subject of the expectation");
 			}
@@ -146,6 +161,9 @@ public sealed partial class ThatNullableJsonElement
 					              [01] it differed as
 					                     $[0] was 1 instead of 2 and
 					                     $[1] was 2 instead of 1
+
+					             [01] JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("every line of the differences belongs to the nested result");
 			}
@@ -163,6 +181,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches new object(),
 					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -179,6 +200,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches 1,
 					             but it was undefined
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}
@@ -213,6 +237,9 @@ public sealed partial class ThatNullableJsonElement
 
 					             Actual (Items[0]):
 					             1
+
+					             JSON options (Items[0]):
+					              - ignore additional properties
 					             """)
 					.Because("the items are the plural subject of the expectation");
 			}
@@ -230,6 +257,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             does not match 1,
 					             but it was undefined
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("an undefined element cannot be compared, so its negation must not be met either");
 			}
@@ -254,6 +284,9 @@ public sealed partial class ThatNullableJsonElement
 
 					              Actual:
 					              {json}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -275,6 +308,9 @@ public sealed partial class ThatNullableJsonElement
 
 					              Actual:
 					              {json}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -296,6 +332,9 @@ public sealed partial class ThatNullableJsonElement
 
 					              Actual:
 					              {json}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -317,6 +356,9 @@ public sealed partial class ThatNullableJsonElement
 
 					              Actual:
 					              {json}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -338,6 +380,9 @@ public sealed partial class ThatNullableJsonElement
 
 					              Actual:
 					              {json}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -355,6 +400,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             does not match new object(),
 					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 		}
@@ -387,6 +435,9 @@ public sealed partial class ThatNullableJsonElement
 					              Expected that subject
 					              matches expected,
 					              but it differed {errorMessage}
+
+					              JSON options:
+					               - ignore additional properties
 					              """);
 			}
 
@@ -405,6 +456,9 @@ public sealed partial class ThatNullableJsonElement
 					             but it differed as
 					               $[0] was 1 instead of 2 and
 					               $[1] was 2 instead of 1
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -421,6 +475,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches [1, 2, 3,],
 					             but it differed as $[2] had missing 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
@@ -437,6 +494,9 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches [1, 2,],
 					             but it differed as $[2] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("additional array elements are only ignored with IgnoringAdditionalArrayElements");
 			}
@@ -471,6 +531,9 @@ public sealed partial class ThatNullableJsonElement
 					             	items = new[] { "A", "B", },
 					             },
 					             but it differed as $.items[2] had unexpected "C"
+
+					             JSON options:
+					              - ignore additional properties
 					             """)
 					.Because("the additional property is ignored, but the additional array element is not");
 			}
@@ -504,6 +567,10 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches [1, 2,],
 					             but it differed as $[0] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore array order
 					             """)
 					.Because("the unpaired element is an additional array element, which is not ignored");
 			}
@@ -535,6 +602,11 @@ public sealed partial class ThatNullableJsonElement
 					             Expected that subject
 					             matches [1, 4,],
 					             but it differed as $ had missing 4
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore additional array elements
+					              - ignore array order
 					             """);
 			}
 
@@ -608,6 +680,9 @@ public sealed partial class ThatNullableJsonElement
 					               	foo = 2,
 					               },
 					               but it differed as {{errorMessage}}
+
+					               JSON options:
+					                - ignore additional properties
 					               """);
 			}
 
@@ -637,7 +712,12 @@ public sealed partial class ThatNullableJsonElement
 						.WithTimeout(TimeSpan.FromMilliseconds(100));
 
 				await That(Act).Throws<XunitException>().Within(TimeSpan.FromSeconds(10))
-					.WithMessage("*but it did not finish within 0:00.100").AsWildcard()
+					.WithMessage("""
+					             *but it did not finish within 0:00.100
+
+					             JSON options:
+					              - ignore additional properties
+					             """).AsWildcard()
 					.Because("the nested expectation must be canceled by the timeout of the evaluation");
 			}
 
@@ -653,7 +733,12 @@ public sealed partial class ThatNullableJsonElement
 					});
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*but it differed as $.foo was <null>").AsWildcard()
+					.WithMessage("""
+					             *but it differed as $.foo was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """).AsWildcard()
 					.Because("a null value has no content that could start with the prefix");
 			}
 
@@ -676,6 +761,9 @@ public sealed partial class ThatNullableJsonElement
 					             	bar = 3,
 					             },
 					             but it differed as $.bar was 2 instead of 3
+
+					             JSON options:
+					              - ignore additional properties
 					             """);
 			}
 
