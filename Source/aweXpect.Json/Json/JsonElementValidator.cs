@@ -240,7 +240,7 @@ internal static class JsonElementValidator
 		return result;
 	}
 
-	private static string Format(JsonElement jsonElement, bool includeType = false)
+	internal static string Format(JsonElement jsonElement, bool includeType = false)
 	{
 		string GetKindName(JsonValueKind kind)
 			=> kind switch

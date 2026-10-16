@@ -359,6 +359,27 @@ internal class JsonValidation : IJsonObjectResult,
 		return this;
 	}
 
+	IJsonObjectResult IJsonObjectResult.Without(string propertyName)
+	{
+		if (propertyName is null)
+		{
+			throw Own(Tracing.WriteException(
+				new ArgumentNullException(nameof(propertyName), "The 'propertyName' cannot be null.")));
+		}
+
+		string currentPath = $"{CurrentPath}.{propertyName}";
+		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
+			.Append(grammars.IsNegated() ? " exists" : " does not exist"));
+		JsonElement? currentElement = _currentElements.Peek();
+		if (currentElement is { ValueKind: JsonValueKind.Object, } &&
+		    currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue))
+		{
+			_failures.Add($" {currentPath} was {JsonElementValidator.Format(propertyValue)}");
+		}
+
+		return this;
+	}
+
 	IJsonObjectResult IJsonObjectResult.And => this;
 
 	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.Matching(object? expected, string doNotPopulateThisValue)

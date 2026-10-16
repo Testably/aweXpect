@@ -230,6 +230,38 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenPropertyIsExpectedNotToExistAndDoesNotExist_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.Without("bar")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object or $.bar exists,
+					             but it was
+
+					             Actual:
+					             {
+					               "foo": 1
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsExpectedNotToExistButExists_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.Without("foo")));
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class WithTests
@@ -455,6 +487,217 @@ public sealed partial class ThatJsonElement
 						.With(expected).Properties());
 
 				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class WithoutTests
+		{
+			[Fact]
+			public async Task WhenCombinedWithOtherExpectations_ShouldListAllFailuresInOrder()
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"bar\": 2, \"baz\": 3}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("foo").Matching(2).And
+						.Without("bar").And
+						.With("baz").Matching(4));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches 2 and $.bar does not exist and $.baz matches 4,
+					             but it differed as
+					               $.foo was 1 instead of 2 and
+					               $.bar was 2 and
+					               $.baz was 3 instead of 4
+					             """);
+			}
+
+			[Theory]
+			[InlineData("[]", "an array")]
+			[InlineData("2", "a number")]
+			public async Task WhenJsonIsNoObject_ShouldOnlyReportTheKind(string json, string kindString)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.foo does not exist,
+					              but it was {kindString}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenNestedObjectContainsProperty_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"address\": {\"street\": \"Main\", \"internalId\": 42}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("address").AnObject(a => a.Without("internalId")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.address is an object and $.address.internalId does not exist,
+					             but it differed as $.address.internalId was 42
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedObjectDoesNotContainProperty_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"address\": {\"street\": \"Main\"}, \"internalId\": 42}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("address").AnObject(a => a.Without("internalId")));
+
+				await That(Act).DoesNotThrow()
+					.Because("only the property of the nested object is considered");
+			}
+
+			[Fact]
+			public async Task WhenNestedPropertyIsNoObject_ShouldOnlyReportTheKind()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("foo").AnObject(a => a.Without("bar")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an object and $.foo.bar does not exist,
+					             but it differed as $.foo was a number
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyDiffersInCase_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"Foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).DoesNotThrow()
+					.Because("property names in JSON are case-sensitive");
+			}
+
+			[Fact]
+			public async Task WhenPropertyDoesNotExist_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("bar"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyExists_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"name\": \"John\", \"passwordHash\": \"8f14e4\"}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("name").Matching("John").And
+						.Without("passwordHash"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.name matches "John" and $.passwordHash does not exist,
+					             but it differed as $.passwordHash was "8f14e4"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyExistsMultipleTimes_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": 1, \"foo\": 2}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo does not exist,
+					             but it differed as $.foo was 2
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsAnObject_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": [1, 2]}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo does not exist,
+					             but it differed as $.foo was {"bar":[1,2]}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNull_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo does not exist,
+					             but it differed as $.foo was <null>
+					             """)
+					.Because("a property with a null value exists");
+			}
+
+			[Fact]
+			public async Task WhenPropertyNameContainsSpecialCharacters_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo.bar\": 1, \"foo\": {\"bar\": 2}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo.bar"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo.bar does not exist,
+					             but it differed as $.foo.bar was 1
+					             """)
+					.Because("the property name is no path");
+			}
+
+			[Fact]
+			public async Task WhenPropertyNameIsNull_ShouldThrowArgumentNullException()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without(null!));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("propertyName").And
+					.WithMessage("The 'propertyName' cannot be null.*").AsWildcard()
+					.Because("an invalid argument is thrown as it is instead of failing the expectation");
 			}
 		}
 	}

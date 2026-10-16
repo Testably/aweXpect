@@ -212,6 +212,25 @@ JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The 
 await Expect.That(track).IsObject(o => o.With(2).Properties());
 ```
 
+You can verify that a JSON object does not contain a property. A property with the value `null` exists and fails
+the expectation:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+
+await Expect.That(track).IsObject(o => o
+    .With("title").Matching("Let It Be").And
+    .Without("label"));
+```
+
+With `.Without("artist")` instead, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+is an object and $.title matches "Let It Be" and $.artist does not exist,
+but it differed as $.artist was "The Beatles"
+```
+
 ### IsArray
 
 You can verify that a `JsonElement` is a JSON array that satisfies some expectations:

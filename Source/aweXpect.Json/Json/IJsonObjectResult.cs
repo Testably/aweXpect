@@ -23,6 +23,15 @@ public interface IJsonObjectResult
 	public IJsonPropertyResult<IJsonObjectResult> With(string propertyName);
 
 	/// <summary>
+	///     Add an expectation that the object does not contain the property with the given
+	///     <paramref name="propertyName" />.
+	/// </summary>
+	/// <remarks>
+	///     A property with the value <see langword="null" /> exists and therefore fails the expectation.
+	/// </remarks>
+	public IJsonObjectResult Without(string propertyName);
+
+	/// <summary>
 	///     Result for the number of properties in a JSON <see cref="JsonValueKind.Object" />.
 	/// </summary>
 	public interface IJsonObjectLengthResult

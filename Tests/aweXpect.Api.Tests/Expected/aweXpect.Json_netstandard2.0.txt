@@ -29,6 +29,7 @@ namespace aweXpect.Json
         aweXpect.Json.IJsonObjectResult And { get; }
         aweXpect.Json.IJsonObjectResult.IJsonObjectLengthResult With(int amount);
         aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> With(string propertyName);
+        aweXpect.Json.IJsonObjectResult Without(string propertyName);
         public interface IJsonObjectLengthResult
         {
             aweXpect.Json.IJsonObjectResult Properties();

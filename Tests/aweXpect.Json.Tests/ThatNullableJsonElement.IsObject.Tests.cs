@@ -348,5 +348,68 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class WithoutTests
+		{
+			[Fact]
+			public async Task WhenPropertyDoesNotExist_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("bar"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyExists_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"foo\": 1, \"bar\": \"baz\"}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(1).And.Without("bar"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches 1 and $.bar does not exist,
+					             but it differed as $.bar was "baz"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNull_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo does not exist,
+					             but it differed as $.foo was <null>
+					             """)
+					.Because("a property with a null value exists");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo does not exist,
+					             but it was <null>
+					             """);
+			}
+		}
 	}
 }

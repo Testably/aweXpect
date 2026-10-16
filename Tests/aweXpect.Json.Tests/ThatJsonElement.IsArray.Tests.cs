@@ -837,6 +837,34 @@ public sealed partial class ThatJsonElement
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenExpectingAbsentProperties_ShouldReportOnlyTheElementsContainingThem()
+			{
+				JsonElement subject = FromString("""
+				                                 [
+				                                   {"foo":1},
+				                                   {"bar":2},
+				                                   {"foo":null}
+				                                 ]
+				                                 """);
+
+				async Task Act()
+					=> await That(subject).IsArray(e => e
+						.WithObjects(
+							o => o.Without("foo"),
+							o => o.Without("foo"),
+							o => o.Without("foo")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] is an object and $[0].foo does not exist and $[1] is an object and $[1].foo does not exist and $[2] is an object and $[2].foo does not exist,
+					             but it differed as
+					               $[0].foo was 1 and
+					               $[2].foo was <null>
+					             """);
+			}
 		}
 	}
 }
