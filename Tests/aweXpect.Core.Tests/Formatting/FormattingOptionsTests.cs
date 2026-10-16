@@ -3,12 +3,32 @@
 public class FormattingOptionsTests
 {
 	[Test]
+	public async Task Complete_ShouldBeCompleteOnASingleLine()
+	{
+		FormattingOptions options = FormattingOptions.Complete;
+
+		await That(options.IsComplete).IsTrue();
+		await That(options.UseLineBreaks).IsFalse();
+		await That(options.IncludeType).IsFalse();
+		await That(options.Indentation).IsEmpty();
+	}
+
+	[Test]
 	public async Task Indented_ShouldDefaultToTwoSpaces()
 	{
 		FormattingOptions options = FormattingOptions.Indented();
 
 		await That(options.UseLineBreaks).IsTrue();
 		await That(options.Indentation).IsEqualTo("  ");
+	}
+
+	[Test]
+	public async Task Indented_ShouldNotBeComplete()
+	{
+		FormattingOptions options = FormattingOptions.Indented();
+
+		await That(options.IsComplete).IsFalse()
+			.Because("only the complete option lifts the limits of a failure message");
 	}
 
 	[Test]

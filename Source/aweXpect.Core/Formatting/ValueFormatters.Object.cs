@@ -89,7 +89,7 @@ public static partial class ValueFormatters
 		}
 		else
 		{
-			stringBuilder.Append(toString.DisplayWhitespace());
+			stringBuilder.Append(EscapeUnquoted(toString, options));
 		}
 	}
 
@@ -252,7 +252,7 @@ public static partial class ValueFormatters
 	{
 		try
 		{
-			if (!EnterContent(context))
+			if (!EnterContent(context, options))
 			{
 				stringBuilder.Append("( \u2026 )");
 				return;
@@ -331,7 +331,7 @@ public static partial class ValueFormatters
 				}
 				: options, context);
 		}
-		catch (Exception exception)
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options))
 		{
 			formattedValue = FormatThrownException(member.Name, exception);
 		}
@@ -380,7 +380,7 @@ public static partial class ValueFormatters
 
 		try
 		{
-			if (!EnterContent(context))
+			if (!EnterContent(context, options))
 			{
 				stringBuilder.Append("{ \u2026 }");
 			}

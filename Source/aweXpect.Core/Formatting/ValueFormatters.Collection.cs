@@ -172,7 +172,7 @@ public static partial class ValueFormatters
 
 		try
 		{
-			if (!EnterContent(context))
+			if (!EnterContent(context, options))
 			{
 				stringBuilder.Append("[ \u2026 ]");
 				return;
@@ -259,7 +259,7 @@ public static partial class ValueFormatters
 		int length = stringBuilder.Length;
 		try
 		{
-			if (!EnterContent(context))
+			if (!EnterContent(context, options))
 			{
 				stringBuilder.Append(isDictionary ? "{ \u2026 }" : "[ \u2026 ]");
 			}
@@ -268,7 +268,7 @@ public static partial class ValueFormatters
 				AppendItems(stringBuilder, value, isDictionary, items, totalCount, options, itemFormatter);
 			}
 		}
-		catch (Exception exception)
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options))
 		{
 			stringBuilder.Length = length;
 			stringBuilder.Append(FormatThrownException("the enumeration", exception));
@@ -298,7 +298,9 @@ public static partial class ValueFormatters
 			stringBuilder.Append(' ');
 		}
 
-		int maxCount = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+		int maxCount = options.IsComplete
+			? int.MaxValue
+			: Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		int count = maxCount;
 		string itemIndentation = options.Indentation + "  ";
 
@@ -509,7 +511,9 @@ public static partial class ValueFormatters
 	{
 		private readonly string _itemIndentation = options.Indentation + "  ";
 		private readonly IEnumerator _items = array.GetEnumerator();
-		private readonly int _maximumCount = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+		private readonly int _maximumCount = options.IsComplete
+			? int.MaxValue
+			: Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		private int _count;
 		private bool _isLimited;
 

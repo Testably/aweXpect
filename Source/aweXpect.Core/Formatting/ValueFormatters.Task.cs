@@ -151,7 +151,7 @@ public static partial class ValueFormatters
 
 		try
 		{
-			if (!EnterContent(context))
+			if (!EnterContent(context, options))
 			{
 				stringBuilder.Append('\u2026');
 				return;

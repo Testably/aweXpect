@@ -91,3 +91,6 @@ aweXpect.Results.AllocatesResult<TResult>.Between(long minimum) -> aweXpect.Resu
 aweXpect.Results.AllocatesResult<TResult>.BetweenResult
 aweXpect.Results.AllocatesResult<TResult>.BetweenResult.And(long maximum) -> TResult
 aweXpect.Results.AllocatesResult<TResult>.Nothing() -> TResult
+aweXpect.Formatting.FormattingOptions.IsComplete.get -> bool
+aweXpect.Formatting.FormattingOptions.IsComplete.init -> void
+static aweXpect.Formatting.FormattingOptions.Complete.get -> aweXpect.Formatting.FormattingOptions!

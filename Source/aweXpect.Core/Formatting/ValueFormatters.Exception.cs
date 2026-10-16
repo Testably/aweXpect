@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using aweXpect.Core.Helpers;
-using aweXpect.Customization;
 
 namespace aweXpect.Formatting;
 
@@ -62,8 +61,7 @@ public static partial class ValueFormatters
 		}
 		else
 		{
-			stringBuilder.Append(message
-				.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).DisplayWhitespace());
+			stringBuilder.Append(EscapeUnquoted(TruncateUnlessComplete(message, options), options));
 		}
 	}
 }
