@@ -286,6 +286,34 @@ JSON options:
    "craetedAt" matched no member (did you mean "createdAt"?)
 ```
 
+Calculated numbers rarely match an expected literal exactly. With `NumbersWithin(tolerance)`, a number matches when it
+differs from the expected number by at most the tolerance, and with `NumbersWithin(tolerance).Percent()` by at most the
+percentage of the expected number. The option is available wherever `JsonOptions` are accepted, e.g.
+`IsEqualTo(expected).AsJson(o => o.NumbersWithin(0.001))`, and can be combined with the other options:
+
+```csharp
+JsonElement invoice = JsonDocument.Parse("""{"total": 0.30000000000000004, "tax": 0.0575}""").RootElement;
+
+await Expect.That(invoice).MatchesExactly(new { total = 0.3, tax = 0.057m },
+    o => o.NumbersWithin(0.001));
+await Expect.That(invoice).MatchesExactly(new { tax = 0.057m },
+    o => o.NumbersWithin(1).Percent().IgnoringAdditionalProperties());
+```
+
+The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. Like in aweXpect,
+a relative tolerance only matches an equal number when the expected number is `0`. The numbers are compared as
+`double`, so numbers outside its range are compared by their text. For a product `{"name": "Guitar", "price": 110}`,
+`MatchesExactly(new { name = "Guitar", price = 100 }, o => o.NumbersWithin(5).Percent())` would fail with:
+
+```text title="Failure message"
+Expected that product
+matches new { name = "Guitar", price = 100 } exactly,
+but it differed as $.price was 110 instead of 100 ± 5%
+
+JSON options:
+ - compare numbers within ± 5%
+```
+
 You can also verify that a `JsonElement` matches a primitive value:
 
 ```csharp

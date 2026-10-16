@@ -57,6 +57,7 @@ namespace aweXpect.Json
             public aweXpect.Customization.ICustomizationValueSetter<System.Text.Json.JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
         }
     }
+    public sealed class JsonNumbersWithinOptions : aweXpect.Json.JsonOptions, System.IEquatable<aweXpect.Json.JsonNumbersWithinOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<double>>, aweXpect.Options.IRelativeToleranceOptions<double>, aweXpect.Results.IWithinToleranceResult<aweXpect.Json.JsonOptions, double> { }
     public class JsonOptions : System.IEquatable<aweXpect.Json.JsonOptions>
     {
         public JsonOptions() { }
@@ -74,6 +75,7 @@ namespace aweXpect.Json
         public static aweXpect.Json.JsonOptions IgnoringAdditionalProperties(this aweXpect.Json.JsonOptions @this, bool ignoreAdditionalProperties = true) { }
         public static aweXpect.Json.JsonOptions IgnoringArrayOrder(this aweXpect.Json.JsonOptions @this, bool ignoreArrayOrder = true) { }
         public static aweXpect.Json.JsonOptions IgnoringMember(this aweXpect.Json.JsonOptions @this, string memberToIgnore) { }
+        public static aweXpect.Json.JsonNumbersWithinOptions NumbersWithin(this aweXpect.Json.JsonOptions @this, double tolerance) { }
         public static aweXpect.Json.JsonOptions TreatingNullAsAbsent(this aweXpect.Json.JsonOptions @this, bool treatNullAsAbsent = true) { }
         public static aweXpect.Json.JsonOptions WithJsonOptions(this aweXpect.Json.JsonOptions @this, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> jsonDocumentOptions) { }
     }

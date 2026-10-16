@@ -846,5 +846,48 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"price\": 104, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						price = 100,
+					}, o => o.NumbersWithin(5).Percent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"price\": 106, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						price = 100,
+					}, o => o.NumbersWithin(5).Percent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	price = 100,
+					             },
+					             but it differed as $.price was 106 instead of 100 ± 5%
+
+					             JSON options:
+					              - ignore additional properties
+					              - compare numbers within ± 5%
+					             """);
+			}
+		}
 	}
 }

@@ -816,5 +816,39 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenMatchingNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("[1, 104]");
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a.At(1).Matching(100), o => o.NumbersWithin(5).Percent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMatchingNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				JsonElement? subject = FromString("[1, 106]");
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a.At(1).Matching(100), o => o.NumbersWithin(5).Percent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[1] matches 100,
+					             but it differed as $[1] was 106 instead of 100 ± 5%
+
+					             JSON options:
+					              - ignore additional properties
+					              - compare numbers within ± 5%
+					             """);
+			}
+		}
 	}
 }

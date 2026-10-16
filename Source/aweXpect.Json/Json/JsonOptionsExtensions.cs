@@ -94,6 +94,23 @@ public static class JsonOptionsExtensions
 		};
 
 	/// <summary>
+	///     Compares all numbers within the <paramref name="tolerance" />, which can be made relative to the expected
+	///     value with <c>Percent()</c>.
+	/// </summary>
+	/// <remarks>
+	///     The tolerance applies to every number, also to integers such as ids or counts. A number is within the tolerance,
+	///     when it differs from the expected number by at most the tolerance, or with <c>Percent()</c> by at most the
+	///     percentage of the expected number, so that an expected <c>0</c> only matches an equal number. The numbers are
+	///     compared as <see langword="double" />, so differences below its precision are not detected, and numbers outside
+	///     its range are compared by their text.
+	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative or NaN.</exception>
+	public static JsonNumbersWithinOptions NumbersWithin(
+		this JsonOptions @this,
+		double tolerance)
+		=> new(@this, tolerance);
+
+	/// <summary>
 	///     Ignores the <paramref name="memberToIgnore" /> in the comparison.
 	/// </summary>
 	/// <remarks>

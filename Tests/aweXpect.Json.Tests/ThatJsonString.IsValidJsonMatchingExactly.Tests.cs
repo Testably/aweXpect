@@ -462,5 +462,38 @@ public sealed partial class ThatJsonString
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				string subject = "[95, 105]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly([100, 100,], o => o.NumbersWithin(5).Percent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				string subject = "[94, 105]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly([100, 100,], o => o.NumbersWithin(5).Percent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [100, 100,] exactly,
+					             but it differed as $[0] was 94 instead of 100 ± 5%
+
+					             JSON options:
+					              - compare numbers within ± 5%
+					             """);
+			}
+		}
 	}
 }

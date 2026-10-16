@@ -1082,5 +1082,48 @@ public sealed partial class ThatJsonString
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				string subject = "{\"price\": 9.96, \"name\": \"a\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						price = 10,
+					}, o => o.NumbersWithin(0.05));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				string subject = "{\"price\": 9.94, \"name\": \"a\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						price = 10,
+					}, o => o.NumbersWithin(0.05));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	price = 10,
+					             },
+					             but it differed as $.price was 9.94 instead of 10 ± 0.05
+
+					             JSON options:
+					              - ignore additional properties
+					              - compare numbers within ± 0.05
+					             """);
+			}
+		}
 	}
 }

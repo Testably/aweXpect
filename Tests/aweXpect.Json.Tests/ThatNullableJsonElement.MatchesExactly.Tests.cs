@@ -581,5 +581,38 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("[0.99, 2.01]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.02));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				JsonElement? subject = FromString("[0.99, 2.03]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.02));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,] exactly,
+					             but it differed as $[1] was 2.03 instead of 2 ± 0.02
+
+					             JSON options:
+					              - compare numbers within ± 0.02
+					             """);
+			}
+		}
 	}
 }

@@ -115,6 +115,104 @@ public class JsonOptionsTests
 	}
 
 	[Fact]
+	public async Task NumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.NumbersWithin(-0.1);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("tolerance").And
+			.WithMessage("The tolerance must not be negative.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task NumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.NumbersWithin(double.NaN);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("tolerance").And
+			.WithMessage("The tolerance must not be NaN.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task NumbersWithin_ShouldNotChangeTheOriginalOptions()
+	{
+		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
+		JsonOptions sut = new();
+
+		_ = sut.NumbersWithin(1);
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, _ => sut);
+
+		await That(Act).Throws<XunitException>()
+			.Because("NumbersWithin returns new options instead of changing the original ones");
+	}
+
+	[Fact]
+	public async Task NumbersWithin_WhenCalledAgain_ShouldReplaceTheTolerance()
+	{
+		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(1, o => o.NumbersWithin(1).IgnoringArrayOrder().NumbersWithin(0.1));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches 1 exactly,
+			             but it differed as $ was 1.5 instead of 1 ± 0.1
+
+			             JSON options:
+			              - ignore array order
+			              - compare numbers within ± 0.1
+			             """);
+	}
+
+	[Fact]
+	public async Task Percent_ShouldNotAffectCopiesMadeBefore()
+	{
+		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
+		JsonNumbersWithinOptions withinOptions = new JsonOptions().NumbersWithin(5);
+		JsonOptions copyBeforePercent = withinOptions.IgnoringArrayOrder();
+
+		JsonOptions percentOptions = withinOptions.Percent();
+
+		async Task ActWithCopyBeforePercent()
+			=> await That(subject).MatchesExactly(0.1, _ => copyBeforePercent);
+
+		async Task ActWithPercent()
+			=> await That(subject).MatchesExactly(0.1, _ => percentOptions);
+
+		await That(ActWithCopyBeforePercent).DoesNotThrow()
+			.Because("the copy keeps the absolute tolerance, as Percent() replaces the tolerance instead of changing it");
+		await That(ActWithPercent).Throws<XunitException>()
+			.Because("5% of 0.1 is less than the difference of 0.2");
+	}
+
+	[Fact]
+	public async Task Percent_ShouldNotAffectOtherOptionsFromTheSameOrigin()
+	{
+		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
+		JsonOptions sut = new();
+		JsonOptions absoluteOptions = sut.NumbersWithin(5);
+
+		_ = sut.NumbersWithin(5).Percent();
+
+		async Task Act()
+			=> await That(subject).MatchesExactly(0.1, _ => absoluteOptions);
+
+		await That(Act).DoesNotThrow()
+			.Because("each call of NumbersWithin creates its own tolerance");
+	}
+
+	[Fact]
 	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
 	{
 		JsonOptions sut = new();

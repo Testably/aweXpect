@@ -1079,5 +1079,48 @@ public sealed partial class ThatJsonElement
 					.Because("only an expected null value accepts a missing property");
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"price\": 10.04, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						price = 10,
+					}, o => o.NumbersWithin(0.05));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"price\": 10.06, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						price = 10,
+					}, o => o.NumbersWithin(0.05));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	price = 10,
+					             },
+					             but it differed as $.price was 10.06 instead of 10 ± 0.05
+
+					             JSON options:
+					              - ignore additional properties
+					              - compare numbers within ± 0.05
+					             """);
+			}
+		}
 	}
 }

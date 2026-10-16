@@ -1225,6 +1225,108 @@ public sealed partial class ThatJsonString
 						.Because("a null subject has no JSON content to inspect");
 				}
 			}
+
+			public sealed class NumbersWithinTests
+			{
+				[Fact]
+				public async Task WhenNumbersAreWithinTheTolerance_ShouldSucceed()
+				{
+					string subject = """{"total": 0.30000000000000004, "tax": 0.0575}""";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo("""{"total": 0.3, "tax": 0.057}""")
+							.AsJson(o => o.NumbersWithin(0.001));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+				{
+					string result = """{"total": 0.3, "tax": 0.06}""";
+
+					async Task Act()
+						=> await That(result).IsEqualTo("""{"total": 0.3, "tax": 0.057}""")
+							.AsJson(o => o.NumbersWithin(0.001));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that result
+						             is JSON equivalent to {"total": 0.3, "tax": 0.057},
+						             but it differed as $.tax was 0.06 instead of 0.057 ± 0.001
+
+						             Actual:
+						             {"total": 0.3, "tax": 0.06}
+
+						             Expected:
+						             {"total": 0.3, "tax": 0.057}
+
+						             JSON options:
+						              - compare numbers within ± 0.001
+						             """);
+				}
+
+				[Theory]
+				[InlineData("1e400", true)]
+				[InlineData("1.0e400", false)]
+				[InlineData("2e400", false)]
+				public async Task WhenNumbersAreOutsideTheRangeOfADouble_ShouldCompareTheirText(string json,
+					bool isMatch)
+				{
+					async Task Act()
+						=> await That(json).IsEqualTo("1e400").AsJson(o => o.NumbersWithin(1e300));
+
+					await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+						.WithMessage($"""
+						              Expected that json
+						              is JSON equivalent to 1e400,
+						              but it differed as $ was {json} instead of 1e400 ± 1E+300
+
+						              Actual:
+						              {json}
+
+						              Expected:
+						              1e400
+
+						              JSON options:
+						               - compare numbers within ± 1E+300
+						              """)
+						.Because("the tolerance cannot be applied to numbers outside the range of a double");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenNumbersAreWithinTheTolerance_ShouldFail()
+				{
+					string subject = "[1.05, 2]";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.NumbersWithin(0.1));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to [1, 2],
+						             but it was "[1.05, 2]"
+
+						             Expected:
+						             [1, 2]
+
+						             JSON options:
+						              - compare numbers within ± 0.1
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenNumbersAreOutsideTheTolerance_ShouldSucceed()
+				{
+					string subject = "[1.2, 2]";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.NumbersWithin(0.1));
+
+					await That(Act).DoesNotThrow();
+				}
+			}
 		}
 	}
 }

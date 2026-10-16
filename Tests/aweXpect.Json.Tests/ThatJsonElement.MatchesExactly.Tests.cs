@@ -1863,5 +1863,349 @@ public sealed partial class ThatJsonElement
 					.Because("the name matched while the elements were paired");
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenNumbersAreClose_ShouldSucceedAsDocumentedInTheReadme()
+			{
+				JsonElement invoice = FromString("""{"total": 0.30000000000000004, "tax": 0.0575}""");
+
+				async Task ActAbsolute()
+					=> await That(invoice).MatchesExactly(new { total = 0.3, tax = 0.057m },
+						o => o.NumbersWithin(0.001));
+
+				async Task ActRelative()
+					=> await That(invoice).MatchesExactly(new { tax = 0.057m },
+						o => o.NumbersWithin(1).Percent().IgnoringAdditionalProperties());
+
+				await That(ActAbsolute).DoesNotThrow();
+				await That(ActRelative).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsOutsideTheRelativeTolerance_ShouldFailAsDocumentedInTheReadme()
+			{
+				JsonElement product = FromString("""{"name": "Guitar", "price": 110}""");
+
+				async Task Act()
+					=> await That(product).MatchesExactly(new { name = "Guitar", price = 100 },
+						o => o.NumbersWithin(5).Percent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that product
+					             matches new { name = "Guitar", price = 100 } exactly,
+					             but it differed as $.price was 110 instead of 100 ± 5%
+
+					             JSON options:
+					              - compare numbers within ± 5%
+					             """);
+			}
+
+			[Theory]
+			[InlineData("10.4", true)]
+			[InlineData("10.5", true)]
+			[InlineData("9.5", true)]
+			[InlineData("10.6", false)]
+			[InlineData("9.4", false)]
+			public async Task WithAbsoluteTolerance_ShouldIncludeTheBoundaries(string json, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(10, o => o.NumbersWithin(0.5));
+
+				await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches 10 exactly,
+					              but it differed as $ was {json} instead of 10 ± 0.5
+
+					              JSON options:
+					               - compare numbers within ± 0.5
+					              """);
+			}
+
+			[Theory]
+			[InlineData("104", true)]
+			[InlineData("105", true)]
+			[InlineData("95", true)]
+			[InlineData("105.1", false)]
+			[InlineData("94.9", false)]
+			public async Task WithRelativeTolerance_ShouldIncludeTheBoundaries(string json, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(100, o => o.NumbersWithin(5).Percent());
+
+				await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches 100 exactly,
+					              but it differed as $ was {json} instead of 100 ± 5%
+
+					              JSON options:
+					               - compare numbers within ± 5%
+					              """);
+			}
+
+			[Theory]
+			[InlineData("-104", true)]
+			[InlineData("-96", true)]
+			[InlineData("-106", false)]
+			public async Task WithRelativeTolerance_WhenExpectedIsNegative_ShouldUseItsMagnitude(string json,
+				bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(-100, o => o.NumbersWithin(5).Percent());
+
+				await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches -100 exactly,
+					              but it differed as $ was {json} instead of -100 ± 5%
+
+					              JSON options:
+					               - compare numbers within ± 5%
+					              """);
+			}
+
+			[Theory]
+			[InlineData("0", true)]
+			[InlineData("0.0", true)]
+			[InlineData("0.0001", false)]
+			public async Task WithRelativeTolerance_WhenExpectedIsZero_ShouldOnlyMatchAnEqualNumber(string json,
+				bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(0, o => o.NumbersWithin(50).Percent());
+
+				await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches 0 exactly,
+					              but it differed as $ was {json} instead of 0 ± 50%
+
+					              JSON options:
+					               - compare numbers within ± 50%
+					              """)
+					.Because("a percentage of zero is zero, like in aweXpect");
+			}
+
+			[Fact]
+			public async Task WhenIntegersDiffer_ShouldAlsoApplyTheTolerance()
+			{
+				JsonElement subject = FromString("{\"id\": 41, \"count\": 3}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 42,
+						count = 2,
+					}, o => o.NumbersWithin(1));
+
+				await That(Act).DoesNotThrow()
+					.Because("the tolerance applies to all numbers, also to integers such as ids or counts");
+			}
+
+			[Fact]
+			public async Task WhenToleranceIsZero_ShouldOnlyMatchEqualNumbers()
+			{
+				JsonElement subject = FromString("[1.0, 2]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 3,], o => o.NumbersWithin(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 3,] exactly,
+					             but it differed as $[1] was 2 instead of 3 ± 0
+
+					             JSON options:
+					              - compare numbers within ± 0
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedNumbersDiffer_ShouldApplyTheToleranceToEachOfThem()
+			{
+				JsonElement subject = FromString(
+					"{\"items\": [{\"price\": 10.04, \"tags\": [1.98]}, {\"price\": 20.1, \"tags\": [3]}]}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						items = new[]
+						{
+							new
+							{
+								price = 10,
+								tags = new[] { 2, },
+							},
+							new
+							{
+								price = 20,
+								tags = new[] { 3, },
+							},
+						},
+					}, o => o.NumbersWithin(0.05));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	items = new[]
+					             	{
+					             		new
+					             		{
+					             			price = 10,
+					             			tags = new[] { 2, },
+					             		},
+					             		new
+					             		{
+					             			price = 20,
+					             			tags = new[] { 3, },
+					             		},
+					             	},
+					             } exactly,
+					             but it differed as $.items[1].price was 20.1 instead of 20 ± 0.05
+
+					             JSON options:
+					              - compare numbers within ± 0.05
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenIgnoringArrayOrder_ShouldPairTheElementsWithinTheTolerance()
+			{
+				JsonElement subject = FromString("[2.01, 0.99]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringArrayOrder().NumbersWithin(0.02));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIgnoringArrayOrder_WhenAnElementIsOutsideTheTolerance_ShouldCompareTheUnpairedElements()
+			{
+				JsonElement subject = FromString("[2.5, 0.99]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.02).IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,] exactly,
+					             but it differed as $[0] was 2.5 instead of 2 ± 0.02
+
+					             JSON options:
+					              - ignore array order
+					              - compare numbers within ± 0.02
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenOtherOptionsAreChainedAfterPercent_ShouldApplyAllOfThem()
+			{
+				JsonElement subject = FromString("{\"values\": [104, 3, 9], \"extra\": true}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						values = new[] { 100, },
+					}, o => o.NumbersWithin(5).Percent().IgnoringAdditionalProperties().IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNumberIsNotExpected_ShouldStillReportTheDifferentKind()
+			{
+				JsonElement subject = FromString("{\"value\": \"1\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						value = 1,
+					}, o => o.NumbersWithin(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	value = 1,
+					             } exactly,
+					             but it differed as $.value was string "1" instead of 1
+
+					             JSON options:
+					              - compare numbers within ± 1
+					             """)
+					.Because("the tolerance only applies to numbers");
+			}
+
+			[Fact]
+			public async Task WhenUsingAnExpectation_ShouldNotApplyTheTolerance()
+			{
+				JsonElement subject = FromString("{\"value\": 1.5}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						value = It.Is<double>().That.IsEqualTo(1),
+					}, o => o.NumbersWithin(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	value = It.Is<double>().That.IsEqualTo(1),
+					             } exactly,
+					             but it differed as $.value was 1.5, which differs by 0.5
+
+					             JSON options:
+					              - compare numbers within ± 1
+					             """)
+					.Because("an expectation has its own tolerance");
+			}
+		}
+
+		public sealed class NumbersWithinNegatedTests
+		{
+			[Theory]
+			[InlineData("10.4", true)]
+			[InlineData("10.6", false)]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldFail(string json, bool isWithin)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(10, o => o.NumbersWithin(0.5)));
+
+				await That(Act).Throws<XunitException>().OnlyIf(isWithin)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match 10 exactly,
+					              but it did
+
+					              Actual:
+					              {json}
+
+					              JSON options:
+					               - compare numbers within ± 0.5
+					              """);
+			}
+		}
 	}
 }

@@ -55,7 +55,8 @@ internal static class JsonElementValidator
 			JsonValueKind.False => result.CompareJsonBoolean(JsonValueKind.False, path, actualElement, expectedElement),
 			JsonValueKind.True => result.CompareJsonBoolean(JsonValueKind.True, path, actualElement, expectedElement),
 			JsonValueKind.Null => result.CompareJsonNull(path, actualElement, expectedElement),
-			JsonValueKind.Number => result.CompareJsonNumber(path, actualElement, expectedElement),
+			JsonValueKind.Number => result.CompareJsonNumber(path, actualElement, expectedElement,
+				options.NumberTolerance),
 			JsonValueKind.String => result.CompareJsonString(path, actualElement, expectedElement),
 			JsonValueKind.Object => await result.CompareJsonObject(path, actualElement, expectedElement, options,
 				converter),
@@ -242,7 +243,8 @@ internal static class JsonElementValidator
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
-		JsonElement expectedElement)
+		JsonElement expectedElement,
+		JsonNumberTolerance? tolerance)
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Number)
 		{
@@ -250,9 +252,9 @@ internal static class JsonElementValidator
 			return result;
 		}
 
-		if (!AreEqualNumbers(actualElement, expectedElement))
+		if (!AreEqualNumbers(actualElement, expectedElement, tolerance))
 		{
-			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}");
+			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}{tolerance}");
 		}
 
 		return result;
@@ -263,23 +265,43 @@ internal static class JsonElementValidator
 	///     compared with the precision of a <see langword="double" />, because an expected <see langword="double" /> is
 	///     serialized with 17 digits on .NET Framework (e.g. <c>42.1</c> as <c>42.100000000000001</c>).
 	///     Rounding is monotonic, so integers whose rounded <see langword="decimal" /> values differ are different.
+	///     A <paramref name="tolerance" /> is applied with the precision of a <see langword="double" />, like in aweXpect.
 	///     Numbers outside the range of a <see langword="double" /> are compared by their text.
 	/// </remarks>
-	private static bool AreEqualNumbers(JsonElement actualElement, JsonElement expectedElement)
+	private static bool AreEqualNumbers(JsonElement actualElement, JsonElement expectedElement,
+		JsonNumberTolerance? tolerance)
 	{
+		if (tolerance is not null &&
+		    TryGetFiniteDoubles(actualElement, expectedElement, out double actual, out double expected))
+		{
+			return tolerance.IsWithinTolerance(actual, expected);
+		}
+
 		if (actualElement.TryGetDecimal(out decimal d1) && expectedElement.TryGetDecimal(out decimal d2) &&
 		    d1 != d2 && d1 == decimal.Truncate(d1) && d2 == decimal.Truncate(d2))
 		{
 			return false;
 		}
 
-		if (actualElement.TryGetDouble(out double n1) && expectedElement.TryGetDouble(out double n2) &&
-		    !double.IsInfinity(n1) && !double.IsInfinity(n2))
+		if (TryGetFiniteDoubles(actualElement, expectedElement, out double n1, out double n2))
 		{
 			return n1.Equals(n2);
 		}
 
 		return actualElement.GetRawText() == expectedElement.GetRawText();
+	}
+
+	private static bool TryGetFiniteDoubles(JsonElement actualElement, JsonElement expectedElement,
+		out double actual, out double expected)
+	{
+		if (!actualElement.TryGetDouble(out actual))
+		{
+			expected = 0;
+			return false;
+		}
+
+		return expectedElement.TryGetDouble(out expected) &&
+		       !double.IsInfinity(actual) && !double.IsInfinity(expected);
 	}
 
 	private static async Task<JsonComparisonResult> CompareJsonObject(

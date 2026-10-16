@@ -1606,5 +1606,48 @@ public sealed partial class ThatJsonElement
 					.Because("an invalid argument is thrown as it is instead of failing the expectation");
 			}
 		}
+
+		public sealed class NumbersWithinTests
+		{
+			[Fact]
+			public async Task WhenMatchingNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": 1.04}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new
+					{
+						bar = 1,
+					}), o => o.NumbersWithin(0.05));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMatchingNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": 1.06}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new
+					{
+						bar = 1,
+					}), o => o.NumbersWithin(0.05));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches new
+					             {
+					             	bar = 1,
+					             },
+					             but it differed as $.foo.bar was 1.06 instead of 1 ± 0.05
+
+					             JSON options:
+					              - ignore additional properties
+					              - compare numbers within ± 0.05
+					             """);
+			}
+		}
 	}
 }

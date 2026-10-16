@@ -95,12 +95,63 @@ public sealed class JsonOptionsContextTests
 		}
 
 		[Fact]
+		public async Task WhenComparingNumbersWithinAnAbsoluteTolerance_ShouldListIt()
+		{
+			JsonElement subject = ThatJsonElement.FromString("{\"tax\": 0.06}");
+
+			async Task Act()
+				=> await That(subject).MatchesExactly(new
+				{
+					tax = 0.057m,
+				}, o => o.NumbersWithin(0.001));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             matches new
+				             {
+				             	tax = 0.057m,
+				             } exactly,
+				             but it differed as $.tax was 0.06 instead of 0.057 ± 0.001
+
+				             JSON options:
+				              - compare numbers within ± 0.001
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenComparingNumbersWithinARelativeTolerance_ShouldListIt()
+		{
+			JsonElement subject = ThatJsonElement.FromString("{\"price\": 110}");
+
+			async Task Act()
+				=> await That(subject).MatchesExactly(new
+				{
+					price = 100,
+				}, o => o.NumbersWithin(5).Percent());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             matches new
+				             {
+				             	price = 100,
+				             } exactly,
+				             but it differed as $.price was 110 instead of 100 ± 5%
+
+				             JSON options:
+				              - compare numbers within ± 5%
+				             """);
+		}
+
+		[Fact]
 		public async Task WhenAllOptionsAreActive_ShouldListThemInAFixedOrder()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
 
 			async Task Act()
 				=> await That(subject).MatchesExactly([2, 1,], o => o
+					.NumbersWithin(0.5)
 					.TreatingNullAsAbsent()
 					.IgnoringArrayOrder()
 					.IgnoringAdditionalArrayElements()
@@ -110,13 +161,14 @@ public sealed class JsonOptionsContextTests
 				.WithMessage("""
 				             Expected that subject
 				             matches [2, 1,],
-				             but it differed as $[1] was 3 instead of 2
+				             but it differed as $[1] was 3 instead of 2 ± 0.5
 
 				             JSON options:
 				              - ignore additional properties
 				              - ignore additional array elements
 				              - ignore array order
 				              - treat null as absent
+				              - compare numbers within ± 0.5
 				             """)
 				.Because("the options are listed in the same order, independent of the order in which they were set");
 		}
@@ -979,6 +1031,26 @@ public sealed class JsonOptionsContextTests
 
 				             JSON options:
 				              - ignore additional properties
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenBothFailingExpectationsHaveTheSameTolerance_ShouldAddTheContextOnce()
+		{
+			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
+
+			async Task Act()
+				=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.5))
+					.And.MatchesExactly([1, 4,], o => o.NumbersWithin(0.5));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             matches [1, 2,] exactly and matches [1, 4,] exactly,
+				             but it differed as $[1] was 3 instead of 2 ± 0.5 and differed as $[1] was 3 instead of 4 ± 0.5
+
+				             JSON options:
+				              - compare numbers within ± 0.5
 				             """);
 		}
 

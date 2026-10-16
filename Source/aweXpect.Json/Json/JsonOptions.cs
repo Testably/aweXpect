@@ -51,6 +51,11 @@ public record JsonOptions
 	public MemberToIgnore[] MembersToIgnore { get; init; } = [];
 
 	/// <summary>
+	///     The tolerance to apply when comparing numbers, or <see langword="null" /> to compare them exactly.
+	/// </summary>
+	internal JsonNumberTolerance? NumberTolerance { get; private protected set; }
+
+	/// <summary>
 	///     Adds the "JSON options" context, which lists the active options, to the <paramref name="contexts" /> of a
 	///     failed comparison, unless no option is active.
 	/// </summary>
@@ -90,6 +95,11 @@ public record JsonOptions
 		if (TreatNullAsAbsent)
 		{
 			sb.AppendLine(" - treat null as absent");
+		}
+
+		if (NumberTolerance is not null)
+		{
+			sb.Append(" - compare numbers within").Append(NumberTolerance).AppendLine();
 		}
 
 		if (MembersToIgnore.Length > 0)
