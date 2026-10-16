@@ -680,7 +680,7 @@ public sealed partial class ThatJsonElement
 					             JSON options:
 					              - ignore additional properties
 					             """)
-					.Because("the README shows this failure message");
+					.Because("the documentation shows this failure message");
 			}
 
 			[Theory]

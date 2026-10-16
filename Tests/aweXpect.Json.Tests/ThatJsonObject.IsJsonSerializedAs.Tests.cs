@@ -261,7 +261,7 @@ public sealed partial class ThatJsonObject
 					             Serialized:
 					             {"title":"Let It Be","genre":2,"album":null}
 					             """)
-					.Because("it is the failure message shown in the README");
+					.Because("it is the failure message shown in the documentation");
 			}
 		}
 

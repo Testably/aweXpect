@@ -484,6 +484,26 @@ public sealed partial class ThatJsonString
 		public sealed class ObjectTests
 		{
 			[Fact]
+			public async Task WhenPropertyDiffers_ShouldNameItsJsonPath()
+			{
+				string json = """{"title": "Yesterday", "artist": "The Beatles", "durationSeconds": 125}""";
+
+				async Task Act()
+					=> await That(json).IsValidJsonMatching(new { title = "Let It Be" });
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that json
+					             is valid JSON which matches new { title = "Let It Be" },
+					             but it differed as $.title was "Yesterday" instead of "Let It Be"
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("the README shows this failure message");
+			}
+
+			[Fact]
 			public async Task WhenIgnoredPropertyDiffers_WhenIgnoringMember_ShouldSucceed()
 			{
 				string subject = "{\"id\": 1, \"name\": \"a\"}";
