@@ -15,6 +15,7 @@ namespace aweXpect.Core.Generators;
 public class ExpectationGenerator : IIncrementalGenerator
 {
 	private const string Attribute = "aweXpect.Core.Extending.GenerateExpectationAttribute";
+	private const string CollectionAttribute = "aweXpect.Core.Extending.GenerateCollectionExpectationAttribute";
 	private const string HelpLink = "https://docs.testably.org/aweXpect/analyzers#expectation-generator";
 
 	private static readonly DiagnosticDescriptor InvalidClass = new(
@@ -71,99 +72,83 @@ public class ExpectationGenerator : IIncrementalGenerator
 					SourceText.From(ExpectationWriter.Write(result.Model), Encoding.UTF8));
 			}
 		});
+
+		IncrementalValueProvider<bool> supportsAsyncEnumerables = context.CompilationProvider
+			.Select(static (compilation, _)
+				=> compilation.GetTypeByMetadataName("aweXpect.IAsyncEnumerableElements`1") is not null);
+		IncrementalValuesProvider<CollectionExpectationResult> collectionExpectations = context.SyntaxProvider
+			.ForAttributeWithMetadataName(CollectionAttribute,
+				static (node, _) => node is MethodDeclarationSyntax,
+				static (ctx, _) => GetCollectionExpectation(ctx))
+			.Combine(supportsAsyncEnumerables)
+			.Select(static (pair, _) => pair.Left.Model is null
+				? pair.Left
+				: pair.Left with { Model = pair.Left.Model with { SupportsAsyncEnumerables = pair.Right, }, })
+			.WithTrackingName("CollectionExpectations");
+
+		context.RegisterSourceOutput(collectionExpectations, static (spc, result) =>
+		{
+			if (result.Problem is not null)
+			{
+				spc.ReportDiagnostic(result.Problem.ToDiagnostic());
+			}
+
+			if (result.Model is not null)
+			{
+				spc.AddSource(result.Model.Class.HintName,
+					SourceText.From(CollectionExpectationWriter.Write(result.Model), Encoding.UTF8));
+			}
+		});
 	}
 
 	private static ExpectationResult GetExpectation(GeneratorAttributeSyntaxContext context)
 	{
-		IMethodSymbol method = (IMethodSymbol)context.TargetSymbol;
-		Location location = ((MethodDeclarationSyntax)context.TargetNode).Identifier.GetLocation();
-		INamedTypeSymbol classSymbol = method.ContainingType;
-		if (!IsExtensionClass(classSymbol, context.TargetNode))
+		if (GetSignatureProblem(context, out Signature signature) is { } signatureProblem)
 		{
-			return Fail(InvalidClass, location, classSymbol.ToDisplayString());
+			return new ExpectationResult(null, signatureProblem);
 		}
 
-		string methodName = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 		AttributeData attribute = context.Attributes[0];
 		if (attribute.ConstructorArguments.Length != 2 ||
 		    attribute.ConstructorArguments[0].Value is not string name ||
 		    attribute.ConstructorArguments[1].Value is not string expectationText)
 		{
-			return Fail(InvalidMethod, location, methodName, "the name and the expectation text are required");
-		}
-
-		if (GetMethodProblem(method) is { } methodProblem)
-		{
-			return Fail(InvalidMethod, location, methodName, methodProblem);
-		}
-
-		bool isAsync = method.ReturnType.SpecialType != SpecialType.System_Boolean;
-		ImmutableArray<IParameterSymbol> parameters = method.Parameters;
-		bool passesCancellationToken = parameters.Length > 1 &&
-		                               IsCancellationToken(parameters[parameters.Length - 1].Type);
-		IParameterSymbol subject = parameters[0];
-		List<IParameterSymbol> expectationParameters = parameters
-			.Skip(1)
-			.Take(parameters.Length - (passesCancellationToken ? 2 : 1))
-			.ToList();
-
-		if (expectationParameters.FirstOrDefault(p => p.Name == "subject") is { } clash)
-		{
-			return Fail(InvalidMethod, location, methodName,
-				$"the parameter '{clash.Name}' would clash with the subject of the expectation");
-		}
-
-		if (parameters.Take(expectationParameters.Count + 1)
-			    .FirstOrDefault(p => GetAccessibility(p.Type) < Accessibility.Internal) is { } inaccessible)
-		{
-			return Fail(InvalidMethod, location, methodName,
-				$"the type of the parameter '{inaccessible.Name}' is not accessible outside of '{classSymbol.Name}'");
+			return signature.Fail("the name and the expectation text are required");
 		}
 
 		if (GetNameProblem(name, GetNamedArgument<string>(attribute, "NegatedName"),
 			    out string positiveName, out string? negatedName) is { } nameProblem)
 		{
-			return Fail(InvalidMethod, location, methodName, nameProblem);
+			return signature.Fail(nameProblem);
 		}
 
 		if (GetTextProblem(expectationText, GetNamedArgument<string>(attribute, "NegatedExpectationText"),
-			    expectationParameters.Select(p => p.Name).ToList(),
+			    signature.GetParameterNames(),
 			    out EquatableArray<TextPart> positiveText, out EquatableArray<TextPart> negatedText) is { } textProblem)
 		{
-			return Fail(InvalidMethod, location, methodName, textProblem);
+			return signature.Fail(textProblem);
 		}
 
 		string? resultMethod = GetNamedArgument<string>(attribute, "Result");
 		ResultModel? result = null;
 		if (resultMethod is not null &&
-		    !TryFindResultMethod(classSymbol, resultMethod, subject, expectationParameters, out result))
+		    !TryFindResultMethod(signature.Class, resultMethod, signature.Subject, signature.ExpectationParameters,
+			    out result))
 		{
-			return Fail(InvalidResult, location, resultMethod, methodName);
+			return new ExpectationResult(null,
+				new Problem(InvalidResult, signature.Location, resultMethod, signature.MethodName));
 		}
 
-		int overloadIndex = classSymbol.GetMembers(method.Name).OfType<IMethodSymbol>().ToList()
-			.FindIndex(m => SymbolEqualityComparer.Default.Equals(m, method));
-		string constraintPrefix = overloadIndex > 0 ? $"{method.Name}_{overloadIndex}" : method.Name;
-		string? ns = classSymbol.ContainingNamespace.IsGlobalNamespace
-			? null
-			: classSymbol.ContainingNamespace.ToDisplayString(NamespaceFormat);
-
+		ClassModel classModel = signature.ToClassModel(context, "");
 		return new ExpectationResult(new ExpectationModel(
-			new EquatableArray<string>(((CompilationUnitSyntax)context.TargetNode.SyntaxTree.GetRoot()).Usings
-				.Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None))
-				.Select(u => u.ToString())
-				.ToImmutableArray()),
-			new EquatableArray<string>(context.TargetNode.Ancestors().OfType<BaseNamespaceDeclarationSyntax>()
-				.Reverse()
-				.SelectMany(n => n.Usings)
-				.Select(u => u.ToString())
-				.ToImmutableArray()),
-			ns,
-			Escape(classSymbol.Name),
-			SyntaxFacts.GetText(classSymbol.DeclaredAccessibility),
-			GetMethodAccessibility(classSymbol, parameters.Take(expectationParameters.Count + 1)),
-			$"{classSymbol.ToDisplayString()}.{constraintPrefix}.g.cs",
-			Escape(method.Name),
+			classModel.Usings,
+			classModel.NamespaceUsings,
+			classModel.Namespace,
+			classModel.ClassName,
+			classModel.ClassAccessibility,
+			classModel.MethodAccessibility,
+			classModel.HintName,
+			classModel.PredicateName,
 			positiveName,
 			negatedName,
 			positiveText,
@@ -172,15 +157,117 @@ public class ExpectationGenerator : IIncrementalGenerator
 			GetNamedArgument<string>(attribute, "NegatedSummary"),
 			GetNamedArgument<string>(attribute, "Remarks"),
 			GetNamedArgument<string>(attribute, "NegatedRemarks"),
-			isAsync,
-			passesCancellationToken,
-			new EquatableArray<ParameterModel>(expectationParameters
-				.Select(p => new ParameterModel(Escape(p.Name), p.Type.ToDisplayString(TypeFormat), p.IsParams,
-					p.Type.IsReferenceType && p.NullableAnnotation == NullableAnnotation.NotAnnotated))
-				.ToImmutableArray()),
+			signature.IsAsync,
+			signature.PassesCancellationToken,
+			classModel.Parameters,
 			result,
-			GetOverloads(subject, constraintPrefix,
+			GetOverloads(signature.Subject, signature.ConstraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true)), null);
+	}
+
+	private static CollectionExpectationResult GetCollectionExpectation(GeneratorAttributeSyntaxContext context)
+	{
+		if (GetSignatureProblem(context, out Signature signature) is { } signatureProblem)
+		{
+			return new CollectionExpectationResult(null, signatureProblem);
+		}
+
+		AttributeData attribute = context.Attributes[0];
+		ImmutableArray<TypedConstant> arguments = attribute.ConstructorArguments;
+		if (arguments.Length is not (2 or 3) ||
+		    arguments[0].Value is not string name ||
+		    arguments[arguments.Length - 1].Value is not string pluralExpectationText)
+		{
+			return signature.FailCollection("the name and the plural expectation text are required");
+		}
+
+		if ((arguments.Length == 3 ? arguments[1].Value as string : GetSingularText(signature.Method)) is not
+		    { } expectationText)
+		{
+			return signature.FailCollection(
+				"the expectation text is required, unless the method is also marked with [GenerateExpectation]");
+		}
+
+		if (!SyntaxFacts.IsValidIdentifier(name))
+		{
+			return signature.FailCollection($"the name '{name}' is not a valid method name");
+		}
+
+		if (expectationText.Contains("{not}") || pluralExpectationText.Contains("{not}"))
+		{
+			return signature.FailCollection(
+				"the expectation text contains '{not}', but the quantifier carries the negation");
+		}
+
+		if (!TryParseText(expectationText.Trim(), signature.GetParameterNames(),
+			    out EquatableArray<TextPart> text, out string? unknownPlaceholder) ||
+		    !TryParseText(pluralExpectationText.Trim(), signature.GetParameterNames(),
+			    out EquatableArray<TextPart> pluralText, out unknownPlaceholder))
+		{
+			return signature.FailCollection(
+				$"the placeholder '{{{unknownPlaceholder}}}' names no parameter of the expectation");
+		}
+
+		return new CollectionExpectationResult(new CollectionExpectationModel(
+			signature.ToClassModel(context, ".Elements"),
+			name,
+			text,
+			pluralText,
+			GetResultVerb(expectationText),
+			GetNamedArgument<string>(attribute, "Summary"),
+			GetNamedArgument<string>(attribute, "Remarks"),
+			GetPredicateKind(signature.Method.ReturnType),
+			signature.PassesCancellationToken,
+			GetItems(signature.Subject, signature.ConstraintPrefix,
+				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
+			false), null);
+	}
+
+	/// <summary>
+	///     The expectation text of the <c>GenerateExpectationAttribute</c> on the <paramref name="method" /> without
+	///     <c>{not}</c>, which is the text on a single item, or <see langword="null" /> without that attribute.
+	/// </summary>
+	private static string? GetSingularText(IMethodSymbol method)
+		=> method.GetAttributes()
+				.FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == Attribute)?
+				.ConstructorArguments.ElementAtOrDefault(1).Value is string text
+			? text.Replace("{not}", "").Replace("  ", " ").Trim()
+			: null;
+
+	/// <summary>
+	///     Checks the class, the method and its parameters, which both attributes require alike.
+	/// </summary>
+	private static Problem? GetSignatureProblem(GeneratorAttributeSyntaxContext context, out Signature signature)
+	{
+		IMethodSymbol method = (IMethodSymbol)context.TargetSymbol;
+		Location location = ((MethodDeclarationSyntax)context.TargetNode).Identifier.GetLocation();
+		INamedTypeSymbol classSymbol = method.ContainingType;
+		string methodName = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+		signature = new Signature(method, location, classSymbol, methodName);
+		if (!IsExtensionClass(classSymbol, context.TargetNode))
+		{
+			return new Problem(InvalidClass, location, classSymbol.ToDisplayString());
+		}
+
+		if (GetMethodProblem(method) is { } methodProblem)
+		{
+			return new Problem(InvalidMethod, location, methodName, methodProblem);
+		}
+
+		if (signature.ExpectationParameters.FirstOrDefault(p => p.Name == "subject") is { } clash)
+		{
+			return new Problem(InvalidMethod, location, methodName,
+				$"the parameter '{clash.Name}' would clash with the subject of the expectation");
+		}
+
+		if (signature.SignatureParameters.FirstOrDefault(p => GetAccessibility(p.Type) < Accessibility.Internal) is
+		    { } inaccessible)
+		{
+			return new Problem(InvalidMethod, location, methodName,
+				$"the type of the parameter '{inaccessible.Name}' is not accessible outside of '{classSymbol.Name}'");
+		}
+
+		return null;
 	}
 
 	private static string? GetNameProblem(string name, string? explicitNegatedName, out string positiveName,
@@ -225,9 +312,30 @@ public class ExpectationGenerator : IIncrementalGenerator
 		return null;
 	}
 
-	private static ExpectationResult Fail(DiagnosticDescriptor descriptor, Location location, string subject,
-		string reason = "")
-		=> new(null, new Problem(descriptor, location, subject, reason));
+	/// <summary>
+	///     The verb in the past tense that stands in for the expectation in the result, e.g. "were" in "but only 1 of 3
+	///     were", which is "were" for a form of "be" and "did" for any other verb, as English requires do-support for it.
+	/// </summary>
+	private static string GetResultVerb(string expectationText)
+	{
+		string trimmed = expectationText.Trim();
+		int space = trimmed.IndexOf(' ');
+		return (space < 0 ? trimmed : trimmed.Substring(0, space)) switch
+		{
+			"" or "is" or "are" or "was" or "were" => "were",
+			_ => "did",
+		};
+	}
+
+	private static PredicateKind GetPredicateKind(ITypeSymbol returnType)
+	{
+		if (returnType.SpecialType == SpecialType.System_Boolean)
+		{
+			return PredicateKind.Boolean;
+		}
+
+		return returnType.Name == "Task" ? PredicateKind.Task : PredicateKind.ValueTask;
+	}
 
 	/// <remarks>
 	///     The compiler requires every part of a partial class to be marked, so the part that declares the method is
@@ -284,16 +392,6 @@ public class ExpectationGenerator : IIncrementalGenerator
 		return null;
 	}
 
-	/// <remarks>
-	///     The extension methods are public, unless the class or a type in their signature is only internal, which a
-	///     public method must not expose.
-	/// </remarks>
-	private static string GetMethodAccessibility(INamedTypeSymbol classSymbol, IEnumerable<IParameterSymbol> parameters)
-		=> classSymbol.DeclaredAccessibility == Accessibility.Public &&
-		   parameters.All(p => GetAccessibility(p.Type) == Accessibility.Public)
-			? "public"
-			: "internal";
-
 	/// <summary>
 	///     The accessibility of the <paramref name="type" />, limited by its containing types and its type arguments.
 	/// </summary>
@@ -315,10 +413,6 @@ public class ExpectationGenerator : IIncrementalGenerator
 		   named.Name is "Task" or "ValueTask" &&
 		   ns.ToDisplayString() == "System.Threading.Tasks" &&
 		   named.TypeArguments[0].SpecialType == SpecialType.System_Boolean;
-
-	private static bool IsCancellationToken(ITypeSymbol type)
-		=> type is { Name: "CancellationToken", ContainingNamespace: var ns, } &&
-		   ns.ToDisplayString() == "System.Threading";
 
 	private static bool TryParseText(string text, List<string> parameterNames, out EquatableArray<TextPart> parts,
 		out string? unknownPlaceholder)
@@ -464,6 +558,43 @@ public class ExpectationGenerator : IIncrementalGenerator
 			=> new(ImmutableArray.Create(overload));
 	}
 
+	/// <summary>
+	///     The item types whose collections the expectation extends, following the rule for <see langword="null" />
+	///     subjects of <see cref="GetOverloads" /> for the items.
+	/// </summary>
+	private static EquatableArray<ItemModel> GetItems(IParameterSymbol subject, string constraintPrefix,
+		bool nullableOverload)
+	{
+		ITypeSymbol type = subject.Type;
+		bool disallowNull = subject.GetAttributes()
+			.Any(a => IsCodeAnalysisAttribute(a, "DisallowNullAttribute"));
+		string generatedPrefix = $"{constraintPrefix}_Generated";
+		string display = type.ToDisplayString(TypeFormat);
+
+		if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+		{
+			return Items(new ItemModel(display, false, generatedPrefix, disallowNull,
+				disallowNull ? "item.Value" : "item"));
+		}
+
+		if (type.IsValueType)
+		{
+			ItemModel value = new(display, false, generatedPrefix, false, "item");
+			return nullableOverload
+				? Items(value, new ItemModel(display + "?", false,
+					generatedPrefix + "Nullable", true, "item.Value"))
+				: Items(value);
+		}
+
+		string nullable = type.WithNullableAnnotation(NullableAnnotation.Annotated).ToDisplayString(TypeFormat);
+		bool failsOnNull = type.NullableAnnotation != NullableAnnotation.Annotated || disallowNull;
+		return Items(new ItemModel(nullable, type.SpecialType == SpecialType.System_String, generatedPrefix,
+			failsOnNull, "item"));
+
+		static EquatableArray<ItemModel> Items(params ItemModel[] items)
+			=> new(items.ToImmutableArray());
+	}
+
 	private static bool IsCodeAnalysisAttribute(AttributeData attribute, string name)
 		=> attribute.AttributeClass is { Name: var attributeName, ContainingNamespace: var ns, } &&
 		   attributeName == name &&
@@ -484,4 +615,99 @@ public class ExpectationGenerator : IIncrementalGenerator
 
 	private static string Escape(string name)
 		=> SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None ? "@" + name : name;
+
+	/// <summary>
+	///     The marked method, split into the subject, the parameters of the expectation and the cancellation token.
+	/// </summary>
+	private sealed class Signature
+	{
+		public Signature(IMethodSymbol method, Location location, INamedTypeSymbol classSymbol, string methodName)
+		{
+			Method = method;
+			Location = location;
+			Class = classSymbol;
+			MethodName = methodName;
+			ImmutableArray<IParameterSymbol> parameters = method.Parameters;
+			PassesCancellationToken = parameters.Length > 1 &&
+			                          IsCancellationToken(parameters[parameters.Length - 1].Type);
+			ExpectationParameters = parameters
+				.Skip(1)
+				.Take(parameters.Length - (PassesCancellationToken ? 2 : 1))
+				.ToList();
+			SignatureParameters = parameters.Take(ExpectationParameters.Count + 1).ToList();
+			int overloadIndex = classSymbol.GetMembers(method.Name).OfType<IMethodSymbol>().ToList()
+				.FindIndex(m => SymbolEqualityComparer.Default.Equals(m, method));
+			ConstraintPrefix = overloadIndex > 0 ? $"{method.Name}_{overloadIndex}" : method.Name;
+		}
+
+		public IMethodSymbol Method { get; }
+		public Location Location { get; }
+		public INamedTypeSymbol Class { get; }
+		public string MethodName { get; }
+		public bool PassesCancellationToken { get; }
+		public bool IsAsync => Method.ReturnType.SpecialType != SpecialType.System_Boolean;
+		public IParameterSymbol Subject => Method.Parameters[0];
+
+		/// <summary>
+		///     The parameters after the subject, without the cancellation token.
+		/// </summary>
+		public List<IParameterSymbol> ExpectationParameters { get; }
+
+		/// <summary>
+		///     The subject and the <see cref="ExpectationParameters" />, whose types appear in the generated signatures.
+		/// </summary>
+		public List<IParameterSymbol> SignatureParameters { get; }
+
+		public List<string> GetParameterNames() => ExpectationParameters.Select(p => p.Name).ToList();
+
+		/// <summary>
+		///     The prefix of the generated constraints, which tells overloads of the method apart.
+		/// </summary>
+		public string ConstraintPrefix { get; }
+
+		public ExpectationResult Fail(string reason)
+			=> new(null, new Problem(InvalidMethod, Location, MethodName, reason));
+
+		public CollectionExpectationResult FailCollection(string reason)
+			=> new(null, new Problem(InvalidMethod, Location, MethodName, reason));
+
+		public ClassModel ToClassModel(GeneratorAttributeSyntaxContext context, string hintSuffix)
+			=> new(
+				new EquatableArray<string>(((CompilationUnitSyntax)context.TargetNode.SyntaxTree.GetRoot()).Usings
+					.Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None))
+					.Select(u => u.ToString())
+					.ToImmutableArray()),
+				new EquatableArray<string>(context.TargetNode.Ancestors().OfType<BaseNamespaceDeclarationSyntax>()
+					.Reverse()
+					.SelectMany(n => n.Usings)
+					.Select(u => u.ToString())
+					.ToImmutableArray()),
+				Class.ContainingNamespace.IsGlobalNamespace
+					? null
+					: Class.ContainingNamespace.ToDisplayString(NamespaceFormat),
+				Escape(Class.Name),
+				SyntaxFacts.GetText(Class.DeclaredAccessibility),
+				GetMethodAccessibility(Class, SignatureParameters),
+				$"{Class.ToDisplayString()}.{ConstraintPrefix}{hintSuffix}.g.cs",
+				Escape(Method.Name),
+				new EquatableArray<ParameterModel>(ExpectationParameters
+					.Select(p => new ParameterModel(Escape(p.Name), p.Type.ToDisplayString(TypeFormat), p.IsParams,
+						p.Type.IsReferenceType && p.NullableAnnotation == NullableAnnotation.NotAnnotated))
+					.ToImmutableArray()));
+
+		/// <remarks>
+		///     The extension methods are public, unless the class or a type in their signature is only internal, which a
+		///     public method must not expose.
+		/// </remarks>
+		private static string GetMethodAccessibility(INamedTypeSymbol classSymbol,
+			IEnumerable<IParameterSymbol> parameters)
+			=> classSymbol.DeclaredAccessibility == Accessibility.Public &&
+			   parameters.All(p => GetAccessibility(p.Type) == Accessibility.Public)
+				? "public"
+				: "internal";
+
+		private static bool IsCancellationToken(ITypeSymbol type)
+			=> type is { Name: "CancellationToken", ContainingNamespace: var ns, } &&
+			   ns.ToDisplayString() == "System.Threading";
+	}
 }

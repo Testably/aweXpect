@@ -13,13 +13,13 @@ namespace aweXpect.Core.Generators;
 internal static class ExpectationWriter
 {
 	private const string ConstraintResult = "global::aweXpect.Core.Constraints.ConstraintResult";
-	private const string Formatter = "global::aweXpect.Formatting.Format.Formatter";
-	private const string Grammars = "global::aweXpect.Core.ExpectationGrammars";
-	private const string GrammarsExtensions = "global::aweXpect.Core.ExpectationGrammarsExtensions";
+	internal const string Formatter = "global::aweXpect.Formatting.Format.Formatter";
+	internal const string Grammars = "global::aweXpect.Core.ExpectationGrammars";
+	internal const string GrammarsExtensions = "global::aweXpect.Core.ExpectationGrammarsExtensions";
 	private const string Outcome = "global::aweXpect.Core.Constraints.Outcome";
-	private const string StringBuilder = "global::System.Text.StringBuilder";
-	private const string ValueFormatters = "global::aweXpect.Formatting.ValueFormatters";
-	private const string ValueTask = "global::System.Threading.Tasks.ValueTask";
+	internal const string StringBuilder = "global::System.Text.StringBuilder";
+	internal const string ValueFormatters = "global::aweXpect.Formatting.ValueFormatters";
+	internal const string ValueTask = "global::System.Threading.Tasks.ValueTask";
 
 	public static string Write(ExpectationModel model)
 	{
@@ -60,7 +60,7 @@ internal static class ExpectationWriter
 		return sb.ToString();
 	}
 
-	private static void AppendUsings(StringBuilder sb, EquatableArray<string> usings)
+	internal static void AppendUsings(StringBuilder sb, EquatableArray<string> usings)
 	{
 		foreach (string directive in usings.Values)
 		{
@@ -91,7 +91,7 @@ internal static class ExpectationWriter
 
 		sb.AppendLine(")");
 		sb.AppendLine("\t{");
-		AppendNullChecks(sb, model);
+		AppendNullChecks(sb, model.Parameters);
 		string arguments = string.Concat(Enumerable.Range(0, model.Parameters.Count)
 			.Select(i => model.Parameters.Count == 1 ? ", __state" : $", __state.Item{i + 1}"));
 		string constraint = $"new {overload.ConstraintName}(__it, __grammars{arguments})";
@@ -129,9 +129,9 @@ internal static class ExpectationWriter
 		}
 	}
 
-	private static void AppendNullChecks(StringBuilder sb, ExpectationModel model)
+	internal static void AppendNullChecks(StringBuilder sb, EquatableArray<ParameterModel> parameters)
 	{
-		foreach (string name in model.Parameters.Values.Where(p => p.RequiresNotNull).Select(p => p.Name))
+		foreach (string name in parameters.Values.Where(p => p.RequiresNotNull).Select(p => p.Name))
 		{
 			string rawName = name.TrimStart('@');
 			sb.Append("\t\tif (").Append(name).AppendLine(" is null)");
@@ -340,7 +340,7 @@ internal static class ExpectationWriter
 			? $"<paramref name=\"{model.Parameters.Values[part.ParameterIndex].Name.TrimStart('@')}\" />"
 			: EscapeXml(part.Text)));
 
-	private static void AppendDocumentation(StringBuilder sb, string text)
+	internal static void AppendDocumentation(StringBuilder sb, string text)
 	{
 		foreach (string line in text.Replace("\r\n", "\n").Split('\n'))
 		{
@@ -348,9 +348,9 @@ internal static class ExpectationWriter
 		}
 	}
 
-	private static string EscapeXml(string text)
+	internal static string EscapeXml(string text)
 		=> text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
 
-	private static string Literal(string text)
+	internal static string Literal(string text)
 		=> SymbolDisplay.FormatLiteral(text, true);
 }

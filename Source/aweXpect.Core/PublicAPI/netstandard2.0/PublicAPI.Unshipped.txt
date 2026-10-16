@@ -23,3 +23,22 @@ aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.get -> string?
 aweXpect.Core.Extending.GenerateExpectationAttribute.NegatedName.set -> void
 aweXpect.Options.StringEqualityOptions.GetOccurrenceDetails(string! actual, string! expected, int count) -> string!
 static aweXpect.Core.ResultContextCollectorExtensions.AddStringDifferencesContext(this aweXpect.Core.ResultContextCollector! contexts, string? actual, string? expected, aweXpect.Options.StringEqualityOptions! options, aweXpect.Core.ExpectationGrammars grammars) -> void
+abstract aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.IsMatch(TItem item, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<bool>
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.ExpectationText.get -> string?
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.GenerateCollectionExpectationAttribute(string! name, string! expectationText, string! pluralExpectationText) -> void
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.GenerateCollectionExpectationAttribute(string! name, string! pluralExpectationText) -> void
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.Name.get -> string!
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.NullableOverload.get -> bool
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.NullableOverload.set -> void
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.PluralExpectationText.get -> string!
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.Remarks.get -> string?
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.Remarks.set -> void
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.Summary.get -> string?
+aweXpect.Core.Extending.GenerateCollectionExpectationAttribute.Summary.set -> void
+aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>
+aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.GeneratedCollectionConstraint(string! it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier! quantifier) -> void
+aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.IsMetBy(TCollection actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
+override aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
+override aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.Core.Extending.GeneratedCollectionConstraint<TCollection, TItem>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void

@@ -62,7 +62,8 @@ public static partial class ThatTrack
 ```
 
 The source generator in `aweXpect.Core` writes `IsRadioFriendly()` and `IsNotRadioFriendly()` with their failure
-messages, see [generated expectations](./01-generated-expectations.md).
+messages, see [generated expectations](./01-generated-expectations.md). With `[GenerateCollectionExpectation]`, the
+same method also verifies the items of a collection, e.g. `That(tracks).All().AreRadioFriendly()`.
 
 When an expectation needs more than a condition, e.g. options, a different result or a nested expectation, write it
 yourself as described in the rest of this section.

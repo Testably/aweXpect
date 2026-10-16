@@ -197,8 +197,8 @@ The source generator warns with `aweXpect2001` when a type named in
 
 ## Expectation generator
 
-The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` that it
-cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
+The source generator in `aweXpect.Core` reports an error for a method marked with `[GenerateExpectation]` or
+`[GenerateCollectionExpectation]` that it cannot turn into an expectation, see [generated expectations](./11-extending/01-generated-expectations.md):
 
 | Rule           | Reported when                                                                                             |
 |----------------|-----------------------------------------------------------------------------------------------------------|
