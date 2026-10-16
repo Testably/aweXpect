@@ -144,6 +144,11 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsJsonSerializable<T>(this aweXpect.Core.IThat<object?> source, System.Func<aweXpect.Equivalency.EquivalencyOptions, aweXpect.Equivalency.EquivalencyOptions>? equivalencyOptions = null) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsJsonSerializable<T>(this aweXpect.Core.IThat<object?> source, System.Text.Json.JsonSerializerOptions serializerOptions, System.Func<aweXpect.Equivalency.EquivalencyOptions, aweXpect.Equivalency.EquivalencyOptions>? equivalencyOptions = null) { }
+        public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> IsJsonSerializedAs<T>(this aweXpect.Core.IThat<T> source, string expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> IsJsonSerializedAs<T>(this aweXpect.Core.IThat<T> source, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> IsJsonSerializedAs<T>(this aweXpect.Core.IThat<T> source, string expected, System.Text.Json.JsonSerializerOptions serializerOptions, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsJsonSerializedAs<T>(this aweXpect.Core.IThat<T?> source, string expected, System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> typeInfo, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> IsJsonSerializedAs<T>(this aweXpect.Core.IThat<T> source, object? expected, System.Text.Json.JsonSerializerOptions serializerOptions, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
     }
     public static class ThatJsonString
     {

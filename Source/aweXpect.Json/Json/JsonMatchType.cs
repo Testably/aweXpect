@@ -154,7 +154,7 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	/// <remarks>
 	///     An expected value that is no JSON differs from every subject, so that a negated expectation could never fail.
 	/// </remarks>
-	private static JsonDocument ParseExpected(string? expected, JsonDocumentOptions documentOptions)
+	internal static JsonDocument ParseExpected(string? expected, JsonDocumentOptions documentOptions)
 	{
 		if (expected is null)
 		{

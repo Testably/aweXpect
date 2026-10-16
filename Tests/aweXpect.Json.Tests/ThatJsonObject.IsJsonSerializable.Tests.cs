@@ -8,7 +8,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Json.Tests;
 
-public sealed class ThatJsonObject
+public sealed partial class ThatJsonObject
 {
 	public sealed class IsJsonSerializable
 	{

@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using aweXpect.Formatting;
 using static aweXpect.Expect;
@@ -8,7 +9,7 @@ using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Json.Aot;
 
-internal static class Checks
+internal static partial class Checks
 {
 	private const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
 
@@ -90,6 +91,16 @@ internal static class Checks
 		new("a serializable object fails loudly under negation",
 			() => ShouldFailLoudly(async () => await That((object)new Dto { Name = "a", })
 				.DoesNotComplyWith(it => it.IsJsonSerializable<Dto>()))),
+		new("an object serialized with its source-generated type info passes",
+			() => ShouldPass(async () => await That(new Dto { Name = "a", })
+				.IsJsonSerializedAs("{\"Name\": \"a\"}", DtoContext.Default.Dto))),
+		new("an object serialized differently with its source-generated type info fails and names the difference",
+			() => ShouldFail(async () => await That(new Dto { Name = "a", })
+					.IsJsonSerializedAs("{\"Name\": \"b\"}", DtoContext.Default.Dto),
+				"$.Name", "Serialized:", "{\"Name\":\"a\"}")),
+		new("an object serialized without type info fails loudly",
+			() => ShouldFailLoudly(async () => await That(new Dto { Name = "a", })
+				.IsJsonSerializedAs("{\"Name\": \"a\"}"))),
 	];
 
 	private static JsonElement Parse(string json)
@@ -165,4 +176,7 @@ internal static class Checks
 	{
 		public string? Name { get; set; }
 	}
+
+	[JsonSerializable(typeof(Dto))]
+	private sealed partial class DtoContext : JsonSerializerContext;
 }

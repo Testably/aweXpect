@@ -17,7 +17,7 @@ namespace aweXpect;
 /// <summary>
 ///     Json expectations on <see langword="object" /> values.
 /// </summary>
-public static class ThatJsonObject
+public static partial class ThatJsonObject
 {
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON.
