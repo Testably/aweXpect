@@ -33,7 +33,8 @@ internal static class NumberToleranceExtensions
 			return true;
 		}
 
-		return IsStrictlyWithinTolerance(tolerance, actual.Value, expected.Value, tolerance.Tolerance.Value);
+		return IsStrictlyWithinTolerance(tolerance, actual.Value, expected.Value,
+			tolerance.ToleranceFor(expected.Value)!.Value);
 	}
 
 	public static bool IsGreaterThanOrEqualTo<TNumber>(
@@ -61,7 +62,7 @@ internal static class NumberToleranceExtensions
 		}
 
 		TNumber? diff = TryCalculateDifference(tolerance, actual.Value, expected.Value);
-		return diff is not null && diff.Value.CompareTo(tolerance.Tolerance.Value) <= 0;
+		return diff is not null && diff.Value.CompareTo(tolerance.ToleranceFor(expected.Value)!.Value) <= 0;
 	}
 
 	public static bool IsInRange<TNumber>(
@@ -97,7 +98,8 @@ internal static class NumberToleranceExtensions
 			return true;
 		}
 
-		return IsStrictlyWithinTolerance(tolerance, actual.Value, expected.Value, tolerance.Tolerance.Value);
+		return IsStrictlyWithinTolerance(tolerance, actual.Value, expected.Value,
+			tolerance.ToleranceFor(expected.Value)!.Value);
 	}
 
 	public static bool IsLessThanOrEqualTo<TNumber>(
@@ -125,7 +127,7 @@ internal static class NumberToleranceExtensions
 		}
 
 		TNumber? diff = TryCalculateDifference(tolerance, actual.Value, expected.Value);
-		return diff is not null && diff.Value.CompareTo(tolerance.Tolerance.Value) <= 0;
+		return diff is not null && diff.Value.CompareTo(tolerance.ToleranceFor(expected.Value)!.Value) <= 0;
 	}
 
 	public static void ThrowIfNaN<TNumber>(this TNumber? value,

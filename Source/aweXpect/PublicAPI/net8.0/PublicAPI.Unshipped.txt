@@ -1,1 +1,16 @@
 #nullable enable
+aweXpect.Results.ObjectCollectionMatchWithToleranceResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectCollectionMatchWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult!
+aweXpect.Results.ObjectCollectionMatchWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult
+aweXpect.Results.ObjectCollectionMatchWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult!
+aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult
+aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
+aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult!
+aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult
+aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
+aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>.WithinResult!
+aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>.WithinResult
+aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>! options) -> void
+aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.WithinResult!
+aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.WithinResult
+aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void

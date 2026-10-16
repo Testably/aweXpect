@@ -125,3 +125,17 @@ await Expect.That(duration).IsGreaterThan(42.2).Within(0.2)
 await Expect.That(duration).IsLessThan(42).Within(0.2)
   .Because("we accept values less than 42.2 (42 + 0.2)");
 ```
+
+For `double`, `float`, `decimal` and `Half`, `Percent()` directly after `Within` interprets the tolerance as a
+percentage of the expected value, or of each bound:
+
+```csharp
+double price = 1040.0;
+
+await Expect.That(price).IsEqualTo(1000).Within(5).Percent()
+  .Because("we accept values between 950 and 1050 (1000 ± 5%)");
+await Expect.That(price).IsBetween(1000).And(2000).Within(5).Percent()
+  .Because("we accept values between 950 and 2100");
+```
+
+An expected value of zero only accepts zero.

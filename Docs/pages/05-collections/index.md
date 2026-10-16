@@ -118,5 +118,12 @@ await Expect.That([9, 20, 31]).Contains(10).Within(1);
 A tolerance takes precedence over the comparer of a set. The values of a [dictionary](./04-dictionaries.md#values)
 accept the same tolerance.
 
+For `double`, `float` and `decimal` items, `Percent()` directly after `Within` interprets the tolerance as a
+[percentage](../04-values/02-number.md#tolerance) of each expected item:
+
+```csharp
+await Expect.That([104.0, 209.0]).IsEqualTo([100.0, 200.0]).Within(5).Percent();
+```
+
 Without `Within`, the items of the time types use the
 [default tolerance](../04-values/10-datetime-offset.md#default-tolerance), if one is set.
