@@ -39,6 +39,9 @@ namespace aweXpect
     }
     public static class ThatIPAddress
     {
+        public static TSelf IgnoringIPv4MappedToIPv6<TSelf>(this aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> result)
+            where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Net.IPAddress?, aweXpect.Core.IThat<System.Net.IPAddress?>, System.Net.IPAddress?> IsEqualTo(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, System.Net.IPAddress? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -47,6 +50,7 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> source, string subnet) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Net.IPAddress?, aweXpect.Core.IThat<System.Net.IPAddress?>, System.Net.IPAddress?> IsNotEqualTo(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, System.Net.IPAddress? unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
         [aweXpect.Core.GuaranteesNotNull]

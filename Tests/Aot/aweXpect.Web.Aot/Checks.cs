@@ -114,6 +114,12 @@ internal static class Checks
 		new("an address outside the subnet fails",
 			() => ShouldFail(async () => await That(IPAddress.Parse("192.168.0.1")).IsInSubnet("10.0.0.0/8"),
 				"is in subnet 10.0.0.0/8", "but it was 192.168.0.1")),
+		new("an IPv4-mapped address equals the IPv4 address when ignoring the mapping",
+			() => ShouldPass(async () => await That(IPAddress.Parse("::ffff:10.0.0.1"))
+				.IsEqualTo(IPAddress.Parse("10.0.0.1")).IgnoringIPv4MappedToIPv6())),
+		new("a differing address fails and names both",
+			() => ShouldFail(async () => await That(IPAddress.Parse("10.0.0.2")).IsEqualTo(IPAddress.Parse("10.0.0.1")),
+				"is equal to 10.0.0.1", "but it was 10.0.0.2")),
 	];
 
 	private static HttpResponseMessage Response(HttpStatusCode statusCode, string? json = null, string? header = null)

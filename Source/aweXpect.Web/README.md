@@ -89,12 +89,13 @@ Expectations for [`Uri`](../../Docs/extensions/aweXpect.Web/02-uri.md):
 
 Expectations for [`IPAddress`](../../Docs/extensions/aweXpect.Web/03-ip-address.md):
 
-| Expectation                                        | Negated         | Summary                |
-|----------------------------------------------------|-----------------|------------------------|
-| [`IsIPv4`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)       | `IsNotIPv4`     | an IPv4 address        |
-| [`IsIPv6`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)       | `IsNotIPv6`     | an IPv6 address        |
-| [`IsLoopback`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)   | `IsNotLoopback` | a loopback address     |
-| [`IsInSubnet`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#subnet) | `IsNotInSubnet` | in the expected subnet |
+| Expectation                                         | Negated         | Summary                                                    |
+|-----------------------------------------------------|-----------------|------------------------------------------------------------|
+| [`IsIPv4`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)        | `IsNotIPv4`     | an IPv4 address                                            |
+| [`IsIPv6`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)        | `IsNotIPv6`     | an IPv6 address                                            |
+| [`IsLoopback`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)    | `IsNotLoopback` | a loopback address                                         |
+| [`IsInSubnet`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#subnet)  | `IsNotInSubnet` | in the expected subnet                                     |
+| [`IsEqualTo`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#equality) | `IsNotEqualTo`  | equal to the expected address, optionally ignoring mapping |
 
 ## Documentation
 
@@ -105,5 +106,5 @@ The full documentation is available at
   `HttpRequestMessage`, and status code, headers, content type, content, problem details and the request message of
   an `HttpResponseMessage`
 - [URIs](../../Docs/extensions/aweXpect.Web/02-uri.md): kind, port, scheme, host, path, fragment, base URI and query parameters of a `Uri`
-- [IP addresses](../../Docs/extensions/aweXpect.Web/03-ip-address.md): IPv4, IPv6, loopback and subnet membership of an `IPAddress`
+- [IP addresses](../../Docs/extensions/aweXpect.Web/03-ip-address.md): IPv4, IPv6, loopback, subnet membership and equality of an `IPAddress`
 - [Customization](../../Docs/extensions/aweXpect.Web/04-customization.md): formatting the request and response content in failure messages
