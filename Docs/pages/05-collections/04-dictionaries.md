@@ -78,18 +78,6 @@ await Expect.That(playCounts).DoesNotContainKey("Help!");
 await Expect.That(playCounts).DoesNotContainKeys("Help!", "Something");
 ```
 
-When a `string` key is missing, the failure message suggests the key that was most likely meant, for each missing key.
-The same holds for a missing `string` value:
-
-```text title="Failure message"
-Expected that playCounts
-contains key "Yesterdy",
-but it did not contain key "Yesterdy" (did you mean "Yesterday"?)
-
-Dictionary:
-{["Let It Be"] = 42, ["Yesterday"] = 7}
-```
-
 You can add additional expectations on the corresponding value(s). `WhoseValues` is a collection of the values
 for the expected keys, so all collection expectations are available:
 

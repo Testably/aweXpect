@@ -57,22 +57,6 @@ await Expect.That(songs).Contains("Let It Be");
 await Expect.That(songs).DoesNotContain("Yesterday");
 ```
 
-When a `string` is not contained at all, the failure message suggests the item that was most likely meant, e.g. one
-that differs only in casing or by a typo. A pattern, e.g. with `AsWildcard()`, gets no suggestion:
-
-```text title="Failure message"
-Expected that songs
-contains "Let It Bee" at least once,
-but it did not contain it (did you mean "Let It Be"?)
-
-Collection:
-[
-  "Come Together",
-  "Something",
-  "Let It Be"
-]
-```
-
 You can also set occurrence constraints on `Contains`:
 
 ```csharp
