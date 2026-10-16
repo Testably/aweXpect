@@ -120,6 +120,78 @@ public class ObjectEqualityWithToleranceOptionsTests
 	}
 
 	[Test]
+	public async Task UseRelativeTolerance_ShouldAppendTheUnitToTheTolerance()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(5);
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		string result = sut.GetExpectation("100", ExpectationGrammars.None);
+
+		await That(result).IsEqualTo("is equal to 100 ± 5%");
+	}
+
+	[Test]
+	[Arguments(-105, -100, true)]
+	[Arguments(105, 100, true)]
+	[Arguments(106, 100, false)]
+	public async Task UseRelativeTolerance_ShouldApplyTheToleranceRelativeToTheExpectedValue(int actual,
+		int expected, bool expectMatch)
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(5);
+		sut.UseRelativeTolerance((t, e) => t * Math.Abs(e) / 100, "%");
+
+		bool result = await sut.AreConsideredEqual(actual, expected);
+
+		await That(result).IsEqualTo(expectMatch);
+	}
+
+	[Test]
+	public async Task UseRelativeTolerance_WhenEvaluated_ShouldKeepTheRelativeTolerance()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(5);
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		ObjectEqualityOptions<int> evaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
+		bool result = await evaluation.AreConsideredEqual(210, 200);
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task UseRelativeTolerance_WhenSubjectIsNullable_ShouldApplyItToTheExpectedValue()
+	{
+		ObjectEqualityWithToleranceOptions<int?, int> sut =
+			new((a, e, t) => a is not null && e is not null && Math.Abs(a.Value - e.Value) <= t);
+		sut.Within(5);
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		bool result = await sut.AreConsideredEqual((int?)210, (int?)200);
+
+		await That(result).IsTrue()
+			.Because("the nullable expected value 200 makes 5% a tolerance of 10");
+	}
+
+	[Test]
+	public async Task UseRelativeTolerance_WithoutWithin_ShouldNotChangeTheComparison()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		bool result = await sut.AreConsideredEqual(201, 200);
+		string expectation = sut.GetExpectation("200", ExpectationGrammars.None);
+
+		await That(result).IsFalse();
+		await That(expectation).IsEqualTo("is equal to 200");
+	}
+
+	[Test]
 	public async Task Using_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =

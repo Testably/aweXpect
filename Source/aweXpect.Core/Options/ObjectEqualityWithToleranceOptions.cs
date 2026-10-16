@@ -14,9 +14,23 @@ namespace aweXpect.Options;
 public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
 	Func<TTolerance, string>? toString = null)
-	: ObjectEqualityOptions<TSubject>
+	: ObjectEqualityOptions<TSubject>,
+		IRelativeToleranceOptions<TTolerance>
 {
 	private Action<TTolerance>? _validateTolerance;
+
+	/// <inheritdoc cref="IRelativeToleranceOptions{TTolerance}.UseRelativeTolerance(Func{TTolerance, TTolerance, TTolerance}, string)" />
+	/// <remarks>
+	///     Applies to the tolerance specified with <see cref="Within(TTolerance)" />, and only to expected values of type
+	///     <typeparamref name="TTolerance" />.
+	/// </remarks>
+	public void UseRelativeTolerance(Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit)
+	{
+		if (MatchType is WithinMatchType matchType)
+		{
+			MatchType = matchType.WithRelativeTolerance(absoluteTolerance, unit);
+		}
+	}
 
 	/// <summary>
 	///     Specifies the <paramref name="tolerance" /> within which the actual value is considered equal to the expected
@@ -81,7 +95,9 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		Func<TTolerance> tolerance,
 		bool isDefault,
 		Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
-		Func<TTolerance, string> toString)
+		Func<TTolerance, string> toString,
+		Func<TTolerance, TTolerance, TTolerance>? absoluteTolerance = null,
+		string unit = "")
 		: IObjectMatchType
 	{
 		public bool IsDefault => isDefault;
@@ -89,8 +105,12 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		public WithinMatchType WithResolvedTolerance()
 		{
 			TTolerance value = tolerance();
-			return new WithinMatchType(() => value, isDefault, isWithinTolerance, toString);
+			return new WithinMatchType(() => value, isDefault, isWithinTolerance, toString, absoluteTolerance, unit);
 		}
+
+		public WithinMatchType WithRelativeTolerance(Func<TTolerance, TTolerance, TTolerance> relativeTolerance,
+			string relativeUnit)
+			=> new(tolerance, isDefault, isWithinTolerance, toString, relativeTolerance, relativeUnit);
 
 		#region IEquality Members
 
@@ -123,7 +143,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			TTolerance value = tolerance();
 			return isDefault && EqualityComparer<TTolerance>.Default.Equals(value, default!)
 				? ""
-				: toString.Invoke(value);
+				: toString.Invoke(value) + unit;
 		}
 
 		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
@@ -134,7 +154,15 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			}
 
 			return actual is TSubject typedActual && expected is TSubject typedExpected &&
-			       isWithinTolerance(typedActual, typedExpected, tolerance());
+			       isWithinTolerance(typedActual, typedExpected, ToleranceFor(typedExpected));
+		}
+
+		private TTolerance ToleranceFor(TSubject expected)
+		{
+			TTolerance value = tolerance();
+			return absoluteTolerance is not null && expected is TTolerance typedExpected
+				? absoluteTolerance(value, typedExpected)
+				: value;
 		}
 
 		#endregion

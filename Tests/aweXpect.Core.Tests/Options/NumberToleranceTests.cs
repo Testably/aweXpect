@@ -65,6 +65,58 @@ public class NumberToleranceTests
 	}
 
 	[Test]
+	[Arguments(-105, -100, true)]
+	[Arguments(105, 100, true)]
+	[Arguments(106, 100, false)]
+	public async Task IsWithinTolerance_WithRelativeTolerance_ShouldApplyItToTheExpectedValue(
+		int actual, int expected, bool expectedResult)
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+		sut.SetTolerance(5);
+		sut.UseRelativeTolerance((t, e) => t * Math.Abs(e) / 100, "%");
+
+		bool result = sut.IsWithinTolerance(actual, expected);
+
+		await That(result).IsEqualTo(expectedResult);
+	}
+
+	[Test]
+	public async Task ToleranceFor_WithoutRelativeTolerance_ShouldReturnTheTolerance()
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+		sut.SetTolerance(5);
+
+		int? result = sut.ToleranceFor(200);
+
+		await That(result).IsEqualTo(5);
+	}
+
+	[Test]
+	public async Task ToleranceFor_WithoutTolerance_ShouldReturnNull()
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		int? result = sut.ToleranceFor(200);
+
+		await That(result).IsNull();
+	}
+
+	[Test]
+	public async Task ToleranceFor_WithRelativeTolerance_ShouldCalculateTheAbsoluteTolerance()
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+		sut.SetTolerance(5);
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		int? result = sut.ToleranceFor(200);
+
+		await That(result).IsEqualTo(10);
+		await That(sut.Tolerance).IsEqualTo(5)
+			.Because("the specified tolerance is kept and only interpreted relative to the expected value");
+	}
+
+	[Test]
 	public async Task ToString_WhenToleranceIsAChar_ShouldFormatItAsNumber()
 	{
 		NumberTolerance<char> sut = new((_, _) => null);
@@ -74,6 +126,18 @@ public class NumberToleranceTests
 
 		await That(result).IsEqualTo(" ± 1")
 			.Because("a tolerance formatted as char would be an unreadable character");
+	}
+
+	[Test]
+	public async Task ToString_WithRelativeTolerance_ShouldAppendTheUnit()
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+		sut.SetTolerance(5);
+		sut.UseRelativeTolerance((t, e) => t * e / 100, "%");
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" ± 5%");
 	}
 
 	[Test]

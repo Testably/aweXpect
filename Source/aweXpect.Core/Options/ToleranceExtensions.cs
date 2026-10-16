@@ -96,4 +96,67 @@ public static class ToleranceExtensions
 		result.Options.SetTolerance(tolerance);
 		return result;
 	}
+
+	/// <summary>
+	///     …interpreting the tolerance as a percentage of the expected value.
+	/// </summary>
+	/// <remarks>
+	///     On an expected value of zero, only an equal value is within the tolerance.
+	/// </remarks>
+	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, double> result)
+	{
+		result.Options.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
+			"%");
+		return (TResult)result;
+	}
+
+	/// <summary>
+	///     …interpreting the tolerance as a percentage of the expected value.
+	/// </summary>
+	/// <remarks>
+	///     On an expected value of zero, only an equal value is within the tolerance.
+	/// </remarks>
+	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, float> result)
+	{
+		result.Options.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
+			"%");
+		return (TResult)result;
+	}
+
+	/// <summary>
+	///     …interpreting the tolerance as a percentage of the expected value.
+	/// </summary>
+	/// <remarks>
+	///     On an expected value of zero, only an equal value is within the tolerance.
+	/// </remarks>
+	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, decimal> result)
+	{
+		result.Options.UseRelativeTolerance(RelativeDecimalTolerance, "%");
+		return (TResult)result;
+	}
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="Percent{TResult}(IWithinToleranceResult{TResult, double})" />
+	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, Half> result)
+	{
+		result.Options.UseRelativeTolerance(
+			static (tolerance, expected) => (Half)((float)tolerance * Math.Abs((float)expected) / 100), "%");
+		return (TResult)result;
+	}
+#endif
+
+	/// <remarks>
+	///     A tolerance beyond the range of <see langword="decimal" /> covers every difference that is representable.
+	/// </remarks>
+	private static decimal RelativeDecimalTolerance(decimal tolerance, decimal expected)
+	{
+		try
+		{
+			return tolerance * Math.Abs(expected) / 100;
+		}
+		catch (OverflowException)
+		{
+			return decimal.MaxValue;
+		}
+	}
 }

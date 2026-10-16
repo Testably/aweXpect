@@ -20,6 +20,29 @@ public sealed class NumberToleranceResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
+	[Test]
+	public async Task Within_ShouldReturnAResultWithRelativeToleranceOptions()
+	{
+		NumberTolerance<int> options = new((a, b) => a - b);
+		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
+
+		NumberToleranceResult<int, IThat<int>>.WithinResult result = sut.Within(1);
+
+		await That(result).Is<IOptionsProvider<IRelativeToleranceOptions<int>>>()
+			.Whose(x => x.Options, it => it.IsSameAs(options));
+	}
+
+	[Test]
+	public async Task Within_ShouldSetTheTolerance()
+	{
+		NumberTolerance<int> options = new((a, b) => a - b);
+		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
+
+		_ = sut.Within(1);
+
+		await That(options.Tolerance).IsEqualTo(1);
+	}
+
 	private static NumberToleranceResult<T, IThat<T>> CreateSut<T>(T subject, NumberTolerance<T> options)
 #if NET8_0_OR_GREATER
 		where T : struct, INumber<T>

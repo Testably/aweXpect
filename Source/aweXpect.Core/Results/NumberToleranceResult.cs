@@ -26,6 +26,31 @@ public class NumberToleranceResult<TType, TThat>(
 	where TType : struct, IComparable<TType>
 #endif
 {
+	private readonly TThat _returnValue = returnValue;
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	NumberTolerance<TType> IOptionsProvider<NumberTolerance<TType>>.Options => options;
+
+	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
+	public WithinResult Within(TType tolerance)
+	{
+		options.SetTolerance(tolerance);
+		return new WithinResult(ExpectationBuilder, _returnValue, options);
+	}
+
+	/// <summary>
+	///     The result directly after <see cref="NumberToleranceResult{TType,TThat}.Within" />, whose tolerance can still be made relative to the
+	///     expected value, e.g. via <c>Percent()</c>.
+	/// </summary>
+	public sealed class WithinResult(
+		ExpectationBuilder expectationBuilder,
+		TThat returnValue,
+		NumberTolerance<TType> options)
+		: NumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
+			IWithinToleranceResult<NumberToleranceResult<TType, TThat>, TType>
+	{
+		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+		IRelativeToleranceOptions<TType> IOptionsProvider<IRelativeToleranceOptions<TType>>.Options
+			=> ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
+	}
 }
