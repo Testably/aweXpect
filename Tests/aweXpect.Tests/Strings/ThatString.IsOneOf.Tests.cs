@@ -465,6 +465,17 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenValueIsEqualToAnyExpectedExceptForTheWhiteSpace_ShouldSucceed()
+			{
+				string subject = "  foo\n\t bar ";
+
+				async Task Act()
+					=> await That(subject).IsOneOf("baz", "foo  bar").NormalizingWhiteSpace();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			[AutoArguments]
 			public async Task WhenValueIsNull_ShouldFail(
 				params string?[] expected)

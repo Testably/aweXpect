@@ -69,6 +69,7 @@ The expectations that compare the `string` with an expected string (`IsEqualTo`,
 | `IgnoringIndentation()`        | removes the leading whitespace from every line (see [below](#indentation)) |
 | `IgnoringLeadingWhiteSpace()`  | ignores whitespace at the start of the strings                             |
 | `IgnoringTrailingWhiteSpace()` | ignores whitespace at the end of the strings                               |
+| `NormalizingWhiteSpace()`      | collapses whitespace runs to a space and trims (see [below](#whitespace))  |
 | `Using(comparer)`              | compares with a custom `IEqualityComparer<string>`                         |
 
 ```csharp
@@ -79,6 +80,7 @@ await Expect.That("Abbey\r\nRoad").IsEqualTo("Abbey\nRoad").IgnoringNewlineStyle
 await Expect.That("  Abbey\n    Road").IsEqualTo("Abbey\nRoad").IgnoringIndentation();
 await Expect.That(title).IsEqualTo("  Abbey Road").IgnoringLeadingWhiteSpace();
 await Expect.That(title).IsEqualTo("Abbey Road \t").IgnoringTrailingWhiteSpace();
+await Expect.That("Abbey\n\t Road ").IsEqualTo("Abbey  Road").NormalizingWhiteSpace();
 await Expect.That(title).StartsWith("ABBEY").Using(StringComparer.OrdinalIgnoreCase);
 ```
 
@@ -131,6 +133,44 @@ await Expect.That(code).Contains("""
 
 This also normalizes the newline style. Trailing whitespace within a line is kept, but a line that consists only of
 whitespace becomes empty.
+
+### Whitespace
+
+`NormalizingWhiteSpace` replaces every run of whitespace, including line breaks and tabs, with a single space and
+removes the whitespace at the start and the end. This compares generated SQL, HTML or log output regardless of its
+layout:
+
+```csharp
+string sql = """
+             SELECT *
+               FROM Albums
+              WHERE Title = 'Abbey Road'
+             """;
+
+await Expect.That(sql).IsEqualTo("SELECT * FROM Albums WHERE Title = 'Abbey Road'").NormalizingWhiteSpace();
+await Expect.That(sql).Contains("FROM Albums WHERE").NormalizingWhiteSpace();
+await Expect.That("AbbeyRoad").IsNotEqualTo("Abbey Road").NormalizingWhiteSpace();
+```
+
+Whitespace is collapsed, not removed, so `"AbbeyRoad"` still differs from `"Abbey Road"`. Any Unicode whitespace
+counts, e.g. also a non-breaking space.
+
+<details>
+<summary>Combining `NormalizingWhiteSpace` with other options</summary>
+
+- It makes `IgnoringIndentation`, `IgnoringNewlineStyle`, `IgnoringLeadingWhiteSpace` and `IgnoringTrailingWhiteSpace`
+  redundant, as it removes every difference that they ignore. They can still be specified.
+- It applies to the patterns of `AsWildcard` and `AsRegex` as well, so a regex sees a single space where the subject
+  had a line break. As the line breaks of the pattern are collapsed too, a comment in a pattern with
+  `RegexOptions.IgnorePatternWhitespace` extends to the end of the pattern.
+- Like with the other whitespace options, a prefix, suffix or substring keeps the whitespace at its inner end, which
+  then has to match whitespace in the subject, unless that end reaches the corresponding end of the subject.
+- It cannot be combined with [`AsBlock`](#blocks), which compares the lines that the normalization joins.
+- A failure shows the values with normalized whitespace and the position of the first difference refers to them.
+  Where the failure shows the normalized subject, the original one is listed below it. No differences per line are
+  listed.
+
+</details>
 
 ## Match types
 

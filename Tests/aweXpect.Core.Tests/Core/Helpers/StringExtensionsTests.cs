@@ -4,6 +4,47 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class StringExtensionsTests
 {
+	public sealed class CollapseWhiteSpace
+	{
+		[Test]
+		[Arguments("a  b", "a b")]
+		[Arguments("a\tb", "a b")]
+		[Arguments("a\r\n  b", "a b")]
+		[Arguments("a  b", "a b")]
+		[Arguments("  a b  ", " a b ")]
+		[Arguments(" \t\n", " ")]
+		[Arguments("\t", " ")]
+		public async Task ShouldReplaceEveryRunOfWhiteSpaceWithASingleSpace(string input, string expected)
+		{
+			string result = input.CollapseWhiteSpace();
+
+			await That(result).IsEqualTo(expected)
+				.Because("every Unicode whitespace counts, and the ends are trimmed separately by the options");
+		}
+
+		[Test]
+		[Arguments("")]
+		[Arguments("a")]
+		[Arguments(" a b ")]
+		public async Task WhenNothingToCollapse_ShouldReturnSameInstance(string input)
+		{
+			string result = input.CollapseWhiteSpace();
+
+			await That(result).IsSameAs(input)
+				.Because("a value without whitespace to collapse must not be copied");
+		}
+
+		[Test]
+		public async Task WhenNull_ShouldReturnNull()
+		{
+			string? input = null;
+
+			string? result = input.CollapseWhiteSpace();
+
+			await That(result).IsNull();
+		}
+	}
+
 	public sealed class DisplayWhitespace
 	{
 		[Test]

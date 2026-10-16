@@ -69,3 +69,5 @@ aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.Wit
 static aweXpect.ToleranceExtensions.Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, decimal>! result) -> TResult
 static aweXpect.ToleranceExtensions.Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, double>! result) -> TResult
 static aweXpect.ToleranceExtensions.Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, float>! result) -> TResult
+aweXpect.Options.StringEqualityOptions.NormalizingWhiteSpace(bool normalizeWhiteSpace = true) -> aweXpect.Options.StringEqualityOptions!
+static aweXpect.StringEqualityOptionsExtensions.NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true) -> TResult
