@@ -1,12 +1,17 @@
 # Customization
 
+Describes the customization values of aweXpect.Json. They work like the
+[customization of aweXpect](https://docs.testably.org/aweXpect/how-it-works/configuration).
+
+| Value                          | Default                      | Used to                                                              |
+|--------------------------------|------------------------------|----------------------------------------------------------------------|
+| `DefaultJsonDocumentOptions`   | `AllowTrailingCommas = true` | parse JSON strings                                                   |
+| `DefaultJsonSerializerOptions` | `AllowTrailingCommas = true` | format JSON values and serialize the subject of `IsJsonSerializedAs` |
+
 You can change the default
-[`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions), used to
-parse JSON strings, and the default
-[`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions), used to
-format JSON values and to serialize the subject of [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
-Both allow trailing commas by default. Each value is set on its own and restored when the returned lifetime is
-disposed:
+[`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and the
+default [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions).
+Each value is set on its own and restored when the returned lifetime is disposed:
 
 ```csharp
 using (Customize.aweXpect.Json().DefaultJsonDocumentOptions.Set(new JsonDocumentOptions
@@ -18,4 +23,16 @@ using (Customize.aweXpect.Json().DefaultJsonDocumentOptions.Set(new JsonDocument
 }
 ```
 
-To change a value for all tests, set it on `Customize.aweXpect.Global.Json()` instead.
+To change a value for all tests, set it on `Customize.aweXpect.Global.Json()` instead, see
+[global defaults](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+
+To use other `JsonDocumentOptions` for a single expectation, pass them to
+[`IsValidJson(o => …)`](./01-strings.md#validation) or, wherever [`JsonOptions`](./02-matching.md#options) are
+accepted, with `WithJsonOptions(…)`:
+
+```csharp
+string track = """{"title": "Let It Be", /* 1970 */ "artist": "The Beatles"}""";
+
+await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" },
+    o => o.WithJsonOptions(d => d with { CommentHandling = JsonCommentHandling.Skip }));
+```

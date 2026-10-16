@@ -1,5 +1,12 @@
 # Serialization
 
+Describes the possible expectations for the JSON serialization of objects with `System.Text.Json`.
+
+| Expectation                                 | Negated | Summary                                                |
+|---------------------------------------------|---------|--------------------------------------------------------|
+| [`IsJsonSerializable`](#json-serializable)  |         | survives a round trip through the JSON serializer      |
+| [`IsJsonSerializedAs`](#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
+
 ## JSON serializable
 
 You can verify that an object is JSON serializable:
@@ -12,8 +19,9 @@ Track track = new("Let It Be", "The Beatles");
 await Expect.That(track).IsJsonSerializable();
 ```
 
-This verifies that the object can be serialized to JSON and deserialized again, and that the result is equivalent to
-the original object. For example, a property with a private setter loses its value:
+This verifies that the object can be serialized to JSON and deserialized again, and that the result is
+[equivalent](https://docs.testably.org/aweXpect/values/equivalency) to the original object. For example, a property
+with a private setter loses its value:
 
 ```csharp
 public class PlayCounter
@@ -40,7 +48,7 @@ but it was not:
 
 You can specify both the
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) and the
-equivalency options:
+[equivalency options](https://docs.testably.org/aweXpect/values/equivalency#configuration):
 
 ```csharp
 await Expect.That(track).IsJsonSerializable(
@@ -110,9 +118,10 @@ await Expect.That(track).IsJsonSerializedAs(new { title = "Let It Be" }, seriali
     o => o.IgnoringAdditionalProperties());
 ```
 
+:::note[Trimming and Native AOT]
 Unless a `JsonTypeInfo<T>` is passed, the subject is serialized by reflection, which is switched off when publishing
-with trimming or Native AOT. In such an application, pass the source-generated `JsonTypeInfo<T>` of the subject together
-with the expected value as a JSON string:
+with trimming or [Native AOT](https://docs.testably.org/aweXpect/how-it-works/native-aot). In such an application, pass
+the source-generated `JsonTypeInfo<T>` of the subject together with the expected value as a JSON string:
 
 ```csharp
 [JsonSerializable(typeof(Track))]
@@ -121,3 +130,4 @@ internal partial class TrackContext : JsonSerializerContext;
 await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""", TrackContext.Default.Track,
     o => o.TreatingNullAsAbsent());
 ```
+:::

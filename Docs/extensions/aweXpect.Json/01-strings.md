@@ -1,5 +1,14 @@
 # JSON strings
 
+Describes the possible expectations for strings that contain JSON.
+
+| Expectation                                           | Negated                    | Summary                                            |
+|-------------------------------------------------------|----------------------------|----------------------------------------------------|
+| [`IsEqualTo(…).AsJson()`](#string-comparison-as-json) | `IsNotEqualTo(…).AsJson()` | equal to the expected JSON, compared by structure  |
+| [`IsValidJson`](#validation)                          |                            | can be parsed as JSON                              |
+| [`IsValidJsonMatching`](#validation)                  |                            | valid JSON that matches the expected value         |
+| [`IsValidJsonMatchingExactly`](#validation)           |                            | valid JSON that matches the expected value exactly |
+
 ## String comparison as JSON
 
 You can verify that a string is equal to the expected JSON, compared by its structure instead of its formatting:
@@ -40,11 +49,16 @@ Expected:
 ```
 
 The expected string must be valid JSON, otherwise an `ArgumentException` is thrown. As JSON is compared by its
-structure, `AsJson()` cannot be combined with `IgnoringCase()` or `Using(comparer)`.
+structure, `AsJson()` cannot be combined with the
+[string options](https://docs.testably.org/aweXpect/values/string#string-options) `IgnoringCase()` or
+`Using(comparer)`. Instead, `AsJson(o => …)` accepts the [JSON options](./02-matching.md#options) to relax the
+comparison.
 
+:::note
 `AsJson()` is not available on `Contains` or `DoesNotContain` for a string subject, as parts of a JSON string are
 usually not valid JSON. Use `IsEqualTo(expected).AsJson()` or `IsValidJsonMatching(expected)` instead. On a collection
 of strings, `Contains(expected).AsJson()` compares each item as JSON.
+:::
 
 ## Validation
 

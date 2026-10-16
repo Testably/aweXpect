@@ -1,9 +1,13 @@
 # Matching JSON
 
-`Matches` and `MatchesExactly` compare a `JsonElement` or a [`JsonNode`](./03-objects-and-arrays.md#jsonnode) with an
-expected value. The options on this page are available wherever `JsonOptions` are accepted, e.g.
-`IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject),
-[`IsArray`](./03-objects-and-arrays.md#isarray) and [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
+Describes the possible expectations for matching a `JsonElement` or a
+[`JsonNode`](./03-objects-and-arrays.md#jsonnode) with an expected value, and the [options](#options) to relax the
+comparison.
+
+| Expectation                  | Negated | Summary                                                   |
+|------------------------------|---------|-----------------------------------------------------------|
+| [`Matches`](#objects)        |         | matches the expected value, additional properties allowed |
+| [`MatchesExactly`](#objects) |         | matches the expected value exactly                        |
 
 ## Objects
 
@@ -17,6 +21,7 @@ await Expect.That(track).Matches(new { title = "Let It Be" });
 await Expect.That(track).MatchesExactly(new { title = "Let It Be", artist = "The Beatles" });
 ```
 
+`Matches` accepts the same values as `MatchesExactly` with the option `IgnoringAdditionalProperties()`.
 `MatchesExactly(new { title = "Let It Be" })` would fail because of the additional `artist` property:
 
 ```text title="Failure message"
@@ -59,7 +64,25 @@ await Expect.That(JsonDocument.Parse("true").RootElement).Matches(true);
 await Expect.That(JsonDocument.Parse("null").RootElement).Matches(null);
 ```
 
-## Treating `null` as absent
+## Options
+
+The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `MatchesExactly`,
+`IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject),
+[`IsArray`](./03-objects-and-arrays.md#isarray) and [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json).
+Like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options), an option that switches
+something on takes an optional `bool`:
+
+| Option                                                             | Configures                                             |
+|--------------------------------------------------------------------|--------------------------------------------------------|
+| [`IgnoringAdditionalProperties()`](#objects)                       | ignores additional properties of objects               |
+| [`TreatingNullAsAbsent()`](#treating-null-as-absent)               | a property with the value `null` counts as absent      |
+| [`IgnoringAdditionalArrayElements()`](#additional-array-elements)  | ignores additional elements of arrays                  |
+| [`IgnoringArrayOrder()`](#array-order)                             | the elements of arrays can be in any order             |
+| [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
+| [`NumbersWithin(tolerance)`](#numbers-within-a-tolerance)          | numbers match within an absolute or relative tolerance |
+| [`WithJsonOptions(…)`](./05-customization.md)                      | the `JsonDocumentOptions` used to parse JSON strings   |
+
+### Treating `null` as absent
 
 By default, a property with the value `null` differs from a missing property. With `TreatingNullAsAbsent()`, a
 property with the value `null` counts as absent, in both directions:
@@ -83,7 +106,7 @@ but it differed as $.album had unexpected <null>
 
 Elements of an array with the value `null` are not affected.
 
-## Additional array elements
+### Additional array elements
 
 With `IgnoringAdditionalArrayElements()`, the additional elements of all compared arrays, also nested ones, are
 ignored:
@@ -95,7 +118,7 @@ await Expect.That(titles).Matches(["Let It Be", "Yesterday"],
     o => o.IgnoringAdditionalArrayElements());
 ```
 
-## Array order
+### Array order
 
 By default, arrays are compared by index. With `IgnoringArrayOrder()`, the elements of all compared arrays, also
 nested ones, can be in any order:
@@ -127,12 +150,15 @@ JSON options:
 
 When exactly one element remains unpaired on each side, they are compared with each other instead, e.g.
 `$[1] was "Yesterday" instead of "Something"`. Combined with `IgnoringAdditionalArrayElements()`, the expected
-elements only have to be contained in the subject in any order. The pairing is greedy, so overlapping `It.Is…`
-expectations can fail, although another pairing would succeed. The positional members of
+elements only have to be contained in the subject in any order. The positional members of
 [`IsArray`](./03-objects-and-arrays.md#isarray) (`At`, `WithElements`, `WithArrays` and `WithObjects`) still verify the
 element at each index.
 
-## Ignoring members
+:::warning
+The pairing is greedy, so overlapping `It.Is…` expectations can fail, although another pairing would succeed.
+:::
+
+### Ignoring members
 
 Generated values, e.g. ids, timestamps or ETags, can be left out of the comparison with `IgnoringMember(name)` or
 `Ignoring(path => …)`. An ignored value and everything below it is neither compared nor reported as missing or
@@ -172,7 +198,7 @@ JSON options:
    "craetedAt" matched no member (did you mean "createdAt"?)
 ```
 
-## Numbers within a tolerance
+### Numbers within a tolerance
 
 Calculated numbers rarely match an expected literal exactly. With `NumbersWithin(tolerance)`, a number matches when it
 differs from the expected number by at most the tolerance, and with `NumbersWithin(tolerance).Percent()` by at most the
@@ -187,9 +213,10 @@ await Expect.That(invoice).MatchesExactly(new { tax = 0.057m },
     o => o.NumbersWithin(1).Percent().IgnoringAdditionalProperties());
 ```
 
-The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. Like in aweXpect,
-a relative tolerance only matches an equal number when the expected number is `0`. The numbers are compared as
-`double`, so numbers outside its range are compared by their text. For a product `{"name": "Guitar", "price": 110}`,
+The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. Like the
+[tolerance in aweXpect](https://docs.testably.org/aweXpect/values/number#tolerance), a relative tolerance only matches
+an equal number when the expected number is `0`. The numbers are compared as `double`, so numbers outside its range are
+compared by their text. For a product `{"name": "Guitar", "price": 110}`,
 `MatchesExactly(new { name = "Guitar", price = 100 }, o => o.NumbersWithin(5).Percent())` would fail with:
 
 ```text title="Failure message"
@@ -201,7 +228,7 @@ JSON options:
  - compare numbers within ± 5%
 ```
 
-## Options in failure messages
+### Options in failure messages
 
 The failure message lists the active options in a "JSON options" context, like in the examples above, and omits it
 when no option is active. As `Matches`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject) and

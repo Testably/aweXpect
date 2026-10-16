@@ -1,5 +1,17 @@
 # Objects, arrays and value kinds
 
+Describes the possible expectations for the kind and the content of a `JsonElement` or a [`JsonNode`](#jsonnode).
+
+| Expectation                           | Negated | Summary                                                 |
+|---------------------------------------|---------|---------------------------------------------------------|
+| [`IsObject`](#isobject)               |         | a JSON object, optionally with expectations on it       |
+| [`IsArray`](#isarray)                 |         | a JSON array, optionally with expectations on it        |
+| [`IsArray().WhoseElements`](#isarray) |         | collection expectations on the elements of a JSON array |
+| [`IsString`](#value-kinds)            |         | a JSON string                                           |
+| [`IsNumber`](#value-kinds)            |         | a JSON number                                           |
+| [`IsBoolean`](#value-kinds)           |         | a JSON boolean, i.e. `true` or `false`                  |
+| [`IsNull`](#value-kinds)              |         | the JSON value `null`, only for a `JsonElement`         |
+
 ## IsObject
 
 You can verify that a `JsonElement` is a JSON object that satisfies some expectations:
@@ -223,8 +235,10 @@ await Expect.That(tracks).IsArray(a => a
 ```
 
 You can verify the elements of an array regardless of their position with `WhoseElements`. It provides all
-collection expectations of aweXpect, e.g. `All()`, `AtLeast(…)`, `AtMost(…)`, `Exactly(…)`, `Between(…).And(…)` and
-`None()` with `ComplyWith(…)` or `Satisfy(…)`, as well as `Contains(…)`, `HasCount(…)` and `IsEmpty()`:
+[collection expectations](https://docs.testably.org/aweXpect/collections/items) of aweXpect, e.g. the
+[quantifiers](https://docs.testably.org/aweXpect/collections/items#quantifiers) `All()`, `AtLeast(…)`, `AtMost(…)`,
+`Exactly(…)`, `Between(…).And(…)` and `None()` with `ComplyWith(…)` or `Satisfy(…)`, as well as `Contains(…)`,
+`HasCount(…)` and `IsEmpty()`:
 
 ```csharp
 JsonElement tracks = JsonDocument.Parse(
@@ -274,10 +288,12 @@ JSON options (elements[1]):
  - ignore additional properties
 ```
 
+:::warning
 A `JsonElement` has no value equality, so value-based expectations on the elements, like `Contains(someElement)` or
 `AreEqualTo(…)`, are not useful. Use expectations like `ComplyWith(e => e.Matches(…))`, `Contains([e => e.Matches(…)])`
 or predicates like `Contains(e => …)` instead. A single lambda in `Contains(e => …)` is such a predicate on the
 `JsonElement`, so pass expectations on an element as a collection.
+:::
 
 ## Value kinds
 
@@ -300,8 +316,10 @@ is a number,
 but it was a string
 ```
 
+:::note
 For a nullable `JsonElement?`, `IsNull()` is the general expectation of aweXpect that verifies that the subject itself
 is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but not a JSON-specific `IsNull()`.
+:::
 
 ## `JsonNode`
 
@@ -329,8 +347,10 @@ matches new { title = "Let It Be" } exactly,
 but it differed as $.artist had unexpected "The Beatles"
 ```
 
+:::note
 The node is verified in the state it has when the expectation is awaited, so changes made after `Expect.That(…)` are
 included.
+:::
 
 A `null` node is the JSON value `null`, as `JsonNode.Parse("null")` returns it. `Matches(null)` succeeds for it, while
 `IsObject()` would fail with:
