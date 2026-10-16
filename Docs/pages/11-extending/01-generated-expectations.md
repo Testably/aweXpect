@@ -112,6 +112,47 @@ private static bool IsUntitled([NotNullWhen(false)] Track? track)
 
 Here `IsNotUntitled()` fails for a `null` subject, so the subject cannot be `null` after it.
 
+## Collections
+
+`[GenerateCollectionExpectation]` generates an expectation on the items of a collection from the same kind of method,
+e.g. `AreLongerThan` for `That(tracks).All().AreLongerThan(…)`. It takes the name, the expectation text on a single
+item and its plural:
+
+```csharp no-compile
+[GenerateCollectionExpectation("AreLongerThan", "is longer than {minimum}", "are longer than {minimum}")]
+private static bool IsLongerThan(Track track, TimeSpan minimum)
+    => track.Duration > minimum;
+```
+
+Together with `[GenerateExpectation]`, the text on a single item can be left out, as it is the expectation text of
+`[GenerateExpectation]` without `{not}`:
+
+```csharp no-compile
+[GenerateExpectation("Is{Not}LongerThan", "is {not} longer than {minimum}")]
+[GenerateCollectionExpectation("AreLongerThan", "are longer than {minimum}")]
+private static bool IsLongerThan(Track track, TimeSpan minimum)
+    => track.Duration > minimum;
+```
+
+```csharp no-compile
+await Expect.That(tracks).All().AreLongerThan(TimeSpan.FromMinutes(2));
+await Expect.That(tracks).AtLeast(2).AreLongerThan(TimeSpan.FromMinutes(2));
+await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
+```
+
+- The method follows the rules above, and its first parameter is the item.
+- The expectation text describes a single item, e.g. "is longer than … for all items". The plural text is used
+  where the quantifier is the subject, e.g. "has values of which at least 2 are longer than …". The quantifier
+  carries the negation, so neither text contains `{not}`.
+- The result counts the items, e.g. "but only 1 of 3 were", with "did" instead of "were" when the text does not start
+  with a form of "be". The failure message lists the matching or not matching items and the collection.
+- The expectation extends the elements of every kind of collection that can hold the item: an `IEnumerable<T>`, an
+  `ImmutableArray<T>` and, on .NET 8 or later, an `IAsyncEnumerable<T>`. A `string` item extends the elements of
+  the collections of strings.
+- A `null` item does not match, unless the item parameter is nullable: then the method decides. `[DisallowNull]` and
+  `NullableOverload` work like for a subject.
+- `Summary` and `Remarks` replace or extend the XML documentation, which is derived from the plural text.
+
 ## Diagnostics
 
 A method that the generator cannot turn into an expectation is reported as an error, see the

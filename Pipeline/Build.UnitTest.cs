@@ -62,7 +62,9 @@ partial class Build
 	Project[] UnitTestProjects(BuildScope buildScope)
 		=> buildScope switch
 		{
-			BuildScope.CoreOnly => [Solution.Tests.aweXpect_Core_Tests,],
+			// The generator of aweXpect.Core is tested by compiling its output against the Core project, which only the
+			// Debug configuration references, so its coverage counts for a Core change as well.
+			BuildScope.CoreOnly => [Solution.Tests.aweXpect_Core_Tests, Solution.Tests.aweXpect_Generators_Tests,],
 			BuildScope.MainOnly =>
 			[
 				Solution.Tests.aweXpect_Analyzers_Tests,
@@ -94,9 +96,9 @@ partial class Build
 				.EnableNoLogo());
 
 			// The projects that `UnitTests` did not run in Debug: under `CoreOnly` it runs its own projects in Debug.
-			Project[] projects = UnitTestProjects(BuildScope == BuildScope.CoreOnly
-				? BuildScope.MainOnly
-				: BuildScope.Default);
+			Project[] projects = BuildScope == BuildScope.CoreOnly
+				? UnitTestProjects(BuildScope.MainOnly).Except(UnitTestProjects(BuildScope.CoreOnly)).ToArray()
+				: UnitTestProjects(BuildScope.Default);
 
 			AbsolutePath resultsDirectory = TestResultsDirectory / Configuration.Debug;
 			RunUnitTests(projects, framework => framework != NetFramework,

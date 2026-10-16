@@ -135,6 +135,7 @@ partial class Build
 			if (BuildScope == BuildScope.CoreOnly)
 			{
 				projects.Add(Solution.Tests.aweXpect_Core_Tests, Configuration.Debug);
+				projects.Add(Solution.Tests.aweXpect_Generators_Tests, Configuration.Debug);
 			}
 
 			foreach (var (project, configuration) in projects)

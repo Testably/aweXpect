@@ -241,7 +241,8 @@ if (expectedValue is IOptionsProvider<ExpectationBuilder> { Options: Equivalency
 
 An expectation on the items of a collection, i.e. an extension method on `IEnumerableElements<TItem>`, which
 `All()`, `AtLeast(2)` and the other quantifiers return, derives from `QuantifiedCollectionConstraint<TValue, TItem>`.
-`IEnumerableElements<TItem>` gives access to the quantifier and the subject:
+`IEnumerableElements<TItem>` gives access to the quantifier and the subject. For a condition on a single item,
+[`[GenerateCollectionExpectation]`](./01-generated-expectations.md#collections) generates such an expectation.
 
 ```csharp
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(

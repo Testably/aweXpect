@@ -268,6 +268,19 @@ public sealed class CoreExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task NameIsNull_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateExpectation(null!, "is {not} zero")]
+			private static bool IsZero(int value) => value == 0;
+			""");
+
+		await ThatReports(result,
+			"aweXpect4002: 'ThatSample.IsZero(int)' cannot generate an expectation, because the name and the expectation text are required");
+	}
+
+	[Test]
 	public async Task NegatedExpectationText_ShouldReplaceTheDerivedText()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(

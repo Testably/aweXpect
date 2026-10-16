@@ -34,6 +34,72 @@ internal sealed record ExpectationModel(
 	EquatableArray<OverloadModel> Overloads);
 
 /// <summary>
+///     The collection expectation that a method marked with <c>GenerateCollectionExpectationAttribute</c> yields.
+/// </summary>
+/// <param name="Class">The class that receives the extension methods.</param>
+/// <param name="Name">The name of the expectation.</param>
+/// <param name="Text">The expectation on a single item.</param>
+/// <param name="PluralText">The plural of the expectation on a single item.</param>
+/// <param name="Verb">The verb in the past tense in the result, e.g. "were" in "but only 1 of 3 were".</param>
+/// <param name="Summary">The XML documentation of the summary, if given.</param>
+/// <param name="Remarks">The XML documentation of the remarks, if given.</param>
+/// <param name="PredicateKind">What the predicate returns.</param>
+/// <param name="PassesCancellationToken">Whether the predicate ends with a cancellation token.</param>
+/// <param name="Items">The item types whose collections are extended.</param>
+/// <param name="SupportsAsyncEnumerables">Whether the referenced aweXpect.Core supports <c>IAsyncEnumerable</c>.</param>
+internal sealed record CollectionExpectationModel(
+	ClassModel Class,
+	string Name,
+	EquatableArray<TextPart> Text,
+	EquatableArray<TextPart> PluralText,
+	string Verb,
+	string? Summary,
+	string? Remarks,
+	PredicateKind PredicateKind,
+	bool PassesCancellationToken,
+	EquatableArray<ItemModel> Items,
+	bool SupportsAsyncEnumerables);
+
+/// <summary>
+///     The parts of a generated file that only depend on the class and the signature of the marked method.
+/// </summary>
+internal sealed record ClassModel(
+	EquatableArray<string> Usings,
+	EquatableArray<string> NamespaceUsings,
+	string? Namespace,
+	string ClassName,
+	string ClassAccessibility,
+	string MethodAccessibility,
+	string HintName,
+	string PredicateName,
+	EquatableArray<ParameterModel> Parameters);
+
+/// <summary>
+///     What the marked method returns.
+/// </summary>
+internal enum PredicateKind
+{
+	Boolean,
+	Task,
+	ValueTask,
+}
+
+/// <summary>
+///     One item type whose collections the expectation extends, with its own constraints.
+/// </summary>
+/// <param name="ItemType">The type of the items.</param>
+/// <param name="IsString">Whether the item type is <see langword="string" />, whose collections have their own elements.</param>
+/// <param name="ConstraintPrefix">The prefix of the names of the nested constraint classes.</param>
+/// <param name="FailsOnNull">Whether a <see langword="null" /> item does not match.</param>
+/// <param name="ItemArgument">The expression that passes the <c>item</c> to the predicate.</param>
+internal readonly record struct ItemModel(
+	string ItemType,
+	bool IsString,
+	string ConstraintPrefix,
+	bool FailsOnNull,
+	string ItemArgument);
+
+/// <summary>
 ///     The method that describes the subject after "but", and which of the optional arguments it takes.
 /// </summary>
 internal readonly record struct ResultModel(string Name, bool TakesParameters, bool TakesItAndGrammars);
@@ -75,6 +141,12 @@ internal readonly record struct OverloadModel(
 ///     The outcome of inspecting a marked method: the expectation to generate, or the problem that prevents it.
 /// </summary>
 internal sealed record ExpectationResult(ExpectationModel? Model, Problem? Problem);
+
+/// <summary>
+///     The outcome of inspecting a method marked for a collection expectation: the expectation to generate, or the
+///     problem that prevents it.
+/// </summary>
+internal sealed record CollectionExpectationResult(CollectionExpectationModel? Model, Problem? Problem);
 
 /// <summary>
 ///     A diagnostic to report.
