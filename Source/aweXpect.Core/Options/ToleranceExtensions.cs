@@ -107,7 +107,7 @@ public static class ToleranceExtensions
 	{
 		result.Options.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
 			"%");
-		return (TResult)result;
+		return result.Result;
 	}
 
 	/// <summary>
@@ -120,7 +120,7 @@ public static class ToleranceExtensions
 	{
 		result.Options.UseRelativeTolerance(static (tolerance, expected) => tolerance * Math.Abs(expected) / 100,
 			"%");
-		return (TResult)result;
+		return result.Result;
 	}
 
 	/// <summary>
@@ -132,7 +132,7 @@ public static class ToleranceExtensions
 	public static TResult Percent<TResult>(this IWithinToleranceResult<TResult, decimal> result)
 	{
 		result.Options.UseRelativeTolerance(RelativeDecimalTolerance, "%");
-		return (TResult)result;
+		return result.Result;
 	}
 
 #if NET8_0_OR_GREATER
@@ -141,7 +141,7 @@ public static class ToleranceExtensions
 	{
 		result.Options.UseRelativeTolerance(
 			static (tolerance, expected) => (Half)((float)tolerance * Math.Abs((float)expected) / 100), "%");
-		return (TResult)result;
+		return result.Result;
 	}
 #endif
 

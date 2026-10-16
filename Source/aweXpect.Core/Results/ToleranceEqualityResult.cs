@@ -50,5 +50,10 @@ public class ToleranceEqualityResult<TType, TThat, TElement, TTolerance>(
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
 			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)this).Options;
+
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		ToleranceEqualityResult<TType, TThat, TElement, TTolerance>
+			IWithinToleranceResult<ToleranceEqualityResult<TType, TThat, TElement, TTolerance>, TTolerance>.Result
+			=> this;
 	}
 }

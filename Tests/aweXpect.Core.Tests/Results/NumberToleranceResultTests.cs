@@ -21,6 +21,18 @@ public sealed class NumberToleranceResultTests
 	}
 
 	[Test]
+	public async Task Within_ShouldReturnAResultThatExposesItselfAsResult()
+	{
+		NumberTolerance<int> options = new((a, b) => a - b);
+		NumberToleranceResult<int, IThat<int>> sut = CreateSut(2, options);
+
+		NumberToleranceResult<int, IThat<int>>.WithinResult result = sut.Within(1);
+
+		await That(result).Is<IWithinToleranceResult<NumberToleranceResult<int, IThat<int>>, int>>()
+			.Whose(x => x.Result, it => it.IsSameAs(result));
+	}
+
+	[Test]
 	public async Task Within_ShouldReturnAResultWithRelativeToleranceOptions()
 	{
 		NumberTolerance<int> options = new((a, b) => a - b);

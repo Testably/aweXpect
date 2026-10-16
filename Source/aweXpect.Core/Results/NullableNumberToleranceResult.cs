@@ -52,5 +52,9 @@ public class NullableNumberToleranceResult<TType, TThat>(
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 		IRelativeToleranceOptions<TType> IOptionsProvider<IRelativeToleranceOptions<TType>>.Options
 			=> ((IOptionsProvider<NumberTolerance<TType>>)this).Options;
+
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		NullableNumberToleranceResult<TType, TThat> IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>.Result
+			=> this;
 	}
 }

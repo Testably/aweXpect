@@ -8,8 +8,11 @@ namespace aweXpect.Results;
 ///     <typeparamref name="TTolerance" /> can still be made relative to the expected value, e.g. via
 ///     <c>Percent()</c>.
 /// </summary>
-/// <remarks>
-///     The implementing type must derive from <typeparamref name="TResult" />.
-/// </remarks>
 public interface IWithinToleranceResult<TResult, TTolerance>
-	: IOptionsProvider<IRelativeToleranceOptions<TTolerance>>;
+	: IOptionsProvider<IRelativeToleranceOptions<TTolerance>>
+{
+	/// <summary>
+	///     The result to continue with after the tolerance was made relative.
+	/// </summary>
+	TResult Result { get; }
+}
