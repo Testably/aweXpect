@@ -344,7 +344,9 @@ public sealed class GuaranteesNotNullTests
 		{
 			closedMethod = CloseMethod(method);
 			if (!closedMethod.IsStatic || !CanHaveNullSubject(closedMethod) ||
-			    GetThatSubjectType(closedMethod.GetParameters()[0].ParameterType) is not { } thatSubjectType)
+			    GetThatSubjectType(closedMethod.GetParameters()[0].ParameterType) is not { } thatSubjectType ||
+			    !closedMethod.GetParameters()[0].ParameterType
+				    .IsAssignableFrom(typeof(IThatSubject<>).MakeGenericType(thatSubjectType)))
 			{
 				return null;
 			}

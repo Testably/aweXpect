@@ -14,3 +14,8 @@ aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance
 aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.WithinResult!
 aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.WithinResult
 aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.WithinResult.WithinResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.ThatWeakReference
+static aweXpect.ThatWeakReference.IsCollected(this aweXpect.Core.IThat<System.WeakReference?>! subject) -> aweXpect.Results.AndOrResult<System.WeakReference!, aweXpect.Core.IThat<System.WeakReference?>!>!
+static aweXpect.ThatWeakReference.IsCollected<T>(this aweXpect.Core.IThat<System.WeakReference<T!>?>! subject) -> aweXpect.Results.AndOrResult<System.WeakReference<T!>!, aweXpect.Core.IThat<System.WeakReference<T!>?>!>!
+static aweXpect.ThatWeakReference.IsNotCollected(this aweXpect.Core.IThat<System.WeakReference?>! subject) -> aweXpect.Results.AndOrResult<System.WeakReference!, aweXpect.Core.IThat<System.WeakReference?>!>!
+static aweXpect.ThatWeakReference.IsNotCollected<T>(this aweXpect.Core.IThat<System.WeakReference<T!>?>! subject) -> aweXpect.Results.AndOrResult<System.WeakReference<T!>!, aweXpect.Core.IThat<System.WeakReference<T!>?>!>!

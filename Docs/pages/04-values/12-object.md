@@ -173,3 +173,36 @@ await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 
 `DoesNotComplyWith` succeeds when the nested expectation fails. Like `Satisfies`, `CompliesWith` can
 [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.
+
+## Garbage collection
+
+You can verify that the target of a `WeakReference` or `WeakReference<T>` is garbage collected or not:
+
+```csharp
+using System.Runtime.CompilerServices;
+
+WeakReference released = CreateReleasedReference();
+Album album = new("Let It Be");
+WeakReference<Album> cached = new(album);
+
+await Expect.That(released).IsCollected();
+await Expect.That(cached).IsNotCollected()
+  .Because("the album is still in use");
+GC.KeepAlive(album);
+
+[MethodImpl(MethodImplOptions.NoInlining)]
+static WeakReference CreateReleasedReference()
+  => new(new Album("Abbey Road"));
+```
+
+Both force full blocking garbage collections before they check the target, and repeat them a few times, as
+finalizers can release further objects.
+
+:::warning[A reference held by the test keeps the target alive]
+A strong reference that the test itself still holds keeps the target alive, e.g. a local variable or the temporary
+object in `new WeakReference(new Album(…))`, which a Debug build keeps until the end of the method, even when it is no
+longer used. The example above therefore creates the released album in a separate method. For an object the test
+creates itself, use
+[`IsCollectedAfter`](../06-behaviour/01-delegates.md#memory-leaks) instead, which creates the object where no
+reference to it remains.
+:::
