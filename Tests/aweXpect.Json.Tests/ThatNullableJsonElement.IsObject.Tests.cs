@@ -323,6 +323,64 @@ public sealed partial class ThatNullableJsonElement
 			}
 		}
 
+		public sealed class WithValueKindTests
+		{
+			[Fact]
+			public async Task WhenPropertiesHaveTheExpectedValueKinds_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"id\": 42, \"name\": \"foo\", \"active\": true, \"deletedAt\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("id").ANumber().And
+						.With("name").AString().And
+						.With("active").ABoolean().And
+						.With("deletedAt").Null());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertiesHaveOtherValueKinds_ShouldListAllFailuresInOrder()
+			{
+				JsonElement? subject = FromString("{\"id\": \"42\", \"name\": null, \"active\": 1, \"deletedAt\": {}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("id").ANumber().And
+						.With("name").AString().And
+						.With("active").ABoolean().And
+						.With("deletedAt").Null());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.id is a number and $.name is a string and $.active is a boolean and $.deletedAt is null,
+					             but it differed as
+					               $.id was a string and
+					               $.name was null and
+					               $.active was a number and
+					               $.deletedAt was an object
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AString());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is a string,
+					             but it was <null>
+					             """);
+			}
+		}
+
 		public sealed class WithNumberOfPropertiesTests
 		{
 			[Fact]

@@ -170,6 +170,27 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
+			public async Task WhenElementIsExpectedToHaveAValueKind_ShouldNegateIt()
+			{
+				JsonElement subject = FromString("[\"foo\"]");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray(a => a.At(0).AString()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an array or $[0] is not a string,
+					             but it was
+
+					             Actual:
+					             [
+					               "foo"
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task IsArray_ShouldBeChainable()
 			{
 				string json = "[1, 2, 3]";
@@ -279,6 +300,48 @@ public sealed partial class ThatJsonElement
 						.At(3).AnObject(o => o.With("foo").AnObject()));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task IsArray_ShouldSupportValueKindExpectationsOnElements()
+			{
+				JsonElement subject = FromString("[\"foo\", 1.5, true, false, null]");
+
+				async Task Act()
+					=> await That(subject).IsArray(elements => elements
+						.At(0).AString().And
+						.At(1).ANumber().And
+						.At(2).ABoolean().And
+						.At(3).ABoolean().And
+						.At(4).Null());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenElementsHaveOtherValueKinds_ShouldListAllFailuresInOrder()
+			{
+				JsonElement subject = FromString("[1, \"1\", null, [], {}]");
+
+				async Task Act()
+					=> await That(subject).IsArray(elements => elements
+						.At(0).AString().And
+						.At(1).ANumber().And
+						.At(2).ABoolean().And
+						.At(3).Null().And
+						.At(5).AString());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] is a string and $[1] is a number and $[2] is a boolean and $[3] is null and $[5] is a string,
+					             but it differed as
+					               $[0] was a number and
+					               $[1] was a string and
+					               $[2] was null and
+					               $[3] was an array and
+					               index $[5] did not exist
+					             """);
 			}
 
 			[Fact]

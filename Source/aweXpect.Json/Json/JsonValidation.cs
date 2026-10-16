@@ -420,6 +420,18 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnObject(Action<IJsonObjectResult> expectation)
 		=> An(JsonValueKind.Object, expectation);
 
+	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AString()
+		=> An(JsonValueKind.String);
+
+	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.ANumber()
+		=> An(JsonValueKind.Number);
+
+	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.ABoolean()
+		=> An(JsonValueKind.True);
+
+	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.Null()
+		=> An(JsonValueKind.Null);
+
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnArray()
 		=> An(JsonValueKind.Array);
 
@@ -431,6 +443,18 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnObject(Action<IJsonObjectResult> expectation)
 		=> An(JsonValueKind.Object, expectation);
+
+	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AString()
+		=> An(JsonValueKind.String);
+
+	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.ANumber()
+		=> An(JsonValueKind.Number);
+
+	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.ABoolean()
+		=> An(JsonValueKind.True);
+
+	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.Null()
+		=> An(JsonValueKind.Null);
 
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.Matching(object? expected, string doNotPopulateThisValue)
 	{
@@ -483,10 +507,10 @@ internal class JsonValidation : IJsonObjectResult,
 		string currentPath = CurrentPath;
 		_expectationBuilder.Add((sb, grammars)
 			=> sb.Append(And(grammars)).Append(currentPath).Append(" is ")
-				.Append(Format(kind, grammars & ~ExpectationGrammars.Plural)));
-		JsonElement? currentElement = PopProperty();
+				.Append(FormatExpected(kind, grammars & ~ExpectationGrammars.Plural)));
+		JsonElement? currentElement = PopProperty(kind == JsonValueKind.Null);
 
-		if (currentElement != null && currentElement.Value.ValueKind != kind)
+		if (currentElement != null && !IsKind(currentElement.Value.ValueKind, kind))
 		{
 			_failures.Add($" {CurrentPath} was {Format(currentElement.Value.ValueKind)}");
 		}
@@ -631,6 +655,28 @@ internal class JsonValidation : IJsonObjectResult,
 			(JsonValueKind.String, true) => "strings",
 			_ => valueKind.ToString().ToLower(),
 		};
+		return grammars.IsNegated() ? "not " + kind : kind;
+	}
+
+	/// <summary>
+	///     Checks if the <paramref name="actual" /> kind is the <paramref name="expected" /> kind, where an expected
+	///     <see cref="JsonValueKind.True" /> stands for a boolean and is therefore also met by
+	///     <see cref="JsonValueKind.False" />.
+	/// </summary>
+	internal static bool IsKind(JsonValueKind actual, JsonValueKind expected)
+		=> actual == expected || (expected == JsonValueKind.True && actual == JsonValueKind.False);
+
+	/// <summary>
+	///     Formats the <paramref name="expected" /> kind, where <see cref="JsonValueKind.True" /> stands for a boolean.
+	/// </summary>
+	internal static string FormatExpected(JsonValueKind expected, ExpectationGrammars grammars)
+	{
+		if (expected != JsonValueKind.True)
+		{
+			return Format(expected, grammars);
+		}
+
+		string kind = grammars.IsPlural() ? "booleans" : "a boolean";
 		return grammars.IsNegated() ? "not " + kind : kind;
 	}
 }

@@ -232,6 +232,47 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
+			public async Task WhenPropertiesAreExpectedToHaveValueKinds_ShouldNegateThem()
+			{
+				JsonElement subject = FromString("{\"id\": 42, \"name\": \"foo\", \"active\": false, \"deletedAt\": null}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o
+						.With("id").ANumber().And
+						.With("name").AString().And
+						.With("active").ABoolean().And
+						.With("deletedAt").Null()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object or $.id is not a number or $.name is not a string or $.active is not a boolean or $.deletedAt is not null,
+					             but it was
+
+					             Actual:
+					             {
+					               "id": 42,
+					               "name": "foo",
+					               "active": false,
+					               "deletedAt": null
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyHasAnotherValueKind_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"id\": 42, \"name\": \"foo\"}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o
+						.With("id").ANumber().And
+						.With("name").Null()));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenPropertyIsExpectedNotToExistAndDoesNotExist_ShouldFail()
 			{
 				JsonElement subject = FromString("{\"foo\": 1}");
@@ -710,6 +751,225 @@ public sealed partial class ThatJsonElement
 					             },
 					             but it differed as $.foo.baz was missing
 					             """);
+			}
+		}
+
+		public sealed class WithValueKindTests
+		{
+			[Theory]
+			[InlineData("true")]
+			[InlineData("false")]
+			public async Task WhenPropertiesHaveTheExpectedValueKinds_ShouldSucceed(string active)
+			{
+				JsonElement subject = FromString(
+					$"{{\"id\": 42, \"name\": \"foo\", \"active\": {active}, \"deletedAt\": null}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("id").ANumber().And
+						.With("name").AString().And
+						.With("active").ABoolean().And
+						.With("deletedAt").Null());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertiesHaveOtherValueKinds_ShouldListAllFailuresInOrder()
+			{
+				JsonElement subject = FromString(
+					"{\"id\": \"42\", \"name\": 1, \"active\": \"yes\", \"deletedAt\": false}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("id").ANumber().And
+						.With("name").AString().And
+						.With("active").ABoolean().And
+						.With("deletedAt").Null());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.id is a number and $.name is a string and $.active is a boolean and $.deletedAt is null,
+					             but it differed as
+					               $.id was a string and
+					               $.name was a number and
+					               $.active was a string and
+					               $.deletedAt was false
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("[]", "an array")]
+			[InlineData("2", "a number")]
+			[InlineData("true", "true")]
+			[InlineData("false", "false")]
+			[InlineData("null", "null")]
+			public async Task WhenPropertyIsNoString_ShouldFail(string value, string kindString)
+			{
+				JsonElement subject = FromString($"{{\"foo\": {value}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AString());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.foo is a string,
+					              but it differed as $.foo was {kindString}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("[]", "an array")]
+			[InlineData("\"2\"", "a string")]
+			[InlineData("true", "true")]
+			[InlineData("false", "false")]
+			[InlineData("null", "null")]
+			public async Task WhenPropertyIsNoNumber_ShouldFail(string value, string kindString)
+			{
+				JsonElement subject = FromString($"{{\"foo\": {value}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").ANumber());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.foo is a number,
+					              but it differed as $.foo was {kindString}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("[]", "an array")]
+			[InlineData("1", "a number")]
+			[InlineData("\"true\"", "a string")]
+			[InlineData("null", "null")]
+			public async Task WhenPropertyIsNoBoolean_ShouldFail(string value, string kindString)
+			{
+				JsonElement subject = FromString($"{{\"foo\": {value}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").ABoolean());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.foo is a boolean,
+					              but it differed as $.foo was {kindString}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("[]", "an array")]
+			[InlineData("0", "a number")]
+			[InlineData("\"null\"", "a string")]
+			[InlineData("true", "true")]
+			[InlineData("false", "false")]
+			public async Task WhenPropertyIsNotNull_ShouldFail(string value, string kindString)
+			{
+				JsonElement subject = FromString($"{{\"foo\": {value}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Null());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.foo is null,
+					              but it differed as $.foo was {kindString}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenPropertyDoesNotExist_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("bar").Null());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.bar is null,
+					             but it differed as property $.bar did not exist
+					             """)
+					.Because("a missing property is not a property with a null value");
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenNull_WhenTreatingNullAsAbsent_ShouldSucceed(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Null(), o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow()
+					.Because("an absent property is accepted when it is expected to be null");
+			}
+
+			[Theory]
+			[InlineData("{\"foo\": null}")]
+			[InlineData("{}")]
+			public async Task WhenAString_WhenTreatingNullAsAbsent_ShouldFail(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AString(), o => o.TreatingNullAsAbsent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is a string,
+					             but it differed as property $.foo did not exist
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedPropertyHasAnotherValueKind_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": {\"baz\": \"1\"}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o
+						.With("foo").AnObject(f => f
+							.With("bar").AnObject(b => b
+								.With("baz").ANumber())));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo is an object and $.foo.bar is an object and $.foo.bar.baz is a number,
+					             but it differed as $.foo.bar.baz was a string
+					             """);
+			}
+
+			[Theory]
+			[InlineData("[]", "an array")]
+			[InlineData("\"foo\"", "a string")]
+			public async Task WhenJsonIsNoObject_ShouldOnlyReportTheKind(string json, string kindString)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").AString());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.foo is a string,
+					              but it was {kindString}
+					              """);
 			}
 		}
 

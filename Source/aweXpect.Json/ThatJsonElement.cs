@@ -111,19 +111,21 @@ public static partial class ThatJsonElement
 		public ConstraintResult IsMetBy(JsonElement actual)
 		{
 			Actual = actual;
-			Outcome = actual.ValueKind == expected ? Outcome.Success : Outcome.Failure;
+			Outcome = JsonValidation.IsKind(actual.ValueKind, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(JsonValidation.Format(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("is ", "are "))
+				.Append(JsonValidation.FormatExpected(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "))
 				.Append(JsonValidation.Format(Actual.ValueKind));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(JsonValidation.Format(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("is ", "are "))
+				.Append(JsonValidation.FormatExpected(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));

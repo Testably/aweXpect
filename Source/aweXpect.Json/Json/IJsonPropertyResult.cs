@@ -33,4 +33,25 @@ public interface IJsonPropertyResult<out TReturn>
 	///     Add an expectation that the property value is an object which satisfies the <paramref name="expectation" />.
 	/// </summary>
 	public TReturn AnObject(Action<IJsonObjectResult> expectation);
+
+	/// <summary>
+	///     Add an expectation that the property value is a string.
+	/// </summary>
+	public TReturn AString();
+
+	/// <summary>
+	///     Add an expectation that the property value is a number.
+	/// </summary>
+	public TReturn ANumber();
+
+	/// <summary>
+	///     Add an expectation that the property value is a boolean, i.e. <see langword="true" /> or
+	///     <see langword="false" />.
+	/// </summary>
+	public TReturn ABoolean();
+
+	/// <summary>
+	///     Add an expectation that the property value is <see langword="null" />.
+	/// </summary>
+	public TReturn Null();
 }

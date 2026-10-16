@@ -20,6 +20,10 @@ Expectations for JSON strings and `System.Text.Json` for [aweXpect](https://gith
 | [`MatchesExactly`](#matches)                            | `JsonElement` | matches the expected value exactly                        |
 | [`IsObject`](#isobject)                                 | `JsonElement` | a JSON object, optionally with expectations on it         |
 | [`IsArray`](#isarray)                                   | `JsonElement` | a JSON array, optionally with expectations on it          |
+| [`IsString`](#value-kinds)                              | `JsonElement` | a JSON string                                             |
+| [`IsNumber`](#value-kinds)                              | `JsonElement` | a JSON number                                             |
+| [`IsBoolean`](#value-kinds)                             | `JsonElement` | a JSON boolean, i.e. `true` or `false`                    |
+| [`IsNull`](#value-kinds)                                | `JsonElement` | the JSON value `null`                                     |
 | [`IsJsonSerializable`](#json-serializable)              | `object`      | survives a round trip through the JSON serializer         |
 
 ## String comparison as JSON
@@ -228,6 +232,28 @@ await Expect.That(album).IsObject(o => o
     .With("tracks").AnArray(tracks => tracks.WithElements("Come Together", "Something")));
 ```
 
+You can verify the kind of a property value without pinning the value itself with `AString()`, `ANumber()`,
+`ABoolean()` (`true` or `false`) and `Null()`. They are also available for array elements, e.g. `.At(0).AString()`:
+
+```csharp
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "durationSeconds": 243, "explicit": false, "label": null}""").RootElement;
+
+await Expect.That(track).IsObject(o => o
+    .With("title").AString().And
+    .With("durationSeconds").ANumber().And
+    .With("explicit").ABoolean().And
+    .With("label").Null());
+```
+
+If the duration was the string `"243"` instead, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+is an object and $.title is a string and $.durationSeconds is a number and $.explicit is a boolean and $.label is null,
+but it differed as $.durationSeconds was a string
+```
+
 You can verify the number of properties in a JSON object:
 
 ```csharp
@@ -344,6 +370,30 @@ await Expect.That(tracks).IsArray(a => a
         null,
         track => track.With(2).Properties()));
 ```
+
+### Value kinds
+
+You can verify that a `JsonElement` is a JSON string, number, boolean (`true` or `false`) or `null`:
+
+```csharp
+JsonElement title = JsonDocument.Parse("\"Let It Be\"").RootElement;
+
+await Expect.That(title).IsString();
+await Expect.That(JsonDocument.Parse("243").RootElement).IsNumber();
+await Expect.That(JsonDocument.Parse("false").RootElement).IsBoolean();
+await Expect.That(JsonDocument.Parse("null").RootElement).IsNull();
+```
+
+`IsNumber()` on the title would fail with:
+
+```text title="Failure message"
+Expected that title
+is a number,
+but it was a string
+```
+
+For a nullable `JsonElement?`, `IsNull()` is the general expectation of aweXpect that verifies that the subject itself
+is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but not a JSON-specific `IsNull()`.
 
 ## JSON serializable
 
