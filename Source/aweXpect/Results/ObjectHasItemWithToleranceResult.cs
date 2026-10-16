@@ -22,6 +22,8 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
 		IObjectEqualityWithToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TItem,
 			TTolerance>
 {
+	private readonly IThat<TCollection?> _collection = collection;
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
 
@@ -31,4 +33,34 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+
+	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
+	public WithinResult Within(TTolerance tolerance)
+	{
+		options.Within(tolerance);
+		return new WithinResult(ExpectationBuilder, _collection, collectionIndexOptions, options);
+	}
+
+	/// <summary>
+	///     The result directly after <see cref="Within(TTolerance)" />, whose tolerance can still be made relative to
+	///     the expected value, e.g. via <c>Percent()</c>.
+	/// </summary>
+	public sealed class WithinResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TCollection?> collection,
+		CollectionIndexOptions collectionIndexOptions,
+		ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+		: ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(expectationBuilder, collection,
+				collectionIndexOptions, options),
+			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TTolerance>
+	{
+		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
+			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options;
+
+		/// <inheritdoc cref="IWithinToleranceResult{TResult,TTolerance}.Result" />
+		ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
+			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TTolerance>.Result
+			=> this;
+	}
 }
