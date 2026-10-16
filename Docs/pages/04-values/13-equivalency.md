@@ -296,12 +296,12 @@ differs from the least.
 
 ### Comparing different types with a predicate
 
-When the actual and the expected objects have different types whose members don't correspond by name, e.g. a DTO and
-an entity, let a predicate decide whether a pair is equivalent:
+When the actual and the expected objects have different types whose members don't correspond by name, e.g. your
+tracks and the entries of a chart, let a predicate decide whether a pair is equivalent:
 
 ```csharp
-await Expect.That(dtos).IsEquivalentTo(entities, o => o
-  .Comparing<TrackDto, TrackEntity>((dto, entity) => dto.Id == entity.Key)
+await Expect.That(tracks).IsEquivalentTo(chart, o => o
+  .Comparing<Track, ChartEntry>((track, entry) => track.Title == entry.Song)
   .IgnoringCollectionOrder());
 ```
 
@@ -310,16 +310,16 @@ types, and decides instead of the comparison by value or by members. A `null` va
 doesn't match is reported with its path and the predicate:
 
 ```text title="Failure message"
-Expected that dtos
-is equivalent to entities,
+Expected that tracks
+is equivalent to chart,
 but it was not:
-  Element [1] did not match (dto, entity) => dto.Id == entity.Key:
-      Actual: TrackDto { Id = 2, Title = "Midnight Echo" }
-    Expected: TrackEntity { Key = 3, Title = "Midnight Echo" }
+  Element [1] did not match (track, entry) => track.Title == entry.Song:
+      Actual: Track { IsPlayed = True, PlayCount = 42, Title = "Midnight Echo" }
+    Expected: ChartEntry { Plays = 42, Song = "Neon Skyline" }
 
 Equivalency options:
  - include public fields and properties
- - compare TrackDto with TrackEntity by (dto, entity) => dto.Id == entity.Key
+ - compare Track with ChartEntry by (track, entry) => track.Title == entry.Song
 ```
 
 When several predicates apply to a pair, the one that was added last decides. Within

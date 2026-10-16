@@ -9,18 +9,14 @@ internal static class Prelude
 	public static Album unexpected = new("Revolver");
 	public static Playlist playlist = new();
 	public static Playlist expectedPlaylist = new();
-	public static TrackDto[] dtos = [];
-	public static TrackEntity[] entities = [];
+	public static Track[] tracks = [];
+	public static ChartEntry[] chart = [];
 }
 
-public class TrackDto
+public class ChartEntry
 {
-	public int Id { get; set; }
-}
-
-public class TrackEntity
-{
-	public int Key { get; set; }
+	public int Plays { get; set; }
+	public string Song { get; set; } = "";
 }
 
 internal class Playlist : List<Track>
