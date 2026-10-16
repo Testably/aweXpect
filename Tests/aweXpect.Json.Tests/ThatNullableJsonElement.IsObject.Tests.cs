@@ -206,6 +206,21 @@ public sealed partial class ThatNullableJsonElement
 		public sealed class WithTests
 		{
 			[Fact]
+			public async Task WhenMatchingObjectWithIgnoredMember_ShouldIgnoreItInTheComparison()
+			{
+				JsonElement? subject = FromString("{\"foo\": {\"id\": 1, \"name\": \"a\"}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new
+					{
+						id = 2,
+						name = "a",
+					}), o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenMatchFails_ShouldFail()
 			{
 				JsonElement? subject = FromString("{\"foo\": 1}");

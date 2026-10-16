@@ -24,10 +24,11 @@ public static class JsonExtensions
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
-		result.Options.SetMatchType(new JsonMatchType(jsonOptions), nameof(AsJson));
+		JsonMatchType matchType = new(jsonOptions);
+		result.Options.SetMatchType(matchType, nameof(AsJson));
 		if (result is IOptionsProvider<ExpectationBuilder> expectationBuilder)
 		{
-			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => jsonOptions.AddContext(contexts));
+			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => matchType.AddContext(contexts));
 		}
 
 		return result;

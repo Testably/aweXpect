@@ -9,6 +9,7 @@ namespace aweXpect.Json;
 internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 {
 	private JsonElementValidator.JsonComparisonResult? _comparisonResult;
+	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 	private string? _validatedExpected;
 
 	/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
@@ -76,9 +77,22 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 				actualJson.RootElement,
 				expectedJson.RootElement,
 				options);
+			_unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_unmatchedMembersToIgnore,
+				_comparisonResult.GetUnmatchedMembersToIgnore());
 			return !_comparisonResult.HasError;
 		}
 	}
+
+	/// <summary>
+	///     Adds the "JSON options" context with the members to ignore by name that matched no member in a failed
+	///     comparison.
+	/// </summary>
+	/// <remarks>
+	///     The items of a collection are compared one after the other with the same match type, so the members to ignore
+	///     of every failed comparison are kept, and a suggestion found for an item is not lost to a later item.
+	/// </remarks>
+	public void AddContext(ResultContextCollector contexts)
+		=> options.AddContext(contexts, _unmatchedMembersToIgnore);
 
 	/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
 	public string GetExpectation(string? expected, ExpectationGrammars grammars)

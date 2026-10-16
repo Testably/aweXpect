@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using aweXpect.Core;
+using aweXpect.Core.Extending;
+using aweXpect.Equivalency;
 using aweXpect.Helpers;
 
 namespace aweXpect.Json;
@@ -88,4 +92,61 @@ public static class JsonOptionsExtensions
 		{
 			TreatNullAsAbsent = treatNullAsAbsent,
 		};
+
+	/// <summary>
+	///     Ignores the <paramref name="memberToIgnore" /> in the comparison.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="memberToIgnore" /> must cover whole trailing segments of the JSON path, ignoring the casing:
+	///     <c>"id"</c> ignores <c>$.id</c> and <c>$.items[0].id</c>, but not <c>$.parentId</c>, while <c>"$.id"</c> only
+	///     ignores the property of the root. An ignored value and everything below it is neither compared nor reported as
+	///     missing or unexpected, but explicit expectations, e.g. <c>With("id")</c>, still verify it.
+	///     <para />
+	///     With <see cref="IgnoringArrayOrder" />, an index refers to the element of the subject, which is then left out
+	///     of the pairing.
+	/// </remarks>
+	public static JsonOptions IgnoringMember(
+		this JsonOptions @this,
+		string memberToIgnore)
+	{
+		ThrowHelper.ThrowIfNull(memberToIgnore, nameof(memberToIgnore));
+		if (memberToIgnore.Length == 0)
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				"The 'memberToIgnore' cannot be empty.", nameof(memberToIgnore)));
+		}
+
+		return @this with
+		{
+			MembersToIgnore = [..@this.MembersToIgnore, new NamedMemberToIgnore(memberToIgnore),],
+		};
+	}
+
+	/// <summary>
+	///     Ignores the members whose JSON path, e.g. <c>$.items[0].etag</c>, satisfies the <paramref name="predicate" />
+	///     in the comparison.
+	/// </summary>
+	/// <remarks>
+	///     An ignored value and everything below it is neither compared nor reported as missing or unexpected, but
+	///     explicit expectations, e.g. <c>With("id")</c>, still verify it.
+	///     <para />
+	///     With <see cref="IgnoringArrayOrder" />, an index refers to the element of the subject, which is then left out
+	///     of the pairing.
+	/// </remarks>
+	public static JsonOptions Ignoring(
+		this JsonOptions @this,
+		Func<string, bool> predicate,
+		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+	{
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+		return @this with
+		{
+			MembersToIgnore =
+			[
+				..@this.MembersToIgnore,
+				new MemberToIgnore.ByPredicate((memberPath, _) => predicate(memberPath),
+					doNotPopulateThisValue.TrimCommonWhiteSpace()),
+			],
+		};
+	}
 }

@@ -455,6 +455,38 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
+			public async Task WhenIndexIsIgnored_ShouldStillVerifyTheElementAtTheIndex()
+			{
+				JsonElement subject = FromString("[{\"id\": 1, \"name\": \"a\"}]");
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a
+							.At(0).Matching(new
+							{
+								id = 2,
+								name = "b",
+							}),
+						o => o.IgnoringMember("[0]").IgnoringMember("id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] matches new
+					             {
+					             	id = 2,
+					             	name = "b",
+					             },
+					             but it differed as $[0].name was "a" instead of "b"
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore members: ["[0]", "id"]
+					                "[0]" matched no member
+					             """)
+					.Because("an explicit expectation wins over an ignored member, so \"[0]\" ignored nothing, but the members below it are still ignored");
+			}
+
+			[Fact]
 			public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				JsonElement subject = FromString("[1]");

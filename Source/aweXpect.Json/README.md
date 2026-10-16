@@ -248,6 +248,44 @@ The failure message lists the active options in a "JSON options" context, like i
 no option is active. As `Matches`, `IsValidJsonMatching`, [`IsObject`](#isobject) and [`IsArray`](#isarray) ignore
 additional properties by default, their failures list `ignore additional properties`.
 
+Generated values, e.g. ids, timestamps or ETags, can be left out of the comparison with `IgnoringMember(name)` or
+`Ignoring(path => …)`. An ignored value and everything below it is neither compared nor reported as missing or
+unexpected. The options are available wherever `JsonOptions` are accepted, e.g.
+`IsEqualTo(expected).AsJson(o => o.IgnoringMember("id"))`:
+
+```csharp
+JsonElement track = JsonDocument.Parse(
+    """{"id": 42, "title": "Let It Be", "meta": {"createdAt": "2026-10-16", "etag": "abc"}}""").RootElement;
+
+await Expect.That(track).MatchesExactly(new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
+    o => o.IgnoringMember("id").IgnoringMember("createdAt").Ignoring(path => path.EndsWith(".etag")));
+```
+
+The name is matched against the JSON path, as it is shown in failure messages, and must cover whole trailing segments
+of it, ignoring the casing: `"id"` ignores `$.id` and `$.items[0].id`, but not `$.parentId`, `"meta.createdAt"` only
+ignores `createdAt` within `meta`, and `"$.id"` only ignores the property of the root. `"[0]"` ignores the first
+element of every array; with `IgnoringArrayOrder()`, an index refers to the element of the subject, which is then left
+out of the pairing. Explicit expectations of [`IsObject`](#isobject) and [`IsArray`](#isarray), e.g. `With("id")`,
+`Without("id")` or `At(0)`, still verify an ignored value.
+
+The members to ignore are listed in the "JSON options" context. When the comparison fails, each name that matched no
+member is named below them, together with the member it most likely meant, as a misspelled name otherwise silently
+ignores nothing. For a track `{"title": "Let It Be", "createdAt": "2026-10-16"}`,
+`MatchesExactly(new { title = "Yesterday", createdAt = "2026-01-01" }, o => o.IgnoringMember("craetedAt"))` would fail
+with:
+
+```text title="Failure message"
+Expected that track
+matches new { title = "Yesterday", createdAt = "2026-01-01" } exactly,
+but it differed as
+  $.title was "Let It Be" instead of "Yesterday" and
+  $.createdAt was "2026-10-16" instead of "2026-01-01"
+
+JSON options:
+ - ignore members: ["craetedAt"]
+   "craetedAt" matched no member (did you mean "createdAt"?)
+```
+
 You can also verify that a `JsonElement` matches a primitive value:
 
 ```csharp

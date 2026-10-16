@@ -34,6 +34,7 @@ internal class JsonValidation : IJsonObjectResult,
 	private int? _amount;
 	private bool _isAbsentProperty;
 	private Exception? _ownException;
+	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 
 	public JsonValidation(JsonElement? element, JsonValueKind valueKind, JsonOptions options,
 		IEvaluationContext context)
@@ -58,6 +59,12 @@ internal class JsonValidation : IJsonObjectResult,
 	}
 
 	private string CurrentPath => string.Join("", _currentPath.Reverse());
+
+	/// <summary>
+	///     The members to ignore by name that matched no member in a failed comparison of the whole validation, with the
+	///     path each one most likely meant.
+	/// </summary>
+	public IReadOnlyDictionary<string, string?>? UnmatchedMembersToIgnore => _root._unmatchedMembersToIgnore;
 
 	IJsonArrayResult IJsonArrayResult.And => this;
 
@@ -150,6 +157,8 @@ internal class JsonValidation : IJsonObjectResult,
 				expectedDocument.RootElement,
 				_options,
 				converter);
+			_root._unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_root._unmatchedMembersToIgnore,
+				comparisonResult.GetUnmatchedMembersToIgnore());
 			return comparisonResult.HasError ? comparisonResult.ToString() : null;
 		});
 	}

@@ -437,6 +437,20 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class ObjectTests
 		{
+			[Fact]
+			public async Task WhenIgnoredPropertyIsUnexpected_WhenIgnoringMember_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"id\": 1, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						name = "a",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[InlineData("{}", "$.foo was missing")]
 			[InlineData("{\"foo\": 2}")]

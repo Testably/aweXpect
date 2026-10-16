@@ -53,4 +53,78 @@ public class JsonOptionsTests
 
 		await That(result.DocumentOptions.MaxDepth).IsEqualTo(maxDepth);
 	}
+
+	[Fact]
+	public async Task MembersToIgnore_ShouldDefaultToEmpty()
+	{
+		JsonOptions sut = new();
+
+		await That(sut.MembersToIgnore).IsEmpty();
+	}
+
+	[Fact]
+	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.IgnoringMember(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberToIgnore").And
+			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.IgnoringMember("");
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("memberToIgnore").And
+			.WithMessage("The 'memberToIgnore' cannot be empty.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task Ignoring_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.Ignoring(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task IgnoringMember_ShouldAccumulateTheMembersWithoutChangingTheOriginalOptions()
+	{
+		JsonOptions sut = new();
+
+		JsonOptions result = sut.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag"));
+
+		await That(result.MembersToIgnore).HasCount(2);
+		await That(result.MembersToIgnore[0].IgnoreMember("$.items[0].id", typeof(JsonElement))).IsTrue();
+		await That(result.MembersToIgnore[1].IgnoreMember("$.items[0].etag", typeof(JsonElement))).IsTrue();
+		await That(sut.MembersToIgnore).IsEmpty();
+	}
+
+	[Fact]
+	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
+	{
+		JsonOptions sut = new();
+
+		JsonOptions result = sut.Ignoring(path
+			=> path.EndsWith(".etag"));
+
+		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
+		                                                          path
+		                                                          => path.EndsWith(".etag")
+		                                                          """);
+	}
 }

@@ -31,6 +31,7 @@ public static partial class ThatJsonString
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_comparisonResult = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -78,7 +79,7 @@ public static partial class ThatJsonString
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AddContext(contexts);
+			=> options.AddContext(contexts, _comparisonResult?.GetUnmatchedMembersToIgnore());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

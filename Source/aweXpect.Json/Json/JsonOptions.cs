@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Customization;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Json;
 
@@ -42,23 +45,32 @@ public record JsonOptions
 	public bool TreatNullAsAbsent { get; init; }
 
 	/// <summary>
+	///     The members that are ignored in the comparison, matched against their JSON path, e.g.
+	///     <c>$.items[0].etag</c>.
+	/// </summary>
+	public MemberToIgnore[] MembersToIgnore { get; init; } = [];
+
+	/// <summary>
 	///     Adds the "JSON options" context, which lists the active options, to the <paramref name="contexts" /> of a
 	///     failed comparison, unless no option is active.
 	/// </summary>
 	/// <remarks>
 	///     The context comes last, like the "Equivalency options" of aweXpect.
+	///     Each member to ignore by name in the <paramref name="unmatchedMembersToIgnore" /> is named below the members to
+	///     ignore, with the path it most likely meant.
 	/// </remarks>
-	internal void AddContext(ResultContextCollector contexts)
+	internal void AddContext(ResultContextCollector contexts,
+		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
 	{
 		StringBuilder sb = new();
-		AppendOptions(sb);
+		AppendOptions(sb, unmatchedMembersToIgnore);
 		if (sb.Length > 0)
 		{
 			contexts.Add(new ResultContext.Fixed("JSON options", sb.ToString().TrimEnd(), int.MinValue));
 		}
 	}
 
-	private void AppendOptions(StringBuilder sb)
+	private void AppendOptions(StringBuilder sb, IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
 	{
 		if (IgnoreAdditionalProperties)
 		{
@@ -78,6 +90,41 @@ public record JsonOptions
 		if (TreatNullAsAbsent)
 		{
 			sb.AppendLine(" - treat null as absent");
+		}
+
+		if (MembersToIgnore.Length > 0)
+		{
+			sb.Append(" - ignore members: ");
+			Formatter.Format(sb, MembersToIgnore, FormattingOptions.SingleLine);
+			sb.AppendLine();
+			AppendUnmatchedMembersToIgnore(sb, unmatchedMembersToIgnore);
+		}
+	}
+
+	private void AppendUnmatchedMembersToIgnore(StringBuilder sb,
+		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
+	{
+		if (unmatchedMembersToIgnore is null)
+		{
+			return;
+		}
+
+		foreach (string name in MembersToIgnore.OfType<NamedMemberToIgnore>().Select(named => named.MemberName))
+		{
+			if (unmatchedMembersToIgnore.TryGetValue(name, out string? suggestion))
+			{
+				sb.Append("   ");
+				Formatter.Format(sb, name);
+				sb.Append(" matched no member");
+				if (suggestion is not null)
+				{
+					sb.Append(" (did you mean ");
+					Formatter.Format(sb, suggestion);
+					sb.Append("?)");
+				}
+
+				sb.AppendLine();
+			}
 		}
 	}
 }

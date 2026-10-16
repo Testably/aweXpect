@@ -512,6 +512,42 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
+			public async Task WhenPropertyIsIgnored_ShouldStillVerifyIt()
+			{
+				JsonElement subject = FromString("{\"id\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("id").Matching(2), o => o.IgnoringMember("id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.id matches 2,
+					             but it differed as $.id was 1 instead of 2
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore members: ["id"]
+					             """)
+					.Because("an explicit expectation wins over an ignored member");
+			}
+
+			[Fact]
+			public async Task WhenMatchingObjectWithIgnoredMember_ShouldIgnoreItInTheComparison()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"id\": 1, \"name\": \"a\"}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(new
+					{
+						id = 2,
+						name = "a",
+					}), o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenMatchingItIsOnNullProperty_ShouldFail()
 			{
 				JsonElement subject = FromString("{\"foo\": null}");
@@ -1268,6 +1304,27 @@ public sealed partial class ThatJsonElement
 
 		public sealed class WithoutTests
 		{
+			[Fact]
+			public async Task WhenPropertyIsIgnored_ShouldStillVerifyItsAbsence()
+			{
+				JsonElement subject = FromString("{\"id\": 1}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.Without("id"), o => o.IgnoringMember("id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.id does not exist,
+					             but it differed as $.id was 1
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore members: ["id"]
+					             """)
+					.Because("an explicit expectation wins over an ignored member");
+			}
+
 			[Fact]
 			public async Task WhenCombinedWithOtherExpectations_ShouldListAllFailuresInOrder()
 			{

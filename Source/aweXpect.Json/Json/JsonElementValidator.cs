@@ -20,15 +20,20 @@ internal static class JsonElementValidator
 		JsonElement expectedElement,
 		JsonOptions options,
 		ExpectationJsonConverter? converter = null)
-		=> Compare(new JsonComparisonResult(), "$", actualElement, expectedElement, options, converter);
+		=> Compare(new JsonComparisonResult(options.MembersToIgnore), "$", actualElement, expectedElement, options,
+			converter);
 
+	/// <remarks>
+	///     The <paramref name="basePath" /> itself is never ignored, as it is the target of an explicit expectation.
+	/// </remarks>
 	public static Task<JsonComparisonResult> Compare(
 		string basePath,
 		JsonElement actualElement,
 		JsonElement expectedElement,
 		JsonOptions options,
 		ExpectationJsonConverter? converter)
-		=> Compare(new JsonComparisonResult(), basePath, actualElement, expectedElement, options, converter);
+		=> Compare(new JsonComparisonResult(options.MembersToIgnore), basePath, actualElement, expectedElement,
+			options, converter);
 
 	private static async Task<JsonComparisonResult> Compare(
 		this JsonComparisonResult result,
@@ -81,6 +86,11 @@ internal static class JsonElementValidator
 		for (int index = 0; index < expectedElement.GetArrayLength(); index++)
 		{
 			string memberPath = path + "[" + index + "]";
+			if (result.IsIgnored(memberPath))
+			{
+				continue;
+			}
+
 			JsonElement expectedArrayElement = expectedElement[index];
 			if (actualElement.GetArrayLength() <= index)
 			{
@@ -98,7 +108,10 @@ internal static class JsonElementValidator
 			{
 				JsonElement actualArrayElement = actualElement[index];
 				string memberPath = path + "[" + index + "]";
-				result.AddError(memberPath, $"had unexpected {Format(actualArrayElement)}");
+				if (!result.IsIgnored(memberPath))
+				{
+					result.AddError(memberPath, $"had unexpected {Format(actualArrayElement)}");
+				}
 			}
 		}
 
@@ -109,6 +122,8 @@ internal static class JsonElementValidator
 	///     A missing element has no index in the subject, so it is reported on the array itself.
 	///     When exactly one element remains unpaired on each side, they are compared with each other instead, as their
 	///     differences are more precise than reporting them as missing and unexpected.
+	///     An ignored element of the subject is left out of the pairing, so it neither pairs with an expected element nor
+	///     is reported as unexpected.
 	/// </remarks>
 	private static async Task<JsonComparisonResult> CompareJsonArrayIgnoringOrder(
 		this JsonComparisonResult result,
@@ -119,11 +134,13 @@ internal static class JsonElementValidator
 		ExpectationJsonConverter? converter)
 	{
 		JsonElement[] actualElements = actualElement.EnumerateArray().ToArray();
-		bool[] isPaired = new bool[actualElements.Length];
+		bool[] isPaired = Enumerable.Range(0, actualElements.Length)
+			.Select(index => result.IsIgnored(path + "[" + index + "]"))
+			.ToArray();
 		List<JsonElement> missingElements = new();
 		foreach (JsonElement expectedArrayElement in expectedElement.EnumerateArray())
 		{
-			int index = await FindUnpairedMatch(path, actualElements, expectedArrayElement, isPaired, options,
+			int index = await result.FindUnpairedMatch(path, actualElements, expectedArrayElement, isPaired, options,
 				converter);
 			if (index < 0)
 			{
@@ -165,9 +182,10 @@ internal static class JsonElementValidator
 	/// </summary>
 	/// <remarks>
 	///     Each candidate is compared in a separate result, so that the differences of a candidate that does not match are
-	///     not reported.
+	///     not reported, but which shares the tracking of the members to ignore.
 	/// </remarks>
 	private static async Task<int> FindUnpairedMatch(
+		this JsonComparisonResult result,
 		string path,
 		JsonElement[] actualElements,
 		JsonElement expectedElement,
@@ -178,7 +196,8 @@ internal static class JsonElementValidator
 		for (int index = 0; index < actualElements.Length; index++)
 		{
 			if (!isPaired[index] &&
-			    !(await Compare(path + "[" + index + "]", actualElements[index], expectedElement, options, converter))
+			    !(await result.ForCandidate().Compare(path + "[" + index + "]", actualElements[index],
+					    expectedElement, options, converter))
 				    .HasError)
 			{
 				return index;
@@ -280,6 +299,11 @@ internal static class JsonElementValidator
 		foreach (JsonProperty item in expectedElement.EnumerateObject())
 		{
 			string memberPath = path + "." + item.Name;
+			if (result.IsIgnored(memberPath))
+			{
+				continue;
+			}
+
 			if (!actualElement.TryGetProperty(item.Name, out JsonElement property))
 			{
 				if (IsTreatedAsAbsent(item.Value, options))
@@ -296,21 +320,32 @@ internal static class JsonElementValidator
 
 		if (!options.IgnoreAdditionalProperties)
 		{
-			foreach (JsonProperty property in actualElement.EnumerateObject())
-			{
-				string memberPath = path + "." + property.Name;
-				if (result.HasMemberError(memberPath) ||
-				    IsTreatedAsAbsent(property.Value, options) ||
-				    expectedElement.TryGetProperty(property.Name, out _))
-				{
-					continue;
-				}
-
-				result.AddError(memberPath, $"had unexpected {Format(property.Value)}");
-			}
+			result.AddUnexpectedProperties(path, actualElement, expectedElement, options);
 		}
 
 		return result;
+	}
+
+	private static void AddUnexpectedProperties(
+		this JsonComparisonResult result,
+		string path,
+		JsonElement actualElement,
+		JsonElement expectedElement,
+		JsonOptions options)
+	{
+		foreach (JsonProperty property in actualElement.EnumerateObject())
+		{
+			string memberPath = path + "." + property.Name;
+			if (result.HasMemberError(memberPath) ||
+			    IsTreatedAsAbsent(property.Value, options) ||
+			    expectedElement.TryGetProperty(property.Name, out _) ||
+			    result.IsIgnored(memberPath))
+			{
+				continue;
+			}
+
+			result.AddError(memberPath, $"had unexpected {Format(property.Value)}");
+		}
 	}
 
 	private static bool IsTreatedAsAbsent(JsonElement value, JsonOptions options)
@@ -424,7 +459,34 @@ internal static class JsonElementValidator
 		/// </remarks>
 		private readonly List<KeyValuePair<string, string>> _errors = new();
 
+		private readonly MembersToIgnoreTracker _membersToIgnore;
+
+		public JsonComparisonResult(MemberToIgnore[] membersToIgnore)
+			: this(new MembersToIgnoreTracker(membersToIgnore))
+		{
+		}
+
+		private JsonComparisonResult(MembersToIgnoreTracker membersToIgnore)
+		{
+			_membersToIgnore = membersToIgnore;
+		}
+
 		public bool HasError => _errors.Any();
+
+		/// <summary>
+		///     Creates a separate result for a candidate of a pairing, which shares the tracking of the members to ignore.
+		/// </summary>
+		public JsonComparisonResult ForCandidate() => new(_membersToIgnore);
+
+		public bool IsIgnored(string memberPath)
+			=> _membersToIgnore.IsIgnored(memberPath);
+
+		/// <summary>
+		///     Returns each member to ignore by name that matched no compared path, with the path it most likely meant, or
+		///     <see langword="null" /> when the comparison succeeded or every one matched.
+		/// </summary>
+		public Dictionary<string, string?>? GetUnmatchedMembersToIgnore()
+			=> HasError ? _membersToIgnore.GetUnmatchedMembersToIgnore() : null;
 
 		public void AddError(string memberPath, string error)
 			=> _errors.Add(new KeyValuePair<string, string>(memberPath, error));

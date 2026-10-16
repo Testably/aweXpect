@@ -748,6 +748,66 @@ public sealed partial class ThatJsonString
 				}
 
 				[Fact]
+				public async Task WhenGeneratedValuesDiffer_WhenIgnoringThem_ShouldSucceed()
+				{
+					string subject = """
+					                 {"id": 1, "title": "Let It Be", "meta": {"createdAt": "today", "etag": "a"}}
+					                 """;
+					string expected = """
+					                  {"id": 2, "title": "Let It Be", "meta": {"createdAt": "yesterday"}}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.AsJson(o => o.IgnoringMember("id").IgnoringMember("meta.createdAt")
+								.Ignoring(path => path.EndsWith(".etag")));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOtherValueDiffers_WhenIgnoringMember_ShouldFail()
+				{
+					string subject = """
+					                 {"id": 1, "title": "Let It Be"}
+					                 """;
+					string expected = """
+					                  {"id": 2, "title": "Yesterday"}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringMember("id"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"id": 2, "title": "Yesterday"},
+						             but it differed as $.title was "Let It Be" instead of "Yesterday"
+
+						             Actual:
+						             {"id": 1, "title": "Let It Be"}
+
+						             Expected:
+						             {"id": 2, "title": "Yesterday"}
+
+						             JSON options:
+						              - ignore members: ["id"]
+						             """);
+				}
+
+				[Fact]
+				public async Task ForCollections_WhenIgnoringMember_ShouldIgnoreItForEachItem()
+				{
+					string[] subject = ["{\"id\": 1, \"a\": 1}", "{\"id\": 2, \"a\": 1}",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("{\"id\": 3, \"a\": 1}")
+							.AsJson(o => o.IgnoringMember("id"));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenSubjectHasFewerArrayItems_ShouldFail()
 				{
 					string subject = """
@@ -1112,6 +1172,28 @@ public sealed partial class ThatJsonString
 
 						             JSON options:
 						              - ignore array order
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInIgnoredMember_ShouldFail()
+				{
+					string subject = "{\"id\":1,\"a\":2}";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("{\"id\":3,\"a\":2}").AsJson(o => o.IgnoringMember("id"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to {"id":3,"a":2},
+						             but it was "{\"id\":1,\"a\":2}"
+
+						             Expected:
+						             {"id":3,"a":2}
+
+						             JSON options:
+						              - ignore members: ["id"]
 						             """);
 				}
 

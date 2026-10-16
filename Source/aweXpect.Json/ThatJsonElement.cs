@@ -30,6 +30,7 @@ public static partial class ThatJsonElement
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_comparisonResult = null;
 			ExpectationJsonConverter converter = new(context, cancellationToken);
 			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
 			if (actual.ValueKind == JsonValueKind.Undefined)
@@ -57,7 +58,7 @@ public static partial class ThatJsonElement
 					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
 			}
 
-			options.AddContext(contexts);
+			options.AddContext(contexts, _comparisonResult?.GetUnmatchedMembersToIgnore());
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -321,6 +321,21 @@ public sealed partial class ThatJsonString
 
 		public sealed class ObjectTests
 		{
+			[Fact]
+			public async Task WhenIgnoredPropertyIsMissing_WhenIgnoringMember_ShouldSucceed()
+			{
+				string subject = "{\"name\": \"a\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly(new
+					{
+						id = 2,
+						name = "a",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[InlineData("{}", "$.foo was missing")]
 			[InlineData("{\"foo\": 2}")]

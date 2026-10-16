@@ -1362,5 +1362,506 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class IgnoringMemberTests
+		{
+			[Fact]
+			public async Task WhenGeneratedValuesDiffer_ShouldSucceedAsDocumentedInTheReadme()
+			{
+				JsonElement track = FromString(
+					"""{"id": 42, "title": "Let It Be", "meta": {"createdAt": "2026-10-16", "etag": "abc"}}""");
+
+				async Task Act()
+					=> await That(track).MatchesExactly(new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
+						o => o.IgnoringMember("id").IgnoringMember("createdAt").Ignoring(path => path.EndsWith(".etag")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNameIsMisspelled_ShouldFailAsDocumentedInTheReadme()
+			{
+				JsonElement track = FromString("""{"title": "Let It Be", "createdAt": "2026-10-16"}""");
+
+				async Task Act()
+					=> await That(track).MatchesExactly(new { title = "Yesterday", createdAt = "2026-01-01" },
+						o => o.IgnoringMember("craetedAt"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that track
+					             matches new { title = "Yesterday", createdAt = "2026-01-01" } exactly,
+					             but it differed as
+					               $.title was "Let It Be" instead of "Yesterday" and
+					               $.createdAt was "2026-10-16" instead of "2026-01-01"
+
+					             JSON options:
+					              - ignore members: ["craetedAt"]
+					                "craetedAt" matched no member (did you mean "createdAt"?)
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPropertiesDifferAtAnyDepth_ShouldIgnoreThem()
+			{
+				JsonElement subject = FromString(
+					"{\"id\": 1, \"inner\": {\"id\": 2, \"name\": \"a\"}, \"items\": [{\"id\": 3}]}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 9,
+						inner = new
+						{
+							id = 8,
+							name = "a",
+						},
+						items = new[]
+						{
+							new
+							{
+								id = 7,
+							},
+						},
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOtherPropertyDiffers_ShouldStillReportIt()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 2,
+						name = "b",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	id = 2,
+					             	name = "b",
+					             } exactly,
+					             but it differed as $.name was "a" instead of "b"
+
+					             JSON options:
+					              - ignore members: ["id"]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNameMatchesOnlyPartOfASegment_ShouldNotIgnoreIt()
+			{
+				JsonElement subject = FromString("{\"parentId\": 1}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						parentId = 2,
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	parentId = 2,
+					             } exactly,
+					             but it differed as $.parentId was 1 instead of 2
+
+					             JSON options:
+					              - ignore members: ["id"]
+					                "id" matched no member
+					             """)
+					.Because("the name must cover whole segments of the path");
+			}
+
+			[Fact]
+			public async Task WhenNameDiffersInCasing_ShouldIgnoreTheProperty()
+			{
+				JsonElement subject = FromString("{\"Id\": 1}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						Id = 2,
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow()
+					.Because("names are matched case-insensitively, like in aweXpect");
+			}
+
+			[Fact]
+			public async Task WhenNameHasSeveralSegments_ShouldOnlyIgnoreMatchingPaths()
+			{
+				JsonElement subject = FromString("{\"inner\": {\"id\": 1}, \"other\": {\"id\": 2}}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						inner = new
+						{
+							id = 9,
+						},
+						other = new
+						{
+							id = 8,
+						},
+					}, o => o.IgnoringMember("inner.id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	inner = new
+					             	{
+					             		id = 9,
+					             	},
+					             	other = new
+					             	{
+					             		id = 8,
+					             	},
+					             } exactly,
+					             but it differed as $.other.id was 2 instead of 8
+
+					             JSON options:
+					              - ignore members: ["inner.id"]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNameStartsWithTheRoot_ShouldOnlyIgnoreThePropertyOfTheRoot()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"inner\": {\"id\": 2}}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 9,
+						inner = new
+						{
+							id = 8,
+						},
+					}, o => o.IgnoringMember("$.id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	id = 9,
+					             	inner = new
+					             	{
+					             		id = 8,
+					             	},
+					             } exactly,
+					             but it differed as $.inner.id was 2 instead of 8
+
+					             JSON options:
+					              - ignore members: ["$.id"]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNameIsAFullPath_ShouldIgnoreThePath()
+			{
+				JsonElement subject = FromString("{\"items\": [{\"etag\": \"a\"}, {\"etag\": \"b\"}]}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						items = new[]
+						{
+							new
+							{
+								etag = "x",
+							},
+							new
+							{
+								etag = "b",
+							},
+						},
+					}, o => o.IgnoringMember("$.items[0].etag"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNameIsAnIndex_ShouldIgnoreTheElementOfEveryArray()
+			{
+				JsonElement subject = FromString("{\"a\": [1, 2], \"b\": [3, 4]}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						a = new[]
+						{
+							9, 2,
+						},
+						b = new[]
+						{
+							8, 4,
+						},
+					}, o => o.IgnoringMember("[0]"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIgnoredPropertyIsMissing_ShouldNotReportIt()
+			{
+				JsonElement subject = FromString("{\"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 1,
+						name = "a",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIgnoredPropertyIsUnexpected_ShouldNotReportIt()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						name = "a",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIgnoredElementIsMissing_ShouldNotReportIt()
+			{
+				JsonElement subject = FromString("[1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringMember("[1]"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIgnoredElementIsUnexpected_ShouldNotReportIt()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1,], o => o.IgnoringMember("[1]"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIgnoredValueHasADifferentKind_ShouldNotReportIt()
+			{
+				JsonElement subject = FromString("{\"meta\": [1, 2]}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						meta = "x",
+					}, o => o.IgnoringMember("meta"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenChildrenOfIgnoredPathDiffer_ShouldNotReportThem()
+			{
+				JsonElement subject = FromString("{\"meta\": {\"a\": 1, \"b\": 2}, \"name\": \"x\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						meta = new
+						{
+							a = 9,
+							c = 3,
+						},
+						name = "x",
+					}, o => o.IgnoringMember("meta"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPredicateMatchesThePath_ShouldIgnoreIt()
+			{
+				JsonElement subject = FromString("{\"items\": [{\"etag\": \"a\", \"name\": \"x\"}], \"etag\": 1}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						items = new[]
+						{
+							new
+							{
+								etag = "b",
+								name = "x",
+							},
+						},
+						etag = 2,
+					}, o => o.Ignoring(path => path.StartsWith("$.items[") && path.EndsWith(".etag")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	items = new[]
+					             	{
+					             		new
+					             		{
+					             			etag = "b",
+					             			name = "x",
+					             		},
+					             	},
+					             	etag = 2,
+					             } exactly,
+					             but it differed as $.etag was 1 instead of 2
+
+					             JSON options:
+					              - ignore members: [path => path.StartsWith("$.items[") && path.EndsWith(".etag")]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenIgnoringSeveralMembers_ShouldIgnoreAllOfThem()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"createdAt\": \"today\", \"etag\": \"a\", \"name\": \"x\"}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						id = 2,
+						createdAt = "yesterday",
+						etag = "b",
+						name = "x",
+					}, o => o
+						.IgnoringMember("id")
+						.IgnoringMember("createdAt")
+						.Ignoring(path => path == "$.etag"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenElementsDifferInIgnoredMember_WhenIgnoringArrayOrder_ShouldPairThem()
+			{
+				JsonElement subject = FromString("[{\"id\": 1, \"name\": \"a\"}, {\"id\": 2, \"name\": \"b\"}]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new[]
+					{
+						new
+						{
+							id = 8,
+							name = "b",
+						},
+						new
+						{
+							id = 9,
+							name = "a",
+						},
+					}, o => o.IgnoringMember("id").IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenIndexIsIgnored_WhenIgnoringArrayOrder_ShouldLeaveTheElementOfTheSubjectOutOfThePairing()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringMember("[0]").IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,] exactly,
+					             but it differed as $[2] was 3 instead of 1
+
+					             JSON options:
+					              - ignore array order
+					              - ignore members: ["[0]"]
+					             """)
+					.Because("the index refers to the element of the subject, so the expected 1 cannot pair with it");
+			}
+
+			[Fact]
+			public async Task WhenIndexIsIgnored_WhenIgnoringArrayOrder_ShouldNotReportTheElementAsUnexpected()
+			{
+				JsonElement subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([3, 2,], o => o.IgnoringMember("[0]").IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNameOnlyMatchedWhilePairing_WhenIgnoringArrayOrder_ShouldNotNameIt()
+			{
+				JsonElement subject = FromString("[{\"id\": 1, \"a\": 1}, {\"id\": 2, \"a\": 2}]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new[]
+					{
+						new
+						{
+							id = 9,
+							a = 3,
+						},
+						new
+						{
+							id = 9,
+							a = 4,
+						},
+					}, o => o.IgnoringMember("id").IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new[]
+					             {
+					             	new
+					             	{
+					             		id = 9,
+					             		a = 3,
+					             	},
+					             	new
+					             	{
+					             		id = 9,
+					             		a = 4,
+					             	},
+					             } exactly,
+					             but it differed as
+					               $ had missing {"id":9,"a":3} and
+					               $ had missing {"id":9,"a":4} and
+					               $[0] had unexpected {"id":1,"a":1} and
+					               $[1] had unexpected {"id":2,"a":2}
+
+					             JSON options:
+					              - ignore array order
+					              - ignore members: ["id"]
+					             """)
+					.Because("the name matched while the elements were paired");
+			}
+		}
 	}
 }

@@ -30,6 +30,7 @@ public static partial class ThatNullableJsonElement
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_comparisonResult = null;
 			if (actual == null)
 			{
 				Outcome = Outcome.Failure;
@@ -62,7 +63,7 @@ public static partial class ThatNullableJsonElement
 					() => Formatter.Format(actual, FormattingOptions.MultipleLines)));
 			}
 
-			options.AddContext(contexts);
+			options.AddContext(contexts, _comparisonResult?.GetUnmatchedMembersToIgnore());
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -791,6 +791,49 @@ public sealed partial class ThatJsonElement
 
 		public sealed class ObjectTests
 		{
+			[Fact]
+			public async Task WhenIgnoredPropertyDiffers_WhenIgnoringMember_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						id = 2,
+						name = "a",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOtherPropertyDiffers_WhenIgnoringMember_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"id\": 1, \"name\": \"a\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						id = 2,
+						name = "b",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	id = 2,
+					             	name = "b",
+					             },
+					             but it differed as $.name was "a" instead of "b"
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore members: ["id"]
+					             """);
+			}
+
 			[Theory]
 			[InlineData("{}", "$.foo was missing")]
 			[InlineData("{\"foo\": 2}")]
