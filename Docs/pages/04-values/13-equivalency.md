@@ -211,6 +211,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 | [`IncludingFields`, `IncludingProperties`](#including-fields-and-properties)         | chooses which fields and properties are compared |
 | [`IgnoringCollectionOrder`](#ignoring-collection-order)                              | matches collection items without an order        |
 | [`Comparing<TActual, TExpected>`](#comparing-different-types-with-a-predicate)       | compares a pair of types with a predicate        |
+| [`Mapping`](#mapping-differently-named-members)                                      | compares differently named members               |
 | [`For<T>`](#per-type-options-with-fort)                                              | applies options to members of type `T` only      |
 | [`ComparisonType`](#comparing-by-value-or-by-members)                                | compares a type by value or by its members       |
 | [`LimitingRecursionDepth`](#limiting-the-recursion-depth)                            | changes the maximum recursion depth of 100       |
@@ -325,6 +326,53 @@ Equivalency options:
 When several predicates apply to a pair, the one that was added last decides. Within
 [`For<T>`](#per-type-options-with-fort), a predicate only applies to values of type `T` and to the values nested in
 them.
+
+### Mapping differently named members
+
+When the members of both types correspond but are named differently, map them, so that they are still compared member
+by member and a failure names the exact difference:
+
+```csharp
+await Expect.That(tracks).IsEquivalentTo(chart, o => o
+  .Mapping<Track, ChartEntry>(track => track.Title, entry => entry.Song)
+  .Mapping<Track, ChartEntry>(track => track.PlayCount, entry => entry.Plays));
+```
+
+The mapping applies wherever an actual `TActual` meets an expected `TExpected`. Failures and
+[members to ignore](#ignoring-members-by-name) name the expected member, e.g. `Property Song differed`. The expressions
+are only read for the names of their members, so they also work with trimming or Native AOT. Without the types, a
+mapping matches the expected member by name, like `IgnoringMember`, at any depth:
+
+```csharp
+await Expect.That(tracks).IsEquivalentTo(chart, o => o
+  .Mapping("Title", "Song")
+  .Mapping("PlayCount", "Plays"));
+```
+
+Either member can be nested, so a mapping also flattens an object, e.g. the artist of a release:
+
+```csharp
+// class ReleaseDto { public string ArtistName { get; set; } }
+// class Release { public Artist Artist { get; set; } }
+await Expect.That(releaseDto).IsEquivalentTo(release, o => o
+  .Mapping<ReleaseDto, Release>(dto => dto.ArtistName, release => release.Artist.Name));
+```
+
+<details>
+<summary>How nested mappings are compared</summary>
+
+- A `null` value on the way to the actual member reads as `null`. A `null` value on the way to the expected member, for
+  which the actual object has no member, makes each mapped actual member below it compare with `null`.
+- When the actual object has no member for an expected member that a mapping runs through, like `Artist` above, every
+  member below it has to be mapped as well. The others are reported as missing, so nothing is left unverified. When the
+  actual object has such a member, it is compared as usual, and only the mapped member below it reads another member.
+- A mapping by name reads the actual member on the actual object that is compared with the object which has the first
+  member of the expected path, so `Mapping("ArtistName", "Artist.Name")` flattens like the example above, and
+  `Mapping("Artist.Alias", "Artist.Name")` reads the alias of the actual artist.
+- When several mappings apply to an expected member, the one that was added last decides.
+- A mapping by name that matched no member is named below it in the failure, like a member to ignore.
+
+</details>
 
 ### Per-type options with `For<T>`
 

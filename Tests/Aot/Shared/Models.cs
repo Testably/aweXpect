@@ -23,6 +23,15 @@ public sealed class Address
 	public string City { get; set; } = "";
 }
 
+/// <summary>
+///     Holds the members of a <see cref="Customer" /> flattened and named differently.
+/// </summary>
+public sealed class CustomerSummary
+{
+	public string FullName { get; set; } = "";
+	public string Town { get; set; } = "";
+}
+
 public sealed class Item
 {
 #pragma warning disable S1104 // A public field is registered and compared differently from a property

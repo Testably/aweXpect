@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Equivalency;
 using aweXpect.Recording;
 using static aweXpect.Expect;
 
@@ -127,6 +128,22 @@ internal static class Checks
 				await That(actual).IsEqualTo(expected);
 				await That(actual).Keys.Contains("a");
 			})),
+		new("mapped and flattened members of different types pass",
+			() => ShouldPass(async () => await That(new CustomerSummary
+			{
+				FullName = "Alice",
+				Town = "Vienna",
+			}).IsEquivalentTo(CreateOrder().Customer, o => o
+				.Mapping<CustomerSummary, Customer>(summary => summary.FullName, customer => customer.Name)
+				.Mapping<CustomerSummary, Customer>(summary => summary.Town, customer => customer.Address.City)))),
+		new("a differing flattened member fails and is named",
+			() => ShouldFail(async () => await That(new CustomerSummary
+			{
+				FullName = "Alice",
+				Town = "Berlin",
+			}).IsEquivalentTo(CreateOrder().Customer, o => o
+				.Mapping("FullName", "Name")
+				.Mapping("Town", "Address.City")), "Address.City differed")),
 		new("a subject the generator did not see fails loudly",
 			() => ShouldFailOrFailLoudly(async () =>
 			{

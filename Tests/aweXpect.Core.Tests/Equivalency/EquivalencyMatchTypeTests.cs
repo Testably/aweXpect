@@ -15,6 +15,28 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyMatchTypeTests
 {
 	[Test]
+	public async Task AppendContexts_AfterAFailedComparisonWithAMapping_ShouldNameItsUnmatchedMember()
+	{
+		EquivalencyMatchType sut = new(new EquivalencyOptions().Mapping("Value", "Valeu"));
+		await sut.AreConsideredEqualWithExplanation(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 2,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - map "Value" to "Valeu"
+		                                "Valeu" matched no member (did you mean "Value"?)
+		                             """)
+			.Because("a mapping names its expected member by the end of its path, like a member to ignore");
+	}
+
+	[Test]
 	public async Task AppendContexts_AfterAFailedDecidingComparison_ShouldNameTheMembersToIgnore()
 	{
 		EquivalencyMatchType sut = new(IgnoringMember("Valeu"));
@@ -34,6 +56,28 @@ public sealed class EquivalencyMatchTypeTests
 		                                "Valeu" matched no member (did you mean "Value"?)
 		                             """)
 			.Because("the items of a collection are compared without an explanation");
+	}
+
+	[Test]
+	public async Task AppendContexts_AfterAFailedDecidingComparisonWithAMatchedMapping_ShouldNotNameIt()
+	{
+		EquivalencyMatchType sut = new(new EquivalencyOptions().Mapping("Missing", "Value"));
+		bool isEqual = await sut.AreConsideredEqual(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = 1,
+		});
+
+		string? result = await ContextOf(sut);
+
+		await That(isEqual).IsFalse()
+			.Because("the mapped actual member does not exist");
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - map "Missing" to "Value"
+		                             """);
 	}
 
 	[Test]

@@ -710,8 +710,9 @@ public static partial class EquivalencyComparison
 			return true;
 		}
 
+		List<ActiveMapping>? pendingMappings = context.TakePendingMappings(expected);
 		ComparedPair comparedPair = new(actual, expected);
-		if (!context.TryEnter(comparedPair, typeOptions, out ComparisonScope scope))
+		if (!context.TryEnter(comparedPair, typeOptions, pendingMappings is not null, out ComparisonScope scope))
 		{
 			return true;
 		}
@@ -739,7 +740,7 @@ public static partial class EquivalencyComparison
 				bool hasEquivalentEntries = await CompareDictionaries(actualDictionary, actualKeyComparer,
 					expectedDictionary, failureBuilder, memberType, path, equivalencyOptions, typeOptions, context);
 				isEquivalent = await CompareOwnMembers(actual, expected, failureBuilder, memberType, path,
-					equivalencyOptions, typeOptions, context) && hasEquivalentEntries;
+					equivalencyOptions, typeOptions, context, pendingMappings) && hasEquivalentEntries;
 			}
 			else if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
 			         TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
@@ -754,12 +755,12 @@ public static partial class EquivalencyComparison
 				bool hasEquivalentItems = await CompareEnumerables(actualEnumerable, expectedEnumerable, dimensions,
 					failureBuilder, path, equivalencyOptions, typeOptions, context);
 				isEquivalent = await CompareOwnMembers(actual, expected, failureBuilder, memberType, path,
-					equivalencyOptions, typeOptions, context) && hasEquivalentItems;
+					equivalencyOptions, typeOptions, context, pendingMappings) && hasEquivalentItems;
 			}
 			else
 			{
 				isEquivalent = await CompareObjects(actual, expected, failureBuilder, memberType, path,
-					equivalencyOptions, typeOptions, context, false);
+					equivalencyOptions, typeOptions, context, false, pendingMappings);
 			}
 
 			if (!HasSufficientStack())
@@ -794,16 +795,32 @@ public static partial class EquivalencyComparison
 			[DisallowNull] TExpected expected,
 			StringBuilder failureBuilder, MemberType memberType, string memberPath,
 			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context,
-			bool ownMembersOnly)
+			bool ownMembersOnly, List<ActiveMapping>? pendingMappings)
 	{
 		bool result = true;
 		int memberCount = 0;
+		List<ActiveMapping>? mappings = GetActiveMappings(actual, expected, typeOptions, pendingMappings);
+		bool tracksComparedPaths = context.TrackMappings(typeOptions.MemberMappings);
 		EquivalencyMemberPlan plan = EquivalencyMemberPlan.For(expected.GetType(), actual.GetType(),
 			typeOptions.Fields, typeOptions.Properties, ownMembersOnly);
 		foreach (EquivalencyMemberPlan.PlannedMember field in plan.Fields)
 		{
 			memberCount++;
 			MemberPath fieldMemberPath = MemberPath.Member(memberPath, field.Expected.Name);
+			if (tracksComparedPaths)
+			{
+				context.TrackComparedPath(fieldMemberPath.ToString());
+			}
+
+			if (mappings is not null &&
+			    FindMappings(mappings, field.Expected.Name, out ActiveMapping? fieldMapping,
+				    out List<ActiveMapping>? fieldMappingsBelow))
+			{
+				result &= await CompareMappedMember(field, MemberType.Field, fieldMemberPath, actual, expected,
+					fieldMapping, fieldMappingsBelow, options, typeOptions, failureBuilder, context);
+				continue;
+			}
+
 			if (!TryReadMember(field, MemberType.Field, fieldMemberPath, actual, expected, options, typeOptions,
 				    failureBuilder, context, out bool isEquivalent, out object? actualFieldValue,
 				    out object? expectedFieldValue))
@@ -824,6 +841,20 @@ public static partial class EquivalencyComparison
 		{
 			memberCount++;
 			MemberPath propertyMemberPath = MemberPath.Member(memberPath, property.Expected.Name);
+			if (tracksComparedPaths)
+			{
+				context.TrackComparedPath(propertyMemberPath.ToString());
+			}
+
+			if (mappings is not null &&
+			    FindMappings(mappings, property.Expected.Name, out ActiveMapping? propertyMapping,
+				    out List<ActiveMapping>? propertyMappingsBelow))
+			{
+				result &= await CompareMappedMember(property, MemberType.Property, propertyMemberPath, actual,
+					expected, propertyMapping, propertyMappingsBelow, options, typeOptions, failureBuilder, context);
+				continue;
+			}
+
 			if (!TryReadMember(property, MemberType.Property, propertyMemberPath, actual, expected, options,
 				    typeOptions, failureBuilder, context, out bool isEquivalent, out object? actualPropertyValue,
 				    out object? expectedPropertyValue))
@@ -870,10 +901,11 @@ public static partial class EquivalencyComparison
 		CompareOwnMembers<TActual, TExpected>([DisallowNull] TActual actual,
 			[DisallowNull] TExpected expected,
 			StringBuilder failureBuilder, MemberType memberType, string memberPath,
-			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context)
+			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context,
+			List<ActiveMapping>? pendingMappings)
 		=> GetTypeShape(expected.GetType()).CanHaveOwnMembers
 			? CompareObjects(actual, expected, failureBuilder, memberType, memberPath, options, typeOptions,
-				context, true)
+				context, true, pendingMappings)
 			: new ValueTask<bool>(true);
 
 	/// <remarks>

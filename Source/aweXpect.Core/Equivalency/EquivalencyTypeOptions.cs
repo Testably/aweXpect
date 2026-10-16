@@ -51,6 +51,14 @@ public record EquivalencyTypeOptions
 	/// </remarks>
 	internal TypePairComparison[] TypePairComparisons { get; init; } = [];
 
+	/// <summary>
+	///     The mappings that read the value for an expected member from a differently named actual member.
+	/// </summary>
+	/// <remarks>
+	///     The last one that applies to an expected member decides, like for <see cref="TypePairComparisons" />.
+	/// </remarks>
+	internal MemberMapping[] MemberMappings { get; init; } = [];
+
 	internal void AppendOptions(StringBuilder sb, string indentation = "",
 		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore = null)
 	{
@@ -82,6 +90,17 @@ public record EquivalencyTypeOptions
 			sb.Append(indentation).Append(" - compare ");
 			typePairComparison.AppendTypes(sb);
 			sb.Append(" by ").AppendLine(typePairComparison.Description);
+		}
+
+		foreach (MemberMapping memberMapping in MemberMappings)
+		{
+			sb.Append(indentation).Append(" - map ");
+			memberMapping.AppendDescription(sb);
+			sb.AppendLine();
+			if (memberMapping.ExpectedName is { } expectedName)
+			{
+				AppendUnmatchedName(sb, indentation, expectedName, unmatchedMembersToIgnore);
+			}
 		}
 
 		AppendMembersToIgnore(sb, indentation, "members",
@@ -124,26 +143,35 @@ public record EquivalencyTypeOptions
 	private void AppendUnmatchedMembersToIgnore(StringBuilder sb, string indentation,
 		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
 	{
-		if (unmatchedMembersToIgnore is null)
+		foreach (MemberToIgnore memberToIgnore in MembersToIgnore)
+		{
+			if (memberToIgnore is MemberToIgnore.ByName byName)
+			{
+				AppendUnmatchedName(sb, indentation, byName.MemberName, unmatchedMembersToIgnore);
+			}
+		}
+	}
+
+	/// <remarks>
+	///     A member to ignore and a mapping share the names that matched no member, as both name a member by the end of
+	///     its path.
+	/// </remarks>
+	private static void AppendUnmatchedName(StringBuilder sb, string indentation, string name,
+		IReadOnlyDictionary<string, string?>? unmatchedNames)
+	{
+		if (unmatchedNames is null || !unmatchedNames.TryGetValue(name, out string? suggestion))
 		{
 			return;
 		}
 
-		foreach (MemberToIgnore memberToIgnore in MembersToIgnore)
+		sb.Append(indentation).Append("   ");
+		Formatter.Format(sb, name);
+		sb.Append(" matched no member");
+		if (suggestion is not null)
 		{
-			if (memberToIgnore is MemberToIgnore.ByName byName &&
-			    unmatchedMembersToIgnore.TryGetValue(byName.MemberName, out string? suggestion))
-			{
-				sb.Append(indentation).Append("   ");
-				Formatter.Format(sb, byName.MemberName);
-				sb.Append(" matched no member");
-				if (suggestion is not null)
-				{
-					ClosestMatch.AppendHint(sb, byName.MemberName, [suggestion,]);
-				}
-
-				sb.AppendLine();
-			}
+			ClosestMatch.AppendHint(sb, name, [suggestion,]);
 		}
+
+		sb.AppendLine();
 	}
 }
