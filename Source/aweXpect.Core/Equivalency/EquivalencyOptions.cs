@@ -125,10 +125,16 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	}
 
 	/// <inheritdoc />
-	public override string ToString()
+	public override string ToString() => ToString(null);
+
+	/// <summary>
+	///     Lists the options like <see cref="ToString()" />, with the hint of each member to ignore by name that
+	///     matched no member below the members to ignore.
+	/// </summary>
+	internal string ToString(IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
 	{
 		StringBuilder? sb = new();
-		AppendOptions(sb);
+		AppendOptions(sb, "", unmatchedMembersToIgnore);
 		if (MaxRecursionDepth != DefaultMaxRecursionDepth)
 		{
 			sb.Append(" - limit the recursion depth to ").Append(MaxRecursionDepth).AppendLine();
@@ -140,7 +146,7 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 			sb.Append(" - for ");
 			Formatter.Format(sb, registration.Key);
 			sb.AppendLine(":");
-			registration.Value(this).AppendOptions(sb, "  ");
+			registration.Value(this).AppendOptions(sb, "  ", unmatchedMembersToIgnore);
 		}
 
 		return sb.ToString().TrimEnd();

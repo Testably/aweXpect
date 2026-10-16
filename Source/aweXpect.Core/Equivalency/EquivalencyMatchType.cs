@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	private readonly IEvaluationContext? _evaluation;
 	private StringBuilder? _failureBuilder;
 	private bool _isMatch;
+	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 
 	/// <summary>
 	///     Compares with the <paramref name="equivalencyOptions" />.
@@ -85,18 +87,60 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	}
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />
+	/// <remarks>
+	///     Only options that can ignore members by name track them, so that most comparisons of collection items stay
+	///     as they are.
+	/// </remarks>
 	public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		=> EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions, _evaluation, _cancellationToken);
+		=> CanIgnoreMembersByName(_equivalencyOptions)
+			? AreConsideredEqualTrackingMembersToIgnore(actual, expected)
+			: EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions, _evaluation,
+				_cancellationToken);
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
+	/// <remarks>
+	///     The items of a collection are compared one after the other with the same match type, so the members to
+	///     ignore of every failed comparison are kept.
+	/// </remarks>
 	public async ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
 		TExpected expected)
 	{
 		StringBuilder failureBuilder = FailureBuilder;
 		failureBuilder.Clear();
-		_isMatch = await EquivalencyComparison.Compare(actual, expected, _equivalencyOptions, failureBuilder,
-			_evaluation, _cancellationToken);
+		(_isMatch, _unmatchedMembersToIgnore) = await EquivalencyComparison.CompareExplaining(actual, expected,
+			_equivalencyOptions, failureBuilder, _evaluation, _cancellationToken, _unmatchedMembersToIgnore);
 		return this;
+	}
+
+	private async ValueTask<bool> AreConsideredEqualTrackingMembersToIgnore<TActual, TExpected>(TActual actual,
+		TExpected expected)
+	{
+		(bool isEquivalent, _unmatchedMembersToIgnore) =
+			await EquivalencyComparison.IsEquivalentTrackingMembersToIgnore(actual, expected, _equivalencyOptions,
+				_evaluation, _cancellationToken, _unmatchedMembersToIgnore);
+		return isEquivalent;
+	}
+
+	/// <remarks>
+	///     The options registered for a type are only created during the comparison, so they may ignore members by
+	///     name as well.
+	/// </remarks>
+	private static bool CanIgnoreMembersByName(EquivalencyOptions equivalencyOptions)
+	{
+		if (equivalencyOptions.HasRegistrations)
+		{
+			return true;
+		}
+
+		foreach (MemberToIgnore memberToIgnore in equivalencyOptions.MembersToIgnore)
+		{
+			if (memberToIgnore is MemberToIgnore.ByName)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/// <summary>
@@ -120,7 +164,18 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 
 	/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 	public void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddEquivalencyContext(_equivalencyOptions);
+	{
+		if (_unmatchedMembersToIgnore is null)
+		{
+			contexts.AddEquivalencyContext(_equivalencyOptions);
+			return;
+		}
+
+		Dictionary<string, string?> unmatchedMembersToIgnore = new(_unmatchedMembersToIgnore,
+			StringComparer.OrdinalIgnoreCase);
+		contexts.Add(new ResultContext.SyncCallback("Equivalency options",
+			() => _equivalencyOptions.ToString(unmatchedMembersToIgnore), int.MinValue));
+	}
 
 	/// <inheritdoc />
 	public override string ToString() => " using equivalency";

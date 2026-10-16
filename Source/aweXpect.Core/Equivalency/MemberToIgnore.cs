@@ -47,6 +47,8 @@ public abstract class MemberToIgnore
 	/// </remarks>
 	public class ByName(string memberName) : MemberToIgnore
 	{
+		internal string MemberName => memberName;
+
 		/// <inheritdoc cref="MemberToIgnore.IgnoreMember(string, Type)" />
 		public override bool IgnoreMember(string memberPath, Type memberType)
 		{
