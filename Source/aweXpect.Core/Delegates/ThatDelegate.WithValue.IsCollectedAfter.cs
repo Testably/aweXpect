@@ -60,17 +60,22 @@ public abstract partial class ThatDelegate
 			Action<T> cleanup, CancellationToken cancellationToken)
 		{
 			Task<T>? task = factory(cancellationToken);
-			return task is null ? null : CleanUpAsync(task, cleanup);
+			return task is null ? null : CleanUpAsync(task, cleanup, cancellationToken);
 		}
 
 		/// <remarks>
 		///     A completing task runs its continuations on the stack of the factory, whose frames may still hold the
 		///     object, so the cleanup continues on a new stack after <see cref="Task.Yield" />.
+		///     <para />
+		///     A timeout abandons the task, so the canceled <paramref name="cancellationToken" /> prevents the cleanup
+		///     from running after the expectation already failed.
 		/// </remarks>
-		private static async Task<CleanedUpObject> CleanUpAsync(Task<T>? task, Action<T> cleanup)
+		private static async Task<CleanedUpObject> CleanUpAsync(Task<T>? task, Action<T> cleanup,
+			CancellationToken cancellationToken)
 		{
 			await (Task)task!;
 			await Task.Yield();
+			cancellationToken.ThrowIfCancellationRequested();
 			return TakeResultAndCleanUp(ref task, cleanup);
 		}
 

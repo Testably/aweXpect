@@ -4,6 +4,7 @@ public sealed partial class ThatWeakReference
 {
 	public sealed class IsCollected
 	{
+		[NotInParallel]
 		public sealed class GenericTests
 		{
 			[Test]
@@ -52,6 +53,7 @@ public sealed partial class ThatWeakReference
 			}
 		}
 
+		[NotInParallel]
 		public sealed class NegatedTests
 		{
 			[Test]
@@ -84,6 +86,7 @@ public sealed partial class ThatWeakReference
 			}
 		}
 
+		[NotInParallel]
 		public sealed class Tests
 		{
 			[Test]

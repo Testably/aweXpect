@@ -7,8 +7,32 @@ namespace aweXpect.Core.Tests.Delegates;
 
 public sealed partial class ThatDelegateTests
 {
+	[NotInParallel]
 	public sealed class IsCollectedAfterTests
 	{
+		[Test]
+		public async Task WhenAsyncDelegateCompletesAfterTheTimeout_ShouldNotCallTheCleanup()
+		{
+			EventBus bus = new();
+			TaskCompletionSource<Subscriber> factory = new();
+			int cleanupCalls = 0;
+
+			async Task Act()
+				=> await That(() => factory.Task).IsCollectedAfter(_ => cleanupCalls++)
+					.WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that () => factory.Task
+				             is collected after _ => cleanupCalls++,
+				             but it did not finish within 0:00.050
+				             """);
+			factory.SetResult(new Subscriber(bus));
+			await Task.Delay(100);
+			await That(cleanupCalls).IsEqualTo(0)
+				.Because("the cleanup of an abandoned delegate must not run after the expectation already failed");
+		}
+
 		[Test]
 		public async Task WhenAsyncDelegateCompletesAsynchronously_AndCleanupReleasesTheObject_ShouldSucceed()
 		{
