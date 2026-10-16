@@ -182,6 +182,38 @@ await Expect.That(titles).Matches(["Let It Be", "Yesterday"]);
 await Expect.That(titles).MatchesExactly(["Let It Be", "Yesterday", "Hey Jude"]);
 ```
 
+By default, arrays are compared by index. With `IgnoringArrayOrder()`, the elements of all compared arrays, also
+nested ones, can be in any order. The option is available wherever `JsonOptions` are accepted, e.g.
+`IsEqualTo(expected).AsJson(o => o.IgnoringArrayOrder())`:
+
+```csharp
+JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
+
+await Expect.That(titles).MatchesExactly(["Hey Jude", "Let It Be", "Yesterday"],
+    o => o.IgnoringArrayOrder());
+```
+
+Each expected element is paired with the first matching element of the subject that is not paired yet. The expected
+elements that could not be paired are reported as missing on the array, the remaining elements of the subject as
+unexpected at their index. `MatchesExactly(["Hey Jude", "Something", "Help!"], o => o.IgnoringArrayOrder())` would
+fail with:
+
+```text title="Failure message"
+Expected that titles
+matches ["Hey Jude", "Something", "Help!"] exactly,
+but it differed as
+  $ had missing "Something" and
+  $ had missing "Help!" and
+  $[0] had unexpected "Let It Be" and
+  $[1] had unexpected "Yesterday"
+```
+
+When exactly one element remains unpaired on each side, they are compared with each other instead, e.g.
+`$[1] was "Yesterday" instead of "Something"`. As additional elements are ignored by `Matches`, the expected elements
+only have to be contained in the subject in any order. The pairing is greedy, so overlapping `It.Is…` expectations
+can fail, although another pairing would succeed. The positional members of [`IsArray`](#isarray) (`At`,
+`WithElements`, `WithArrays` and `WithObjects`) still verify the element at each index.
+
 You can also verify that a `JsonElement` matches a primitive value:
 
 ```csharp

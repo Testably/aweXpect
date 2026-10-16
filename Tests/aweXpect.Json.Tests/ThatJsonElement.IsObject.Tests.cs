@@ -401,6 +401,28 @@ public sealed partial class ThatJsonElement
 					             """);
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenMatchingArrayInDifferentOrder_ShouldFailUnlessIgnoringArrayOrder(bool ignoreArrayOrder)
+			{
+				JsonElement subject = FromString("{\"foo\": [1, 2]}");
+
+				async Task Act()
+					=> await That(subject).IsObject(
+						o => o.With("foo").Matching(new[] { 2, 1, }),
+						o => o.IgnoringArrayOrder(ignoreArrayOrder));
+
+				await That(Act).Throws<XunitException>().OnlyIf(!ignoreArrayOrder)
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches new[] { 2, 1, },
+					             but it differed as
+					               $.foo[0] was 1 instead of 2 and
+					               $.foo[1] was 2 instead of 1
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenMatchingItIsOnNullProperty_ShouldFail()
 			{

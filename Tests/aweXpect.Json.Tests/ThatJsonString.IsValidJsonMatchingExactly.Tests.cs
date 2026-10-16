@@ -222,6 +222,33 @@ public sealed partial class ThatJsonString
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenElementsAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly([2, 1,], o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				string subject = "[3, 2, 1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatchingExactly([1, 2,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,] exactly,
+					             but it differed as $[0] had unexpected 3
+					             """);
+			}
+
 			public static TheoryData<string[], string> MatchingArrayValues
 				=> new()
 				{

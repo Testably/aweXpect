@@ -661,6 +661,86 @@ public sealed partial class ThatJsonString
 						.Because("null elements of an array are not affected by the option");
 				}
 
+				[Theory]
+				[InlineData(false)]
+				[InlineData(true)]
+				public async Task WhenArrayElementsAreInDifferentOrder_ShouldFailUnlessIgnoringArrayOrder(
+					bool ignoreArrayOrder)
+				{
+					string subject = """
+					                 {"tags": ["rock", "pop"]}
+					                 """;
+					string expected = """
+					                  {"tags": ["pop", "rock"]}
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.AsJson(o => o.IgnoringArrayOrder(ignoreArrayOrder));
+
+					await That(Act).Throws<XunitException>().OnlyIf(!ignoreArrayOrder)
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {"tags": ["pop", "rock"]},
+						             but it differed as
+						               $.tags[0] was "rock" instead of "pop" and
+						               $.tags[1] was "pop" instead of "rock"
+
+						             Actual:
+						             {"tags": ["rock", "pop"]}
+
+						             Expected:
+						             {"tags": ["pop", "rock"]}
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenArrayElementsDiffer_WhenIgnoringArrayOrder_ShouldReportMissingAndUnexpectedElements()
+				{
+					string subject = """
+					                 ["rock", "blues", "jazz", "metal"]
+					                 """;
+					string expected = """
+					                  ["jazz", "rock", "pop", "soul"]
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringArrayOrder());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to ["jazz", "rock", "pop", "soul"],
+						             but it differed as
+						               $ had missing "pop" and
+						               $ had missing "soul" and
+						               $[1] had unexpected "blues" and
+						               $[3] had unexpected "metal"
+
+						             Actual:
+						             ["rock", "blues", "jazz", "metal"]
+
+						             Expected:
+						             ["jazz", "rock", "pop", "soul"]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenObjectsInArrayAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+				{
+					string subject = """
+					                 [{"id": 1, "tags": ["a", "b"]}, {"id": 2, "tags": ["c"]}]
+					                 """;
+					string expected = """
+					                  [{"id": 2, "tags": ["c"]}, {"id": 1, "tags": ["b", "a"]}]
+					                  """;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringArrayOrder());
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WhenSubjectHasFewerArrayItems_ShouldFail()
 				{
@@ -916,6 +996,25 @@ public sealed partial class ThatJsonString
 
 						             Expected:
 						             {}
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsEquivalentWhenIgnoringArrayOrder_ShouldFail()
+				{
+					string subject = "[1,2]";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("[2,1]").AsJson(o => o.IgnoringArrayOrder());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to [2,1],
+						             but it was "[1,2]"
+
+						             Expected:
+						             [2,1]
 						             """);
 				}
 

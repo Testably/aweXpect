@@ -25,6 +25,11 @@ public record JsonOptions
 	public bool IgnoreAdditionalProperties { get; init; }
 
 	/// <summary>
+	///     Flag indicating, if the order of the elements in arrays should be ignored.
+	/// </summary>
+	public bool IgnoreArrayOrder { get; init; }
+
+	/// <summary>
 	///     Flag indicating, if a property with the value <see langword="null" /> should be treated as if it was absent.
 	/// </summary>
 	public bool TreatNullAsAbsent { get; init; }

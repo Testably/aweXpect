@@ -335,6 +335,37 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenElementsAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([3, 1, 2,], o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenElementsDiffer_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement? subject = FromString("[1, 2, 3]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([4, 1, 5,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [4, 1, 5,] exactly,
+					             but it differed as
+					               $ had missing 4 and
+					               $ had missing 5 and
+					               $[1] had unexpected 2 and
+					               $[2] had unexpected 3
+					             """);
+			}
+
 			public static TheoryData<string[], string> MatchingArrayValues
 				=> new()
 				{

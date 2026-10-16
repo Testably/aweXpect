@@ -72,6 +72,12 @@ internal static class JsonElementValidator
 			return result;
 		}
 
+		if (options.IgnoreArrayOrder)
+		{
+			return await result.CompareJsonArrayIgnoringOrder(path, actualElement, expectedElement, options,
+				converter);
+		}
+
 		for (int index = 0; index < expectedElement.GetArrayLength(); index++)
 		{
 			string memberPath = path + "[" + index + "]";
@@ -97,6 +103,89 @@ internal static class JsonElementValidator
 		}
 
 		return result;
+	}
+
+	/// <remarks>
+	///     A missing element has no index in the subject, so it is reported on the array itself.
+	///     When exactly one element remains unpaired on each side, they are compared with each other instead, as their
+	///     differences are more precise than reporting them as missing and unexpected.
+	/// </remarks>
+	private static async Task<JsonComparisonResult> CompareJsonArrayIgnoringOrder(
+		this JsonComparisonResult result,
+		string path,
+		JsonElement actualElement,
+		JsonElement expectedElement,
+		JsonOptions options,
+		ExpectationJsonConverter? converter)
+	{
+		JsonElement[] actualElements = actualElement.EnumerateArray().ToArray();
+		bool[] isPaired = new bool[actualElements.Length];
+		List<JsonElement> missingElements = new();
+		foreach (JsonElement expectedArrayElement in expectedElement.EnumerateArray())
+		{
+			int index = await FindUnpairedMatch(path, actualElements, expectedArrayElement, isPaired, options,
+				converter);
+			if (index < 0)
+			{
+				missingElements.Add(expectedArrayElement);
+			}
+			else
+			{
+				isPaired[index] = true;
+			}
+		}
+
+		List<int> unpairedIndices = Enumerable.Range(0, isPaired.Length).Where(index => !isPaired[index]).ToList();
+		if (missingElements.Count == 1 && unpairedIndices.Count == 1)
+		{
+			int index = unpairedIndices[0];
+			return await result.Compare(path + "[" + index + "]", actualElements[index], missingElements[0], options,
+				converter);
+		}
+
+		foreach (JsonElement missingElement in missingElements)
+		{
+			result.AddError(path, $"had missing {Format(missingElement)}");
+		}
+
+		if (!options.IgnoreAdditionalProperties)
+		{
+			foreach (int index in unpairedIndices)
+			{
+				result.AddError(path + "[" + index + "]", $"had unexpected {Format(actualElements[index])}");
+			}
+		}
+
+		return result;
+	}
+
+	/// <summary>
+	///     Returns the index of the first unpaired element in the <paramref name="actualElements" /> that matches the
+	///     <paramref name="expectedElement" />, or <c>-1</c> if there is none.
+	/// </summary>
+	/// <remarks>
+	///     Each candidate is compared in a separate result, so that the differences of a candidate that does not match are
+	///     not reported.
+	/// </remarks>
+	private static async Task<int> FindUnpairedMatch(
+		string path,
+		JsonElement[] actualElements,
+		JsonElement expectedElement,
+		bool[] isPaired,
+		JsonOptions options,
+		ExpectationJsonConverter? converter)
+	{
+		for (int index = 0; index < actualElements.Length; index++)
+		{
+			if (!isPaired[index] &&
+			    !(await Compare(path + "[" + index + "]", actualElements[index], expectedElement, options, converter))
+				    .HasError)
+			{
+				return index;
+			}
+		}
+
+		return -1;
 	}
 
 	private static JsonComparisonResult CompareJsonBoolean(
@@ -329,15 +418,19 @@ internal static class JsonElementValidator
 
 	internal class JsonComparisonResult
 	{
-		private readonly Dictionary<string, string> _errors = new();
+		/// <remarks>
+		///     A list instead of a dictionary, because the missing elements of an array that ignores the order of its elements
+		///     are all reported on the path of the array.
+		/// </remarks>
+		private readonly List<KeyValuePair<string, string>> _errors = new();
 
 		public bool HasError => _errors.Any();
 
 		public void AddError(string memberPath, string error)
-			=> _errors.Add(memberPath, error);
+			=> _errors.Add(new KeyValuePair<string, string>(memberPath, error));
 
 		public bool HasMemberError(string memberPath)
-			=> _errors.ContainsKey(memberPath);
+			=> _errors.Exists(error => error.Key == memberPath);
 
 		public override string ToString()
 		{

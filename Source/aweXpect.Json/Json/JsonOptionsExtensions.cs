@@ -37,6 +37,25 @@ public static class JsonOptionsExtensions
 		};
 
 	/// <summary>
+	///     Ignores the order of the elements in all compared arrays
+	///     when <paramref name="ignoreArrayOrder" /> is <see langword="true" />
+	/// </summary>
+	/// <remarks>
+	///     Each expected element is paired with the first unpaired element of the subject that matches it. This greedy
+	///     pairing can fail for overlapping <c>It.Is…</c> expectations, even when another pairing would succeed.
+	///     <para />
+	///     The positional members of <see cref="IJsonArrayResult" /> (<see cref="IJsonArrayResult.At(int)" />,
+	///     <c>WithElements</c>, <c>WithArrays</c> and <c>WithObjects</c>) still verify the element at each index.
+	/// </remarks>
+	public static JsonOptions IgnoringArrayOrder(
+		this JsonOptions @this,
+		bool ignoreArrayOrder = true)
+		=> @this with
+		{
+			IgnoreArrayOrder = ignoreArrayOrder,
+		};
+
+	/// <summary>
 	///     Treats a property with the value <see langword="null" /> as if it was absent
 	///     when <paramref name="treatNullAsAbsent" /> is <see langword="true" />
 	/// </summary>

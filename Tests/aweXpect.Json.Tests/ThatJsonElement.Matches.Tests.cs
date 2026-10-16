@@ -453,6 +453,53 @@ public sealed partial class ThatJsonElement
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[4, 3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).Matches([1, 3,], o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow()
+					.Because("additional elements are ignored, so the expected elements are a subset in any order");
+			}
+
+			[Fact]
+			public async Task WhenSubjectMissesExpectedElements_WhenIgnoringArrayOrder_ShouldOnlyReportMissingElements()
+			{
+				JsonElement subject = FromString("[4, 3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).Matches([5, 1, 6,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [5, 1, 6,],
+					             but it differed as
+					               $ had missing 5 and
+					               $ had missing 6
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItIsMatchesLaterElement_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[{\"foo\": 1}, {\"foo\": 2}, {\"foo\": 3}]");
+
+				async Task Act()
+					=> await That(subject).Matches(new[]
+					{
+						new
+						{
+							foo = It.Is<int>().That.IsGreaterThan(2),
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
 			public static TheoryData<string[], string> MatchingArrayValues
 				=> new()
 				{

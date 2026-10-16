@@ -62,11 +62,13 @@ namespace aweXpect.Json
         public JsonOptions() { }
         public System.Text.Json.JsonDocumentOptions DocumentOptions { get; init; }
         public bool IgnoreAdditionalProperties { get; init; }
+        public bool IgnoreArrayOrder { get; init; }
         public bool TreatNullAsAbsent { get; init; }
     }
     public static class JsonOptionsExtensions
     {
         public static aweXpect.Json.JsonOptions IgnoringAdditionalProperties(this aweXpect.Json.JsonOptions @this, bool ignoreAdditionalProperties = true) { }
+        public static aweXpect.Json.JsonOptions IgnoringArrayOrder(this aweXpect.Json.JsonOptions @this, bool ignoreArrayOrder = true) { }
         public static aweXpect.Json.JsonOptions TreatingNullAsAbsent(this aweXpect.Json.JsonOptions @this, bool treatNullAsAbsent = true) { }
         public static aweXpect.Json.JsonOptions WithJsonOptions(this aweXpect.Json.JsonOptions @this, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> jsonDocumentOptions) { }
     }

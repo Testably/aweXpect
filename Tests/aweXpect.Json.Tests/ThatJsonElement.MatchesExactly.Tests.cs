@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Json.Tests;
 
@@ -233,6 +234,31 @@ public sealed partial class ThatJsonElement
 					             }
 					             """);
 			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task WhenElementsAreInDifferentOrder_ShouldFailWhenIgnoringArrayOrder(bool ignoreArrayOrder)
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly([2, 1,],
+						o => o.IgnoringArrayOrder(ignoreArrayOrder)));
+
+				await That(Act).Throws<XunitException>().OnlyIf(ignoreArrayOrder)
+					.WithMessage("""
+					             Expected that subject
+					             does not match [2, 1,] exactly,
+					             but it did
+
+					             Actual:
+					             [
+					               1,
+					               2
+					             ]
+					             """);
+			}
 		}
 
 		public sealed class ArrayTests
@@ -359,6 +385,532 @@ public sealed partial class ThatJsonElement
 					             but it differed as $[1] had missing <null>
 					             """)
 					.Because("null elements of an array are not affected by the option");
+			}
+
+			[Theory]
+			[InlineData("[1, 2, 3]")]
+			[InlineData("[3, 1, 2]")]
+			[InlineData("[2, 3, 1]")]
+			public async Task WhenElementsAreInAnyOrder_WhenIgnoringArrayOrder_ShouldSucceed(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2, 3,], o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBothArraysAreEmpty_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(Array.Empty<int>(), o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenElementsAreInDifferentOrder_WhenNotIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([2, 1,], o => o.IgnoringArrayOrder(false));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [2, 1,] exactly,
+					             but it differed as
+					               $[0] was 1 instead of 2 and
+					               $[1] was 2 instead of 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenDuplicateElementsAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[1, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([2, 1, 1,], o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsDuplicateElement_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 1,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 1,] exactly,
+					             but it differed as $[1] was 2 instead of 1
+					             """)
+					.Because("each element of the subject can only be paired with one expected element");
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsDuplicateElement_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[2, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2, 3,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2, 3,] exactly,
+					             but it differed as $[1] was 2 instead of 3
+					             """)
+					.Because("the single unpaired elements are compared with each other");
+			}
+
+			[Fact]
+			public async Task WhenElementsAreMissingAndUnexpected_WhenIgnoringArrayOrder_ShouldListThem()
+			{
+				JsonElement titles = FromString("[\"Let It Be\", \"Yesterday\", \"Hey Jude\"]");
+
+				async Task Act()
+					=> await That(titles).MatchesExactly(["Hey Jude", "Something", "Help!",],
+						o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that titles
+					             matches ["Hey Jude", "Something", "Help!",] exactly,
+					             but it differed as
+					               $ had missing "Something" and
+					               $ had missing "Help!" and
+					               $[0] had unexpected "Let It Be" and
+					               $[1] had unexpected "Yesterday"
+					             """)
+					.Because("missing elements have no index in the subject, while unexpected elements keep theirs");
+			}
+
+			[Fact]
+			public async Task WhenSingleElementDiffers_WhenIgnoringArrayOrder_ShouldCompareTheUnpairedElements()
+			{
+				JsonElement titles = FromString("[\"Let It Be\", \"Yesterday\", \"Hey Jude\"]");
+
+				async Task Act()
+					=> await That(titles).MatchesExactly(["Hey Jude", "Let It Be", "Something",],
+						o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that titles
+					             matches ["Hey Jude", "Let It Be", "Something",] exactly,
+					             but it differed as $[1] was "Yesterday" instead of "Something"
+					             """)
+					.Because("the only unpaired elements on both sides are compared with each other");
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsAdditionalElements_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2, 3, 4,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2, 3, 4,] exactly,
+					             but it differed as
+					               $ had missing 3 and
+					               $ had missing 4
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 2,] exactly,
+					             but it differed as $[0] had unexpected 3
+					             """);
+			}
+
+			[Theory]
+			[InlineData("[]", "$ had missing 1")]
+			[InlineData("[1]", null)]
+			[InlineData("[2]", "$[0] was 2 instead of 1")]
+			public async Task WhenExpectingSingleElement_WhenIgnoringArrayOrder_ShouldFailUnlessItMatches(
+				string json, string? errorMessage)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>().OnlyIf(errorMessage != null)
+					.WithMessage($"""
+					              Expected that subject
+					              matches [1,] exactly,
+					              but it differed as {errorMessage}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsEmpty_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(Array.Empty<int>(), o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches Array.Empty<int>() exactly,
+					             but it differed as $[0] had unexpected 1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringArrayOrderAndAdditionalProperties_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[4, 3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 3,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalProperties());
+
+				await That(Act).DoesNotThrow()
+					.Because("the expected elements must only be a subset of the subject in any order");
+			}
+
+			[Fact]
+			public async Task WhenElementIsMissing_WhenIgnoringArrayOrderAndAdditionalProperties_ShouldOnlyReportMissingElement()
+			{
+				JsonElement subject = FromString("[4, 3, 2, 1]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly([1, 5,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalProperties());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches [1, 5,],
+					             but it differed as $ had missing 5
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedArraysAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("[[1, 2], [3, 4, 5]]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new[]
+					{
+						new[] { 5, 3, 4, },
+						new[] { 2, 1, },
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNestedArrayDiffers_WhenIgnoringArrayOrder_ShouldReportTheNestedDifference()
+			{
+				JsonElement subject = FromString("[[1, 2], [3, 4]]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new[]
+					{
+						new[] { 4, 3, },
+						new[] { 2, 5, },
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new[]
+					             {
+					             	new[] { 4, 3, },
+					             	new[] { 2, 5, },
+					             } exactly,
+					             but it differed as $[0][0] was 1 instead of 5
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenObjectsAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("""
+				                                 [
+				                                   {"id": 1, "tags": ["a", "b"]},
+				                                   {"id": 2, "tags": []}
+				                                 ]
+				                                 """);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new object[]
+					{
+						new
+						{
+							id = 2,
+							tags = Array.Empty<string>(),
+						},
+						new
+						{
+							id = 1,
+							tags = new[] { "b", "a", },
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenObjectDiffers_WhenIgnoringArrayOrder_ShouldReportTheDifferentProperty()
+			{
+				JsonElement subject = FromString("""
+				                                 [
+				                                   {"id": 1, "name": "foo"},
+				                                   {"id": 2, "name": "bar"}
+				                                 ]
+				                                 """);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new object[]
+					{
+						new
+						{
+							id = 2,
+							name = "bar",
+						},
+						new
+						{
+							id = 1,
+							name = "baz",
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new object[]
+					             {
+					             	new
+					             	{
+					             		id = 2,
+					             		name = "bar",
+					             	},
+					             	new
+					             	{
+					             		id = 1,
+					             		name = "baz",
+					             	},
+					             } exactly,
+					             but it differed as $[0].name was "foo" instead of "baz"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenObjectsDiffer_WhenIgnoringArrayOrder_ShouldReportThemAsMissingAndUnexpected()
+			{
+				JsonElement subject = FromString("""
+				                                 [
+				                                   {"id": 1},
+				                                   {"id": 2},
+				                                   {"id": 3}
+				                                 ]
+				                                 """);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new object[]
+					{
+						new
+						{
+							id = 4,
+						},
+						new
+						{
+							id = 2,
+						},
+						new
+						{
+							id = 5,
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new object[]
+					             {
+					             	new
+					             	{
+					             		id = 4,
+					             	},
+					             	new
+					             	{
+					             		id = 2,
+					             	},
+					             	new
+					             	{
+					             		id = 5,
+					             	},
+					             } exactly,
+					             but it differed as
+					               $ had missing {"id":4} and
+					               $ had missing {"id":5} and
+					               $[0] had unexpected {"id":1} and
+					               $[2] had unexpected {"id":3}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenArrayInObjectIsInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": [1, 2, 3]}}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = new
+						{
+							bar = new[] { 3, 2, 1, },
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenArrayInObjectDiffers_WhenIgnoringArrayOrder_ShouldReportItsPath()
+			{
+				JsonElement subject = FromString("{\"foo\": {\"bar\": [1, 2, 3]}}");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new
+					{
+						foo = new
+						{
+							bar = new[] { 5, 4, 3, },
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = new
+					             	{
+					             		bar = new[] { 5, 4, 3, },
+					             	},
+					             } exactly,
+					             but it differed as
+					               $.foo.bar had missing 5 and
+					               $.foo.bar had missing 4 and
+					               $.foo.bar[0] had unexpected 1 and
+					               $.foo.bar[1] had unexpected 2
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItIsMatchesLaterElement_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("""
+				                                 [
+				                                   {"id": 1, "name": "foo"},
+				                                   {"id": 2, "name": "bar"}
+				                                 ]
+				                                 """);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new object[]
+					{
+						new
+						{
+							id = It.Is<int>().That.IsGreaterThan(1),
+							name = It.Is<string>().That.StartsWith("b"),
+						},
+						new
+						{
+							id = 1,
+							name = "foo",
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectations fail for the first element, but are met by the second");
+			}
+
+			[Fact]
+			public async Task WhenItIsOverlapsWithLaterElement_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new object[]
+					{
+						It.Is<int>().That.IsGreaterThan(0),
+						1,
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new object[]
+					             {
+					             	It.Is<int>().That.IsGreaterThan(0),
+					             	1,
+					             } exactly,
+					             but it differed as $[1] was 2 instead of 1
+					             """)
+					.Because("the greedy pairing pairs the first element with the expectation, although only the other pairing succeeds");
+			}
+
+			[Fact]
+			public async Task WhenItIsDoesNotMatchRemainingElement_WhenIgnoringArrayOrder_ShouldOnlyReportItsFailure()
+			{
+				JsonElement subject = FromString("[\"foo\", \"bar\"]");
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(new[]
+					{
+						It.Is<string>().That.StartsWith("b"),
+						It.Is<string>().That.StartsWith("x"),
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new[]
+					             {
+					             	It.Is<string>().That.StartsWith("b"),
+					             	It.Is<string>().That.StartsWith("x"),
+					             } exactly,
+					             but it differed as $[0] was "foo", which differs at index 0:
+					                ↓ (actual)
+					               "foo"
+					               "x"
+					                ↑ (expected prefix)
+					             """)
+					.Because("the failures of the candidates that were not paired must not be reported");
 			}
 
 			public static TheoryData<string[], string> MatchingArrayValues

@@ -404,6 +404,26 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Fact]
+			public async Task WhenIgnoringArrayOrder_ShouldStillVerifyTheElementAtTheIndex()
+			{
+				JsonElement subject = FromString("[[1, 2], 3]");
+
+				async Task Act()
+					=> await That(subject).IsArray(a => a
+							.At(0).Matching(new[] { 2, 1, }).And
+							.At(1).Matching(new[] { 2, 1, }),
+						o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] matches new[] { 2, 1, } and $[1] matches new[] { 2, 1, },
+					             but it differed as $[1] was number 3 instead of [2,1]
+					             """)
+					.Because("the option only ignores the order within the matched value, not the index of the element");
+			}
+
+			[Fact]
 			public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				JsonElement subject = FromString("[1]");
@@ -826,6 +846,27 @@ public sealed partial class ThatJsonElement
 					             but it differed as $[1] did not exist
 					             """)
 					.Because("null elements of an array are not affected by the option");
+			}
+
+			[Fact]
+			public async Task WhenElementsAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				JsonElement subject = FromString("[1, 2]");
+
+				async Task Act()
+					=> await That(subject).IsArray(e => e
+							.WithElements(2, 1),
+						o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array and $[0] matches 2 and $[1] matches 1,
+					             but it differed as
+					               $[0] was 1 instead of 2 and
+					               $[1] was 2 instead of 1
+					             """)
+					.Because("the elements are still verified at their index");
 			}
 		}
 
