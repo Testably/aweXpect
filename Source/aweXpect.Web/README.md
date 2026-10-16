@@ -9,193 +9,24 @@
 Expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress` for
 [aweXpect](https://github.com/Testably/aweXpect).
 
-## Overview
-
-Expectations for [`HttpRequestMessage`](#httprequestmessage):
-
-| Expectation                      | Negated             | Summary                               |
-|----------------------------------|---------------------|---------------------------------------|
-| [`HasMethod`](#method)           |                     | has the expected HTTP method          |
-| [`HasRequestUri`](#request-uri)  |                     | has the expected request URI          |
-| [`HasHeader`](#request-headers)  | `DoesNotHaveHeader` | has a header, optionally with a value |
-| [`HasContent`](#request-content) |                     | has the expected string content       |
-
-Expectations for [`HttpResponseMessage`](#httpresponsemessage):
-
-| Expectation                                    | Negated                       | Summary                                         |
-|------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
-| [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
-| [`HasContentType`](#content-type)              |                               | has the expected media type                     |
-| [`HasContent`](#response-content)              |                               | has the expected string content                 |
-| [`HasProblemDetailsContent`](#problem-details) |                               | has a `ProblemDetails` content                  |
-| [`HasRequestMessage`](#request-message)        |                               | the request message meets nested expectations   |
-
-Expectations for [`Uri`](#uri):
-
-| Expectation                              | Negated                     | Summary                                        |
-|------------------------------------------|-----------------------------|------------------------------------------------|
-| [`IsAbsolute`](#kind)                    | `IsNotAbsolute`             | an absolute URI                                |
-| [`IsFile`](#kind)                        | `IsNotFile`                 | a file URI                                     |
-| [`IsLoopback`](#kind)                    | `IsNotLoopback`             | references the local host                      |
-| [`IsUnc`](#kind)                         | `IsNotUnc`                  | a UNC path                                     |
-| [`HasDefaultPort`](#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
-| [`HasPort`](#port)                       | negated comparison          | has the expected port                          |
-| [`HasScheme`](#scheme)                   | negated comparison          | has the expected scheme                        |
-| [`HasHost`](#host)                       | negated comparison          | has the expected host                          |
-| [`HasPath`](#path)                       | negated comparison          | has the expected path                          |
-| [`HasFragment`](#fragment)               | negated comparison          | has the expected fragment                      |
-| [`IsBaseOf`](#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
-| [`HasQueryParameter`](#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
-
-Expectations for [`IPAddress`](#ipaddress):
-
-| Expectation                   | Negated         | Summary            |
-|-------------------------------|-----------------|--------------------|
-| [`IsIPv4`](#address-kind)     | `IsNotIPv4`     | an IPv4 address    |
-| [`IsIPv6`](#address-kind)     | `IsNotIPv6`     | an IPv6 address    |
-| [`IsLoopback`](#address-kind) | `IsNotLoopback` | a loopback address |
-
-When an expectation on a request or response fails, the failure message includes the formatted HTTP request and
-response.
-
-## `HttpRequestMessage`
-
-### Method
-
-You can verify that the `HttpRequestMessage` has the expected method:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
-
-await Expect.That(request).HasMethod(HttpMethod.Get);
-```
-
-### Request URI
-
-You can verify that the `HttpRequestMessage` has the expected request URI:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
-
-await Expect.That(request).HasRequestUri("https://music.example.com/tracks/1");
-await Expect.That(request).HasRequestUri(new Uri("https://music.example.com/tracks/1"));
-```
-
-### Request headers
-
-You can verify that the `HttpRequestMessage` has a header, optionally with the expected value, or that it does not have
-it:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
-request.Headers.Add("Accept", "application/json");
-
-await Expect.That(request).HasHeader("Accept");
-await Expect.That(request).HasHeader("Accept").WithValue("application/json");
-await Expect.That(request).DoesNotHaveHeader("Authorization");
-```
-
-`WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
-
-When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
-request.Headers.Add("Accept", ["application/json", "text/plain"]);
-
-await Expect.That(request).HasHeader("Accept").WithValues("application/json", "text/plain");
-```
-
-`WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) and
-[collection options](https://docs.testably.org/aweXpect/collections/equality#equality) as comparing string collections,
-e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`.
-
-You can also add expectations on the header value or on all of its values:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
-request.Headers.Add("Accept-Encoding", ["gzip", "deflate"]);
-
-await Expect.That(request).HasHeader("Accept-Encoding")
-    .WhoseValues(values => values.Contains("gzip"));
-```
-
-The failure message shows the difference and the request:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
-request.Headers.Add("Cache-Control", "no-cache");
-
-await Expect.That(request).HasHeader("Cache-Control").WithValue("max-age=0");
-```
-
-```text title="Failure message"
-Expected that request
-has a "Cache-Control" header whose value is equal to "max-age=0",
-but it had header value "no-cache", which differs at index 0:
-   ↓ (actual)
-  "no-cache"
-  "max-age=0"
-   ↑ (expected)
-
-HTTP-Request:
-  GET https://music.example.com/tracks/1 HTTP/1.1
-    Cache-Control: no-cache
-```
-
-### Request content
-
-You can verify that the `HttpRequestMessage` has the expected string content:
-
-```csharp
-HttpRequestMessage request = new(HttpMethod.Post, "https://music.example.com/tracks")
-{
-    Content = new StringContent("{\"title\": \"Let It Be\"}"),
-};
-
-await Expect.That(request).HasContent("*Let It Be*").AsWildcard();
-await Expect.That(request).HasContent(content => content.Contains("Let It Be"));
-```
-
-The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
-
-## `HttpResponseMessage`
-
-### Status code
-
-You can verify the status code of the `HttpResponseMessage`, either the exact value or its category:
+## At a glance
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
-await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
-await Expect.That(response).HasStatusCode().DifferentTo(HttpStatusCode.NotFound);
+// verify the status code, either the exact value or its category
 await Expect.That(response).HasStatusCode().Success();
+
+// verify the media type and the headers of the response
+await Expect.That(response).HasContentType("application/json");
+await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+
+// verify the content of the response
+await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
 ```
 
-The categories are `Success()` (2xx), `Redirection()` (3xx), `ClientError()` (4xx), `ServerError()` (5xx) and
-`Error()` (4xx or 5xx). Combine them with `.Or` to allow several:
-
-```csharp
-HttpResponseMessage response = await httpClient.PostAsync("https://music.example.com/tracks", new StringContent(""));
-
-await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError();
-```
-
-A failing expectation against a test server
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
-
-await Expect.That(response).HasStatusCode(HttpStatusCode.NotFound);
-```
-
-fails with the request and the response:
+A failing expectation on a request or response includes the formatted HTTP request and response. If the test server
+returned the track, `HasStatusCode(HttpStatusCode.NotFound)` would fail with:
 
 ```text title="Failure message"
 Expected that response
@@ -217,324 +48,61 @@ HTTP-Response:
   }
 ```
 
-### Response headers
-
-You can verify that the `HttpResponseMessage` has a header, optionally with the expected value, or that it does not
-have it:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
-
-await Expect.That(response).HasHeader("Cache-Control");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
-await Expect.That(response).DoesNotHaveHeader("Set-Cookie");
-```
-
-When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
-
-await Expect.That(response).HasHeader("Vary").WithValues("Accept", "Accept-Encoding");
-```
-
-`WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) and
-[collection options](https://docs.testably.org/aweXpect/collections/equality#equality) as comparing string collections,
-e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`.
-
-You can also add expectations on the header value or on all of its values:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
-
-await Expect.That(response).HasHeader("ETag")
-    .WhoseValue(value => value.IsNotEmpty());
-await Expect.That(response).HasHeader("Vary")
-    .WhoseValues(values => values.Contains("Accept-Encoding"));
-```
-
-### Content type
-
-You can verify the media type in the `Content-Type` header of the `HttpResponseMessage`:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
-
-await Expect.That(response).HasContentType("application/json");
-await Expect.That(response).HasContentType("application/*").AsWildcard();
-```
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
-
-await Expect.That(response).HasContentType("text/plain");
-```
-
-```text title="Failure message"
-Expected that response
-has a `Content-Type` header equal to "text/plain",
-but it had content type "application/json", which differs at index 0:
-   ↓ (actual)
-  "application/json"
-  "text/plain"
-   ↑ (expected)
-
-HTTP-Request:
-  GET http://localhost/tracks/1 HTTP/1.1
-
-HTTP-Response:
-  200 OK HTTP/1.1
-    x-vendor: VENDOR
-    Content-Type: application/json; charset=utf-8
-    Content-Length: 51
-  {
-    "id": 1,
-    "title": "Let It Be",
-    "artist": "The Beatles"
-  }
-```
-
-### Response content
-
-You can verify that the `HttpResponseMessage` has the expected string content:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
-
-await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
-await Expect.That(response).HasContent(content => content.Contains("The Beatles"));
-```
-
-The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. With
-[aweXpect.Json](https://github.com/Testably/aweXpect.Json), the nested expectations can also verify JSON content:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
-
-await Expect.That(response).HasContent(content => content
-    .IsValidJsonMatching(new { title = "Let It Be", artist = "The Beatles" }));
-```
-
-### Problem details
-
-You can verify that the content of the `HttpResponseMessage` is a valid
-[`ProblemDetails`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails) object,
-optionally with the expected type, title, status, detail and instance:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
-
-await Expect.That(response)
-    .HasProblemDetailsContent("https://httpstatuses.com/404")
-    .WithTitle("Track not found")
-    .WithStatus(404)
-    .WithInstance("/tracks/42");
-```
-
-The type, title, detail and instance support the same
-[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
-
-### Request message
-
-You can add expectations on the `HttpRequestMessage` that led to the `HttpResponseMessage`:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
-
-await Expect.That(response).HasRequestMessage(request => request
-    .HasMethod(HttpMethod.Get).And
-    .HasRequestUri("https://music.example.com/tracks/1"));
-```
-
-## `Uri`
-
-### Kind
-
-You can verify what kind of URI the `Uri` is, or that it is not:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks/1");
-
-await Expect.That(uri).IsAbsolute();
-await Expect.That(uri).IsNotFile();
-await Expect.That(uri).IsNotLoopback();
-await Expect.That(uri).IsNotUnc();
-```
-
-```csharp
-Uri uri = new("/tracks/1", UriKind.Relative);
-
-await Expect.That(uri).IsAbsolute();
-```
-
-```text title="Failure message"
-Expected that uri
-is an absolute URI,
-but it was /tracks/1
-```
-
-### Default port
-
-You can verify that the `Uri` uses the default port of its scheme, or that it does not:
-
-```csharp
-await Expect.That(new Uri("https://music.example.com/tracks/1")).HasDefaultPort();
-await Expect.That(new Uri("https://music.example.com:8443/tracks/1")).DoesNotHaveDefaultPort();
-```
-
-### Port
-
-You can verify the port of the `Uri`. Without an explicit port, it is the default port of the scheme:
-
-```csharp
-Uri uri = new("https://localhost:5001/health");
-
-await Expect.That(uri).HasPort().EqualTo(5001);
-await Expect.That(uri).HasPort().Between(5000).And(5999);
-await Expect.That(new Uri("http://localhost:4000/health")).HasPort(4000);
-```
-
-### Scheme
-
-You can verify the scheme of the `Uri`:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks/1");
-
-await Expect.That(uri).HasScheme().EqualTo("https");
-await Expect.That(uri).HasScheme().NotEqualTo("http");
-```
-
-### Host
-
-You can verify the host of the `Uri`:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks/1");
-
-await Expect.That(uri).HasHost().EqualTo("music.example.com");
-await Expect.That(uri).HasHost().EndingWith(".example.com");
-```
-
-### Path
-
-You can verify the URL-decoded path of the `Uri`:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks/1");
-
-await Expect.That(uri).HasPath().EqualTo("/tracks/1");
-await Expect.That(uri).HasPath().StartingWith("/tracks/");
-await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath().EqualTo("/my song");
-```
-
-### Fragment
-
-You can verify the URL-decoded fragment of the `Uri`, without the leading `#`:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks/1#lyrics");
-
-await Expect.That(uri).HasFragment().EqualTo("lyrics");
-await Expect.That(uri).HasFragment().NotEqualTo("credits");
-```
-
-### Base URI
-
-You can verify that the `Uri` is a base URI of another absolute URI, or that it is not:
-
-```csharp
-Uri uri = new("https://music.example.com/api/");
-
-await Expect.That(uri).IsBaseOf("https://music.example.com/api/tracks/1");
-await Expect.That(uri).IsNotBaseOf(new Uri("https://other.example.com/api/tracks/1"));
-```
-
-Like `Uri.IsBaseOf`, only the part of the `Uri` up to its last `/` is considered, so `https://music.example.com/api`
-is also a base URI of `https://music.example.com/tracks/1`.
-
-### Query parameters
-
-You can verify that the `Uri` has a query parameter, optionally with the expected value, or that it does not have it:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks?page=2&genre=Jazz");
-
-await Expect.That(uri).HasQueryParameter("page");
-await Expect.That(uri).HasQueryParameter("page").WithValue("2");
-await Expect.That(uri).HasQueryParameter("genre").WithValue("jazz").IgnoringCase();
-await Expect.That(uri).DoesNotHaveQueryParameter("token");
-```
-
-Names and values are URL-decoded, and names are compared case-sensitively. `WithValue` supports the same
-[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings and requires the query
-parameter to occur exactly once. A query parameter that occurs several times can be verified with `WithValues`, which
-compares the values in the order in which they appear in the URI, unless `InAnyOrder()` is specified. It supports the
-same options as comparing [string collections](https://docs.testably.org/aweXpect/collections/equality#equality).
-
-You can also add expectations on the value or on all values of the query parameter:
-
-```csharp
-Uri uri = new("https://music.example.com/tracks?tag=live&tag=remastered");
-
-await Expect.That(uri).HasQueryParameter("tag").WithValues("live", "remastered");
-await Expect.That(uri).HasQueryParameter("tag")
-    .WhoseValues(values => values.Contains("live"));
-```
-
-## `IPAddress`
-
-### Address kind
-
-You can verify what kind of address the `IPAddress` is, or that it is not:
-
-```csharp
-IPAddress address = IPAddress.Parse("10.0.0.1");
-
-await Expect.That(address).IsIPv4();
-await Expect.That(address).IsNotIPv6();
-await Expect.That(address).IsNotLoopback();
-```
-
-The address family decides between IPv4 and IPv6, so an IPv4-mapped address like `::ffff:10.0.0.1` is an IPv6 address:
-
-```csharp
-IPAddress address = IPAddress.Parse("::ffff:10.0.0.1");
-
-await Expect.That(address).IsIPv4();
-```
-
-```text title="Failure message"
-Expected that address
-is an IPv4 address,
-but it was ::ffff:10.0.0.1
-```
-
-## Customization
-
-The failure messages include the content of the request and the response. Each content is formatted by the first
-content processor that can handle it: by default JSON is indented, text is shown as is, and audio, image, video and
-PDF content is summarized with its media type and length. You can change the processors, e.g. with your own
-`IContentProcessor`. The value is restored when the returned lifetime is disposed:
-
-```csharp
-using aweXpect.Customization;
-using aweXpect.Web;
-using aweXpect.Web.ContentProcessors;
-
-using (Customize.aweXpect.Web().ContentProcessors.Set([
-           new MyCsvContentProcessor(),
-           new JsonContentProcessor(),
-           new StringContentProcessor(),
-           new BinaryContentProcessor(),
-       ]))
-{
-    // formats CSV content with the custom processor
-}
-```
-
-To change the processors for all tests, set them on `Customize.aweXpect.Global.Web()` instead.
+## Overview
+
+Expectations for [`HttpRequestMessage`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#httprequestmessage):
+
+| Expectation                                                           | Negated             | Summary                               |
+|-----------------------------------------------------------------------|---------------------|---------------------------------------|
+| [`HasMethod`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#method)           |                     | has the expected HTTP method          |
+| [`HasRequestUri`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#request-uri)  |                     | has the expected request URI          |
+| [`HasHeader`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#request-headers)  | `DoesNotHaveHeader` | has a header, optionally with a value |
+| [`HasContent`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#request-content) |                     | has the expected string content       |
+
+Expectations for [`HttpResponseMessage`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#httpresponsemessage):
+
+| Expectation                                                                          | Negated                       | Summary                                         |
+|--------------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
+| [`HasStatusCode`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
+| [`HasHeader`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
+| [`HasContentType`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#content-type)              |                               | has the expected media type                     |
+| [`HasContent`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#response-content)              |                               | has the expected string content                 |
+| [`HasProblemDetailsContent`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#problem-details) |                               | has a `ProblemDetails` content                  |
+| [`HasRequestMessage`](../../Docs/extensions/aweXpect.Web/01-http-messages.md#request-message)        |                               | the request message meets nested expectations   |
+
+Expectations for [`Uri`](../../Docs/extensions/aweXpect.Web/02-uri.md):
+
+| Expectation                                                  | Negated                     | Summary                                        |
+|--------------------------------------------------------------|-----------------------------|------------------------------------------------|
+| [`IsAbsolute`](../../Docs/extensions/aweXpect.Web/02-uri.md#kind)                    | `IsNotAbsolute`             | an absolute URI                                |
+| [`IsFile`](../../Docs/extensions/aweXpect.Web/02-uri.md#kind)                        | `IsNotFile`                 | a file URI                                     |
+| [`IsLoopback`](../../Docs/extensions/aweXpect.Web/02-uri.md#kind)                    | `IsNotLoopback`             | references the local host                      |
+| [`IsUnc`](../../Docs/extensions/aweXpect.Web/02-uri.md#kind)                         | `IsNotUnc`                  | a UNC path                                     |
+| [`HasDefaultPort`](../../Docs/extensions/aweXpect.Web/02-uri.md#default-port)        | `DoesNotHaveDefaultPort`    | uses the default port of its scheme            |
+| [`HasPort`](../../Docs/extensions/aweXpect.Web/02-uri.md#port)                       | negated comparison          | has the expected port                          |
+| [`HasScheme`](../../Docs/extensions/aweXpect.Web/02-uri.md#scheme)                   | negated comparison          | has the expected scheme                        |
+| [`HasHost`](../../Docs/extensions/aweXpect.Web/02-uri.md#host)                       | negated comparison          | has the expected host                          |
+| [`HasPath`](../../Docs/extensions/aweXpect.Web/02-uri.md#path)                       | negated comparison          | has the expected path                          |
+| [`HasFragment`](../../Docs/extensions/aweXpect.Web/02-uri.md#fragment)               | negated comparison          | has the expected fragment                      |
+| [`IsBaseOf`](../../Docs/extensions/aweXpect.Web/02-uri.md#base-uri)                  | `IsNotBaseOf`               | a base URI of the expected URI                 |
+| [`HasQueryParameter`](../../Docs/extensions/aweXpect.Web/02-uri.md#query-parameters) | `DoesNotHaveQueryParameter` | has a query parameter, optionally with a value |
+
+Expectations for [`IPAddress`](../../Docs/extensions/aweXpect.Web/03-ip-address.md):
+
+| Expectation                                      | Negated         | Summary            |
+|--------------------------------------------------|-----------------|--------------------|
+| [`IsIPv4`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)     | `IsNotIPv4`     | an IPv4 address    |
+| [`IsIPv6`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind)     | `IsNotIPv6`     | an IPv6 address    |
+| [`IsLoopback`](../../Docs/extensions/aweXpect.Web/03-ip-address.md#kind) | `IsNotLoopback` | a loopback address |
+
+## Documentation
+
+The full documentation is available at
+[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Web/):
+
+- [HTTP requests and responses](../../Docs/extensions/aweXpect.Web/01-http-messages.md): method, request URI, headers and content of an
+  `HttpRequestMessage`, and status code, headers, content type, content, problem details and the request message of
+  an `HttpResponseMessage`
+- [URIs](../../Docs/extensions/aweXpect.Web/02-uri.md): kind, port, scheme, host, path, fragment, base URI and query parameters of a `Uri`
+- [IP addresses](../../Docs/extensions/aweXpect.Web/03-ip-address.md): IPv4, IPv6 and loopback `IPAddress` values
+- [Customization](../../Docs/extensions/aweXpect.Web/04-customization.md): formatting the request and response content in failure messages
