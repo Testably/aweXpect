@@ -96,9 +96,12 @@ in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own pa
   `aweXpect.Core.Extending`. It appends ` (did you mean "Username"?)` only when a single candidate is close enough:
 
   ```csharp
-  stringBuilder.Append(It).Append(" did not contain key ");
-  Formatter.Format(stringBuilder, expected);
-  ClosestMatch.AppendHint(stringBuilder, expected, actual.Keys);
+  private static void AppendMissingKey(StringBuilder stringBuilder, string it, string expected, string[] keys)
+  {
+      stringBuilder.Append(it).Append(" did not contain key ");
+      Formatter.Format(stringBuilder, expected);
+      ClosestMatch.AppendHint(stringBuilder, expected, keys);
+  }
   ```
 
   `ClosestMatch.Find` returns that candidate, or `null`, for your own wording.
