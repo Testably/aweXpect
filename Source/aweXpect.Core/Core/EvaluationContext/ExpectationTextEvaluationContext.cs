@@ -1,4 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.EvaluationContext;
 
@@ -43,6 +47,16 @@ internal sealed class ExpectationTextEvaluationContext : IEvaluationContext
 
 	/// <inheritdoc />
 	public EvaluationCancellation Cancellation => _inner?.Cancellation ?? EvaluationCancellation.None;
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     Without an evaluation, nothing completes, so the <paramref name="callback" /> is never run.
+	/// </remarks>
+	public void OnCompleted(Func<CompletedEvaluation, CancellationToken, ValueTask> callback)
+	{
+		callback.ThrowIfNull();
+		_inner?.OnCompleted(callback);
+	}
 
 	/// <summary>
 	///     Returns an <see cref="ExpectationTextEvaluationContext" /> wrapping the <paramref name="context" />.

@@ -165,6 +165,8 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 	///     collections they materialize, the reasons they leave pending and the values they store are their own, so
 	///     they never reach the <paramref name="context" />: the reasons are resolved when the expectations are not
 	///     met, and the collections are released before the returned task completes, also when the evaluation throws.
+	///     Only the callbacks registered with <see cref="IEvaluationContext.OnCompleted" /> are registered in the
+	///     <paramref name="context" />, so that they run when the whole expectation completes.
 	/// </remarks>
 	public ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue value,
@@ -185,6 +187,11 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		try
 		{
 			ConstraintResult result = await IsMetByCore(value, context, cancellationToken);
+			if (evaluation is null)
+			{
+				await context.RunCompletionCallbacks(result.Outcome, cancellationToken);
+			}
+
 			if (result.Outcome != Outcome.Success)
 			{
 				await context.ResolvePendingReasons(cancellationToken);
@@ -194,6 +201,11 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		}
 		finally
 		{
+			if (evaluation is not null)
+			{
+				context.ForwardCompletionCallbacksTo(evaluation);
+			}
+
 			await context.ReleaseMaterializations();
 		}
 	}

@@ -147,6 +147,8 @@ public sealed class ManualExpectationBuilder<TValue>(
 	///     are disposed, so a failure message created from the result afterwards only shows the items that the
 	///     evaluation read. Only the <paramref name="cancellationToken" /> cancels the evaluation; no expectation
 	///     timeout applies.<br />
+	///     The callbacks registered with <see cref="IEvaluationContext.OnCompleted" /> run with the outcome of these
+	///     expectations, as there is no surrounding evaluation that could decide another one.<br />
 	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.
 	/// </remarks>
 	public async ValueTask<ConstraintResult> IsMetBy(TValue value, CancellationToken cancellationToken)
@@ -158,6 +160,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 		try
 		{
 			ConstraintResult result = await IsMetBy(value, context, cancellationToken);
+			await context.RunCompletionCallbacks(result.Outcome);
 			if (result.Outcome != Outcome.Success)
 			{
 				await context.ResolvePendingReasons(cancellationToken);

@@ -153,6 +153,14 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 		=> ExpectationBuilder.ResolvePendingReasons();
 
 	/// <inheritdoc />
+	internal override bool HasCompletionCallbacks => ExpectationBuilder.HasCompletionCallbacks;
+
+	/// <inheritdoc />
+	internal override Task RunCompletionCallbacks(Outcome outcome,
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>> ran)
+		=> ExpectationBuilder.RunCompletionCallbacks(outcome, ran);
+
+	/// <inheritdoc />
 	internal override void UseTimeSystem(ITimeSystem timeSystem)
 		=> ExpectationBuilder.UseTimeSystem(timeSystem);
 
@@ -370,6 +378,14 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <inheritdoc />
 	internal override Task ResolvePendingReasons()
 		=> ExpectationBuilder.ResolvePendingReasons();
+
+	/// <inheritdoc />
+	internal override bool HasCompletionCallbacks => ExpectationBuilder.HasCompletionCallbacks;
+
+	/// <inheritdoc />
+	internal override Task RunCompletionCallbacks(Outcome outcome,
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>> ran)
+		=> ExpectationBuilder.RunCompletionCallbacks(outcome, ran);
 
 	/// <inheritdoc />
 	internal override void UseTimeSystem(ITimeSystem timeSystem)

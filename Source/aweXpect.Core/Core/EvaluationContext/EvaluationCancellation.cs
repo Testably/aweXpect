@@ -82,6 +82,11 @@ public sealed class EvaluationCancellation
 	public CancellationToken Token { get; }
 
 	/// <summary>
+	///     The token with which the caller cancels the evaluation, which the timeout does not cancel.
+	/// </summary>
+	internal CancellationToken CallerToken => _callerToken;
+
+	/// <summary>
 	///     The effective timeout of the evaluation: the tighter of <c>WithTimeout(…)</c> and the timeout of
 	///     <c>Customize.aweXpect.Settings().TestCancellation</c>, or <see langword="null" /> without a timeout.
 	/// </summary>

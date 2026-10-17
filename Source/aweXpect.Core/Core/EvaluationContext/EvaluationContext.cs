@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Internal;
 using aweXpect.Core.TimeSystem;
@@ -240,6 +241,7 @@ internal class EvaluationContext : IEvaluationContext
 	public async Task<EvaluationContext> StartAttempt()
 	{
 		await ReleaseMaterializations();
+		_extras?.Attempt?.ForwardCompletionCallbacksTo(this);
 		EvaluationContext attempt = new()
 		{
 			Cancellation = Cancellation,
@@ -320,13 +322,118 @@ internal class EvaluationContext : IEvaluationContext
 	/// <inheritdoc />
 	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
 
+	/// <inheritdoc />
+	/// <remarks>
+	///     The context of a check of a repeated check registers the <paramref name="callback" /> in the context that
+	///     started the check, as the check ends before the evaluation does.
+	/// </remarks>
+	public void OnCompleted(Func<CompletedEvaluation, CancellationToken, ValueTask> callback)
+	{
+		callback.ThrowIfNull();
+		if (_extras?.RepeatedBy is { } repeatedBy)
+		{
+			repeatedBy.OnCompleted(callback);
+			return;
+		}
+
+		Extras extras = GetExtras();
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? callbacks = extras.CompletionCallbacks;
+		CompletionCallbacks.Add(ref callbacks, callback);
+		extras.CompletionCallbacks = callbacks;
+	}
+
 	#endregion
+
+	/// <summary>
+	///     Whether a callback is registered with <see cref="OnCompleted" /> in this context or in its current attempt.
+	/// </summary>
+	public bool HasCompletionCallbacks
+		=> _extras is not null &&
+		   (_extras.CompletionCallbacks is not null || _extras.Attempt is { HasCompletionCallbacks: true, });
+
+	/// <summary>
+	///     Adds the callbacks registered with <see cref="OnCompleted" /> in this context and in its current attempt to the
+	///     <paramref name="callbacks" />.
+	/// </summary>
+	public void CollectCompletionCallbacks(
+		ref List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? callbacks)
+	{
+		if (_extras is null)
+		{
+			return;
+		}
+
+		if (_extras.CompletionCallbacks is { } completionCallbacks)
+		{
+			foreach (Func<CompletedEvaluation, CancellationToken, ValueTask> callback in completionCallbacks)
+			{
+				CompletionCallbacks.Add(ref callbacks, callback);
+			}
+		}
+
+		_extras.Attempt?.CollectCompletionCallbacks(ref callbacks);
+	}
+
+	/// <summary>
+	///     Registers the callbacks of this context with <see cref="OnCompleted" /> in the <paramref name="context" />, in
+	///     which the evaluation that this context was part of completes.
+	/// </summary>
+	public void ForwardCompletionCallbacksTo(IEvaluationContext context)
+	{
+		if (!HasCompletionCallbacks)
+		{
+			return;
+		}
+
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? callbacks = null;
+		CollectCompletionCallbacks(ref callbacks);
+		foreach (Func<CompletedEvaluation, CancellationToken, ValueTask> callback in callbacks!)
+		{
+			context.OnCompleted(callback);
+		}
+	}
+
+	/// <summary>
+	///     Runs the callbacks registered with <see cref="OnCompleted" /> with the <paramref name="outcome" /> of the whole
+	///     expectation, skipping and extending the <paramref name="ran" /> ones of other evaluations in the same
+	///     combination.
+	/// </summary>
+	/// <remarks>
+	///     The callbacks receive the token of the caller, as the token of the evaluation is already canceled after a
+	///     timeout.
+	/// </remarks>
+	public Task RunCompletionCallbacks(Outcome outcome,
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? ran = null)
+		=> RunCompletionCallbacks(outcome, Cancellation.CallerToken, ran);
+
+	/// <summary>
+	///     Runs the callbacks like <see cref="RunCompletionCallbacks(Outcome, List{Func{CompletedEvaluation, CancellationToken, ValueTask}})" />,
+	///     with the <paramref name="callerToken" /> of an evaluation that has no cancellation of its own.
+	/// </summary>
+	public Task RunCompletionCallbacks(Outcome outcome, CancellationToken callerToken,
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? ran = null)
+	{
+		if (!HasCompletionCallbacks)
+		{
+			return Task.CompletedTask;
+		}
+
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? callbacks = null;
+		CollectCompletionCallbacks(ref callbacks);
+		if (ran is not null)
+		{
+			callbacks!.RemoveAll(ran.Contains);
+			ran.AddRange(callbacks);
+		}
+
+		return CompletionCallbacks.Run(callbacks!, outcome, callerToken);
+	}
 
 	private Extras GetExtras() => _extras ??= new Extras();
 
 	/// <summary>
-	///     The state of the repeated checks, the attempts, the reasons to await, the resources to release and the
-	///     values stored during nested evaluations.
+	///     The state of the repeated checks, the attempts, the reasons to await, the resources to release, the
+	///     values stored during nested evaluations and the callbacks to run when the evaluation completes.
 	/// </summary>
 	/// <remarks>
 	///     A context is created for every expectation, while most expectations need none of it, so it is only created
@@ -336,6 +443,7 @@ internal class EvaluationContext : IEvaluationContext
 	{
 		public EvaluationContext? Attempt { get; set; }
 		public List<EvaluationContext>? Checks { get; set; }
+		public List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? CompletionCallbacks { get; set; }
 		public List<Dictionary<string, object?>?>? NestedStores { get; set; }
 		public List<AsyncBecauseReason>? PendingReasons { get; set; }
 		public List<Action>? Releases { get; set; }

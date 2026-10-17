@@ -973,7 +973,8 @@ public abstract class ExpectationBuilder
 		}
 
 		ConstraintResult result = isMet.Result;
-		if (result.Outcome != Outcome.Success || (_reasons is not null && !CanSkipReasonsOfMetResult(endsWhenMet)))
+		if (result.Outcome != Outcome.Success || (_reasons is not null && !CanSkipReasonsOfMetResult(endsWhenMet)) ||
+		    (endsWhenMet && context.HasCompletionCallbacks))
 		{
 			return CompleteEvaluation(new ValueTask<ConstraintResult>(result), endsWhenMet);
 		}
@@ -1093,6 +1094,11 @@ public abstract class ExpectationBuilder
 				result = await ApplyReasons(result,
 					endsWhenMet && result.Outcome == Outcome.Success ? null : _evaluationContext);
 			}
+
+			if (endsWhenMet && _evaluationContext is not null)
+			{
+				await _evaluationContext.RunCompletionCallbacks(result.Outcome);
+			}
 		}
 		catch
 		{
@@ -1123,6 +1129,20 @@ public abstract class ExpectationBuilder
 
 		return _otherExceptions is null ? result : new ConstraintResult.WithOtherExceptions(result, _otherExceptions);
 	}
+
+	/// <summary>
+	///     Whether a callback was registered with <see cref="IEvaluationContext.OnCompleted" /> during the current
+	///     evaluation.
+	/// </summary>
+	internal bool HasCompletionCallbacks => _evaluationContext?.HasCompletionCallbacks == true;
+
+	/// <summary>
+	///     Runs the callbacks registered with <see cref="IEvaluationContext.OnCompleted" /> during the current evaluation
+	///     that are not among the <paramref name="ran" /> ones, for the combination that this expectation is a member of.
+	/// </summary>
+	internal Task RunCompletionCallbacks(Outcome outcome,
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>> ran)
+		=> _evaluationContext?.RunCompletionCallbacks(outcome, ran) ?? Task.CompletedTask;
 
 	/// <summary>
 	///     Releases the sources of the collections materialized during the current evaluation, once the failure message

@@ -709,6 +709,8 @@ public class EvaluationContextExtensionsTests
 	{
 		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
 
+		public void OnCompleted(Func<CompletedEvaluation, CancellationToken, ValueTask> callback) { }
+
 		public void Store<T>(string key, T value) { }
 
 		public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)

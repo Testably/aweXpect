@@ -935,6 +935,12 @@ public class ExpectTests
 		internal override Task ResolvePendingReasons()
 			=> Task.CompletedTask;
 
+		internal override bool HasCompletionCallbacks => false;
+
+		internal override Task RunCompletionCallbacks(Outcome outcome,
+			List<Func<aweXpect.Core.EvaluationContext.CompletedEvaluation, CancellationToken, ValueTask>> ran)
+			=> Task.CompletedTask;
+
 		internal override void UseTimeSystem(ITimeSystem timeSystem) { }
 
 		internal override void AddRemainingCancellations(
