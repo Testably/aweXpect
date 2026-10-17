@@ -3,17 +3,6 @@
 public class FormattingOptionsTests
 {
 	[Test]
-	public async Task Complete_ShouldBeCompleteOnASingleLine()
-	{
-		FormattingOptions options = FormattingOptions.Complete;
-
-		await That(options.IsComplete).IsTrue();
-		await That(options.UseLineBreaks).IsFalse();
-		await That(options.IncludeType).IsFalse();
-		await That(options.Indentation).IsEmpty();
-	}
-
-	[Test]
 	public async Task Indented_ShouldDefaultToTwoSpaces()
 	{
 		FormattingOptions options = FormattingOptions.Indented();
@@ -23,12 +12,12 @@ public class FormattingOptionsTests
 	}
 
 	[Test]
-	public async Task Indented_ShouldNotBeComplete()
+	public async Task Indented_ShouldNotBeASnapshot()
 	{
 		FormattingOptions options = FormattingOptions.Indented();
 
-		await That(options.IsComplete).IsFalse()
-			.Because("only the complete option lifts the limits of a failure message");
+		await That(options.IsSnapshot).IsFalse()
+			.Because("only the snapshot option lifts the limits of a failure message");
 	}
 
 	[Test]
@@ -55,6 +44,17 @@ public class FormattingOptionsTests
 		FormattingOptions options = FormattingOptions.SingleLine;
 
 		await That(options.UseLineBreaks).IsFalse();
+		await That(options.Indentation).IsEmpty();
+	}
+
+	[Test]
+	public async Task Snapshot_ShouldBeASnapshotOnASingleLine()
+	{
+		FormattingOptions options = FormattingOptions.Snapshot;
+
+		await That(options.IsSnapshot).IsTrue();
+		await That(options.UseLineBreaks).IsFalse();
+		await That(options.IncludeType).IsFalse();
 		await That(options.Indentation).IsEmpty();
 	}
 }

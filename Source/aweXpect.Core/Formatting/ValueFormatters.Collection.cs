@@ -1,3 +1,7 @@
+#if NET8_0_OR_GREATER
+using System.Collections.Frozen;
+using System.Collections.Immutable;
+#endif
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -105,7 +109,8 @@ public static partial class ValueFormatters
 		}
 
 		FormatItems(stringBuilder, value, value, GetCount(value), options,
-			new ItemFormatter<KeyValuePair<TKey, TValue>>(formatter, context, FormatKeyValuePair));
+			new ItemFormatter<KeyValuePair<TKey, TValue>>(formatter, context, FormatKeyValuePair,
+				static item => item.Key));
 	}
 
 	private static void FormatEnumerable(
@@ -132,12 +137,13 @@ public static partial class ValueFormatters
 			if (ValueFormatter.Registrations.Length > 0)
 			{
 				FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
-					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem));
+					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem, GetDictionaryItemKey));
 			}
 			else
 			{
 				FormatItems(stringBuilder, value, GetEntries(dictionary), GetCount(value), options,
-					new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry));
+					new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry,
+						static entry => entry.Key));
 			}
 		}
 		else if (value is Array { Rank: > 1, } array)
@@ -224,6 +230,17 @@ public static partial class ValueFormatters
 			? FormatDictionaryEntry(formatter, entry, options, context)
 			: FormatItem(formatter, item, options, context);
 
+	/// <remarks>
+	///     An entry whose key cannot be read is sorted by itself.
+	/// </remarks>
+	private static object? GetDictionaryItemKey(object? item)
+		=> item switch
+		{
+			DictionaryEntry entry => entry.Key,
+			not null when TryGetKeyValuePair(item, out object? key, out _) => key,
+			_ => item,
+		};
+
 	private static string FormatItem(
 		ValueFormatter formatter,
 		object? item,
@@ -298,7 +315,7 @@ public static partial class ValueFormatters
 			stringBuilder.Append(' ');
 		}
 
-		int maxCount = options.IsComplete
+		int maxCount = options.IsSnapshot
 			? int.MaxValue
 			: Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		int count = maxCount;
@@ -308,36 +325,44 @@ public static partial class ValueFormatters
 		bool hasMoreValues = false;
 		bool isNotEmpty = false;
 		Exception? enumerationException = null;
-		using IEnumerator<T> enumerator = items.GetEnumerator();
-		while (TryMoveNext(enumerator, isNotEmpty, ref enumerationException))
+		if (options.IsSnapshot && HasUnstableOrder(value))
 		{
-			T item = enumerator.Current;
-			isNotEmpty = true;
-			if (count < maxCount)
+			isNotEmpty = AppendSortedItems(stringBuilder, isDictionary, items, options, itemFormatter,
+				ref enumerationException);
+		}
+		else
+		{
+			using IEnumerator<T> enumerator = items.GetEnumerator();
+			while (TryMoveNext(enumerator, isNotEmpty, ref enumerationException))
 			{
-				if (options.UseLineBreaks)
+				T item = enumerator.Current;
+				isNotEmpty = true;
+				if (count < maxCount)
 				{
-					stringBuilder.AppendLine(",");
+					if (options.UseLineBreaks)
+					{
+						stringBuilder.AppendLine(",");
+						stringBuilder.Append(itemIndentation);
+					}
+					else
+					{
+						stringBuilder.Append(", ");
+					}
+				}
+				else if (options.UseLineBreaks)
+				{
+					stringBuilder.AppendLine();
 					stringBuilder.Append(itemIndentation);
 				}
-				else
+
+				if (count-- <= 0)
 				{
-					stringBuilder.Append(", ");
+					hasMoreValues = true;
+					break;
 				}
-			}
-			else if (options.UseLineBreaks)
-			{
-				stringBuilder.AppendLine();
-				stringBuilder.Append(itemIndentation);
-			}
 
-			if (count-- <= 0)
-			{
-				hasMoreValues = true;
-				break;
+				stringBuilder.Append(itemFormatter.FormatSingle(item, options).Indent("  ", false));
 			}
-
-			stringBuilder.Append(itemFormatter.FormatSingle(item, options).Indent("  ", false));
 		}
 
 		if (enumerationException is not null)
@@ -371,6 +396,94 @@ public static partial class ValueFormatters
 		stringBuilder.Append(isDictionary ? '}' : ']');
 	}
 #pragma warning restore S3776
+
+	/// <summary>
+	///     Appends the items sorted by their formatted text, or the entries of a dictionary by their formatted key, and
+	///     returns whether there were any.
+	/// </summary>
+	/// <remarks>
+	///     Entries with the same formatted key are sorted by their formatted text, so that the order does not depend on
+	///     the enumeration either.
+	/// </remarks>
+	private static bool AppendSortedItems<T>(
+		StringBuilder stringBuilder,
+		bool isDictionary,
+		IEnumerable<T> items,
+		FormattingOptions options,
+		ItemFormatter<T> itemFormatter,
+		ref Exception? enumerationException)
+	{
+		List<(string SortKey, string Text)> formattedItems = [];
+		using IEnumerator<T> enumerator = items.GetEnumerator();
+		while (TryMoveNext(enumerator, formattedItems.Count > 0, ref enumerationException))
+		{
+			T item = enumerator.Current;
+			string text = itemFormatter.FormatSingle(item, options);
+			formattedItems.Add((isDictionary ? itemFormatter.FormatKey(item, options) ?? text : text, text));
+		}
+
+		formattedItems.Sort(static (left, right) =>
+		{
+			int comparison = string.CompareOrdinal(left.SortKey, right.SortKey);
+			return comparison != 0 ? comparison : string.CompareOrdinal(left.Text, right.Text);
+		});
+		string itemIndentation = options.Indentation + "  ";
+		for (int i = 0; i < formattedItems.Count; i++)
+		{
+			if (options.UseLineBreaks)
+			{
+				stringBuilder.Append(i > 0 ? "," : "").AppendLine().Append(itemIndentation);
+			}
+			else if (i > 0)
+			{
+				stringBuilder.Append(", ");
+			}
+
+			stringBuilder.Append(formattedItems[i].Text.Indent("  ", false));
+		}
+
+		return formattedItems.Count > 0;
+	}
+
+	/// <summary>
+	///     Whether the <paramref name="value" /> enumerates in an order that depends on hash codes or threads, so that it
+	///     can differ in every run.
+	/// </summary>
+	/// <remarks>
+	///     The interfaces do not tell, as sorted and ordered collections implement them as well, so the known collection
+	///     types are matched instead, including their base types, as frozen collections are internal subclasses.
+	///     netstandard2.0 lacks the immutable and frozen collections, which the runtime might have, so they are matched
+	///     by name there.
+	/// </remarks>
+	private static bool HasUnstableOrder(IEnumerable value)
+	{
+		for (Type? type = value.GetType(); type is not null; type = type.BaseType)
+		{
+			if (type == typeof(Hashtable) ||
+			    (type.IsGenericType && IsUnstableOrderDefinition(type.GetGenericTypeDefinition())))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static bool IsUnstableOrderDefinition(Type definition)
+		=> definition == typeof(HashSet<>) ||
+		   definition == typeof(ConcurrentBag<>) ||
+		   definition == typeof(ConcurrentDictionary<,>) ||
+#if NET8_0_OR_GREATER
+		   definition == typeof(ImmutableHashSet<>) ||
+		   definition == typeof(ImmutableDictionary<,>) ||
+		   definition == typeof(FrozenSet<>) ||
+		   definition == typeof(FrozenDictionary<,>);
+#else
+		   definition.FullName is "System.Collections.Immutable.ImmutableHashSet`1"
+			   or "System.Collections.Immutable.ImmutableDictionary`2"
+			   or "System.Collections.Frozen.FrozenSet`1"
+			   or "System.Collections.Frozen.FrozenDictionary`2";
+#endif
 
 	/// <summary>
 	///     An exception of the enumeration after the first item is caught, so that the items listed so far are kept.
@@ -511,7 +624,7 @@ public static partial class ValueFormatters
 	{
 		private readonly string _itemIndentation = options.Indentation + "  ";
 		private readonly IEnumerator _items = array.GetEnumerator();
-		private readonly int _maximumCount = options.IsComplete
+		private readonly int _maximumCount = options.IsSnapshot
 			? int.MaxValue
 			: Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		private int _count;
@@ -590,11 +703,27 @@ public static partial class ValueFormatters
 	private readonly struct ItemFormatter<T>(
 		ValueFormatter formatter,
 		FormattingContext context,
-		Func<ValueFormatter, T, FormattingOptions, FormattingContext, string> formatItem)
+		Func<ValueFormatter, T, FormattingOptions, FormattingContext, string> formatItem,
+		Func<T, object?>? getKey = null)
 	{
 		public FormattingContext Context { get; } = context;
 
 		public string FormatSingle(T item, FormattingOptions options)
 			=> formatItem(formatter, item, options, Context);
+
+		/// <summary>
+		///     Formats the key of a dictionary entry on a single line, or returns <see langword="null" /> when the items
+		///     have no key.
+		/// </summary>
+		public string? FormatKey(T item, FormattingOptions options)
+			=> getKey is null
+				? null
+				: formatter.Format(getKey(item), options with
+				{
+					IncludeType = false,
+					UseLineBreaks = false,
+					Indentation = "",
+					TotalItemCount = null,
+				}, Context);
 	}
 }
