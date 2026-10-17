@@ -1,3 +1,6 @@
+using System;
+using System.Linq.Expressions;
+using aweXpect.Formatting;
 using aweXpect.Snapshots;
 
 namespace aweXpect.Results;
@@ -42,6 +45,22 @@ public sealed class SnapshotMaskings<TType, TThat>
 	/// <inheritdoc cref="SnapshotMasking.Member(string, string)" />
 	public SnapshotResult<TType, TThat> Member(string memberName, string replacement)
 		=> AddStructural(SnapshotMasking.Member(memberName, replacement));
+
+	/// <inheritdoc cref="SnapshotMasking.Member(Func{FormattedValue, bool})" />
+	public SnapshotResult<TType, TThat> Member(Func<FormattedValue, bool> predicate)
+		=> AddStructural(SnapshotMasking.Member(predicate));
+
+	/// <inheritdoc cref="SnapshotMasking.Member(Func{FormattedValue, bool}, string)" />
+	public SnapshotResult<TType, TThat> Member(Func<FormattedValue, bool> predicate, string replacement)
+		=> AddStructural(SnapshotMasking.Member(predicate, replacement));
+
+	/// <inheritdoc cref="SnapshotMasking.MemberOf{T}(Expression{Func{T, object}})" />
+	public SnapshotResult<TType, TThat> MemberOf<T>(Expression<Func<T, object?>> member)
+		=> AddStructural(SnapshotMasking.MemberOf(member));
+
+	/// <inheritdoc cref="SnapshotMasking.MemberOf{T}(Expression{Func{T, object}}, string)" />
+	public SnapshotResult<TType, TThat> MemberOf<T>(Expression<Func<T, object?>> member, string replacement)
+		=> AddStructural(SnapshotMasking.MemberOf(member, replacement));
 
 	/// <summary>
 	///     Replaces the paths of the environment with placeholders when <paramref name="mask" /> is

@@ -1,4 +1,6 @@
 using System;
+using System.Linq.Expressions;
+using aweXpect.Formatting;
 using aweXpect.Snapshots;
 
 namespace aweXpect.Results;
@@ -42,6 +44,18 @@ public sealed class SnapshotIgnorings<TType, TThat>
 	/// <inheritdoc cref="SnapshotIgnoring.Member{T}()" />
 	public SnapshotResult<TType, TThat> Member<T>()
 		=> Add(SnapshotIgnoring.Member<T>());
+
+	/// <inheritdoc cref="SnapshotIgnoring.Member(Func{FormattedValue, bool})" />
+	public SnapshotResult<TType, TThat> Member(Func<FormattedValue, bool> predicate)
+		=> Add(SnapshotIgnoring.Member(predicate));
+
+	/// <inheritdoc cref="SnapshotIgnoring.MemberOf{T}(Expression{Func{T, object}})" />
+	public SnapshotResult<TType, TThat> MemberOf<T>(Expression<Func<T, object?>> member)
+		=> Add(SnapshotIgnoring.MemberOf(member));
+
+	/// <inheritdoc cref="SnapshotIgnoring.EmptyCollections()" />
+	public SnapshotResult<TType, TThat> EmptyCollections()
+		=> Add(SnapshotIgnoring.EmptyCollections());
 
 	private SnapshotResult<TType, TThat> Add(SnapshotIgnoring ignoring)
 	{

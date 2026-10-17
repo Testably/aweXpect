@@ -4,10 +4,13 @@ namespace aweXpect.Results
 {
     public sealed class SnapshotIgnorings<TType, TThat>
     {
+        public aweXpect.Results.SnapshotResult<TType, TThat> EmptyCollections() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Lines(System.Func<string, bool> predicate) { }
         public aweXpect.Results.SnapshotLinesContainingResult<TType, TThat> LinesContaining(string text) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Member(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member<T>() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> MemberOf<T>(System.Linq.Expressions.Expression<System.Func<T, object?>> member) { }
     }
     public sealed class SnapshotLinesContainingResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
     public sealed class SnapshotMaskings<TType, TThat>
@@ -15,8 +18,12 @@ namespace aweXpect.Results
         public aweXpect.Results.SnapshotResult<TType, TThat> Dates() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Guids() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> MachineName() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Member(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Member(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName, string replacement) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> MemberOf<T>(System.Linq.Expressions.Expression<System.Func<T, object?>> member) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> MemberOf<T>(System.Linq.Expressions.Expression<System.Func<T, object?>> member, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Paths(bool mask = true) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Regex(string pattern, string replacement) { }
@@ -62,10 +69,13 @@ namespace aweXpect.Snapshots
     }
     public class SnapshotIgnoring
     {
+        public static aweXpect.Snapshots.SnapshotIgnoring EmptyCollections() { }
         public static aweXpect.Snapshots.SnapshotIgnoring Lines(System.Func<string, bool> predicate) { }
         public static aweXpect.Snapshots.SnapshotIgnoringLinesContaining LinesContaining(string text) { }
+        public static aweXpect.Snapshots.SnapshotIgnoring Member(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
         public static aweXpect.Snapshots.SnapshotIgnoring Member(string memberName) { }
         public static aweXpect.Snapshots.SnapshotIgnoring Member<T>() { }
+        public static aweXpect.Snapshots.SnapshotIgnoring MemberOf<T>(System.Linq.Expressions.Expression<System.Func<T, object?>> member) { }
     }
     public sealed class SnapshotIgnoringLinesContaining : aweXpect.Snapshots.SnapshotIgnoring, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
     public sealed class SnapshotMasking
@@ -73,8 +83,12 @@ namespace aweXpect.Snapshots
         public static aweXpect.Snapshots.SnapshotMasking Dates() { }
         public static aweXpect.Snapshots.SnapshotMasking Guids() { }
         public static aweXpect.Snapshots.SnapshotMasking MachineName() { }
+        public static aweXpect.Snapshots.SnapshotMasking Member(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
         public static aweXpect.Snapshots.SnapshotMasking Member(string memberName) { }
+        public static aweXpect.Snapshots.SnapshotMasking Member(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Member(string memberName, string replacement) { }
+        public static aweXpect.Snapshots.SnapshotMasking MemberOf<T>(System.Linq.Expressions.Expression<System.Func<T, object?>> member) { }
+        public static aweXpect.Snapshots.SnapshotMasking MemberOf<T>(System.Linq.Expressions.Expression<System.Func<T, object?>> member, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Regex(string pattern, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Text(string value, string replacement) { }

@@ -24,6 +24,8 @@ internal static class Checks
 			() => ShouldPass(ObjectMatchesItsSnapshot)),
 		new("an object with ignored and masked members matching its snapshot passes",
 			() => ShouldPass(ObjectWithRulesMatchesItsSnapshot)),
+		new("an object with members selected by expression and empty collections left out matching its snapshot passes",
+			() => ShouldPass(ObjectWithMemberOfAndEmptyCollectionsMatchesItsSnapshot)),
 		new("a record matching its snapshot is written member-wise",
 			() => ShouldPass(RecordMatchesItsSnapshot)),
 		new("a snapshot named after arguments matching its snapshot passes",
@@ -63,6 +65,22 @@ internal static class Checks
 			.Ignoring.Member("Status")
 			.Masking.Member("Id")
 			.Masking.Type<decimal>("{weight}")
+			.AcceptingChanges(false);
+
+	/// <remarks>
+	///     The expressions are only read, never compiled, and the empty collections are recognized without reflection,
+	///     including a set of a value type, which is no non-generic collection.
+	/// </remarks>
+	private static async Task ObjectWithMemberOfAndEmptyCollectionsMatchesItsSnapshot()
+		=> await That(new Playlist
+			{
+				Id = 1,
+				Name = "Road Trip",
+				Songs = [new Song { Id = 7, Title = "Highway to Hell", }, new Song { Id = 9, Title = "Let It Be", },],
+			}).MatchesSnapshot()
+			.Ignoring.EmptyCollections()
+			.Ignoring.MemberOf<Playlist>(p => p.Id)
+			.Masking.MemberOf<Song>(s => s.Id)
 			.AcceptingChanges(false);
 
 	/// <remarks>

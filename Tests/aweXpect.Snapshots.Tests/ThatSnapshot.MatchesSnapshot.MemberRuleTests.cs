@@ -555,7 +555,7 @@ public sealed partial class ThatSnapshot
 			public async Task WhenMemberNameIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Member(null!);
+					=> SnapshotMasking.Member((string)null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("memberName");

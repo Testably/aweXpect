@@ -17,7 +17,7 @@ internal static class ApiParity
 	private static string[] GetSignatures(MethodInfo[] methods)
 		=> methods
 			.Select(method => $"{method.Name}`{(method.IsGenericMethodDefinition ? method.GetGenericArguments().Length : 0)}" +
-			                  $"({string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.FullName} {p.Name}"))})")
+			                  $"({string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.FullName ?? p.ParameterType.ToString()} {p.Name}"))})")
 			.OrderBy(signature => signature, StringComparer.Ordinal)
 			.ToArray();
 }

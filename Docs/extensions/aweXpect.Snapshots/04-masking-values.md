@@ -172,6 +172,68 @@ Album {
 - Ignoring wins over masking, the first masking that matches a value replaces it, and the rules of the expectation come
   before those for all snapshots. They apply before the maskings of the text.
 
+### Members of a type and predicates
+
+A member name matches every member of that name, whichever object it belongs to. To select the member of one type
+only, pass an expression to `MemberOf<T>(…)`, or decide for each value with a predicate:
+
+```csharp
+await Expect.That(album).MatchesSnapshot()
+    .Ignoring.MemberOf<Album>(a => a.Price)                         // only the price of an album, not of its tracks
+    .Masking.MemberOf<Track>(t => t.Id)                             // numbered: Id = {Id_1}
+    .Ignoring.Member(value => value.Name.EndsWith("Url", StringComparison.Ordinal))
+    .Masking.Member(value => value.DeclaringType == typeof(Track) && value.Name == "Duration");
+```
+
+```text title="Snapshot"
+Album {
+  Title = "Let It Be",
+  Tracks = [
+    Track {
+      Duration = {Duration_1},
+      Id = {Id_1},
+      Price = 1.29,
+      Title = "Get Back"
+    }
+  ]
+}
+```
+
+- `MemberOf<T>(…)` matches the member in an object of the type `T` or of a derived type. The expression must access a
+  field or property of its parameter itself, e.g. `a => a.Price`; it is only read, never compiled, so it works under
+  Native AOT. A nested member (`a => a.Artist.Name`) throws an `ArgumentException`, as the formatter does not tell
+  the type of the object that contains the artist; select it by the type that declares it instead:
+  `MemberOf<Artist>(a => a.Name)`. Other expressions, e.g. `a => a.ToString()`, throw an `ArgumentException` as well.
+- A predicate gets each member, tuple item and collection item as a `FormattedValue`, with its `Kind`, `Name`, `Path`,
+  declared `Type` and `DeclaringType`; the value itself is only read when the predicate calls `GetValue()`. Check
+  `value.Kind == FormattedValueKind.Member` to leave items untouched. A numbered placeholder is named after the member,
+  or `Item` for an item of a collection or a dictionary value.
+
+### Empty collections
+
+Members that are often empty, e.g. the bonus tracks of an album, can be left out while they are empty:
+
+```csharp
+await Expect.That(album).MatchesSnapshot().Ignoring.EmptyCollections();
+```
+
+```text title="Snapshot"
+Album {
+  Title = "Let It Be",
+  Tracks = [
+    "Two of Us",
+    "Dig a Pony"
+  ]
+}
+```
+
+- `.Ignoring.EmptyCollections()` leaves out each member whose value is an empty array, list, set, dictionary or other
+  collection that knows its count, here `BonusTracks = []`.
+- A `null` value and an empty `string` are kept, and so are empty items of a collection or values of a dictionary,
+  which keep their place.
+- A sequence that does not know its count, like a LINQ query or an iterator, is kept as well and only enumerated once
+  to be written, as it might only be enumerable once.
+
 A `string` is compared as raw text and has no members, so a member or type rule on a `string` subject throws an
 `InvalidOperationException`.
 
@@ -193,7 +255,7 @@ Customize.aweXpect.Global.Snapshots().Maskings.Set([
 They are applied after the maskings of the expectation, in the order of the list, so a specific masking of the
 expectation goes before a general one for all snapshots. Members, types and lines are left out for all snapshots with
 `Customize.aweXpect.Snapshots().Ignorings` and the factories of `SnapshotIgnoring`, e.g.
-`Ignorings.Set([SnapshotIgnoring.Member<DateTime>(), SnapshotIgnoring.LinesContaining("Build date").IgnoringCase()])`.
+`Ignorings.Set([SnapshotIgnoring.EmptyCollections(), SnapshotIgnoring.MemberOf<Album>(a => a.Price), SnapshotIgnoring.LinesContaining("Build date").IgnoringCase()])`.
 Member and type rules for all snapshots are ignored for a `string` subject, and line rules for any other subject.
 Setting a value replaces the list; to extend an outer setting, e.g. for one async flow, include it:
 

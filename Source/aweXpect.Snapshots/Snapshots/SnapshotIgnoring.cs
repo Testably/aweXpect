@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Formatting;
@@ -69,6 +70,47 @@ public class SnapshotIgnoring
 	/// </remarks>
 	public static SnapshotIgnoring Member<T>()
 		=> new(SnapshotValueRule.ForType(typeof(T)), true);
+
+	/// <summary>
+	///     Leaves out each value nested in an object snapshot for which the <paramref name="predicate" /> returns
+	///     <see langword="true" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="predicate" /> is asked for every member, tuple item and collection item, with its
+	///     <see cref="FormattedValue.Kind" />, <see cref="FormattedValue.Name" />, <see cref="FormattedValue.Path" />,
+	///     declared <see cref="FormattedValue.Type" /> and <see cref="FormattedValue.DeclaringType" />; the value itself is
+	///     only read when it calls <see cref="FormattedValue.GetValue()" />. Check the <see cref="FormattedValue.Kind" />
+	///     to only leave out members, e.g.
+	///     <c>value =&gt; value.Kind == FormattedValueKind.Member &amp;&amp; value.Name.EndsWith("Url")</c>.
+	/// </remarks>
+	public static SnapshotIgnoring Member(Func<FormattedValue, bool> predicate)
+		=> new(SnapshotValueRule.ForPredicate(predicate), false);
+
+	/// <summary>
+	///     Leaves out the <paramref name="member" /> of each <typeparamref name="T" />.
+	/// </summary>
+	/// <remarks>
+	///     Only the member of an object of the type <typeparamref name="T" /> or a derived type matches, unlike
+	///     <see cref="Member(string)" />, which matches every member of that name:
+	///     <c>MemberOf&lt;Album&gt;(a =&gt; a.Price)</c> leaves out the <c>Price</c> of each <c>Album</c>, but not the one
+	///     of its tracks. The <paramref name="member" /> must access a field or property of the parameter itself; it is
+	///     only read, never compiled. A nested member, e.g. <c>a =&gt; a.Artist.Name</c>, throws an
+	///     <see cref="ArgumentException" />, so select it by the type that declares it instead.
+	/// </remarks>
+	public static SnapshotIgnoring MemberOf<T>(Expression<Func<T, object?>> member)
+		=> new(SnapshotValueRule.ForMemberOf(member), true);
+
+	/// <summary>
+	///     Leaves out each member whose value is an empty collection, e.g. an empty array, list, set or dictionary.
+	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> value and an empty <see cref="string" /> are kept. Only collections that know their
+	///     count are left out: a sequence that does not, like a LINQ query or an iterator, is kept and enumerated only
+	///     once, when it is written, as it might compute its items or only be enumerable once. The items of a collection,
+	///     the values of a dictionary and the items of a tuple are kept, like with <see cref="Member{T}()" />.
+	/// </remarks>
+	public static SnapshotIgnoring EmptyCollections()
+		=> new(SnapshotValueRule.ForEmptyCollections(), true);
 
 	/// <summary>
 	///     Leaves out each line of a <see cref="string" /> snapshot for which the <paramref name="predicate" /> returns

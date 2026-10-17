@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Customization;
@@ -17,9 +18,9 @@ namespace aweXpect.Snapshots;
 ///     substitutions of <see cref="System.Text.RegularExpressions.Regex.Replace(string, string)" />, e.g. <c>$1</c>.
 ///     <see cref="Guids" /> and <see cref="Dates" /> number their placeholders, so that the same value keeps the same
 ///     placeholder within one subject.<br />
-///     <see cref="Member(string)" /> and <see cref="Type{T}()" /> replace values nested in an object snapshot while it is
-///     written, so they apply before the maskings of the text, and only to snapshots of objects; the first one that
-///     matches a value wins. Numbered placeholders of the same name share their numbers across all maskings.<br />
+///     <see cref="Member(string)" />, <see cref="MemberOf{T}(Expression{Func{T, object}})" /> and
+///     <see cref="Type{T}()" /> replace values nested in an object snapshot while it is written, so they apply before
+///     the maskings of the text, and only to snapshots of objects; the first one that matches a value wins. Numbered placeholders of the same name share their numbers across all maskings.<br />
 ///     Set maskings for all snapshots with <c>Customize.aweXpect.Snapshots().Maskings</c>; they are applied after the
 ///     maskings of the expectation. <see cref="MachineName" /> and <see cref="UserName" /> are applied first, after the
 ///     paths of the environment, see <c>Customize.aweXpect.Snapshots().MaskPaths</c>.
@@ -264,6 +265,62 @@ public sealed class SnapshotMasking
 		=> new(SnapshotValueRule.ForMember(memberName), ThrowIfNull(replacement));
 
 	/// <summary>
+	///     Replaces each value nested in an object snapshot for which the <paramref name="predicate" /> returns
+	///     <see langword="true" /> with a numbered placeholder named after the member, e.g. <c>{Duration_1}</c>, where the
+	///     same value keeps the same number.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="predicate" /> is asked for every member, tuple item and collection item, with its
+	///     <see cref="FormattedValue.Kind" />, <see cref="FormattedValue.Name" />, <see cref="FormattedValue.Path" />,
+	///     declared <see cref="FormattedValue.Type" /> and <see cref="FormattedValue.DeclaringType" />; the value itself is
+	///     only read when it calls <see cref="FormattedValue.GetValue()" />. The placeholder of a collection item or a
+	///     dictionary value is named <c>Item</c>. A <see langword="null" /> value is not masked.
+	/// </remarks>
+	public static SnapshotMasking Member(Func<FormattedValue, bool> predicate)
+		=> new(SnapshotValueRule.ForPredicate(predicate), null);
+
+	/// <summary>
+	///     Replaces each value nested in an object snapshot for which the <paramref name="predicate" /> returns
+	///     <see langword="true" /> with the <paramref name="replacement" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="predicate" /> is asked like in <see cref="Member(Func{FormattedValue, bool})" />. The
+	///     <paramref name="replacement" /> is written as it is, without quotes. A <see langword="null" /> value is not
+	///     masked.
+	/// </remarks>
+	public static SnapshotMasking Member(Func<FormattedValue, bool> predicate, string replacement)
+		=> new(SnapshotValueRule.ForPredicate(predicate), ThrowIfNull(replacement));
+
+	/// <summary>
+	///     Replaces the value of the <paramref name="member" /> of each <typeparamref name="T" /> in an object snapshot
+	///     with a numbered placeholder named after the member, e.g. <c>{Id_1}</c>, where the same value keeps the same
+	///     number.
+	/// </summary>
+	/// <remarks>
+	///     Only the member of an object of the type <typeparamref name="T" /> or a derived type matches, unlike
+	///     <see cref="Member(string)" />, which matches every member of that name:
+	///     <c>MemberOf&lt;Track&gt;(t =&gt; t.Id)</c> masks the <c>Id</c> of each <c>Track</c>, but not the one of its
+	///     <c>Album</c>. The <paramref name="member" /> must access a field or property of the parameter itself; it is
+	///     only read, never compiled. A nested member, e.g. <c>a =&gt; a.Artist.Name</c>, throws an
+	///     <see cref="ArgumentException" />, so select it by the type that declares it instead. The placeholder shares its
+	///     numbers with the other maskings of that name. A <see langword="null" /> value is not masked.
+	/// </remarks>
+	public static SnapshotMasking MemberOf<T>(Expression<Func<T, object?>> member)
+		=> new(SnapshotValueRule.ForMemberOf(member), null);
+
+	/// <summary>
+	///     Replaces the value of the <paramref name="member" /> of each <typeparamref name="T" /> in an object snapshot
+	///     with the <paramref name="replacement" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="member" /> matches like in <see cref="MemberOf{T}(Expression{Func{T, object}})" />. The
+	///     <paramref name="replacement" /> is written as it is, without quotes. A <see langword="null" /> value is not
+	///     masked.
+	/// </remarks>
+	public static SnapshotMasking MemberOf<T>(Expression<Func<T, object?>> member, string replacement)
+		=> new(SnapshotValueRule.ForMemberOf(member), ThrowIfNull(replacement));
+
+	/// <summary>
 	///     Replaces each value of the type <typeparamref name="T" /> in an object snapshot with a numbered placeholder
 	///     named after the type, e.g. <c>{Guid_1}</c>, where the same value keeps the same number.
 	/// </summary>
@@ -347,12 +404,13 @@ public sealed class SnapshotMasking
 			return null;
 		}
 
-		return new SnapshotPlaceholder(_replacement ?? numbering.GetPlaceholder(_rule.PlaceholderName, actual switch
-		{
-			string text => text,
-			IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
-			_ => Formatter.Format(actual, FormattingOptions.Snapshot),
-		}));
+		return new SnapshotPlaceholder(_replacement ?? numbering.GetPlaceholder(_rule.GetPlaceholderName(value),
+			actual switch
+			{
+				string text => text,
+				IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
+				_ => Formatter.Format(actual, FormattingOptions.Snapshot),
+			}));
 	}
 
 	/// <summary>
