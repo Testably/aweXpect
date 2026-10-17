@@ -74,9 +74,9 @@ static aweXpect.StringEqualityOptionsExtensions.NormalizingWhiteSpace<TResult>(t
 aweXpect.Core.Extending.ClosestMatch
 static aweXpect.Core.Extending.ClosestMatch.AppendHint(System.Text.StringBuilder! stringBuilder, string! value, System.Collections.Generic.IEnumerable<string!>! candidates) -> void
 static aweXpect.Core.Extending.ClosestMatch.Find(string! value, System.Collections.Generic.IEnumerable<string!>! candidates) -> string?
-aweXpect.Formatting.FormattingOptions.IsComplete.get -> bool
-aweXpect.Formatting.FormattingOptions.IsComplete.init -> void
-static aweXpect.Formatting.FormattingOptions.Complete.get -> aweXpect.Formatting.FormattingOptions!
+aweXpect.Formatting.FormattingOptions.IsSnapshot.get -> bool
+aweXpect.Formatting.FormattingOptions.IsSnapshot.init -> void
+static aweXpect.Formatting.FormattingOptions.Snapshot.get -> aweXpect.Formatting.FormattingOptions!
 aweXpect.Equivalency.EquivalencyTypeOptionsExtensions
 static aweXpect.Equivalency.EquivalencyTypeOptionsExtensions.Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyOptions! options, System.Func<TActual, TExpected, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Equivalency.EquivalencyOptions!
 static aweXpect.Equivalency.EquivalencyTypeOptionsExtensions.Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyTypeOptions! options, System.Func<TActual, TExpected, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Equivalency.EquivalencyTypeOptions!

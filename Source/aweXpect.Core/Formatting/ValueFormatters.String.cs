@@ -29,7 +29,7 @@ public static partial class ValueFormatters
 		}
 
 		string formattedValue =
-			$"\"{TruncateUnlessComplete(value, options).Escape()}\"";
+			$"\"{TruncateUnlessSnapshot(value, options).Escape()}\"";
 		return options?.IncludeType == true ? $"string {formattedValue}" : formattedValue;
 	}
 
@@ -64,21 +64,21 @@ public static partial class ValueFormatters
 		}
 
 		stringBuilder.Append('\"');
-		stringBuilder.Append(TruncateUnlessComplete(value, options).Escape());
+		stringBuilder.Append(TruncateUnlessSnapshot(value, options).Escape());
 		stringBuilder.Append('\"');
 	}
 
-	private static string TruncateUnlessComplete(string value, FormattingOptions? options)
-		=> options?.IsComplete == true
+	private static string TruncateUnlessSnapshot(string value, FormattingOptions? options)
+		=> options?.IsSnapshot == true
 			? value
 			: value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get());
 
 	/// <remarks>
-	///     Complete output escapes the backslashes of unquoted text as well, so that an escaped line break cannot be
+	///     A snapshot escapes the backslashes of unquoted text as well, so that an escaped line break cannot be
 	///     mistaken for a backslash followed by an <c>n</c>.
 	/// </remarks>
 	private static string EscapeUnquoted(string value, FormattingOptions? options)
-		=> options?.IsComplete == true
+		=> options?.IsSnapshot == true
 			? value.Escape('\\')
 			: value.DisplayWhitespace();
 }

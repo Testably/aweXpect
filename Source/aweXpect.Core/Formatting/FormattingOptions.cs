@@ -6,16 +6,16 @@
 public record FormattingOptions
 {
 	/// <summary>
-	///     Format the objects completely on a single line.
+	///     Format the objects for a snapshot on a single line.
 	/// </summary>
 	/// <remarks>
 	///     Use <see langword="with" /> to combine it with other options, e.g.
-	///     <c>FormattingOptions.Indented() with { IsComplete = true }</c>.
+	///     <c>FormattingOptions.Indented() with { IsSnapshot = true }</c>.
 	/// </remarks>
-	public static FormattingOptions Complete { get; } = new()
+	public static FormattingOptions Snapshot { get; } = new()
 	{
 		UseLineBreaks = false,
-		IsComplete = true,
+		IsSnapshot = true,
 	};
 
 	/// <summary>
@@ -69,7 +69,8 @@ public record FormattingOptions
 	public int? TotalItemCount { get; init; }
 
 	/// <summary>
-	///     Flag indicating if the objects should be formatted completely, without shortening them for a failure message.
+	///     Flag indicating if the objects should be formatted for a snapshot: completely, without shortening them for a
+	///     failure message, and the same in every run.
 	/// </summary>
 	/// <remarks>
 	///     Neither the <c>MaximumNumberOfCollectionItems</c> nor the <c>MaximumStringLength</c> of the formatting
@@ -80,9 +81,18 @@ public record FormattingOptions
 	///     <see cref="object.ToString()" /> or formatter that throws is still written as a placeholder that names the
 	///     exception. Backslashes in unquoted text, like an exception message, are escaped as well, so that an escaped
 	///     line break cannot be mistaken for a backslash followed by an <c>n</c>. The items of a collection are written
-	///     in the order it enumerates them, so an endless sequence never completes.
+	///     in the order it enumerates them, so an endless sequence never completes. Only collections whose order depends on
+	///     hash codes or threads, so that it can differ in every run, are written sorted instead: the
+	///     items of a <see cref="System.Collections.Generic.HashSet{T}" />, an <c>ImmutableHashSet&lt;T&gt;</c>, a
+	///     <c>FrozenSet&lt;T&gt;</c> and a <see cref="System.Collections.Concurrent.ConcurrentBag{T}" /> by their
+	///     formatted text, and the entries of a
+	///     <see cref="System.Collections.Concurrent.ConcurrentDictionary{TKey,TValue}" />, an
+	///     <c>ImmutableDictionary&lt;TKey, TValue&gt;</c>, a <c>FrozenDictionary&lt;TKey, TValue&gt;</c> and a
+	///     <see cref="System.Collections.Hashtable" /> by their formatted key, each ordinal. A
+	///     <see cref="System.Collections.Generic.Dictionary{TKey,TValue}" /> keeps the order in which its entries were
+	///     added.
 	/// </remarks>
-	public bool IsComplete { get; init; }
+	public bool IsSnapshot { get; init; }
 
 	/// <summary>
 	///     Format the objects on multiple lines with the given <paramref name="indentation" />.
