@@ -3,7 +3,7 @@ using aweXpect.Xml.Tests.Helpers;
 
 namespace aweXpect.Xml.Tests;
 
-public sealed class ThatXElement
+public sealed partial class ThatXElement
 {
 	public sealed class Matches
 	{

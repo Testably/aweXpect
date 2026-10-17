@@ -36,6 +36,12 @@ internal static class Checks
 		new("a valid XML string that differs from the expected XML fails",
 			() => ShouldFail(async () => await That("<a x=\"2\"/>").IsValidXmlMatching("<a x=\"1\"/>"),
 				"is valid XML which matches", "/a/@x was \"2\" instead of \"1\"")),
+		new("an element with the expected attribute value and child element passes",
+			() => ShouldPass(async () => await That(XElement.Parse("<a x=\"1\"><b/></a>"))
+				.HasAttribute("x", x => x.IsEqualTo("1")).And.HasElement("b").And.DoesNotHaveElement("c"))),
+		new("an element whose attribute value differs fails and names the attribute",
+			() => ShouldFail(async () => await That(XElement.Parse("<a x=\"2\"/>")).HasAttribute("x", x => x.IsEqualTo("1")),
+				"has attribute \"x\" whose value is equal to \"1\"", "value of attribute \"x\" was \"2\"")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)
