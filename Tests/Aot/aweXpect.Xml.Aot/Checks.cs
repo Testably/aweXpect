@@ -15,6 +15,12 @@ internal static class Checks
 		new("an XML string with a DTD fails",
 			() => ShouldFail(async () => await That("<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>").IsValidXml(),
 				"is valid XML", "contained a document type definition (DTD)")),
+		new("the root element of a valid XML string can be verified",
+			() => ShouldPass(async () => await That("<a><b c=\"1\"/></a>").IsValidXml()
+				.Which(r => r.Satisfies(e => e!.Name.LocalName == "a")))),
+		new("a failing expectation on the root element fails",
+			() => ShouldFail(async () => await That("<a/>").IsValidXml()
+				.Which(r => r.Satisfies(e => e!.Name.LocalName == "b")), "is valid XML which satisfies")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)

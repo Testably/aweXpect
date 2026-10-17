@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
@@ -24,7 +25,7 @@ public static partial class ThatXmlString
 	///     (XXE) or entity expansion attacks.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> IsValidXml(
+	public static XmlWhichResult IsValidXml(
 		this IThat<string?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsValidXmlConstraint(it, grammars)),
@@ -38,15 +39,18 @@ public static partial class ThatXmlString
 		{
 			DtdProcessing = DtdProcessing.Prohibit,
 			XmlResolver = null,
+			IgnoreWhitespace = true,
 		};
 
 		private static readonly XmlReaderSettings DtdSkippingSettings = new()
 		{
 			DtdProcessing = DtdProcessing.Ignore,
 			XmlResolver = null,
+			IgnoreWhitespace = true,
 		};
 
 		private bool _containsDtd;
+		private XDocument? _document;
 		private string? _parseError;
 
 		public ConstraintResult IsMetBy(string? actual)
@@ -60,7 +64,7 @@ public static partial class ThatXmlString
 
 			try
 			{
-				ReadToEnd(actual, DtdProhibitingSettings);
+				_document = Load(actual, DtdProhibitingSettings);
 			}
 			catch (XmlException xmlException)
 			{
@@ -83,7 +87,7 @@ public static partial class ThatXmlString
 		{
 			try
 			{
-				ReadToEnd(xml, DtdSkippingSettings);
+				Load(xml, DtdSkippingSettings);
 				return true;
 			}
 			catch (XmlException xmlException)
@@ -92,13 +96,28 @@ public static partial class ThatXmlString
 			}
 		}
 
-		private static void ReadToEnd(string xml, XmlReaderSettings settings)
+		/// <remarks>
+		///     Insignificant whitespace is dropped, like by <see cref="XDocument.Parse(string)" />.
+		/// </remarks>
+		private static XDocument Load(string xml, XmlReaderSettings settings)
 		{
 			using XmlReader reader = XmlReader.Create(new StringReader(xml), settings);
-			while (reader.Read())
+			return XDocument.Load(reader);
+		}
+
+		/// <remarks>
+		///     Stores the parsed document, so that <see cref="XmlWhichResult.Which" /> does not parse the subject again and
+		///     is not applied to a subject that could not be parsed.
+		/// </remarks>
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		{
+			if (typeof(TValue) == typeof(XDocument) && _document is TValue document)
 			{
-				// Most errors are only detected when the reader reaches them.
+				value = document;
+				return true;
 			}
+
+			return base.TryGetStoredValue(out value);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

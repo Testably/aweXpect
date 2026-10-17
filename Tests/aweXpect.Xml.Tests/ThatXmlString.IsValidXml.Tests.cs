@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Xml.Linq;
 using aweXpect.Xml.Tests.Helpers;
 
 namespace aweXpect.Xml.Tests;
@@ -234,6 +236,168 @@ public sealed partial class ThatXmlString
 					             is not valid XML,
 					             but it was <null>
 					             """);
+			}
+		}
+
+		[UseEnglishMessages]
+		public sealed class WhichTests
+		{
+			[Fact]
+			public async Task WhenActualContainsDtd_ShouldFailWithoutExpandingEntities()
+			{
+				string subject = "<!DOCTYPE a [<!ENTITY e \"expanded\">]><a>&e;</a>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Value == "expanded"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML which satisfies e => e!.Value == "expanded",
+					             but it contained a document type definition (DTD), which is prohibited for security reasons
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenActualIsInvalidXml_ShouldFail()
+			{
+				string subject = "<a><b>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML which satisfies e => e!.Name == "a",
+					             but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithAnd_ShouldApplyFollowingExpectationToString()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"))
+						.And.HasLength().GreaterThan(4);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML which satisfies e => e!.Name == "a" and has length greater than 4,
+					             but it had length 4
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectationInWhichFails_ShouldFail()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "b"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML which satisfies e => e!.Name == "b",
+					             but it was <a />
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectationInWhichIsSatisfied_ShouldSucceed()
+			{
+				string subject = "<?xml version=\"1.0\"?><!-- comment --><a><b/></a>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"));
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectations apply to the root element, not to the document");
+			}
+
+			[Fact]
+			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenRootHasNamespace_ShouldKeepIt()
+			{
+				string subject = "<x:a xmlns:x=\"urn:x\"/>";
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == XName.Get("a", "urn:x")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid XML which satisfies e => e!.Name == "a",
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegatedAndExpectationInWhichFails_ShouldSucceed()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml().Which(r => r.Satisfies(e => e!.Name == "b")));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNegatedAndExpectationInWhichIsSatisfied_ShouldFail()
+			{
+				string subject = "<a/>";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidXml().Which(r => r.Satisfies(e => e!.Name == "a")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid XML which satisfies e => e!.Name == "a",
+					             but it was "<a/>"
+					             """);
+			}
+
+			[Theory]
+			[InlineData("<a>\n  <b/>\n  <c/>\n</a>", 2)]
+			[InlineData("<a> <b/> text <c/> </a>", 3)]
+			[InlineData("<a xml:space=\"preserve\"> <b/> </a>", 3)]
+			public async Task WhenSubjectContainsWhitespace_ShouldDropInsignificantWhitespace(string subject,
+				int expectedNodes)
+			{
+				async Task Act()
+					=> await That(subject).IsValidXml().Which(r => r.Satisfies(e => e!.Nodes().Count() == expectedNodes));
+
+				await That(Act).DoesNotThrow()
+					.Because("whitespace-only text is dropped like by XDocument.Parse, unless xml:space preserves it");
 			}
 		}
 	}

@@ -35,6 +35,19 @@ is valid XML,
 but it contained a document type definition (DTD), which is prohibited for security reasons
 ```
 
+You can add further expectations on the root
+[`XElement`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xelement) parsed from the subject:
+
+```csharp
+string track = """<track title="Let It Be" artist="The Beatles" />""";
+
+await Expect.That(track).IsValidXml().Which(root => root.Satisfies(t => t!.Name == "track"));
+```
+
+The expectations are only verified when the string is valid XML. Like with
+[`XDocument.Parse`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument.parse), whitespace-only text
+between elements is dropped, unless `xml:space="preserve"` keeps it.
+
 You can also verify that a string is not valid XML:
 
 ```csharp
