@@ -85,6 +85,20 @@ public abstract class Expectation
 	internal abstract Task ResolvePendingReasons();
 
 	/// <summary>
+	///     Whether a callback was registered with <see cref="IEvaluationContext.OnCompleted" /> during the evaluation of a
+	///     member of a combination.
+	/// </summary>
+	internal abstract bool HasCompletionCallbacks { get; }
+
+	/// <summary>
+	///     Runs the callbacks registered with <see cref="IEvaluationContext.OnCompleted" /> during the evaluation of a
+	///     member of a combination with the <paramref name="outcome" /> of the combination, skipping and extending the
+	///     <paramref name="ran" /> ones.
+	/// </summary>
+	internal abstract Task RunCompletionCallbacks(Outcome outcome,
+		List<Func<CompletedEvaluation, CancellationToken, ValueTask>> ran);
+
+	/// <summary>
 	///     Lets the evaluations of the expectation run on the <paramref name="timeSystem" />.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
@@ -178,7 +192,7 @@ public abstract class Expectation
 			}
 
 			Result completed = result.Result;
-			return completed.ConstraintResult.Outcome == Outcome.Success
+			return completed.ConstraintResult.Outcome == Outcome.Success && !HasCompletionCallbacks
 				? EndEvaluation().GetAwaiter()
 				: GetResultOrThrow(new ValueTask<Result>(completed)).GetAwaiter();
 		}
@@ -288,6 +302,36 @@ public abstract class Expectation
 		}
 
 		/// <inheritdoc />
+		internal override bool HasCompletionCallbacks
+		{
+			get
+			{
+				foreach (Expectation expectation in _expectations)
+				{
+					if (expectation.HasCompletionCallbacks)
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+		}
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     Each combined expectation passes the cancellation token of its own caller to its callbacks.
+		/// </remarks>
+		internal override async Task RunCompletionCallbacks(Outcome outcome,
+			List<Func<CompletedEvaluation, CancellationToken, ValueTask>> ran)
+		{
+			foreach (Expectation expectation in _expectations)
+			{
+				await expectation.RunCompletionCallbacks(outcome, ran);
+			}
+		}
+
+		/// <inheritdoc />
 		/// <remarks>
 		///     A combination has no evaluation of its own, so every combined expectation runs on the
 		///     <paramref name="timeSystem" />.
@@ -324,6 +368,11 @@ public abstract class Expectation
 		private async Task ThrowUnlessMet(ValueTask<Result> isMet)
 		{
 			Result result = await isMet;
+			if (HasCompletionCallbacks)
+			{
+				await RunCompletionCallbacks(result.ConstraintResult.Outcome, []);
+			}
+
 			if (result.ConstraintResult.Outcome == Outcome.Success)
 			{
 				return;

@@ -300,6 +300,8 @@ public sealed class RepeatedCheckOptionsTests
 	{
 		public EvaluationCancellation Cancellation => cancellation ?? EvaluationCancellation.None;
 
+		public void OnCompleted(Func<CompletedEvaluation, CancellationToken, ValueTask> callback) { }
+
 		public void Store<T>(string key, T value) { }
 
 		public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)

@@ -5,8 +5,11 @@
 
 ```csharp
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Formatting;
 using aweXpect.Results;
 using static aweXpect.Formatting.Format;
@@ -37,7 +40,8 @@ avoid enumerating an `IEnumerable` multiple times across multiple constraints. A
 collection or a member after `Whose` or `Which` is evaluated is only received by the expectations on that item or
 member, so a value cached for one item is not handed to the next one. Its `Cancellation` describes the
 cancellation of the evaluation: the `Token` (the same token that an asynchronous constraint receives), the effective
-`Timeout`, and the `Reason` of a cancellation: `None`, the `Timeout`, or the `Caller`.
+`Timeout`, and the `Reason` of a cancellation: `None`, the `Timeout`, or the `Caller`. With `OnCompleted`, a constraint
+registers a callback that runs when the whole expectation is decided, see [side effects](#side-effects).
 
 </details>
 
@@ -260,6 +264,88 @@ public static AndOrResult<Track, IThat<Track?>> IsNotRadioFriendly(
             => new IsRadioFriendlyConstraint(it, grammars).Invert()),
         subject);
 ```
+
+## Side effects
+
+A constraint that changes something outside the evaluation, e.g. writes a file, must not do so in `IsMetBy`: at that
+point it cannot know whether it is negated, e.g. by `DoesNotComplyWith`, or whether another branch of an `Or` decides
+the expectation. Register a callback with `IEvaluationContext.OnCompleted` instead. It runs after the whole expectation
+is decided and every negation is applied, before a failure is thrown:
+
+```csharp
+public interface ITrackArchive
+{
+    bool Contains(Track track);
+    Task AddAsync(Track track, CancellationToken cancellationToken);
+}
+
+private sealed class IsArchivedConstraint(string it, ExpectationGrammars grammars, ITrackArchive archive)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IContextConstraint<Track?>
+{
+    public ConstraintResult IsMetBy(Track? actual, IEvaluationContext context)
+    {
+        Actual = actual;
+        Outcome = actual is not null && archive.Contains(actual) ? Outcome.Success : Outcome.Failure;
+        context.OnCompleted(OnCompletedAsync);
+        return this;
+    }
+
+    private async ValueTask OnCompletedAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
+    {
+        if (evaluation.Outcome == Outcome.Failure && Outcome == Outcome.Failure && !IsNegated && Actual is not null)
+        {
+            await archive.AddAsync(Actual, cancellationToken);
+        }
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is archived");
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" was not");
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is not archived");
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" was");
+}
+```
+
+- The `CompletedEvaluation` has the `Outcome` of the whole expectation: `Success`, `Failure` (also after a timeout)
+  or `Undecided`, when the evaluation was canceled. The constraint itself knows its own `Outcome`, which already
+  includes the negation, and whether it `IsNegated`.
+- A constraint that derives from `ConstraintResult` directly tracks its negation by overriding `Negate()`, which is
+  called for every negation that applies to it, also within `.And`, `.Or`, `Whose` and `Which`:
+  ```csharp no-compile
+  public override ConstraintResult Negate()
+  {
+      _isNegated = !_isNegated;
+      Outcome = Outcome switch
+      {
+          Outcome.Success => Outcome.Failure,
+          Outcome.Failure => Outcome.Success,
+          _ => Outcome,
+      };
+      return this;
+  }
+  ```
+- Each delegate runs once, even when the constraint is evaluated several times, e.g. for each item of a collection or
+  each check of `Eventually()` or `Within(…)`, so register a method of the constraint, as above. Its state is then the
+  one of the last evaluation.
+- The callbacks run in the order in which they were registered first. An exception they throw is thrown by the
+  expectation.
+- They receive the cancellation token of the caller, which a timeout of the expectation does not cancel.
+
+<details>
+<summary>Constraints that do not negate the items</summary>
+
+A quantifier, e.g. in `All().ComplyWith(…)`, counts the items that meet the item expectations without negating them,
+so a constraint on the items is never negated, not even in `DoesNotComplyWith(c => c.All().ComplyWith(…))` or for
+`None()`. Decide on the `Outcome` of the whole expectation there.
+
+</details>
 
 ## Code of the caller
 
