@@ -1,4 +1,6 @@
 ﻿using System.Threading;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -199,14 +201,16 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenToleranceIsGivenAndDelegateThrowsWithinIt_ShouldSucceed()
 			{
+				VirtualTimeSystem time = new();
 				Action @delegate = () =>
 				{
-					Task.Delay(50.Milliseconds()).Wait();
+					time.Advance(50.Milliseconds());
 					throw new MyException();
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(50.Milliseconds()).AllowingExceptions().Within(5.Seconds());
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).AllowingExceptions().Within(5.Seconds())
+						.WithTimeSystem(time);
 
 				await That(Act).DoesNotThrow()
 					.Because("the option must also be available on the tolerance overload");
