@@ -26,12 +26,16 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	{
 	}
 
+	/// <remarks>
+	///     The test file is resolved before the snapshot is read, so that an ambiguous source root is reported instead of
+	///     reading the snapshot next to another test file with the same relative path.
+	/// </remarks>
 	public override ValueTask<string?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
+		SourceRoots.ThrowIfUnresolvable(id.SourceFile);
 		string snapshotPath = GetSnapshotPath(id);
 		if (!File.Exists(snapshotPath))
 		{
-			SourceRoots.ThrowIfDeterministic(id.SourceFile);
 			return new ValueTask<string?>((string?)null);
 		}
 
