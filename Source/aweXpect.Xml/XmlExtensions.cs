@@ -1,3 +1,4 @@
+using System;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -19,11 +20,22 @@ public static class XmlExtensions
 	///     text between elements, comments, processing instructions and the XML declaration are ignored, and CDATA
 	///     sections are compared as text. Like <see cref="ThatXmlString.IsValidXml" />, a document type definition (DTD)
 	///     is prohibited.
+	///     <para />
+	///     The active <paramref name="options" /> are listed in the "XML options" context of every failure on the
+	///     subject, as the string comparison offers no way to add a context only to its own failure.
 	/// </remarks>
-	public static TResult AsXml<TResult>(this TResult result)
+	public static TResult AsXml<TResult>(
+		this TResult result,
+		Func<XmlOptions, XmlOptions>? options = null)
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
-		result.Options.SetMatchType(new XmlMatchType(), nameof(AsXml));
+		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
+		result.Options.SetMatchType(new XmlMatchType(xmlOptions), nameof(AsXml));
+		if (result is IOptionsProvider<ExpectationBuilder> expectationBuilder)
+		{
+			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => xmlOptions.AddContext(contexts));
+		}
+
 		return result;
 	}
 }

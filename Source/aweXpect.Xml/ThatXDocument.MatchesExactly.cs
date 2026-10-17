@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
@@ -17,6 +18,7 @@ public static partial class ThatXDocument
 	[GuaranteesNotNull]
 	public static AndOrResult<XDocument?, IThat<XDocument?>> MatchesExactly(
 		this IThat<XDocument?> source,
-		string expected)
-		=> MatchesXmlConstraint<XDocument>.Add(source, expected, true, document => document.Root);
+		string expected,
+		Func<XmlOptions, XmlOptions>? options = null)
+		=> MatchesXmlConstraint<XDocument>.Add(source, expected, true, document => document.Root, options);
 }

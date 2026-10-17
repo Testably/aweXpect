@@ -10,7 +10,7 @@ using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Xml;
 
-internal sealed class XmlMatchType : IStringMatchType
+internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 {
 	private XmlComparer.XmlComparisonResult? _comparisonResult;
 	private XDocument? _expectedDocument;
@@ -74,7 +74,7 @@ internal sealed class XmlMatchType : IStringMatchType
 				$"it was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
 		}
 
-		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, false);
+		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options, false);
 		return new ValueTask<StringMatchResult>(!_comparisonResult.HasError);
 	}
 

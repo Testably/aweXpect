@@ -20,13 +20,15 @@ namespace aweXpect.Xml;
 /// <param name="expectedElement">The root element of the <paramref name="expected" /> XML.</param>
 /// <param name="exactly">Whether the additional attributes and child nodes of the subject fail the expectation.</param>
 /// <param name="getElement">Selects the compared element of the node, e.g. the root element of a document.</param>
+/// <param name="options">The options of the comparison.</param>
 internal sealed class MatchesXmlConstraint<TNode>(
 	string it,
 	ExpectationGrammars grammars,
 	string expected,
 	XElement expectedElement,
 	bool exactly,
-	Func<TNode, XElement?> getElement)
+	Func<TNode, XElement?> getElement,
+	XmlOptions options)
 	: ConstraintResult.WithNotNullValue<TNode?>(it, grammars),
 		IValueConstraint<TNode?>
 	where TNode : XNode
@@ -46,13 +48,15 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
 	public static AndOrResult<TNode?, IThat<TNode?>> Add(IThat<TNode?> source, string expected, bool exactly,
-		Func<TNode, XElement?> getElement)
+		Func<TNode, XElement?> getElement, Func<XmlOptions, XmlOptions>? options)
 	{
 		XElement expectedElement = SecureXml.LoadExpected(expected).Root!;
+		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
 		return new AndOrResult<TNode?, IThat<TNode?>>(source.Get().ExpectationBuilder.AddConstraint(
-				(Expected: expected, ExpectedElement: expectedElement, Exactly: exactly, GetElement: getElement),
+				(Expected: expected, ExpectedElement: expectedElement, Exactly: exactly, GetElement: getElement,
+					Options: xmlOptions),
 				static (state, it, grammars) => new MatchesXmlConstraint<TNode>(it, grammars, state.Expected,
-					state.ExpectedElement, state.Exactly, state.GetElement)),
+					state.ExpectedElement, state.Exactly, state.GetElement, state.Options)),
 			source);
 	}
 
@@ -74,7 +78,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 			return this;
 		}
 
-		_comparisonResult = XmlComparer.Compare(element, expectedElement, !exactly);
+		_comparisonResult = XmlComparer.Compare(element, expectedElement, options, !exactly);
 		Outcome = _comparisonResult.HasError ? Outcome.Failure : Outcome.Success;
 		return this;
 	}
@@ -86,6 +90,8 @@ internal sealed class MatchesXmlConstraint<TNode>(
 			TNode? actual = Actual;
 			contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
 		}
+
+		options.AddContext(contexts);
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

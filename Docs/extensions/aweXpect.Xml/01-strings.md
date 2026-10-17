@@ -49,6 +49,9 @@ siblings of the same name, if there are several, e.g. `/order/item[2]/@price`, a
 elements are paired by this path, so an additional element is reported as unexpected instead of shifting the elements
 after it, and a different order is reported once for their parent.
 
+You can [ignore members](./02-matching.md#ignoring-members) whose values change between runs, e.g.
+`AsXml(o => o.IgnoringMember("@createdAt"))`.
+
 The expected string must be valid XML, otherwise an `ArgumentException` is thrown. Like for [validation](#validation),
 a document type definition (DTD) is prohibited in both strings. As XML is compared by its content, `AsXml()` cannot be
 combined with `IgnoringCase()` or `Using(comparer)`, and it is not available on `Contains` or `DoesNotContain` for a

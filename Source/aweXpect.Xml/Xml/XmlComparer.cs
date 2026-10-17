@@ -24,49 +24,55 @@ namespace aweXpect.Xml;
 /// </remarks>
 internal static class XmlComparer
 {
-	private const char PathSeparator = '/';
+	internal const char PathSeparator = '/';
 
 	/// <param name="actual">The element of the subject.</param>
 	/// <param name="expected">The expected element.</param>
+	/// <param name="options">The options of the comparison.</param>
 	/// <param name="ignoreAdditionalNodes">
 	///     Whether the attributes and child nodes of the subject that are not paired with an expected one are ignored.
 	/// </param>
-	public static XmlComparisonResult Compare(XElement actual, XElement expected, bool ignoreAdditionalNodes)
+	public static XmlComparisonResult Compare(XElement actual, XElement expected, XmlOptions options,
+		bool ignoreAdditionalNodes)
 	{
-		XmlComparisonResult result = new();
+		Comparison comparison = new(options, ignoreAdditionalNodes);
 		string path = PathSeparator + expected.Name.LocalName;
+		if (options.IsIgnored(path))
+		{
+			return comparison.Result;
+		}
+
 		if (actual.Name.LocalName != expected.Name.LocalName)
 		{
-			result.AddError(path, $"was <{actual.Name.LocalName}> instead of <{expected.Name.LocalName}>");
+			comparison.Result.AddError(path, $"was <{actual.Name.LocalName}> instead of <{expected.Name.LocalName}>");
 		}
 		else
 		{
-			CompareElements(actual, expected, path, ignoreAdditionalNodes, result);
+			CompareElements(actual, expected, path, comparison);
 		}
 
-		return result;
+		return comparison.Result;
 	}
 
-	private static void CompareElements(XElement actual, XElement expected, string path,
-		bool ignoreAdditionalNodes, XmlComparisonResult result)
+	private static void CompareElements(XElement actual, XElement expected, string path, Comparison comparison)
 	{
 		if (actual.Name.Namespace != expected.Name.Namespace)
 		{
-			result.AddError(path, DescribeNamespaces(actual.Name.Namespace, expected.Name.Namespace));
+			comparison.Result.AddError(path, DescribeNamespaces(actual.Name.Namespace, expected.Name.Namespace));
 			return;
 		}
 
-		CompareAttributes(actual, expected, path, ignoreAdditionalNodes, result);
-		CompareChildren(actual, expected, path, ignoreAdditionalNodes, result);
+		CompareAttributes(actual, expected, path, comparison);
+		CompareChildren(actual, expected, path, comparison);
 	}
 
 	/// <remarks>
 	///     An attribute in another namespace is paired with an expected attribute of the same local name, so that the
 	///     difference is reported once instead of as a missing and an unexpected attribute.
 	/// </remarks>
-	private static void CompareAttributes(XElement actual, XElement expected, string path,
-		bool ignoreAdditionalNodes, XmlComparisonResult result)
+	private static void CompareAttributes(XElement actual, XElement expected, string path, Comparison comparison)
 	{
+		XmlComparisonResult result = comparison.Result;
 		List<XAttribute> unpairedAttributes = actual.Attributes().Where(a => !a.IsNamespaceDeclaration).ToList();
 		foreach (XAttribute expectedAttribute in expected.Attributes().Where(a => !a.IsNamespaceDeclaration))
 		{
@@ -74,14 +80,21 @@ internal static class XmlComparer
 			XAttribute? actualAttribute =
 				unpairedAttributes.Find(a => a.Name == expectedAttribute.Name) ??
 				unpairedAttributes.Find(a => a.Name.LocalName == expectedAttribute.Name.LocalName);
-			if (actualAttribute is null)
+			if (actualAttribute is not null)
 			{
-				result.AddError(attributePath, "was missing");
+				unpairedAttributes.Remove(actualAttribute);
+			}
+
+			if (comparison.Options.IsIgnored(attributePath))
+			{
 				continue;
 			}
 
-			unpairedAttributes.Remove(actualAttribute);
-			if (actualAttribute.Name.Namespace != expectedAttribute.Name.Namespace)
+			if (actualAttribute is null)
+			{
+				result.AddError(attributePath, "was missing");
+			}
+			else if (actualAttribute.Name.Namespace != expectedAttribute.Name.Namespace)
 			{
 				result.AddError(attributePath,
 					DescribeNamespaces(actualAttribute.Name.Namespace, expectedAttribute.Name.Namespace));
@@ -93,22 +106,35 @@ internal static class XmlComparer
 			}
 		}
 
-		if (ignoreAdditionalNodes)
+		if (comparison.IgnoreAdditionalNodes)
 		{
 			return;
 		}
 
 		foreach (XAttribute unexpectedAttribute in unpairedAttributes)
 		{
-			result.AddError($"{path}{PathSeparator}@{unexpectedAttribute.Name.LocalName}", "was unexpected");
+			string attributePath = $"{path}{PathSeparator}@{unexpectedAttribute.Name.LocalName}";
+			if (!comparison.Options.IsIgnored(attributePath))
+			{
+				result.AddError(attributePath, "was unexpected");
+			}
 		}
 	}
 
-	private static void CompareChildren(XElement actual, XElement expected, string path,
-		bool ignoreAdditionalNodes, XmlComparisonResult result)
+	/// <remarks>
+	///     A child is ignored with its pair, when the path of either is ignored, so that the documents cannot disagree
+	///     about it, e.g. when only one of them has several siblings of the same name.
+	/// </remarks>
+	private static void CompareChildren(XElement actual, XElement expected, string path, Comparison comparison)
 	{
+		XmlComparisonResult result = comparison.Result;
 		List<Content> actualChildren = GetContent(actual, path);
 		List<Content> expectedChildren = GetContent(expected, path);
+		HashSet<string> ignoredKeys = new(actualChildren.Concat(expectedChildren)
+			.Where(child => comparison.Options.IsIgnored(child.Path))
+			.Select(child => child.Key));
+		actualChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
+		expectedChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
 		Dictionary<string, Content> actualChildrenByKey = actualChildren.ToDictionary(child => child.Key);
 		HashSet<string> expectedKeys = new(expectedChildren.Select(child => child.Key));
 
@@ -121,8 +147,7 @@ internal static class XmlComparer
 			}
 			else if (expectedChild.Element is not null)
 			{
-				CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, ignoreAdditionalNodes,
-					result);
+				CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, comparison);
 			}
 			else if (actualChild.Text != expectedChild.Text)
 			{
@@ -131,7 +156,7 @@ internal static class XmlComparer
 			}
 		}
 
-		if (ignoreAdditionalNodes)
+		if (comparison.IgnoreAdditionalNodes)
 		{
 			return;
 		}
@@ -219,6 +244,13 @@ internal static class XmlComparer
 
 	private static string DescribeNamespace(XNamespace ns)
 		=> ns == XNamespace.None ? "no namespace" : $"namespace {Formatter.Format(ns.NamespaceName)}";
+
+	private sealed class Comparison(XmlOptions options, bool ignoreAdditionalNodes)
+	{
+		public XmlOptions Options { get; } = options;
+		public bool IgnoreAdditionalNodes { get; } = ignoreAdditionalNodes;
+		public XmlComparisonResult Result { get; } = new();
+	}
 
 	/// <summary>
 	///     A child element or text, identified by its <see cref="Key" /> of its name and its occurrence among the

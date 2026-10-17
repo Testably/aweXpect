@@ -42,6 +42,13 @@ internal static class Checks
 		new("an element whose attribute value differs fails and names the attribute",
 			() => ShouldFail(async () => await That(XElement.Parse("<a x=\"2\"/>")).HasAttribute("x", x => x.IsEqualTo("1")),
 				"has attribute \"x\" whose value is equal to \"1\"", "value of attribute \"x\" was \"2\"")),
+		new("XML strings that only differ in ignored members pass",
+			() => ShouldPass(async () => await That("<a id=\"1\" etag=\"x\"><b/></a>").IsEqualTo("<a id=\"2\"><b/></a>")
+				.AsXml(o => o.IgnoringMember("/a/@id").Ignoring(path => path.EndsWith("/@etag"))))),
+		new("a failure lists the ignored members",
+			() => ShouldFail(async () => await That(XElement.Parse("<a id=\"1\" x=\"1\"/>"))
+					.Matches("<a id=\"2\" x=\"2\"/>", o => o.IgnoringMember("@id")),
+				"/a/@x was \"1\" instead of \"2\"", "ignore members: [\"@id\"]")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)

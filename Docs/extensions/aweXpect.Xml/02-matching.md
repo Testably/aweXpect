@@ -50,3 +50,34 @@ XElement track = XElement.Parse("""<track title="Let It Be" />""");
 
 await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
 ```
+
+## Ignoring members
+
+You can ignore members whose values change between runs, e.g. generated ids or timestamps. The options are available
+for `Matches`, `MatchesExactly`, `IsValidXmlMatching`, `IsValidXmlMatchingExactly` and
+[`AsXml()`](./01-strings.md#string-comparison-as-xml):
+
+```csharp
+string order = """<order id="42" createdAt="2026-10-17"><item sku="A1" etag="x1" /></order>""";
+
+await Expect.That(order).IsEqualTo("""<order id="1"><item sku="A1" /></order>""")
+    .AsXml(o => o
+        .IgnoringMember("/order/@id")
+        .IgnoringMember("@createdAt")
+        .Ignoring(path => path.EndsWith("/@etag")));
+```
+
+`IgnoringMember` matches whole trailing segments of the [path](./01-strings.md#string-comparison-as-xml):
+`"@createdAt"` ignores the attribute on every element and `"item/@id"` the attribute of every `item`, while a path
+starting with `/`, e.g. `"/order/@id"`, only ignores this member. A segment without a position, e.g. `item`, matches
+every element of the name, and `item[2]` only the second. The names are compared case-sensitively, as in XML.
+`Ignoring` receives the path of every compared member instead.
+
+An ignored attribute, element or text, and everything below it, is neither compared nor reported as missing or
+unexpected, and an ignored element is not considered for the order of its siblings. The ignored members are listed
+when the expectation fails:
+
+```text title="Failure message"
+XML options:
+ - ignore members: ["/order/@id", "@createdAt", path => path.EndsWith("/@etag")]
+```

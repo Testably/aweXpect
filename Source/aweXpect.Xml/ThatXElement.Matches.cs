@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
@@ -23,6 +24,7 @@ public static partial class ThatXElement
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> Matches(
 		this IThat<XElement?> source,
-		string expected)
-		=> MatchesXmlConstraint<XElement>.Add(source, expected, false, element => element);
+		string expected,
+		Func<XmlOptions, XmlOptions>? options = null)
+		=> MatchesXmlConstraint<XElement>.Add(source, expected, false, element => element, options);
 }

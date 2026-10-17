@@ -1,5 +1,7 @@
+using System;
 using aweXpect.Core;
 using aweXpect.Results;
+using aweXpect.Xml;
 
 namespace aweXpect;
 
@@ -10,11 +12,12 @@ public static partial class ThatXmlString
 	///     <paramref name="expected" /> XML exactly.
 	/// </summary>
 	/// <remarks>
-	///     This is a shortcut for <c>IsValidXml().Which(root => root.MatchesExactly(expected))</c>.
+	///     This is a shortcut for <c>IsValidXml().Which(root => root.MatchesExactly(expected, options))</c>.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidXmlMatchingExactly(
 		this IThat<string?> source,
-		string expected)
-		=> source.IsValidXml().Which(root => root.MatchesExactly(expected));
+		string expected,
+		Func<XmlOptions, XmlOptions>? options = null)
+		=> source.IsValidXml().Which(root => root.MatchesExactly(expected, options));
 }
