@@ -18,12 +18,13 @@ namespace aweXpect.Snapshots;
 ///     assemblies are searched for the recorded values once, when the first snapshot needs them, and every assembly that
 ///     is loaded afterwards adds its own.<br />
 ///     The directories of the test projects are recorded as well, so that <see cref="OrphanedSnapshots" /> only lists
-///     the snapshots of these projects.
+///     the snapshots of these projects, each with its target framework for <c>.UniqueFor.TargetFramework()</c>.
 /// </remarks>
 internal static class SourceRoots
 {
 	private const string MetadataKey = "aweXpect.Snapshots.SourceRoot";
 	private const string ProjectDirectoryKey = "aweXpect.Snapshots.ProjectDirectory";
+	private const string TargetFrameworkKey = "aweXpect.Snapshots.TargetFramework";
 
 	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
 		? StringComparison.OrdinalIgnoreCase
@@ -77,7 +78,8 @@ internal static class SourceRoots
 				Records loaded = Read(loadedAssemblies);
 				Volatile.Write(ref _records, new Records(
 					[.. _records!.SourceRoots, .. loaded.SourceRoots,],
-					[.. _records.ProjectDirectories, .. loaded.ProjectDirectories,]));
+					[.. _records.ProjectDirectories, .. loaded.ProjectDirectories,],
+					[.. _records.TargetFrameworks, .. loaded.TargetFrameworks,]));
 			}
 
 			return _records!;
@@ -100,6 +102,47 @@ internal static class SourceRoots
 		}
 
 		return projectDirectories.ToArray();
+	}
+
+	/// <summary>
+	///     Returns the target framework of the test project whose directory contains the <paramref name="sourceFile" />,
+	///     or <see langword="null" /> when none or several different ones are recorded for it.
+	/// </summary>
+	/// <remarks>
+	///     The innermost project directory wins, so that a project in an enclosing directory does not decide it.<br />
+	///     With several source roots, the ones under which the test file exists are used, or every one when it exists
+	///     under none, e.g. after it was deleted, so that the snapshots of a deleted test file are still checked.
+	/// </remarks>
+	public static string? GetTargetFramework(string sourceFile)
+	{
+		string[] paths = Path.IsPathRooted(sourceFile)
+			? [sourceFile,]
+			: GetDistinctSourceRoots().Select(sourceRoot => Combine(sourceRoot, sourceFile)).ToArray();
+		string[] existing = paths.Where(File.Exists).ToArray();
+		string[] targetFrameworks = (existing.Length > 0 ? existing : paths)
+			.SelectMany(GetTargetFrameworksOfPath)
+			.Distinct(StringComparer.Ordinal)
+			.ToArray();
+		return targetFrameworks.Length == 1 ? targetFrameworks[0] : null;
+	}
+
+	private static IEnumerable<string> GetTargetFrameworksOfPath(string path)
+	{
+		string normalizedPath = Normalize(path);
+		(string Directory, string TargetFramework)[] containing = GetRecords().TargetFrameworks
+			.Select(recorded => (Directory: Normalize(recorded.Key), TargetFramework: recorded.Value))
+			.Where(recorded
+				=> normalizedPath.StartsWith(recorded.Directory + Path.DirectorySeparatorChar, PathComparison))
+			.ToArray();
+		if (containing.Length == 0)
+		{
+			return [];
+		}
+
+		int innermost = containing.Max(recorded => recorded.Directory.Length);
+		return containing
+			.Where(recorded => recorded.Directory.Length == innermost)
+			.Select(recorded => recorded.TargetFramework);
 	}
 
 	/// <summary>
@@ -247,7 +290,8 @@ internal static class SourceRoots
 	}
 
 	/// <remarks>
-	///     A mapped path never contains <c>=</c>, so the first one separates it from the source root.
+	///     A mapped path never contains <c>=</c>, so the first one separates it from the source root. The same holds for
+	///     a target framework, which is recorded as <c>&lt;TargetFramework&gt;=&lt;ProjectDirectory&gt;</c>.
 	/// </remarks>
 	private static Records Read(IEnumerable<Assembly> assemblies)
 	{
@@ -262,6 +306,12 @@ internal static class SourceRoots
 			attributes
 				.Where(attribute => attribute.Key == ProjectDirectoryKey && !string.IsNullOrEmpty(attribute.Value))
 				.Select(attribute => attribute.Value!)
+				.ToArray(),
+			attributes
+				.Where(attribute => attribute.Key == TargetFrameworkKey && attribute.Value?.IndexOf('=') > 0)
+				.Select(attribute => new KeyValuePair<string, string>(
+					attribute.Value!.Substring(attribute.Value.IndexOf('=') + 1),
+					attribute.Value.Substring(0, attribute.Value.IndexOf('='))))
 				.ToArray());
 	}
 
@@ -283,5 +333,11 @@ internal static class SourceRoots
 
 	/// <param name="SourceRoots">Each recorded <c>&lt;MappedPath&gt;=&lt;SourceRoot&gt;</c> as key and value.</param>
 	/// <param name="ProjectDirectories">The full path of each recorded project directory.</param>
-	private sealed record Records(KeyValuePair<string, string>[] SourceRoots, string[] ProjectDirectories);
+	/// <param name="TargetFrameworks">
+	///     The full path of each recorded project directory as key and its target framework as value.
+	/// </param>
+	private sealed record Records(
+		KeyValuePair<string, string>[] SourceRoots,
+		string[] ProjectDirectories,
+		KeyValuePair<string, string>[] TargetFrameworks);
 }

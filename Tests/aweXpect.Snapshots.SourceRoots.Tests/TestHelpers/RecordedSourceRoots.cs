@@ -31,12 +31,22 @@ internal static class RecordedSourceRoots
 	///     <paramref name="mappedPath" />.
 	/// </summary>
 	public static void Record(string mappedPath, string sourceRoot)
+		=> RecordMetadata(MetadataKey, $"{mappedPath}={sourceRoot}");
+
+	/// <summary>
+	///     Loads a dynamic assembly that records the <paramref name="targetFramework" /> for the test project in the
+	///     <paramref name="projectDirectory" />.
+	/// </summary>
+	public static void RecordTargetFramework(string targetFramework, string projectDirectory)
+		=> RecordMetadata("aweXpect.Snapshots.TargetFramework", $"{targetFramework}={projectDirectory}");
+
+	private static void RecordMetadata(string key, string value)
 		=> AssemblyBuilder.DefineDynamicAssembly(
 			new AssemblyName($"SourceRoot{Guid.NewGuid():N}"), AssemblyBuilderAccess.Run,
 			[
 				new CustomAttributeBuilder(
 					typeof(AssemblyMetadataAttribute).GetConstructor([typeof(string), typeof(string),])!,
-					[MetadataKey, $"{mappedPath}={sourceRoot}",]),
+					[key, value,]),
 			]);
 
 	/// <summary>

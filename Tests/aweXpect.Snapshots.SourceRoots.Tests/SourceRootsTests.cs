@@ -28,6 +28,26 @@ public sealed class SourceRootsTests
 	}
 
 	[Fact]
+	public async Task WhenOtherDirectoriesRecordATargetFramework_ShouldUseTheInnermostProjectOfTheTestFile()
+	{
+		using TemporarySourceRoot otherSourceRoot = new();
+		RecordedSourceRoots.Record("/_/", RecordedSourceRoots.Own.SourceRoot);
+		RecordedSourceRoots.Record("/_/", otherSourceRoot.Path);
+		RecordedSourceRoots.RecordTargetFramework("net35", RecordedSourceRoots.Own.SourceRoot);
+		RecordedSourceRoots.RecordTargetFramework("net40", otherSourceRoot.Path + "Tests");
+		string subject = "found";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot("/_/" + RecordedSourceRoots.RelativeTestFile(),
+				nameof(WhenOtherDirectoriesRecordATargetFramework_ShouldUseTheInnermostProjectOfTheTestFile))
+				.UniqueFor.TargetFramework();
+
+		await That(Act).DoesNotThrow()
+			.Because(
+				"the snapshot of each target framework of this test project is committed, and neither an enclosing directory nor another source root decides it");
+	}
+
+	[Fact]
 	public async Task WhenTheSameSourceRootIsRecordedTwice_ShouldCountItOnce()
 	{
 		string sourceRoot = RecordedSourceRoots.Own.SourceRoot.TrimEnd(Path.DirectorySeparatorChar);

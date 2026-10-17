@@ -30,7 +30,10 @@ public static class OrphanedSnapshots
 	///     <c>AWEXPECT_ACCEPT_SNAPSHOTS</c>, which is ignored on a build server), the orphaned snapshots are deleted, and
 	///     it still fails, listing them, so that a deletion never goes unnoticed.<br />
 	///     A snapshot counts as used as soon as <c>MatchesSnapshot()</c> is called for it, also when it is not compared,
-	///     but a test that is skipped or that fails before it calls <c>MatchesSnapshot()</c> leaves its snapshot unused.
+	///     but a test that is skipped or that fails before it calls <c>MatchesSnapshot()</c> leaves its snapshot unused.<br />
+	///     A snapshot that is unique for an environment (see <see cref="SnapshotId.Variant" />) is only checked when
+	///     every part of its variant is a value of this environment, e.g. its target framework, as only a test run there
+	///     can use it.
 	/// </remarks>
 	public static async Task CheckAsync(bool force = false, CancellationToken cancellationToken = default)
 	{
@@ -78,7 +81,7 @@ public static class OrphanedSnapshots
 		bool isDeleting = settings.AcceptChanges ?? AcceptEnvironment.IsAccepting();
 		List<string> lines = new();
 		foreach ((SnapshotId id, string description) in snapshots
-			         .Where(id => !ClaimedSnapshots.IsClaimed(id))
+			         .Where(id => !ClaimedSnapshots.IsClaimed(id) && SnapshotEnvironment.IsCurrent(id))
 			         .Distinct(ClaimedSnapshots.Comparer)
 			         .Select(id => (id, settings.Store.Describe(id)))
 			         .OrderBy(orphan => orphan.Item2, StringComparer.Ordinal))

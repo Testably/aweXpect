@@ -1,6 +1,8 @@
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 
 namespace aweXpect.Snapshots.Orphans.Tests.TestHelpers;
 
@@ -29,6 +31,37 @@ internal sealed class TemporaryProject : IDisposable
 		Directory.CreateDirectory(Path);
 		Record("aweXpect.Snapshots.SourceRoot", $"{MappedPath}={_sourceRoot}");
 		Record("aweXpect.Snapshots.ProjectDirectory", Path);
+		Record("aweXpect.Snapshots.TargetFramework", $"{TargetFramework}={Path}");
+	}
+
+	/// <summary>
+	///     The target framework that the build targets recorded for this test project, which the temporary project shares.
+	/// </summary>
+	public static string TargetFramework
+	{
+		get
+		{
+			string value = typeof(TemporaryProject).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+				.Single(attribute => attribute.Key == "aweXpect.Snapshots.TargetFramework").Value!;
+			return value.Substring(0, value.IndexOf('='));
+		}
+	}
+
+	/// <summary>
+	///     The variant of a snapshot that is unique for the target framework, operating system and architecture.
+	/// </summary>
+	public static string Variant
+	{
+		get
+		{
+			string operatingSystem = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx" : "linux";
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				operatingSystem = "windows";
+			}
+
+			return $"{TargetFramework}@{operatingSystem}@{RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant()}";
+		}
 	}
 
 	public string MappedPath { get; }

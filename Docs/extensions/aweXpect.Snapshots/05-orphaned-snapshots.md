@@ -71,6 +71,9 @@ compared, e.g. after `.Or` was already met. The check cannot know about tests th
 - A skipped test, or one that fails before calling `MatchesSnapshot()`, leaves its snapshot unused.
 - A test that only exists for some target frameworks, e.g. behind `#if NET8_0_OR_GREATER`, leaves its snapshot unused
   in the test runs of the other target frameworks, so only check in the run of a target framework that has all tests.
+- A snapshot per environment (see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)), e.g.
+  `AlbumTests.Describes@net48@windows.snapshot.txt`, is only checked by a test run in that environment, here on
+  Windows for `net48`; the test runs of the other environments skip it.
 - A file name that only differs in case from a used snapshot counts as used, as it is the same file on Windows and
   macOS.
 - Test projects that share a directory see each other's snapshots, so give each test project its own directory.

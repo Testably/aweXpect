@@ -229,6 +229,7 @@ public sealed partial class ThatSnapshot
 			[InlineData("50%", "50%25")]
 			[InlineData("a<b>c\"d/e\\f|g?h*i", "a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai")]
 			[InlineData("a\tb", "a%09b")]
+			[InlineData("AC@DC", "AC%40DC")]
 			public async Task WhenNamed_ShouldEscapeTheNameInTheFileNames(string name, string escapedName)
 			{
 				using SnapshotDirectory directory = new();
@@ -326,6 +327,53 @@ public sealed partial class ThatSnapshot
 				File.Move(pendingPath, snapshotPath);
 				await That(Act).DoesNotThrow()
 					.Because("the name is escaped like any other, but a member access adds no dot to it");
+			}
+
+			[Fact]
+			public async Task WhenUniqueForTheEnvironment_ShouldAppendTheVariantToTheFileNames()
+			{
+				using SnapshotDirectory directory = new();
+				string variant = $"{CurrentEnvironment.OperatingSystem}@{CurrentEnvironment.Architecture}";
+				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.snapshot.pending.txt");
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.Named("Abbey Road")
+						.UniqueFor.Architecture()
+						.UniqueFor.OperatingSystem()
+						.AcceptingChanges(false);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but the snapshot did not exist
+
+					              Actual:
+					              foo
+
+					              Pending snapshot:
+					              {pendingPath}
+					              """);
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUniqueForTargetFramework_ShouldReadTheSnapshotOfTheTargetFramework()
+			{
+				string subject = CurrentEnvironment.TargetFramework == "net48"
+					? "Let It Be on .NET Framework"
+					: "Let It Be on .NET";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot().UniqueFor.TargetFramework();
+
+				await That(Act).DoesNotThrow()
+					.Because(
+						$"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenUniqueForTargetFramework_ShouldReadTheSnapshotOfTheTargetFramework@{CurrentEnvironment.TargetFramework}.snapshot.txt' is committed next to this test file for each target framework");
 			}
 
 			[Fact]

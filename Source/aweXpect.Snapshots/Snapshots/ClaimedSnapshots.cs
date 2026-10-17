@@ -8,8 +8,9 @@ namespace aweXpect.Snapshots;
 ///     The snapshots that the expectations of this process refer to, which <see cref="OrphanedSnapshots" /> keeps.
 /// </summary>
 /// <remarks>
-///     A snapshot is claimed when <c>MatchesSnapshot()</c> is called, and moved to its name by <c>.Named(…)</c>, not when
-///     the expectation is evaluated, so that also a snapshot that is not compared, e.g. after another branch of an
+///     A snapshot is claimed when <c>MatchesSnapshot()</c> is called, and moved to its name or variant by
+///     <c>.Named(…)</c> or <c>.UniqueFor</c>, not when the expectation is evaluated, so that also a snapshot that is
+///     not compared, e.g. after another branch of an
 ///     <c>Or</c> was met or for a <see langword="null" /> subject, is not taken for an orphan. The claims are counted, so
 ///     that renaming one expectation does not release a snapshot that another expectation still claims.<br />
 ///     The ids are compared ignoring the case, so that a snapshot whose file name only differs in case from its test
@@ -42,7 +43,8 @@ internal static class ClaimedSnapshots
 			   (x is not null && y is not null &&
 			    string.Equals(x.SourceFile, y.SourceFile, StringComparison.OrdinalIgnoreCase) &&
 			    string.Equals(x.MemberName, y.MemberName, StringComparison.OrdinalIgnoreCase) &&
-			    string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase));
+			    string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) &&
+			    string.Equals(x.Variant, y.Variant, StringComparison.OrdinalIgnoreCase));
 
 		public int GetHashCode(SnapshotId obj)
 			=> StringComparer.OrdinalIgnoreCase.GetHashCode(obj.SourceFile) ^

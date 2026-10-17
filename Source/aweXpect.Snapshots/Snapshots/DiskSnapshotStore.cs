@@ -22,7 +22,8 @@ namespace aweXpect.Snapshots;
 ///     A relative <see cref="SnapshotId.SourceFile" /> is resolved against the recorded source root, see
 ///     <see cref="SourceRoots" />.<br />
 ///     The method name and the name of the snapshot are escaped in the file name, see
-///     <see cref="EscapeFileNamePart(string)" />.
+///     <see cref="EscapeFileNamePart(string)" />, and a <see cref="SnapshotId.Variant" /> is appended after an <c>@</c>,
+///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>.
 /// </remarks>
 internal sealed class DiskSnapshotStore : SnapshotStore
 {
@@ -196,7 +197,8 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	/// </summary>
 	/// <remarks>
 	///     The class part is the name of a test file in the same directory, which may contain dots. The method and the
-	///     name follow, with their dots escaped, so the rest has one or two parts. When several test files fit, e.g.
+	///     name follow, with their dots escaped, so the rest has one or two parts, followed by the parts of the variant,
+	///     each after an <c>@</c>, which is escaped in the method and the name. When several test files fit, e.g.
 	///     <c>AlbumTests.cs</c> and <c>AlbumTests.Tracks.cs</c> for <c>AlbumTests.Tracks.Count</c>, the one for which a
 	///     test claimed the snapshot wins, so that a used snapshot is never listed as another, unused one; otherwise the
 	///     longest one wins. Without such a test file, which was then deleted or renamed, the last part is taken as the
@@ -212,10 +214,12 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 			.Where(file => baseName.StartsWith(Path.GetFileNameWithoutExtension(file) + ".", PathComparison))
 			.OrderByDescending(file => Path.GetFileNameWithoutExtension(file).Length)
 			.ToList();
-		int lastDot = baseName.LastIndexOf('.');
-		if (testFiles.Count == 0 && lastDot > 0)
+		int variantStart = baseName.IndexOf(SnapshotEnvironment.Separator);
+		string withoutVariant = variantStart < 0 ? baseName : baseName.Substring(0, variantStart);
+		string testClass = Path.GetFileNameWithoutExtension(withoutVariant);
+		if (testFiles.Count == 0 && testClass.Length > 0 && testClass != withoutVariant)
 		{
-			testFiles.Add(Path.Combine(directory, Path.ChangeExtension(baseName, ".cs")));
+			testFiles.Add(Path.Combine(directory, testClass + ".cs"));
 		}
 
 		SnapshotId[] candidates = testFiles
@@ -229,7 +233,8 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	private static SnapshotId? TryGetIdOfTestFile(string baseName, string testFile)
 	{
 		string className = baseName.Substring(0, Path.GetFileNameWithoutExtension(testFile).Length);
-		string[] parts = baseName.Substring(className.Length + 1).Split('.');
+		string[] variantParts = baseName.Substring(className.Length + 1).Split(SnapshotEnvironment.Separator);
+		string[] parts = variantParts[0].Split('.');
 		if (parts.Length > 2 || !TryUnescape(parts[0], out string? memberName) || memberName.Length == 0)
 		{
 			return null;
@@ -241,11 +246,19 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 			return null;
 		}
 
-		string escaped = name is null
-			? $"{className}.{EscapeFileNamePart(memberName)}"
-			: $"{className}.{EscapeFileNamePart(memberName)}.{EscapeFileNamePart(name)}";
-		return string.Equals(escaped, baseName, StringComparison.Ordinal)
+		if (variantParts.Any(part => part.Length == 0))
+		{
+			return null;
+		}
+
+		string? variant = variantParts.Length == 1
+			? null
+			: string.Join(SnapshotEnvironment.Separator.ToString(), variantParts, 1, variantParts.Length - 1);
+		return string.Equals(GetBaseName(className, memberName, name, variant), baseName, StringComparison.Ordinal)
 			? new SnapshotId(SourceRoots.GetSourceFileOfPath(testFile), memberName, name)
+			{
+				Variant = variant,
+			}
 			: null;
 	}
 
@@ -256,20 +269,36 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	private static string GetBasePath(SnapshotId id)
 	{
 		string testFilePath = SourceRoots.GetPath(id.SourceFile);
-		return Path.Combine(Path.GetDirectoryName(testFilePath) ?? "", id.Name is null
-			? $"{Path.GetFileNameWithoutExtension(testFilePath)}.{EscapeFileNamePart(id.MemberName)}"
-			: $"{Path.GetFileNameWithoutExtension(testFilePath)}.{EscapeFileNamePart(id.MemberName)}.{EscapeFileNamePart(id.Name)}");
+		return Path.Combine(Path.GetDirectoryName(testFilePath) ?? "",
+			GetBaseName(Path.GetFileNameWithoutExtension(testFilePath), id.MemberName, id.Name, id.Variant));
+	}
+
+	/// <summary>
+	///     Returns <c>&lt;Class&gt;.&lt;Method&gt;</c> or <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;</c>, followed by
+	///     <c>@&lt;Variant&gt;</c> with a <paramref name="variant" />, with the method and the name escaped.
+	/// </summary>
+	/// <remarks>
+	///     The variant is not escaped, as its parts are names like <c>net8.0</c> or <c>x64</c>, which a file name can hold
+	///     and which stay readable.
+	/// </remarks>
+	private static string GetBaseName(string className, string memberName, string? name, string? variant)
+	{
+		string baseName = name is null
+			? $"{className}.{EscapeFileNamePart(memberName)}"
+			: $"{className}.{EscapeFileNamePart(memberName)}.{EscapeFileNamePart(name)}";
+		return variant is null ? baseName : $"{baseName}{SnapshotEnvironment.Separator}{variant}";
 	}
 
 	/// <summary>
 	///     Escapes each character as <c>%XX</c> that a file name cannot hold on every operating system
 	///     (<c>&lt; &gt; : " / \ | ? *</c> and control characters), as the snapshots are committed and checked out on other
-	///     machines, as well as <c>%</c> and <c>.</c>.
+	///     machines, as well as <c>%</c>, <c>.</c> and <c>@</c>.
 	/// </summary>
 	/// <remarks>
 	///     Escaping <c>%</c> keeps the file names of two different names apart, e.g. <c>a:b</c> and <c>a%3Ab</c>, and
-	///     escaping <c>.</c> keeps the dots in <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;</c> as the only separators,
-	///     so that a file name can be read back into its parts. A name without such characters is used unchanged.
+	///     escaping <c>.</c> and <c>@</c> keeps them in <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;@&lt;Variant&gt;</c>
+	///     as the only separators, so that a file name can be read back into its parts. A name without such characters is
+	///     used unchanged.
 	/// </remarks>
 	private static string EscapeFileNamePart(string part)
 	{
@@ -278,7 +307,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		{
 			char character = part[i];
 			if (char.IsControl(character) ||
-			    character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '.')
+			    character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '.' or '@')
 			{
 				escaped ??= new StringBuilder(part, 0, i, part.Length + 8);
 				escaped.Append('%').Append(((int)character).ToString("X2", CultureInfo.InvariantCulture));

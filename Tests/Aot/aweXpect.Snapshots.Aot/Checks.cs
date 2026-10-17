@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using aweXpect.Customization;
 using static aweXpect.Expect;
@@ -23,6 +24,12 @@ internal static class Checks
 			() => ShouldPass(RecordMatchesItsSnapshot)),
 		new("a snapshot named after arguments matching its snapshot passes",
 			() => ShouldPass(() => NamedAfterMatchesItsSnapshot("Abbey Road", 1969))),
+		new("a string unique for the target framework matches the snapshot of its target framework",
+			() => ShouldPass(MatchesItsSnapshotForTheTargetFramework)),
+		new("a snapshot unique for the operating system and architecture is named after them",
+			() => ShouldFail(IsMissingForTheEnvironment,
+				$"Checks.IsMissingForTheEnvironment@{ExpectedOperatingSystem()}@{ExpectedArchitecture()}.snapshot.txt",
+				"the snapshot did not exist")),
 		new("every snapshot is used by one of the checks above",
 			() => ShouldPass(EverySnapshotIsUsed)),
 	];
@@ -98,6 +105,47 @@ internal static class Checks
 
 	private static async Task NamedAfterMatchesItsSnapshot(string title, int year)
 		=> await That($"{title} ({year})").MatchesSnapshot().NamedAfter(title, year).AcceptingChanges(false);
+
+	/// <remarks>
+	///     The target framework is recorded by the build targets, so that it is found without reflection.
+	/// </remarks>
+	private static async Task MatchesItsSnapshotForTheTargetFramework()
+		=> await That("snapshot content for net10.0").MatchesSnapshot().UniqueFor.TargetFramework()
+			.AcceptingChanges(false);
+
+	/// <remarks>
+	///     No snapshot is committed, as it would depend on the machine; the pending snapshot is deleted again by the path
+	///     on the last line of the failure.
+	/// </remarks>
+	private static async Task IsMissingForTheEnvironment()
+	{
+		try
+		{
+			await That("snapshot content for this machine").MatchesSnapshot()
+				.UniqueFor.Architecture().UniqueFor.OperatingSystem()
+				.AcceptingChanges(false);
+		}
+		catch (FailException exception)
+		{
+			File.Delete(exception.Message.Substring(exception.Message.LastIndexOf('\n') + 1).Trim());
+			throw;
+		}
+	}
+
+	private static string ExpectedArchitecture()
+		=> RuntimeInformation.ProcessArchitecture switch
+		{
+			Architecture.X64 => "x64",
+			Architecture.X86 => "x86",
+			Architecture.Arm64 => "arm64",
+			Architecture.Arm => "arm",
+			_ => "unexpected architecture",
+		};
+
+	private static string ExpectedOperatingSystem()
+		=> RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows"
+			: RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx"
+			: "linux";
 
 	private static async Task<string?> ShouldFail(Func<Task> act, params string[] parts)
 	{

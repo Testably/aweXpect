@@ -116,6 +116,77 @@ public sealed class OrphanedSnapshotsTests
 	}
 
 	[Fact]
+	public async Task WhenTheSnapshotIsUniqueForTheEnvironment_ShouldOnlyCountTheVariantAsUsed()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+		store.Snapshots[new SnapshotId(SourceFile, "Describes") { Variant = CurrentEnvironment.OperatingSystem, }] =
+			"Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		await That("Abbey Road").MatchesSnapshot(SourceFile, "Describes").UniqueFor.OperatingSystem();
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
+			               AlbumTests.Describes
+			             """)
+			.Because("there is no fallback to the snapshot shared by every environment");
+	}
+
+	[Fact]
+	public async Task WhenAVariantOfThisEnvironmentIsNotUsed_ShouldReportIt()
+	{
+		string sourceFile = "Tests/aweXpect.Snapshots.Tests/OrphanedSnapshotsTests.cs";
+		string memberName = $"Describes{Guid.NewGuid():N}";
+		string variant =
+			$"{CurrentEnvironment.TargetFramework}@{CurrentEnvironment.OperatingSystem}@{CurrentEnvironment.Architecture}";
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(sourceFile, memberName) { Variant = variant, }] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"*  OrphanedSnapshotsTests.{memberName}@{variant}").AsWildcard()
+			.Because("every part of the variant is a value of this environment, so this run would have used it");
+	}
+
+	[Theory]
+	[InlineData("beos")]
+	[InlineData("{os}@sparc")]
+	[InlineData("net35@{os}")]
+	public async Task WhenAVariantIsOfAnotherEnvironment_ShouldNeverReportIt(string variant)
+	{
+		variant = variant.Replace("{os}", CurrentEnvironment.OperatingSystem);
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes") { Variant = variant, }] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("only a test run in the environment of the variant can tell whether it is used");
+		await That(store.Deleted).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenTheTargetFrameworkOfAVariantCannotBeResolved_ShouldNeverReportIt()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes") { Variant = CurrentEnvironment.TargetFramework, }] =
+			"Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("no target framework is recorded for a test file outside of the test projects");
+	}
+
+	[Fact]
 	public async Task WhenAcceptingChanges_ShouldDeleteTheSnapshotsAndStillFail()
 	{
 		SnapshotId used = new(SourceFile, "Describes", "Abbey Road");

@@ -25,6 +25,9 @@ await Expect.That(playlist).MatchesSnapshot().Masking.Guids().Masking.Dates();
 
 // leave out or mask members of an object by their name or type
 await Expect.That(album).MatchesSnapshot().Ignoring.Member("PlayCount").Masking.Member("Id");
+
+// keep a snapshot per target framework and operating system (AlbumTests.Describes@net8.0@windows.snapshot.txt)
+await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
 ```
 
 The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the

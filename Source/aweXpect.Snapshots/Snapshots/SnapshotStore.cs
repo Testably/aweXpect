@@ -72,7 +72,8 @@ public abstract class SnapshotStore
 	/// <returns>The ids, or <see langword="null" /> when the store cannot list its snapshots, which is the default.</returns>
 	/// <remarks>
 	///     Only list the snapshots of the current test project: every listed snapshot that no expectation of the test run
-	///     refers to is reported as orphaned, and deleted while accepting changes.
+	///     refers to is reported as orphaned, and deleted while accepting changes. The snapshots of every environment can be
+	///     listed, as one whose <see cref="SnapshotId.Variant" /> is for another environment is skipped.
 	/// </remarks>
 	public virtual ValueTask<IReadOnlyList<SnapshotId>?> ListAsync(CancellationToken cancellationToken)
 		=> new((IReadOnlyList<SnapshotId>?)null);

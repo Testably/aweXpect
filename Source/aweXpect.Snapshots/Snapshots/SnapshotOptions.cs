@@ -12,7 +12,9 @@ internal sealed class SnapshotOptions
 {
 	private readonly string _memberName;
 	private readonly string _sourceFile;
+	private readonly string?[] _variantParts = new string?[3];
 	private string? _name;
+	private string? _variant;
 
 	/// <remarks>
 	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />.
@@ -26,7 +28,10 @@ internal sealed class SnapshotOptions
 
 	public bool? AcceptChanges { get; set; }
 
-	public SnapshotId Id => new(_sourceFile, _memberName, _name);
+	public SnapshotId Id => new(_sourceFile, _memberName, _name)
+	{
+		Variant = _variant,
+	};
 
 	public List<SnapshotIgnoring> Ignorings { get; } = new();
 
@@ -44,6 +49,21 @@ internal sealed class SnapshotOptions
 			_name = value;
 			ClaimedSnapshots.Claim(Id);
 		}
+	}
+
+	/// <summary>
+	///     Makes the snapshot unique for the <paramref name="value" /> of the <paramref name="part" /> of the environment.
+	/// </summary>
+	/// <remarks>
+	///     The parts of the variant keep the order of <see cref="SnapshotEnvironment.Part" />, whatever the order of the
+	///     calls, and a new variant moves the claim of the snapshot like a new name.
+	/// </remarks>
+	public void UniqueFor(SnapshotEnvironment.Part part, string value)
+	{
+		ClaimedSnapshots.Release(Id);
+		_variantParts[(int)part] = value;
+		_variant = string.Join(SnapshotEnvironment.Separator.ToString(), _variantParts.OfType<string>());
+		ClaimedSnapshots.Claim(Id);
 	}
 
 	/// <summary>

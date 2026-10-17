@@ -18,11 +18,25 @@ namespace aweXpect.Snapshots;
 public sealed record SnapshotId(string SourceFile, string MemberName, string? Name = null)
 {
 	/// <summary>
+	///     The environment that the snapshot is unique for, e.g. <c>net8.0@windows@x64</c>, or <see langword="null" />
+	///     when every environment shares the snapshot.
+	/// </summary>
+	/// <remarks>
+	///     It is set by <c>.UniqueFor</c>, e.g. <c>.UniqueFor.TargetFramework()</c>, and joins the target framework, the
+	///     operating system and the architecture, in this order, with <c>@</c>. A store keeps it as one opaque value.
+	/// </remarks>
+	public string? Variant { get; init; }
+
+	/// <summary>
 	///     Returns <c>&lt;Class&gt;.&lt;Method&gt;</c>, or <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;</c> with a
-	///     <see cref="Name" />, where <c>&lt;Class&gt;</c> is the name of the test file without its extension.
+	///     <see cref="Name" />, where <c>&lt;Class&gt;</c> is the name of the test file without its extension, followed
+	///     by <c>@&lt;Variant&gt;</c> with a <see cref="Variant" />.
 	/// </summary>
 	public override string ToString()
-		=> Name is null
+	{
+		string id = Name is null
 			? $"{Path.GetFileNameWithoutExtension(SourceFile)}.{MemberName}"
 			: $"{Path.GetFileNameWithoutExtension(SourceFile)}.{MemberName}.{Name}";
+		return Variant is null ? id : $"{id}@{Variant}";
+	}
 }

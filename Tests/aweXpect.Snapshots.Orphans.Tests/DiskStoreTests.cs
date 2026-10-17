@@ -57,6 +57,77 @@ public sealed class DiskStoreTests
 	}
 
 	[Fact]
+	public async Task WhenSnapshotsUniqueForThisEnvironmentAreUsed_ShouldReadTheirVariantsBack()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile($"AlbumTests.Describes@{TemporaryProject.Variant}.snapshot.txt", "Abbey Road");
+		project.CreateFile($"AlbumTests.Describes.AC%40DC@{TemporaryProject.TargetFramework}.snapshot.txt", "AC/DC");
+		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes")
+			.UniqueFor.Architecture().UniqueFor.OperatingSystem().UniqueFor.TargetFramework();
+		await That("AC/DC").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes")
+			.Named("AC@DC").UniqueFor.TargetFramework();
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("an '@' in a name is escaped, so the variant starts at the first '@'");
+	}
+
+	[Fact]
+	public async Task WhenASnapshotUniqueForThisEnvironmentIsNotUsed_ShouldReportAndDeleteIt()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile($"AlbumTests.Describes@{TemporaryProject.Variant}.snapshot.txt", "Abbey Road");
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
+			                {project.GetFullPath($"AlbumTests.Describes@{TemporaryProject.Variant}.snapshot.txt")} (deleted)
+			              """);
+		await That(project.Exists($"AlbumTests.Describes@{TemporaryProject.Variant}.snapshot.txt")).IsFalse();
+	}
+
+	[Fact]
+	public async Task WhenTheTestFileOfASnapshotUniqueForThisEnvironmentWasDeleted_ShouldReportAndDeleteIt()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile($"AlbumTests.Describes.Let It Be@{TemporaryProject.Variant}.snapshot.txt", "Let It Be");
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*1 snapshot was not used by any test:*(deleted)").AsWildcard()
+			.Because("the dots in the target framework are part of the variant, not of the method or the name");
+		await That(project.Exists($"AlbumTests.Describes.Let It Be@{TemporaryProject.Variant}.snapshot.txt")).IsFalse();
+	}
+
+	[Theory]
+	[InlineData("AlbumTests.Describes@net35.snapshot.txt")]
+	[InlineData("AlbumTests.Describes@beos.snapshot.txt")]
+	[InlineData("AlbumTests.Describes@{variant}@sparc.snapshot.txt")]
+	[InlineData("AlbumTests.Describes.Abbey Road@net35@{variant}.snapshot.pending.txt")]
+	public async Task WhenASnapshotIsUniqueForAnotherEnvironment_ShouldNeverReportIt(string fileName)
+	{
+		fileName = fileName.Replace("{variant}", TemporaryProject.Variant);
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile(fileName, "Abbey Road");
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("only a test run in the environment of the snapshot can tell whether it is used");
+		await That(project.Exists(fileName)).IsTrue();
+	}
+
+	[Fact]
 	public async Task WhenTheClassNameContainsDots_ShouldReadTheMethodBack()
 	{
 		using TemporaryProject project = new();
@@ -159,6 +230,8 @@ public sealed class DiskStoreTests
 	[InlineData("AlbumTests.Describes%ZZ.snapshot.txt")]
 	[InlineData("AlbumTests.Describes%3a.snapshot.txt")]
 	[InlineData("Describes.snapshot.txt")]
+	[InlineData("AlbumTests.Describes@.snapshot.txt")]
+	[InlineData("AlbumTests.Describes@@x64.snapshot.txt")]
 	public async Task WhenAFileWasNotWrittenByTheDiskStore_ShouldNeverListIt(string fileName)
 	{
 		using TemporaryProject project = new();

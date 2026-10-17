@@ -61,6 +61,17 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	public SnapshotIgnorings<TType, TThat> Ignoring => new(this, _options);
 
 	/// <summary>
+	///     Keeps a snapshot of its own for each environment, e.g. <c>.UniqueFor.TargetFramework()</c>, when the subject
+	///     legitimately differs between them.
+	/// </summary>
+	/// <remarks>
+	///     Several environments are combined by repeating <c>.UniqueFor</c>, e.g.
+	///     <c>.UniqueFor.TargetFramework().UniqueFor.OperatingSystem()</c>, which is stored in
+	///     <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>.
+	/// </remarks>
+	public SnapshotUniqueFor<TType, TThat> UniqueFor => new(this, _options);
+
+	/// <summary>
 	///     Names the snapshot, so that several snapshots of the same test method, e.g. of the cases of a parameterized
 	///     test, are kept apart.
 	/// </summary>

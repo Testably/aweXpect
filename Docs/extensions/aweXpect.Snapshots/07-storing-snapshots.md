@@ -58,8 +58,11 @@ checking anything. A cancellation of the evaluation still aborts it.
 
 A `SnapshotId` consists of the path of the test file relative to the repository (`SourceFile`, e.g.
 `Tests/AlbumTests.cs`, see [Deterministic builds](06-deterministic-builds.md)), the name of the test method
-(`MemberName`) and the name from `.Named(…)` (`Name`). It is a record, so it can be used as a key, and its `ToString()`
-returns `AlbumTests.Describes` or `AlbumTests.Describes.Abbey Road`.
+(`MemberName`), the name from `.Named(…)` (`Name`) and the environment from `.UniqueFor` (`Variant`, e.g.
+`net8.0@windows`, see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)). It is a record,
+so it can be used as a key, and its `ToString()` returns `AlbumTests.Describes`, `AlbumTests.Describes.Abbey Road` or
+`AlbumTests.Describes.Abbey Road@net8.0@windows`. A listed snapshot whose `Variant` is for another environment is
+skipped by the check.
 
 Set the store for all tests, e.g. in an assembly-level setup, or only for the current async flow:
 
