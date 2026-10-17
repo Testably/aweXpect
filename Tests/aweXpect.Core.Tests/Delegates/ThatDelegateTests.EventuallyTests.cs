@@ -1329,17 +1329,19 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		[Arguments(50)]
-		[Arguments(5000)]
-		public async Task WhenTheCheckStopsUndecidedAtTheTimeout_ShouldFail(int timeoutInMilliseconds)
+		[Arguments(1)]
+		[Arguments(100)]
+		public async Task WhenTheCheckStopsUndecidedAtTheTimeout_ShouldFail(int timeoutInHours)
 		{
+			VirtualTimeSystem timeSystem = new();
 			Func<int> subject = () => 1;
 			EvaluationCancellation? cancellation = null;
 
 			async Task Act()
-				=> await Awaits(That(subject).Eventually().Within(VeryLowTimeout), async (context, _) =>
+				=> await Awaits(That(subject).Eventually().OnVirtualTime(timeSystem).Within(1.Hours()), async (context, _) =>
 				{
 					cancellation = context.Cancellation;
+					timeSystem.Advance(2.Hours());
 					try
 					{
 						return await UntilCanceled(context.Cancellation.Token);
@@ -1348,15 +1350,15 @@ public sealed partial class ThatDelegateTests
 					{
 						return Outcome.Undecided;
 					}
-				}).WithTimeout(timeoutInMilliseconds.Milliseconds());
+				}).WithTimeout(timeoutInHours.Hours());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             eventually awaits within 0:00.050,
-				             but it did not finish within 0:00.050
+				             eventually awaits within 1:00:00,
+				             but it did not finish within 1:00:00
 				             """).And
-				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 1:00:00."))
 				.Because("a constraint that observes the cancellation of its context is bounded as well");
 			await That(cancellation?.Reason).IsEqualTo(CancellationReason.Timeout)
 				.Because("the constraint is told that it was a timeout which canceled it");
