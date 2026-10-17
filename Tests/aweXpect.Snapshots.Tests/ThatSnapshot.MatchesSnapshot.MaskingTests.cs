@@ -20,8 +20,13 @@ public sealed partial class ThatSnapshot
 #if NET8_0_OR_GREATER
 			[GeneratedRegex("(token)=\\w+", RegexOptions.IgnoreCase)]
 			private static partial Regex TokenRegex();
+
+			[GeneratedRegex(@"^(\w+\s?)*$", RegexOptions.None, 1)]
+			private static partial Regex BacktrackingRegex();
 #else
 			private static Regex TokenRegex() => new("(token)=\\w+", RegexOptions.IgnoreCase);
+
+			private static Regex BacktrackingRegex() => new(@"^(\w+\s?)*$", RegexOptions.None, TimeSpan.FromMilliseconds(1));
 #endif
 
 			[Fact]
@@ -279,7 +284,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Regex(new Regex(@"^(\w+\s?)*$", RegexOptions.None, TimeSpan.FromMilliseconds(1)), "<x>");
+						.Masking.Regex(BacktrackingRegex(), "<x>");
 
 				XunitException exception = await That(Act).Throws<XunitException>()
 					.WithMessage("""
