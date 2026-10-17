@@ -1,3 +1,11 @@
 [assembly: System.Reflection.AssemblyMetadata("IsTrimmable", "True")]
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Snapshots.git")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
+namespace aweXpect
+{
+    public static class ThatSnapshot
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+    }
+}

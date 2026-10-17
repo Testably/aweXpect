@@ -11,18 +11,19 @@ Snapshot testing for [aweXpect](https://github.com/Testably/aweXpect).
 ## At a glance
 
 ```csharp
-// compare a value with the snapshot that is stored next to the test
-await Expect.That(order).MatchesSnapshot();
+// compare a string with the snapshot that is stored next to the test
+await Expect.That(html).MatchesSnapshot();
 ```
 
-The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file. A missing or different snapshot fails
-the test and writes the actual value to `<Class>.<Method>.snapshot.pending.txt`.
+The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the
+test file. A missing or different snapshot fails the test and writes the actual value to
+`<Class>.<Method>.snapshot.pending.txt`; rename it to `<Class>.<Method>.snapshot.txt` to accept it.
 
 ## Overview
 
-| Expectation       | Subject  | Summary                                      |
-|-------------------|----------|----------------------------------------------|
-| `MatchesSnapshot` | `object` | matches the snapshot stored next to the test |
+| Expectation                                                         | Subject  | Summary                                      |
+|---------------------------------------------------------------------|----------|----------------------------------------------|
+| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-snapshots.md#matching-a-snapshot) | `string` | matches the snapshot stored next to the test |
 
 ## Documentation
 
