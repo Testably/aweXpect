@@ -12,10 +12,12 @@ namespace aweXpect.Xml;
 public static class XmlOptionsExtensions
 {
 	/// <summary>
-	///     Ignores the order of the child nodes of all compared elements
-	///     when <paramref name="ignoreElementOrder" /> is <see langword="true" />
+	///     Ignores the order of the child elements and texts of all compared elements
+	///     when <paramref name="ignoreElementOrder" /> is <see langword="true" />.
 	/// </summary>
 	/// <remarks>
+	///     The order of the texts matters only for mixed content, e.g. <c>&lt;p&gt;a&lt;b/&gt;c&lt;/p&gt;</c>.
+	///     <para />
 	///     Each expected child is paired with the first unpaired child of the subject with the same name that matches it,
 	///     and the remaining children of the same name are paired in their order, so that their differences are
 	///     reported. This greedy pairing can fail for <c>Matches</c>, which ignores additional nodes, when an expected
@@ -27,7 +29,7 @@ public static class XmlOptionsExtensions
 	public static XmlOptions IgnoringElementOrder(
 		this XmlOptions @this,
 		bool ignoreElementOrder = true)
-		=> @this with
+		=> new XmlOptions(@this)
 		{
 			IgnoreElementOrder = ignoreElementOrder,
 		};
@@ -40,7 +42,9 @@ public static class XmlOptionsExtensions
 	///     <c>"@createdAt"</c> ignores the attribute on every element and <c>"item/@id"</c> the attribute of every
 	///     <c>item</c>, while <c>"/order/@id"</c>, starting with <c>/</c>, only ignores the attribute of the root. A
 	///     segment without a position, e.g. <c>item</c>, matches every element of the name, and <c>item[2]</c> only the
-	///     second. The names are compared case-sensitively.
+	///     second. The names are compared case-sensitively. Like the paths, they are local names, so that
+	///     <c>"item"</c> ignores an <c>item</c> in every namespace, unlike <c>HasElement</c>, which looks up the
+	///     <see cref="System.Xml.Linq.XName" /> with its namespace.
 	///     <para />
 	///     An ignored attribute, element or text, and everything below it, is neither compared nor reported as missing
 	///     or unexpected, and an ignored child is not considered for the order of the child nodes.
@@ -57,7 +61,7 @@ public static class XmlOptionsExtensions
 				"The 'memberToIgnore' cannot be empty.", nameof(memberToIgnore)));
 		}
 
-		return @this with
+		return new XmlOptions(@this)
 		{
 			MembersToIgnore = [..@this.MembersToIgnore, new XmlMemberToIgnore.ByPath(memberToIgnore),],
 		};
@@ -77,7 +81,7 @@ public static class XmlOptionsExtensions
 		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return @this with
+		return new XmlOptions(@this)
 		{
 			MembersToIgnore =
 			[

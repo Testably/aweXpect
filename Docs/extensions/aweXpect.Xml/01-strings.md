@@ -42,7 +42,7 @@ The documents are equivalent, when they only differ in
 - CDATA sections instead of escaped text, or `<a/>` instead of `<a></a>`.
 
 Texts and attribute values are compared exactly, including leading and trailing whitespace, and the order of the
-child elements is significant.
+child elements is significant, unless you [ignore the element order](./02-matching.md#element-order).
 
 Each difference names the path of the node: every element by its local name, followed by its position among the
 siblings of the same name, if there are several, e.g. `/order/item[2]/@price`, and every text as `text()`. The child

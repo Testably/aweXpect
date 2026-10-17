@@ -4,9 +4,8 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName=".NET 10.0")]
 namespace aweXpect.Results
 {
-    public class XmlWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
+    public sealed class XmlWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
     {
-        public XmlWhichResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<string?> returnValue) { }
         public aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> Which(System.Action<aweXpect.Core.IThat<System.Xml.Linq.XElement?>> expectations) { }
     }
 }
@@ -55,7 +54,7 @@ namespace aweXpect
 }
 namespace aweXpect.Xml
 {
-    public class XmlOptions : System.IEquatable<aweXpect.Xml.XmlOptions>
+    public sealed class XmlOptions
     {
         public XmlOptions() { }
     }

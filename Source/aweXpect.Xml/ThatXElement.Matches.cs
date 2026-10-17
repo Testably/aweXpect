@@ -19,7 +19,7 @@ public static partial class ThatXElement
 	///     The elements are compared by their content like by <see cref="XmlExtensions.AsXml{TResult}" />, but the
 	///     attributes and child nodes of the subject that are not in the <paramref name="expected" /> XML are ignored.
 	///     Missing nodes, different values and the order of the child nodes in the <paramref name="expected" /> XML fail
-	///     the expectation.
+	///     the expectation, unless the order is ignored with <see cref="XmlOptionsExtensions.IgnoringElementOrder" />.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> Matches(

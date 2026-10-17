@@ -11,8 +11,30 @@ namespace aweXpect.Xml;
 /// <summary>
 ///     Options for comparing XML.
 /// </summary>
-public record XmlOptions
+/// <remarks>
+///     The options are immutable: each extension method in <see cref="XmlOptionsExtensions" /> returns a modified copy.
+/// </remarks>
+public sealed class XmlOptions
 {
+	/// <summary>
+	///     Creates options without any active option.
+	/// </summary>
+	public XmlOptions()
+	{
+	}
+
+	/// <summary>
+	///     Copies the <paramref name="options" />, so that an extension method only has to set what it changes.
+	/// </summary>
+	/// <remarks>
+	///     Every option must be copied here.
+	/// </remarks>
+	internal XmlOptions(XmlOptions options)
+	{
+		IgnoreElementOrder = options.IgnoreElementOrder;
+		MembersToIgnore = options.MembersToIgnore;
+	}
+
 	internal bool IgnoreElementOrder { get; init; }
 
 	internal IReadOnlyList<XmlMemberToIgnore> MembersToIgnore { get; init; } = [];

@@ -18,7 +18,8 @@ await Expect.That(track).MatchesExactly("""
 
 `Matches` ignores the attributes and child nodes of the subject that are not in the expected XML, while
 `MatchesExactly` fails for them. Missing nodes, different values and a different order of the expected child elements
-fail both. If the title was "Yesterday" instead, `Matches` would fail with:
+fail both, unless you [ignore the element order](#element-order). If the title was "Yesterday" instead, `Matches`
+would fail with:
 
 ```text title="Failure message"
 Expected that track
@@ -70,8 +71,10 @@ await Expect.That(order).IsEqualTo("""<order id="1"><item sku="A1" /></order>"""
 `IgnoringMember` matches whole trailing segments of the [path](./01-strings.md#string-comparison-as-xml):
 `"@createdAt"` ignores the attribute on every element and `"item/@id"` the attribute of every `item`, while a path
 starting with `/`, e.g. `"/order/@id"`, only ignores this member. A segment without a position, e.g. `item`, matches
-every element of the name, and `item[2]` only the second. The names are compared case-sensitively, as in XML.
-`Ignoring` receives the path of every compared member instead.
+every element of the name, and `item[2]` only the second. The names are compared case-sensitively, as in XML. Like
+the paths, they are local names, so that `"item"` ignores an `item` in every namespace, unlike
+[`HasElement`](./03-navigation.md#names-and-namespaces), which looks up the name with its namespace. `Ignoring`
+receives the path of every compared member instead.
 
 An ignored attribute, element or text, and everything below it, is neither compared nor reported as missing or
 unexpected, and an ignored element is not considered for the order of its siblings. The ignored members are listed
@@ -93,7 +96,7 @@ XML options:
 
 ## Element order
 
-By default, the order of the child elements is significant. You can ignore it for all compared elements:
+By default, the order of the child elements and texts is significant. You can ignore it for all compared elements:
 
 ```csharp
 XElement order = XElement.Parse("""<order><item sku="B2" /><item sku="A1" /></order>""");
@@ -107,6 +110,9 @@ remaining children of the same name are paired in their order, so that their dif
 `/order/item[1]/@sku was "C3" instead of "A1"`, and the children that are still unpaired are reported as missing or
 unexpected. This greedy pairing can fail for `Matches`, which ignores additional nodes, when an expected child matches
 several children of the subject, even if another pairing would succeed.
+
+The texts are paired like the elements, so that the order of the texts in mixed content, e.g. `<p>a<b/>c</p>`, is
+ignored as well.
 
 As the children are no longer paired by their position, a position in a [member to ignore](#ignoring-members), e.g.
 `item[2]`, refers to the child at this position in each document.

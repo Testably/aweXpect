@@ -13,6 +13,7 @@ public sealed partial class XmlOptionsTests
 		[InlineData("<a><b x=\"2\"/><b x=\"1\"/></a>", "<a><b x=\"1\"/><b x=\"2\"/></a>", "elements of the same name")]
 		[InlineData("<a><b><d/><c/></b></a>", "<a><b><c/><d/></b></a>", "nested elements")]
 		[InlineData("<a><b/>x</a>", "<a>x<b/></a>", "texts")]
+		[InlineData("<p>c<b/>a</p>", "<p>a<b/>c</p>", "texts in mixed content")]
 		[InlineData("<a><b x=\"2\"><c/></b><b x=\"1\"/><d/></a>", "<a><d/><b x=\"1\"/><b x=\"2\"><c/></b></a>",
 			"elements with content")]
 		public async Task WhenOnlyTheOrderDiffers_ShouldSucceed(string subject, string expected, string because)
