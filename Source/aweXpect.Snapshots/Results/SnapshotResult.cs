@@ -1,5 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Snapshots;
 
@@ -37,67 +36,15 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	}
 
 	/// <summary>
-	///     Replaces each occurrence of the <paramref name="value" /> in the subject with the
-	///     <paramref name="replacement" /> before it is compared with the snapshot, e.g. an id that changes from run to
-	///     run.
+	///     Masks values in the subject that change from run to run, e.g. an id or a timestamp, before it is compared with
+	///     the snapshot.
 	/// </summary>
 	/// <remarks>
-	///     The <paramref name="value" /> is literal text; <c>.AsRegex()</c> interprets it as a regex pattern instead,
-	///     whose matches are replaced with the substitutions of <see cref="Regex.Replace(string, string)" />, e.g.
-	///     <c>$1</c>.<br />
-	///     The maskings are applied in the order in which they are added, so a specific one goes before a general one.
-	///     The snapshot and the failure contain the masked subject.
+	///     The maskings have the same names and semantics as the factories of <see cref="SnapshotMasking" /> for all
+	///     snapshots, e.g. <c>.Masking.Text(order.Id.ToString(), "&lt;order-id&gt;")</c> or <c>.Masking.Guids()</c>. They are applied
+	///     in the order in which they are added, before the maskings for all snapshots.
 	/// </remarks>
-	public SnapshotMaskingResult<TType, TThat> Masking(string value, string replacement)
-	{
-		_options.Maskings.Add(SnapshotMasking.Text(value, replacement));
-		return new SnapshotMaskingResult<TType, TThat>(ExpectationBuilder, _returnValue, _options,
-			_options.Maskings.Count - 1);
-	}
-
-	/// <summary>
-	///     Replaces each match of the <paramref name="pattern" /> in the subject with the
-	///     <paramref name="replacement" />, which can use the substitutions of
-	///     <see cref="Regex.Replace(string, string)" />, e.g. <c>$1</c>, before it is compared with the snapshot.
-	/// </summary>
-	/// <remarks>
-	///     The options and the timeout of the <paramref name="pattern" /> apply.<br />
-	///     The maskings are applied in the order in which they are added, so a specific one goes before a general one.
-	///     The snapshot and the failure contain the masked subject.
-	/// </remarks>
-	public SnapshotResult<TType, TThat> Masking(Regex pattern, string replacement)
-	{
-		_options.Maskings.Add(SnapshotMasking.Regex(pattern, replacement));
-		return this;
-	}
-
-	/// <summary>
-	///     Replaces each date and date with time in ISO 8601 in the subject with a numbered placeholder, <c>Date_1</c>,
-	///     <c>Date_2</c> and so on, before it is compared with the snapshot, where the same text keeps the same number.
-	/// </summary>
-	/// <remarks>
-	///     See <see cref="SnapshotMasking.Dates()" /> for the matched formats. The maskings are applied in the order in
-	///     which they are added, and the numbers are counted after the maskings that come before.
-	/// </remarks>
-	public SnapshotResult<TType, TThat> MaskingDates()
-	{
-		_options.Maskings.Add(SnapshotMasking.Dates());
-		return this;
-	}
-
-	/// <summary>
-	///     Replaces each <see cref="Guid" /> in the subject with a numbered placeholder, <c>Guid_1</c>, <c>Guid_2</c> and
-	///     so on, before it is compared with the snapshot, where the same <see cref="Guid" /> keeps the same number.
-	/// </summary>
-	/// <remarks>
-	///     See <see cref="SnapshotMasking.Guids()" /> for the matched formats. The maskings are applied in the order in
-	///     which they are added, and the numbers are counted after the maskings that come before.
-	/// </remarks>
-	public SnapshotResult<TType, TThat> MaskingGuids()
-	{
-		_options.Maskings.Add(SnapshotMasking.Guids());
-		return this;
-	}
+	public SnapshotMaskings<TType, TThat> Masking => new(this, _options);
 
 	/// <summary>
 	///     Names the snapshot, so that several snapshots of the same test method, e.g. of the cases of a parameterized

@@ -43,9 +43,8 @@ public static class ThatSnapshot
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
-	///     Values that change from run to run can be replaced before comparing, see <c>.Masking(…)</c>,
-	///     <c>.MaskingGuids()</c>, <c>.MaskingDates()</c> and, for all snapshots,
-	///     <c>Customize.aweXpect.Snapshots().Maskings</c>.<br />
+	///     Values that change from run to run can be replaced before comparing, see <c>.Masking</c>, e.g.
+	///     <c>.Masking.Guids()</c>, and, for all snapshots, <c>Customize.aweXpect.Snapshots().Maskings</c>.<br />
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
 	///     subject.<br />
 	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a

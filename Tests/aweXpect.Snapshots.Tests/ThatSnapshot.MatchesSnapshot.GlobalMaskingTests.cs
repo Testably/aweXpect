@@ -136,7 +136,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(FirstGuid, "<order-id>");
+						.Masking.Text(FirstGuid, "<order-id>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer Guid_1")
@@ -207,10 +207,31 @@ public sealed partial class ThatSnapshot
 			public async Task WhenRegexPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Regex(null!, "x");
+					=> SnapshotMasking.Regex((Regex)null!, "x");
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("pattern");
+			}
+
+			[Fact]
+			public async Task WhenRegexPatternStringIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+					=> SnapshotMasking.Regex((string)null!, "x");
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("pattern");
+			}
+
+			[Fact]
+			public async Task WhenRegexPatternStringIsInvalid_ShouldThrowArgumentException()
+			{
+				void Act()
+					=> SnapshotMasking.Regex("(", "x");
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("pattern").And
+					.WithMessage("The 'pattern' is not a valid regex pattern: *").AsWildcard();
 			}
 
 			[Fact]

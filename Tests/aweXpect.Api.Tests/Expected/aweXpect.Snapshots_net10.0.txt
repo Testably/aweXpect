@@ -4,17 +4,18 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName=".NET 10.0")]
 namespace aweXpect.Results
 {
-    public class SnapshotMaskingResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat>
+    public sealed class SnapshotMaskings<TType, TThat>
     {
-        public aweXpect.Results.SnapshotResult<TType, TThat> AsRegex() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Dates() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Guids() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Regex(string pattern, string replacement) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Text(string value, string replacement) { }
     }
     public class SnapshotResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
     {
+        public aweXpect.Results.SnapshotMaskings<TType, TThat> Masking { get; }
         public aweXpect.Results.AndOrResult<TType, TThat> AcceptingChanges(bool accept = true) { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> Masking(System.Text.RegularExpressions.Regex pattern, string replacement) { }
-        public aweXpect.Results.SnapshotMaskingResult<TType, TThat> Masking(string value, string replacement) { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> MaskingDates() { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> MaskingGuids() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
     }
 }
@@ -33,6 +34,7 @@ namespace aweXpect.Snapshots
         public static aweXpect.Snapshots.SnapshotMasking Dates() { }
         public static aweXpect.Snapshots.SnapshotMasking Guids() { }
         public static aweXpect.Snapshots.SnapshotMasking Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
+        public static aweXpect.Snapshots.SnapshotMasking Regex(string pattern, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Text(string value, string replacement) { }
     }
     public abstract class SnapshotStore

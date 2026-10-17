@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using aweXpect.Core;
 using aweXpect.Customization;
+using aweXpect.Results;
 using aweXpect.Snapshots.Tests.TestHelpers;
 
 namespace aweXpect.Snapshots.Tests;
@@ -29,7 +33,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking("42", "<id>").AcceptingChanges();
+						.Masking.Text("42", "<id>").AcceptingChanges();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -47,8 +51,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(@"\d{4}-\d{2}-\d{2}", "<date>").AsRegex()
-						.Masking("2026-10-17", "<today>");
+						.Masking.Regex(@"\d{4}-\d{2}-\d{2}", "<date>")
+						.Masking.Text("2026-10-17", "<today>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("on <date> and <date>")
@@ -64,8 +68,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking("2026-10-17", "<today>")
-						.Masking(@"\d{4}-\d{2}-\d{2}", "<date>").AsRegex();
+						.Masking.Text("2026-10-17", "<today>")
+						.Masking.Regex(@"\d{4}-\d{2}-\d{2}", "<date>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("on <today> and <date>");
@@ -79,7 +83,7 @@ public sealed partial class ThatSnapshot
 				string subject = "price 5";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("5", "$1");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("5", "$1");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("price $1");
@@ -93,7 +97,7 @@ public sealed partial class ThatSnapshot
 				string subject = "id=42, ref=42";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("42", "<id>");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("42", "<id>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("id=<id>, ref=<id>");
@@ -107,7 +111,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo (debug)";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking(" (debug)", "");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text(" (debug)", "");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("foo");
@@ -122,7 +126,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(TokenRegex(), "$1=<token>");
+						.Masking.Regex(TokenRegex(), "$1=<token>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Token=<token>, TOKEN=<token>");
@@ -138,7 +142,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("42", "<id>"));
+						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("42", "<id>"));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -158,8 +162,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking("bar", "<bar>")
-						.Masking(@"\d+", "<n>").AsRegex();
+						.Masking.Text("bar", "<bar>")
+						.Masking.Regex(@"\d+", "<n>");
 
 				await That(Act).DoesNotThrow();
 			}
@@ -170,11 +174,89 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("(", "x").AsRegex();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Regex("(", "x");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'value' is not a valid regex pattern: *").AsWildcard();
+					.WithParamName("pattern").And
+					.WithMessage("The 'pattern' is not a valid regex pattern: *").AsWildcard()
+					.Because("an invalid pattern is reported where it is written");
 			}
+
+			[Fact]
+			public async Task WhenPatternStringIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Regex("", "x");
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("pattern").And
+					.WithMessage("The 'pattern' cannot be empty.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenPatternStringIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Regex((string)null!, "x");
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("pattern");
+			}
+
+			[Fact]
+			public async Task WhenNamedBeforeMasking_ShouldApplyBoth()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "id=42";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Named("before").Masking.Text("42", "<id>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id with { Name = "before", }]).IsEqualTo("id=<id>");
+			}
+
+			[Fact]
+			public async Task WhenNamedAfterMasking_ShouldApplyBoth()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "id=42";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Masking.Text("42", "<id>").Named("after");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id with { Name = "after", }]).IsEqualTo("id=<id>");
+			}
+
+			[Fact]
+			public async Task MaskingProperty_ShouldOfferEveryFactoryOfSnapshotMasking()
+			{
+				string[] factories = typeof(SnapshotMasking)
+					.GetMethods(BindingFlags.Public | BindingFlags.Static)
+					.Select(GetSignature)
+					.OrderBy(signature => signature, StringComparer.Ordinal)
+					.ToArray();
+				string[] maskings = typeof(SnapshotMaskings<string, IThat<string>>)
+					.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.Select(GetSignature)
+					.OrderBy(signature => signature, StringComparer.Ordinal)
+					.ToArray();
+
+				await That(maskings).IsEqualTo(factories)
+					.Because("a masking of the expectation has the same name and parameters as for all snapshots");
+			}
+
+			private static string GetSignature(MethodInfo method)
+				=> $"{method.Name}({string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.FullName} {p.Name}"))})";
 
 			[Fact]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
@@ -182,7 +264,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking((Regex)null!, "x");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Regex((Regex)null!, "x");
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("pattern");
@@ -197,7 +279,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(new Regex(@"^(\w+\s?)*$", RegexOptions.None, TimeSpan.FromMilliseconds(1)), "<x>");
+						.Masking.Regex(new Regex(@"^(\w+\s?)*$", RegexOptions.None, TimeSpan.FromMilliseconds(1)), "<x>");
 
 				XunitException exception = await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -219,7 +301,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(@"\d+", "$$<n>").AsRegex();
+						.Masking.Regex(@"\d+", "$$<n>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("price $<n>");
@@ -234,7 +316,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(@"(\w+\.local):\d+", "$1:<port>").AsRegex();
+						.Masking.Regex(@"(\w+\.local):\d+", "$1:<port>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("api.local:<port> and web.local:<port>");
@@ -249,7 +331,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(@"\d+", "<n>").AsRegex()
+						.Masking.Regex(@"\d+", "<n>")
 						.Named("first")
 						.AcceptingChanges();
 
@@ -266,7 +348,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("foo", null!);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("foo", null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("replacement");
@@ -279,7 +361,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(TokenRegex(), null!);
+						.Masking.Regex(TokenRegex(), null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("replacement");
@@ -294,7 +376,7 @@ public sealed partial class ThatSnapshot
 				string subject = "id=17";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("17", "<id>");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("17", "<id>");
 
 				await That(Act).DoesNotThrow();
 			}
@@ -308,7 +390,7 @@ public sealed partial class ThatSnapshot
 				string subject = "id=17, name=bar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("17", "<id>");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("17", "<id>");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -334,7 +416,7 @@ public sealed partial class ThatSnapshot
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("foo", "<foo>");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("foo", "<foo>");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -350,7 +432,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking("", "x");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text("", "x");
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("value").And
@@ -363,7 +445,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking((string)null!, "x");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Text(null!, "x");
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("value");
@@ -378,8 +460,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 				{
-					await That("id=1").MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking(@"\d+", "<id>").AsRegex();
-					await That("id=2").MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking(@"\d+", "<id>").AsRegex();
+					await That("id=1").MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Regex(@"\d+", "<id>");
+					await That("id=2").MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Regex(@"\d+", "<id>");
 				}
 
 				await That(Act).DoesNotThrow()

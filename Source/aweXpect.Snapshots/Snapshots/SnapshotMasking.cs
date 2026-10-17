@@ -20,8 +20,8 @@ namespace aweXpect.Snapshots;
 public sealed class SnapshotMasking
 {
 	/// <summary>
-	///     The timeout of the built-in patterns and of a pattern from <c>.AsRegex()</c>, the same as for the regex matching
-	///     of aweXpect.
+	///     The timeout of the built-in patterns and of a pattern passed as a string, the same as for the regex matching of
+	///     aweXpect.
 	/// </summary>
 	private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
 
@@ -95,6 +95,43 @@ public sealed class SnapshotMasking
 	}
 
 	/// <summary>
+	///     Replaces each match of the regex <paramref name="pattern" /> with the <paramref name="replacement" />, which can
+	///     use the substitutions of <see cref="System.Text.RegularExpressions.Regex.Replace(string, string)" />, e.g.
+	///     <c>$1</c>.
+	/// </summary>
+	/// <remarks>
+	///     The pattern has no options and a timeout of one second; for other options or another timeout, pass a
+	///     <see cref="System.Text.RegularExpressions.Regex" /> instead. An invalid pattern throws here, where it is
+	///     written, instead of when the expectation is evaluated. An empty <paramref name="replacement" /> removes the
+	///     matches.
+	/// </remarks>
+	public static SnapshotMasking Regex(string pattern, string replacement)
+	{
+		if (pattern is null)
+		{
+			throw Tracing.WriteException(new ArgumentNullException(nameof(pattern), "The 'pattern' cannot be null."));
+		}
+
+		if (pattern.Length == 0)
+		{
+			throw Tracing.WriteException(new ArgumentException("The 'pattern' cannot be empty.", nameof(pattern)));
+		}
+
+		System.Text.RegularExpressions.Regex regex;
+		try
+		{
+			regex = new System.Text.RegularExpressions.Regex(pattern, RegexOptions.None, RegexTimeout);
+		}
+		catch (ArgumentException exception)
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The 'pattern' is not a valid regex pattern: {exception.Message}", nameof(pattern), exception));
+		}
+
+		return new SnapshotMasking(pattern, ThrowIfNull(replacement), regex);
+	}
+
+	/// <summary>
 	///     Replaces each match of the <paramref name="pattern" /> with the <paramref name="replacement" />, which can use
 	///     the substitutions of <see cref="System.Text.RegularExpressions.Regex.Replace(string, string)" />, e.g.
 	///     <c>$1</c>.
@@ -120,7 +157,7 @@ public sealed class SnapshotMasking
 	/// <remarks>
 	///     A <see cref="Guid" /> is matched in the format <c>"D"</c> (<c>3f2504e0-4f89-11d3-9a0c-0305e82c3301</c>) in
 	///     upper or lower case, also inside braces or parentheses, which are kept. The format <c>"N"</c> without hyphens
-	///     is not matched, as it cannot be told apart from a hash; mask it with <see cref="Regex" /> if needed.<br />
+	///     is not matched, as it cannot be told apart from a hash; mask it with <see cref="Regex(string, string)" /> if needed.<br />
 	///     The numbers are counted per subject in the order of appearance, after the maskings that come before.
 	/// </remarks>
 	public static SnapshotMasking Guids()
@@ -134,34 +171,12 @@ public sealed class SnapshotMasking
 	///     It matches a date (<c>2026-10-17</c>) and a date with a time (<c>2026-10-17T09:30</c>), with optional seconds,
 	///     a fraction of up to seven digits and an offset or <c>Z</c>, as the round-trip format <c>"o"</c> writes a
 	///     <see cref="DateTime" />, <see cref="DateTimeOffset" /> or <c>DateOnly</c>. Culture-specific formats, a space
-	///     instead of the <c>T</c> and a time on its own are not matched; mask them with <see cref="Regex" /> if needed.
+	///     instead of the <c>T</c> and a time on its own are not matched; mask them with <see cref="Regex(string, string)" /> if needed.
 	///     <br />
 	///     The numbers are counted per subject in the order of appearance, after the maskings that come before.
 	/// </remarks>
 	public static SnapshotMasking Dates()
 		=> new(DatePattern, "Date", StringComparer.Ordinal);
-
-	/// <summary>
-	///     Interprets the value of a text masking as a regex pattern.
-	/// </summary>
-	/// <remarks>
-	///     The pattern is parsed here, so that an invalid one is reported where it is written instead of when the
-	///     expectation is evaluated. The message names the <c>value</c> of <c>.Masking(…)</c>, as <c>.AsRegex()</c> has
-	///     no parameter of its own.
-	/// </remarks>
-	internal SnapshotMasking AsRegex()
-	{
-		try
-		{
-			return new SnapshotMasking(_value, _replacement,
-				new System.Text.RegularExpressions.Regex(_value, RegexOptions.None, RegexTimeout));
-		}
-		catch (ArgumentException exception)
-		{
-			throw Tracing.WriteException(new ArgumentException(
-				$"The 'value' is not a valid regex pattern: {exception.Message}", exception));
-		}
-	}
 
 	/// <summary>
 	///     Applies the masking to the <paramref name="text" />.

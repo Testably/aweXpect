@@ -307,7 +307,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking(@"Address = ""[0-9a-f-]{36}""", @"Address = ""<guid>""").AsRegex();
+						.Masking.Regex(@"Address = ""[0-9a-f-]{36}""", @"Address = ""<guid>""");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""

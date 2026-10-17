@@ -84,7 +84,7 @@ Order {
   like any other value.
 - A collection is written in the order it enumerates its items. The order of a hash-based collection, e.g. a
   `HashSet<string>`, can change between runs, so order it before, e.g. with `OrderBy`.
-- Maskings apply to the written text, e.g. `.Masking(@"Id = ""[0-9a-f-]{36}""", @"Id = ""<id>""").AsRegex()`.
+- Maskings apply to the written text, e.g. `.Masking.Guids()` for a `Guid` member.
 
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
 generator of aweXpect registers them for the call site, which it does for `MatchesSnapshot()`. A record is written with
@@ -177,27 +177,27 @@ compared, so that the snapshot stays stable:
 
 ```csharp
 await Expect.That(json).MatchesSnapshot()
-    .Masking(order.Id.ToString(), "<order-id>");
+    .Masking.Text(order.Id.ToString(), "<order-id>");
 ```
 
-The value is replaced as literal text. With `.AsRegex()` it is a regex pattern instead, and the replacement can use the
-substitutions of `Regex.Replace`, e.g. `$1` for the first group, to keep part of the match (`$$` inserts a `$`):
+`.Masking.Text(…)` replaces literal text. `.Masking.Regex(…)` takes a regex pattern instead, and the replacement can
+use the substitutions of `Regex.Replace`, e.g. `$1` for the first group, to keep part of the match (`$$` inserts a `$`):
 
 ```csharp
 await Expect.That(log).MatchesSnapshot()
-    .Masking(@"(\w+\.local):\d+", "$1:<port>").AsRegex();   // "api.local:5001" → "api.local:<port>"
+    .Masking.Regex(@"(\w+\.local):\d+", "$1:<port>");   // "api.local:5001" → "api.local:<port>"
 ```
 
-The pattern has a timeout of one second. For other options or another timeout, pass a `Regex` instead:
-`.Masking(new Regex(@"token=\w+", RegexOptions.IgnoreCase), "token=<token>")`. A pattern that times out fails the
-expectation, and an invalid pattern throws an `ArgumentException` where it is written.
+A pattern passed as a string has a timeout of one second. For other options or another timeout, pass a `Regex`
+instead: `.Masking.Regex(new Regex(@"token=\w+", RegexOptions.IgnoreCase), "token=<token>")`. A pattern that times out
+fails the expectation, and an invalid pattern throws an `ArgumentException` where it is written.
 
 The maskings are applied in the order in which they are written, so put a specific masking before a general one:
 
 ```csharp
 await Expect.That(report).MatchesSnapshot()
-    .Masking(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), "<today>")
-    .Masking(@"\d{4}-\d{2}-\d{2}", "<date>").AsRegex();
+    .Masking.Text(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), "<today>")
+    .Masking.Regex(@"\d{4}-\d{2}-\d{2}", "<date>");
 ```
 
 In the other order, the general masking would already have replaced today's date with `<date>`.
@@ -208,11 +208,11 @@ snapshots](#naming-a-snapshot).
 
 ### Guids and dates
 
-`.MaskingGuids()` and `.MaskingDates()` replace every `Guid` and date with a numbered placeholder. The same value keeps
-the same number, so relations stay visible in the snapshot:
+`.Masking.Guids()` and `.Masking.Dates()` replace every `Guid` and date with a numbered placeholder. The same value
+keeps the same number, so relations stay visible in the snapshot:
 
 ```csharp
-await Expect.That(log).MatchesSnapshot().MaskingGuids().MaskingDates();
+await Expect.That(log).MatchesSnapshot().Masking.Guids().Masking.Dates();
 ```
 
 ```text title="Snapshot"
@@ -229,12 +229,13 @@ order Guid_1 shipped Date_2
   instead of the `T` and a time on its own are not matched; mask them with a regex.
 
 The numbers are counted per subject in the order of appearance, and only after the maskings that come before, so
-`.Masking(order.Id.ToString(), "<order-id>").MaskingGuids()` numbers only the other `Guid`s.
+`.Masking.Text(order.Id.ToString(), "<order-id>").Masking.Guids()` numbers only the other `Guid`s.
 
 ### For all snapshots
 
 Maskings that apply to every snapshot are set with `Customize.aweXpect.Snapshots().Maskings`, e.g. in an assembly-level
-setup, from the factories of `SnapshotMasking` in the namespace `aweXpect.Snapshots`:
+setup, from the factories of `SnapshotMasking` in the namespace `aweXpect.Snapshots`. They have the same names and
+semantics as the maskings of an expectation:
 
 ```csharp
 Customize.aweXpect.Global.Snapshots().Maskings.Set([
