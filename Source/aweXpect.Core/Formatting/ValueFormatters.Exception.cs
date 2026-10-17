@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using aweXpect.Core.Helpers;
 using aweXpect.Equivalency;
@@ -140,19 +141,9 @@ public static partial class ValueFormatters
 
 		AddFrameworkExceptionMembers(exception, members);
 
-		HashSet<string> names = new(StringComparer.Ordinal);
-		foreach (EquivalencyMember member in members)
-		{
-			names.Add(member.Name);
-		}
-
-		foreach (EquivalencyMember member in GetMembers(exception.GetType()) ?? [])
-		{
-			if (!ExceptionMembersWrittenSeparately.Contains(member.Name) && names.Add(member.Name))
-			{
-				members.Add(member);
-			}
-		}
+		HashSet<string> names = new(members.Select(member => member.Name), StringComparer.Ordinal);
+		members.AddRange((GetMembers(exception.GetType()) ?? []).Where(member =>
+			!ExceptionMembersWrittenSeparately.Contains(member.Name) && names.Add(member.Name)));
 
 		return members;
 	}
