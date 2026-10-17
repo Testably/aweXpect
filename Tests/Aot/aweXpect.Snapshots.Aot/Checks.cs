@@ -18,7 +18,18 @@ internal static class Checks
 			() => ShouldPass(ObjectMatchesItsSnapshot)),
 		new("an object with ignored and masked members matching its snapshot passes",
 			() => ShouldPass(ObjectWithRulesMatchesItsSnapshot)),
+		new("a record matching its snapshot is written member-wise",
+			() => ShouldPass(RecordMatchesItsSnapshot)),
 	];
+
+	/// <remarks>
+	///     A record is only written member-wise instead of through its compiler-generated <c>ToString()</c>, which would
+	///     write the list as its type name, when the source generator of aweXpect marks it as a record, as this project
+	///     disables the reflection fallback.
+	/// </remarks>
+	private static async Task RecordMatchesItsSnapshot()
+		=> await That(new Album("Abbey Road", 12.99m, ["Come Together", "Something",]))
+			.MatchesSnapshot().AcceptingChanges(false);
 
 	/// <remarks>
 	///     The formatter offers the registered members to the member and type rules, so that they also apply without
