@@ -160,7 +160,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.Masking.Text("42", "<id>").AcceptingChanges();
+						.For.Text("42").Mask("<id>").AcceptingChanges();
 
 				await That(Act).Throws<XunitException>();
 				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("id=<id>" + Environment.NewLine);
@@ -174,7 +174,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.Masking.Regex(@"\d+", "<id>");
+						.For.Text(@"\d+").AsRegex().Mask("<id>");
 
 				await That(Act).Throws<XunitException>();
 				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("id=<id>" + Environment.NewLine);

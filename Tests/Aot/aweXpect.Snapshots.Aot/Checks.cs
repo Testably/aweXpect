@@ -24,8 +24,10 @@ internal static class Checks
 			() => ShouldPass(ObjectMatchesItsSnapshot)),
 		new("an object with ignored and masked members matching its snapshot passes",
 			() => ShouldPass(ObjectWithRulesMatchesItsSnapshot)),
-		new("an object with members selected by expression and empty collections left out matching its snapshot passes",
-			() => ShouldPass(ObjectWithMemberOfAndEmptyCollectionsMatchesItsSnapshot)),
+		new("an object with members selected by their declaring type and empty collections left out matching its snapshot passes",
+			() => ShouldPass(ObjectWithDeclaredMembersAndEmptyCollectionsMatchesItsSnapshot)),
+		new("an object with converted members matching its snapshot passes",
+			() => ShouldPass(ObjectWithConvertedMembersMatchesItsSnapshot)),
 		new("a record matching its snapshot is written member-wise",
 			() => ShouldPass(RecordMatchesItsSnapshot)),
 		new("a snapshot named after arguments matching its snapshot passes",
@@ -52,7 +54,7 @@ internal static class Checks
 			.MatchesSnapshot().AcceptingChanges(false);
 
 	/// <remarks>
-	///     The formatter offers the registered members to the member and type rules, so that they also apply without
+	///     The formatter offers the registered members to the member and value rules, so that they also apply without
 	///     reflection.
 	/// </remarks>
 	private static async Task ObjectWithRulesMatchesItsSnapshot()
@@ -62,25 +64,41 @@ internal static class Checks
 				Status = ShipmentStatus.Sent,
 				Parcels = [new Parcel { Weight = 1.25m, }, new Parcel { Weight = 3m, },],
 			}).MatchesSnapshot()
-			.Ignoring.Member("Status")
-			.Masking.Member("Id")
-			.Masking.Type<decimal>("{weight}")
+			.For.Members().WithName(nameof(Shipment.Status)).Ignore()
+			.For.Members().WithName(nameof(Shipment.Id)).Mask()
+			.For.Values().OfType<decimal>().Mask("{weight}")
 			.AcceptingChanges(false);
 
 	/// <remarks>
-	///     The expressions are only read, never compiled, and the empty collections are recognized without reflection,
-	///     including a set of a value type, which is no non-generic collection.
+	///     The declaring types are compared without reflection, and the empty collections are recognized without
+	///     reflection, including a set of a value type, which is no non-generic collection.
 	/// </remarks>
-	private static async Task ObjectWithMemberOfAndEmptyCollectionsMatchesItsSnapshot()
+	private static async Task ObjectWithDeclaredMembersAndEmptyCollectionsMatchesItsSnapshot()
 		=> await That(new Playlist
 			{
 				Id = 1,
 				Name = "Road Trip",
 				Songs = [new Song { Id = 7, Title = "Highway to Hell", }, new Song { Id = 9, Title = "Let It Be", },],
 			}).MatchesSnapshot()
-			.Ignoring.EmptyCollections()
-			.Ignoring.MemberOf<Playlist>(p => p.Id)
-			.Masking.MemberOf<Song>(s => s.Id)
+			.For.Members().WhichAreEmptyCollections().Ignore()
+			.For.Members().DeclaredIn<Playlist>().WithName(nameof(Playlist.Id)).Ignore()
+			.For.Members().DeclaredIn<Song>().WithName(nameof(Song.Id)).Mask()
+			.AcceptingChanges(false);
+
+	/// <remarks>
+	///     The converters are only called, never compiled, and the anonymous type that a converter returns is written
+	///     member-wise, as the source generator registers it at the call site.
+	/// </remarks>
+	private static async Task ObjectWithConvertedMembersMatchesItsSnapshot()
+		=> await That(new Concert
+			{
+				Date = new DateTime(1969, 1, 30, 12, 30, 0),
+				Duration = TimeSpan.FromMinutes(42),
+				Venue = "Apple Corps rooftop",
+			}).MatchesSnapshot()
+			.For.Members().DeclaredIn<Concert>().WithName(nameof(Concert.Date)).OfType<DateTime>()
+			.Convert(date => new { date.Year, date.Month, })
+			.For.Members().OfType<TimeSpan>().Convert(duration => Math.Round(duration.TotalMinutes))
 			.AcceptingChanges(false);
 
 	/// <remarks>
@@ -196,10 +214,10 @@ internal static class Checks
 	private static async Task StringWithLineRulesMatchesItsSnapshot()
 		=> await That($"Abbey Road\r\nELAPSED {DateTime.Now.Ticks} ms\r\nTrack 2: Help! (Live)\r\n09:30 Let It Be\r\n\r\nBack in Black")
 			.MatchesSnapshot()
-			.Ignoring.LinesContaining("elapsed").IgnoringCase()
-			.Ignoring.LinesContaining("Track ?: *Live*").AsWildcard()
-			.Ignoring.LinesContaining(@"^\d{2}:\d{2} ").AsRegex()
-			.Ignoring.Lines(line => line.Length == 0)
+			.For.Lines().Containing("elapsed").IgnoringCase().Ignore()
+			.For.Lines().Containing("Track ?: *Live*").AsWildcard().Ignore()
+			.For.Lines().Containing(@"^\d{2}:\d{2} ").AsRegex().Ignore()
+			.For.Lines().Which(line => line.Length == 0).Ignore()
 			.AcceptingChanges(false);
 
 	private static async Task<string?> ShouldFail(Func<Task> act, params string[] parts)

@@ -23,7 +23,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Guids().Masking.Dates().AcceptingChanges();
+						.For.Guids().Mask().For.Dates().Mask().AcceptingChanges();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted[Id]).IsEqualTo("{Guid_1} {Date_1}");
@@ -45,7 +45,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"created: {date}.";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("created: {Date_1}.");
@@ -62,7 +62,7 @@ public sealed partial class ThatSnapshot
 					new DateTimeOffset(2026, 10, 17, 9, 30, 15, TimeSpan.FromHours(-7)).ToString("o"));
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Date_1} {Date_2} {Date_3}")
@@ -77,7 +77,7 @@ public sealed partial class ThatSnapshot
 				string subject = "from 2026-10-17 to 2026-10-18, created 2026-10-17";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("from {Date_1} to {Date_2}, created {Date_1}");
@@ -100,7 +100,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"value: {text}";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject);
@@ -114,7 +114,7 @@ public sealed partial class ThatSnapshot
 				string subject = "2026-10-17 09:30:15";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Date_1} 09:30:15")
@@ -129,7 +129,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"{{{FirstGuid}}} ({SecondGuid})";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{{Guid_1}} ({Guid_2})");
@@ -143,7 +143,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"{FirstGuid} {FirstGuid.ToUpperInvariant()}";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Guid_1}");
@@ -157,7 +157,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"order_{FirstGuid}_x";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order_{Guid_1}_x");
@@ -171,7 +171,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"{SecondGuid}, {FirstGuid}, {SecondGuid}";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1}, {Guid_2}, {Guid_1}")
@@ -191,7 +191,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"value: {text}";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject)
@@ -206,7 +206,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"{FirstGuid} 2026-10-17 {SecondGuid} 2026-10-18";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids().Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask().For.Dates().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Date_1} {Guid_2} {Date_2}");
@@ -221,7 +221,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Text(FirstGuid, "<order-id>").Masking.Guids();
+						.For.Text(FirstGuid).Mask("<order-id>").For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer {Guid_1}");
@@ -236,7 +236,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Guids().Masking.Text(FirstGuid, "<order-id>");
+						.For.Guids().Mask().For.Text(FirstGuid).Mask("<order-id>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order {Guid_1}, customer {Guid_2}")
@@ -253,7 +253,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids());
+						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -272,7 +272,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"{Guid.NewGuid()} created {DateTime.UtcNow:o}";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids().Masking.Dates();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask().For.Dates().Mask();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -285,7 +285,7 @@ public sealed partial class ThatSnapshot
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -305,8 +305,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 				{
-					await That($"id={FirstGuid}").MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
-					await That($"id={SecondGuid}").MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					await That($"id={FirstGuid}").MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
+					await That($"id={SecondGuid}").MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 				}
 
 				await That(Act).DoesNotThrow()

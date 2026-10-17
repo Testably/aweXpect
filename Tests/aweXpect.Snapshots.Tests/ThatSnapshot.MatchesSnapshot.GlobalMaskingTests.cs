@@ -26,19 +26,19 @@ public sealed partial class ThatSnapshot
 			[Fact]
 			public async Task ShouldBeEmptyByDefault()
 			{
-				IReadOnlyList<SnapshotMasking> maskings = Customize.aweXpect.Snapshots().Maskings.Get();
+				IReadOnlyList<SnapshotRule> rules = Customize.aweXpect.Snapshots().Rules.Get();
 
-				await That(maskings).IsEmpty();
+				await That(rules).IsEmpty();
 			}
 
 			[Fact]
-			public async Task WhenTheListIsChangedAfterSetting_ShouldKeepTheMaskingsOfTheSetting()
+			public async Task WhenTheListIsChangedAfterSetting_ShouldKeepTheRulesOfTheSetting()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				List<SnapshotMasking> maskings = [SnapshotMasking.Text("Bob", "<name>"),];
-				using CustomizationLifetime setting = Customize.aweXpect.Snapshots().Maskings.Set(maskings);
-				maskings.Add(SnapshotMasking.Text("Alice", "<name>"));
+				List<SnapshotRule> rules = [SnapshotRule.For.Text("Bob").Mask("<name>"),];
+				using CustomizationLifetime setting = Customize.aweXpect.Snapshots().Rules.Set(rules);
+				rules.Add(SnapshotRule.For.Text("Alice").Mask("<name>"));
 				string subject = "Bob Alice";
 
 				async Task Act()
@@ -54,12 +54,12 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime outer = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Guids(),
+				using CustomizationLifetime outer = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Guids().Mask(),
 				]);
-				using CustomizationLifetime inner = Customize.aweXpect.Snapshots().Maskings.Set([
-					.. Customize.aweXpect.Snapshots().Maskings.Get(),
-					SnapshotMasking.Text("Bob", "<name>"),
+				using CustomizationLifetime inner = Customize.aweXpect.Snapshots().Rules.Set([
+					.. Customize.aweXpect.Snapshots().Rules.Get(),
+					SnapshotRule.For.Text("Bob").Mask("<name>"),
 				]);
 				string subject = $"Bob {FirstGuid}";
 
@@ -75,9 +75,9 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Guids(),
-					SnapshotMasking.Dates(),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Guids().Mask(),
+					SnapshotRule.For.Dates().Mask(),
 				]);
 				string subject = $"{FirstGuid} 2026-10-17 {SecondGuid}";
 
@@ -95,9 +95,9 @@ public sealed partial class ThatSnapshot
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = $"id={FirstGuid}";
 
-				using (Customize.aweXpect.Snapshots().Maskings.Set([SnapshotMasking.Guids(),]))
+				using (Customize.aweXpect.Snapshots().Rules.Set([SnapshotRule.For.Guids().Mask(),]))
 				{
-					await That(Customize.aweXpect.Snapshots().Maskings.Get()).HasCount(1);
+					await That(Customize.aweXpect.Snapshots().Rules.Get()).HasCount(1);
 				}
 
 				async Task Act()
@@ -105,7 +105,7 @@ public sealed partial class ThatSnapshot
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject)
-					.Because("the global maskings only apply while they are set");
+					.Because("the global rules only apply while they are set");
 			}
 
 			[Fact]
@@ -113,8 +113,8 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Regex(TokenRegex(), "$1=<token>"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Regex(TokenRegex()).Mask("$1=<token>"),
 				]);
 				string subject = "Token=abc, TOKEN=def";
 
@@ -126,12 +126,29 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenGlobalTextMaskingAsRegex_ShouldApplyIt()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Text(@"localhost:(\d+)").AsRegex().Mask("localhost:<port>"),
+				]);
+				string subject = "http://localhost:5001/albums";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("http://localhost:<port>/albums");
+			}
+
+			[Fact]
 			public async Task WhenGlobalTextMasking_ShouldInsertTheReplacementLiterally()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Text("42", "$1"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Text("42").Mask("$1"),
 				]);
 				string subject = "id=42";
 
@@ -147,18 +164,18 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Guids(),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Guids().Mask(),
 				]);
 				string subject = $"order {FirstGuid}, customer {SecondGuid}";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Text(FirstGuid, "<order-id>");
+						.For.Text(FirstGuid).Mask("<order-id>");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer {Guid_1}")
-					.Because("a specific masking of the expectation goes before a general one for all snapshots");
+					.Because("a specific rule of the expectation goes before a general one for all snapshots");
 			}
 
 			[Fact]
@@ -166,9 +183,9 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Text("foo", "bar"),
-					SnapshotMasking.Text("bar", "baz"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Text("foo").Mask("bar"),
+					SnapshotRule.For.Text("bar").Mask("baz"),
 				]);
 				string subject = "foo";
 
@@ -183,7 +200,7 @@ public sealed partial class ThatSnapshot
 			public async Task WhenSetToListWithNull_ShouldThrowArgumentException()
 			{
 				void Act()
-					=> Customize.aweXpect.Snapshots().Maskings.Set([null!,]);
+					=> Customize.aweXpect.Snapshots().Rules.Set([null!,]);
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("value").And
@@ -194,7 +211,7 @@ public sealed partial class ThatSnapshot
 			public async Task WhenSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> Customize.aweXpect.Snapshots().Maskings.Set(null!);
+					=> Customize.aweXpect.Snapshots().Rules.Set(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("value");
@@ -205,8 +222,8 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Guids(),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Guids().Mask(),
 				]);
 				string? subject = null;
 
@@ -225,72 +242,72 @@ public sealed partial class ThatSnapshot
 			public async Task WhenRegexPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Regex((Regex)null!, "x");
+					=> SnapshotRule.For.Regex(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("pattern");
 			}
 
 			[Fact]
-			public async Task WhenRegexPatternStringIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenTextAsRegexIsInvalid_ShouldThrowArgumentException()
 			{
 				void Act()
-					=> SnapshotMasking.Regex((string)null!, "x");
-
-				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("pattern");
-			}
-
-			[Fact]
-			public async Task WhenRegexPatternStringIsInvalid_ShouldThrowArgumentException()
-			{
-				void Act()
-					=> SnapshotMasking.Regex("(", "x");
+					=> SnapshotRule.For.Text("(").AsRegex().Mask("x");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithParamName("pattern").And
-					.WithMessage("The 'pattern' is not a valid regex pattern: *").AsWildcard();
+					.WithParamName("text").And
+					.WithMessage("The 'text' is not a valid regex pattern: *").AsWildcard();
 			}
 
 			[Fact]
-			public async Task WhenRegexReplacementIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenRegexTemplateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Regex(TokenRegex(), null!);
+					=> SnapshotRule.For.Regex(TokenRegex()).Mask(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("replacement");
+					.WithParamName("template");
 			}
 
 			[Fact]
-			public async Task WhenTextReplacementIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenTextTemplateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Text("foo", null!);
+					=> SnapshotRule.For.Text("foo").Mask(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("replacement");
+					.WithParamName("template");
 			}
 
 			[Fact]
-			public async Task WhenTextValueIsEmpty_ShouldThrowArgumentException()
+			public async Task WhenGuidsTemplateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Text("", "x");
+					=> SnapshotRule.For.Guids().Mask(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("template");
+			}
+
+			[Fact]
+			public async Task WhenTextIsEmpty_ShouldThrowArgumentException()
+			{
+				void Act()
+					=> SnapshotRule.For.Text("");
 
 				await That(Act).Throws<ArgumentException>()
-					.WithParamName("value").And
-					.WithMessage("The 'value' cannot be empty.*").AsWildcard();
+					.WithParamName("text").And
+					.WithMessage("The 'text' cannot be empty.*").AsWildcard();
 			}
 
 			[Fact]
-			public async Task WhenTextValueIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenTextIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Text(null!, "x");
+					=> SnapshotRule.For.Text(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("value");
+					.WithParamName("text");
 			}
 		}
 	}

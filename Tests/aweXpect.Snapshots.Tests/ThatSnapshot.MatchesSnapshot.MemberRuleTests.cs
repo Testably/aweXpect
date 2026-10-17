@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Results;
@@ -29,7 +30,8 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member("Id");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("Id").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -47,7 +49,8 @@ public sealed partial class ThatSnapshot
 				RuleOrder subject = RuleOrder.Create();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member("id");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("Id").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -68,7 +71,32 @@ public sealed partial class ThatSnapshot
 				                                             OrderId = 7
 				                                           }
 				                                           """).IgnoringNewlineStyle()
-					.Because("the name matches whole segments at any depth, ignoring the case, so 'OrderId' is kept");
+					.Because("the name is compared with the name of the member itself at any depth, so 'OrderId' is kept");
+			}
+
+			[Fact]
+			public async Task IgnoringMember_WithNameInAnotherCase_ShouldKeepTheMember()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleCustomer subject = new()
+				{
+					Id = 1,
+					Name = "Ann",
+				};
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("id").Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleCustomer {
+				                                             Id = 1,
+				                                             Name = "Ann"
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the name is compared case-sensitive by default");
 			}
 
 			[Fact]
@@ -80,9 +108,9 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member("Customer.Id")
-						.Ignoring.Member("ByCode")
-						.Ignoring.Member("Lines");
+						.For.Members().WithPath("Customer.Id").Ignore()
+						.For.Members().WithName("ByCode").Ignore()
+						.For.Members().WithName("Lines").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -94,6 +122,39 @@ public sealed partial class ThatSnapshot
 				                                             OrderId = 7
 				                                           }
 				                                           """).IgnoringNewlineStyle();
+			}
+
+			[Fact]
+			public async Task IgnoringMember_WithPath_ShouldMatchWholeSegmentsAtTheEndOfThePath()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleOrder subject = RuleOrder.Create();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithPath("[0].Id").Ignore()
+						.For.Members().WithPath("rId").Ignore()
+						.For.Members().WithPath("customer.Id").Ignore()
+						.For.Members().WithName("ByCode").Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleOrder {
+				                                             Customer = RuleCustomer {
+				                                               Id = 9,
+				                                               Name = "Ann"
+				                                             },
+				                                             Id = 42,
+				                                             Lines = [
+				                                               RuleLine {
+				                                                 Product = "Pen"
+				                                               }
+				                                             ],
+				                                             OrderId = 7
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("an index starts a segment, 'rId' is no whole segment of 'OrderId', and the segments are compared case-sensitive");
 			}
 
 			[Fact]
@@ -112,8 +173,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member<DateTime>()
-						.Ignoring.Member<Exception>();
+						.For.Members().OfType<DateTime>().Ignore()
+						.For.Members().OfType<Exception>().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -136,7 +197,8 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member<DateTime>();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().OfType<DateTime>().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -150,6 +212,34 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task IgnoringMemberOfExactType_ShouldNotMatchDerivedTypes()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleTypes subject = new()
+				{
+					Created = new DateTime(2026, 10, 17, 9, 30, 0, DateTimeKind.Utc),
+					Extra = new DateTime(2026, 10, 19, 9, 30, 0, DateTimeKind.Utc),
+					Error = new InvalidOperationException("boom"),
+					Name = "kept",
+				};
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().OfExactType<DateTime>().Ignore()
+						.For.Members().OfExactType<Exception>().Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTypes {
+				                                             Error = *boom*,
+				                                             Name = "kept"
+				                                           }
+				                                           """).AsWildcard().IgnoringNewlineStyle()
+					.Because("a DateTime, a null DateTime? and a DateTime in an object member are exactly of the type, but an InvalidOperationException is no exact Exception");
+			}
+
+			[Fact]
 			public async Task IgnoringMemberOfType_ShouldKeepTheItemsOfCollectionsAndDictionaries()
 			{
 				InMemorySnapshotStore store = new();
@@ -157,7 +247,8 @@ public sealed partial class ThatSnapshot
 				RuleCollections subject = RuleCollections.Create();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member<DateTime>();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().OfType<DateTime>().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -175,6 +266,31 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task IgnoringValuesOfType_ShouldAlsoLeaveOutTheItems()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				List<object> subject =
+				[
+					new DateTime(2026, 10, 17),
+					"Let It Be",
+					new DateTime(2026, 10, 18),
+				];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().OfType<DateTime>().Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           [
+				                                             "Let It Be"
+				                                           ]
+				                                           """).IgnoringNewlineStyle()
+					.Because("the values are the members and the items, so the items of the type are left out");
+			}
+
+			[Fact]
 			public async Task IgnoringMemberOfType_WhenTheItemsAreMaskedByType_ShouldMaskThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -183,8 +299,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member<DateTime>()
-						.Masking.Type<DateTime>();
+						.For.Members().OfType<DateTime>().Ignore()
+						.For.Values().OfType<DateTime>().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -202,7 +318,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task IgnoringMember_WithThePathOfAnItem_ShouldLeaveOutTheItem()
+			public async Task IgnoringValue_WithThePathOfAnItem_ShouldLeaveOutTheItem()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -210,9 +326,9 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member("Dates[0]")
-						.Ignoring.Member("Created")
-						.Ignoring.Member("Releases");
+						.For.Values().WithPath("Dates[0]").Ignore()
+						.For.Members().WithName("Created").Ignore()
+						.For.Members().WithName("Releases").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -226,6 +342,31 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task IgnoringMember_WithThePathOfAnItem_ShouldKeepTheItem()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleCollections subject = RuleCollections.Create();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithPath("Dates[0]").Ignore()
+						.For.Members().WithName("Created").Ignore()
+						.For.Members().WithName("Releases").Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleCollections {
+				                                             Dates = [
+				                                               2026-10-17T00:00:00.0000000,
+				                                               2026-10-18T00:00:00.0000000
+				                                             ]
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("an item is no member");
+			}
+
+			[Fact]
 			public async Task WhenAGetterThrows_ShouldNeitherIgnoreNorMaskTheValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -234,8 +375,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member<DateTime>()
-						.Masking.Member("Value", "{value}");
+						.For.Members().OfType<DateTime>().Ignore()
+						.For.Members().WithName("Value").Mask("{value}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
@@ -255,8 +396,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member("Id")
-						.Ignoring.Member("Id");
+						.For.Members().WithName("Id").Mask()
+						.For.Members().WithName("Id").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -274,7 +415,8 @@ public sealed partial class ThatSnapshot
 				RuleOrder subject = RuleOrder.Create();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Member("Id");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("Id").Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -313,7 +455,8 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Member("Text", "{text}");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("Text").Mask("{text}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -337,7 +480,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member("Name", "{name}");
+						.For.Members().WithName("Name").Mask("{name}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -361,8 +504,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Type<Guid>()
-						.Masking.Guids();
+						.For.Values().OfType<Guid>().Mask()
+						.For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -382,7 +525,8 @@ public sealed partial class ThatSnapshot
 				List<Guid> subject = [Guid.Parse(FirstGuid), Guid.Parse(SecondGuid), Guid.Parse(FirstGuid),];
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Type<Guid>();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().OfType<Guid>().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -392,6 +536,26 @@ public sealed partial class ThatSnapshot
 				                                             {Guid_1}
 				                                           ]
 				                                           """).IgnoringNewlineStyle();
+			}
+
+			[Fact]
+			public async Task MaskingMembersOfType_InACollection_ShouldKeepTheItems()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				List<Guid> subject = [Guid.Parse(FirstGuid),];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().OfType<Guid>().Mask();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo($$"""
+				                                           [
+				                                             {{FirstGuid}}
+				                                           ]
+				                                           """).IgnoringNewlineStyle()
+					.Because("an item is no member");
 			}
 
 			[Fact]
@@ -405,7 +569,8 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Type<Uri>("{uri}");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().OfType<Uri>().Mask("{uri}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -428,8 +593,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member("Key", "{key}")
-						.Masking.Type<Guid>();
+						.For.Members().WithName("Key").Mask("{key}")
+						.For.Values().OfType<Guid>().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -445,9 +610,9 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Member("Name", "{global}"),
-					SnapshotMasking.Member("Id", "{id}"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Members().WithName("Name").Mask("{global}"),
+					SnapshotRule.For.Members().WithName("Id").Mask("{id}"),
 				]);
 				RuleCustomer subject = new()
 				{
@@ -457,7 +622,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member("Name", "{local}");
+						.For.Members().WithName("Name").Mask("{local}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -469,12 +634,12 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenGlobalIgnorings_ShouldLeaveOutTheValues()
+			public async Task WhenGlobalIgnoringRules_ShouldLeaveOutTheValues()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.Member("Id"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Members().WithName("Id").Ignore(),
 				]);
 				RuleCustomer subject = new()
 				{
@@ -498,11 +663,9 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.Member<string>(),
-				]);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Type<string>("{text}"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Members().OfType<string>().Ignore(),
+					SnapshotRule.For.Values().OfType<string>().Mask("{text}"),
 				]);
 				string subject = "Id = 1";
 
@@ -529,120 +692,131 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 				{
 					await That(new RuleCustomer { Id = 1, Name = "Ann", }).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member("Id");
+						.For.Members().WithName("Id").Mask();
 					await That(new RuleCustomer { Id = 2, Name = "Ann", }).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member("Id");
+						.For.Members().WithName("Id").Mask();
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the check for a snapshot used for another value compares the masked value");
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData(" ")]
-			public async Task WhenMemberNameIsEmpty_ShouldThrowArgumentException(string memberName)
+			[Fact]
+			public async Task WhenNameIsEmpty_ShouldThrowArgumentException()
 			{
-				void Act()
-					=> SnapshotIgnoring.Member(memberName);
+				void MembersAct()
+					=> SnapshotRule.For.Members().WithName("");
 
-				await That(Act).Throws<ArgumentException>()
-					.WithParamName("memberName").And
-					.WithMessage("The 'memberName' cannot be empty.*").AsWildcard();
+				void ValuesAct()
+					=> SnapshotRule.For.Values().WithName("");
+
+				await That(MembersAct).Throws<ArgumentException>()
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be empty.*").AsWildcard();
+				await That(ValuesAct).Throws<ArgumentException>().WithParamName("name");
 			}
 
 			[Fact]
-			public async Task WhenMemberNameIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> SnapshotMasking.Member((string)null!);
+					=> SnapshotRule.For.Members().WithName(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("memberName");
+					.WithParamName("name");
+			}
+
+			[Fact]
+			public async Task WhenPathIsNullOrEmpty_ShouldThrow()
+			{
+				void NullAct()
+					=> SnapshotRule.For.Values().WithPath(null!);
+
+				void EmptyAct()
+					=> SnapshotRule.For.Members().WithPath("");
+
+				await That(NullAct).Throws<ArgumentNullException>().WithParamName("path");
+				await That(EmptyAct).Throws<ArgumentException>().WithParamName("path");
 			}
 
 			[Fact]
 			public async Task WhenReplacementIsNull_ShouldThrowArgumentNullException()
 			{
 				void MemberAct()
-					=> SnapshotMasking.Member("Id", null!);
+					=> SnapshotRule.For.Members().WithName("Id").Mask((string)null!);
 
 				void TypeAct()
-					=> SnapshotMasking.Type<Guid>(null!);
+					=> SnapshotRule.For.Values().OfType<Guid>().Mask((string)null!);
 
-				await That(MemberAct).Throws<ArgumentNullException>().WithParamName("replacement");
-				await That(TypeAct).Throws<ArgumentNullException>().WithParamName("replacement");
+				void TemplateAct()
+					=> SnapshotRule.For.Values().Mask((Func<FormattedValue, string?>)null!);
+
+				await That(MemberAct).Throws<ArgumentNullException>().WithParamName("template");
+				await That(TypeAct).Throws<ArgumentNullException>().WithParamName("template");
+				await That(TemplateAct).Throws<ArgumentNullException>().WithParamName("template");
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsAString_IgnoringRule_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAString_MemberRule_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member("Id");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("Id").Ignore();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object, but a string is compared as raw text.*")
+					.WithMessage("A member or value rule only applies to a snapshot of an object, but a string is compared as raw text.*")
 					.AsWildcard();
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsAString_MaskingRule_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAString_ValueRule_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Type<Guid>();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().OfType<Guid>().Mask();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object*").AsWildcard();
+					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 
 			[Fact]
-			public async Task IgnoringProperty_ShouldOfferEveryFactoryOfSnapshotIgnoring()
+			public async Task Rules_ShouldBeEmptyByDefault()
 			{
-				string[] factories = ApiParity.GetFactories(typeof(SnapshotIgnoring));
-				string[] ignorings = ApiParity.GetMethods(typeof(SnapshotIgnorings<object, IThat<object>>));
+				IReadOnlyList<SnapshotRule> rules = Customize.aweXpect.Snapshots().Rules.Get();
 
-				await That(ignorings).IsEqualTo(factories)
-					.Because("an ignoring of the expectation has the same name, generic arity and parameters as for all snapshots");
+				await That(rules).IsEmpty();
 			}
 
 			[Fact]
-			public async Task Ignorings_ShouldBeEmptyByDefault()
-			{
-				IReadOnlyList<SnapshotIgnoring> ignorings = Customize.aweXpect.Snapshots().Ignorings.Get();
-
-				await That(ignorings).IsEmpty();
-			}
-
-			[Fact]
-			public async Task Ignorings_WhenSetToNull_ShouldThrowArgumentNullException()
+			public async Task Rules_WhenSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
-					=> Customize.aweXpect.Snapshots().Ignorings.Set(null!);
+					=> Customize.aweXpect.Snapshots().Rules.Set(null!);
 
 				await That(Act).Throws<ArgumentNullException>().WithParamName("value");
 			}
 
 			[Fact]
-			public async Task Ignorings_WhenContainingNull_ShouldThrowArgumentException()
+			public async Task Rules_WhenContainingNull_ShouldThrowArgumentException()
 			{
 				void Act()
-					=> Customize.aweXpect.Snapshots().Ignorings.Set([null!,]);
+					=> Customize.aweXpect.Snapshots().Rules.Set([null!,]);
 
 				await That(Act).Throws<ArgumentException>().WithParamName("value");
 			}
 
 			[Fact]
-			public async Task Ignorings_WhenTheListIsChangedAfterSetting_ShouldKeepTheSetting()
+			public async Task Rules_WhenTheListIsChangedAfterSetting_ShouldKeepTheSetting()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				List<SnapshotIgnoring> ignorings = [SnapshotIgnoring.Member("Id"),];
-				using CustomizationLifetime setting = Customize.aweXpect.Snapshots().Ignorings.Set(ignorings);
-				ignorings.Add(SnapshotIgnoring.Member("Name"));
+				List<SnapshotRule> rules = [SnapshotRule.For.Members().WithName("Id").Ignore(),];
+				using CustomizationLifetime setting = Customize.aweXpect.Snapshots().Rules.Set(rules);
+				rules.Add(SnapshotRule.For.Members().WithName("Name").Ignore());
 				RuleCustomer subject = new()
 				{
 					Id = 1,
@@ -658,6 +832,23 @@ public sealed partial class ThatSnapshot
 				                                             Name = "Ann"
 				                                           }
 				                                           """).IgnoringNewlineStyle();
+			}
+
+			[Fact]
+			public async Task For_ShouldOfferTheSameRulesAsForAllSnapshots()
+			{
+				string[] global = ApiParity.GetSurface(
+					typeof(SnapshotRule).GetProperty(nameof(SnapshotRule.For))!.PropertyType, typeof(SnapshotRule));
+				string[] expectation = ApiParity.GetSurface(
+					typeof(SnapshotResult<object, IThat<object>>)
+						.GetProperty(nameof(SnapshotResult<object, IThat<object>>.For))!.PropertyType,
+					typeof(SnapshotResult<object, IThat<object>>));
+
+				await That(expectation).IsEqualTo(global)
+					.Because("every selection, filter and action of the expectation exists for all snapshots, and vice versa");
+				await That(global.Any(signature => signature.Contains(".Convert`1(")) &&
+				           global.Any(signature => signature.Contains(".Keep`0()"))).IsTrue()
+					.Because("the comparison follows the selections down to their actions");
 			}
 		}
 	}

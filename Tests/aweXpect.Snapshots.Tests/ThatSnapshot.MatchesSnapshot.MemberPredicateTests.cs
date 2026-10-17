@@ -21,8 +21,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member(value => value.Name.EndsWith("Url", StringComparison.Ordinal))
-						.Ignoring.Member("Tracks");
+						.For.Members().Which(value => value.Name.EndsWith("Url", StringComparison.Ordinal)).Ignore()
+						.For.Members().WithName("Tracks").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -46,7 +46,8 @@ public sealed partial class ThatSnapshot
 				RuleTrack subject = RuleTrack.ComeTogether();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member(IsUrl);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().Which(IsUrl).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -61,7 +62,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task IgnoringMember_WithPredicate_ShouldAlsoBeAskedForCollectionItems()
+			public async Task IgnoringValues_WithPredicate_ShouldAlsoBeAskedForCollectionItems()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -69,8 +70,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member(value => value.Kind == FormattedValueKind.CollectionItem &&
-						                          Equals(value.GetValue(), "Something"));
+						.For.Values().Which(value => value.Kind == FormattedValueKind.CollectionItem &&
+						                              Equals(value.GetValue(), "Something")).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -91,7 +92,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member(value => value.GetValue() is null);
+						.For.Members().Which(value => value.GetValue() is null).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
@@ -107,7 +108,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member(_ => throw new InvalidOperationException("predicate failed"));
+						.For.Members().Which(_ => throw new InvalidOperationException("predicate failed")).Ignore();
 
 				await That(Act).Throws<InvalidOperationException>().WithMessage("predicate failed")
 					.Because("an exception of the predicate is a mistake in the test, which a placeholder would hide");
@@ -123,8 +124,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member(value => value.DeclaringType == typeof(RuleTrack) && value.Name == "Duration")
-						.Ignoring.Member(value => value.Name is "Artist" or "CoverUrl" or "PreviewUrl" or "Price");
+						.For.Members().Which(value => value.DeclaringType == typeof(RuleTrack) && value.Name == "Duration").Mask()
+						.For.Members().Which(value => value.Name is "Artist" or "CoverUrl" or "PreviewUrl" or "Price").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -154,7 +155,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task MaskingMember_WithPredicateOnCollectionItems_ShouldNameThePlaceholderItem()
+			public async Task MaskingValues_WithPredicateOnCollectionItems_ShouldNameThePlaceholderItem()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -162,7 +163,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member(value => value.Kind == FormattedValueKind.CollectionItem);
+						.For.Values().Which(value => value.Kind == FormattedValueKind.CollectionItem).Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -184,7 +185,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member(value => value.Type == typeof(string), "{text}");
+						.For.Members().Which(value => value.Type == typeof(string)).Mask("{text}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -207,8 +208,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member(value => value.Type == typeof(string), "{text}")
-						.Ignoring.Member(IsUrl);
+						.For.Members().Which(value => value.Type == typeof(string)).Mask("{text}")
+						.For.Members().Which(IsUrl).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -226,18 +227,16 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.Member(IsUrl),
-				]);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Member(value => value.Type == typeof(string), "{global}"),
-					SnapshotMasking.Member(value => value.Name == "Id"),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Members().Which(IsUrl).Ignore(),
+					SnapshotRule.For.Members().Which(value => value.Type == typeof(string)).Mask("{global}"),
+					SnapshotRule.For.Members().Which(value => value.Name == "Id").Mask(),
 				]);
 				RuleTrack subject = RuleTrack.ComeTogether();
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Member(value => value.Name == "Title", "{local}");
+						.For.Members().Which(value => value.Name == "Title").Mask("{local}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -251,29 +250,45 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			public async Task ExceptOnValues_ShouldOnlySelectTheValuesForWhichThePredicateIsFalse()
 			{
-				void IgnoringAct()
-					=> SnapshotIgnoring.Member((Func<FormattedValue, bool>)null!);
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				List<string> subject = ["Let It Be", "Abbey Road", "Let It Be",];
 
-				void MaskingAct()
-					=> SnapshotMasking.Member((Func<FormattedValue, bool>)null!);
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().Except(value => Equals(value.GetValue(), "Abbey Road")).Mask();
 
-				void MaskingWithReplacementAct()
-					=> SnapshotMasking.Member((Func<FormattedValue, bool>)null!, "{x}");
-
-				await That(IgnoringAct).Throws<ArgumentNullException>().WithParamName("predicate");
-				await That(MaskingAct).Throws<ArgumentNullException>().WithParamName("predicate");
-				await That(MaskingWithReplacementAct).Throws<ArgumentNullException>().WithParamName("predicate");
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           [
+				                                             {Item_1},
+				                                             "Abbey Road",
+				                                             {Item_1}
+				                                           ]
+				                                           """).IgnoringNewlineStyle();
 			}
 
 			[Fact]
-			public async Task WhenReplacementIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
-				void Act()
-					=> SnapshotMasking.Member(_ => true, null!);
+				void MembersWhichAct()
+					=> SnapshotRule.For.Members().Which(null!);
 
-				await That(Act).Throws<ArgumentNullException>().WithParamName("replacement");
+				void MembersExceptAct()
+					=> SnapshotRule.For.Members().Except(null!);
+
+				void ValuesWhichAct()
+					=> SnapshotRule.For.Values().Which(null!);
+
+				void ValuesExceptAct()
+					=> SnapshotRule.For.Values().Except(null!);
+
+				await That(MembersWhichAct).Throws<ArgumentNullException>().WithParamName("predicate");
+				await That(MembersExceptAct).Throws<ArgumentNullException>().WithParamName("predicate");
+				await That(ValuesWhichAct).Throws<ArgumentNullException>().WithParamName("predicate");
+				await That(ValuesExceptAct).Throws<ArgumentNullException>().WithParamName("predicate");
 			}
 
 			[Fact]
@@ -282,15 +297,17 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task IgnoringAct()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member(IsUrl);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().Which(IsUrl).Ignore();
 
 				async Task MaskingAct()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Member(IsUrl, "{url}");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Values().Which(IsUrl).Mask("{url}");
 
 				await That(IgnoringAct).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object*").AsWildcard();
+					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 				await That(MaskingAct).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object*").AsWildcard();
+					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 
 			private static bool IsUrl(FormattedValue value)

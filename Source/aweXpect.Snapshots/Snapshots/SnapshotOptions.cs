@@ -36,11 +36,10 @@ internal sealed class SnapshotOptions
 		Variant = _variant,
 	};
 
-	public List<SnapshotIgnoring> Ignorings { get; } = new();
-
-	public List<SnapshotMasking> Maskings { get; } = new();
-
-	public bool? MaskPaths { get; set; }
+	/// <summary>
+	///     The rules of the expectation, in the order in which they were added.
+	/// </summary>
+	public List<SnapshotRule> Rules { get; } = new();
 
 	/// <remarks>
 	///     A new name moves the claim of the snapshot to the named one.
@@ -72,21 +71,21 @@ internal sealed class SnapshotOptions
 	}
 
 	/// <summary>
-	///     Applies the text maskings of <see cref="Maskings" /> in the order in which they were added, then those of the
-	///     <paramref name="globalMaskings" /> in their order, so that a specific masking of the expectation goes before
-	///     a general one for all snapshots.
+	///     Applies the text rules of <see cref="Rules" /> in the order in which they were added, then those of the
+	///     <paramref name="globalRules" /> in their order, so that a specific rule of the expectation goes before a general
+	///     one for all snapshots.
 	/// </summary>
 	/// <remarks>
-	///     The maskings of the environment come first, the paths unless <see cref="MaskPaths" /> or else
-	///     <paramref name="maskPaths" /> turns them off, so that the other maskings see their placeholders.
+	///     The rules of the environment come first, the paths unless a rule keeps them, so that the other rules see their
+	///     placeholders.
 	/// </remarks>
-	public string Mask(string value, IReadOnlyList<SnapshotMasking> globalMaskings, bool maskPaths,
-		SnapshotNumbering numbering)
+	public string Mask(string value, IReadOnlyList<SnapshotRule> globalRules, SnapshotNumbering numbering)
 	{
-		SnapshotMasking[] maskings = Maskings.Concat(globalMaskings).ToArray();
-		IEnumerable<SnapshotMasking> paths = (MaskPaths ?? maskPaths)
-			? EnvironmentMaskings.ForPaths(_sourceFile)
-			: [];
+		SnapshotRule[] rules = Rules.Concat(globalRules).ToArray();
+		TextMasking[] maskings = rules.Select(rule => rule.TextMasking).OfType<TextMasking>().ToArray();
+		IEnumerable<TextMasking> paths = rules.Any(rule => rule.KeepsPaths)
+			? []
+			: EnvironmentMaskings.ForPaths(_sourceFile);
 		return paths
 			.Concat(maskings.Where(masking => masking.IsEnvironment))
 			.Concat(maskings.Where(masking => !masking.IsEnvironment))
@@ -94,24 +93,25 @@ internal sealed class SnapshotOptions
 	}
 
 	/// <summary>
-	///     Removes each line of the <paramref name="value" /> that a line rule of <see cref="Ignorings" /> or of the
-	///     <paramref name="globalIgnorings" /> matches.
+	///     Leaves out, masks or converts each line of the <paramref name="value" /> that a line rule of
+	///     <see cref="Rules" /> or of the <paramref name="globalRules" /> matches.
 	/// </summary>
 	/// <remarks>
-	///     A line ends with <c>\r\n</c>, <c>\n</c> or <c>\r</c>. A removed line takes its line break with it; when the last
-	///     line is removed, the line break of the last remaining line goes as well, so that no empty line is left at the
-	///     end. The other lines keep their line breaks.<br />
-	///     Every rule is validated first, so that an invalid pattern throws, whichever lines the subject has.
+	///     A line ends with <c>\r\n</c>, <c>\n</c> or <c>\r</c>. A line rule that leaves lines out wins, otherwise the
+	///     first matching rule replaces the line, which keeps its line break. A removed line takes its line break with it;
+	///     when the last line is removed, the line break of the last remaining line goes as well, so that no empty line is
+	///     left at the end. The other lines keep their line breaks.
 	/// </remarks>
-	public async ValueTask<string> RemoveLines(string value, IReadOnlyList<SnapshotIgnoring> globalIgnorings)
+	public async ValueTask<string> ApplyLineRules(string value, IReadOnlyList<SnapshotRule> globalRules,
+		SnapshotNumbering numbering)
 	{
-		SnapshotIgnoring[] rules = Ignorings.Concat(globalIgnorings).Where(ignoring => ignoring.IsLineRule).ToArray();
+		LineRule[] rules = Rules.Concat(globalRules).Select(rule => rule.LineRule).OfType<LineRule>()
+			.OrderByDescending(rule => rule.IsIgnoring).ToArray();
 		if (rules.Length == 0)
 		{
 			return value;
 		}
 
-		Array.ForEach(rules, rule => rule.ValidateLineRule());
 		StringBuilder result = new(value.Length);
 		int lastLineBreakLength = 0;
 		bool isLastLineRemoved;
@@ -122,10 +122,11 @@ internal sealed class SnapshotOptions
 			lineBreak = value.IndexOfAny(LineBreaks, start);
 			int end = lineBreak < 0 ? value.Length : lineBreak;
 			int next = lineBreak < 0 ? end : end + GetLineBreakLength(value, lineBreak);
-			isLastLineRemoved = await IsRemoved(value.Substring(start, end - start), rules);
-			if (!isLastLineRemoved)
+			string? line = await ApplyLineRules(value.Substring(start, end - start), rules, numbering);
+			isLastLineRemoved = line is null;
+			if (line is not null)
 			{
-				result.Append(value, start, next - start);
+				result.Append(line).Append(value, end, next - end);
 				lastLineBreakLength = next - end;
 			}
 
@@ -143,56 +144,52 @@ internal sealed class SnapshotOptions
 	private static int GetLineBreakLength(string value, int lineBreak)
 		=> value[lineBreak] == '\r' && lineBreak + 1 < value.Length && value[lineBreak + 1] == '\n' ? 2 : 1;
 
-	private static async ValueTask<bool> IsRemoved(string line, SnapshotIgnoring[] rules)
+	/// <remarks>
+	///     The <paramref name="rules" /> that leave lines out come first, so that they win.
+	/// </remarks>
+	private static async ValueTask<string?> ApplyLineRules(string line, LineRule[] rules,
+		SnapshotNumbering numbering)
 	{
-		foreach (SnapshotIgnoring rule in rules)
+		foreach (LineRule rule in rules)
 		{
-			if (await rule.MatchesLine(line))
+			if (await rule.Matches(line))
 			{
-				return true;
+				return rule.IsIgnoring ? null : rule.Replace(line, numbering);
 			}
 		}
 
-		return false;
+		return line;
 	}
 
 	/// <summary>
-	///     Creates the decision of the formatter for each value nested in an object snapshot from the ignorings and the
-	///     structural maskings of the expectation and the global ones, or returns <see langword="null" /> when there is
-	///     none, so that the formatter does not offer the values at all.
+	///     Creates the decision of the formatter for each value nested in an object snapshot from the member and value
+	///     rules of the expectation and the global ones, or returns <see langword="null" /> when there is none, so that the
+	///     formatter does not offer the values at all.
 	/// </summary>
 	/// <remarks>
-	///     An ignoring wins over a masking, the rules of the expectation come before the global ones, and the first
-	///     masking that matches a value replaces it.
+	///     A rule that leaves values out wins over one that masks or converts them, the rules of the expectation come
+	///     before the global ones, and the first masking or converter that matches a value replaces it.
 	/// </remarks>
-	public Func<FormattedValue, ValueFormatting>? CreateFormatValue(IReadOnlyList<SnapshotIgnoring> globalIgnorings,
-		IReadOnlyList<SnapshotMasking> globalMaskings, SnapshotNumbering numbering)
+	public Func<FormattedValue, ValueFormatting>? CreateFormatValue(IReadOnlyList<SnapshotRule> globalRules,
+		SnapshotNumbering numbering)
 	{
-		SnapshotIgnoring[] ignorings = Ignorings.Concat(globalIgnorings).Where(ignoring => !ignoring.IsLineRule)
-			.ToArray();
-		SnapshotMasking[] maskings = Maskings.Concat(globalMaskings).Where(masking => masking.IsStructural).ToArray();
-		if (ignorings.Length == 0 && maskings.Length == 0)
+		ValueRule[] rules = Rules.Concat(globalRules).Select(rule => rule.ValueRule).OfType<ValueRule>().ToArray();
+		if (rules.Length == 0)
 		{
 			return null;
 		}
 
+		ValueRule[] ignorings = rules.Where(rule => rule.IsIgnoring).ToArray();
+		ValueRule[] replacements = rules.Where(rule => !rule.IsIgnoring).ToArray();
 		return value =>
 		{
-			if (ignorings.Any(ignoring => ignoring.Matches(value)))
+			if (ignorings.Any(rule => rule.Ignores(value)))
 			{
 				return ValueFormatting.Omit;
 			}
 
-			foreach (SnapshotMasking masking in maskings)
-			{
-				SnapshotPlaceholder? replacement = masking.GetReplacement(value, numbering);
-				if (replacement is not null)
-				{
-					return ValueFormatting.Replace(replacement);
-				}
-			}
-
-			return ValueFormatting.Write;
+			return replacements.Select(rule => rule.GetReplacement(value, numbering))
+				.FirstOrDefault(replacement => replacement is not null) ?? ValueFormatting.Write;
 		};
 	}
 }

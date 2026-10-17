@@ -40,27 +40,16 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	}
 
 	/// <summary>
-	///     Masks values in the subject that change from run to run, e.g. an id or a timestamp, before it is compared with
-	///     the snapshot.
+	///     Adds a rule for values that change from run to run or are irrelevant for the test, e.g.
+	///     <c>.For.Members().WithName("Id").Mask()</c> or <c>.For.Guids().Mask()</c>.
 	/// </summary>
 	/// <remarks>
-	///     The maskings have the same names and semantics as the factories of <see cref="SnapshotMasking" /> for all
-	///     snapshots, e.g. <c>.Masking.Text(album.Id.ToString(), "&lt;album-id&gt;")</c> or <c>.Masking.Guids()</c>. They are applied
-	///     in the order in which they are added, before the maskings for all snapshots.
+	///     A rule selects what it applies to, filters it, then ends with one action: <c>Ignore()</c>, <c>Mask()</c>,
+	///     <c>Mask("…")</c>, <c>Convert(…)</c> or <c>Keep()</c>. It is written like a rule for all snapshots,
+	///     <c>SnapshotRule.For.…</c>, and applied before those. A member or value rule throws on a <see cref="string" />
+	///     subject, which is compared as raw text, and a line rule on any other subject.
 	/// </remarks>
-	public SnapshotMaskings<TType, TThat> Masking => new(this, _options);
-
-	/// <summary>
-	///     Leaves values out of a snapshot, e.g. a member of an object or a line of a string that is irrelevant for the
-	///     test.
-	/// </summary>
-	/// <remarks>
-	///     The ignorings have the same names and semantics as the factories of <see cref="SnapshotIgnoring" /> for all
-	///     snapshots, e.g. <c>.Ignoring.Member("ETag")</c>, <c>.Ignoring.Member&lt;DateTime&gt;()</c> or
-	///     <c>.Ignoring.LinesContaining("elapsed")</c>, and win over every masking. A member or type rule throws on a
-	///     <see cref="string" /> subject, which is compared as raw text, and a line rule on any other subject.
-	/// </remarks>
-	public SnapshotIgnorings<TType, TThat> Ignoring => new(this, _options);
+	public SnapshotFor<SnapshotResult<TType, TThat>> For => new(AddRule);
 
 	/// <summary>
 	///     Keeps a snapshot of its own for each environment, e.g. <c>.UniqueFor.TargetFramework()</c>, when the subject
@@ -173,6 +162,10 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 			? formattable.ToString(null, CultureInfo.InvariantCulture)
 			: value?.ToString()) ?? "null";
 
-	internal SnapshotLinesContainingResult<TType, TThat> WithLineRule(SnapshotIgnoringLinesContaining ignoring)
-		=> new(ExpectationBuilder, _returnValue, _options, ignoring);
+	private SnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
+	{
+		StructuralRules.ThrowIfNotApplicable<TType>(rule);
+		_options.Rules.Add(rule);
+		return this;
+	}
 }

@@ -36,26 +36,10 @@ public static class SnapshotsAwexpectCustomizationExtensions
 				});
 			AcceptChanges = new CustomizationValue<bool?>(awexpectCustomization,
 				"aweXpect.Snapshots.AcceptChanges", null);
-			Ignorings = new CopyingSetter<SnapshotIgnoring>(new CustomizationValue<IReadOnlyList<SnapshotIgnoring>>(
-				awexpectCustomization, "aweXpect.Snapshots.Ignorings", Array.Empty<SnapshotIgnoring>(),
+			Rules = new CopyingSetter<SnapshotRule>(new CustomizationValue<IReadOnlyList<SnapshotRule>>(
+				awexpectCustomization, "aweXpect.Snapshots.Rules", Array.Empty<SnapshotRule>(),
 				ThrowIfNullOrContainsNull));
-			Maskings = new CopyingSetter<SnapshotMasking>(new CustomizationValue<IReadOnlyList<SnapshotMasking>>(
-				awexpectCustomization, "aweXpect.Snapshots.Maskings", Array.Empty<SnapshotMasking>(),
-				ThrowIfNullOrContainsNull));
-			MaskPaths = new CustomizationValue<bool>(awexpectCustomization,
-				"aweXpect.Snapshots.MaskPaths", true);
 		}
-
-		/// <summary>
-		///     The ignorings that are applied to every snapshot, together with the ignorings of the expectation.
-		/// </summary>
-		/// <remarks>
-		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
-		///     <c>Set([.. Get(), extra])</c>. The list is copied, so changing it afterwards does not change the setting.
-		///     Member and type rules are ignored for a snapshot of a <see cref="string" />, which is compared as raw text,
-		///     and line rules for a snapshot of an object.
-		/// </remarks>
-		public ICustomizationValueSetter<IReadOnlyList<SnapshotIgnoring>> Ignorings { get; }
 
 		/// <summary>
 		///     Whether a missing or different snapshot is accepted, unless the expectation sets
@@ -69,26 +53,17 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		public ICustomizationValueSetter<bool?> AcceptChanges { get; }
 
 		/// <summary>
-		///     The maskings that are applied to every snapshot, after the maskings of the expectation; member and type
-		///     maskings are ignored for a snapshot of a <see cref="string" />.
+		///     The rules that are applied to every snapshot, after the rules of the expectation, e.g.
+		///     <c>SnapshotRule.For.Guids().Mask()</c>.
 		/// </summary>
 		/// <remarks>
 		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
 		///     <c>Set([.. Get(), extra])</c>. The list is copied, so changing it afterwards does not change the setting.
+		///     Member and value rules are ignored for a snapshot of a <see cref="string" />, which is compared as raw text,
+		///     and line rules for a snapshot of an object. <c>SnapshotRule.For.Paths().Keep()</c> keeps the paths of the
+		///     environment in every snapshot, which are masked by default.
 		/// </remarks>
-		public ICustomizationValueSetter<IReadOnlyList<SnapshotMasking>> Maskings { get; }
-
-		/// <summary>
-		///     Whether the paths of the environment are replaced with placeholders in every snapshot, unless the
-		///     expectation sets <c>.Masking.Paths(…)</c>.
-		/// </summary>
-		/// <remarks>
-		///     Defaults to <see langword="true" />: the directory of the test project with <c>{ProjectDirectory}</c>, the
-		///     source root with <c>{SourceRoot}</c>, <see cref="AppContext.BaseDirectory" /> with
-		///     <c>{OutputDirectory}</c>, <see cref="System.IO.Path.GetTempPath()" /> with <c>{TempPath}</c> and the
-		///     profile of the user with <c>{UserProfile}</c>, so that a snapshot does not depend on the machine.
-		/// </remarks>
-		public ICustomizationValueSetter<bool> MaskPaths { get; }
+		public ICustomizationValueSetter<IReadOnlyList<SnapshotRule>> Rules { get; }
 
 		/// <summary>
 		///     The <see cref="SnapshotStore" /> that keeps the snapshots.

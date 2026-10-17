@@ -35,7 +35,7 @@ internal static class EnvironmentMaskings
 	/// </summary>
 	private const string SegmentEnd = @"(?![\w-]|\.[\w-])";
 
-	private static readonly ConcurrentDictionary<(string Placeholder, string Path), SnapshotMasking> Maskings = new();
+	private static readonly ConcurrentDictionary<(string Placeholder, string Path), TextMasking> Maskings = new();
 
 	public static readonly RegexOptions PathOptions =
 		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
@@ -53,7 +53,7 @@ internal static class EnvironmentMaskings
 	///     <c>{SourceRoot}</c>. A path that is unknown, not rooted or a root of the file system, such as <c>C:\</c> or
 	///     <c>/</c>, is not masked.
 	/// </remarks>
-	public static IEnumerable<SnapshotMasking> ForPaths(string sourceFile)
+	public static IEnumerable<TextMasking> ForPaths(string sourceFile)
 	{
 		(string Placeholder, string? Path)[] paths =
 		[
@@ -68,7 +68,7 @@ internal static class EnvironmentMaskings
 			.Where(path => IsMaskable(path.Path))
 			.OrderByDescending(path => path.Path!.Length)
 			.Select(path => Maskings.GetOrAdd((path.Placeholder, path.Path!),
-				key => SnapshotMasking.ForPath(key.Path, key.Placeholder)));
+				key => TextMasking.ForPath(key.Path, key.Placeholder)));
 	}
 
 	/// <summary>

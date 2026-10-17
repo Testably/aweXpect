@@ -18,13 +18,16 @@ await Expect.That(description).MatchesSnapshot();
 await Expect.That(album).MatchesSnapshot();
 
 // replace values that change from run to run before comparing
-await Expect.That(playlist).MatchesSnapshot().Masking.Regex(@"plays=\d+", "plays=<count>");
+await Expect.That(playlist).MatchesSnapshot().For.Text(@"plays=\d+").AsRegex().Mask("plays=<count>");
 
 // replace every Guid and ISO 8601 date with a numbered placeholder ({Guid_1}, {Date_1}, …)
-await Expect.That(playlist).MatchesSnapshot().Masking.Guids().Masking.Dates();
+await Expect.That(playlist).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
 
-// leave out or mask members of an object by their name or type
-await Expect.That(album).MatchesSnapshot().Ignoring.Member("PlayCount").Masking.Member("Id");
+// leave out, mask or convert members of an object, selected by their name, type or declaring type
+await Expect.That(album).MatchesSnapshot()
+    .For.Members().WithName("PlayCount").Ignore()
+    .For.Members().WithName("Id").Mask()
+    .For.Members().DeclaredIn<Album>().WithName("Released").OfType<DateTime>().Convert(released => released.Year);
 
 // keep a snapshot per target framework and operating system (AlbumTests.Describes@net8.0@windows.snapshot.txt)
 await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework().UniqueFor.OperatingSystem();

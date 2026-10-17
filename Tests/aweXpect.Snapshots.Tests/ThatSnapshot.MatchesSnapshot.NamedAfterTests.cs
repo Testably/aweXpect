@@ -50,7 +50,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That("id=42").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Text("42", "<id>").NamedAfter(title).AcceptingChanges();
+						.For.Text("42").Mask("<id>").NamedAfter(title).AcceptingChanges();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>

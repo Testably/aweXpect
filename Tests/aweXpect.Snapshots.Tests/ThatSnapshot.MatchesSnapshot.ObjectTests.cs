@@ -328,7 +328,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Regex(@"Address = ""[0-9a-f-]{36}""", @"Address = ""<guid>""");
+						.For.Text(@"Address = ""[0-9a-f-]{36}""").AsRegex().Mask(@"Address = ""<guid>""");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -344,9 +344,9 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Guids(),
-					SnapshotMasking.Dates(),
+				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Guids().Mask(),
+					SnapshotRule.For.Dates().Mask(),
 				]);
 				Guid parent = Guid.NewGuid();
 				SnapshotAudit subject = new(Guid.NewGuid(), parent, parent, DateTime.UtcNow);

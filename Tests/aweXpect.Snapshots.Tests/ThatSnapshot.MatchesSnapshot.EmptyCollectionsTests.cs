@@ -22,7 +22,8 @@ public sealed partial class ThatSnapshot
 				RuleShelf subject = new();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.EmptyCollections();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WhichAreEmptyCollections().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -49,7 +50,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Member("Artist");
+						.For.Members().WithName("Artist").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Tracks = []*").AsWildcard()
@@ -64,7 +65,8 @@ public sealed partial class ThatSnapshot
 				RuleBoxSet subject = new();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.EmptyCollections();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WhichAreEmptyCollections().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -96,7 +98,8 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.EmptyCollections();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WhichAreEmptyCollections().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -117,7 +120,8 @@ public sealed partial class ThatSnapshot
 				RuleThrowing subject = new();
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.EmptyCollections();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WhichAreEmptyCollections().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
@@ -125,13 +129,13 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenGlobalIgnorings_ShouldLeaveOutEmptyCollections()
+			public async Task WhenGlobalRules_ShouldLeaveOutEmptyCollections()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.EmptyCollections(),
-					SnapshotIgnoring.MemberOf<RuleAlbum>(a => a.Artist),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Members().WhichAreEmptyCollections().Ignore(),
+					SnapshotRule.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Artist)).Ignore(),
 				]);
 				RuleAlbum subject = new()
 				{
@@ -155,15 +159,41 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task IgnoringEmptyCollections_WithAnotherFilter_ShouldOnlyLeaveOutTheMatchingMembers()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleShelf subject = new();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().Except(value => value.Name == "List").WhichAreEmptyCollections().Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleShelf {
+				                                             Empty = "",
+				                                             List = [],
+				                                             Missing = <null>,
+				                                             Tracks = [
+				                                               "Let It Be"
+				                                             ]
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the filters before it still apply");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.EmptyCollections();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WhichAreEmptyCollections().Ignore();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object*").AsWildcard();
+					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 
 			private sealed class OneShotSequence : IEnumerable<string>

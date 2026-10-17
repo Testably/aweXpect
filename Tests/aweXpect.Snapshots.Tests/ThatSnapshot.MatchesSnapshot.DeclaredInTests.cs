@@ -7,12 +7,12 @@ public sealed partial class ThatSnapshot
 {
 	public sealed partial class MatchesSnapshot
 	{
-		public sealed class MemberOfTests
+		public sealed class DeclaredInTests
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Fact]
-			public async Task IgnoringMemberOf_ShouldOnlyLeaveOutTheMemberOfTheType()
+			public async Task IgnoringMemberDeclaredIn_ShouldOnlyLeaveOutTheMemberOfTheType()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -21,7 +21,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.Price);
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Price)).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -48,7 +48,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task IgnoringMemberOf_ShouldLeaveOutTheMemberOfADerivedType()
+			public async Task IgnoringMemberDeclaredIn_ShouldLeaveOutTheMemberOfADerivedType()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -62,10 +62,10 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.Price)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.Artist)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.CoverUrl)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.Tracks);
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Price)).Ignore()
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Artist)).Ignore()
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.CoverUrl)).Ignore()
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Tracks)).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -78,7 +78,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task IgnoringMemberOf_WhenTheTypeIsAnotherOne_ShouldKeepTheMember()
+			public async Task IgnoringMemberDeclaredIn_WhenTheTypeIsAnotherOne_ShouldKeepTheMember()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -91,10 +91,10 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.MemberOf<RuleLiveAlbum>(a => a.Price)
-						.Ignoring.Member("Artist")
-						.Ignoring.Member("CoverUrl")
-						.Ignoring.Member("Tracks");
+						.For.Members().DeclaredIn<RuleLiveAlbum>().WithName(nameof(RuleLiveAlbum.Price)).Ignore()
+						.For.Members().WithName("Artist").Ignore()
+						.For.Members().WithName("CoverUrl").Ignore()
+						.For.Members().WithName("Tracks").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -108,7 +108,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task MaskingMemberOf_ShouldNumberThePlaceholderAfterTheMember()
+			public async Task MaskingMemberDeclaredIn_ShouldNumberThePlaceholderAfterTheMember()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -116,11 +116,11 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.MemberOf<RuleTrack>(t => t.Id)
-						.Ignoring.Member("CoverUrl")
-						.Ignoring.Member("PreviewUrl")
-						.Ignoring.Member("Price")
-						.Ignoring.Member("Duration");
+						.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.Id)).Mask()
+						.For.Members().WithName("CoverUrl").Ignore()
+						.For.Members().WithName("PreviewUrl").Ignore()
+						.For.Members().WithName("Price").Ignore()
+						.For.Members().WithName("Duration").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -147,7 +147,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task MaskingMemberOf_ShouldShareTheNumbersWithMember()
+			public async Task MaskingMemberDeclaredIn_ShouldShareTheNumbersWithOtherMemberRules()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -156,10 +156,11 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.MemberOf<RuleArtist>(a => a.Id, "{artist}")
-						.Masking.MemberOf<RuleTrack>(t => t.Id)
-						.Masking.Member("Id")
-						.Ignoring.Member(value => value.Name is "CoverUrl" or "PreviewUrl" or "Price" or "Duration");
+						.For.Members().DeclaredIn<RuleArtist>().WithName(nameof(RuleArtist.Id)).Mask("{artist}")
+						.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.Id)).Mask()
+						.For.Members().WithName("Id").Mask()
+						.For.Members().Which(value => value.Name is "CoverUrl" or "PreviewUrl" or "Price" or "Duration")
+						.Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -186,7 +187,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task MaskingMemberOf_WithAField_ShouldWriteTheReplacementWithoutQuotes()
+			public async Task MaskingMemberDeclaredIn_WithAField_ShouldWriteTheReplacementWithoutQuotes()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -198,7 +199,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.MemberOf<RuleArtist>(a => a.Name, "{artist}");
+						.For.Members().DeclaredIn<RuleArtist>().WithName(nameof(RuleArtist.Name)).Mask("{artist}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -210,22 +211,94 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task Filters_ShouldAllHaveToMatch()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleAlbum subject = RuleAlbum.AbbeyRoad();
+				subject.Tracks.RemoveAt(1);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().DeclaredIn<RuleTrack>().OfType<decimal>().Ignore()
+						.For.Members().WithName("Id").OfType<string>().Ignore()
+						.For.Members().WithName("Url").AsSuffix().DeclaredIn<RuleAlbum>().Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleAlbum {
+				                                             Artist = RuleArtist {
+				                                               Id = 3,
+				                                               Name = "The Beatles"
+				                                             },
+				                                             Id = 1,
+				                                             Price = 12.99,
+				                                             Title = "Abbey Road",
+				                                             Tracks = [
+				                                               RuleTrack {
+				                                                 Duration = 259,
+				                                                 Id = 11,
+				                                                 PreviewUrl = "https://example.com/come-together.mp3",
+				                                                 Title = "Come Together"
+				                                               }
+				                                             ]
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("only the price of a track is a decimal declared in a track, no id is a string, and only the cover url is declared in the album");
+			}
+
+			[Fact]
+			public async Task Except_ShouldLeaveOutTheMembersForWhichThePredicateIsTrue()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleAlbum subject = RuleAlbum.AbbeyRoad();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Members().WithName("Id").Except(value => value.DeclaringType == typeof(RuleArtist)).Mask()
+						.For.Members().Which(value => value.Name is "CoverUrl" or "PreviewUrl" or "Price" or "Duration")
+						.Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleAlbum {
+				                                             Artist = RuleArtist {
+				                                               Id = 3,
+				                                               Name = "The Beatles"
+				                                             },
+				                                             Id = {Id_1},
+				                                             Title = "Abbey Road",
+				                                             Tracks = [
+				                                               RuleTrack {
+				                                                 Id = {Id_2},
+				                                                 Title = "Come Together"
+				                                               },
+				                                               RuleTrack {
+				                                                 Id = {Id_3},
+				                                                 Title = "Something"
+				                                               }
+				                                             ]
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the id of the artist is excepted");
+			}
+
+			[Fact]
 			public async Task WhenGlobalRules_ShouldApplyThemAfterTheLocalOnes()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.MemberOf<RuleTrack>(t => t.PreviewUrl),
-				]);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.MemberOf<RuleTrack>(t => t.Title, "{global}"),
-					SnapshotMasking.MemberOf<RuleTrack>(t => t.Id),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.PreviewUrl)).Ignore(),
+					SnapshotRule.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.Title)).Mask("{global}"),
+					SnapshotRule.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.Id)).Mask(),
 				]);
 				RuleTrack subject = RuleTrack.ComeTogether();
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.MemberOf<RuleTrack>(t => t.Title, "{local}");
+						.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.Title)).Mask("{local}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -239,112 +312,22 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenTheMemberIsNested_ShouldThrowArgumentExceptionWhereItIsWritten()
-			{
-				RuleAlbum subject = RuleAlbum.AbbeyRoad();
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.Artist.Name);
-
-				await That(Act).Throws<ArgumentException>()
-					.WithParamName("member").And
-					.WithMessage(
-						"The 'member' must access a field or property of the RuleAlbum itself, but 'a => a.Artist.Name' accesses a nested member. Select it by the type that declares it instead, e.g. 'MemberOf<RuleArtist>(x => x.Name)'.*")
-					.AsWildcard()
-					.Because("the formatter does not tell the type of the object that contains a nested member");
-			}
-
-			[Fact]
-			public async Task WhenTheParameterIsCast_ShouldThrowArgumentExceptionNamingTheDeclaringType()
-			{
-				void Act()
-					=> SnapshotIgnoring.MemberOf<RuleAlbum>(a => ((RuleLiveAlbum)a).Venue);
-
-				await That(Act).Throws<ArgumentException>()
-					.WithParamName("member").And
-					.WithMessage("*accesses a nested member*e.g. 'MemberOf<RuleLiveAlbum>(x => x.Venue)'.*")
-					.AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenTheExpressionIsNoMemberOfTheParameter_ShouldThrowArgumentException()
-			{
-				void MethodAct()
-					=> SnapshotIgnoring.MemberOf<RuleAlbum>(a => a.ToString());
-
-				void ParameterAct()
-					=> SnapshotMasking.MemberOf<RuleAlbum>(a => a);
-
-				void IndexerAct()
-					=> SnapshotMasking.MemberOf<RuleAlbum>(a => a.Tracks[0], "{track}");
-
-				void StaticAct()
-					=> SnapshotIgnoring.MemberOf<RuleAlbum>(_ => string.Empty);
-
-				RuleAlbum other = RuleAlbum.AbbeyRoad();
-
-				void CapturedAct()
-					=> SnapshotIgnoring.MemberOf<RuleAlbum>(_ => other.Price);
-
-				await That(MethodAct).Throws<ArgumentException>().WithParamName("member").And
-					.WithMessage(
-						"The 'member' must access a field or property of the RuleAlbum itself, e.g. 'x => x.Id', but was 'a => a.ToString()'.*")
-					.AsWildcard();
-				await That(ParameterAct).Throws<ArgumentException>().WithParamName("member").And
-					.WithMessage("*but was 'a => a'.*").AsWildcard();
-				await That(IndexerAct).Throws<ArgumentException>().WithParamName("member").And
-					.WithMessage("*e.g. 'x => x.Id', but was*").AsWildcard();
-				await That(StaticAct).Throws<ArgumentException>().WithParamName("member").And
-					.WithMessage("*e.g. 'x => x.Id', but was*").AsWildcard();
-				await That(CapturedAct).Throws<ArgumentException>().WithParamName("member").And
-					.WithMessage("*e.g. 'x => x.Id', but was*").AsWildcard()
-					.Because("a member of another object is no member of the parameter");
-			}
-
-			[Fact]
-			public async Task WhenTheMemberIsNull_ShouldThrowArgumentNullException()
-			{
-				void IgnoringAct()
-					=> SnapshotIgnoring.MemberOf<RuleAlbum>(null!);
-
-				void MaskingAct()
-					=> SnapshotMasking.MemberOf<RuleAlbum>(null!);
-
-				void MaskingWithReplacementAct()
-					=> SnapshotMasking.MemberOf<RuleAlbum>(null!, "{x}");
-
-				await That(IgnoringAct).Throws<ArgumentNullException>().WithParamName("member");
-				await That(MaskingAct).Throws<ArgumentNullException>().WithParamName("member");
-				await That(MaskingWithReplacementAct).Throws<ArgumentNullException>().WithParamName("member");
-			}
-
-			[Fact]
-			public async Task WhenReplacementIsNull_ShouldThrowArgumentNullException()
-			{
-				void Act()
-					=> SnapshotMasking.MemberOf<RuleAlbum>(a => a.Id, null!);
-
-				await That(Act).Throws<ArgumentNullException>().WithParamName("replacement");
-			}
-
-			[Fact]
 			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task IgnoringAct()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.MemberOf<RuleAlbum>(a => a.Price);
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Price)).Ignore();
 
 				async Task MaskingAct()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.MemberOf<RuleAlbum>(a => a.Id);
+						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Id)).Mask();
 
 				await That(IgnoringAct).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object*").AsWildcard();
+					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 				await That(MaskingAct).Throws<InvalidOperationException>()
-					.WithMessage("A member or type rule only applies to a snapshot of an object*").AsWildcard();
+					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 		}
 	}

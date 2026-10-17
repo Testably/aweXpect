@@ -13,14 +13,12 @@ namespace aweXpect.Snapshots;
 internal sealed record SnapshotSettings(
 	SnapshotStore Store,
 	bool? AcceptChanges,
-	IReadOnlyList<SnapshotIgnoring> Ignorings,
-	IReadOnlyList<SnapshotMasking> Maskings,
-	bool MaskPaths)
+	IReadOnlyList<SnapshotRule> Rules)
 {
 	public static SnapshotSettings Read()
 	{
 		SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
 		return new SnapshotSettings(customization.Store.Get(), customization.AcceptChanges.Get(),
-			customization.Ignorings.Get(), customization.Maskings.Get(), customization.MaskPaths.Get());
+			customization.Rules.Get());
 	}
 }

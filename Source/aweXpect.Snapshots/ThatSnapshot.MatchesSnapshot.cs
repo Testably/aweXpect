@@ -45,11 +45,10 @@ public static class ThatSnapshot
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
-	///     Values that change from run to run can be replaced before comparing, see <c>.Masking</c>, e.g.
-	///     <c>.Masking.Guids()</c>, and, for all snapshots, <c>Customize.aweXpect.Snapshots().Maskings</c>. Paths of the
-	///     environment, e.g. of the test project, are replaced by default, see <c>.Masking.Paths(…)</c>. Lines that are
-	///     irrelevant for the test can be left out before, see <c>.Ignoring.Lines(…)</c> and
-	///     <c>.Ignoring.LinesContaining(…)</c>, and, for all snapshots, <c>Customize.aweXpect.Snapshots().Ignorings</c>.<br />
+	///     Values that change from run to run can be replaced before comparing, and lines that are irrelevant for the test
+	///     left out, see <c>.For</c>, e.g. <c>.For.Guids().Mask()</c> or <c>.For.Lines().Containing("elapsed").Ignore()</c>,
+	///     and, for all snapshots, <c>Customize.aweXpect.Snapshots().Rules</c>. Paths of the environment, e.g. of the
+	///     test project, are replaced by default, see <c>.For.Paths().Keep()</c>.<br />
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
 	///     subject.<br />
 	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a
@@ -81,7 +80,8 @@ public static class ThatSnapshot
 	///     A <see cref="string" /> subject is compared as raw text by the other overload; the static type decides, so a
 	///     string in an <see cref="object" /> subject is written in quotes like any other value.<br />
 	///     Otherwise it behaves like the overload for strings: see there for the files, accepting changes and the
-	///     failures. A masking applies to the written text, e.g. to a <see cref="Guid" /> member.
+	///     failures. A text rule applies to the written text, e.g. to a <see cref="Guid" /> member, and member and value
+	///     rules, e.g. <c>.For.Members().WithName("Id").Ignore()</c>, while the subject is written.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
 	/// <param name="callerFilePath">
@@ -160,16 +160,16 @@ public static class ThatSnapshot
 		private bool _isMatch;
 		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
-		private RegexMatchTimeoutException? _lineRuleTimeout;
-		private RegexMatchTimeoutException? _maskingTimeout;
 		private Exception? _readError;
+		private RegexMatchTimeoutException? _ruleTimeout;
 		private string? _snapshot;
+		private string? _timedOutRule;
 		private string? _value;
 		private string? _writeError;
 
 		/// <inheritdoc />
 		public override Exception? FailureCause
-			=> (Exception?)_formatError ?? _lineRuleTimeout ?? _maskingTimeout ?? _readError;
+			=> (Exception?)_formatError ?? _ruleTimeout ?? _readError;
 
 		private SnapshotId Id => snapshotOptions.Id;
 
@@ -197,8 +197,8 @@ public static class ThatSnapshot
 			_isMatch = false;
 			_isMismatch = false;
 			_isUsedForAnotherValue = false;
-			_lineRuleTimeout = null;
-			_maskingTimeout = null;
+			_ruleTimeout = null;
+			_timedOutRule = null;
 			_writeError = null;
 			_readError = null;
 			_snapshot = null;
@@ -211,18 +211,19 @@ public static class ThatSnapshot
 			}
 
 			string value;
-			bool isMasking = false;
+			string rule = "the member rule with the pattern ";
 			try
 			{
 				SnapshotNumbering numbering = new();
-				value = format(actual, snapshotOptions.CreateFormatValue(settings.Ignorings, settings.Maskings, numbering));
+				value = format(actual, snapshotOptions.CreateFormatValue(settings.Rules, numbering));
 				if (typeof(T) == typeof(string))
 				{
-					value = await snapshotOptions.RemoveLines(value, settings.Ignorings);
+					rule = "the line rule with the pattern ";
+					value = await snapshotOptions.ApplyLineRules(value, settings.Rules, numbering);
 				}
 
-				isMasking = true;
-				value = snapshotOptions.Mask(value, settings.Maskings, settings.MaskPaths, numbering);
+				rule = "the masking with the regex ";
+				value = snapshotOptions.Mask(value, settings.Rules, numbering);
 			}
 			catch (InsufficientExecutionStackException exception)
 			{
@@ -230,15 +231,10 @@ public static class ThatSnapshot
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
-			catch (RegexMatchTimeoutException exception) when (!isMasking)
-			{
-				_lineRuleTimeout = exception;
-				Outcome = Outcome.FailureBothWays;
-				return this;
-			}
 			catch (RegexMatchTimeoutException exception)
 			{
-				_maskingTimeout = exception;
+				_ruleTimeout = exception;
+				_timedOutRule = rule;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
@@ -380,16 +376,10 @@ public static class ThatSnapshot
 			{
 				stringBuilder.Append(It).Append(" could not be written: ").Append(_formatError.Message);
 			}
-			else if (_lineRuleTimeout is not null)
+			else if (_ruleTimeout is not null)
 			{
-				stringBuilder.Append("the line rule with the pattern ").Append(Formatter.Format(_lineRuleTimeout.Pattern))
-					.Append(" did not complete within ").Append(Formatter.Format(_lineRuleTimeout.MatchTimeout))
-					.Append(". Simplify the pattern to avoid catastrophic backtracking");
-			}
-			else if (_maskingTimeout is not null)
-			{
-				stringBuilder.Append("the masking with the regex ").Append(Formatter.Format(_maskingTimeout.Pattern))
-					.Append(" did not complete within ").Append(Formatter.Format(_maskingTimeout.MatchTimeout))
+				stringBuilder.Append(_timedOutRule).Append(Formatter.Format(_ruleTimeout.Pattern))
+					.Append(" did not complete within ").Append(Formatter.Format(_ruleTimeout.MatchTimeout))
 					.Append(". Simplify the pattern to avoid catastrophic backtracking");
 			}
 			else if (_isUsedForAnotherValue)

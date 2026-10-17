@@ -24,14 +24,6 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Fact]
-			public async Task MaskPaths_ShouldBeEnabledByDefault()
-			{
-				bool maskPaths = Customize.aweXpect.Snapshots().MaskPaths.Get();
-
-				await That(maskPaths).IsTrue();
-			}
-
-			[Fact]
 			public async Task WhenSubjectContainsTheTempPath_ShouldMaskIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -285,26 +277,44 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenPathsAreNotMaskedForTheExpectation_ShouldKeepThem()
+			public async Task WhenPathsAreKeptForTheExpectation_ShouldKeepThem()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = Path.Combine(TempPath, "abbey.tmp");
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Paths(false);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Paths().Keep();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject)
-					.Because("the expectation overrides the setting, which masks the paths");
+					.Because("the expectation keeps the paths, which are masked by default");
 			}
 
 			[Fact]
-			public async Task WhenPathsAreNotMaskedGlobally_ShouldKeepThem()
+			public async Task WhenPathsAreKeptForTheExpectation_ShouldStillApplyTheOtherRules()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskPaths = Customize.aweXpect.Snapshots().MaskPaths.Set(false);
+				string subject = Path.Combine(TempPath, $"{FirstGuid}.tmp");
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Paths().Keep()
+						.For.Guids().Mask();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo(Path.Combine(TempPath, "{Guid_1}.tmp"));
+			}
+
+			[Fact]
+			public async Task WhenPathsAreKeptGlobally_ShouldKeepThem()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Paths().Keep(),
+				]);
 				string subject = Path.Combine(TempPath, "abbey.tmp");
 
 				async Task Act()
@@ -315,19 +325,24 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenPathsAreNotMaskedGlobally_ButForTheExpectation_ShouldMaskThem()
+			public async Task WhenPathsAreKeptGlobally_AndAScopeSetsTheRulesWithoutIt_ShouldMaskThem()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskPaths = Customize.aweXpect.Snapshots().MaskPaths.Set(false);
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Paths().Keep(),
+				]);
 				string subject = Path.Combine(TempPath, "abbey.tmp");
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Paths();
+				{
+					using CustomizationLifetime inner = Customize.aweXpect.Snapshots().Rules.Set([]);
+					await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+				}
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo($"{{TempPath}}{Separator}abbey.tmp")
-					.Because("the expectation overrides the setting");
+					.Because("an expectation cannot mask the paths again, but a scope can set the rules without keeping them");
 			}
 
 			[Fact]
@@ -339,7 +354,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Regex(@"\{TempPath\}[\\/]\w+\.tmp", "{cache-file}");
+						.For.Text(@"\{TempPath\}[\\/]\w+\.tmp").AsRegex().Mask("{cache-file}");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Cache: {cache-file}")
@@ -354,7 +369,7 @@ public sealed partial class ThatSnapshot
 				string subject = Path.Combine(TempPath, $"{FirstGuid}.tmp");
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo($"{{TempPath}}{Separator}{{Guid_1}}.tmp");
@@ -414,7 +429,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"Ripped on {Environment.MachineName}, played on {InvertCase(Environment.MachineName)}.";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.MachineName();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.MachineName().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Ripped on {MachineName}, played on {MachineName}.")
@@ -429,7 +444,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"{Environment.MachineName}2 x{Environment.MachineName}";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.MachineName();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.MachineName().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject);
@@ -443,7 +458,7 @@ public sealed partial class ThatSnapshot
 				string subject = $"Playlist of {Environment.UserName}, not of {Environment.UserName}s";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.UserName();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.UserName().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo($"Playlist of {{UserName}}, not of {Environment.UserName}s");
@@ -457,7 +472,7 @@ public sealed partial class ThatSnapshot
 				string subject = Path.Combine(UserProfile, "Music");
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.UserName();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.UserName().Mask();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo($"{{UserProfile}}{Separator}Music")
@@ -469,9 +484,9 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.MachineName(),
-					SnapshotMasking.UserName(),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.MachineName().Mask(),
+					SnapshotRule.For.UserName().Mask(),
 				]);
 				string subject = $"{Environment.UserName} on {Environment.MachineName}";
 
@@ -487,18 +502,55 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.MachineName(),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.MachineName().Mask(),
 				]);
 				string subject = $"Ripped on {Environment.MachineName}";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Text("on {MachineName}", "elsewhere");
+						.For.Text("on {MachineName}").Mask("elsewhere");
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Ripped elsewhere")
 					.Because("the maskings of the environment come before the others, also from the global setting");
+			}
+
+			[Fact]
+			public async Task WhenMaskingMachineNameWithATemplate_ShouldUseIt()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = $"Ripped on {Environment.MachineName}, played on {InvertCase(Environment.MachineName)}";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.MachineName().Mask("<host>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Ripped on <host>, played on <host>");
+			}
+
+			[Fact]
+			public async Task WhenMaskingUserNameWithATemplate_ShouldUseIt()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = $"Playlist of {Environment.UserName}";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.UserName().Mask("<user>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Playlist of <user>");
+			}
+
+			[Fact]
+			public async Task WhenMachineNameTemplateIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+					=> SnapshotRule.For.MachineName().Mask(null!);
+
+				await That(Act).Throws<ArgumentNullException>().WithParamName("template");
 			}
 
 			private static string InvertCase(string value)

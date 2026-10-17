@@ -94,7 +94,8 @@ Album {
   change between runs: the items of a `HashSet<T>`, `ImmutableHashSet<T>`, `FrozenSet<T>` or `ConcurrentBag<T>` are
   sorted by their written text, and the entries of a `ConcurrentDictionary`, `ImmutableDictionary`, `FrozenDictionary`
   or `Hashtable` by their key. A `Dictionary<TKey, TValue>` keeps its insertion order.
-- Maskings apply to the written text, e.g. `.Masking.Guids()` for a `Guid` member.
+- Text rules apply to the written text, e.g. `.For.Guids().Mask()` for a `Guid` member; member and value rules, e.g.
+  `.For.Members().WithName("Id").Ignore()`, apply while the object is written, see [rules](04-masking-values.md).
 
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
 generator of aweXpect registers them for the call site, which it does for `MatchesSnapshot()`.

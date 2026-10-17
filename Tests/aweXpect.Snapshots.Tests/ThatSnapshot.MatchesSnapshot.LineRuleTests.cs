@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Customization;
@@ -21,7 +20,7 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Fact]
-			public async Task Lines_ShouldRemoveTheLinesMatchingThePredicate()
+			public async Task Which_ShouldRemoveTheLinesMatchingThePredicate()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -29,14 +28,14 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Lines(line => line.Length == 0);
+						.For.Lines().Which(line => line.Length == 0).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\nLet It Be");
 			}
 
 			[Fact]
-			public async Task Lines_ShouldPassEachLineWithoutItsLineBreak()
+			public async Task Which_ShouldPassEachLineWithoutItsLineBreak()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -45,11 +44,11 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Lines(line =>
+						.For.Lines().Which(line =>
 						{
 							lines.Add(line);
 							return false;
-						});
+						}).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(lines).IsEqualTo(["Abbey Road", "Let It Be", "Help!", "Back in Black", "",])
@@ -58,7 +57,55 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_ShouldRemoveTheLinesContainingTheTextAnywhere()
+			public async Task Except_ShouldRemoveTheLinesNotMatchingThePredicate()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Track 1: Help!\nloaded\nTrack 2: Let It Be";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Except(line => line.StartsWith("Track", StringComparison.Ordinal)).Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Track 1: Help!\nTrack 2: Let It Be");
+			}
+
+			[Fact]
+			public async Task Filters_ShouldAllHaveToMatch()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Track 1: Help! (Live)\nTrack 2: Let It Be\nLive at Wembley";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("Live").Which(line => line.StartsWith("Track", StringComparison.Ordinal))
+						.Except(line => line.EndsWith("Be", StringComparison.Ordinal))
+						.Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Track 2: Let It Be\nLive at Wembley")
+					.Because("the filters of a rule are combined, so a line has to match all of them");
+			}
+
+			[Fact]
+			public async Task WithoutFilter_ShouldApplyToEveryLine()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road\nLet It Be";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Mask("<line>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("<line>\n<line>");
+			}
+
+			[Fact]
+			public async Task Containing_ShouldRemoveTheLinesContainingTheTextAnywhere()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -66,14 +113,14 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\nLet It Be");
 			}
 
 			[Fact]
-			public async Task LinesContaining_ShouldCompareOrdinallyByDefault()
+			public async Task Containing_ShouldCompareOrdinallyByDefault()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -81,7 +128,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\nElapsed 3 ms")
@@ -89,7 +136,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_IgnoringCase_ShouldIgnoreTheCaseOfTheText()
+			public async Task Containing_IgnoringCase_ShouldIgnoreTheCaseOfTheText()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -97,14 +144,14 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("ELAPSED").IgnoringCase();
+						.For.Lines().Containing("ELAPSED").IgnoringCase().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road");
 			}
 
 			[Fact]
-			public async Task LinesContaining_IgnoringCase_ShouldNotIgnoreTheCaseWhenComparingWithTheSnapshot()
+			public async Task Containing_IgnoringCase_ShouldNotIgnoreTheCaseWhenComparingWithTheSnapshot()
 			{
 				InMemorySnapshotStore store = new();
 				store.Snapshots[Id] = "Abbey Road";
@@ -113,7 +160,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("ELAPSED").IgnoringCase();
+						.For.Lines().Containing("ELAPSED").IgnoringCase().Ignore();
 
 				await That(Act).Throws<XunitException>()
 					.Because("the option only applies to the line rule");
@@ -121,7 +168,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_AsWildcard_ShouldMatchThePattern()
+			public async Task Containing_AsWildcard_ShouldMatchThePattern()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -129,14 +176,14 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("Track ?: *Live*").AsWildcard();
+						.For.Lines().Containing("Track ?: *Live*").AsWildcard().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Track 1: Help!\nTrack 3: Let It Be");
 			}
 
 			[Fact]
-			public async Task LinesContaining_AsRegex_ShouldMatchThePattern()
+			public async Task Containing_AsRegex_ShouldMatchThePattern()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -144,7 +191,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining(@"^\d{2}:\d{2} ").AsRegex();
+						.For.Lines().Containing(@"^\d{2}:\d{2} ").AsRegex().Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\nat 09:31 Let It Be")
@@ -152,7 +199,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_Options_ShouldOnlyApplyToTheirOwnRule()
+			public async Task Containing_Options_ShouldOnlyApplyToTheirOwnRule()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -160,8 +207,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("TRACK").IgnoringCase()
-						.Ignoring.LinesContaining("LIVE");
+						.For.Lines().Containing("TRACK").IgnoringCase().Ignore()
+						.For.Lines().Containing("LIVE").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("live at Shea Stadium")
@@ -169,19 +216,28 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_WhenFollowedByAnotherOption_ShouldNoLongerOfferTheOptionsOfTheRule()
+			public async Task Containing_AfterTheAction_ShouldNoLongerOfferTheOptionsOfTheRule()
 			{
-				Type afterLineRule = typeof(SnapshotLinesContainingResult<string?, IThat<string?>>);
-				Type afterOtherOption = typeof(SnapshotLinesContainingResult<string?, IThat<string?>>)
-					.GetMethod(nameof(SnapshotResult<string?, IThat<string?>>.Named))!.ReturnType;
+				Type containing = typeof(SnapshotLinesContaining<SnapshotResult<string?, IThat<string?>>>);
+				Type afterAction = containing.GetMethod(nameof(SnapshotLines<SnapshotRule>.Ignore))!.ReturnType;
 
-				await That(typeof(IOptionsProvider<StringEqualityOptions>).IsAssignableFrom(afterLineRule)).IsTrue();
-				await That(typeof(IOptionsProvider<StringEqualityOptions>).IsAssignableFrom(afterOtherOption)).IsFalse()
+				await That(typeof(IOptionsProvider<StringEqualityOptions>).IsAssignableFrom(containing)).IsTrue();
+				await That(typeof(IOptionsProvider<StringEqualityOptions>).IsAssignableFrom(afterAction)).IsFalse()
 					.Because("the options of the line rule must not be mistaken for options of the snapshot comparison");
 			}
 
 			[Fact]
-			public async Task LinesContaining_WhenFollowedByOtherOptions_ShouldApplyThem()
+			public async Task Containing_ShouldOnlyOfferThePatternOptions()
+			{
+				Type containing = typeof(SnapshotLinesContaining<SnapshotRule>);
+
+				await That(typeof(IStringPatternMatchTypeOptions).IsAssignableFrom(containing)).IsTrue();
+				await That(typeof(IStringMatchTypeOptions).IsAssignableFrom(containing)).IsFalse()
+					.Because("the text is searched within the line, where a prefix or suffix has no meaning");
+			}
+
+			[Fact]
+			public async Task Containing_WhenFollowedByOtherOptions_ShouldApplyThem()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -189,9 +245,9 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("ELAPSED").IgnoringCase()
+						.For.Lines().Containing("ELAPSED").IgnoringCase().Ignore()
 						.Named("tracks")
-						.Masking.Guids()
+						.For.Guids().Mask()
 						.AcceptingChanges();
 
 				await That(Act).Throws<XunitException>();
@@ -202,40 +258,54 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_WhenRegexIsInvalid_ShouldThrowArgumentException()
+			public async Task Containing_WhenRegexIsInvalid_ShouldThrowArgumentExceptionAtTheAction()
 			{
 				string subject = "Abbey Road";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Lines(_ => true)
-						.Ignoring.LinesContaining("(").AsRegex();
+						.For.Lines().Which(_ => true).Ignore()
+						.For.Lines().Containing("(").AsRegex().Ignore();
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("text").And
 					.WithMessage("The 'text' regex pattern is invalid: *").AsWildcard()
-					.Because("the pattern is validated before any line is checked, also when another rule removes every line");
+					.Because("the pattern is validated where the rule is written, also when another rule removes every line");
 			}
 
 			[Fact]
-			public async Task LinesContaining_WhenRegexTimesOut_ShouldFailWithTheExceptionAsCause()
+			public async Task Containing_WhenGlobalRegexIsInvalid_ShouldThrowArgumentExceptionAtTheAction()
+			{
+				void Act()
+					=> SnapshotRule.For.Lines().Containing("(").AsRegex().Mask("x");
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("text").And
+					.WithMessage("The 'text' regex pattern is invalid: *").AsWildcard();
+			}
+
+			[Fact]
+			public async Task Containing_WhenRegexTimesOut_ShouldFailWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime timeout =
-					Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromMilliseconds(1));
 				string subject = new string('a', 40) + "!";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining(@"^(\w+\s?)*$").AsRegex();
+				{
+					using CustomizationLifetime timeout =
+						Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromMilliseconds(1));
+					await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing(@"^(\w+\s?)*$").AsRegex().Ignore();
+				}
 
 				XunitException exception = await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
 					             but the line rule with the pattern "^(\\w+\\s?)*$" did not complete within *. Simplify the pattern to avoid catastrophic backtracking
-					             """).AsWildcard();
+					             """).AsWildcard()
+					.Because("the short timeout only applies to the expectation, not to this wildcard match of its message");
 				await That(exception.InnerException).Is<RegexMatchTimeoutException>()
 					.Whose(timeoutException => timeoutException.MatchTimeout,
 						matchTimeout => matchTimeout.IsEqualTo(TimeSpan.FromMilliseconds(1)))
@@ -245,10 +315,10 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_WhenTextIsEmpty_ShouldThrowArgumentException()
+			public async Task Containing_WhenTextIsEmpty_ShouldThrowArgumentException()
 			{
 				void Act()
-					=> SnapshotIgnoring.LinesContaining("");
+					=> SnapshotRule.For.Lines().Containing("");
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("text").And
@@ -256,26 +326,48 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task LinesContaining_WhenTextIsNull_ShouldThrowArgumentNullException()
+			public async Task Containing_WhenTextIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "Abbey Road";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining(null!);
+						.For.Lines().Containing(null!).Ignore();
 
 				await That(Act).Throws<ArgumentNullException>().WithParamName("text");
 			}
 
 			[Fact]
-			public async Task Lines_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			public async Task Which_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "Abbey Road";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Lines(null!);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Lines().Which(null!).Ignore();
 
 				await That(Act).Throws<ArgumentNullException>().WithParamName("predicate");
+			}
+
+			[Fact]
+			public async Task Except_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+					=> SnapshotRule.For.Lines().Except(null!);
+
+				await That(Act).Throws<ArgumentNullException>().WithParamName("predicate");
+			}
+
+			[Fact]
+			public async Task Which_WhenPredicateThrows_ShouldThrowTheException()
+			{
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Which(_ => throw new InvalidOperationException("boom")).Ignore();
+
+				await That(Act).Throws<InvalidOperationException>().WithMessage("boom")
+					.Because("an exception of the predicate is a mistake in the test that must not be hidden");
 			}
 
 			[Theory]
@@ -298,7 +390,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("x");
+						.For.Lines().Containing("x").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo(expected)
@@ -314,10 +406,179 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Lines(line => line.Length == 0);
+						.For.Lines().Which(line => line.Length == 0).Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\r\nLet It Be");
+			}
+
+			[Theory]
+			[InlineData("Abbey Road\r\nNow playing: Help!\r\nLet It Be", "Abbey Road\r\nNow playing: <track>\r\nLet It Be")]
+			[InlineData("Now playing: Help!\nLet It Be", "Now playing: <track>\nLet It Be")]
+			[InlineData("Abbey Road\rNow playing: Help!", "Abbey Road\rNow playing: <track>")]
+			[InlineData("Now playing: Help!\n", "Now playing: <track>\n")]
+			public async Task Mask_ShouldReplaceTheWholeLineAndKeepItsLineBreak(string subject, string expected)
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("Now playing").Mask("Now playing: <track>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo(expected);
+			}
+
+			[Fact]
+			public async Task Mask_WhenTemplateIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+					=> SnapshotRule.For.Lines().Mask(null!);
+
+				await That(Act).Throws<ArgumentNullException>().WithParamName("template");
+			}
+
+			[Fact]
+			public async Task Mask_ShouldInsertTheTemplateLiterally()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "elapsed 3 ms";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing(@"(\d+) ms").AsRegex().Mask("$1 ms");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("$1 ms")
+					.Because("a line is replaced as a whole, so a pattern of the filter has no groups to substitute");
+			}
+
+			[Fact]
+			public async Task Convert_ShouldReplaceTheLineWithTheConvertedText()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road\r\nelapsed 3 ms\r\nLet It Be";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("elapsed").Convert(line => line.Substring(0, "elapsed".Length));
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\r\nelapsed\r\nLet It Be")
+					.Because("the converted line keeps its line break");
+			}
+
+			[Fact]
+			public async Task Convert_WhenItReturnsNull_ShouldRemoveTheLine()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road\nelapsed 3 ms\nLet It Be\nelapsed 4 ms";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Convert(line => line.StartsWith("elapsed", StringComparison.Ordinal)
+							? null
+							: line.ToUpperInvariant());
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("ABBEY ROAD\nLET IT BE")
+					.Because("a line converted to null is removed like an ignored line, also its line break");
+			}
+
+			[Fact]
+			public async Task Convert_WhenConverterIsNull_ShouldThrowArgumentNullException()
+			{
+				void Act()
+					=> SnapshotRule.For.Lines().Convert(null!);
+
+				await That(Act).Throws<ArgumentNullException>().WithParamName("convert");
+			}
+
+			[Fact]
+			public async Task Convert_WhenConverterThrows_ShouldThrowTheException()
+			{
+				string subject = "Abbey Road";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Convert(_ => throw new InvalidOperationException("boom"));
+
+				await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
+			}
+
+			[Fact]
+			public async Task IgnoringWinsOverMasking()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Abbey Road\nelapsed 3 ms";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("elapsed").Mask("<elapsed>")
+						.For.Lines().Containing("ms").Ignore();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road")
+					.Because("a rule that leaves lines out wins, also when it is added after a masking");
+			}
+
+			[Fact]
+			public async Task TheFirstMatchingMaskingWins()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "elapsed 3 ms";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("elapsed").Mask("<first>")
+						.For.Lines().Containing("ms").Convert(_ => "<second>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("<first>")
+					.Because("a masked line is not masked again by a later rule");
+			}
+
+			[Fact]
+			public async Task WhenGlobalAndLocalMaskings_ShouldApplyTheLocalOneFirst()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Lines().Containing("elapsed").Mask("<global>"),
+				]);
+				string subject = "Abbey Road\nelapsed 3 ms";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Containing("elapsed").Mask("<local>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road\n<local>")
+					.Because("the rules of the expectation come before those for all snapshots");
+			}
+
+			[Fact]
+			public async Task WhenMaskingLines_ShouldApplyTheTextRulesAfterwards()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = $"Now playing: Help!\nalbum {FirstGuid}";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Text("Now playing").Mask("<text>")
+						.For.Guids().Mask()
+						.For.Lines().Containing("Now playing").Mask("Now playing: <track>");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("<text>: <track>\nalbum {Guid_1}")
+					.Because("the line rules are applied before the text rules, whatever the order in which they are added");
 			}
 
 			[Fact]
@@ -325,22 +586,20 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.LinesContaining("session"),
-				]);
-				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
-					SnapshotMasking.Guids(),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Lines().Containing("session").Ignore(),
+					SnapshotRule.For.Guids().Mask(),
 				]);
 				string subject = $"session {Guid.NewGuid()}\nAbbey Road {FirstGuid}\ndebug {Guid.NewGuid()}\nLet It Be {SecondGuid}";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Masking.Guids()
-						.Ignoring.LinesContaining("debug");
+						.For.Guids().Mask()
+						.For.Lines().Containing("debug").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road {Guid_1}\nLet It Be {Guid_2}")
-					.Because("the lines are removed before the maskings of the expectation and the global ones");
+					.Because("the lines are removed before the text rules of the expectation and the global ones");
 			}
 
 			[Fact]
@@ -353,7 +612,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -368,7 +627,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -393,9 +652,9 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 				{
 					await That("Abbey Road\nelapsed 3 ms").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 					await That("Abbey Road\nelapsed 4 ms").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 				}
 
 				await That(Act).DoesNotThrow()
@@ -411,7 +670,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("(").AsRegex();
+						.For.Lines().Which(_ => throw new InvalidOperationException("boom")).Ignore();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -422,7 +681,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsAnObject_LinesRule_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAnObject_IgnoringLines_ShouldThrowInvalidOperationException()
 			{
 				RuleNote subject = new()
 				{
@@ -430,7 +689,7 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Lines(_ => true);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Lines().Which(_ => true).Ignore();
 
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("A line rule only applies to a snapshot of a string, but an object is written by the formatter.*")
@@ -438,7 +697,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsAnObject_LinesContainingRule_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAnObject_MaskingLines_ShouldThrowInvalidOperationException()
 			{
 				RuleNote subject = new()
 				{
@@ -447,7 +706,23 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("Abbey");
+						.For.Lines().Containing("Abbey").Mask("<album>");
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A line rule only applies to a snapshot of a string*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAnObject_ConvertingLines_ShouldThrowInvalidOperationException()
+			{
+				RuleNote subject = new()
+				{
+					Text = "Abbey Road",
+				};
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Lines().Convert(line => line);
 
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("A line rule only applies to a snapshot of a string*").AsWildcard();
@@ -458,15 +733,15 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.LinesContaining("BUILD DATE").IgnoringCase(),
-					SnapshotIgnoring.Lines(line => line.Length > 0 && line[0] == '#'),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Lines().Containing("BUILD DATE").IgnoringCase().Ignore(),
+					SnapshotRule.For.Lines().Which(line => line.Length > 0 && line[0] == '#').Ignore(),
 				]);
 				string subject = "Build date: 2026-10-17\n# AC/DC\nBack in Black\nelapsed 3 ms\nHighway to Hell";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.LinesContaining("elapsed");
+						.For.Lines().Containing("elapsed").Ignore();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Back in Black\nHighway to Hell");
@@ -477,9 +752,10 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.LinesContaining("Text"),
-					SnapshotIgnoring.Lines(_ => true),
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+					SnapshotRule.For.Lines().Containing("Text").Ignore(),
+					SnapshotRule.For.Lines().Which(_ => true).Ignore(),
+					SnapshotRule.For.Lines().Mask("<line>"),
 				]);
 				RuleNote subject = new()
 				{
@@ -503,18 +779,21 @@ public sealed partial class ThatSnapshot
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				using CustomizationLifetime timeout =
-					Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromMilliseconds(1));
-				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.LinesContaining(@"^(\w+\s?)*$").AsRegex(),
-				]);
 				string subject = new string('a', 40) + "!";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+				{
+					using CustomizationLifetime timeout =
+						Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromMilliseconds(1));
+					using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+						SnapshotRule.For.Lines().Containing(@"^(\w+\s?)*$").AsRegex().Ignore(),
+					]);
+					await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+				}
 
 				XunitException exception = await That(Act).Throws<XunitException>()
-					.WithMessage("*the line rule with the pattern \"^(\\\\w+\\\\s?)*$\" did not complete*").AsWildcard();
+					.WithMessage("*the line rule with the pattern \"^(\\\\w+\\\\s?)*$\" did not complete*").AsWildcard()
+					.Because("the short timeout only applies to the expectation, not to this wildcard match of its message");
 				await That(exception.InnerException).Is<RegexMatchTimeoutException>();
 			}
 
@@ -532,15 +811,15 @@ public sealed partial class ThatSnapshot
 
 				async Task ActWithGlobalRule()
 				{
-					using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-						WithOption(SnapshotIgnoring.LinesContaining(text), option),
+					using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([
+						WithOption(SnapshotRule.For.Lines().Containing(text), option).Ignore(),
 					]);
 					await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("global");
 				}
 
 				async Task ActWithExpectationRule()
 					=> await WithOption(That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("expectation")
-						.Ignoring.LinesContaining(text), option);
+						.For.Lines().Containing(text), option).Ignore();
 
 				await That(ActWithGlobalRule).Throws<XunitException>();
 				await That(ActWithExpectationRule).Throws<XunitException>();
@@ -558,21 +837,6 @@ public sealed partial class ThatSnapshot
 					"AsRegex" => result.AsRegex(),
 					_ => result,
 				};
-
-			[Fact]
-			public async Task LinesContaining_ShouldOfferTheSameOptionsForAllSnapshotsAsForTheExpectation()
-			{
-				Type[] global = typeof(SnapshotIgnoringLinesContaining).GetInterfaces()
-					.OrderBy(type => type.FullName, StringComparer.Ordinal).ToArray();
-				Type[] expectation = typeof(SnapshotLinesContainingResult<string?, IThat<string?>>).GetInterfaces()
-					.Except(typeof(SnapshotResult<string?, IThat<string?>>).GetInterfaces())
-					.OrderBy(type => type.FullName, StringComparer.Ordinal).ToArray();
-
-				await That(expectation).IsEqualTo(global)
-					.Because("the global line rule supports the same options as the one of the expectation");
-				await That(global).Contains(typeof(IOptionsProvider<StringEqualityOptions>)).And
-					.Contains(typeof(IStringPatternMatchTypeOptions));
-			}
 		}
 	}
 }
