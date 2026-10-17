@@ -346,7 +346,7 @@ apart from the reviewed snapshot:
 |-----------------------|------------------------------------------------|--------------------------------------------------|
 | `ReadAsync`           | to read the reviewed snapshot, `null` if none  | the expectation fails with the exception         |
 | `RecordMismatchAsync` | when the snapshot is missing or different      | the failure names the error                      |
-| `AcceptAsync`         | instead, while accepting changes               | the failure names the error                      |
+| `AcceptAsync`         | instead, while accepting changes               | the failure names the error, and the mismatch is recorded instead |
 | `RecordMatchAsync`    | when the snapshot matches, e.g. to clean up    | the error is ignored, as the snapshot matched    |
 | `Describe`            | to name the snapshot in the failure            |                                                  |
 | `DescribeMismatch`    | to name the recorded mismatch, `null` to omit  |                                                  |

@@ -147,6 +147,7 @@ public static class ThatSnapshot
 			IAsyncConstraint<T>
 	{
 		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
+		private string? _acceptError;
 		private InsufficientExecutionStackException? _formatError;
 		private bool _isAccepted;
 		private bool _isMatch;
@@ -169,7 +170,9 @@ public static class ThatSnapshot
 		///     e.g. of a member that throws, into the text instead.<br />
 		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
 		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
-		///     An accepted snapshot still fails the expectation, so that accepting by accident never goes unnoticed.<br />
+		///     An accepted snapshot still fails the expectation, so that accepting by accident never goes unnoticed. A
+		///     snapshot that cannot be accepted, e.g. because the file is read-only, is recorded as a mismatch instead, so
+		///     that it can still be reviewed and accepted by hand.<br />
 		///     Everything after the masking only sees the masked value, so that the comparison, the stored snapshot and
 		///     the failure agree, and two values that only differ in a masked part are no conflict. A masking that times
 		///     out fails the expectation both ways, with the exception as the <see cref="FailureCause" />.
@@ -177,6 +180,7 @@ public static class ThatSnapshot
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_acceptError = null;
 			_isAccepted = false;
 			_isMatch = false;
 			_isUsedForAnotherValue = false;
@@ -248,16 +252,23 @@ public static class ThatSnapshot
 			}
 
 			_isAccepted = snapshotOptions.AcceptChanges ?? acceptChanges ?? AcceptEnvironment.IsAccepting();
-			try
+			if (_isAccepted)
 			{
-				if (_isAccepted)
+				try
 				{
 					await store.AcceptAsync(id, value, cancellationToken);
+					Outcome = Outcome.FailureBothWays;
+					return this;
 				}
-				else
+				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 				{
-					await store.RecordMismatchAsync(id, value, cancellationToken);
+					_acceptError = exception.Message;
 				}
+			}
+
+			try
+			{
+				await store.RecordMismatchAsync(id, value, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
@@ -284,8 +295,11 @@ public static class ThatSnapshot
 			if (_isAccepted)
 			{
 				contexts.Add(new ResultContext.Fixed("Accepted snapshot",
-					_writeError is null ? store.Describe(Id) : $"could not be written: {_writeError}"));
-				return;
+					_acceptError is null ? store.Describe(Id) : $"could not be written: {_acceptError}"));
+				if (_acceptError is null)
+				{
+					return;
+				}
 			}
 
 			string? mismatch = _writeError is null

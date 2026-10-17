@@ -29,11 +29,11 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenAccepting_AndAcceptingThrows_ShouldNameTheErrorInTheFailure()
+			public async Task WhenAccepting_AndAcceptingThrows_ShouldNameTheErrorAndRecordAMismatchInstead()
 			{
 				InMemorySnapshotStore store = new()
 				{
-					AcceptException = new IOException("disk full"),
+					AcceptException = new IOException("read-only"),
 				};
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
@@ -51,9 +51,43 @@ public sealed partial class ThatSnapshot
 					             foo
 
 					             Accepted snapshot:
+					             could not be written: read-only
+					             """);
+				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
+				{
+					[Id] = "foo",
+				}).Because("the value can still be reviewed and accepted by hand");
+			}
+
+			[Fact]
+			public async Task WhenAccepting_AndAcceptingAndRecordingThrow_ShouldNameBothErrors()
+			{
+				InMemorySnapshotStore store = new()
+				{
+					AcceptException = new IOException("read-only"),
+					RecordMismatchException = new IOException("disk full"),
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).AcceptingChanges();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist
+
+					             Actual:
+					             foo
+
+					             Accepted snapshot:
+					             could not be written: read-only
+
+					             Pending snapshot:
 					             could not be written: disk full
 					             """);
-				await That(store.Mismatches).IsEmpty();
 			}
 
 			[Fact]

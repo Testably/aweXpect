@@ -44,7 +44,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenAccepting_AndDirectoryDoesNotExist_ShouldReportThatTheSnapshotCouldNotBeWritten()
+			public async Task WhenAccepting_AndDirectoryDoesNotExist_ShouldReportThatNeitherSnapshotCouldBeWritten()
 			{
 				using SnapshotDirectory directory = new();
 				string testFilePath = Path.Combine(directory.Path, "missing", "MyTests.cs");
@@ -59,7 +59,43 @@ public sealed partial class ThatSnapshot
 					             *
 					             Accepted snapshot:
 					             could not be written: *
+
+					             Pending snapshot:
+					             could not be written: *
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAccepting_AndSnapshotIsReadOnly_ShouldWriteThePendingSnapshotInstead()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("foo");
+				File.SetAttributes(directory.SnapshotPath, FileAttributes.ReadOnly);
+				try
+				{
+					string subject = "bar";
+
+					async Task Act()
+						=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+							.AcceptingChanges();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              *
+						              Accepted snapshot:
+						              could not be written: *
+
+						              Pending snapshot:
+						              {directory.PendingPath}
+						              """).AsWildcard();
+					await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar" + Environment.NewLine)
+						.Because("a version control system like Perforce checks files out read-only, so the value is kept for review");
+					await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo");
+				}
+				finally
+				{
+					File.SetAttributes(directory.SnapshotPath, FileAttributes.Normal);
+				}
 			}
 
 			[Fact]
