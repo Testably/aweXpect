@@ -228,6 +228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -268,7 +274,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -312,7 +319,8 @@ window.BENCHMARK_DATA = {
           6861.284078470866,
           12421.406861525316,
           12496.73488323505,
-          13080.987020639273
+          13080.987020639273,
+          13147.132938091572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -361,6 +369,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880
         ],
         "borderColor": "#63A2AC",
@@ -413,7 +422,8 @@ window.BENCHMARK_DATA = {
           205385.36598557694,
           378961.86875,
           366736.21819196426,
-          383840.941796875
+          383840.941796875,
+          376214.4415364583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -460,6 +470,7 @@ window.BENCHMARK_DATA = {
           590292,
           590289,
           590226,
+          590292,
           590292,
           590292,
           590292
@@ -514,7 +525,8 @@ window.BENCHMARK_DATA = {
           12472.836968994141,
           20068.747473580497,
           19177.849635532923,
-          19932.613854980467
+          19932.613854980467,
+          19449.401745605468
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -526,6 +538,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -763,6 +776,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -796,7 +815,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -833,7 +853,8 @@ window.BENCHMARK_DATA = {
           207.12579550743104,
           319.7000914255778,
           359.03796838124595,
-          326.2151486714681
+          326.2151486714681,
+          269.3584834734599
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -845,6 +866,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -920,7 +942,8 @@ window.BENCHMARK_DATA = {
           378.2134840965271,
           519.9569649378459,
           504.27239751815796,
-          536.68154519399
+          536.68154519399,
+          493.8878744761149
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -932,6 +955,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1007,7 +1031,8 @@ window.BENCHMARK_DATA = {
           289.82909094492595,
           407.7315179824829,
           403.92290452548434,
-          413.399849096934
+          413.399849096934,
+          406.1844599246979
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1019,6 +1044,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -1064,12 +1090,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
-        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
-      },
       {
         "sha": "3fd1189bbcc7dcb05cc18646d823f18924ce7e17",
         "author": "Valentin Breu\u00DF",
@@ -1363,10 +1383,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
-      "75cde8b0",
       "3fd1189b",
       "fe613c6c",
       "5ef58e1e",
@@ -1415,14 +1440,14 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          160.85706199010212,
           150.09303159713744,
           159.1996108373006,
           116.29780764239175,
@@ -1471,7 +1496,8 @@ window.BENCHMARK_DATA = {
           104.08127458890279,
           174.27535274823506,
           153.22138957977296,
-          162.44515345891315
+          162.44515345891315,
+          151.5168959924153
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1485,7 +1511,6 @@ window.BENCHMARK_DATA = {
         "data": [
           528,
           528,
-          528,
           544,
           544,
           544,
@@ -1527,6 +1552,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -1547,7 +1573,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          281.25273551940916,
           260.12614444096886,
           275.2909729003906,
           192.52232818603517,
@@ -1596,7 +1621,8 @@ window.BENCHMARK_DATA = {
           196.98380131721495,
           260.67188380559287,
           268.07214767592296,
-          277.98049046198526
+          277.98049046198526,
+          244.37976859410603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1672,7 +1698,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          260.1941842714945,
           257.2019051483699,
           260.9803979056222,
           186.36010232993536,
@@ -1721,7 +1746,8 @@ window.BENCHMARK_DATA = {
           154.8402912457784,
           252.18514610926312,
           248.56553770701092,
-          259.5931412378947
+          259.5931412378947,
+          240.0195998509725
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2024,6 +2050,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -2064,7 +2096,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -2108,7 +2141,8 @@ window.BENCHMARK_DATA = {
           182.34853585561117,
           298.23871854373385,
           281.43434371267045,
-          285.66499205430347
+          285.66499205430347,
+          275.98561099597384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2127,6 +2161,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -2209,7 +2244,8 @@ window.BENCHMARK_DATA = {
           393.68072278683,
           589.0532191594442,
           559.042838160197,
-          585.0306126730783
+          585.0306126730783,
+          524.1911427815755
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2221,6 +2257,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -2310,7 +2347,8 @@ window.BENCHMARK_DATA = {
           227.4628293434779,
           360.1869178158896,
           366.7763278325399,
-          362.4129788534982
+          362.4129788534982,
+          356.1902251879374
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2322,6 +2360,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -2374,12 +2413,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
-        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
-      },
       {
         "sha": "3fd1189bbcc7dcb05cc18646d823f18924ce7e17",
         "author": "Valentin Breu\u00DF",
@@ -2673,10 +2706,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
-      "75cde8b0",
       "3fd1189b",
       "fe613c6c",
       "5ef58e1e",
@@ -2725,14 +2763,14 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          652.825014591217,
           669.0740095547268,
           642.7825833002727,
           495.1894598007202,
@@ -2781,7 +2819,8 @@ window.BENCHMARK_DATA = {
           397.2413293031546,
           659.90538753782,
           683.9723534266154,
-          702.9955768585205
+          702.9955768585205,
+          672.7664096832275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2795,7 +2834,6 @@ window.BENCHMARK_DATA = {
         "data": [
           880,
           880,
-          880,
           896,
           896,
           896,
@@ -2840,6 +2878,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872
@@ -2857,7 +2896,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1404.0230564117433,
           1410.129246266683,
           1380.0243453979492,
           1017.1524626413981,
@@ -2906,7 +2944,8 @@ window.BENCHMARK_DATA = {
           956.4516964594524,
           1503.5793655940465,
           1455.674855295817,
-          1477.6917106628418
+          1477.6917106628418,
+          1384.177633013044
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2982,7 +3021,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          661.3155122756958,
           657.2392098108927,
           645.1081802504403,
           504.1748679478963,
@@ -3031,7 +3069,8 @@ window.BENCHMARK_DATA = {
           420.7603173596518,
           779.9199893315633,
           686.5302294322422,
-          705.9186899185181
+          705.9186899185181,
+          644.3552690505982
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3108,12 +3147,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
-        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
-      },
-      {
         "sha": "3fd1189bbcc7dcb05cc18646d823f18924ce7e17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 21:17:53 2026 \u002B0200",
@@ -3406,10 +3439,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
-      "75cde8b0",
       "3fd1189b",
       "fe613c6c",
       "5ef58e1e",
@@ -3458,14 +3496,14 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1036.0475843974523,
           1016.0087453297207,
           1116.2271496909004,
           784.9643902778625,
@@ -3514,7 +3552,8 @@ window.BENCHMARK_DATA = {
           393.09915994008384,
           653.0178367614747,
           694.6997187296549,
-          712.9865600722177
+          712.9865600722177,
+          634.71514913014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3528,7 +3567,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1288,
           1288,
-          1288,
           1304,
           1304,
           1304,
@@ -3573,6 +3611,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920
@@ -3590,7 +3629,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27858.206268310547,
           27096.974322509766,
           28014.6536325308,
           15738.152657645089,
@@ -3639,7 +3677,8 @@ window.BENCHMARK_DATA = {
           11981.575541178385,
           28045.679953438896,
           29119.16752726237,
-          28597.698056902205
+          28597.698056902205,
+          27523.385920933313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3660,7 +3699,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -3698,6 +3736,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
@@ -3715,7 +3754,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          812.0843548456828,
           789.7045337677002,
           799.8754990259806,
           584.2545240402221,
@@ -3764,7 +3802,8 @@ window.BENCHMARK_DATA = {
           519.8414870580037,
           952.3073452631633,
           809.1234210087703,
-          827.8117097218832
+          827.8117097218832,
+          779.6573479334513
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3841,12 +3880,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
-        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
-      },
-      {
         "sha": "3fd1189bbcc7dcb05cc18646d823f18924ce7e17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 21:17:53 2026 \u002B0200",
@@ -4139,10 +4172,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
-      "75cde8b0",
       "3fd1189b",
       "fe613c6c",
       "5ef58e1e",
@@ -4191,14 +4229,14 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          851.6755803426107,
           765.237514087132,
           783.9828212102254,
           556.5622659410749,
@@ -4247,7 +4285,8 @@ window.BENCHMARK_DATA = {
           511.9858414967855,
           765.6373788197835,
           776.9395786285401,
-          751.7218626022338
+          751.7218626022338,
+          721.9878223419189
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4261,7 +4300,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1824,
           1824,
-          1824,
           1840,
           1840,
           1840,
@@ -4308,6 +4346,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856
         ],
         "borderColor": "#63A2AC",
@@ -4323,7 +4362,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84981.80950055804,
           83312.36499023438,
           84426.20920410156,
           52025.71477801983,
@@ -4372,7 +4410,8 @@ window.BENCHMARK_DATA = {
           31958.795033772785,
           86892.4383219401,
           84208.5743367513,
-          84969.9701944987
+          84969.9701944987,
+          81701.1803917518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4386,7 +4425,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5252,
           5252,
-          5252,
           5256,
           5252,
           5256,
@@ -4431,6 +4469,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252
@@ -4448,12 +4487,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
-        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
-      },
       {
         "sha": "3fd1189bbcc7dcb05cc18646d823f18924ce7e17",
         "author": "Valentin Breu\u00DF",
@@ -4747,10 +4780,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
-      "75cde8b0",
       "3fd1189b",
       "fe613c6c",
       "5ef58e1e",
@@ -4799,14 +4837,14 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.8366877237956,
           275.5710287412008,
           256.67651211420696,
           192.95787699405963,
@@ -4855,7 +4893,8 @@ window.BENCHMARK_DATA = {
           133.23548081715902,
           193.24924760205406,
           188.47719389597574,
-          201.78900542259217
+          201.78900542259217,
+          176.96644123395285
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4869,7 +4908,6 @@ window.BENCHMARK_DATA = {
         "data": [
           672,
           672,
-          672,
           688,
           688,
           688,
@@ -4886,6 +4924,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -4931,7 +4970,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32316.998864746092,
           30731.354388897234,
           31265.845668247766,
           15174.909043532152,
@@ -4980,7 +5018,8 @@ window.BENCHMARK_DATA = {
           13757.90241800944,
           32224.892517089844,
           32860.736685616626,
-          32836.915307617186
+          32836.915307617186,
+          30277.19969998873
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4994,7 +5033,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5038,6 +5076,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -5056,7 +5095,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          258.87168684005735,
           248.2426520415715,
           244.78331689834596,
           181.11447252546037,
@@ -5105,7 +5143,8 @@ window.BENCHMARK_DATA = {
           148.93192338943481,
           262.45795218149823,
           255.68252026240032,
-          259.3531918525696
+          259.3531918525696,
+          243.56041056315104
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5408,6 +5447,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -5448,7 +5493,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -5492,7 +5538,8 @@ window.BENCHMARK_DATA = {
           246.2678359576634,
           375.8416256268819,
           360.64861358006794,
-          386.1386714935303
+          386.1386714935303,
+          356.05538924535114
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5540,6 +5587,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744
         ],
@@ -5593,7 +5641,8 @@ window.BENCHMARK_DATA = {
           301.7702502250671,
           396.90675279072354,
           376.1144390741984,
-          421.93366057078043
+          421.93366057078043,
+          379.3646048545837
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5605,6 +5654,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -5694,7 +5744,8 @@ window.BENCHMARK_DATA = {
           270.1760391553243,
           426.20220750172933,
           403.9497693061829,
-          415.692871538798
+          415.692871538798,
+          406.5985387166341
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5706,6 +5757,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -5985,6 +6037,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -6025,7 +6083,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -6069,7 +6128,8 @@ window.BENCHMARK_DATA = {
           592.0035296122234,
           852.2483039220174,
           839.5557680130005,
-          848.8291051864624
+          848.8291051864624,
+          784.5412870815823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6096,6 +6156,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -6170,7 +6231,8 @@ window.BENCHMARK_DATA = {
           1451.777178700765,
           1990.7309013366698,
           1959.3745323181151,
-          2080.954852549235
+          2080.954852549235,
+          1876.5497653667744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6182,6 +6244,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -6271,7 +6334,8 @@ window.BENCHMARK_DATA = {
           621.4610689603365,
           966.7443075815837,
           950.560247484843,
-          1049.845222745623
+          1049.845222745623,
+          925.6240917205811
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6283,6 +6347,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -6562,6 +6627,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -6602,7 +6673,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -6646,7 +6718,8 @@ window.BENCHMARK_DATA = {
           7079.729796091716,
           12300.737869262695,
           12418.78408930852,
-          12321.265700707068
+          12321.265700707068,
+          12389.441782633463
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6695,6 +6768,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736
         ],
         "borderColor": "#63A2AC",
@@ -6747,7 +6821,8 @@ window.BENCHMARK_DATA = {
           22978.51051940918,
           41087.26018582858,
           41183.82026367188,
-          41637.939457194014
+          41637.939457194014,
+          41065.19112141927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6795,6 +6870,7 @@ window.BENCHMARK_DATA = {
           18609,
           18608,
           18394,
+          18609,
           18609,
           18609
         ],
@@ -6848,7 +6924,8 @@ window.BENCHMARK_DATA = {
           6794.341003417969,
           11474.479409437914,
           11364.65059879848,
-          11377.018030019906
+          11377.018030019906,
+          11357.496549479167
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6860,6 +6937,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -7139,6 +7217,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
         "message": "chore: reset the build scope after the Core release (#1861)"
+      },
+      {
+        "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.4.0 (#1865)"
       }
     ],
     "labels": [
@@ -7179,7 +7263,8 @@ window.BENCHMARK_DATA = {
       "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
-      "e6bb38c8"
+      "e6bb38c8",
+      "b3e4bee7"
     ],
     "datasets": [
       {
@@ -7223,7 +7308,8 @@ window.BENCHMARK_DATA = {
           7041.386879475912,
           11663.701488201435,
           12042.929080669697,
-          12015.968975947453
+          12015.968975947453,
+          11763.05514831543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7272,6 +7358,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216
         ],
         "borderColor": "#63A2AC",
@@ -7324,7 +7411,8 @@ window.BENCHMARK_DATA = {
           32192.377535306492,
           61600.718985421314,
           60698.27840169271,
-          60178.56344095866
+          60178.56344095866,
+          58970.817065429685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7373,6 +7461,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -7425,7 +7514,8 @@ window.BENCHMARK_DATA = {
           13507.326941172281,
           22521.69926234654,
           22486.292557779947,
-          22622.643391200476
+          22622.643391200476,
+          22581.593056233723
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7437,6 +7527,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
