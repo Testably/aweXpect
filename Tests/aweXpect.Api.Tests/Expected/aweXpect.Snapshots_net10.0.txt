@@ -70,6 +70,11 @@ namespace aweXpect.Snapshots
         public TReturn Mask(string template) { }
         public aweXpect.Snapshots.SnapshotLines<TReturn> Which(System.Func<string, bool> predicate) { }
     }
+    public sealed class SnapshotMembersOfType<TReturn, TValue> : aweXpect.Snapshots.SnapshotMembers<TReturn, TValue>
+    {
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, object> OrOfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, object> OrOfType<T>() { }
+    }
     public sealed class SnapshotMembersWithName<TReturn, TValue> : aweXpect.Snapshots.SnapshotMembers<TReturn, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions { }
     public class SnapshotMembers<TReturn, TValue>
     {
@@ -80,8 +85,8 @@ namespace aweXpect.Snapshots
         public TReturn Mask() { }
         public TReturn Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template) { }
         public TReturn Mask(string template) { }
-        public aweXpect.Snapshots.SnapshotMembers<TReturn, T> OfExactType<T>() { }
-        public aweXpect.Snapshots.SnapshotMembers<TReturn, T> OfType<T>() { }
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, T> OfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, T> OfType<T>() { }
         public aweXpect.Snapshots.SnapshotMembers<TReturn, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
         public aweXpect.Snapshots.SnapshotEmptyCollections<TReturn> WhichAreEmptyCollections() { }
         public aweXpect.Snapshots.SnapshotMembersWithName<TReturn, TValue> WithName(string name) { }
@@ -117,6 +122,11 @@ namespace aweXpect.Snapshots
         public aweXpect.Snapshots.SnapshotText<TReturn> AsWildcard() { }
         public aweXpect.Snapshots.SnapshotText<TReturn> IgnoringCase(bool ignoreCase = true) { }
     }
+    public sealed class SnapshotValuesOfType<TReturn, TValue> : aweXpect.Snapshots.SnapshotValues<TReturn, TValue>
+    {
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, object> OrOfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, object> OrOfType<T>() { }
+    }
     public sealed class SnapshotValuesWithName<TReturn, TValue> : aweXpect.Snapshots.SnapshotValues<TReturn, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions { }
     public class SnapshotValues<TReturn, TValue>
     {
@@ -127,8 +137,8 @@ namespace aweXpect.Snapshots
         public TReturn Mask() { }
         public TReturn Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template) { }
         public TReturn Mask(string template) { }
-        public aweXpect.Snapshots.SnapshotValues<TReturn, T> OfExactType<T>() { }
-        public aweXpect.Snapshots.SnapshotValues<TReturn, T> OfType<T>() { }
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, T> OfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, T> OfType<T>() { }
         public aweXpect.Snapshots.SnapshotValues<TReturn, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
         public aweXpect.Snapshots.SnapshotValuesWithName<TReturn, TValue> WithName(string name) { }
         public aweXpect.Snapshots.SnapshotValues<TReturn, TValue> WithPath(string path) { }

@@ -14,7 +14,7 @@ namespace aweXpect.Snapshots;
 /// <typeparam name="TReturn">What an action returns.</typeparam>
 /// <typeparam name="TValue">
 ///     The type of the selected values, which <see cref="OfType{T}" /> and <see cref="OfExactType{T}" /> set, so that
-///     <see cref="Convert{TResult}" /> gets a typed value.
+///     <see cref="Convert{TResult}" /> gets a typed value, or <see cref="object" /> after an alternative type.
 /// </typeparam>
 public class SnapshotMembers<TReturn, TValue>
 {
@@ -64,20 +64,22 @@ public class SnapshotMembers<TReturn, TValue>
 	/// <remarks>
 	///     A member matches by its declared or its runtime type, including <see cref="Nullable{T}" /> and derived types,
 	///     e.g. <c>OfType&lt;DateTime&gt;()</c> also matches a <c>DateTime?</c> member and a
-	///     <see cref="DateTime" /> in an <see cref="object" /> member.
+	///     <see cref="DateTime" /> in an <see cref="object" /> member. Alternative types can follow, e.g.
+	///     <c>.OfType&lt;int&gt;().OrOfType&lt;long&gt;()</c>.
 	/// </remarks>
-	public SnapshotMembers<TReturn, T> OfType<T>()
-		=> new(_add, _selection.OfType(typeof(T), value => ValueFilters.IsOfType(value, typeof(T))));
+	public SnapshotMembersOfType<TReturn, T> OfType<T>()
+		=> new(_add, _selection, [new TypeFilter(typeof(T), false),]);
 
 	/// <summary>
 	///     Filters for the members whose value is exactly of the type <typeparamref name="T" />, not of a derived type.
 	/// </summary>
 	/// <remarks>
 	///     The runtime type of the value decides, or for a <see langword="null" /> value the declared type of the member,
-	///     where a <c>DateTime?</c> member counts as <see cref="DateTime" />.
+	///     where a <c>DateTime?</c> member counts as <see cref="DateTime" />. Alternative types can follow, e.g.
+	///     <c>.OfExactType&lt;int&gt;().OrOfExactType&lt;long&gt;()</c>.
 	/// </remarks>
-	public SnapshotMembers<TReturn, T> OfExactType<T>()
-		=> new(_add, _selection.OfType(typeof(T), value => ValueFilters.IsOfExactType(value, typeof(T))));
+	public SnapshotMembersOfType<TReturn, T> OfExactType<T>()
+		=> new(_add, _selection, [new TypeFilter(typeof(T), true),]);
 
 	/// <summary>
 	///     Filters for the members of an object of the type <typeparamref name="T" /> or of a derived type, e.g.
@@ -137,7 +139,8 @@ public class SnapshotMembers<TReturn, TValue>
 	/// </summary>
 	/// <remarks>
 	///     The placeholder is named after the type of a selection that is filtered by its type, but not by its name or path, e.g.
-	///     <c>{Guid_1}</c> for <c>.OfType&lt;Guid&gt;()</c>, and otherwise after the member. It shares its numbers with
+	///     <c>{Guid_1}</c> for <c>.OfType&lt;Guid&gt;()</c>, or with alternative types after the first
+	///     one that the value matches, and otherwise after the member. It shares its numbers with
 	///     the other placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TReturn}.Guids" />. A
 	///     <see langword="null" /> value is not masked. The first masking or converter that matches a value wins.
 	/// </remarks>

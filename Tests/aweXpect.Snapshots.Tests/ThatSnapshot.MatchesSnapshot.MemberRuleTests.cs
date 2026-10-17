@@ -847,7 +847,8 @@ public sealed partial class ThatSnapshot
 				await That(expectation).IsEqualTo(global)
 					.Because("every selection, filter and action of the expectation exists for all snapshots, and vice versa");
 				await That(global.Any(signature => signature.Contains(".Convert`1(")) &&
-				           global.Any(signature => signature.Contains(".Keep`0()"))).IsTrue()
+				           global.Any(signature => signature.Contains(".Keep`0()")) &&
+				           global.Any(signature => signature.Contains(".OrOfType`1("))).IsTrue()
 					.Because("the comparison follows the selections down to their actions");
 			}
 		}

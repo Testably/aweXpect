@@ -27,6 +27,7 @@ The selections and their filters:
 | Selection                                                | Filters                                                                                 |
 |----------------------------------------------------------|-----------------------------------------------------------------------------------------|
 | `.For.Members()`                                         | `WithName`, `WithPath`, `OfType<T>`, `OfExactType<T>`, `DeclaredIn<T>`, `Which`, `Except` |
+| `.For.Members().OfType<T>()`, `.OfExactType<T>()`        | `OrOfType<T>`, `OrOfExactType<T>`, and the filters of `Members()`                        |
 | `.For.Members().WhichAreEmptyCollections()`              | the filters of `Members()` before it                                                    |
 | `.For.Values()`                                          | like `Members()`, without `WhichAreEmptyCollections`                                    |
 | `.For.Lines()`                                           | `Containing(text)`, `Which`, `Except`                                                   |
@@ -119,6 +120,8 @@ too, and also the items of tuples, collections and dictionaries:
 - `OfType<T>()` matches the declared or the runtime type, including `Nullable<T>` and derived types:
   `.For.Members().OfType<DateTime>()` also matches a `DateTime?` member and a `DateTime` in an `object` member.
   `OfExactType<T>()` only matches a value whose runtime type is `T`, or a `null` value declared as `T` or `T?`.
+  Directly after them, `OrOfType<T>()` and `OrOfExactType<T>()` allow alternative types, see
+  [alternative types](#alternative-types).
 - `DeclaredIn<T>()` matches the values in an object of the type `T` or of a derived type, e.g.
   `.For.Members().DeclaredIn<Album>().WithName(nameof(Album.Price))` for the price of each album, but not of its tracks.
 - `Which(predicate)` and `Except(predicate)` decide for each value, which they get as a `FormattedValue` with its
@@ -140,8 +143,46 @@ list. Select members only with `.For.Members()`, mask the items instead, or leav
 
 `Mask()` and `Mask("…")` replace the value, see [the templates](#mask-texts-are-templates). The placeholder of `Mask()`
 is named after the type when the selection is filtered by `OfType<T>()` or `OfExactType<T>()` but not by
-`WithName` or `WithPath`, e.g. `{Guid_1}`, and otherwise after the member or tuple item, or `Item` for an item of a collection or a dictionary value. A `null`
+`WithName` or `WithPath`, e.g. `{Guid_1}`, or with alternative types after the first one that the value matches, and otherwise after the member or tuple item, or `Item` for an item of a collection or a dictionary value. A `null`
 value is neither masked nor converted, as it does not change from run to run.
+
+### Alternative types
+
+Values of related types, such as numeric ids of `int` and `long`, are selected together with `OrOfType<T>()` or
+`OrOfExactType<T>()` directly after `OfType<T>()` or `OfExactType<T>()`:
+
+```csharp
+await Expect.That(shop).MatchesSnapshot()
+    .For.Members().OfType<int>().OrOfType<long>().WithName("Id").AsSuffix()
+    .Mask(value => "{" + (value.Name == "Id"
+        ? value.DeclaringType.Name
+        : value.Name.Substring(0, value.Name.Length - 2)) + "_{0}}");
+```
+
+```text title="Snapshot"
+Shop {
+  Customers = [
+    Customer {
+      Id = {Customer_1},
+      Name = "Ringo"
+    }
+  ],
+  Orders = [
+    Order {
+      CustomerId = {Customer_1},
+      Id = {Order_1},
+      TrackingId = "1Z999"
+    }
+  ]
+}
+```
+
+- A value matches when it matches any of the types, each with the meaning of its filter, so
+  `.OfExactType<Exception>().OrOfType<ArgumentException>()` matches an `Exception` and any `ArgumentException`. The
+  other filters can follow as before.
+- `Mask()` names the placeholder after the first type that the value matches, e.g. `{Int32_1}` and `{Int64_1}`, so an
+  `int` shares its numbers with `.OfType<int>().Mask()`.
+- As the values are of different types, `Convert(…)` gets an `object`.
 
 ### Empty collections
 
@@ -195,7 +236,7 @@ Album {
 ```
 
 - `OfType<T>()` types the selection, so the converter gets a `T` and its result type is inferred. Without it, the
-  converter gets an `object`.
+  converter gets an `object`, as it does after `OrOfType<T>()`.
 - The converted value is written by the formatter like any other value, e.g. a `string` in quotes, a number in the
   invariant culture and an object member-wise. The member and value rules do not apply to the values nested in it, but
   the text rules do. A converted `null` is written as `<null>`.
