@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace aweXpect.Formatting;
@@ -22,6 +23,20 @@ public class FormattingContext
 	///     The number of objects, collections and tuples whose content was written so far.
 	/// </summary>
 	internal int NumberOfWrittenContents { get; set; }
+
+	/// <summary>
+	///     The offered value whose content is being written, which is the parent of the values nested in it.
+	/// </summary>
+	/// <remarks>
+	///     Only set when <see cref="FormattingOptions.FormatValue" /> is set, so that a failure message pays nothing for
+	///     tracking the path.
+	/// </remarks>
+	internal FormattedValue? Value { get; set; }
+
+	/// <summary>
+	///     The exception that <see cref="FormattingOptions.FormatValue" /> threw, which is not written as a placeholder.
+	/// </summary>
+	internal Exception? FormatValueException { get; set; }
 
 	/// <remarks>
 	///     A recursion is the same instance coming round again, not an equal one, and an anonymous type aggregates its

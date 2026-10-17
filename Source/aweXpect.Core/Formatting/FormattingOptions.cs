@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Formatting;
+﻿using System;
+
+namespace aweXpect.Formatting;
 
 /// <summary>
 ///     Formatting options used in the <see cref="ValueFormatter" />.
@@ -93,6 +95,21 @@ public record FormattingOptions
 	///     added.
 	/// </remarks>
 	public bool IsSnapshot { get; init; }
+
+	/// <summary>
+	///     Decides for each nested value whether it is written, left out or replaced.
+	/// </summary>
+	/// <remarks>
+	///     Every value nested in the formatted value is offered: the members of an object that is written member-wise,
+	///     the items of a tuple and the items of a collection, with the entries of a dictionary as its items. The
+	///     formatted value itself is not offered, nor the keys of a dictionary, nor the values nested in a value that a
+	///     registered <see cref="IValueFormatter" /> or its own <see cref="object.ToString()" /> renders.
+	///     <para />
+	///     A left out item of a tuple changes the position of the following items. An exception that the hook throws is
+	///     not written as a placeholder, but thrown out of the formatting, except when it is the exception of
+	///     <see cref="FormattedValue.GetValue()" />.
+	/// </remarks>
+	public Func<FormattedValue, ValueFormatting>? FormatValue { get; init; }
 
 	/// <summary>
 	///     Format the objects on multiple lines with the given <paramref name="indentation" />.

@@ -41,7 +41,7 @@ public static partial class ValueFormatters
 		else if (TryGetTupleItems(value, out List<object?>? items))
 		{
 			AppendTypeIfIncluded(stringBuilder, value, options);
-			AppendTupleItems(stringBuilder, items, options with
+			AppendTupleItems(stringBuilder, value.GetType(), items, options with
 			{
 				IncludeType = false,
 			}, context ?? new FormattingContext());
@@ -255,7 +255,7 @@ public static partial class ValueFormatters
 		=> type == typeof(ValueTuple) ||
 		   (type.IsGenericType && TupleDefinitions.Contains(type.GetGenericTypeDefinition()));
 
-	private static void AppendTupleItems(StringBuilder stringBuilder, List<object?> items,
+	private static void AppendTupleItems(StringBuilder stringBuilder, Type tupleType, List<object?> items,
 		FormattingOptions options, FormattingContext context)
 	{
 		try
@@ -266,15 +266,39 @@ public static partial class ValueFormatters
 				return;
 			}
 
+			List<Type>? itemTypes = options.FormatValue is null ? null : GetTupleItemTypes(tupleType);
+			bool isFirst = true;
 			stringBuilder.Append('(');
 			for (int i = 0; i < items.Count; i++)
 			{
-				if (i > 0)
+				object? item = items[i];
+				FormattedValue? offeredItem = null;
+				ValueFormatting formatting = ValueFormatting.Write;
+				if (itemTypes is not null)
+				{
+					offeredItem = FormattedValue.TupleItem(context.Value, i, GetTupleItemType(itemTypes, i, item),
+						tupleType, item);
+					formatting = OfferValue(offeredItem, options, context);
+					if (formatting.IsOmitted)
+					{
+						continue;
+					}
+				}
+
+				if (!isFirst)
 				{
 					stringBuilder.Append(", ");
 				}
 
-				Formatter.Format(stringBuilder, items[i], WithoutLineBreaksForString(items[i], options), context);
+				isFirst = false;
+				if (offeredItem is null)
+				{
+					Formatter.Format(stringBuilder, item, WithoutLineBreaksForString(item, options), context);
+				}
+				else
+				{
+					AppendOfferedTupleItem(stringBuilder, offeredItem, formatting, options, context);
+				}
 			}
 
 			stringBuilder.Append(')');
@@ -283,6 +307,66 @@ public static partial class ValueFormatters
 		{
 			context.Depth--;
 		}
+	}
+
+	/// <remarks>
+	///     The declared type of the item, or its runtime type when the tuple type does not tell it.
+	/// </remarks>
+	private static Type GetTupleItemType(List<Type> itemTypes, int index, object? item)
+		=> index < itemTypes.Count ? itemTypes[index] : item?.GetType() ?? typeof(object);
+
+	private static void AppendOfferedTupleItem(StringBuilder stringBuilder, FormattedValue item,
+		ValueFormatting formatting, FormattingOptions options, FormattingContext context)
+	{
+		if (formatting.IsReplaced)
+		{
+			object? replacement = formatting.Replacement;
+			Formatter.Format(stringBuilder, replacement,
+				WithoutLineBreaksForString(replacement, WithoutFormatValue(options)), context);
+			return;
+		}
+
+		FormattedValue? parent = context.Value;
+		context.Value = item;
+		try
+		{
+			object? value = item.GetValue();
+			Formatter.Format(stringBuilder, value, WithoutLineBreaksForString(value, options), context);
+		}
+		finally
+		{
+			context.Value = parent;
+		}
+	}
+
+	/// <summary>
+	///     The declared types of the items of a tuple, with the items of its eighth item flattened like the items.
+	/// </summary>
+	/// <remarks>
+	///     A <see cref="Nullable{T}" /> is unwrapped, like the declared type of a member.
+	/// </remarks>
+	private static List<Type> GetTupleItemTypes(Type tupleType)
+	{
+		List<Type> itemTypes = [];
+		Type? type = tupleType;
+		while (type is { IsGenericType: true, })
+		{
+			Type[] arguments = type.GetGenericArguments();
+			type = null;
+			for (int i = 0; i < arguments.Length; i++)
+			{
+				if (i == 7 && IsTupleType(arguments[i]))
+				{
+					type = arguments[i];
+				}
+				else
+				{
+					itemTypes.Add(Nullable.GetUnderlyingType(arguments[i]) ?? arguments[i]);
+				}
+			}
+		}
+
+		return itemTypes;
 	}
 
 	/// <remarks>
@@ -295,7 +379,10 @@ public static partial class ValueFormatters
 		=> type.Name.Contains("AnonymousType") &&
 		   type.IsDefined(typeof(CompilerGeneratedAttribute), false);
 
-	private static void WriteMemberValues(
+	/// <summary>
+	///     Writes the members and returns whether any was written, as each can be left out.
+	/// </summary>
+	private static bool WriteMemberValues(
 		object obj,
 		List<EquivalencyMember> members,
 		StringBuilder stringBuilder,
@@ -303,9 +390,19 @@ public static partial class ValueFormatters
 		FormattingOptions options,
 		FormattingContext context)
 	{
+		bool isWritten = false;
 		foreach (EquivalencyMember member in members.OrderBy(member => member.Name, StringComparer.Ordinal))
 		{
-			WriteMemberValueTextFor(obj, member, stringBuilder, indentation, options, context);
+			if (options.FormatValue is null)
+			{
+				WriteMemberValueTextFor(obj, member, stringBuilder, indentation, options, context);
+			}
+			else if (!TryWriteOfferedMemberValueTextFor(obj, member, stringBuilder, indentation, options, context))
+			{
+				continue;
+			}
+
+			isWritten = true;
 			if (options.UseLineBreaks)
 			{
 				stringBuilder.AppendLine(",").Append(options.Indentation);
@@ -316,7 +413,13 @@ public static partial class ValueFormatters
 			}
 		}
 
-		stringBuilder.Length -= options.UseLineBreaks ? 1 + Environment.NewLine.Length + options.Indentation.Length : 2;
+		if (isWritten)
+		{
+			stringBuilder.Length -=
+				options.UseLineBreaks ? 1 + Environment.NewLine.Length + options.Indentation.Length : 2;
+		}
+
+		return isWritten;
 	}
 
 	private static void WriteMemberValueTextFor(
@@ -331,20 +434,70 @@ public static partial class ValueFormatters
 
 		try
 		{
-			object? memberValue = member.GetValue(value);
-			formattedValue = Formatter.Format(memberValue, memberValue is string && options.UseLineBreaks
-				? options with
-				{
-					UseLineBreaks = false,
-				}
-				: options, context);
+			formattedValue = FormatMemberValue(member.GetValue(value), options, context);
 		}
-		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options))
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options, context))
 		{
 			formattedValue = FormatThrownException(member.Name, exception);
 		}
 
-		stringBuilder.Append($"{new string(' ', indentation)}{member.Name} = ");
+		AppendMemberValueText(stringBuilder, member.Name, formattedValue, indentation, options);
+	}
+
+	/// <summary>
+	///     Writes the member as <see cref="FormattingOptions.FormatValue" /> decides, and returns whether it was written.
+	/// </summary>
+	private static bool TryWriteOfferedMemberValueTextFor(
+		object value,
+		EquivalencyMember member,
+		StringBuilder stringBuilder,
+		int indentation,
+		FormattingOptions options,
+		FormattingContext context)
+	{
+		FormattedValue? parent = context.Value;
+		FormattedValue offeredMember = FormattedValue.Member(parent, member.Name, member.DeclaredType,
+			value.GetType(), value, member.GetValue);
+		ValueFormatting formatting = OfferValue(offeredMember, options, context);
+		if (formatting.IsOmitted)
+		{
+			return false;
+		}
+
+		string? formattedValue;
+		context.Value = offeredMember;
+		try
+		{
+			formattedValue = formatting.IsReplaced
+				? FormatMemberValue(formatting.Replacement, WithoutFormatValue(options), context)
+				: FormatMemberValue(offeredMember.GetValue(), options, context);
+		}
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options, context))
+		{
+			formattedValue = FormatThrownException(member.Name, exception);
+		}
+		finally
+		{
+			context.Value = parent;
+		}
+
+		AppendMemberValueText(stringBuilder, member.Name, formattedValue, indentation, options);
+		return true;
+	}
+
+	private static string FormatMemberValue(object? memberValue, FormattingOptions options,
+		FormattingContext context)
+		=> Formatter.Format(memberValue, memberValue is string && options.UseLineBreaks
+			? options with
+			{
+				UseLineBreaks = false,
+			}
+			: options, context);
+
+	private static void AppendMemberValueText(StringBuilder stringBuilder, string name, string formattedValue,
+		int indentation, FormattingOptions options)
+	{
+		stringBuilder.Append($"{new string(' ', indentation)}{name} = ");
 		if (options.UseLineBreaks)
 		{
 			formattedValue = formattedValue.Indent("  ", false);
@@ -422,9 +575,16 @@ public static partial class ValueFormatters
 		}
 		else
 		{
+			int length = stringBuilder.Length;
 			stringBuilder.Append('{');
 			AppendLineWithIndentationOrBlank(stringBuilder, options);
-			WriteMemberValues(obj, members, stringBuilder, options.UseLineBreaks ? 2 : 0, options, context);
+			if (!WriteMemberValues(obj, members, stringBuilder, options.UseLineBreaks ? 2 : 0, options, context))
+			{
+				stringBuilder.Length = length;
+				stringBuilder.Append("{ }");
+				return;
+			}
+
 			AppendLineWithIndentationOrBlank(stringBuilder, options);
 			stringBuilder.Append('}');
 		}
