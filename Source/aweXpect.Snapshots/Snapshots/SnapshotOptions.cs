@@ -16,17 +16,20 @@ internal sealed class SnapshotOptions
 	private readonly string _memberName;
 	private readonly string _sourceFile;
 	private readonly string?[] _variantParts = new string?[3];
-	private string _extension = SnapshotId.DefaultExtension;
+	private string _extension;
+	private bool _isExtensionSet;
 	private string? _name;
 	private string? _variant;
 
 	/// <remarks>
 	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />.
 	/// </remarks>
-	public SnapshotOptions(string sourceFile, string memberName)
+	public SnapshotOptions(string sourceFile, string memberName, string? extension = null)
 	{
 		_sourceFile = sourceFile;
 		_memberName = memberName;
+		_extension = extension ?? SnapshotId.DefaultExtension;
+		_isExtensionSet = extension is not null;
 		ClaimedSnapshots.Claim(Id);
 	}
 
@@ -49,9 +52,33 @@ internal sealed class SnapshotOptions
 		{
 			ClaimedSnapshots.Release(Id);
 			_extension = value;
+			_isExtensionSet = true;
 			ClaimedSnapshots.Claim(Id);
 		}
 	}
+
+	/// <summary>
+	///     Uses the extension of the subject, e.g. of a file, unless one was set for the expectation.
+	/// </summary>
+	/// <remarks>
+	///     It is only known when the expectation is evaluated, so the claim of the snapshot moves then.
+	/// </remarks>
+	public void UseExtensionOfSubject(string extension)
+	{
+		if (_isExtensionSet)
+		{
+			return;
+		}
+
+		ClaimedSnapshots.Release(Id);
+		_extension = extension;
+		ClaimedSnapshots.Claim(Id);
+	}
+
+	/// <summary>
+	///     Whether the extension was set for the expectation, which a subject with an extension of its own then keeps.
+	/// </summary>
+	public bool IsExtensionSet => _isExtensionSet;
 
 	/// <summary>
 	///     The rules of the expectation, in the order in which they were added.

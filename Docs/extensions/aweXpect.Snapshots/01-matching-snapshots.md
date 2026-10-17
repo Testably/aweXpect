@@ -70,7 +70,7 @@ The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.snapshot.
 `.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html")`. It is kept as given and passed without the
 leading dot: it cannot be empty, contain a `.`, whitespace, control characters or any of `< > : " / \ | ? * % @`, or be
 `pending`; otherwise `WithExtension` throws an `ArgumentException`. Objects are always stored as `.txt`, so
-`WithExtension` is only offered for strings.
+`WithExtension` is only offered for strings and [binary data](#binary-data-and-files).
 
 A snapshot that was already used with another extension in the same test run fails, as the two files would otherwise
 drift apart:
@@ -126,12 +126,62 @@ Album {
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
 generator of aweXpect registers them for the call site, which it does for `MatchesSnapshot()`.
 
+## Binary data and files
+
+Binary data, e.g. the cover art an album service renders, is compared byte by byte. A `byte[]` or a `Stream` does not
+tell which kind of file it is, so it needs the extension:
+
+```csharp
+await Expect.That(coverArt).MatchesSnapshot().WithExtension("png");
+await Expect.That(linerNotesStream).MatchesSnapshot().WithExtension("pdf");
+```
+
+The snapshot is `AlbumTests.Cover.snapshot.png` and a mismatch is written to `AlbumTests.Cover.snapshot.pending.png`,
+so both open in an image viewer. Without `.WithExtension(…)` the expectation cannot be awaited, so a missing extension
+does not compile. A `Stream` is read from its current position to the end; it does not need to be seekable and is neither
+reset nor disposed.
+
+A `FileInfo` is stored with the extension of the file, here `pdf`:
+
+```csharp
+await Expect.That(new FileInfo("liner-notes.pdf")).MatchesSnapshot();
+```
+
+`.WithExtension(…)` sets another one, e.g. for a file without an extension like `LICENSE`, which fails otherwise, as
+does an extension that a snapshot cannot have, e.g. `pending`. A file that does not exist fails like a `null` subject.
+
+The failure never shows the bytes, but the first byte that differs, counted from 0, and the lengths:
+
+```text title="Failure message"
+Expected that coverArt
+matches the snapshot "/src/Tests/AlbumTests.Cover.snapshot.png",
+but it differed at byte 1024 (the snapshot has 4096 bytes, the subject 4100)
+
+Pending snapshot:
+/src/Tests/AlbumTests.Cover.snapshot.pending.png
+```
+
+- The bytes are stored unchanged: no encoding, no additional final line break, and the newline style is not ignored.
+- Rules do not apply to binary data: `.For` is not offered, and the [rules for all snapshots](04-masking-values.md) are
+  ignored.
+- Names, `.UniqueFor`, accepting changes and the [check for orphaned snapshots](05-orphaned-snapshots.md) work as for
+  any other snapshot.
+- A `byte[]` is compared as binary data, not written by the formatter like other collections. As for a string, the
+  static type decides, so a `byte[]` in an `object` subject is still written by the formatter.
+- Version control must not change the line breaks in a binary snapshot, so mark its extension as binary in
+  `.gitattributes`, e.g. `*.png binary`, unless Git already detects it as binary.
+- A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to choose the overload for streams; before,
+  `MatchesSnapshot()` throws an `InvalidOperationException` that asks to declare the subject as a `Stream`, e.g.
+  `Expect.That<Stream>(stream)`.
+
 ## Files
 
-The snapshot files are encoded as UTF-8. The pending file ends with an additional line break, which is removed again
-when the snapshot is read, so that an editor which adds a final line break does not change the snapshot.
+The text of a string or an object is stored encoded as UTF-8. The pending file ends with an additional line break, which
+is removed again when the snapshot is read, so that an editor which adds a final line break does not change the
+snapshot.
 
-The newline style is ignored when comparing, because version control can change it when the snapshot is checked out.
+The newline style of a text snapshot is ignored when comparing, because version control can change it when the snapshot
+is checked out.
 
 A snapshot that cannot be read, e.g. because another process locks it, fails the expectation with the reason. A pending
 file that cannot be written is named as such in the failure, and a leftover pending file that cannot be deleted does not

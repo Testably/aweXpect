@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -24,7 +23,7 @@ namespace aweXpect;
 /// <summary>
 ///     Snapshot expectations.
 /// </summary>
-public static class ThatSnapshot
+public static partial class ThatSnapshot
 {
 	/// <summary>
 	///     Verifies that the subject matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.txt</c> next to the
@@ -80,7 +79,10 @@ public static class ThatSnapshot
 	///     the hash-based collections whose order can change between runs (e.g. a
 	///     <see cref="System.Collections.Generic.HashSet{T}" />), whose items are sorted.<br />
 	///     A <see cref="string" /> subject is compared as raw text by the other overload; the static type decides, so a
-	///     string in an <see cref="object" /> subject is written in quotes like any other value.<br />
+	///     string in an <see cref="object" /> subject is written in quotes like any other value. Binary data, a
+	///     <see cref="T:byte[]" />, a <see cref="Stream" /> or a <see cref="FileInfo" />, is compared byte by byte by the
+	///     other overloads; a type derived from <see cref="Stream" /> throws an
+	///     <see cref="InvalidOperationException" /> here, which only happens before C# 13.<br />
 	///     Otherwise it behaves like the overload for strings: see there for the files, accepting changes and the
 	///     failures. A text rule applies to the written text, e.g. to a <see cref="Guid" /> member, and member and value
 	///     rules, e.g. <c>.For.Members().WithName("Id").Ignore()</c>, while the subject is written.
@@ -96,13 +98,103 @@ public static class ThatSnapshot
 		this IThat<T> subject,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddSnapshot(subject, callerFilePath, callerMemberName,
+	{
+		if (typeof(Stream).IsAssignableFrom(typeof(T)))
+		{
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"A {typeof(T).Name} is compared as binary data, but before C# 13 a type derived from Stream chooses the snapshot of an object. Declare the subject as a Stream, e.g. Expect.That<Stream>(stream), or use C# 13 or later."));
+		}
+
+		return AddSnapshot(subject, callerFilePath, callerMemberName,
 			static (value, formatValue) => Formatter.Format(value, formatValue is null
 				? SnapshotFormatting
 				: SnapshotFormatting with
 				{
 					FormatValue = formatValue,
 				}));
+	}
+
+	/// <summary>
+	///     Verifies that the binary data matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.&lt;extension&gt;</c>
+	///     next to the test file, with the extension from <c>.WithExtension(…)</c>, e.g. <c>png</c>.
+	/// </summary>
+	/// <remarks>
+	///     The data is compared byte by byte and stored unchanged; the failure names the first byte that differs and the
+	///     lengths, but never shows the bytes. It has no rules, and the rules for all snapshots are ignored.<br />
+	///     Otherwise it behaves like the overload for strings: see there for the files, accepting changes and the
+	///     failures.
+	/// </remarks>
+	/// <param name="subject">The subject.</param>
+	/// <param name="callerFilePath">
+	///     The path of the test file, which is set by the compiler. It must be rooted, so that a name passed here by
+	///     mistake is not taken as the path.
+	/// </param>
+	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
+	[GuaranteesNotNull]
+	public static BinarySnapshotWithoutExtension<byte[]?, IThat<byte[]?>> MatchesSnapshot(
+		this IThat<byte[]?> subject,
+		[CallerFilePath] string callerFilePath = "",
+		[CallerMemberName] string callerMemberName = "")
+	{
+		string sourceFile = GetSourceFile(callerFilePath);
+		return new BinarySnapshotWithoutExtension<byte[]?, IThat<byte[]?>>(extension => AddBinarySnapshot(subject,
+			new SnapshotOptions(sourceFile, callerMemberName, extension),
+			static (bytes, _) => new ValueTask<byte[]>(bytes!)));
+	}
+
+	/// <summary>
+	///     Verifies that the content of the stream matches the snapshot
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.&lt;extension&gt;</c> next to the test file, with the extension from
+	///     <c>.WithExtension(…)</c>, e.g. <c>pdf</c>.
+	/// </summary>
+	/// <remarks>
+	///     The stream is read from its current position to the end, so it does not need to be seekable, and is neither
+	///     reset nor disposed; a stream that cannot be read fails the expectation.<br />
+	///     Otherwise it behaves like the overload for a <see cref="T:byte[]" />.
+	/// </remarks>
+	/// <param name="subject">The subject.</param>
+	/// <param name="callerFilePath">
+	///     The path of the test file, which is set by the compiler. It must be rooted, so that a name passed here by
+	///     mistake is not taken as the path.
+	/// </param>
+	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
+	[GuaranteesNotNull]
+	[OverloadResolutionPriority(1)]
+	public static BinarySnapshotWithoutExtension<Stream?, IThat<Stream?>> MatchesSnapshot(
+		this IThat<Stream?> subject,
+		[CallerFilePath] string callerFilePath = "",
+		[CallerMemberName] string callerMemberName = "")
+	{
+		string sourceFile = GetSourceFile(callerFilePath);
+		return new BinarySnapshotWithoutExtension<Stream?, IThat<Stream?>>(extension => AddBinarySnapshot(subject,
+			new SnapshotOptions(sourceFile, callerMemberName, extension),
+			static (stream, cancellationToken) => ReadToEndAsync(stream!, cancellationToken)));
+	}
+
+	/// <summary>
+	///     Verifies that the content of the file matches the snapshot
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.&lt;extension&gt;</c> next to the test file, with the extension of
+	///     the file, e.g. <c>pdf</c>.
+	/// </summary>
+	/// <remarks>
+	///     Another extension can be set with <c>.WithExtension(…)</c>, e.g. for a file without one, which fails the
+	///     expectation like a file whose extension a snapshot cannot have. A file that does not exist fails the
+	///     expectation both ways, like a <see langword="null" /> subject.<br />
+	///     Otherwise it behaves like the overload for a <see cref="T:byte[]" />.
+	/// </remarks>
+	/// <param name="subject">The subject.</param>
+	/// <param name="callerFilePath">
+	///     The path of the test file, which is set by the compiler. It must be rooted, so that a name passed here by
+	///     mistake is not taken as the path.
+	/// </param>
+	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
+	[GuaranteesNotNull]
+	public static BinarySnapshotResult<FileInfo?, IThat<FileInfo?>> MatchesSnapshot(
+		this IThat<FileInfo?> subject,
+		[CallerFilePath] string callerFilePath = "",
+		[CallerMemberName] string callerMemberName = "")
+		=> AddBinarySnapshot(subject, new SnapshotOptions(GetSourceFile(callerFilePath), callerMemberName),
+			static (file, _) => new ValueTask<byte[]>(File.ReadAllBytes(file!.FullName)));
 
 	/// <summary>
 	///     Stores the snapshot of a <see cref="string" /> with the file <paramref name="extension" /> instead of
@@ -126,6 +218,24 @@ public static class ThatSnapshot
 		return result;
 	}
 
+	/// <summary>
+	///     Stores the snapshot of a <see cref="FileInfo" /> with the file <paramref name="extension" /> instead of the
+	///     extension of the file, e.g. for a file without one.
+	/// </summary>
+	/// <param name="result">The snapshot expectation of a file.</param>
+	/// <param name="extension">The file extension without a leading dot, e.g. <c>png</c>, <c>pdf</c> or <c>bin</c>.</param>
+	/// <remarks>
+	///     It cannot be empty, contain a <c>.</c>, whitespace, control characters or any of
+	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.
+	/// </remarks>
+	public static BinarySnapshotResult<FileInfo?, IThat<FileInfo?>> WithExtension(
+		this BinarySnapshotResult<FileInfo?, IThat<FileInfo?>> result, string extension)
+	{
+		SnapshotExtension.ThrowIfInvalid(extension);
+		result.Options.Extension = extension;
+		return result;
+	}
+
 	private static readonly FormattingOptions SnapshotFormatting = FormattingOptions.Indented("") with
 	{
 		IsSnapshot = true,
@@ -142,6 +252,22 @@ public static class ThatSnapshot
 	/// </remarks>
 	private static readonly ConcurrentDictionary<SnapshotId, (string Extension, int HashCode)> UsedSnapshots = new();
 
+	/// <summary>
+	///     Returns the test file relative to the source root, see <see cref="SnapshotId.SourceFile" />.
+	/// </summary>
+	/// <param name="callerFilePath">The path of the test file.</param>
+	private static string GetSourceFile(string callerFilePath)
+	{
+		if (!Path.IsPathRooted(callerFilePath))
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{nameof(callerFilePath)}' must be the rooted path of the test file, which the compiler sets. Name a snapshot with '.Named(…)' instead.",
+				nameof(callerFilePath)));
+		}
+
+		return SourceRoots.GetSourceFile(callerFilePath);
+	}
+
 	/// <param name="subject">The subject.</param>
 	/// <param name="callerFilePath">The path of the test file.</param>
 	/// <param name="callerMemberName">The name of the test method.</param>
@@ -152,14 +278,7 @@ public static class ThatSnapshot
 	private static SnapshotResult<T, IThat<T>> AddSnapshot<T>(IThat<T> subject, string callerFilePath,
 		string callerMemberName, Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
 	{
-		if (!Path.IsPathRooted(callerFilePath))
-		{
-			throw Tracing.WriteException(new ArgumentException(
-				$"The '{nameof(callerFilePath)}' must be the rooted path of the test file, which the compiler sets. Name a snapshot with '.Named(…)' instead.",
-				nameof(callerFilePath)));
-		}
-
-		SnapshotOptions options = new(SourceRoots.GetSourceFile(callerFilePath), callerMemberName);
+		SnapshotOptions options = new(GetSourceFile(callerFilePath), callerMemberName);
 		return new SnapshotResult<T, IThat<T>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(Options: options, Format: format),
 				static (state, it, grammars) => new MatchesSnapshotConstraint<T>(it, grammars, SnapshotSettings.Read(),
@@ -168,109 +287,107 @@ public static class ThatSnapshot
 			options);
 	}
 
-	private sealed class MatchesSnapshotConstraint<T>(
+	/// <param name="subject">The subject.</param>
+	/// <param name="options">The options of the snapshot.</param>
+	/// <param name="read">Reads the bytes of the subject, which is not <see langword="null" />.</param>
+	private static BinarySnapshotResult<T, IThat<T>> AddBinarySnapshot<T>(IThat<T> subject, SnapshotOptions options,
+		Func<T, CancellationToken, ValueTask<byte[]>> read)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(
+				(Options: options, Read: read),
+				static (state, it, grammars) => new MatchesBinarySnapshotConstraint<T>(it, grammars,
+					SnapshotSettings.Read(), state.Options, state.Read)),
+			subject,
+			options);
+
+	private static async ValueTask<byte[]> ReadToEndAsync(Stream stream, CancellationToken cancellationToken)
+	{
+		using MemoryStream content = new();
+		await stream.CopyToAsync(content, 81920, cancellationToken);
+		return content.ToArray();
+	}
+
+	/// <summary>
+	///     Compares the subject with its snapshot in the <see cref="SnapshotStore" />, which keeps it as the bytes that
+	///     <see cref="CreateContentAsync" /> returns.
+	/// </summary>
+	private abstract class SnapshotConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
 		SnapshotSettings settings,
-		SnapshotOptions snapshotOptions,
-		Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
+		SnapshotOptions snapshotOptions)
 		: ConstraintResult.WithNotNullValue<T>(it, grammars),
 			IAsyncContextConstraint<T>
 	{
-		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
 		private string? _acceptError;
-		private InsufficientExecutionStackException? _formatError;
+		private byte[]? _content;
+		private bool _hasSnapshot;
+		private bool _hasSubjectError;
 		private bool _hasWritten;
 		private bool _isAccepted;
 		private bool _isMatch;
 		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
 		private Exception? _readError;
-		private RegexMatchTimeoutException? _ruleTimeout;
-		private string? _snapshot;
-		private string? _timedOutRule;
 		private string? _usedExtension;
-		private string? _value;
 		private string? _writeError;
 
 		/// <inheritdoc />
-		public override Exception? FailureCause
-			=> (Exception?)_formatError ?? _ruleTimeout ?? _readError;
+		public override Exception? FailureCause => SubjectError ?? _readError;
+
+		protected SnapshotSettings Settings => settings;
+
+		protected SnapshotOptions SnapshotOptions => snapshotOptions;
+
+		/// <summary>
+		///     The exception that kept the subject from being compared, which is the <see cref="FailureCause" />.
+		/// </summary>
+		protected abstract Exception? SubjectError { get; }
 
 		private SnapshotId Id => snapshotOptions.Id;
 
 		/// <remarks>
-		///     A subject that is nested too deeply to be written, or a snapshot that cannot be read, fails the expectation
-		///     both ways instead of throwing, so that the failure names the expectation and a negation cannot turn it into
-		///     a success; the exception is kept as the <see cref="FailureCause" />. The formatter writes every other error,
-		///     e.g. of a member that throws, into the text instead.<br />
+		///     A subject that cannot be compared, or a snapshot that cannot be read, fails the expectation both ways
+		///     instead of throwing, so that the failure names the expectation and a negation cannot turn it into a
+		///     success; the exception is kept as the <see cref="FailureCause" />.<br />
 		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
 		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
-		///     A mismatch is only written once the whole expectation is decided, see <see cref="WriteMismatchAsync" />.<br />
-		///     The line rules of a <see cref="string" /> subject remove its lines before the masking, so that they don't use
-		///     up numbered placeholders. Everything after the masking only sees the masked value, so that the comparison,
-		///     the stored snapshot and the failure agree, and two values that only differ in a masked part are no
-		///     conflict. A line rule or a masking that times out fails the expectation both ways, with the exception as the
-		///     <see cref="FailureCause" />.
+		///     A mismatch is only written once the whole expectation is decided, see <see cref="WriteMismatchAsync" />.
 		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_acceptError = null;
+			_content = null;
+			_hasSnapshot = false;
+			_hasSubjectError = false;
 			_hasWritten = false;
 			_isAccepted = false;
 			_isMatch = false;
 			_isMismatch = false;
 			_isUsedForAnotherValue = false;
-			_ruleTimeout = null;
-			_timedOutRule = null;
 			_usedExtension = null;
 			_writeError = null;
 			_readError = null;
-			_snapshot = null;
-			_value = null;
-			_formatError = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
-			string value;
-			string rule = "the member rule with the pattern ";
-			try
+			byte[]? content = await CreateContentAsync(actual, cancellationToken);
+			if (content is null)
 			{
-				SnapshotNumbering numbering = new();
-				value = format(actual, snapshotOptions.CreateFormatValue(settings.Rules, numbering));
-				if (typeof(T) == typeof(string))
-				{
-					rule = "the line rule with the pattern ";
-					value = await snapshotOptions.ApplyLineRules(value, settings.Rules, numbering);
-				}
-
-				rule = "the masking with the regex ";
-				value = snapshotOptions.Mask(value, settings.Rules, numbering);
-			}
-			catch (InsufficientExecutionStackException exception)
-			{
-				_formatError = exception;
-				Outcome = Outcome.FailureBothWays;
-				return this;
-			}
-			catch (RegexMatchTimeoutException exception)
-			{
-				_ruleTimeout = exception;
-				_timedOutRule = rule;
+				_hasSubjectError = true;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
-			_value = value;
+			_content = content;
 			SnapshotId id = Id;
-			int valueHashCode = StringComparer.Ordinal.GetHashCode(value);
+			int contentHashCode = GetHashCode(content);
 			(string extension, int hashCode) = UsedSnapshots.GetOrAdd(
-				id with { Extension = SnapshotId.DefaultExtension, }, (id.Extension, valueHashCode));
+				id with { Extension = SnapshotId.DefaultExtension, }, (id.Extension, contentHashCode));
 			if (extension != id.Extension)
 			{
 				_usedExtension = extension;
@@ -278,16 +395,17 @@ public static class ThatSnapshot
 				return this;
 			}
 
-			if (hashCode != valueHashCode)
+			if (hashCode != contentHashCode)
 			{
 				_isUsedForAnotherValue = true;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
+			byte[]? snapshot;
 			try
 			{
-				_snapshot = await settings.Store.ReadAsync(id, cancellationToken);
+				snapshot = await settings.Store.ReadAsync(id, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
@@ -296,7 +414,8 @@ public static class ThatSnapshot
 				return this;
 			}
 
-			if (_snapshot is not null && await _options.AreConsideredEqual(value, _snapshot))
+			_hasSnapshot = snapshot is not null;
+			if (snapshot is not null && await MatchesAsync(snapshot))
 			{
 				try
 				{
@@ -315,12 +434,45 @@ public static class ThatSnapshot
 			SnapshotAcceptance acceptance = snapshotOptions.Acceptance ?? settings.Acceptance ??
 			                                AcceptEnvironment.GetAcceptance();
 			_isAccepted = acceptance == SnapshotAcceptance.All ||
-			              (acceptance == SnapshotAcceptance.New && _snapshot is null);
+			              (acceptance == SnapshotAcceptance.New && !_hasSnapshot);
 			_isMismatch = true;
 			context.OnCompleted(WriteMismatchAsync);
 			Outcome = Outcome.FailureBothWays;
 			return this;
 		}
+
+		/// <summary>
+		///     Returns the bytes that the snapshot of the <paramref name="actual" /> value consists of, or
+		///     <see langword="null" /> when it cannot be compared, which fails the expectation both ways and is described
+		///     by <see cref="AppendSubjectError" />.
+		/// </summary>
+		protected abstract ValueTask<byte[]?> CreateContentAsync(T actual, CancellationToken cancellationToken);
+
+		/// <summary>
+		///     Compares the content with the bytes of the existing <paramref name="snapshot" />.
+		/// </summary>
+		protected abstract ValueTask<bool> MatchesAsync(byte[] snapshot);
+
+		/// <summary>
+		///     Describes why the subject could not be compared, see <see cref="CreateContentAsync" />.
+		/// </summary>
+		protected abstract void AppendSubjectError(StringBuilder stringBuilder);
+
+		/// <summary>
+		///     Describes how the subject differs from the existing snapshot.
+		/// </summary>
+		protected abstract void AppendDifference(StringBuilder stringBuilder, string? indentation);
+
+		/// <summary>
+		///     Adds the contexts that show the subject and the snapshot when they were compared and differed, or the
+		///     snapshot did not exist.
+		/// </summary>
+		protected virtual void AppendValueContexts(ResultContextCollector contexts)
+		{
+		}
+
+		protected static bool IsNotCanceled(Exception exception, CancellationToken cancellationToken)
+			=> !(exception is OperationCanceledException && cancellationToken.IsCancellationRequested);
 
 		/// <summary>
 		///     Accepts the mismatch, or records it for review, once the whole expectation is decided.
@@ -338,7 +490,7 @@ public static class ThatSnapshot
 		/// </remarks>
 		private async ValueTask WriteMismatchAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
 		{
-			if (evaluation.Outcome != Outcome.Failure || IsNegated || !_isMismatch || _value is null)
+			if (evaluation.Outcome != Outcome.Failure || IsNegated || !_isMismatch || _content is null)
 			{
 				return;
 			}
@@ -349,7 +501,7 @@ public static class ThatSnapshot
 			{
 				try
 				{
-					await settings.Store.AcceptAsync(id, _value, cancellationToken);
+					await settings.Store.AcceptAsync(id, _content, cancellationToken);
 					return;
 				}
 				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
@@ -360,7 +512,7 @@ public static class ThatSnapshot
 
 			try
 			{
-				await settings.Store.RecordMismatchAsync(id, _value, cancellationToken);
+				await settings.Store.RecordMismatchAsync(id, _content, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
@@ -368,20 +520,32 @@ public static class ThatSnapshot
 			}
 		}
 
-		private static bool IsNotCanceled(Exception exception, CancellationToken cancellationToken)
-			=> !(exception is OperationCanceledException && cancellationToken.IsCancellationRequested);
+		/// <summary>
+		///     The FNV-1a hash of the <paramref name="content" />, which is the same in every process.
+		/// </summary>
+		private static int GetHashCode(byte[] content)
+		{
+			unchecked
+			{
+				int hashCode = (int)2166136261;
+				foreach (byte value in content)
+				{
+					hashCode = (hashCode ^ value) * 16777619;
+				}
+
+				return hashCode;
+			}
+		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (_value is null || _isMatch || _isUsedForAnotherValue || _usedExtension is not null ||
+			if (_content is null || _isMatch || _isUsedForAnotherValue || _usedExtension is not null ||
 			    _readError is not null || IsNegated)
 			{
 				return;
 			}
 
-			contexts.AddStringDifferencesContext(_value, _snapshot, _options, Grammars);
-			contexts.AddStringContext("Actual", _value, this);
-			contexts.AddStringContext("Snapshot", _snapshot, this);
+			AppendValueContexts(contexts);
 			if (!_hasWritten)
 			{
 				return;
@@ -412,15 +576,9 @@ public static class ThatSnapshot
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_formatError is not null)
+			if (_hasSubjectError)
 			{
-				stringBuilder.Append(It).Append(" could not be written: ").Append(_formatError.Message);
-			}
-			else if (_ruleTimeout is not null)
-			{
-				stringBuilder.Append(_timedOutRule).Append(Formatter.Format(_ruleTimeout.Pattern))
-					.Append(" did not complete within ").Append(Formatter.Format(_ruleTimeout.MatchTimeout))
-					.Append(". Simplify the pattern to avoid catastrophic backtracking");
+				AppendSubjectError(stringBuilder);
 			}
 			else if (_usedExtension is not null)
 			{
@@ -437,14 +595,13 @@ public static class ThatSnapshot
 			{
 				stringBuilder.Append("the snapshot could not be read: ").Append(_readError.Message);
 			}
-			else if (_snapshot is null)
+			else if (!_hasSnapshot)
 			{
 				stringBuilder.Append("the snapshot did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, _snapshot)
-					.Indent(indentation, false));
+				AppendDifference(stringBuilder, indentation);
 			}
 		}
 
@@ -454,5 +611,107 @@ public static class ThatSnapshot
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("a snapshot cannot be negated");
+	}
+
+	/// <summary>
+	///     Compares the subject as text, written by <paramref name="format" />.
+	/// </summary>
+	/// <remarks>
+	///     The text is stored as encoded by <see cref="SnapshotTextEncoding" />, and the newline style is ignored when
+	///     comparing.
+	/// </remarks>
+	private sealed class MatchesSnapshotConstraint<T>(
+		string it,
+		ExpectationGrammars grammars,
+		SnapshotSettings settings,
+		SnapshotOptions snapshotOptions,
+		Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
+		: SnapshotConstraint<T>(it, grammars, settings, snapshotOptions)
+	{
+		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
+		private InsufficientExecutionStackException? _formatError;
+		private RegexMatchTimeoutException? _ruleTimeout;
+		private string? _snapshot;
+		private string? _timedOutRule;
+		private string? _value;
+
+		protected override Exception? SubjectError => (Exception?)_formatError ?? _ruleTimeout;
+
+		/// <remarks>
+		///     A subject that is nested too deeply to be written fails the expectation; the formatter writes every other
+		///     error, e.g. of a member that throws, into the text instead.<br />
+		///     The line rules of a <see cref="string" /> subject remove its lines before the masking, so that they don't
+		///     use up numbered placeholders. Everything after the masking only sees the masked value, so that the
+		///     comparison, the stored snapshot and the failure agree, and two values that only differ in a masked part are
+		///     no conflict. A line rule or a masking that times out fails the expectation.
+		/// </remarks>
+		protected override async ValueTask<byte[]?> CreateContentAsync(T actual, CancellationToken cancellationToken)
+		{
+			_formatError = null;
+			_ruleTimeout = null;
+			_snapshot = null;
+			_timedOutRule = null;
+			_value = null;
+			string value;
+			string rule = "the member rule with the pattern ";
+			try
+			{
+				SnapshotNumbering numbering = new();
+				value = format(actual, SnapshotOptions.CreateFormatValue(Settings.Rules, numbering));
+				if (typeof(T) == typeof(string))
+				{
+					rule = "the line rule with the pattern ";
+					value = await SnapshotOptions.ApplyLineRules(value, Settings.Rules, numbering);
+				}
+
+				rule = "the masking with the regex ";
+				value = SnapshotOptions.Mask(value, Settings.Rules, numbering);
+			}
+			catch (InsufficientExecutionStackException exception)
+			{
+				_formatError = exception;
+				return null;
+			}
+			catch (RegexMatchTimeoutException exception)
+			{
+				_ruleTimeout = exception;
+				_timedOutRule = rule;
+				return null;
+			}
+
+			_value = value;
+			return SnapshotTextEncoding.Encode(value);
+		}
+
+		protected override async ValueTask<bool> MatchesAsync(byte[] snapshot)
+		{
+			_snapshot = SnapshotTextEncoding.Decode(snapshot);
+			return await _options.AreConsideredEqual(_value, _snapshot);
+		}
+
+		protected override void AppendValueContexts(ResultContextCollector contexts)
+		{
+			contexts.AddStringDifferencesContext(_value, _snapshot, _options, Grammars);
+			contexts.AddStringContext("Actual", _value, this);
+			contexts.AddStringContext("Snapshot", _snapshot, this);
+		}
+
+		protected override void AppendSubjectError(StringBuilder stringBuilder)
+		{
+			if (_formatError is not null)
+			{
+				stringBuilder.Append(It).Append(" could not be written: ").Append(_formatError.Message);
+			}
+			else if (_ruleTimeout is not null)
+			{
+				stringBuilder.Append(_timedOutRule).Append(Formatter.Format(_ruleTimeout.Pattern))
+					.Append(" did not complete within ").Append(Formatter.Format(_ruleTimeout.MatchTimeout))
+					.Append(". Simplify the pattern to avoid catastrophic backtracking");
+			}
+		}
+
+		protected override void AppendDifference(StringBuilder stringBuilder, string? indentation)
+			=> stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, _snapshot)
+				.Indent(indentation, false));
 	}
 }

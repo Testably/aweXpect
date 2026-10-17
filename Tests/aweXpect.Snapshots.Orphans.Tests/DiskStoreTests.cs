@@ -1,3 +1,4 @@
+using System.IO;
 using aweXpect.Customization;
 using aweXpect.Snapshots.Orphans.Tests.TestHelpers;
 
@@ -167,6 +168,46 @@ public sealed class DiskStoreTests
 		await That(project.Exists("AlbumTests.Describes.snapshot.json")).IsFalse();
 		await That(project.Exists("AlbumTests.Describes.snapshot.pending.json")).IsFalse();
 		await That(project.Exists("AlbumTests.Describes.snapshot.txt")).IsTrue();
+	}
+
+	[Fact]
+	public async Task WhenBinarySnapshotsAreUsed_ShouldReadThemBack()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		byte[] coverArt = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00,];
+		File.WriteAllBytes(project.GetFullPath("AlbumTests.Cover.snapshot.png"), coverArt);
+		File.WriteAllBytes(project.GetFullPath("AlbumTests.Cover.snapshot.pending.png"), [0x00,]);
+		File.WriteAllBytes(project.GetFullPath("AlbumTests.LinerNotes.snapshot.pdf"), [0x25, 0x50, 0x44, 0x46,]);
+		File.WriteAllBytes(project.GetFullPath("liner-notes.pdf"), [0x25, 0x50, 0x44, 0x46,]);
+		await That(coverArt).MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Cover").WithExtension("png");
+		await That(new FileInfo(project.GetFullPath("liner-notes.pdf")))
+			.MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "LinerNotes");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("a binary snapshot is listed like any other snapshot with its extension");
+	}
+
+	[Fact]
+	public async Task WhenABinarySnapshotIsNotUsed_ShouldReportAndDeleteItAndItsPendingFile()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		File.WriteAllBytes(project.GetFullPath("AlbumTests.Cover.snapshot.png"), [0x89, 0x50, 0x4E, 0x47,]);
+		File.WriteAllBytes(project.GetFullPath("AlbumTests.Cover.snapshot.pending.png"), [0x00,]);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
+			                {project.GetFullPath("AlbumTests.Cover.snapshot.png")} (deleted)
+			              """);
+		await That(project.Exists("AlbumTests.Cover.snapshot.png")).IsFalse();
+		await That(project.Exists("AlbumTests.Cover.snapshot.pending.png")).IsFalse();
 	}
 
 	[Fact]

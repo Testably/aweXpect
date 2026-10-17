@@ -40,6 +40,10 @@ internal static class Checks
 				"the snapshot did not exist")),
 		new("a string with the extension json matching its snapshot passes",
 			() => ShouldPass(JsonMatchesItsSnapshot)),
+		new("binary data matching its snapshot passes",
+			() => ShouldPass(CoverArtMatchesItsSnapshot)),
+		new("a stream matching its snapshot passes",
+			() => ShouldPass(LinerNotesMatchesItsSnapshot)),
 		new("paths of the environment in a string of an object are masked",
 			() => ShouldPass(PathsAreMasked)),
 		new("every snapshot is used by one of the checks above",
@@ -172,6 +176,19 @@ internal static class Checks
 	private static async Task JsonMatchesItsSnapshot()
 		=> await That("{ \"title\": \"Abbey Road\", \"year\": 1969 }").MatchesSnapshot().WithExtension("json")
 			.Accepting(SnapshotAcceptance.None);
+
+	/// <remarks>
+	///     The committed <c>.snapshot.bin</c> contains both line break styles, which binary data keeps unchanged.
+	/// </remarks>
+	private static async Task CoverArtMatchesItsSnapshot()
+		=> await That(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, })
+			.MatchesSnapshot().WithExtension("bin").Accepting(SnapshotAcceptance.None);
+
+	private static async Task LinerNotesMatchesItsSnapshot()
+	{
+		using MemoryStream linerNotes = new([0x25, 0x50, 0x44, 0x46, 0x0A,]);
+		await That(linerNotes).MatchesSnapshot().WithExtension("bin").Accepting(SnapshotAcceptance.None);
+	}
 
 	private static async Task NamedAfterMatchesItsSnapshot(string title, int year)
 		=> await That($"{title} ({year})").MatchesSnapshot().NamedAfter(title, year).Accepting(SnapshotAcceptance.None);

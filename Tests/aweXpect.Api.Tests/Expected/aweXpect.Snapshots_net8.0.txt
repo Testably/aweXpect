@@ -3,22 +3,34 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
 namespace aweXpect.Results
 {
-    public class SnapshotResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
+    public class BinarySnapshotResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat, aweXpect.Results.BinarySnapshotResult<TType, TThat>> { }
+    public sealed class BinarySnapshotWithoutExtension<TType, TThat>
+    {
+        [System.Obsolete("A snapshot of binary data needs a file extension, e.g. .MatchesSnapshot().WithExt" +
+            "ension(\"png\").", true)]
+        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
+        public aweXpect.Results.BinarySnapshotResult<TType, TThat> WithExtension(string extension) { }
+    }
+    public class SnapshotResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
     {
         public aweXpect.Snapshots.SnapshotFor<aweXpect.Results.SnapshotResult<TType, TThat>> For { get; }
-        public aweXpect.Results.SnapshotUniqueFor<TType, TThat> UniqueFor { get; }
-        public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
     }
-    public sealed class SnapshotUniqueFor<TType, TThat>
+    public class SnapshotResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, TThat, TSelf>
+        where TSelf : aweXpect.Results.SnapshotResult<TType, TThat, TSelf>
     {
-        public aweXpect.Results.SnapshotResult<TType, TThat> Architecture() { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> OperatingSystem() { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> TargetFramework() { }
+        public aweXpect.Results.SnapshotUniqueFor<TSelf> UniqueFor { get; }
+        public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
+        public TSelf Named(string name) { }
+        public TSelf NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
+    }
+    public sealed class SnapshotUniqueFor<TResult>
+    {
+        public TResult Architecture() { }
+        public TResult OperatingSystem() { }
+        public TResult TargetFramework() { }
     }
 }
 namespace aweXpect.Snapshots
@@ -113,14 +125,14 @@ namespace aweXpect.Snapshots
     public abstract class SnapshotStore
     {
         protected SnapshotStore() { }
-        public abstract System.Threading.Tasks.ValueTask AcceptAsync(aweXpect.Snapshots.SnapshotId id, string actual, System.Threading.CancellationToken cancellationToken);
+        public abstract System.Threading.Tasks.ValueTask AcceptAsync(aweXpect.Snapshots.SnapshotId id, byte[] actual, System.Threading.CancellationToken cancellationToken);
         public virtual System.Threading.Tasks.ValueTask DeleteAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken) { }
         public virtual string Describe(aweXpect.Snapshots.SnapshotId id) { }
         public virtual string? DescribeMismatch(aweXpect.Snapshots.SnapshotId id) { }
         public virtual System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotId>?> ListAsync(System.Threading.CancellationToken cancellationToken) { }
-        public abstract System.Threading.Tasks.ValueTask<string?> ReadAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken);
+        public abstract System.Threading.Tasks.ValueTask<byte[]?> ReadAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken);
         public virtual System.Threading.Tasks.ValueTask RecordMatchAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken) { }
-        public abstract System.Threading.Tasks.ValueTask RecordMismatchAsync(aweXpect.Snapshots.SnapshotId id, string actual, System.Threading.CancellationToken cancellationToken);
+        public abstract System.Threading.Tasks.ValueTask RecordMismatchAsync(aweXpect.Snapshots.SnapshotId id, byte[] actual, System.Threading.CancellationToken cancellationToken);
     }
     public sealed class SnapshotText<TReturn> : aweXpect.Snapshots.SnapshotPattern<TReturn>
     {
@@ -165,9 +177,16 @@ namespace aweXpect
     public static class ThatSnapshot
     {
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BinarySnapshotWithoutExtension<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.Stream?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BinarySnapshotWithoutExtension<byte[]?, aweXpect.Core.IThat<byte[]?>> MatchesSnapshot(this aweXpect.Core.IThat<byte[]?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SnapshotResult<T, aweXpect.Core.IThat<T>> MatchesSnapshot<[aweXpect.Core.Metadata.RequiresMemberMetadata]  T>(this aweXpect.Core.IThat<T> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> WithExtension(this aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> result, string extension) { }
         public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> WithExtension(this aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> result, string extension) { }
     }
 }

@@ -12,12 +12,13 @@ namespace aweXpect.Results;
 ///     architecture, and adding one again changes nothing. A missing snapshot of the environment does not fall back to
 ///     the snapshot that every environment shares.
 /// </remarks>
-public sealed class SnapshotUniqueFor<TType, TThat>
+/// <typeparam name="TResult">The result of the snapshot expectation, which each environment returns.</typeparam>
+public sealed class SnapshotUniqueFor<TResult>
 {
 	private readonly SnapshotOptions _options;
-	private readonly SnapshotResult<TType, TThat> _result;
+	private readonly TResult _result;
 
-	internal SnapshotUniqueFor(SnapshotResult<TType, TThat> result, SnapshotOptions options)
+	internal SnapshotUniqueFor(TResult result, SnapshotOptions options)
 	{
 		_result = result;
 		_options = options;
@@ -26,7 +27,7 @@ public sealed class SnapshotUniqueFor<TType, TThat>
 	/// <summary>
 	///     Keeps a snapshot for each architecture of the process, e.g. <c>x64</c>, <c>x86</c> or <c>arm64</c>.
 	/// </summary>
-	public SnapshotResult<TType, TThat> Architecture()
+	public TResult Architecture()
 		=> Add(SnapshotEnvironment.Part.Architecture, SnapshotEnvironment.GetArchitecture());
 
 	/// <summary>
@@ -35,7 +36,7 @@ public sealed class SnapshotUniqueFor<TType, TThat>
 	/// <remarks>
 	///     On any other operating system it throws a <see cref="System.PlatformNotSupportedException" />.
 	/// </remarks>
-	public SnapshotResult<TType, TThat> OperatingSystem()
+	public TResult OperatingSystem()
 		=> Add(SnapshotEnvironment.Part.OperatingSystem, SnapshotEnvironment.GetOperatingSystem());
 
 	/// <summary>
@@ -46,10 +47,10 @@ public sealed class SnapshotUniqueFor<TType, TThat>
 	///     The build targets of aweXpect.Snapshots record the target framework for the test project that contains the
 	///     test file; without it, it throws an <see cref="System.InvalidOperationException" />.
 	/// </remarks>
-	public SnapshotResult<TType, TThat> TargetFramework()
+	public TResult TargetFramework()
 		=> Add(SnapshotEnvironment.Part.TargetFramework, SnapshotEnvironment.GetTargetFramework(_options.Id.SourceFile));
 
-	private SnapshotResult<TType, TThat> Add(SnapshotEnvironment.Part part, string value)
+	private TResult Add(SnapshotEnvironment.Part part, string value)
 	{
 		_options.UniqueFor(part, value);
 		return _result;

@@ -6,25 +6,25 @@ derive from `SnapshotStore` in the namespace `aweXpect.Snapshots`:
 ```csharp
 public sealed class FolderSnapshotStore(string root) : SnapshotStore
 {
-    public override ValueTask<string?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
+    public override ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
     {
         string path = GetPath(id, "snapshot");
-        return new ValueTask<string?>(File.Exists(path) ? File.ReadAllText(path) : null);
+        return new ValueTask<byte[]?>(File.Exists(path) ? File.ReadAllBytes(path) : null);
     }
 
-    public override ValueTask RecordMismatchAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+    public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
     {
         string path = GetPath(id, "pending");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-        File.WriteAllText(path, actual);
+        File.WriteAllBytes(path, actual);
         return default;
     }
 
-    public override ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+    public override ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
     {
         string path = GetPath(id, "snapshot");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-        File.WriteAllText(path, actual);
+        File.WriteAllBytes(path, actual);
         File.Delete(GetPath(id, "pending"));
         return default;
     }
@@ -34,9 +34,13 @@ public sealed class FolderSnapshotStore(string root) : SnapshotStore
     public override string? DescribeMismatch(SnapshotId id) => GetPath(id, "pending");
 
     private string GetPath(SnapshotId id, string kind)
-        => Path.Combine(root, Path.GetDirectoryName(id.SourceFile) ?? "", $"{id}.{kind}.txt");
+        => Path.Combine(root, Path.GetDirectoryName(id.SourceFile) ?? "", $"{id}.{kind}.{id.Extension}");
 }
 ```
+
+A snapshot is passed as bytes, which the store keeps unchanged. The library encodes the text of a string or an object
+as UTF-8 without a byte order mark, with an additional final line break that it removes again when reading, and passes
+[binary data](01-matching-snapshots.md#binary-data-and-files) as it is, so one store keeps both.
 
 The operations describe what happened in the expectation, so the store decides how it keeps a value that awaits review
 apart from the reviewed snapshot:
@@ -63,8 +67,8 @@ A `SnapshotId` consists of the path of the test file relative to the repository 
 so it can be used as a key, and its `ToString()` returns `AlbumTests.Describes`, `AlbumTests.Describes.Abbey Road` or
 `AlbumTests.Describes.Abbey Road@net8.0@windows`. A listed snapshot whose `Variant` is for another environment is
 skipped by the check. `Extension` is the file extension from
-[`.WithExtension(…)`](01-matching-snapshots.md#file-extension), `txt` by default, e.g. to choose a content type; it is
-not part of `ToString()`.
+[`.WithExtension(…)`](01-matching-snapshots.md#file-extension) or of a `FileInfo`, `txt` by default, e.g. to choose a
+content type; it is not part of `ToString()`.
 
 Set the store for all tests, e.g. in an assembly-level setup, or only for the current async flow:
 

@@ -736,6 +736,120 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow()
 					.Because("renaming the pending snapshot accepts the written object");
 			}
+
+			[Fact]
+			public async Task WithBinaryData_ShouldReadTheCommittedSnapshot()
+			{
+				byte[] subject = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0xFF,];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot().WithExtension("bin");
+
+				await That(Act).DoesNotThrow()
+					.Because(
+						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithBinaryData_ShouldReadTheCommittedSnapshot.snapshot.bin' is committed next to this test file, with both line break styles that a text snapshot would normalize");
+			}
+
+			[Fact]
+			public async Task WithBinaryData_ShouldWriteThePendingSnapshotUnchanged()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.png");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.png");
+				byte[] subject = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.WithExtension("png");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but the snapshot did not exist
+
+					              Pending snapshot:
+					              {pendingPath}
+					              """);
+				await That(File.ReadAllBytes(pendingPath)).IsEqualTo(subject)
+					.Because("binary data is written without the encoding and the final line break of a text snapshot");
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow()
+					.Because("renaming the pending snapshot accepts the bytes unchanged");
+			}
+
+			[Fact]
+			public async Task WithBinaryData_WhenAccepting_ShouldWriteTheSnapshotUnchangedAndDeleteThePendingSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.png");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.png");
+				File.WriteAllBytes(snapshotPath, [1, 2,]);
+				File.WriteAllBytes(pendingPath, [3,]);
+				byte[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.WithExtension("png").Accepting(SnapshotAcceptance.All);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but it differed at byte 2 (the snapshot has 2 bytes, the subject 3)
+
+					              Accepted snapshot:
+					              {snapshotPath}
+					              """);
+				await That(File.ReadAllBytes(snapshotPath)).IsEqualTo(subject);
+				await That(File.Exists(pendingPath)).IsFalse();
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithFileInfo_ShouldNameTheSnapshotWithTheExtensionOfTheFile()
+			{
+				using SnapshotDirectory directory = new();
+				using SnapshotDirectory output = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pdf");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.pdf");
+				FileInfo subject = new(Path.Combine(output.Path, "liner-notes.pdf"));
+				File.WriteAllBytes(subject.FullName, [0x25, 0x50, 0x44, 0x46,]);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but the snapshot did not exist
+
+					              Pending snapshot:
+					              {pendingPath}
+					              """);
+				await That(File.ReadAllBytes(pendingPath)).IsEqualTo(File.ReadAllBytes(subject.FullName));
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithFileInfo_WhenTheFileDoesNotExist_ShouldNameTheSnapshotWithTheExtensionOfTheFile()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pdf");
+				FileInfo subject = new(Path.Combine(directory.Path, "liner-notes.pdf"));
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but the file "{subject.FullName}" did not exist
+					              """);
+			}
 		}
 	}
 }

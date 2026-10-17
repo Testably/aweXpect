@@ -16,8 +16,7 @@ namespace aweXpect.Snapshots;
 ///     in <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.txt</c>, which can be renamed to accept it.
 /// </summary>
 /// <remarks>
-///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed again
-///     when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
+///     The bytes are written and read unchanged, so that a pending file can be renamed to accept it.<br />
 ///     The files are accessed synchronously, as netstandard2.0 lacks the asynchronous methods of <see cref="File" />.<br />
 ///     A relative <see cref="SnapshotId.SourceFile" /> is resolved against the recorded source root, see
 ///     <see cref="SourceRoots" />.<br />
@@ -31,7 +30,6 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	public static readonly DiskSnapshotStore Instance = new();
 	private const string PendingSuffix = ".snapshot.pending";
 	private const string SnapshotSuffix = ".snapshot";
-	private static readonly Encoding Utf8WithoutBom = new UTF8Encoding(false);
 
 	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
 		? StringComparison.OrdinalIgnoreCase
@@ -48,32 +46,31 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	///     The test file is resolved before the snapshot is read, so that an ambiguous source root is reported instead of
 	///     reading the snapshot next to another test file with the same relative path.
 	/// </remarks>
-	public override ValueTask<string?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
+	public override ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
 		SourceRoots.ThrowIfUnresolvable(id.SourceFile);
 		string snapshotPath = GetSnapshotPath(id);
 		if (!File.Exists(snapshotPath))
 		{
-			return new ValueTask<string?>((string?)null);
+			return new ValueTask<byte[]?>((byte[]?)null);
 		}
 
-		return new ValueTask<string?>(RemoveFinalLineBreak(File.ReadAllText(snapshotPath)));
+		return new ValueTask<byte[]?>(File.ReadAllBytes(snapshotPath));
 	}
 
-	public override ValueTask RecordMismatchAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+	public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
-		File.WriteAllText(GetPendingPath(id), actual + Environment.NewLine, Utf8WithoutBom);
+		File.WriteAllBytes(GetPendingPath(id), actual);
 		return default;
 	}
 
 	/// <remarks>
-	///     The snapshot is written like a pending file, so that the next run reads the <paramref name="actual" /> value
-	///     unchanged. The accepted snapshot makes a leftover pending file obsolete, so one that cannot be deleted does not
-	///     fail it; the next matching run deletes it.
+	///     The accepted snapshot makes a leftover pending file obsolete, so one that cannot be deleted does not fail it;
+	///     the next matching run deletes it.
 	/// </remarks>
-	public override ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+	public override ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
-		File.WriteAllText(GetSnapshotPath(id), actual + Environment.NewLine, Utf8WithoutBom);
+		File.WriteAllBytes(GetSnapshotPath(id), actual);
 		try
 		{
 			DeletePending(id);
@@ -379,17 +376,5 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 
 		unescaped = builder.ToString();
 		return true;
-	}
-
-	private static string RemoveFinalLineBreak(string snapshot)
-	{
-		if (snapshot.EndsWith("\r\n", StringComparison.Ordinal))
-		{
-			return snapshot.Substring(0, snapshot.Length - 2);
-		}
-
-		return snapshot.Length > 0 && snapshot[snapshot.Length - 1] == '\n'
-			? snapshot.Substring(0, snapshot.Length - 1)
-			: snapshot;
 	}
 }

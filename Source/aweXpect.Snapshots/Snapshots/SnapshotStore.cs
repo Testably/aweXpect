@@ -12,38 +12,41 @@ namespace aweXpect.Snapshots;
 ///     The default store keeps every snapshot in a file next to its test file. Another store, e.g. one that keeps the
 ///     snapshots in a database, is set with <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 ///     The operations describe what happened in the expectation instead of how it is stored, so that a store decides
-///     on its own how it keeps a value that awaits review apart from the reviewed snapshot.
+///     on its own how it keeps a value that awaits review apart from the reviewed snapshot.<br />
+///     A snapshot is stored as bytes, which a store keeps unchanged: the text of a string or an object is encoded as
+///     UTF-8 without a byte order mark and ends with an additional line break, which is removed again when it is read,
+///     and binary data, e.g. an image, is stored as it is.
 /// </remarks>
 public abstract class SnapshotStore
 {
 	/// <summary>
 	///     Reads the reviewed snapshot with the <paramref name="id" />.
 	/// </summary>
-	/// <returns>The snapshot, or <see langword="null" /> when it does not exist.</returns>
+	/// <returns>The bytes of the snapshot, or <see langword="null" /> when it does not exist.</returns>
 	/// <remarks>
 	///     An exception fails the expectation and its negation, with the exception as cause.
 	/// </remarks>
-	public abstract ValueTask<string?> ReadAsync(SnapshotId id, CancellationToken cancellationToken);
+	public abstract ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken);
 
 	/// <summary>
-	///     Records the <paramref name="actual" /> value for the snapshot with the <paramref name="id" />, which was missing
+	///     Records the bytes of the <paramref name="actual" /> value for the snapshot with the <paramref name="id" />, which was missing
 	///     or different, so that it can be reviewed and accepted.
 	/// </summary>
 	/// <remarks>
 	///     The reviewed snapshot must stay unchanged. An exception is named in the failure, which the mismatch causes
 	///     anyway.
 	/// </remarks>
-	public abstract ValueTask RecordMismatchAsync(SnapshotId id, string actual, CancellationToken cancellationToken);
+	public abstract ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken);
 
 	/// <summary>
-	///     Accepts the <paramref name="actual" /> value as the reviewed snapshot with the <paramref name="id" />, which was
+	///     Accepts the bytes of the <paramref name="actual" /> value as the reviewed snapshot with the <paramref name="id" />, which was
 	///     missing or different while accepting changes was enabled.
 	/// </summary>
 	/// <remarks>
 	///     It replaces the reviewed snapshot, so a value that an earlier mismatch recorded is obsolete. An exception is
 	///     named in the failure, which the expectation reports anyway.
 	/// </remarks>
-	public abstract ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken);
+	public abstract ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken);
 
 	/// <summary>
 	///     Records that the snapshot with the <paramref name="id" /> matched, e.g. to remove a value that an earlier

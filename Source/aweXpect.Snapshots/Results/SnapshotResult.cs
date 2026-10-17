@@ -11,7 +11,52 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result of a snapshot expectation, which allows setting its options.
 /// </summary>
-public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotResult<TType, TThat>>
+public class SnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, SnapshotResult<TType, TThat>>
+{
+	internal SnapshotResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options)
+		: base(expectationBuilder, returnValue, options)
+	{
+	}
+
+	/// <summary>
+	///     Adds a rule for values that change from run to run or are irrelevant for the test, e.g.
+	///     <c>.For.Members().WithName("Id").Mask()</c> or <c>.For.Guids().Mask()</c>.
+	/// </summary>
+	/// <remarks>
+	///     A rule selects what it applies to, filters it, then ends with one action: <c>Ignore()</c>, <c>Mask()</c>,
+	///     <c>Mask("…")</c>, <c>Convert(…)</c> or <c>Keep()</c>. It is written like a rule for all snapshots,
+	///     <c>SnapshotRule.For.…</c>, and applied before those. A member or value rule throws on a <see cref="string" />
+	///     subject, which is compared as raw text, and a line rule on any other subject.
+	/// </remarks>
+	public SnapshotFor<SnapshotResult<TType, TThat>> For => new(AddRule);
+
+	private SnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
+	{
+		StructuralRules.ThrowIfNotApplicable<TType>(rule);
+		Options.Rules.Add(rule);
+		return this;
+	}
+}
+
+/// <summary>
+///     The result of a snapshot expectation of binary data, which allows setting its options.
+/// </summary>
+/// <remarks>
+///     Binary data is compared byte by byte, so it offers no rules, and the rules for all snapshots are ignored.
+/// </remarks>
+public class BinarySnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, BinarySnapshotResult<TType, TThat>>
+{
+	internal BinarySnapshotResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options)
+		: base(expectationBuilder, returnValue, options)
+	{
+	}
+}
+
+/// <summary>
+///     The options that every snapshot expectation offers.
+/// </summary>
+public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSelf>
+	where TSelf : SnapshotResult<TType, TThat, TSelf>
 {
 	private readonly SnapshotOptions _options;
 	private readonly TThat _returnValue;
@@ -40,18 +85,6 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	}
 
 	/// <summary>
-	///     Adds a rule for values that change from run to run or are irrelevant for the test, e.g.
-	///     <c>.For.Members().WithName("Id").Mask()</c> or <c>.For.Guids().Mask()</c>.
-	/// </summary>
-	/// <remarks>
-	///     A rule selects what it applies to, filters it, then ends with one action: <c>Ignore()</c>, <c>Mask()</c>,
-	///     <c>Mask("…")</c>, <c>Convert(…)</c> or <c>Keep()</c>. It is written like a rule for all snapshots,
-	///     <c>SnapshotRule.For.…</c>, and applied before those. A member or value rule throws on a <see cref="string" />
-	///     subject, which is compared as raw text, and a line rule on any other subject.
-	/// </remarks>
-	public SnapshotFor<SnapshotResult<TType, TThat>> For => new(AddRule);
-
-	/// <summary>
 	///     Keeps a snapshot of its own for each environment, e.g. <c>.UniqueFor.TargetFramework()</c>, when the subject
 	///     legitimately differs between them.
 	/// </summary>
@@ -60,7 +93,7 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	///     <c>.UniqueFor.TargetFramework().UniqueFor.OperatingSystem()</c>, which is stored in
 	///     <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>.
 	/// </remarks>
-	public SnapshotUniqueFor<TType, TThat> UniqueFor => new(this, _options);
+	public SnapshotUniqueFor<TSelf> UniqueFor => new((TSelf)this, _options);
 
 	internal SnapshotOptions Options => _options;
 
@@ -71,7 +104,7 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	/// <remarks>
 	///     The name is appended to the snapshot, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;.snapshot.txt</c>.
 	/// </remarks>
-	public SnapshotResult<TType, TThat> Named(string name)
+	public TSelf Named(string name)
 	{
 		if (name is null)
 		{
@@ -84,7 +117,7 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 		}
 
 		_options.Name = name;
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <summary>
@@ -99,20 +132,20 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	///     <see langword="null" /> as <c>null</c>.<br />
 	///     The name replaces one set before, also by <c>.Named(…)</c>.
 	/// </remarks>
-	public SnapshotResult<TType, TThat> NamedAfter(object? argument1,
+	public TSelf NamedAfter(object? argument1,
 		EndOfArguments endOfArguments = default,
 		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "")
 		=> SetNameAfter((argument1, doNotPopulateThisValue1));
 
 	/// <inheritdoc cref="NamedAfter(object, EndOfArguments, string)" />
-	public SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2,
+	public TSelf NamedAfter(object? argument1, object? argument2,
 		EndOfArguments endOfArguments = default,
 		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "",
 		[CallerArgumentExpression(nameof(argument2))] string doNotPopulateThisValue2 = "")
 		=> SetNameAfter((argument1, doNotPopulateThisValue1), (argument2, doNotPopulateThisValue2));
 
 	/// <inheritdoc cref="NamedAfter(object, EndOfArguments, string)" />
-	public SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, object? argument3,
+	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3,
 		EndOfArguments endOfArguments = default,
 		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "",
 		[CallerArgumentExpression(nameof(argument2))] string doNotPopulateThisValue2 = "",
@@ -123,7 +156,7 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	/// <inheritdoc cref="NamedAfter(object, EndOfArguments, string)" />
 	[SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters",
 		Justification = "Each argument needs its own caller argument expression parameter.")]
-	public SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, object? argument3,
+	public TSelf NamedAfter(object? argument1, object? argument2, object? argument3,
 		object? argument4,
 		EndOfArguments endOfArguments = default,
 		[CallerArgumentExpression(nameof(argument1))] string doNotPopulateThisValue1 = "",
@@ -133,11 +166,11 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 		=> SetNameAfter((argument1, doNotPopulateThisValue1), (argument2, doNotPopulateThisValue2),
 			(argument3, doNotPopulateThisValue3), (argument4, doNotPopulateThisValue4));
 
-	private SnapshotResult<TType, TThat> SetNameAfter(params (object? Value, string Expression)[] arguments)
+	private TSelf SetNameAfter(params (object? Value, string Expression)[] arguments)
 	{
 		_options.Name = string.Join("_", arguments.Select((argument, index)
 			=> $"{GetArgumentName(argument.Expression, index)}={FormatArgumentValue(argument.Value)}"));
-		return this;
+		return (TSelf)this;
 	}
 
 	/// <remarks>
@@ -163,11 +196,4 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 		=> (value is IFormattable formattable
 			? formattable.ToString(null, CultureInfo.InvariantCulture)
 			: value?.ToString()) ?? "null";
-
-	private SnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
-	{
-		StructuralRules.ThrowIfNotApplicable<TType>(rule);
-		_options.Rules.Add(rule);
-		return this;
-	}
 }
