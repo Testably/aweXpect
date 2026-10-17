@@ -64,13 +64,12 @@ public sealed partial class ThatSnapshot
 					.WithMessage($"""
 					              Expected that subject
 					              does not match the snapshot "{directory.SnapshotPath}",
-					              but the snapshot could not be read: *
-					              """).AsWildcard()
-					.Because("a snapshot that cannot be read can neither be matched nor not be matched");
+					              but a snapshot cannot be negated
+					              """);
 			}
 
 			[Fact]
-			public async Task WhenNegated_AndSnapshotDiffers_ShouldSucceed()
+			public async Task WhenNegated_AndSnapshotDiffers_ShouldFail()
 			{
 				using SnapshotDirectory directory = new();
 				directory.WriteSnapshot("bar");
@@ -80,7 +79,13 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not match the snapshot "{directory.SnapshotPath}",
+					              but a snapshot cannot be negated
+					              """)
+					.Because("accepting the pending snapshot would turn the success into a failure");
 			}
 
 			[Fact]
@@ -97,15 +102,8 @@ public sealed partial class ThatSnapshot
 					.WithMessage($"""
 					              Expected that subject
 					              does not match the snapshot "{directory.SnapshotPath}",
-					              but the snapshot did not exist
-
-					              Actual:
-					              foo
-
-					              Pending snapshot:
-					              {directory.PendingPath}
-					              """)
-					.Because("a missing snapshot can neither be matched nor not be matched");
+					              but a snapshot cannot be negated
+					              """);
 			}
 
 			[Fact]
@@ -123,8 +121,27 @@ public sealed partial class ThatSnapshot
 					.WithMessage($"""
 					              Expected that subject
 					              does not match the snapshot "{directory.SnapshotPath}",
-					              but it did
+					              but a snapshot cannot be negated
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndSubjectIsNull_ShouldFail()
+			{
+				using SnapshotDirectory directory = new();
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not match the snapshot "{directory.SnapshotPath}",
+					              but it was <null>
+					              """);
+				await That(File.Exists(directory.PendingPath)).IsFalse();
 			}
 
 			[Fact]

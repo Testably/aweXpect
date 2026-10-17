@@ -31,7 +31,9 @@ public static class ThatSnapshot
 	///     snapshot deletes a leftover pending file.<br />
 	///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed
 	///     again when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
-	///     The newline style is ignored, because version control can change it when the snapshot is checked out.
+	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
+	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
+	///     subject.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
@@ -79,7 +81,7 @@ public static class ThatSnapshot
 			_snapshot = null;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -99,7 +101,7 @@ public static class ThatSnapshot
 			}
 
 			WritePending(actual);
-			Outcome = _snapshot is null ? Outcome.FailureBothWays : Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 			return this;
 		}
 
@@ -176,7 +178,7 @@ public static class ThatSnapshot
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is null || _isMatch || _readError is not null)
+			if (Actual is null || _isMatch || _readError is not null || IsNegated)
 			{
 				return;
 			}
@@ -196,7 +198,7 @@ public static class ThatSnapshot
 		{
 			if (_readError is not null)
 			{
-				AppendReadError(stringBuilder);
+				stringBuilder.Append("the snapshot could not be read: ").Append(_readError.Message);
 			}
 			else if (_snapshot is null)
 			{
@@ -214,22 +216,6 @@ public static class ThatSnapshot
 				.Append(snapshotPath).Append('"');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_readError is not null)
-			{
-				AppendReadError(stringBuilder);
-			}
-			else if (_snapshot is null)
-			{
-				stringBuilder.Append("the snapshot did not exist");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
-
-		private void AppendReadError(StringBuilder stringBuilder)
-			=> stringBuilder.Append("the snapshot could not be read: ").Append(_readError!.Message);
+			=> stringBuilder.Append("a snapshot cannot be negated");
 	}
 }

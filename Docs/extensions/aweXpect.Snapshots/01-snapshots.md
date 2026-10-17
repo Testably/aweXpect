@@ -71,6 +71,9 @@ when the snapshot is read, so that an editor which adds a final line break does 
 
 The newline style is ignored when comparing, because version control can change it when the snapshot is checked out.
 
-A snapshot that cannot be read, e.g. because another process locks it, fails the expectation with the reason, also when
-it is negated. A pending file that cannot be written is named as such in the failure, and a leftover pending file that
-cannot be deleted does not fail a matching snapshot.
+A snapshot that cannot be read, e.g. because another process locks it, fails the expectation with the reason. A pending
+file that cannot be written is named as such in the failure, and a leftover pending file that cannot be deleted does not
+fail a matching snapshot.
+
+A snapshot cannot be negated: `DoesNotComplyWith(it => it.MatchesSnapshot())` always fails, as accepting the pending
+snapshot would turn any success into a failure.
