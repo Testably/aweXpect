@@ -1,2 +1,10 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Xml.git")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
+namespace aweXpect
+{
+    public static class ThatXmlString
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsValidXml(this aweXpect.Core.IThat<string?> source) { }
+    }
+}

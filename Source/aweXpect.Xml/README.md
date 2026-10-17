@@ -11,21 +11,29 @@ Expectations for XML strings and `System.Xml.Linq` for [aweXpect](https://github
 ## At a glance
 
 ```csharp
-// compare XML strings by their structure instead of their formatting
-await Expect.That(xml).IsEqualTo(expected).AsXml();
+string xml = """<track title="Let It Be" artist="The Beatles" />""";
 
-// verify that a string is valid XML
+// verify that a string is a well-formed XML document
 await Expect.That(xml).IsValidXml();
+```
+
+If the element was not closed, i.e. `<track title="Let It Be" artist="The Beatles">`, the expectation would fail with:
+
+```text title="Failure message"
+Expected that xml
+is valid XML,
+but it could not be parsed: Unexpected end of file has occurred. The following elements are not closed: track. Line 1, position 47.
 ```
 
 ## Overview
 
-| Expectation             | Subject  | Summary                                         |
-|-------------------------|----------|-------------------------------------------------|
-| `IsEqualTo(…).AsXml()`  | `string` | equal to the expected XML, compared by structure |
-| `IsValidXml`            | `string` | can be parsed as XML                            |
+| Expectation                                         | Subject  | Summary                                     |
+|-----------------------------------------------------|----------|---------------------------------------------|
+| [`IsValidXml`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation) | `string` | can be parsed as a well-formed XML document |
 
 ## Documentation
 
 The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Xml/).
+[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Xml/):
+
+- [XML strings](../../Docs/extensions/aweXpect.Xml/01-strings.md): validating strings as XML
