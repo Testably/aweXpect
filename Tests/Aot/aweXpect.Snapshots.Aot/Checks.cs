@@ -14,7 +14,22 @@ internal static class Checks
 		new("a string differing from its snapshot fails and names the difference",
 			() => ShouldFail(DiffersFromItsSnapshot,
 				"Checks.DiffersFromItsSnapshot.snapshot.txt", "differs at index 9")),
+		new("an object matching its snapshot passes",
+			() => ShouldPass(ObjectMatchesItsSnapshot)),
 	];
+
+	/// <remarks>
+	///     The members are only written when the source generator registered them for the call site, as this project
+	///     disables the reflection fallback like a trimmed application. Accepting is disabled, so that a difference fails
+	///     instead of replacing the committed snapshot.
+	/// </remarks>
+	private static async Task ObjectMatchesItsSnapshot()
+		=> await That(new Shipment
+		{
+			Id = 7,
+			Status = ShipmentStatus.Sent,
+			Parcels = [new Parcel { Weight = 1.25m, }, new Parcel { Weight = 3m, },],
+		}).MatchesSnapshot().AcceptingChanges(false);
 
 	/// <remarks>
 	///     The pending snapshot is deleted by the path on the last line of the failure, as the path of this file is

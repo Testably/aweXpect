@@ -52,6 +52,44 @@ Pending snapshot:
 
 A snapshot with several lines lists every line that differs.
 
+## Matching a snapshot of an object
+
+Any other value is written by the aweXpect formatter, completely and indented, so that a change in a single member
+shows up as a changed line:
+
+```csharp
+await Expect.That(order).MatchesSnapshot();
+```
+
+```text title="OrderTests.Creates.snapshot.txt"
+Order {
+  Created = 2026-10-17T09:30:00.0000000Z,
+  Id = 42,
+  Lines = [
+    Line {
+      Price = 1.5,
+      Product = "Pen"
+    }
+  ],
+  Note = <null>,
+  Status = Closed
+}
+```
+
+- Members are written in alphabetical order, and nothing is shortened like in a failure message.
+- Numbers and dates are written independently of the current culture.
+- An object that contains itself is written as `*recursive*` where it repeats, and an object that is nested too deeply
+  for the stack fails the expectation instead of being shortened.
+- The static type decides: a `string` is compared as raw text, but a string in an `object` subject is written in quotes
+  like any other value.
+- A collection is written in the order it enumerates its items. The order of a hash-based collection, e.g. a
+  `HashSet<string>`, can change between runs, so order it before, e.g. with `OrderBy`.
+- Maskings apply to the written text, e.g. `.Masking(@"Id = ""[0-9a-f-]{36}""", @"Id = ""<id>""").AsRegex()`.
+
+In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
+generator of aweXpect registers them for the call site, which it does for `MatchesSnapshot()`. A record is written with
+its own `ToString()` there, as it can only be recognized with reflection, so prefer classes in such snapshots.
+
 ## Accepting a snapshot
 
 A missing or different snapshot writes the actual value to `<Class>.<Method>.snapshot.pending.txt` next to the

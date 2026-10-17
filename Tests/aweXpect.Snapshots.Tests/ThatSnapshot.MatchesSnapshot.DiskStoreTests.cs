@@ -438,6 +438,30 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 				await That(File.Exists(directory.PendingPath)).IsFalse();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsAnObject_ShouldWriteItToThePendingSnapshotForAcceptance()
+			{
+				using SnapshotDirectory directory = new();
+				SnapshotLine subject = new("Pen", 2, 1.5m);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*the snapshot did not exist*").AsWildcard();
+				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("""
+				                                                              SnapshotLine {
+				                                                                Price = 1.5,
+				                                                                Product = "Pen",
+				                                                                Quantity = 2
+				                                                              }
+
+				                                                              """).IgnoringNewlineStyle();
+				File.Move(directory.PendingPath, directory.SnapshotPath);
+				await That(Act).DoesNotThrow()
+					.Because("renaming the pending snapshot accepts the written object");
+			}
 		}
 	}
 }

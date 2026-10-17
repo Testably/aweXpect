@@ -14,6 +14,9 @@ Snapshot testing for [aweXpect](https://github.com/Testably/aweXpect).
 // compare a string with the snapshot that is stored next to the test
 await Expect.That(html).MatchesSnapshot();
 
+// compare an object, written completely and indented by the aweXpect formatter
+await Expect.That(order).MatchesSnapshot();
+
 // replace values that change from run to run before comparing
 await Expect.That(html).MatchesSnapshot().Masking(@"id=\d+", "id=<id>").AsRegex();
 ```
@@ -25,9 +28,10 @@ environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to accept all changed snapshots
 
 ## Overview
 
-| Expectation                                                         | Subject  | Summary                                      |
-|---------------------------------------------------------------------|----------|----------------------------------------------|
-| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-snapshots.md#matching-a-snapshot) | `string` | matches the snapshot stored next to the test |
+| Expectation                                                                      | Subject  | Summary                                                 |
+|----------------------------------------------------------------------------------|----------|---------------------------------------------------------|
+| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-snapshots.md#matching-a-snapshot)              | `string` | matches the snapshot stored next to the test            |
+| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-snapshots.md#matching-a-snapshot-of-an-object) | any `T`  | matches the snapshot of the object, written by aweXpect |
 
 ## Documentation
 

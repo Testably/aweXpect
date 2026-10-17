@@ -52,5 +52,7 @@ namespace aweXpect
     {
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<T, aweXpect.Core.IThat<T>> MatchesSnapshot<[aweXpect.Core.Metadata.RequiresMemberMetadata]  T>(this aweXpect.Core.IThat<T> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
     }
 }
