@@ -1,0 +1,26 @@
+<Project>
+
+	<!--
+	    Records the source root of the project in the test assembly as `<MappedPath>=<SourceRoot>`, so that a snapshot is
+	    identified by the path of its test file relative to the source root, which is the same on every machine. A
+	    deterministic build (e.g. with `ContinuousIntegrationBuild`) emits the mapped path, such as `/_/`, instead of the
+	    source root, which is how the snapshots are found again in such a build.
+	    Only the source root that contains the project is recorded, so that a relative path leads back to one directory.
+	-->
+	<Target Name="_AweXpectSnapshotsRecordSourceRoot"
+			BeforeTargets="GetAssemblyAttributes"
+			DependsOnTargets="InitializeSourceRootMappedPaths"
+			Condition="'$(SourceRootMappedPathsFeatureSupported)' == 'true'">
+		<ItemGroup>
+			<_AweXpectSnapshotsSourceRoot Include="@(SourceRoot)"
+										  Condition="'%(SourceRoot.NestedRoot)' == '' and !$([MSBuild]::MakeRelative('%(SourceRoot.Identity)', '$(MSBuildProjectDirectory)').StartsWith('..')) and !$([System.IO.Path]::IsPathRooted($([MSBuild]::MakeRelative('%(SourceRoot.Identity)', '$(MSBuildProjectDirectory)'))))"/>
+		</ItemGroup>
+		<ItemGroup Condition="'@(_AweXpectSnapshotsSourceRoot)' != ''">
+			<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+				<_Parameter1>aweXpect.Snapshots.SourceRoot</_Parameter1>
+				<_Parameter2>%(_AweXpectSnapshotsSourceRoot.MappedPath)=%(_AweXpectSnapshotsSourceRoot.Identity)</_Parameter2>
+			</AssemblyAttribute>
+		</ItemGroup>
+	</Target>
+
+</Project>

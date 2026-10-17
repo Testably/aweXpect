@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Customization;
 using aweXpect.Snapshots.Tests.TestHelpers;
@@ -16,7 +15,7 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Fact]
-			public async Task ShouldUseTheCallerInformationAsSnapshotId()
+			public async Task ShouldIdentifyTheSnapshotByThePathRelativeToTheSourceRoot()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -28,24 +27,25 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
-					new SnapshotId(GetCallerFilePath(), nameof(ShouldUseTheCallerInformationAsSnapshotId)),
-				}).InAnyOrder();
+					new SnapshotId("Tests/aweXpect.Snapshots.Tests/ThatSnapshot.MatchesSnapshot.Tests.cs",
+						nameof(ShouldIdentifyTheSnapshotByThePathRelativeToTheSourceRoot)),
+				}).InAnyOrder().Because("the build targets record the source root, so the id is the same on every machine");
 			}
 
 			[Fact]
-			public async Task WhenCallerFilePathIsDeterministic_ShouldUseIt()
+			public async Task WhenCallerFilePathIsDeterministic_ShouldAcceptIt()
 			{
-				SnapshotId id = new($"/_/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
+				SnapshotId id = new($"/_9/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 				InMemorySnapshotStore store = new();
 				store.Snapshots[id] = "foo";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(id.TestFilePath, id.MemberName);
+					=> await That(subject).MatchesSnapshot(id.SourceFile, id.MemberName);
 
 				await That(Act).DoesNotThrow()
-					.Because("deterministic builds map the path of the test file to the rooted path '/_/…'");
+					.Because("deterministic builds map the path of the test file to a rooted path like '/_9/…'");
 			}
 
 			[Fact]
@@ -71,7 +71,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named("login");
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("login");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -96,7 +96,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named(name);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named(name);
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("name").And
@@ -109,7 +109,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named(null!);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("name");
@@ -126,7 +126,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -145,7 +145,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -164,7 +164,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -183,7 +183,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -201,7 +201,7 @@ public sealed partial class ThatSnapshot
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -228,7 +228,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName)
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.WithCancellation(cancellationTokenSource.Token);
 
 				await That(Act).Throws<InconclusiveException>()
@@ -253,7 +253,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				XunitException exception = await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -277,7 +277,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*but the snapshot could not be read: timed out").AsWildcard()
@@ -296,7 +296,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).DoesNotThrow()
 					.Because("the snapshot matched, and recording the match only cleans up");
@@ -313,7 +313,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -338,7 +338,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo baz";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -362,7 +362,7 @@ public sealed partial class ThatSnapshot
 				string subject = "bar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -383,7 +383,7 @@ public sealed partial class ThatSnapshot
 				string subject = "a\nB\nc\nD";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -414,7 +414,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo\nbar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).DoesNotThrow()
 					.Because("version control can change the newline style when the snapshot is checked out");
@@ -429,7 +429,7 @@ public sealed partial class ThatSnapshot
 				string subject = "";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -442,7 +442,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -468,7 +468,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo\nbar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).DoesNotThrow();
 				await That(store.Matches).IsEqualTo(new[] { Id, });
@@ -484,7 +484,7 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).DoesNotThrow();
 				await That(Act).DoesNotThrow()
@@ -497,11 +497,11 @@ public sealed partial class ThatSnapshot
 				InMemorySnapshotStore store = new();
 				store.Snapshots[Id] = "foo";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-				await That("foo").MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+				await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 				string subject = "bar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -523,8 +523,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 				{
-					await That("foo").MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named("first");
-					await That("bar").MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named("second");
+					await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("first");
+					await That("bar").MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("second");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -551,7 +551,7 @@ public sealed partial class ThatSnapshot
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -561,9 +561,6 @@ public sealed partial class ThatSnapshot
 					             """);
 				await That(store.Mismatches).IsEmpty();
 			}
-
-			private static string GetCallerFilePath([CallerFilePath] string callerFilePath = "")
-				=> callerFilePath;
 		}
 	}
 }

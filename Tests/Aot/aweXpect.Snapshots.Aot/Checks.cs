@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using static aweXpect.Expect;
 
@@ -17,20 +16,22 @@ internal static class Checks
 				"Checks.DiffersFromItsSnapshot.snapshot.txt", "differs at index 9")),
 	];
 
+	/// <remarks>
+	///     The pending snapshot is deleted by the path on the last line of the failure, as the path of this file is
+	///     mapped by the deterministic build.
+	/// </remarks>
 	private static async Task DiffersFromItsSnapshot()
 	{
 		try
 		{
 			await That("snapshot differs").MatchesSnapshot();
 		}
-		finally
+		catch (FailException exception)
 		{
-			File.Delete(GetSnapshotPath($"Checks.{nameof(DiffersFromItsSnapshot)}.snapshot.pending.txt"));
+			File.Delete(exception.Message.Substring(exception.Message.LastIndexOf('\n') + 1).Trim());
+			throw;
 		}
 	}
-
-	private static string GetSnapshotPath(string fileName, [CallerFilePath] string callerFilePath = "")
-		=> Path.Combine(Path.GetDirectoryName(callerFilePath)!, fileName);
 
 	private static async Task MatchesItsSnapshot()
 		=> await That("snapshot content").MatchesSnapshot();

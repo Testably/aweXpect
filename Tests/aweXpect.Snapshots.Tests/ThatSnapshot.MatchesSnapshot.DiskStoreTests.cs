@@ -23,6 +23,22 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenPathComesFromDeterministicBuild_WithoutRecordedSourceRoot_ShouldFail()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot("/_9/Tests/MyTests.cs", SnapshotDirectory.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "*MyTests.MyTest.snapshot.txt",
+					             but the snapshot could not be read: The path "/_9/Tests/MyTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenDirectoryDoesNotExist_ShouldReportThatThePendingSnapshotCouldNotBeWritten()
 			{
 				using SnapshotDirectory directory = new();

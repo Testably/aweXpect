@@ -13,7 +13,9 @@ namespace aweXpect.Snapshots;
 /// <remarks>
 ///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed again
 ///     when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
-///     The files are accessed synchronously, as netstandard2.0 lacks the asynchronous methods of <see cref="File" />.
+///     The files are accessed synchronously, as netstandard2.0 lacks the asynchronous methods of <see cref="File" />.<br />
+///     A relative <see cref="SnapshotId.SourceFile" /> is resolved against the recorded source root, see
+///     <see cref="SourceRoots" />.
 /// </remarks>
 internal sealed class DiskSnapshotStore : SnapshotStore
 {
@@ -29,6 +31,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		string snapshotPath = GetSnapshotPath(id);
 		if (!File.Exists(snapshotPath))
 		{
+			SourceRoots.ThrowIfDeterministic(id.SourceFile);
 			return new ValueTask<string?>((string?)null);
 		}
 
@@ -61,9 +64,12 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	private static string GetPendingPath(SnapshotId id) => GetBasePath(id) + ".snapshot.pending.txt";
 
 	private static string GetBasePath(SnapshotId id)
-		=> Path.Combine(Path.GetDirectoryName(id.TestFilePath) ?? "", id.Name is null
-			? $"{Path.GetFileNameWithoutExtension(id.TestFilePath)}.{id.MemberName}"
-			: $"{Path.GetFileNameWithoutExtension(id.TestFilePath)}.{id.MemberName}.{id.Name}");
+	{
+		string testFilePath = SourceRoots.GetPath(id.SourceFile);
+		return Path.Combine(Path.GetDirectoryName(testFilePath) ?? "", id.Name is null
+			? $"{Path.GetFileNameWithoutExtension(testFilePath)}.{id.MemberName}"
+			: $"{Path.GetFileNameWithoutExtension(testFilePath)}.{id.MemberName}.{id.Name}");
+	}
 
 	private static string RemoveFinalLineBreak(string snapshot)
 	{

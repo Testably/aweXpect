@@ -63,9 +63,9 @@ public static class ThatSnapshot
 
 		SnapshotOptions options = new();
 		return new SnapshotResult<string?, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(TestFilePath: callerFilePath, MemberName: callerMemberName, Options: options),
+				(SourceFile: SourceRoots.GetSourceFile(callerFilePath), MemberName: callerMemberName, Options: options),
 				static (state, it, grammars) => new MatchesSnapshotConstraint(it, grammars,
-					Customize.aweXpect.Snapshots().Store.Get(), state.TestFilePath, state.MemberName, state.Options)),
+					Customize.aweXpect.Snapshots().Store.Get(), state.SourceFile, state.MemberName, state.Options)),
 			subject,
 			options);
 	}
@@ -74,7 +74,7 @@ public static class ThatSnapshot
 		string it,
 		ExpectationGrammars grammars,
 		SnapshotStore store,
-		string testFilePath,
+		string sourceFile,
 		string memberName,
 		SnapshotOptions snapshotOptions)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
@@ -100,7 +100,7 @@ public static class ThatSnapshot
 		/// <inheritdoc />
 		public override Exception? FailureCause => _readError;
 
-		private SnapshotId Id => new(testFilePath, memberName, snapshotOptions.Name);
+		private SnapshotId Id => new(sourceFile, memberName, snapshotOptions.Name);
 
 		/// <remarks>
 		///     A snapshot that cannot be read fails the expectation both ways instead of throwing, so that the failure

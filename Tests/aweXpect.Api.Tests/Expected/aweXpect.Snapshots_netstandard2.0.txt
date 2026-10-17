@@ -11,10 +11,10 @@ namespace aweXpect.Snapshots
 {
     public sealed class SnapshotId : System.IEquatable<aweXpect.Snapshots.SnapshotId>
     {
-        public SnapshotId(string TestFilePath, string MemberName, string? Name = null) { }
+        public SnapshotId(string SourceFile, string MemberName, string? Name = null) { }
         public string MemberName { get; init; }
         public string? Name { get; init; }
-        public string TestFilePath { get; init; }
+        public string SourceFile { get; init; }
         public override string ToString() { }
     }
     public abstract class SnapshotStore
