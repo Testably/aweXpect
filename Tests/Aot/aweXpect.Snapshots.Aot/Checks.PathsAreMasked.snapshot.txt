@@ -1,0 +1,9 @@
+Album {
+  Price = 12.99,
+  Title = "{ProjectDirectory}/albums.json",
+  Tracks = [
+    "{OutputDirectory}/abbey.tmp",
+    "{TempPath}/let-it-be.tmp",
+    "{UserProfile}/Music"
+  ]
+}

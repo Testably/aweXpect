@@ -146,6 +146,20 @@ internal static class SourceRoots
 	}
 
 	/// <summary>
+	///     Returns the recorded project directory that contains the test file <paramref name="sourceFile" />, the
+	///     innermost one when they are nested, or <see langword="null" /> when none contains it.
+	/// </summary>
+	public static string? GetProjectDirectory(string sourceFile)
+	{
+		string testFile = Normalize(GetPath(sourceFile));
+		return GetProjectDirectories()
+			.Select(Normalize)
+			.Where(projectDirectory => testFile.StartsWith(projectDirectory + Path.DirectorySeparatorChar, PathComparison))
+			.OrderByDescending(projectDirectory => projectDirectory.Length)
+			.FirstOrDefault();
+	}
+
+	/// <summary>
 	///     Returns the full <paramref name="path" /> of a test file on this machine relative to the source root that
 	///     contains it, like <see cref="GetSourceFile" /> returns it for the path that the compiler set.
 	/// </summary>
@@ -254,7 +268,7 @@ internal static class SourceRoots
 	///     A source root that is recorded several times, also with another trailing separator or, on Windows, another
 	///     case of the drive letter, counts as one.
 	/// </remarks>
-	private static string[] GetDistinctSourceRoots()
+	public static string[] GetDistinctSourceRoots()
 	{
 		List<string> sourceRoots = new();
 		foreach (string sourceRoot in Recorded.Select(recorded => recorded.Value))

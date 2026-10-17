@@ -8,7 +8,9 @@ namespace aweXpect.Results;
 /// </summary>
 /// <remarks>
 ///     The maskings of the expectation are applied in the order in which they are added, then the maskings for all
-///     snapshots, so a specific one goes before a general one. The snapshot and the failure contain the masked subject.
+///     snapshots, so a specific one goes before a general one. Only the maskings of the environment come first: the
+///     paths, see <see cref="Paths" />, then <see cref="MachineName" /> and <see cref="UserName" />. The snapshot and the
+///     failure contain the masked subject.
 /// </remarks>
 public sealed class SnapshotMaskings<TType, TThat>
 {
@@ -29,6 +31,10 @@ public sealed class SnapshotMaskings<TType, TThat>
 	public SnapshotResult<TType, TThat> Guids()
 		=> Add(SnapshotMasking.Guids());
 
+	/// <inheritdoc cref="SnapshotMasking.MachineName()" />
+	public SnapshotResult<TType, TThat> MachineName()
+		=> Add(SnapshotMasking.MachineName());
+
 	/// <inheritdoc cref="SnapshotMasking.Member(string)" />
 	public SnapshotResult<TType, TThat> Member(string memberName)
 		=> AddStructural(SnapshotMasking.Member(memberName));
@@ -36,6 +42,30 @@ public sealed class SnapshotMaskings<TType, TThat>
 	/// <inheritdoc cref="SnapshotMasking.Member(string, string)" />
 	public SnapshotResult<TType, TThat> Member(string memberName, string replacement)
 		=> AddStructural(SnapshotMasking.Member(memberName, replacement));
+
+	/// <summary>
+	///     Replaces the paths of the environment with placeholders when <paramref name="mask" /> is
+	///     <see langword="true" />, e.g. <c>C:\Music\Discography\Tests\albums.json</c> with
+	///     <c>{ProjectDirectory}\albums.json</c>.
+	/// </summary>
+	/// <remarks>
+	///     It overrides <c>Customize.aweXpect.Snapshots().MaskPaths</c>, which masks the paths by default: the directory
+	///     of the test project with <c>{ProjectDirectory}</c>, the source root with <c>{SourceRoot}</c>,
+	///     <see cref="System.AppContext.BaseDirectory" /> with <c>{OutputDirectory}</c>,
+	///     <see cref="System.IO.Path.GetTempPath()" /> with <c>{TempPath}</c> and the profile of the user with
+	///     <c>{UserProfile}</c>.<br />
+	///     The longest path is replaced first, as they are nested in each other. On Windows, a path matches with <c>\</c>
+	///     or <c>/</c> as separator, also with escaped backslashes (<c>\\</c>) as in a string of an object snapshot, and
+	///     elsewhere with <c>/</c>. It only matches as whole segments, so <c>C:\Music\Album</c> does not match inside
+	///     <c>C:\Music\Albums</c>; the rest of the path keeps its separators. The case is ignored on Windows and macOS. A
+	///     root of the file system, such as <c>C:\</c> or <c>/</c>, is never masked. The paths are replaced before the
+	///     other maskings, so that they see the placeholders.
+	/// </remarks>
+	public SnapshotResult<TType, TThat> Paths(bool mask = true)
+	{
+		_options.MaskPaths = mask;
+		return _result;
+	}
 
 	/// <inheritdoc cref="SnapshotMasking.Regex(string, string)" />
 	public SnapshotResult<TType, TThat> Regex(string pattern, string replacement)
@@ -56,6 +86,10 @@ public sealed class SnapshotMaskings<TType, TThat>
 	/// <inheritdoc cref="SnapshotMasking.Type{T}(string)" />
 	public SnapshotResult<TType, TThat> Type<T>(string replacement)
 		=> AddStructural(SnapshotMasking.Type<T>(replacement));
+
+	/// <inheritdoc cref="SnapshotMasking.UserName()" />
+	public SnapshotResult<TType, TThat> UserName()
+		=> Add(SnapshotMasking.UserName());
 
 	private SnapshotResult<TType, TThat> Add(SnapshotMasking masking)
 	{

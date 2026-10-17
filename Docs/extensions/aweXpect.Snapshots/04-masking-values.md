@@ -86,6 +86,50 @@ await Expect.That(log).MatchesSnapshot()
 An object is written by the formatter, so a line rule on any other subject than a `string` throws an
 `InvalidOperationException`; leave out its members instead.
 
+## Paths, machine and user name
+
+Paths of the environment differ between machines, so they are masked by default:
+
+```text
+// value                                               // snapshot
+Loaded C:\Music\Discography\Tests\albums.json          Loaded {ProjectDirectory}\albums.json
+Cache: C:\Users\paul\AppData\Local\Temp\abbey.tmp      Cache: {TempPath}\abbey.tmp
+```
+
+| Placeholder          | Path                                                                                     |
+|----------------------|------------------------------------------------------------------------------------------|
+| `{ProjectDirectory}` | the directory of the test project that contains the test file                            |
+| `{SourceRoot}`       | the source root, see [deterministic builds](06-deterministic-builds.md)                  |
+| `{OutputDirectory}`  | `AppContext.BaseDirectory`                                                               |
+| `{TempPath}`         | `Path.GetTempPath()`                                                                     |
+| `{UserProfile}`      | `Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)`, on every system      |
+
+- The longest path is masked first, as they are nested in each other, e.g. the output directory in the project directory
+  in the source root.
+- On Windows, a path matches with `\` or `/` as separator, also with escaped backslashes (`C:\\Music`), as in JSON or in
+  a string of a [snapshot of an object](01-matching-snapshots.md#objects); elsewhere only with `/`, as a backslash is part
+  of a file name there. The rest of the path keeps its separators.
+- Only whole segments match, so `C:\Music\Album` does not match inside `C:\Music\Albums`.
+- The case is ignored on Windows and macOS, but not on Linux.
+- A root of the file system, such as `C:\` or `/`, is never masked.
+
+The paths are masked before all other maskings of the text, so these see the placeholders. Turn it off for one
+expectation with `.Masking.Paths(false)`, or for all snapshots with `Customize.aweXpect.Snapshots().MaskPaths.Set(false)`;
+the expectation overrides the setting in both directions.
+
+The name of the machine and of the user are only masked when asked for, as whole words, with `{MachineName}` and
+`{UserName}`. The machine name ignores the case, the user name only on Windows and macOS. They are masked right after
+the paths, also from the setting for all snapshots, so a path in the user profile becomes `{UserProfile}`:
+
+```csharp
+await Expect.That(log).MatchesSnapshot().Masking.MachineName().Masking.UserName();
+
+Customize.aweXpect.Global.Snapshots().Maskings.Set([
+    SnapshotMasking.MachineName(),
+    SnapshotMasking.UserName(),
+]);
+```
+
 ## Members and types of an object
 
 In a [snapshot of an object](01-matching-snapshots.md#objects), members can be left out or masked by their name or
@@ -141,7 +185,7 @@ semantics as the maskings of an expectation:
 Customize.aweXpect.Global.Snapshots().Maskings.Set([
     SnapshotMasking.Guids(),
     SnapshotMasking.Dates(),
-    SnapshotMasking.Text(Environment.MachineName, "<machine>"),
+    SnapshotMasking.MachineName(),
     SnapshotMasking.Regex(new Regex(@"localhost:\d+"), "localhost:<port>"),
 ]);
 ```

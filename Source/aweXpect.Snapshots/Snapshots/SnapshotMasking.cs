@@ -21,7 +21,8 @@ namespace aweXpect.Snapshots;
 ///     written, so they apply before the maskings of the text, and only to snapshots of objects; the first one that
 ///     matches a value wins. Numbered placeholders of the same name share their numbers across all maskings.<br />
 ///     Set maskings for all snapshots with <c>Customize.aweXpect.Snapshots().Maskings</c>; they are applied after the
-///     maskings of the expectation.
+///     maskings of the expectation. <see cref="MachineName" /> and <see cref="UserName" /> are applied first, after the
+///     paths of the environment, see <c>Customize.aweXpect.Snapshots().MaskPaths</c>.
 /// </remarks>
 public sealed class SnapshotMasking
 {
@@ -88,6 +89,18 @@ public sealed class SnapshotMasking
 		_rule = rule;
 		_replacement = replacement;
 	}
+
+	private SnapshotMasking(string pattern, RegexOptions options, string placeholder)
+		: this(pattern, placeholder, new System.Text.RegularExpressions.Regex(
+			pattern, options | RegexOptions.CultureInvariant, RegexTimeout), true)
+	{
+		IsEnvironment = true;
+	}
+
+	/// <summary>
+	///     Whether the masking replaces a value of the environment, which is applied before the other text maskings.
+	/// </summary>
+	internal bool IsEnvironment { get; }
 
 	/// <summary>
 	///     Whether the masking replaces values nested in an object snapshot while it is written, instead of the text.
@@ -200,6 +213,29 @@ public sealed class SnapshotMasking
 	/// </remarks>
 	public static SnapshotMasking Dates()
 		=> new(DatePattern, "Date", false);
+
+	/// <summary>
+	///     Replaces the name of this machine, <see cref="Environment.MachineName" />, with <c>{MachineName}</c>.
+	/// </summary>
+	/// <remarks>
+	///     The name only matches as a whole word, ignoring the case, as host names are case-insensitive, so it is not
+	///     replaced inside a longer word. Like the paths of the environment, which are masked by default, it is replaced
+	///     before the other maskings of the text, so that they see the placeholder.
+	/// </remarks>
+	public static SnapshotMasking MachineName()
+		=> Word(Environment.MachineName, RegexOptions.IgnoreCase, "{MachineName}");
+
+	/// <summary>
+	///     Replaces the name of the current user, <see cref="Environment.UserName" />, with <c>{UserName}</c>.
+	/// </summary>
+	/// <remarks>
+	///     The name only matches as a whole word, so it is not replaced inside a longer word, ignoring the case on Windows
+	///     and macOS like the paths of the environment. Like these, which are masked by default, it is replaced before the
+	///     other maskings of the text, so that they see the placeholder; a path in the user profile therefore becomes
+	///     <c>{UserProfile}</c>, unless the paths are not masked.
+	/// </remarks>
+	public static SnapshotMasking UserName()
+		=> Word(Environment.UserName, EnvironmentMaskings.PathOptions, "{UserName}");
 
 	/// <summary>
 	///     Replaces the value of each member whose path ends with the <paramref name="memberName" /> in an object snapshot
@@ -345,6 +381,20 @@ public sealed class SnapshotMasking
 
 		return regex;
 	}
+
+	/// <summary>
+	///     Replaces the <paramref name="path" /> of the environment with the <paramref name="placeholder" />, see
+	///     <see cref="EnvironmentMaskings" />.
+	/// </summary>
+	internal static SnapshotMasking ForPath(string path, string placeholder)
+		=> new(EnvironmentMaskings.GetPathPattern(path), EnvironmentMaskings.PathOptions, placeholder);
+
+	/// <remarks>
+	///     An empty <paramref name="word" /> matches nothing.
+	/// </remarks>
+	private static SnapshotMasking Word(string word, RegexOptions options, string placeholder)
+		=> new(word.Length == 0 ? "(?!)" : $@"(?<!\w){System.Text.RegularExpressions.Regex.Escape(word)}(?!\w)",
+			options, placeholder);
 
 	private static string ThrowIfNull(string replacement)
 		=> replacement ?? throw Tracing.WriteException(

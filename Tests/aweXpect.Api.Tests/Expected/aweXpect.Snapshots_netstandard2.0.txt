@@ -14,13 +14,16 @@ namespace aweXpect.Results
     {
         public aweXpect.Results.SnapshotResult<TType, TThat> Dates() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Guids() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> MachineName() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName, string replacement) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Paths(bool mask = true) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Regex(string pattern, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Text(string value, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Type<T>() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Type<T>(string replacement) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> UserName() { }
     }
     public class SnapshotResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
     {
@@ -69,6 +72,7 @@ namespace aweXpect.Snapshots
     {
         public static aweXpect.Snapshots.SnapshotMasking Dates() { }
         public static aweXpect.Snapshots.SnapshotMasking Guids() { }
+        public static aweXpect.Snapshots.SnapshotMasking MachineName() { }
         public static aweXpect.Snapshots.SnapshotMasking Member(string memberName) { }
         public static aweXpect.Snapshots.SnapshotMasking Member(string memberName, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
@@ -76,6 +80,7 @@ namespace aweXpect.Snapshots
         public static aweXpect.Snapshots.SnapshotMasking Text(string value, string replacement) { }
         public static aweXpect.Snapshots.SnapshotMasking Type<T>() { }
         public static aweXpect.Snapshots.SnapshotMasking Type<T>(string replacement) { }
+        public static aweXpect.Snapshots.SnapshotMasking UserName() { }
     }
     public abstract class SnapshotStore
     {
@@ -96,6 +101,7 @@ namespace aweXpect.Snapshots
         {
             public aweXpect.Customization.ICustomizationValueSetter<bool?> AcceptChanges { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotIgnoring>> Ignorings { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<bool> MaskPaths { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotMasking>> Maskings { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
         }

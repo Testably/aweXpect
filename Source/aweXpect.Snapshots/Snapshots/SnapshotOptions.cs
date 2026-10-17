@@ -40,6 +40,8 @@ internal sealed class SnapshotOptions
 
 	public List<SnapshotMasking> Maskings { get; } = new();
 
+	public bool? MaskPaths { get; set; }
+
 	/// <remarks>
 	///     A new name moves the claim of the snapshot to the named one.
 	/// </remarks>
@@ -74,20 +76,21 @@ internal sealed class SnapshotOptions
 	///     <paramref name="globalMaskings" /> in their order, so that a specific masking of the expectation goes before
 	///     a general one for all snapshots.
 	/// </summary>
-	public string Mask(string value, IReadOnlyList<SnapshotMasking> globalMaskings, SnapshotNumbering numbering)
+	/// <remarks>
+	///     The maskings of the environment come first, the paths unless <see cref="MaskPaths" /> or else
+	///     <paramref name="maskPaths" /> turns them off, so that the other maskings see their placeholders.
+	/// </remarks>
+	public string Mask(string value, IReadOnlyList<SnapshotMasking> globalMaskings, bool maskPaths,
+		SnapshotNumbering numbering)
 	{
-		string masked = value;
-		foreach (SnapshotMasking masking in Maskings)
-		{
-			masked = masking.Apply(masked, numbering);
-		}
-
-		foreach (SnapshotMasking masking in globalMaskings)
-		{
-			masked = masking.Apply(masked, numbering);
-		}
-
-		return masked;
+		SnapshotMasking[] maskings = Maskings.Concat(globalMaskings).ToArray();
+		IEnumerable<SnapshotMasking> paths = (MaskPaths ?? maskPaths)
+			? EnvironmentMaskings.ForPaths(_sourceFile)
+			: [];
+		return paths
+			.Concat(maskings.Where(masking => masking.IsEnvironment))
+			.Concat(maskings.Where(masking => !masking.IsEnvironment))
+			.Aggregate(value, (masked, masking) => masking.Apply(masked, numbering));
 	}
 
 	/// <summary>

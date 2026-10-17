@@ -245,10 +245,11 @@ public sealed partial class ThatSnapshot
 			public async Task MaskingProperty_ShouldOfferEveryFactoryOfSnapshotMasking()
 			{
 				string[] factories = ApiParity.GetFactories(typeof(SnapshotMasking));
-				string[] maskings = ApiParity.GetMethods(typeof(SnapshotMaskings<string, IThat<string>>));
+				string[] maskings = ApiParity.GetMethods(typeof(SnapshotMaskings<string, IThat<string>>))
+					.Where(masking => masking != "Paths`0(System.Boolean mask)").ToArray();
 
 				await That(maskings).IsEqualTo(factories)
-					.Because("a masking of the expectation has the same name, generic arity and parameters as for all snapshots");
+					.Because("a masking of the expectation has the same name, generic arity and parameters as for all snapshots, except for the switch of the paths, whose counterpart is the setting 'MaskPaths'");
 			}
 
 			[Fact]

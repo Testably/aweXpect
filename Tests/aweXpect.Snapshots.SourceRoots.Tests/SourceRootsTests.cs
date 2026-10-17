@@ -1,5 +1,6 @@
 using System.IO;
 using System.Runtime.CompilerServices;
+using aweXpect.Customization;
 using aweXpect.Snapshots.SourceRoots.Tests.TestHelpers;
 
 namespace aweXpect.Snapshots.SourceRoots.Tests;
@@ -45,6 +46,27 @@ public sealed class SourceRootsTests
 		await That(Act).DoesNotThrow()
 			.Because(
 				"the snapshot of each target framework of this test project is committed, and neither an enclosing directory nor another source root decides it");
+	}
+
+	[Fact]
+	public async Task WhenSeveralSourceRootsAreRecorded_ShouldMaskEachOneButNoRootOfTheFileSystem()
+	{
+		using TemporarySourceRoot otherSourceRoot = new();
+		string fileSystemRoot = Path.GetPathRoot(otherSourceRoot.Path)!;
+		RecordedSourceRoots.Record("/_other/", otherSourceRoot.Path);
+		RecordedSourceRoots.Record("/_root/", fileSystemRoot);
+		RecordingSnapshotStore store = new();
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		string subject =
+			$"{Path.Combine(otherSourceRoot.Path, "Let It Be.txt")} {Path.Combine(fileSystemRoot, "Abbey Road.txt")}";
+
+		async Task Act()
+			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), "Masking");
+
+		await That(Act).Throws<XunitException>();
+		await That(store.Mismatch)
+			.IsEqualTo($"{{SourceRoot}}{Path.DirectorySeparatorChar}Let It Be.txt {fileSystemRoot}Abbey Road.txt")
+			.Because("every recorded source root is masked, unless it is a root of the file system, which would mask every path");
 	}
 
 	[Fact]

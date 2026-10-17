@@ -14,12 +14,13 @@ internal sealed record SnapshotSettings(
 	SnapshotStore Store,
 	bool? AcceptChanges,
 	IReadOnlyList<SnapshotIgnoring> Ignorings,
-	IReadOnlyList<SnapshotMasking> Maskings)
+	IReadOnlyList<SnapshotMasking> Maskings,
+	bool MaskPaths)
 {
 	public static SnapshotSettings Read()
 	{
 		SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
 		return new SnapshotSettings(customization.Store.Get(), customization.AcceptChanges.Get(),
-			customization.Ignorings.Get(), customization.Maskings.Get());
+			customization.Ignorings.Get(), customization.Maskings.Get(), customization.MaskPaths.Get());
 	}
 }

@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using aweXpect.Customization;
@@ -32,6 +34,8 @@ internal static class Checks
 			() => ShouldFail(IsMissingForTheEnvironment,
 				$"Checks.IsMissingForTheEnvironment@{ExpectedOperatingSystem()}@{ExpectedArchitecture()}.snapshot.txt",
 				"the snapshot did not exist")),
+		new("paths of the environment in a string of an object are masked",
+			() => ShouldPass(PathsAreMasked)),
 		new("every snapshot is used by one of the checks above",
 			() => ShouldPass(EverySnapshotIsUsed)),
 	];
@@ -100,6 +104,25 @@ internal static class Checks
 	{
 		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(false);
 		await OrphanedSnapshots.CheckAsync(true);
+	}
+
+	/// <remarks>
+	///     The paths differ between machines, and the formatter escapes their backslashes on Windows, so the committed
+	///     snapshot only matches everywhere with the placeholders. The rest of each path uses <c>/</c>, as it keeps its
+	///     own separators.
+	/// </remarks>
+	private static async Task PathsAreMasked()
+	{
+		string projectDirectory = typeof(Checks).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+			.Single(attribute => attribute.Key == "aweXpect.Snapshots.ProjectDirectory").Value!;
+		await That(new Album($"{Trim(projectDirectory)}/albums.json", 12.99m,
+			[
+				$"{Trim(AppContext.BaseDirectory)}/abbey.tmp",
+				$"{Trim(Path.GetTempPath())}/let-it-be.tmp",
+				$"{Trim(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))}/Music",
+			])).MatchesSnapshot().AcceptingChanges(false);
+
+		static string Trim(string path) => path.TrimEnd('\\', '/');
 	}
 
 	private static async Task MatchesItsSnapshot()

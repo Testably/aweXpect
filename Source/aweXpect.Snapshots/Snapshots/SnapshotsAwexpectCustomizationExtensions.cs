@@ -42,6 +42,8 @@ public static class SnapshotsAwexpectCustomizationExtensions
 			Maskings = new CopyingSetter<SnapshotMasking>(new CustomizationValue<IReadOnlyList<SnapshotMasking>>(
 				awexpectCustomization, "aweXpect.Snapshots.Maskings", Array.Empty<SnapshotMasking>(),
 				ThrowIfNullOrContainsNull));
+			MaskPaths = new CustomizationValue<bool>(awexpectCustomization,
+				"aweXpect.Snapshots.MaskPaths", true);
 		}
 
 		/// <summary>
@@ -75,6 +77,18 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		///     <c>Set([.. Get(), extra])</c>. The list is copied, so changing it afterwards does not change the setting.
 		/// </remarks>
 		public ICustomizationValueSetter<IReadOnlyList<SnapshotMasking>> Maskings { get; }
+
+		/// <summary>
+		///     Whether the paths of the environment are replaced with placeholders in every snapshot, unless the
+		///     expectation sets <c>.Masking.Paths(…)</c>.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to <see langword="true" />: the directory of the test project with <c>{ProjectDirectory}</c>, the
+		///     source root with <c>{SourceRoot}</c>, <see cref="AppContext.BaseDirectory" /> with
+		///     <c>{OutputDirectory}</c>, <see cref="System.IO.Path.GetTempPath()" /> with <c>{TempPath}</c> and the
+		///     profile of the user with <c>{UserProfile}</c>, so that a snapshot does not depend on the machine.
+		/// </remarks>
+		public ICustomizationValueSetter<bool> MaskPaths { get; }
 
 		/// <summary>
 		///     The <see cref="SnapshotStore" /> that keeps the snapshots.
