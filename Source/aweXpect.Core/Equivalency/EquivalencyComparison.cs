@@ -66,7 +66,7 @@ public static partial class EquivalencyComparison
 			IEvaluationContext? evaluation,
 			CancellationToken cancellationToken)
 		=> (await CompareExplaining(actual, expected, equivalencyOptions, failureBuilder, evaluation,
-			cancellationToken, null)).IsEquivalent;
+			null, cancellationToken)).IsEquivalent;
 
 	/// <summary>
 	///     Compares like
@@ -81,8 +81,8 @@ public static partial class EquivalencyComparison
 			EquivalencyOptions equivalencyOptions,
 			StringBuilder failureBuilder,
 			IEvaluationContext? evaluation,
-			CancellationToken cancellationToken,
-			Dictionary<string, string?>? unmatchedMembers)
+			Dictionary<string, string?>? unmatchedMembers,
+			CancellationToken cancellationToken)
 	{
 		int start = failureBuilder.Length;
 		EquivalencyContext context = new(equivalencyOptions)
@@ -118,8 +118,8 @@ public static partial class EquivalencyComparison
 			TExpected expected,
 			EquivalencyOptions equivalencyOptions,
 			IEvaluationContext? evaluation,
-			CancellationToken cancellationToken,
-			Dictionary<string, string?>? unmatchedMembers)
+			Dictionary<string, string?>? unmatchedMembers,
+			CancellationToken cancellationToken)
 	{
 		EquivalencyContext context = new(equivalencyOptions)
 		{
