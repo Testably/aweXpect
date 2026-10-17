@@ -110,10 +110,18 @@ public static partial class ValueFormatters
 	///     A record renders itself through a compiler-generated <see cref="object.ToString()" /> that passes every
 	///     member through its own one, which uses the current culture and does not quote strings, so it is written
 	///     member-wise instead. A record with a user-written <see cref="object.ToString()" /> or <c>PrintMembers</c>
-	///     keeps its own rendering. Without reflection, a record cannot be recognized and keeps its rendering as well.
+	///     keeps its own rendering. The source generator registers which records the compiler rendered, so that they
+	///     are recognized without reflection; an unregistered record is only recognized by reflection and otherwise
+	///     keeps its rendering as well. A registration without the mark, as made by an older generator, still reflects.
 	/// </remarks>
 	private static bool IsCompilerGeneratedRecord(Type type)
 	{
+		if (TypeMetadataRegistry.Instance.TryGet(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
+		    metadata.IsCompilerGeneratedRecord)
+		{
+			return true;
+		}
+
 		if (!ReflectionFallback.IsSupported)
 		{
 			return false;

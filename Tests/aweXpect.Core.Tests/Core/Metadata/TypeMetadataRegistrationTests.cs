@@ -1,4 +1,5 @@
 #if NET8_0_OR_GREATER
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using aweXpect.Core.Metadata;
@@ -10,6 +11,8 @@ using aweXpect.Equivalency;
 [assembly: GenerateMetadata(typeof(TypeMetadataRegistrationTests.HidingWithNonPublicGetter))]
 [assembly: GenerateMetadata(typeof(TypeMetadataRegistrationTests.OverridingOnlyTheSetter))]
 [assembly: GenerateMetadata(typeof(TypeMetadataRegistrationTests.WithRefProperty))]
+[assembly: GenerateMetadata(typeof(TypeMetadataRegistrationTests.GeneratedRecord))]
+[assembly: GenerateMetadata(typeof(TypeMetadataRegistrationTests.RecordWithOwnToString))]
 
 namespace aweXpect.Core.Tests.Core.Metadata;
 
@@ -44,6 +47,8 @@ public sealed class TypeMetadataRegistrationTests
 			.Because("the declared member type feeds the type-based ignore rules");
 	}
 
+	public sealed record GeneratedRecord(int Id, List<string> Notes);
+
 	public sealed class HidingWithNonPublicGetter : WithValue
 	{
 		public int Own { get; set; }
@@ -71,6 +76,11 @@ public sealed class TypeMetadataRegistrationTests
 		{
 			set => base.Value = value;
 		}
+	}
+
+	public sealed record RecordWithOwnToString(int Id)
+	{
+		public override string ToString() => "custom";
 	}
 
 	public sealed class RegisteredByTheGenerator
@@ -116,6 +126,27 @@ public sealed class TypeMetadataRegistrationTests
 
 		await That(TypeMetadataRegistry.Instance.TryGet(subject.GetType(), out _)).IsTrue()
 			.Because("the generated probe has to unify with the anonymous type of the call site");
+	}
+
+	[Test]
+	public async Task GenerateMetadataAttribute_ShouldMarkACompilerGeneratedRecord()
+	{
+		TypeMetadataRegistry.Instance.TryGet(typeof(GeneratedRecord), out TypeMetadataRegistry.TypeMetadata? metadata);
+
+		await That(metadata!.IsCompilerGeneratedRecord).IsTrue()
+			.Because("the formatter has to recognize the record where reflection is switched off");
+		await That(metadata.Properties.Keys).IsEqualTo(["Id", "Notes",]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task GenerateMetadataAttribute_ShouldNotMarkARecordWithItsOwnToString()
+	{
+		TypeMetadataRegistry.Instance.TryGet(typeof(RecordWithOwnToString),
+			out TypeMetadataRegistry.TypeMetadata? metadata);
+
+		await That(metadata!.IsCompilerGeneratedRecord).IsFalse()
+			.Because("a record with a user-written ToString keeps its own rendering");
+		await That(metadata.Properties.Keys).IsEqualTo(["Id",]);
 	}
 
 	[Test]

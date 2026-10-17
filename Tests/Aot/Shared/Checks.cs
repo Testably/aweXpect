@@ -237,6 +237,11 @@ internal static class Checks
 				"but it was {", "[\"vip\"] = 1")),
 		new("a failure message renders a tuple positionally",
 			() => ShouldFail(async () => await That((object)(1.5, "a")).IsNull(), "(1.5, \"a\")")),
+		// A record is recognized from its registration where reflection is switched off, so a rendering that silently
+		// falls back to its own `ToString()` is only visible from the message.
+		new("a failure message renders the members of a record",
+			() => ShouldFail(async () => await That(new Shipment(1, 12.5m, ["a",])).IsNull(),
+				"Notes = [", "\"a\"", "Weight = 12.5")),
 	];
 
 	private static async IAsyncEnumerable<int> CountAsync()
