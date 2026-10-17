@@ -31,7 +31,8 @@ public static class ThatSnapshot
 	///     name is not across namespaces.<br />
 	///     A missing or different snapshot fails the expectation and writes the subject to
 	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.txt</c>, which can be renamed to accept it; a matching
-	///     snapshot deletes a leftover pending file.<br />
+	///     snapshot deletes a leftover pending file. While accepting changes, see <c>.AcceptingChanges()</c>, the subject
+	///     replaces the snapshot instead, and the expectation still fails.<br />
 	///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed
 	///     again when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
@@ -64,8 +65,13 @@ public static class ThatSnapshot
 		SnapshotOptions options = new();
 		return new SnapshotResult<string?, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(SourceFile: SourceRoots.GetSourceFile(callerFilePath), MemberName: callerMemberName, Options: options),
-				static (state, it, grammars) => new MatchesSnapshotConstraint(it, grammars,
-					Customize.aweXpect.Snapshots().Store.Get(), state.SourceFile, state.MemberName, state.Options)),
+				static (state, it, grammars) =>
+				{
+					SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization =
+						Customize.aweXpect.Snapshots();
+					return new MatchesSnapshotConstraint(it, grammars, customization.Store.Get(),
+						customization.AcceptChanges.Get(), state.SourceFile, state.MemberName, state.Options);
+				}),
 			subject,
 			options);
 	}
@@ -74,6 +80,7 @@ public static class ThatSnapshot
 		string it,
 		ExpectationGrammars grammars,
 		SnapshotStore store,
+		bool? acceptChanges,
 		string sourceFile,
 		string memberName,
 		SnapshotOptions snapshotOptions)
@@ -91,11 +98,12 @@ public static class ThatSnapshot
 		private static readonly ConcurrentDictionary<SnapshotId, int> UsedSnapshots = new();
 
 		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
+		private bool _isAccepted;
 		private bool _isMatch;
 		private bool _isUsedForAnotherValue;
-		private string? _mismatchError;
 		private Exception? _readError;
 		private string? _snapshot;
+		private string? _writeError;
 
 		/// <inheritdoc />
 		public override Exception? FailureCause => _readError;
@@ -106,15 +114,17 @@ public static class ThatSnapshot
 		///     A snapshot that cannot be read fails the expectation both ways instead of throwing, so that the failure
 		///     names the expectation and a negation cannot turn it into a success; the exception is kept as the
 		///     <see cref="FailureCause" />.<br />
-		///     A mismatch that cannot be recorded must not hide why the expectation failed, so the error is reported with
-		///     the failure, and an error while recording a match is ignored, as the snapshot matched.
+		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
+		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
+		///     An accepted snapshot still fails the expectation, so that accepting by accident never goes unnoticed.
 		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_isAccepted = false;
 			_isMatch = false;
 			_isUsedForAnotherValue = false;
-			_mismatchError = null;
+			_writeError = null;
 			_readError = null;
 			_snapshot = null;
 			if (actual is null)
@@ -159,13 +169,21 @@ public static class ThatSnapshot
 				return this;
 			}
 
+			_isAccepted = snapshotOptions.AcceptChanges ?? acceptChanges ?? AcceptEnvironment.IsAccepting();
 			try
 			{
-				await store.RecordMismatchAsync(id, actual, cancellationToken);
+				if (_isAccepted)
+				{
+					await store.AcceptAsync(id, actual, cancellationToken);
+				}
+				else
+				{
+					await store.RecordMismatchAsync(id, actual, cancellationToken);
+				}
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
-				_mismatchError = exception.Message;
+				_writeError = exception.Message;
 			}
 
 			Outcome = Outcome.FailureBothWays;
@@ -185,9 +203,16 @@ public static class ThatSnapshot
 			contexts.AddStringDifferencesContext(Actual, _snapshot, _options, Grammars);
 			contexts.AddStringContext("Actual", Actual, this);
 			contexts.AddStringContext("Snapshot", _snapshot, this);
-			string? mismatch = _mismatchError is null
+			if (_isAccepted)
+			{
+				contexts.Add(new ResultContext.Fixed("Accepted snapshot",
+					_writeError is null ? store.Describe(Id) : $"could not be written: {_writeError}"));
+				return;
+			}
+
+			string? mismatch = _writeError is null
 				? store.DescribeMismatch(Id)
-				: $"could not be written: {_mismatchError}";
+				: $"could not be written: {_writeError}";
 			if (mismatch is not null)
 			{
 				contexts.Add(new ResultContext.Fixed("Pending snapshot", mismatch));

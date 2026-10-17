@@ -17,7 +17,8 @@ await Expect.That(html).MatchesSnapshot();
 
 The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the
 test file. A missing or different snapshot fails the test and writes the actual value to
-`<Class>.<Method>.snapshot.pending.txt`; rename it to `<Class>.<Method>.snapshot.txt` to accept it.
+`<Class>.<Method>.snapshot.pending.txt`; rename it to `<Class>.<Method>.snapshot.txt` to accept it, or set the
+environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to accept all changed snapshots of a test run.
 
 ## Overview
 

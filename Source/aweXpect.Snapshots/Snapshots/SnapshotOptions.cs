@@ -5,5 +5,7 @@ namespace aweXpect.Snapshots;
 /// </summary>
 internal sealed class SnapshotOptions
 {
+	public bool? AcceptChanges { get; set; }
+
 	public string? Name { get; set; }
 }

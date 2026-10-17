@@ -18,13 +18,14 @@ internal static class Checks
 
 	/// <remarks>
 	///     The pending snapshot is deleted by the path on the last line of the failure, as the path of this file is
-	///     mapped by the deterministic build.
+	///     mapped by the deterministic build. Accepting is disabled, as it would replace the committed snapshot and name
+	///     it on the last line instead.
 	/// </remarks>
 	private static async Task DiffersFromItsSnapshot()
 	{
 		try
 		{
-			await That("snapshot differs").MatchesSnapshot();
+			await That("snapshot differs").MatchesSnapshot().AcceptingChanges(false);
 		}
 		catch (FailException exception)
 		{

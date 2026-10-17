@@ -34,6 +34,16 @@ public abstract class SnapshotStore
 	public abstract ValueTask RecordMismatchAsync(SnapshotId id, string actual, CancellationToken cancellationToken);
 
 	/// <summary>
+	///     Accepts the <paramref name="actual" /> value as the reviewed snapshot with the <paramref name="id" />, which was
+	///     missing or different while accepting changes was enabled.
+	/// </summary>
+	/// <remarks>
+	///     It replaces the reviewed snapshot, so a value that an earlier mismatch recorded is obsolete. An exception is
+	///     named in the failure, which the expectation reports anyway.
+	/// </remarks>
+	public abstract ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken);
+
+	/// <summary>
 	///     Records that the snapshot with the <paramref name="id" /> matched, e.g. to remove a value that an earlier
 	///     mismatch recorded.
 	/// </summary>

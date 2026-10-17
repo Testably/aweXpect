@@ -32,7 +32,20 @@ public static class SnapshotsAwexpectCustomizationExtensions
 							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
 					}
 				});
+			AcceptChanges = new CustomizationValue<bool?>(awexpectCustomization,
+				"aweXpect.Snapshots.AcceptChanges", null);
 		}
+
+		/// <summary>
+		///     Whether a missing or different snapshot is accepted, unless the expectation sets
+		///     <c>.AcceptingChanges(…)</c>.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to <see langword="null" />, which accepts when the environment variable
+		///     <c>AWEXPECT_ACCEPT_SNAPSHOTS</c> is set (to anything but <c>0</c> or <c>false</c>) and no build server is
+		///     detected, so that a forgotten variable cannot change the snapshots on a build server.
+		/// </remarks>
+		public ICustomizationValueSetter<bool?> AcceptChanges { get; }
 
 		/// <summary>
 		///     The <see cref="SnapshotStore" /> that keeps the snapshots.

@@ -9,6 +9,8 @@ namespace aweXpect.Snapshots.Tests.TestHelpers;
 /// </summary>
 internal sealed class InMemorySnapshotStore : SnapshotStore
 {
+	public Exception? AcceptException { get; set; }
+	public Dictionary<SnapshotId, string> Accepted { get; } = new();
 	public List<SnapshotId> Matches { get; } = new();
 	public Dictionary<SnapshotId, string> Mismatches { get; } = new();
 	public Action? OnRead { get; set; }
@@ -16,6 +18,18 @@ internal sealed class InMemorySnapshotStore : SnapshotStore
 	public Exception? RecordMatchException { get; set; }
 	public Exception? RecordMismatchException { get; set; }
 	public Dictionary<SnapshotId, string> Snapshots { get; } = new();
+
+	public override ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+	{
+		if (AcceptException is not null)
+		{
+			throw AcceptException;
+		}
+
+		Accepted[id] = actual;
+		Snapshots[id] = actual;
+		return default;
+	}
 
 	public override ValueTask<string?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
 	{

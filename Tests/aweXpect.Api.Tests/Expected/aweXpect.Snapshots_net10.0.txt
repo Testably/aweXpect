@@ -6,6 +6,7 @@ namespace aweXpect.Results
 {
     public class SnapshotResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
     {
+        public aweXpect.Results.AndOrResult<TType, TThat> AcceptingChanges(bool accept = true) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
     }
 }
@@ -22,6 +23,7 @@ namespace aweXpect.Snapshots
     public abstract class SnapshotStore
     {
         protected SnapshotStore() { }
+        public abstract System.Threading.Tasks.ValueTask AcceptAsync(aweXpect.Snapshots.SnapshotId id, string actual, System.Threading.CancellationToken cancellationToken);
         public virtual string Describe(aweXpect.Snapshots.SnapshotId id) { }
         public virtual string? DescribeMismatch(aweXpect.Snapshots.SnapshotId id) { }
         public abstract System.Threading.Tasks.ValueTask<string?> ReadAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken);
@@ -33,6 +35,7 @@ namespace aweXpect.Snapshots
         public static aweXpect.Snapshots.SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization Snapshots(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class SnapshotsCustomization
         {
+            public aweXpect.Customization.ICustomizationValueSetter<bool?> AcceptChanges { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
         }
     }

@@ -44,15 +44,39 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		return default;
 	}
 
+	/// <remarks>
+	///     The snapshot is written like a pending file, so that the next run reads the <paramref name="actual" /> value
+	///     unchanged. The accepted snapshot makes a leftover pending file obsolete, so one that cannot be deleted does not
+	///     fail it; the next matching run deletes it.
+	/// </remarks>
+	public override ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+	{
+		File.WriteAllText(GetSnapshotPath(id), actual + Environment.NewLine, Utf8WithoutBom);
+		try
+		{
+			DeletePending(id);
+		}
+		catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+		{
+			// The pending file is only a leftover, see the remarks.
+		}
+
+		return default;
+	}
+
 	public override ValueTask RecordMatchAsync(SnapshotId id, CancellationToken cancellationToken)
+	{
+		DeletePending(id);
+		return default;
+	}
+
+	private static void DeletePending(SnapshotId id)
 	{
 		string pendingPath = GetPendingPath(id);
 		if (File.Exists(pendingPath))
 		{
 			File.Delete(pendingPath);
 		}
-
-		return default;
 	}
 
 	public override string Describe(SnapshotId id) => GetSnapshotPath(id);

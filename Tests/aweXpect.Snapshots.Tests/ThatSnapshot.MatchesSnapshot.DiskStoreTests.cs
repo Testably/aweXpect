@@ -22,6 +22,100 @@ public sealed partial class ThatSnapshot
 						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName.snapshot.txt' is committed next to this test file");
 			}
 
+			[Theory]
+			[InlineData("")]
+			[InlineData("foo")]
+			[InlineData("foo\n")]
+			[InlineData("foo\r\n")]
+			[InlineData("\n\nfoo\n\n")]
+			public async Task WhenAccepting_ShouldMatchTheAcceptedSnapshotInTheNextRun(string subject)
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("outdated");
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.AcceptingChanges();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Accepted snapshot:*").AsWildcard();
+				await That(Act).DoesNotThrow()
+					.Because("the accepted snapshot is read back unchanged");
+			}
+
+			[Fact]
+			public async Task WhenAccepting_AndDirectoryDoesNotExist_ShouldReportThatTheSnapshotCouldNotBeWritten()
+			{
+				using SnapshotDirectory directory = new();
+				string testFilePath = Path.Combine(directory.Path, "missing", "MyTests.cs");
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(testFilePath, SnapshotDirectory.MemberName)
+						.AcceptingChanges();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             *
+					             Accepted snapshot:
+					             could not be written: *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAccepting_AndPendingSnapshotCannotBeDeleted_ShouldStillAccept()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WritePending("outdated");
+				using FileStream lockedPending = new(directory.PendingPath, FileMode.Open, FileAccess.Read,
+					FileShare.None);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.AcceptingChanges();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              *
+					              Accepted snapshot:
+					              {directory.SnapshotPath}
+					              """).AsWildcard()
+					.Because("the pending snapshot is only a leftover of an earlier run");
+				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo" + Environment.NewLine);
+			}
+
+			[Fact]
+			public async Task WhenAccepting_ShouldWriteTheSnapshotAndDeleteThePendingSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("foo");
+				directory.WritePending("outdated");
+				string subject = "bar";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.AcceptingChanges();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{directory.SnapshotPath}",
+					              but it was "bar", which differs at index 0:
+					                 ↓ (actual)
+					                "bar"
+					                "foo"
+					                 ↑ (expected)
+
+					              Accepted snapshot:
+					              {directory.SnapshotPath}
+					              """);
+				await That(File.ReadAllBytes(directory.SnapshotPath))
+					.IsEqualTo(new System.Text.UTF8Encoding(false).GetBytes(subject + Environment.NewLine));
+				await That(File.Exists(directory.PendingPath)).IsFalse()
+					.Because("the accepted snapshot replaces the pending snapshot");
+			}
+
 			[Fact]
 			public async Task WhenPathComesFromDeterministicBuild_WithoutRecordedSourceRoot_ShouldFail()
 			{

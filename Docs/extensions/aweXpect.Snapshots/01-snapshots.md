@@ -64,6 +64,40 @@ Add the pending files to your `.gitignore`, so that they are not committed by ac
 *.snapshot.pending.txt
 ```
 
+To accept many snapshots at once, set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` (to anything but `0` or
+`false`) and run the tests. A missing or different snapshot is then replaced by the actual value, and the expectation
+still fails, so that an accepted snapshot never goes unnoticed:
+
+```text title="Failure message"
+Expected that greeting
+matches the snapshot "/src/Tests/GreetingTests.Greets.snapshot.txt",
+but the snapshot did not exist
+
+Actual:
+Hello, World!
+
+Accepted snapshot:
+/src/Tests/GreetingTests.Greets.snapshot.txt
+```
+
+The next run compares with the accepted snapshot. Review the changed snapshots in version control before committing
+them.
+
+The environment variable is ignored on a build server (when `CI`, `TF_BUILD`, `JENKINS_URL` or `TEAMCITY_VERSION` is
+set), so that a variable that was forgotten in a pipeline cannot change the snapshots there. To decide it in code
+instead, which also applies on a build server:
+
+```csharp
+await Expect.That(greeting).MatchesSnapshot().AcceptingChanges();          // accepts
+await Expect.That(greeting).MatchesSnapshot().AcceptingChanges(isLocalRun); // accepts if isLocalRun is true
+
+Customize.aweXpect.Snapshots().AcceptChanges.Set(true);                     // for the current async flow
+```
+
+`AcceptingChanges(…)` takes precedence over `Customize.aweXpect.Snapshots().AcceptChanges`, which takes precedence
+over the environment variable. `AcceptingChanges(…)` is always the last option of the expectation, so that it is easy to
+find and remove again.
+
 ## Naming a snapshot
 
 The cases of a parameterized test share the name of the test method, so give each case its own snapshot with
@@ -159,6 +193,15 @@ public sealed class FolderSnapshotStore(string root) : SnapshotStore
         return default;
     }
 
+    public override ValueTask AcceptAsync(SnapshotId id, string actual, CancellationToken cancellationToken)
+    {
+        string path = GetPath(id, "snapshot");
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        File.WriteAllText(path, actual);
+        File.Delete(GetPath(id, "pending"));
+        return default;
+    }
+
     public override string Describe(SnapshotId id) => GetPath(id, "snapshot");
 
     public override string? DescribeMismatch(SnapshotId id) => GetPath(id, "pending");
@@ -175,6 +218,7 @@ apart from the reviewed snapshot:
 |-----------------------|------------------------------------------------|--------------------------------------------------|
 | `ReadAsync`           | to read the reviewed snapshot, `null` if none  | the expectation fails with the exception         |
 | `RecordMismatchAsync` | when the snapshot is missing or different      | the failure names the error                      |
+| `AcceptAsync`         | instead, while accepting changes               | the failure names the error                      |
 | `RecordMatchAsync`    | when the snapshot matches, e.g. to clean up    | the error is ignored, as the snapshot matched    |
 | `Describe`            | to name the snapshot in the failure            |                                                  |
 | `DescribeMismatch`    | to name the recorded mismatch, `null` to omit  |                                                  |

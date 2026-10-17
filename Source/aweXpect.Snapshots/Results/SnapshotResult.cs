@@ -10,11 +10,29 @@ namespace aweXpect.Results;
 public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotResult<TType, TThat>>
 {
 	private readonly SnapshotOptions _options;
+	private readonly TThat _returnValue;
 
 	internal SnapshotResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options)
 		: base(expectationBuilder, returnValue)
 	{
 		_options = options;
+		_returnValue = returnValue;
+	}
+
+	/// <summary>
+	///     Accepts a missing or different snapshot when <paramref name="accept" /> is <see langword="true" />: the
+	///     actual value replaces the snapshot, and the expectation still fails, saying that the snapshot was accepted, so
+	///     that the next run compares with it.
+	/// </summary>
+	/// <remarks>
+	///     It overrides <c>Customize.aweXpect.Snapshots().AcceptChanges</c> and the environment variable
+	///     <c>AWEXPECT_ACCEPT_SNAPSHOTS</c>, also on a build server.<br />
+	///     It is the last option of the expectation, so that it is easy to find and remove again.
+	/// </remarks>
+	public AndOrResult<TType, TThat> AcceptingChanges(bool accept = true)
+	{
+		_options.AcceptChanges = accept;
+		return new AndOrResult<TType, TThat>(ExpectationBuilder, _returnValue);
 	}
 
 	/// <summary>
