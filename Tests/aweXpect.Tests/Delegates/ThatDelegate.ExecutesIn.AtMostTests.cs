@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -20,10 +23,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -36,14 +40,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheLimit_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				Action @delegate = () =>
 				{
-					Task.Delay(500.Milliseconds()).Wait();
+					time.Advance(500.Milliseconds());
 					throw new MyException();
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""

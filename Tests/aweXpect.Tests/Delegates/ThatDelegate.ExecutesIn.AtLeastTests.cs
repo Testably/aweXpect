@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -9,10 +12,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
-				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(5.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtLeast(5123.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtLeast(5123.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -25,10 +29,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
-				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtLeast(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtLeast(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -36,14 +41,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				Action @delegate = () =>
 				{
-					Task.Delay(500.Milliseconds()).Wait();
+					time.Advance(500.Milliseconds());
 					throw new MyException();
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtLeast(5.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtLeast(5.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""

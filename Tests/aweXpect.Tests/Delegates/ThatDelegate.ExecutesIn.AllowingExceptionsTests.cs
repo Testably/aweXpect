@@ -26,14 +26,16 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				Action @delegate = () =>
 				{
-					Task.Delay(50.Milliseconds()).Wait();
+					time.Advance(50.Milliseconds());
 					throw new MyException();
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
+						.WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
@@ -96,14 +98,16 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateWithValueThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				Func<int> @delegate = () =>
 				{
-					Task.Delay(50.Milliseconds()).Wait();
+					time.Advance(50.Milliseconds());
 					throw new MyException();
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
+						.WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
@@ -130,15 +134,17 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenExceptionIsAllowed_ShouldNotForwardItAsInnerException()
 			{
+				VirtualTimeSystem time = new();
 				Exception exception = new MyException();
 				Action @delegate = () =>
 				{
-					Task.Delay(50.Milliseconds()).Wait();
+					time.Advance(50.Milliseconds());
 					throw exception;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
+						.WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.Whose(e => e.InnerException, i => i.IsNull())
