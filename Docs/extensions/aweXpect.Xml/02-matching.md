@@ -29,8 +29,9 @@ but it differed as /track/@title was "Yesterday" instead of "Let It Be"
 
 The elements are compared by their content like by [`AsXml()`](./01-strings.md#string-comparison-as-xml): attributes
 regardless of their order, elements and attributes by their namespace and local name instead of their prefix, and
-without whitespace-only text between elements, comments and processing instructions. The paths of the differences
-start at the subject, also when it is nested in a document.
+without comments and processing instructions. Whitespace-only text between elements is ignored, also when the subject
+was loaded with `LoadOptions.PreserveWhitespace`, unless `xml:space="preserve"` on the subject or one of its ancestors
+keeps it. The paths of the differences start at the subject, also when it is nested in a document.
 
 For an [`XDocument`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument), its root element is
 compared, so that a document without a root element fails, also when the expectation is negated:
@@ -93,6 +94,9 @@ XML options:
  - ignore members: ["@createdat"]
    "@createdat" matched no member (did you mean "@createdAt"?)
 ```
+
+As `Matches` does not compare the additional nodes of the subject, a member to ignore that only occurs in the subject
+matches no compared path either, and is named as well, although it is not needed.
 
 ## Element order
 

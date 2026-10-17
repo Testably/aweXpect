@@ -229,6 +229,54 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
+			[Theory]
+			[InlineData("<a>\n  <b/>\n</a>", "<a><b/></a>")]
+			[InlineData("<a>x<!-- c -->\n<!-- c -->y</a>", "<a>xy</a>")]
+			[InlineData("<a xml:space=\"preserve\"><b xml:space=\"default\"> <c/> </b></a>",
+				"<a xml:space=\"preserve\"><b xml:space=\"default\"><c/></b></a>")]
+			public async Task WhenSubjectKeepsInsignificantWhitespace_ShouldIgnoreIt(string subject, string expected)
+			{
+				XElement element = XElement.Parse(subject, LoadOptions.PreserveWhitespace);
+
+				async Task Act()
+					=> await That(element).MatchesExactly(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("whitespace-only text is dropped like by XElement.Parse, unless xml:space preserves it");
+			}
+
+			[Theory]
+			[InlineData("<a xml:space=\"preserve\"> <b/></a>", "<a xml:space=\"preserve\"><b/></a>", "/a/text() was unexpected")]
+			[InlineData("<a xml:space=\"preserve\"><b> <c/></b></a>", "<a xml:space=\"preserve\"><b><c/></b></a>",
+				"/a/b/text() was unexpected")]
+			[InlineData("<a><![CDATA[ ]]></a>", "<a/>", "/a/text() was unexpected")]
+			public async Task WhenSubjectHasSignificantWhitespace_ShouldCompareIt(string subject, string expected,
+				string difference)
+			{
+				XElement element = XElement.Parse(subject, LoadOptions.PreserveWhitespace);
+
+				async Task Act()
+					=> await That(element).MatchesExactly(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"*but it differed as {difference}*").AsWildcard()
+					.Because("whitespace is significant within xml:space=\"preserve\" and in CDATA sections");
+			}
+
+			[Fact]
+			public async Task WhenAncestorOfSubjectPreservesWhitespace_ShouldCompareIt()
+			{
+				XElement element = XElement.Parse("<r xml:space=\"preserve\"><a> <b/></a></r>", LoadOptions.PreserveWhitespace)
+					.Element("a")!;
+
+				async Task Act()
+					=> await That(element).MatchesExactly("<a><b/></a>");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*but it differed as /a/text() was unexpected*").AsWildcard()
+					.Because("xml:space applies to the subject also when it is set on an ancestor");
+			}
+
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{

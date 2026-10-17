@@ -246,16 +246,27 @@ internal static class XmlComparer
 
 	/// <summary>
 	///     Returns the child elements and texts of the <paramref name="parent" />, with adjacent text and CDATA sections
-	///     joined to one text and without comments and processing instructions.
+	///     joined to one text and without insignificant whitespace, comments and processing instructions.
 	/// </summary>
+	/// <remarks>
+	///     Whitespace-only text is dropped like by <see cref="System.Xml.XmlReaderSettings.IgnoreWhitespace" />, which
+	///     the expected XML is parsed with, so that a subject loaded with <see cref="LoadOptions.PreserveWhitespace" />
+	///     is compared the same way.
+	/// </remarks>
 	private static List<Content> GetContent(XElement parent, string parentPath)
 	{
 		List<(XElement? Element, string? Text)> nodes = new();
 		StringBuilder? text = null;
+		bool preservesWhitespace = PreservesWhitespace(parent);
 		foreach (XNode node in parent.Nodes())
 		{
 			if (node is XText textNode)
 			{
+				if (!preservesWhitespace && node is not XCData && IsWhitespace(textNode.Value))
+				{
+					continue;
+				}
+
 				text ??= new StringBuilder();
 				text.Append(textNode.Value);
 			}
@@ -296,6 +307,17 @@ internal static class XmlComparer
 		static string GetName((XElement? Element, string? Text) node)
 			=> node.Element?.Name.LocalName ?? "text()";
 	}
+
+	/// <remarks>
+	///     The ancestors are included, as <c>xml:space</c> is inherited, also from outside a subject nested in a document.
+	/// </remarks>
+	private static bool PreservesWhitespace(XElement element)
+		=> element.AncestorsAndSelf()
+			.Select(e => e.Attribute(XNamespace.Xml + "space"))
+			.FirstOrDefault(attribute => attribute is not null)?.Value == "preserve";
+
+	private static bool IsWhitespace(string text)
+		=> text.All(c => c is ' ' or '\t' or '\r' or '\n');
 
 	private static string DescribeNamespaces(XNamespace actual, XNamespace expected)
 		=> $"was in {DescribeNamespace(actual)} instead of {DescribeNamespace(expected)}";

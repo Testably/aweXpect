@@ -52,10 +52,33 @@ after it, and a different order is reported once for their parent.
 You can [ignore members](./02-matching.md#ignoring-members) whose values change between runs, e.g.
 `AsXml(o => o.IgnoringMember("@createdAt"))`.
 
+If the subject is not valid XML, the expectation fails with the reason:
+
+```text title="Failure message"
+Expected that order
+is XML equivalent to <order id="42" />,
+but it was "<order id=\"42\">", which could not be parsed as XML: Unexpected end of file has occurred. The following elements are not closed: order. Line 1, position 16.
+
+Actual:
+<order id="42">
+
+Expected:
+<order id="42" />
+```
+
 The expected string must be valid XML, otherwise an `ArgumentException` is thrown. Like for [validation](#validation),
 a document type definition (DTD) is prohibited in both strings. As XML is compared by its content, `AsXml()` cannot be
-combined with `IgnoringCase()` or `Using(comparer)`, and it is not available on `Contains` or `DoesNotContain` for a
-string subject. On a collection of strings, `Contains(expected).AsXml()` compares each item as XML.
+combined with `IgnoringCase()`, `Using(comparer)` or another match type like `AsWildcard()`, and it is not available
+on `Contains` or `DoesNotContain` for a string subject.
+
+`AsXml()` is also available on other string comparisons, e.g. on the items of a collection or on the message of an
+exception:
+
+```csharp
+await Expect.That(orders).All().AreEqualTo("""<order id="42" />""").AsXml();
+await Expect.That(orders).Contains("""<order id="42" />""").AsXml();
+await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("""<error code="42" />""").AsXml();
+```
 
 ## Validation
 
