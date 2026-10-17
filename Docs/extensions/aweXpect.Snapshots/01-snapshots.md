@@ -98,6 +98,10 @@ A missing or different snapshot writes the actual value to `<Class>.<Method>.sna
 snapshot. Review it and rename it to `<Class>.<Method>.snapshot.txt` to accept it. The next run that matches the
 snapshot deletes a leftover pending file.
 
+The pending snapshot is only written, and a change only accepted, when the whole expectation fails. When the snapshot
+is combined with other expectations and another branch is met, e.g. `.Or.IsEqualTo(…)` or `Expect.ThatAny(…)`, the
+test passes and nothing is written, so that a passing test never changes a snapshot.
+
 Add the pending files to your `.gitignore`, so that they are not committed by accident:
 
 ```text title=".gitignore"
@@ -278,7 +282,8 @@ file that cannot be written is named as such in the failure, and a leftover pend
 fail a matching snapshot.
 
 A snapshot cannot be negated: `DoesNotComplyWith(it => it.MatchesSnapshot())` always fails, as accepting the pending
-snapshot would turn any success into a failure.
+snapshot would turn any success into a failure. Nothing is written for a negated snapshot, also not while accepting
+changes.
 
 ## Deterministic builds
 

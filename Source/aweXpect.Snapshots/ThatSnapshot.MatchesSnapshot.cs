@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 using aweXpect.Customization;
@@ -37,7 +38,8 @@ public static class ThatSnapshot
 	///     A missing or different snapshot fails the expectation and writes the subject to
 	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.txt</c>, which can be renamed to accept it; a matching
 	///     snapshot deletes a leftover pending file. While accepting changes, see <c>.AcceptingChanges()</c>, the subject
-	///     replaces the snapshot instead, and the expectation still fails.<br />
+	///     replaces the snapshot instead, and the expectation still fails. Both only happen when the whole expectation
+	///     fails, not when e.g. another branch of an <c>Or</c> is met, and never for a negated snapshot.<br />
 	///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed
 	///     again when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
@@ -144,13 +146,15 @@ public static class ThatSnapshot
 		SnapshotOptions snapshotOptions,
 		Func<T, string> format)
 		: ConstraintResult.WithNotNullValue<T>(it, grammars),
-			IAsyncConstraint<T>
+			IAsyncContextConstraint<T>
 	{
 		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
 		private string? _acceptError;
 		private InsufficientExecutionStackException? _formatError;
+		private bool _hasWritten;
 		private bool _isAccepted;
 		private bool _isMatch;
+		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
 		private RegexMatchTimeoutException? _maskingTimeout;
 		private Exception? _readError;
@@ -170,19 +174,20 @@ public static class ThatSnapshot
 		///     e.g. of a member that throws, into the text instead.<br />
 		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
 		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
-		///     An accepted snapshot still fails the expectation, so that accepting by accident never goes unnoticed. A
-		///     snapshot that cannot be accepted, e.g. because the file is read-only, is recorded as a mismatch instead, so
-		///     that it can still be reviewed and accepted by hand.<br />
+		///     A mismatch is only written once the whole expectation is decided, see <see cref="WriteMismatchAsync" />.<br />
 		///     Everything after the masking only sees the masked value, so that the comparison, the stored snapshot and
 		///     the failure agree, and two values that only differ in a masked part are no conflict. A masking that times
 		///     out fails the expectation both ways, with the exception as the <see cref="FailureCause" />.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_acceptError = null;
+			_hasWritten = false;
 			_isAccepted = false;
 			_isMatch = false;
+			_isMismatch = false;
 			_isUsedForAnotherValue = false;
 			_maskingTimeout = null;
 			_writeError = null;
@@ -252,13 +257,41 @@ public static class ThatSnapshot
 			}
 
 			_isAccepted = snapshotOptions.AcceptChanges ?? acceptChanges ?? AcceptEnvironment.IsAccepting();
+			_isMismatch = true;
+			context.OnCompleted(WriteMismatchAsync);
+			Outcome = Outcome.FailureBothWays;
+			return this;
+		}
+
+		/// <summary>
+		///     Accepts the mismatch, or records it for review, once the whole expectation is decided.
+		/// </summary>
+		/// <remarks>
+		///     Nothing is written when the whole expectation does not fail, e.g. because another branch of an <c>Or</c>,
+		///     a <c>ThatAny</c> or a quantifier is met, or when the evaluation was canceled, so that a passing test never
+		///     changes a snapshot and accepting always fails. A negated snapshot fails, but writes nothing either, as a
+		///     snapshot cannot be negated.<br />
+		///     The callback runs once per expectation, also when the snapshot was evaluated several times, e.g. by a
+		///     repeated check, and only writes when its last evaluation was a mismatch. It runs before the failure message
+		///     is built, so that the failure names the written snapshot or the error.<br />
+		///     A snapshot that cannot be accepted, e.g. because the file is read-only, is recorded as a mismatch instead,
+		///     so that it can still be reviewed and accepted by hand.
+		/// </remarks>
+		private async ValueTask WriteMismatchAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
+		{
+			if (evaluation.Outcome != Outcome.Failure || IsNegated || !_isMismatch || _value is null)
+			{
+				return;
+			}
+
+			_hasWritten = true;
+			SnapshotId id = Id;
 			if (_isAccepted)
 			{
 				try
 				{
-					await store.AcceptAsync(id, value, cancellationToken);
-					Outcome = Outcome.FailureBothWays;
-					return this;
+					await store.AcceptAsync(id, _value, cancellationToken);
+					return;
 				}
 				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 				{
@@ -268,15 +301,12 @@ public static class ThatSnapshot
 
 			try
 			{
-				await store.RecordMismatchAsync(id, value, cancellationToken);
+				await store.RecordMismatchAsync(id, _value, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
 				_writeError = exception.Message;
 			}
-
-			Outcome = Outcome.FailureBothWays;
-			return this;
 		}
 
 		private static bool IsNotCanceled(Exception exception, CancellationToken cancellationToken)
@@ -292,6 +322,11 @@ public static class ThatSnapshot
 			contexts.AddStringDifferencesContext(_value, _snapshot, _options, Grammars);
 			contexts.AddStringContext("Actual", _value, this);
 			contexts.AddStringContext("Snapshot", _snapshot, this);
+			if (!_hasWritten)
+			{
+				return;
+			}
+
 			if (_isAccepted)
 			{
 				contexts.Add(new ResultContext.Fixed("Accepted snapshot",
