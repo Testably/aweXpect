@@ -49,18 +49,54 @@ public static partial class ValueFormatters
 		AppendKeyValuePair(formatter, stringBuilder, value.Key, value.Value, options, null);
 	}
 
+	/// <remarks>
+	///     When <see cref="FormattingOptions.FormatValue" /> is set, the key of a dictionary <paramref name="isEntry" />
+	///     is not offered, as it is part of the path, and the value is offered under the path of the entry. A pair that
+	///     is no entry is compared by its members in an equivalency comparison, so its key and value are offered under
+	///     the paths of its <c>Key</c> and <c>Value</c>.
+	/// </remarks>
 	private static void AppendKeyValuePair(
 		ValueFormatter formatter,
 		StringBuilder stringBuilder,
 		object? key,
 		object? value,
 		FormattingOptions? options,
-		FormattingContext? context)
+		FormattingContext? context,
+		bool isEntry = false)
 	{
+		if (options?.FormatValue is null)
+		{
+			stringBuilder.Append('[');
+			formatter.Format(stringBuilder, key, WithoutLineBreaksForString(key, options), context);
+			stringBuilder.Append("] = ");
+			formatter.Format(stringBuilder, value, WithoutLineBreaksForString(value, options), context);
+			return;
+		}
+
+		context ??= new FormattingContext();
+		FormattedValue? parent = context.Value;
 		stringBuilder.Append('[');
-		formatter.Format(stringBuilder, key, WithoutLineBreaksForString(key, options), context);
-		stringBuilder.Append("] = ");
-		formatter.Format(stringBuilder, value, WithoutLineBreaksForString(value, options), context);
+		if (isEntry)
+		{
+			formatter.Format(stringBuilder, key, WithoutLineBreaksForString(key, WithoutFormatValue(options)),
+				context);
+			stringBuilder.Append("] = ");
+			formatter.Format(stringBuilder, value, WithoutLineBreaksForString(value, options), context);
+			return;
+		}
+
+		try
+		{
+			context.Value = FormattedValue.Segment(parent, nameof(KeyValuePair<object, object>.Key));
+			formatter.Format(stringBuilder, key, WithoutLineBreaksForString(key, options), context);
+			stringBuilder.Append("] = ");
+			context.Value = FormattedValue.Segment(parent, nameof(KeyValuePair<object, object>.Value));
+			formatter.Format(stringBuilder, value, WithoutLineBreaksForString(value, options), context);
+		}
+		finally
+		{
+			context.Value = parent;
+		}
 	}
 
 	/// <remarks>

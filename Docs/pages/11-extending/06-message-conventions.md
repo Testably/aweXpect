@@ -142,6 +142,37 @@ shortening it, and the items of collections whose order depends on hash codes or
 `ConcurrentDictionary<TKey, TValue>`, sorted by their formatted text or key, so that it is the same in every run.
 Register an `IValueFormatter` to format your own types, see [value formatters](./08-initialization.md#value-formatters).
 
+`FormatValue` on the `FormattingOptions` decides for every nested value whether it is written
+(`ValueFormatting.Write`), left out (`ValueFormatting.Omit`) or replaced by another value that is formatted in its
+place (`ValueFormatting.Replace(value)`), e.g. to leave out values that change from run to run in a snapshot. It is
+offered the members of objects that are written member-wise, the items of tuples and collections, and the values of
+dictionary entries, as a `FormattedValue` with its `Kind`, `Name`, `Type`, `DeclaringType` and `Path`. The path has the
+format of an equivalency comparison (`Customer.Name`, `Lines[0].Id`, `Prices[1.5]`, `Grid[0,1]`), with `[*]` as the
+index of an item of a collection whose order depends on hash codes or threads, like a `HashSet<T>`, so that the rules
+to ignore members in an equivalency comparison can be reused:
+
+```csharp
+using aweXpect.Equivalency;
+
+MemberToIgnore ignoreDuration = new MemberToIgnore.ByName("Duration");
+FormattingOptions options = FormattingOptions.Indented("") with
+{
+    IsSnapshot = true,
+    FormatValue = value => ignoreDuration.IgnoreMember(value.Path, value.Type)
+        ? ValueFormatting.Omit
+        : value.Name == "Title"
+            ? ValueFormatting.Replace("{title}")
+            : ValueFormatting.Write,
+};
+string snapshot = Formatter.Format(new Track("Let It Be", TimeSpan.FromSeconds(243)), options);
+```
+
+The value itself is not offered, nor the keys of a dictionary, nor anything inside a value that a registered
+`IValueFormatter` or its own `ToString()` renders. A member is only read when it is written or when `GetValue()` asks
+for it, so a member that is left out is not read at all. Leaving out an item of a tuple shifts the following items, so
+that their position in the parentheses no longer matches their position in the tuple. A getter that throws is written as the usual placeholder,
+while an exception of `FormatValue` itself is thrown out of the formatting. Without `FormatValue`, nothing changes.
+
 <details>
 <summary>Escaping and limits</summary>
 

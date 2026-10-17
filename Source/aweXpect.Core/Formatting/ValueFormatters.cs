@@ -227,10 +227,56 @@ public static partial class ValueFormatters
 	///     Whether an <paramref name="exception" /> of code of the caller is written as a placeholder instead of thrown.
 	/// </summary>
 	/// <remarks>
-	///     A snapshot must not replace a nested value that is too deep for the stack with a placeholder.
+	///     A snapshot must not replace a nested value that is too deep for the stack with a placeholder, and an exception
+	///     of <see cref="FormattingOptions.FormatValue" /> is a bug in the configuration that a placeholder would hide.
 	/// </remarks>
-	private static bool IsWrittenAsPlaceholder(Exception exception, FormattingOptions? options)
-		=> options?.IsSnapshot != true || exception is not InsufficientExecutionStackException;
+	private static bool IsWrittenAsPlaceholder(Exception exception, FormattingOptions? options,
+		FormattingContext? context)
+		=> (options?.IsSnapshot != true || exception is not InsufficientExecutionStackException) &&
+		   (context?.FormatValueException is null || !ReferenceEquals(exception, context.FormatValueException));
+
+	/// <summary>
+	///     Asks <see cref="FormattingOptions.FormatValue" /> how to write the <paramref name="value" />.
+	/// </summary>
+	/// <remarks>
+	///     The exception of reading the value is written as a placeholder like without the hook, so it is told apart
+	///     from an exception of the hook by its identity.
+	/// </remarks>
+	private static ValueFormatting OfferValue(FormattedValue value, FormattingOptions options,
+		FormattingContext context)
+	{
+		try
+		{
+			return options.FormatValue!(value) ?? ValueFormatting.Write;
+		}
+		catch (Exception exception) when (IsReadException(exception, value, context))
+		{
+			return ValueFormatting.Write;
+		}
+	}
+
+	/// <remarks>
+	///     Runs as a filter, so that an exception of the hook is known before the filters of the outer placeholders run.
+	/// </remarks>
+	private static bool IsReadException(Exception exception, FormattedValue value, FormattingContext context)
+	{
+		if (ReferenceEquals(exception, value.ReadException))
+		{
+			return true;
+		}
+
+		context.FormatValueException = exception;
+		return false;
+	}
+
+	/// <summary>
+	///     The options for a value whose nested values are not offered, like a replacement or the key of an entry.
+	/// </summary>
+	private static FormattingOptions WithoutFormatValue(FormattingOptions options)
+		=> options with
+		{
+			FormatValue = null,
+		};
 
 	/// <summary>
 	///     The placeholder for a value that could not be formatted, because code of the caller threw the
@@ -334,6 +380,11 @@ public static partial class ValueFormatters
 	{
 		FormattingContext? previousContext = _registeredFormatterContext;
 		context ??= previousContext;
+		if (context is null && options?.FormatValue is not null)
+		{
+			context = new FormattingContext();
+		}
+
 		FormattingContext? trackingContext = null;
 		if (!value.GetType().IsValueType)
 		{
@@ -356,7 +407,7 @@ public static partial class ValueFormatters
 				}
 			}
 		}
-		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options))
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options, context))
 		{
 			stringBuilder.Length = length;
 			stringBuilder.Append(FormatThrownException("the formatter", exception));

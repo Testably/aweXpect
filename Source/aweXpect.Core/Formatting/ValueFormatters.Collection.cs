@@ -83,7 +83,7 @@ public static partial class ValueFormatters
 		}
 
 		FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
-			new ItemFormatter<object?>(formatter, context, FormatItem));
+			new ItemFormatter<object?>(formatter, context, FormatItem, TryGetDictionaryItemEntry));
 	}
 
 	/// <summary>
@@ -110,7 +110,12 @@ public static partial class ValueFormatters
 
 		FormatItems(stringBuilder, value, value, GetCount(value), options,
 			new ItemFormatter<KeyValuePair<TKey, TValue>>(formatter, context, FormatKeyValuePair,
-				static item => item.Key));
+				static (KeyValuePair<TKey, TValue> item, out object? key, out object? entryValue) =>
+				{
+					key = item.Key;
+					entryValue = item.Value;
+					return true;
+				}));
 	}
 
 	private static void FormatEnumerable(
@@ -137,13 +142,18 @@ public static partial class ValueFormatters
 			if (ValueFormatter.Registrations.Length > 0)
 			{
 				FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
-					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem, GetDictionaryItemKey));
+					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem, TryGetDictionaryItemEntry));
 			}
 			else
 			{
 				FormatItems(stringBuilder, value, GetEntries(dictionary), GetCount(value), options,
 					new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry,
-						static entry => entry.Key));
+						static (DictionaryEntry entry, out object? key, out object? entryValue) =>
+						{
+							key = entry.Key;
+							entryValue = entry.Value;
+							return true;
+						}));
 			}
 		}
 		else if (value is Array { Rank: > 1, } array)
@@ -154,7 +164,7 @@ public static partial class ValueFormatters
 		else
 		{
 			FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
-				new ItemFormatter<object?>(formatter, context, FormatItem));
+				new ItemFormatter<object?>(formatter, context, FormatItem, TryGetDictionaryItemEntry));
 		}
 	}
 
@@ -230,16 +240,23 @@ public static partial class ValueFormatters
 			? FormatDictionaryEntry(formatter, entry, options, context)
 			: FormatItem(formatter, item, options, context);
 
-	/// <remarks>
-	///     An entry whose key cannot be read is sorted by itself.
-	/// </remarks>
-	private static object? GetDictionaryItemKey(object? item)
-		=> item switch
+	/// <summary>
+	///     Reads the key and value of an entry of a dictionary, which is a <see cref="DictionaryEntry" /> or a boxed
+	///     <see cref="KeyValuePair{TKey,TValue}" />.
+	/// </summary>
+	private static bool TryGetDictionaryItemEntry(object? item, out object? key, out object? value)
+	{
+		if (item is DictionaryEntry entry)
 		{
-			DictionaryEntry entry => entry.Key,
-			not null when TryGetKeyValuePair(item, out object? key, out _) => key,
-			_ => item,
-		};
+			key = entry.Key;
+			value = entry.Value;
+			return true;
+		}
+
+		key = null;
+		value = null;
+		return item is not null && TryGetKeyValuePair(item, out key, out value);
+	}
 
 	private static string FormatItem(
 		ValueFormatter formatter,
@@ -285,7 +302,7 @@ public static partial class ValueFormatters
 				AppendItems(stringBuilder, value, isDictionary, items, totalCount, options, itemFormatter);
 			}
 		}
-		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options))
+		catch (Exception exception) when (IsWrittenAsPlaceholder(exception, options, context))
 		{
 			stringBuilder.Length = length;
 			stringBuilder.Append(FormatThrownException("the enumeration", exception));
@@ -320,6 +337,7 @@ public static partial class ValueFormatters
 			: Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		int count = maxCount;
 		string itemIndentation = options.Indentation + "  ";
+		ItemOffer offer = options.FormatValue is null ? default : new ItemOffer(value, isDictionary);
 
 		stringBuilder.Append(isDictionary ? '{' : '[');
 		bool hasMoreValues = false;
@@ -327,15 +345,26 @@ public static partial class ValueFormatters
 		Exception? enumerationException = null;
 		if (options.IsSnapshot && HasUnstableOrder(value))
 		{
-			isNotEmpty = AppendSortedItems(stringBuilder, isDictionary, items, options, itemFormatter,
+			isNotEmpty = AppendSortedItems(stringBuilder, isDictionary, items, options, itemFormatter, offer,
 				ref enumerationException);
 		}
 		else
 		{
 			using IEnumerator<T> enumerator = items.GetEnumerator();
+			int index = 0;
 			while (TryMoveNext(enumerator, isNotEmpty, ref enumerationException))
 			{
 				T item = enumerator.Current;
+				string? formattedItem = null;
+				if (count > 0)
+				{
+					formattedItem = itemFormatter.FormatSingle(item, options, offer, index++);
+					if (formattedItem is null)
+					{
+						continue;
+					}
+				}
+
 				isNotEmpty = true;
 				if (count < maxCount)
 				{
@@ -361,7 +390,7 @@ public static partial class ValueFormatters
 					break;
 				}
 
-				stringBuilder.Append(itemFormatter.FormatSingle(item, options).Indent("  ", false));
+				stringBuilder.Append(formattedItem!.Indent("  ", false));
 			}
 		}
 
@@ -411,15 +440,20 @@ public static partial class ValueFormatters
 		IEnumerable<T> items,
 		FormattingOptions options,
 		ItemFormatter<T> itemFormatter,
+		ItemOffer offer,
 		ref Exception? enumerationException)
 	{
 		List<(string SortKey, string Text)> formattedItems = [];
 		using IEnumerator<T> enumerator = items.GetEnumerator();
+		int index = 0;
 		while (TryMoveNext(enumerator, formattedItems.Count > 0, ref enumerationException))
 		{
 			T item = enumerator.Current;
-			string text = itemFormatter.FormatSingle(item, options);
-			formattedItems.Add((isDictionary ? itemFormatter.FormatKey(item, options) ?? text : text, text));
+			string? text = itemFormatter.FormatSingle(item, options, offer, index++);
+			if (text is not null)
+			{
+				formattedItems.Add((isDictionary ? itemFormatter.FormatKey(item, options) ?? text : text, text));
+			}
 		}
 
 		formattedItems.Sort(static (left, right) =>
@@ -622,11 +656,13 @@ public static partial class ValueFormatters
 		FormattingOptions options,
 		ItemFormatter<object?> itemFormatter)
 	{
+		private readonly int[]? _indices = options.FormatValue is null ? null : new int[array.Rank];
 		private readonly string _itemIndentation = options.Indentation + "  ";
 		private readonly IEnumerator _items = array.GetEnumerator();
 		private readonly int _maximumCount = options.IsSnapshot
 			? int.MaxValue
 			: Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+		private readonly ItemOffer _offer = options.FormatValue is null ? default : new ItemOffer(array, false);
 		private int _count;
 		private bool _isLimited;
 
@@ -638,36 +674,61 @@ public static partial class ValueFormatters
 				_count++;
 			}
 
+			bool isEmpty = true;
 			stringBuilder.Append('[');
 			for (int index = 0; index < length && !_isLimited; index++)
 			{
-				AppendSeparator(stringBuilder, index == 0);
+				if (_indices is not null)
+				{
+					_indices[dimension] = index;
+				}
+
 				if (_count >= _maximumCount)
 				{
+					AppendSeparator(stringBuilder, isEmpty);
 					_isLimited = true;
 					stringBuilder.Append("(\u2026 and ").Append(GetTotalCount() - _maximumCount).Append(" more)");
 				}
 				else if (dimension == array.Rank - 1)
 				{
-					_count++;
 					_items.MoveNext();
-					stringBuilder.Append(itemFormatter.FormatSingle(_items.Current, options).Indent("  ", false));
+					string? formattedItem = FormatItem();
+					if (formattedItem is null)
+					{
+						continue;
+					}
+
+					_count++;
+					AppendSeparator(stringBuilder, isEmpty);
+					stringBuilder.Append(formattedItem.Indent("  ", false));
 				}
 				else
 				{
+					AppendSeparator(stringBuilder, isEmpty);
 					StringBuilder nestedBuilder = new();
 					Append(nestedBuilder, dimension + 1);
 					stringBuilder.Append(nestedBuilder.ToString().Indent("  ", false));
 				}
+
+				isEmpty = false;
 			}
 
-			if (options.UseLineBreaks && length > 0)
+			if (options.UseLineBreaks && !isEmpty)
 			{
 				stringBuilder.AppendLine().Append(options.Indentation);
 			}
 
 			stringBuilder.Append(']');
 		}
+
+		/// <summary>
+		///     Formats the current item, or returns <see langword="null" /> when
+		///     <see cref="FormattingOptions.FormatValue" /> leaves it out.
+		/// </summary>
+		private string? FormatItem()
+			=> _indices is null
+				? itemFormatter.FormatSingle(_items.Current, options)
+				: itemFormatter.FormatSingle(_items.Current, options, _offer, 0, [.._indices,]);
 
 		private void AppendSeparator(StringBuilder stringBuilder, bool isFirst)
 		{
@@ -704,7 +765,7 @@ public static partial class ValueFormatters
 		ValueFormatter formatter,
 		FormattingContext context,
 		Func<ValueFormatter, T, FormattingOptions, FormattingContext, string> formatItem,
-		Func<T, object?>? getKey = null)
+		TryGetEntry<T>? tryGetEntry = null)
 	{
 		public FormattingContext Context { get; } = context;
 
@@ -712,18 +773,111 @@ public static partial class ValueFormatters
 			=> formatItem(formatter, item, options, Context);
 
 		/// <summary>
+		///     Formats the item at the <paramref name="index" />, or returns <see langword="null" /> when
+		///     <see cref="FormattingOptions.FormatValue" /> leaves it out.
+		/// </summary>
+		public string? FormatSingle(T item, FormattingOptions options, ItemOffer offer, int index,
+			int[]? indices = null)
+		{
+			if (options.FormatValue is null)
+			{
+				return formatItem(formatter, item, options, Context);
+			}
+
+			FormattedValue? parent = Context.Value;
+			object? key = null;
+			object? entryValue = null;
+			bool isEntry = offer.IsDictionary && tryGetEntry is not null &&
+			               tryGetEntry(item, out key, out entryValue);
+			FormattedValue offeredItem = isEntry
+				? FormattedValue.Entry(parent, key, offer.CollectionType, entryValue)
+				: FormattedValue.Item(parent, offer.IsUnordered ? -1 : index, indices, offer.CollectionType, item);
+			ValueFormatting formatting = OfferValue(offeredItem, options, Context);
+			if (formatting.IsOmitted)
+			{
+				return null;
+			}
+
+			if (formatting.IsReplaced)
+			{
+				FormattingOptions replacementOptions = WithoutFormatValue(options);
+				return isEntry
+					? FormatEntry(item, key, formatting.Replacement, replacementOptions, false)
+					: FormatItem(formatter, formatting.Replacement, replacementOptions, Context);
+			}
+
+			Context.Value = offeredItem;
+			try
+			{
+				return isEntry
+					? FormatEntry(item, key, offeredItem.GetValue(), options, true)
+					: formatItem(formatter, item, options, Context);
+			}
+			finally
+			{
+				Context.Value = parent;
+			}
+		}
+
+		/// <summary>
 		///     Formats the key of a dictionary entry on a single line, or returns <see langword="null" /> when the items
 		///     have no key.
 		/// </summary>
+		/// <remarks>
+		///     An entry whose key cannot be read is sorted by itself.
+		/// </remarks>
 		public string? FormatKey(T item, FormattingOptions options)
-			=> getKey is null
+			=> tryGetEntry is null
 				? null
-				: formatter.Format(getKey(item), options with
+				: formatter.Format(tryGetEntry(item, out object? key, out _) ? key : item, options with
 				{
 					IncludeType = false,
 					UseLineBreaks = false,
 					Indentation = "",
 					TotalItemCount = null,
+					FormatValue = null,
 				}, Context);
+
+		/// <summary>
+		///     Formats a dictionary entry with its offered value, like the formatter of the items would format it.
+		/// </summary>
+		/// <remarks>
+		///     A registered formatter is only asked for the entry as written, not for its replacement, and never for a
+		///     <see cref="DictionaryEntry" />, as the formatter of the items does not ask it either.
+		/// </remarks>
+		private string FormatEntry(T item, object? key, object? value, FormattingOptions options,
+			bool isWritten)
+		{
+			FormattingOptions entryOptions = options with
+			{
+				IncludeType = false,
+				TotalItemCount = null,
+			};
+			StringBuilder stringBuilder = new();
+			if (!isWritten || item is DictionaryEntry ||
+			    !TryFormatWithRegistrations(stringBuilder, (object)item!, entryOptions, Context))
+			{
+				AppendKeyValuePair(formatter, stringBuilder, key, value, entryOptions, Context, true);
+			}
+
+			return stringBuilder.ToString();
+		}
+	}
+
+	private delegate bool TryGetEntry<in T>(T item, out object? key, out object? value);
+
+	/// <summary>
+	///     The collection whose items are offered to <see cref="FormattingOptions.FormatValue" />.
+	/// </summary>
+	private readonly struct ItemOffer(IEnumerable collection, bool isDictionary)
+	{
+		public Type CollectionType { get; } = collection.GetType();
+
+		public bool IsDictionary { get; } = isDictionary;
+
+		/// <summary>
+		///     The items of a collection whose order depends on hash codes or threads have no stable index.
+		/// </summary>
+		public bool IsUnordered { get; } = !isDictionary && HasUnstableOrder(collection);
 	}
 }

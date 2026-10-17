@@ -91,3 +91,20 @@ aweXpect.Customization.AwexpectCustomization.SettingsCustomization.DefaultRegexT
 aweXpect.Core.EvaluationContext.CompletedEvaluation
 aweXpect.Core.EvaluationContext.CompletedEvaluation.Outcome.get -> aweXpect.Core.Constraints.Outcome
 aweXpect.Core.EvaluationContext.IEvaluationContext.OnCompleted(System.Func<aweXpect.Core.EvaluationContext.CompletedEvaluation!, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask>! callback) -> void
+aweXpect.Formatting.FormattedValue
+aweXpect.Formatting.FormattedValue.DeclaringType.get -> System.Type!
+aweXpect.Formatting.FormattedValue.GetValue() -> object?
+aweXpect.Formatting.FormattedValue.Kind.get -> aweXpect.Formatting.FormattedValueKind
+aweXpect.Formatting.FormattedValue.Name.get -> string!
+aweXpect.Formatting.FormattedValue.Path.get -> string!
+aweXpect.Formatting.FormattedValue.Type.get -> System.Type!
+aweXpect.Formatting.FormattedValueKind
+aweXpect.Formatting.FormattedValueKind.CollectionItem = 2 -> aweXpect.Formatting.FormattedValueKind
+aweXpect.Formatting.FormattedValueKind.Member = 0 -> aweXpect.Formatting.FormattedValueKind
+aweXpect.Formatting.FormattedValueKind.TupleItem = 1 -> aweXpect.Formatting.FormattedValueKind
+aweXpect.Formatting.FormattingOptions.FormatValue.get -> System.Func<aweXpect.Formatting.FormattedValue!, aweXpect.Formatting.ValueFormatting!>?
+aweXpect.Formatting.FormattingOptions.FormatValue.init -> void
+aweXpect.Formatting.ValueFormatting
+static aweXpect.Formatting.ValueFormatting.Omit.get -> aweXpect.Formatting.ValueFormatting!
+static aweXpect.Formatting.ValueFormatting.Replace(object? value) -> aweXpect.Formatting.ValueFormatting!
+static aweXpect.Formatting.ValueFormatting.Write.get -> aweXpect.Formatting.ValueFormatting!
