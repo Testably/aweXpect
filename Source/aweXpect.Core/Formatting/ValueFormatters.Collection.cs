@@ -692,7 +692,7 @@ public static partial class ValueFormatters
 				else if (dimension == array.Rank - 1)
 				{
 					_items.MoveNext();
-					string? formattedItem = FormatItem();
+					string? formattedItem = FormatCurrentItem();
 					if (formattedItem is null)
 					{
 						continue;
@@ -725,7 +725,7 @@ public static partial class ValueFormatters
 		///     Formats the current item, or returns <see langword="null" /> when
 		///     <see cref="FormattingOptions.FormatValue" /> leaves it out.
 		/// </summary>
-		private string? FormatItem()
+		private string? FormatCurrentItem()
 			=> _indices is null
 				? itemFormatter.FormatSingle(_items.Current, options)
 				: itemFormatter.FormatSingle(_items.Current, options, _offer, 0, [.._indices,]);
@@ -787,11 +787,12 @@ public static partial class ValueFormatters
 			FormattedValue? parent = Context.Value;
 			object? key = null;
 			object? entryValue = null;
-			bool isEntry = offer.IsDictionary && tryGetEntry is not null &&
+			bool isEntry = offer.HasKeys && tryGetEntry is not null &&
 			               tryGetEntry(item, out key, out entryValue);
+			int offeredIndex = offer.IsUnordered ? -1 : index;
 			FormattedValue offeredItem = isEntry
 				? FormattedValue.Entry(parent, key, offer.CollectionType, entryValue)
-				: FormattedValue.Item(parent, offer.IsUnordered ? -1 : index, indices, offer.CollectionType, item);
+				: FormattedValue.Item(parent, offeredIndex, indices, offer.CollectionType, item);
 			ValueFormatting formatting = OfferValue(offeredItem, options, Context);
 			if (formatting.IsOmitted)
 			{
@@ -827,16 +828,22 @@ public static partial class ValueFormatters
 		///     An entry whose key cannot be read is sorted by itself.
 		/// </remarks>
 		public string? FormatKey(T item, FormattingOptions options)
-			=> tryGetEntry is null
-				? null
-				: formatter.Format(tryGetEntry(item, out object? key, out _) ? key : item, options with
-				{
-					IncludeType = false,
-					UseLineBreaks = false,
-					Indentation = "",
-					TotalItemCount = null,
-					FormatValue = null,
-				}, Context);
+		{
+			if (tryGetEntry is null)
+			{
+				return null;
+			}
+
+			object? sortKey = tryGetEntry(item, out object? key, out _) ? key : item;
+			return formatter.Format(sortKey, options with
+			{
+				IncludeType = false,
+				UseLineBreaks = false,
+				Indentation = "",
+				TotalItemCount = null,
+				FormatValue = null,
+			}, Context);
+		}
 
 		/// <summary>
 		///     Formats a dictionary entry with its offered value, like the formatter of the items would format it.
@@ -873,7 +880,7 @@ public static partial class ValueFormatters
 	{
 		public Type CollectionType { get; } = collection.GetType();
 
-		public bool IsDictionary { get; } = isDictionary;
+		public bool HasKeys { get; } = isDictionary;
 
 		/// <summary>
 		///     The items of a collection whose order depends on hash codes or threads have no stable index.

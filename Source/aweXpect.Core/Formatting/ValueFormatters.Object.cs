@@ -276,8 +276,8 @@ public static partial class ValueFormatters
 				ValueFormatting formatting = ValueFormatting.Write;
 				if (itemTypes is not null)
 				{
-					offeredItem = FormattedValue.TupleItem(context.Value, i,
-						i < itemTypes.Count ? itemTypes[i] : item?.GetType() ?? typeof(object), tupleType, item);
+					offeredItem = FormattedValue.TupleItem(context.Value, i, GetTupleItemType(itemTypes, i, item),
+						tupleType, item);
 					formatting = OfferValue(offeredItem, options, context);
 					if (formatting.IsOmitted)
 					{
@@ -308,6 +308,12 @@ public static partial class ValueFormatters
 			context.Depth--;
 		}
 	}
+
+	/// <remarks>
+	///     The declared type of the item, or its runtime type when the tuple type does not tell it.
+	/// </remarks>
+	private static Type GetTupleItemType(List<Type> itemTypes, int index, object? item)
+		=> index < itemTypes.Count ? itemTypes[index] : item?.GetType() ?? typeof(object);
 
 	private static void AppendOfferedTupleItem(StringBuilder stringBuilder, FormattedValue item,
 		ValueFormatting formatting, FormattingOptions options, FormattingContext context)
