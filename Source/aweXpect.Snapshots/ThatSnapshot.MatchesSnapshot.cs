@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -36,37 +38,69 @@ public static class ThatSnapshot
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
-	///     subject.
+	///     subject.<br />
+	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a
+	///     parameterized test, which have to be told apart with <c>.Named(…)</c>.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
-	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
+	/// <param name="callerFilePath">
+	///     The path of the test file, which is set by the compiler. It must be rooted, so that a name passed here by
+	///     mistake is not taken as the path.
+	/// </param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<string?, IThat<string?>> MatchesSnapshot(
+	public static SnapshotResult<string?, IThat<string?>> MatchesSnapshot(
 		this IThat<string?> subject,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(new SnapshotId(callerFilePath, callerMemberName),
-				static (id, it, grammars) => new MatchesSnapshotConstraint(it, grammars,
-					Customize.aweXpect.Snapshots().Store.Get(), id)),
-			subject);
+	{
+		if (!Path.IsPathRooted(callerFilePath))
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{nameof(callerFilePath)}' must be the rooted path of the test file, which the compiler sets. Name a snapshot with '.Named(…)' instead.",
+				nameof(callerFilePath)));
+		}
+
+		SnapshotOptions options = new();
+		return new SnapshotResult<string?, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
+				(TestFilePath: callerFilePath, MemberName: callerMemberName, Options: options),
+				static (state, it, grammars) => new MatchesSnapshotConstraint(it, grammars,
+					Customize.aweXpect.Snapshots().Store.Get(), state.TestFilePath, state.MemberName, state.Options)),
+			subject,
+			options);
+	}
 
 	private sealed class MatchesSnapshotConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		SnapshotStore store,
-		SnapshotId id)
+		string testFilePath,
+		string memberName,
+		SnapshotOptions snapshotOptions)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
 	{
+		/// <summary>
+		///     The hash code of the value that each snapshot was used for in this process.
+		/// </summary>
+		/// <remarks>
+		///     Only another value counts as a conflict, so that a test which is retried or repeated, or run again by a
+		///     test runner that keeps its process, still compares with its snapshot. The hash code keeps large values
+		///     out of memory; a collision only misses a conflict.
+		/// </remarks>
+		private static readonly ConcurrentDictionary<SnapshotId, int> UsedSnapshots = new();
+
 		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
 		private bool _isMatch;
+		private bool _isUsedForAnotherValue;
 		private string? _mismatchError;
 		private Exception? _readError;
 		private string? _snapshot;
 
 		/// <inheritdoc />
 		public override Exception? FailureCause => _readError;
+
+		private SnapshotId Id => new(testFilePath, memberName, snapshotOptions.Name);
 
 		/// <remarks>
 		///     A snapshot that cannot be read fails the expectation both ways instead of throwing, so that the failure
@@ -79,11 +113,21 @@ public static class ThatSnapshot
 		{
 			Actual = actual;
 			_isMatch = false;
+			_isUsedForAnotherValue = false;
 			_mismatchError = null;
 			_readError = null;
 			_snapshot = null;
 			if (actual is null)
 			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			SnapshotId id = Id;
+			int valueHashCode = StringComparer.Ordinal.GetHashCode(actual);
+			if (UsedSnapshots.GetOrAdd(id, valueHashCode) != valueHashCode)
+			{
+				_isUsedForAnotherValue = true;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
@@ -133,7 +177,7 @@ public static class ThatSnapshot
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is null || _isMatch || _readError is not null || IsNegated)
+			if (Actual is null || _isMatch || _isUsedForAnotherValue || _readError is not null || IsNegated)
 			{
 				return;
 			}
@@ -142,7 +186,7 @@ public static class ThatSnapshot
 			contexts.AddStringContext("Actual", Actual, this);
 			contexts.AddStringContext("Snapshot", _snapshot, this);
 			string? mismatch = _mismatchError is null
-				? store.DescribeMismatch(id)
+				? store.DescribeMismatch(Id)
 				: $"could not be written: {_mismatchError}";
 			if (mismatch is not null)
 			{
@@ -152,11 +196,16 @@ public static class ThatSnapshot
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("matches", "match")).Append(" the snapshot \"")
-				.Append(store.Describe(id)).Append('"');
+				.Append(store.Describe(Id)).Append('"');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_readError is not null)
+			if (_isUsedForAnotherValue)
+			{
+				stringBuilder.Append(
+					"the snapshot was already used for another value in this test run, so name each one with .Named(…)");
+			}
+			else if (_readError is not null)
 			{
 				stringBuilder.Append("the snapshot could not be read: ").Append(_readError.Message);
 			}
@@ -173,7 +222,7 @@ public static class ThatSnapshot
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not match", "do not match")).Append(" the snapshot \"")
-				.Append(store.Describe(id)).Append('"');
+				.Append(store.Describe(Id)).Append('"');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("a snapshot cannot be negated");

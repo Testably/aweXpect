@@ -1,11 +1,19 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Snapshots.git")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
+namespace aweXpect.Results
+{
+    public class SnapshotResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
+    {
+        public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
+    }
+}
 namespace aweXpect.Snapshots
 {
     public sealed class SnapshotId : System.IEquatable<aweXpect.Snapshots.SnapshotId>
     {
-        public SnapshotId(string TestFilePath, string MemberName) { }
+        public SnapshotId(string TestFilePath, string MemberName, string? Name = null) { }
         public string MemberName { get; init; }
+        public string? Name { get; init; }
         public string TestFilePath { get; init; }
         public override string ToString() { }
     }
@@ -32,6 +40,6 @@ namespace aweXpect
     public static class ThatSnapshot
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
     }
 }

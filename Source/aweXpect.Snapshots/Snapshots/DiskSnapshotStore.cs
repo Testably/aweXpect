@@ -61,8 +61,9 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	private static string GetPendingPath(SnapshotId id) => GetBasePath(id) + ".snapshot.pending.txt";
 
 	private static string GetBasePath(SnapshotId id)
-		=> Path.Combine(Path.GetDirectoryName(id.TestFilePath) ?? "",
-			$"{Path.GetFileNameWithoutExtension(id.TestFilePath)}.{id.MemberName}");
+		=> Path.Combine(Path.GetDirectoryName(id.TestFilePath) ?? "", id.Name is null
+			? $"{Path.GetFileNameWithoutExtension(id.TestFilePath)}.{id.MemberName}"
+			: $"{Path.GetFileNameWithoutExtension(id.TestFilePath)}.{id.MemberName}.{id.Name}");
 
 	private static string RemoveFinalLineBreak(string snapshot)
 	{

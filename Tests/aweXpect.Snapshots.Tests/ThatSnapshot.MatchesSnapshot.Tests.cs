@@ -13,7 +13,7 @@ public sealed partial class ThatSnapshot
 	{
 		public sealed class Tests
 		{
-			private static readonly SnapshotId Id = new("/src/Tests/MyTests.cs", "MyTest");
+			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Fact]
 			public async Task ShouldUseTheCallerInformationAsSnapshotId()
@@ -30,6 +30,89 @@ public sealed partial class ThatSnapshot
 				{
 					new SnapshotId(GetCallerFilePath(), nameof(ShouldUseTheCallerInformationAsSnapshotId)),
 				}).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task WhenCallerFilePathIsDeterministic_ShouldUseIt()
+			{
+				SnapshotId id = new($"/_/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(id.TestFilePath, id.MemberName);
+
+				await That(Act).DoesNotThrow()
+					.Because("deterministic builds map the path of the test file to the rooted path '/_/…'");
+			}
+
+			[Fact]
+			public async Task WhenCallerFilePathIsNotRooted_ShouldThrowArgumentException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot("login");
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("callerFilePath").And
+					.WithMessage(
+						"The 'callerFilePath' must be the rooted path of the test file, which the compiler sets. Name a snapshot with '.Named(…)' instead.*")
+					.AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNamed_ShouldAddTheNameToTheSnapshotId()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named("login");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest.login",
+					             but the snapshot did not exist
+
+					             Actual:
+					             foo
+					             """);
+				await That(store.Mismatches.Keys).IsEqualTo(new[]
+				{
+					Id with { Name = "login", },
+				}).InAnyOrder();
+			}
+
+			[Theory]
+			[InlineData("")]
+			[InlineData(" ")]
+			public async Task WhenNamedWithEmptyName_ShouldThrowArgumentException(string name)
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named(name);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be empty.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNamedWithNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("name");
 			}
 
 			[Fact]
@@ -390,6 +473,61 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 				await That(store.Matches).IsEqualTo(new[] { Id, });
 				await That(store.Mismatches).IsEmpty();
+			}
+
+			[Fact]
+			public async Task WhenSnapshotIsUsedAgainForTheSameValue_ShouldSucceed()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+
+				await That(Act).DoesNotThrow();
+				await That(Act).DoesNotThrow()
+					.Because("a retried or repeated test produces the same value again");
+			}
+
+			[Fact]
+			public async Task WhenSnapshotIsUsedForAnotherValue_ShouldFailWithoutRecordingMismatch()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				await That("foo").MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+				string subject = "bar";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot was already used for another value in this test run, so name each one with .Named(…)
+					             """);
+				await That(store.Mismatches).IsEmpty()
+					.Because("the values would overwrite each other's pending snapshot");
+			}
+
+			[Fact]
+			public async Task WhenSnapshotsAreNamedDifferently_ShouldKeepThemApart()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id with { Name = "first", }] = "foo";
+				store.Snapshots[Id with { Name = "second", }] = "bar";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+				async Task Act()
+				{
+					await That("foo").MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named("first");
+					await That("bar").MatchesSnapshot(Id.TestFilePath, Id.MemberName).Named("second");
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

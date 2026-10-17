@@ -48,6 +48,34 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenNamed_ShouldAppendTheNameToTheFileNames()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.login.snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.login.snapshot.pending.txt");
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.Named("login");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but the snapshot did not exist
+
+					              Actual:
+					              foo
+
+					              Pending snapshot:
+					              {pendingPath}
+					              """);
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenPendingSnapshotCannotBeDeleted_AndSnapshotMatches_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();
