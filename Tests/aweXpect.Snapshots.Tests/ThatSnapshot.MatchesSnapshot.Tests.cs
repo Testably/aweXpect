@@ -1,365 +1,352 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using aweXpect.Customization;
 using aweXpect.Snapshots.Tests.TestHelpers;
 
 namespace aweXpect.Snapshots.Tests;
 
 public sealed partial class ThatSnapshot
 {
-	public sealed class MatchesSnapshot
+	public sealed partial class MatchesSnapshot
 	{
 		public sealed class Tests
 		{
+			private static readonly SnapshotId Id = new("/src/Tests/MyTests.cs", "MyTest");
+
 			[Fact]
-			public async Task WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName()
+			public async Task ShouldUseTheCallerInformationAsSnapshotId()
 			{
-				string subject = "stored next to the test file";
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot();
 
-				await That(Act).DoesNotThrow()
-					.Because(
-						"the snapshot 'ThatSnapshot.MatchesSnapshot.Tests.WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName.snapshot.txt' is committed next to this test file");
-			}
-
-			[Fact]
-			public async Task WhenDirectoryDoesNotExist_ShouldReportThatThePendingSnapshotCouldNotBeWritten()
-			{
-				using SnapshotDirectory directory = new();
-				string testFilePath = Path.Combine(directory.Path, "missing", "MyTests.cs");
-				string snapshotPath = Path.Combine(directory.Path, "missing", "MyTests.MyTest.snapshot.txt");
-				string subject = "foo";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(testFilePath, SnapshotDirectory.MemberName);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              matches the snapshot "{snapshotPath}",
-					              but the snapshot did not exist
-
-					              Actual:
-					              foo
-
-					              Pending snapshot:
-					              could not be written: *
-					              """).AsWildcard();
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches.Keys).IsEqualTo(new[]
+				{
+					new SnapshotId(GetCallerFilePath(), nameof(ShouldUseTheCallerInformationAsSnapshotId)),
+				}).InAnyOrder();
 			}
 
 			[Fact]
 			public async Task WhenNegated_AndSnapshotCannotBeRead_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("bar");
-				using FileStream lockedSnapshot = new(directory.SnapshotPath, FileMode.Open, FileAccess.Read,
-					FileShare.None);
+				InMemorySnapshotStore store = new()
+				{
+					ReadException = new IOException("locked"),
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not match the snapshot "{directory.SnapshotPath}",
-					              but a snapshot cannot be negated
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             does not match the snapshot "MyTests.MyTest",
+					             but a snapshot cannot be negated
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenNegated_AndSnapshotDiffers_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("bar");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "bar";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not match the snapshot "{directory.SnapshotPath}",
-					              but a snapshot cannot be negated
-					              """)
+					.WithMessage("""
+					             Expected that subject
+					             does not match the snapshot "MyTests.MyTest",
+					             but a snapshot cannot be negated
+					             """)
 					.Because("accepting the pending snapshot would turn the success into a failure");
 			}
 
 			[Fact]
 			public async Task WhenNegated_AndSnapshotIsMissing_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not match the snapshot "{directory.SnapshotPath}",
-					              but a snapshot cannot be negated
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             does not match the snapshot "MyTests.MyTest",
+					             but a snapshot cannot be negated
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenNegated_AndSnapshotMatches_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not match the snapshot "{directory.SnapshotPath}",
-					              but a snapshot cannot be negated
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             does not match the snapshot "MyTests.MyTest",
+					             but a snapshot cannot be negated
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenNegated_AndSubjectIsNull_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.TestFilePath, Id.MemberName));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not match the snapshot "{directory.SnapshotPath}",
-					              but it was <null>
-					              """);
-				await That(File.Exists(directory.PendingPath)).IsFalse();
+					.WithMessage("""
+					             Expected that subject
+					             does not match the snapshot "MyTests.MyTest",
+					             but it was <null>
+					             """);
+				await That(store.Mismatches).IsEmpty();
 			}
 
 			[Fact]
-			public async Task WhenPendingSnapshotCannotBeDeleted_AndSnapshotMatches_ShouldSucceed()
+			public async Task WhenReadingIsCanceled_ShouldNotReportThatTheSnapshotCouldNotBeRead()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo");
-				directory.WritePending("bar");
-				using FileStream lockedPending = new(directory.PendingPath, FileMode.Open, FileAccess.Read,
-					FileShare.None);
+				using CancellationTokenSource cancellationTokenSource = new();
+				InMemorySnapshotStore store = new()
+				{
+					OnRead = () =>
+					{
+						cancellationTokenSource.Cancel();
+						cancellationTokenSource.Token.ThrowIfCancellationRequested();
+					},
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName)
+						.WithCancellation(cancellationTokenSource.Token);
 
-				await That(Act).DoesNotThrow()
-					.Because("the snapshot matched, and the pending snapshot is only a leftover of an earlier run");
+				await That(Act).Throws<InconclusiveException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but it could not be verified, because the evaluation was already canceled
+
+					             Actual:
+					             foo
+					             """);
 			}
 
 			[Fact]
-			public async Task WhenPendingSnapshotExists_AndSnapshotDiffers_ShouldOverwritePendingSnapshot()
+			public async Task WhenReadingThrows_ShouldFailWithTheExceptionAsCause()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo");
-				directory.WritePending("a much longer outdated value");
-				string subject = "bar";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("*Pending snapshot:*").AsWildcard();
-				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar" + Environment.NewLine);
-			}
-
-			[Fact]
-			public async Task WhenPendingSnapshotExists_AndSnapshotMatches_ShouldDeletePendingSnapshot()
-			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo");
-				directory.WritePending("bar");
-				string subject = "foo";
-
-				await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
-
-				await That(File.Exists(directory.PendingPath)).IsFalse();
-			}
-
-			[Theory]
-			[InlineData("")]
-			[InlineData("foo")]
-			[InlineData("foo\n")]
-			[InlineData("foo\r\n")]
-			[InlineData("\n\nfoo\n\n")]
-			public async Task WhenPendingSnapshotIsAccepted_ShouldSucceed(string subject)
-			{
-				using SnapshotDirectory directory = new();
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("*the snapshot did not exist*").AsWildcard();
-				File.Move(directory.PendingPath, directory.SnapshotPath);
-				await That(Act).DoesNotThrow()
-					.Because("renaming the pending snapshot accepts the subject unchanged");
-			}
-
-			[Fact]
-			public async Task WhenSnapshotCannotBeRead_ShouldFailWithoutWritingPendingSnapshot()
-			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("bar");
-				using FileStream lockedSnapshot = new(directory.SnapshotPath, FileMode.Open, FileAccess.Read,
-					FileShare.None);
+				InMemorySnapshotStore store = new()
+				{
+					ReadException = new IOException("locked"),
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              matches the snapshot "{directory.SnapshotPath}",
-					              but the snapshot could not be read: *
-					              """).AsWildcard();
-				await That(File.Exists(directory.PendingPath)).IsFalse()
+				XunitException exception = await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot could not be read: locked
+					             """);
+				await That(exception.InnerException).IsSameAs(store.ReadException);
+				await That(store.Mismatches).IsEmpty()
 					.Because("the subject could not be compared with the snapshot");
+			}
+
+			[Fact]
+			public async Task WhenReadingThrowsOperationCanceledException_WithoutCancellation_ShouldFail()
+			{
+				InMemorySnapshotStore store = new()
+				{
+					ReadException = new OperationCanceledException("timed out"),
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*but the snapshot could not be read: timed out").AsWildcard()
+					.Because("only a cancellation of the evaluation aborts it");
+			}
+
+			[Fact]
+			public async Task WhenRecordingMatchThrows_ShouldSucceed()
+			{
+				InMemorySnapshotStore store = new()
+				{
+					RecordMatchException = new IOException("locked"),
+				};
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+
+				await That(Act).DoesNotThrow()
+					.Because("the snapshot matched, and recording the match only cleans up");
+			}
+
+			[Fact]
+			public async Task WhenRecordingMismatchThrows_ShouldNameTheErrorInTheFailure()
+			{
+				InMemorySnapshotStore store = new()
+				{
+					RecordMismatchException = new IOException("disk full"),
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist
+
+					             Actual:
+					             foo
+
+					             Pending snapshot:
+					             could not be written: disk full
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenSnapshotDiffers_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo bar");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo bar";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo baz";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              matches the snapshot "{directory.SnapshotPath}",
-					              but it was "foo baz", which differs at index 6:
-					                       ↓ (actual)
-					                "foo baz"
-					                "foo bar"
-					                       ↑ (expected)
-
-					              Pending snapshot:
-					              {directory.PendingPath}
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but it was "foo baz", which differs at index 6:
+					                      ↓ (actual)
+					               "foo baz"
+					               "foo bar"
+					                      ↑ (expected)
+					             """)
+					.Because("a store without a description of the mismatch leaves out the pending snapshot");
 			}
 
 			[Fact]
-			public async Task WhenSnapshotDiffers_ShouldWritePendingSnapshot()
+			public async Task WhenSnapshotDiffers_ShouldRecordMismatch()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "bar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("*Pending snapshot:*").AsWildcard();
-				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar" + Environment.NewLine);
-				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo")
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
+				{
+					[Id] = "bar",
+				});
+				await That(store.Matches).IsEmpty();
+				await That(store.Snapshots[Id]).IsEqualTo("foo")
 					.Because("the snapshot is only changed by the user");
 			}
 
 			[Fact]
 			public async Task WhenSnapshotDiffersInSeveralLines_ShouldListTheDifferences()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("a\nb\nc\nd");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "a\nb\nc\nd";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "a\nB\nc\nD";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              matches the snapshot "{directory.SnapshotPath}",
-					              but it was "a\nB\nc\nD", which differs on line 2 and column 1:
-					                    ↓ (actual)
-					                "a\nB\nc\nD"
-					                "a\nb\nc\nd"
-					                    ↑ (expected)
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but it was "a\nB\nc\nD", which differs on line 2 and column 1:
+					                   ↓ (actual)
+					               "a\nB\nc\nD"
+					               "a\nb\nc\nd"
+					                   ↑ (expected)
 
-					              Differences:
-					                   1   1    a
-					                -  2        B
-					                +      2    b
-					                   3   3    c
-					                -  4        D
-					                +      4    d
-
-					              Pending snapshot:
-					              {directory.PendingPath}
-					              """);
+					             Differences:
+					                  1   1    a
+					               -  2        B
+					               +      2    b
+					                  3   3    c
+					               -  4        D
+					               +      4    d
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenSnapshotDiffersOnlyInNewlineStyle_ShouldSucceed()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo\r\nbar");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo\r\nbar";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo\nbar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).DoesNotThrow()
 					.Because("version control can change the newline style when the snapshot is checked out");
 			}
 
-			[Theory]
-			[InlineData("foo\n")]
-			[InlineData("foo\r\n")]
-			public async Task WhenSnapshotEndsWithLineBreak_ShouldIgnoreIt(string snapshot)
-			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot(snapshot);
-				string subject = "foo";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
-
-				await That(Act).DoesNotThrow()
-					.Because("an editor can add a final line break when it saves the snapshot");
-			}
-
-			[Fact]
-			public async Task WhenSnapshotHasByteOrderMark_ShouldSucceed()
-			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("äöü", true);
-				string subject = "äöü";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
-
-				await That(Act).DoesNotThrow()
-					.Because("an editor can save the snapshot with a byte order mark");
-			}
-
 			[Fact]
 			public async Task WhenSnapshotIsEmpty_AndSubjectIsEmpty_ShouldSucceed()
 			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -367,72 +354,78 @@ public sealed partial class ThatSnapshot
 			[Fact]
 			public async Task WhenSnapshotIsMissing_ShouldFail()
 			{
-				using SnapshotDirectory directory = new();
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              matches the snapshot "{directory.SnapshotPath}",
-					              but the snapshot did not exist
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but the snapshot did not exist
 
-					              Actual:
-					              foo
-
-					              Pending snapshot:
-					              {directory.PendingPath}
-					              """);
+					             Actual:
+					             foo
+					             """);
+				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
+				{
+					[Id] = "foo",
+				});
 			}
 
 			[Fact]
-			public async Task WhenSnapshotIsMissing_ShouldWritePendingSnapshotAsUtf8WithoutByteOrderMark()
+			public async Task WhenSnapshotMatches_ShouldRecordMatch()
 			{
-				using SnapshotDirectory directory = new();
-				string subject = "äöü\r\nfoo";
-
-				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("*Pending snapshot:*").AsWildcard();
-				await That(File.ReadAllBytes(directory.PendingPath))
-					.IsEqualTo(new System.Text.UTF8Encoding(false).GetBytes(subject + Environment.NewLine));
-			}
-
-			[Fact]
-			public async Task WhenSnapshotMatches_ShouldSucceed()
-			{
-				using SnapshotDirectory directory = new();
-				directory.WriteSnapshot("foo\nbar");
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo\nbar";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo\nbar";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).DoesNotThrow();
-				await That(File.Exists(directory.PendingPath)).IsFalse();
+				await That(store.Matches).IsEqualTo(new[] { Id, });
+				await That(store.Mismatches).IsEmpty();
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFailWithoutWritingPendingSnapshot()
+			public async Task WhenStoreIsSetToNull_ShouldThrowArgumentNullException()
 			{
-				using SnapshotDirectory directory = new();
+				void Act()
+					=> Customize.aweXpect.Snapshots().Store.Set(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("value");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFailWithoutAccessingTheStore()
+			{
+				InMemorySnapshotStore store = new()
+				{
+					ReadException = new IOException("must not be read"),
+				};
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+					=> await That(subject).MatchesSnapshot(Id.TestFilePath, Id.MemberName);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              matches the snapshot "{directory.SnapshotPath}",
-					              but it was <null>
-					              """);
-				await That(File.Exists(directory.PendingPath)).IsFalse();
+					.WithMessage("""
+					             Expected that subject
+					             matches the snapshot "MyTests.MyTest",
+					             but it was <null>
+					             """);
+				await That(store.Mismatches).IsEmpty();
 			}
+
+			private static string GetCallerFilePath([CallerFilePath] string callerFilePath = "")
+				=> callerFilePath;
 		}
 	}
 }

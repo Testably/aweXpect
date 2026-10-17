@@ -2,6 +2,33 @@
 [assembly: System.Reflection.AssemblyMetadata("IsTrimmable", "True")]
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Snapshots.git")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName=".NET 10.0")]
+namespace aweXpect.Snapshots
+{
+    public sealed class SnapshotId : System.IEquatable<aweXpect.Snapshots.SnapshotId>
+    {
+        public SnapshotId(string TestFilePath, string MemberName) { }
+        public string MemberName { get; init; }
+        public string TestFilePath { get; init; }
+        public override string ToString() { }
+    }
+    public abstract class SnapshotStore
+    {
+        protected SnapshotStore() { }
+        public virtual string Describe(aweXpect.Snapshots.SnapshotId id) { }
+        public virtual string? DescribeMismatch(aweXpect.Snapshots.SnapshotId id) { }
+        public abstract System.Threading.Tasks.ValueTask<string?> ReadAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken);
+        public virtual System.Threading.Tasks.ValueTask RecordMatchAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken) { }
+        public abstract System.Threading.Tasks.ValueTask RecordMismatchAsync(aweXpect.Snapshots.SnapshotId id, string actual, System.Threading.CancellationToken cancellationToken);
+    }
+    public static class SnapshotsAwexpectCustomizationExtensions
+    {
+        public static aweXpect.Snapshots.SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization Snapshots(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public class SnapshotsCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
+        }
+    }
+}
 namespace aweXpect
 {
     public static class ThatSnapshot
