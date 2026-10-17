@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,7 +109,7 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 		StringBuilder failureBuilder = FailureBuilder;
 		failureBuilder.Clear();
 		(_isMatch, _unmatchedMembersToIgnore) = await EquivalencyComparison.CompareExplaining(actual, expected,
-			_equivalencyOptions, failureBuilder, _evaluation, _cancellationToken, _unmatchedMembersToIgnore);
+			_equivalencyOptions, failureBuilder, _evaluation, _unmatchedMembersToIgnore, _cancellationToken);
 		return this;
 	}
 
@@ -117,7 +118,7 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	{
 		(bool isEquivalent, _unmatchedMembersToIgnore) =
 			await EquivalencyComparison.IsEquivalentTrackingMembersToIgnore(actual, expected, _equivalencyOptions,
-				_evaluation, _cancellationToken, _unmatchedMembersToIgnore);
+				_evaluation, _unmatchedMembersToIgnore, _cancellationToken);
 		return isEquivalent;
 	}
 
@@ -126,22 +127,8 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	///     name as well.
 	/// </remarks>
 	private static bool CanIgnoreMembersByName(EquivalencyOptions equivalencyOptions)
-	{
-		if (equivalencyOptions.HasRegistrations)
-		{
-			return true;
-		}
-
-		foreach (MemberToIgnore memberToIgnore in equivalencyOptions.MembersToIgnore)
-		{
-			if (memberToIgnore is MemberToIgnore.ByName)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
+		=>equivalencyOptions.HasRegistrations ||
+		   equivalencyOptions.MembersToIgnore.Any(memberToIgnore => memberToIgnore is MemberToIgnore.ByName);
 
 	/// <summary>
 	///     Returns a match type for the comparisons of the <paramref name="evaluation" />, so that the expectations of
