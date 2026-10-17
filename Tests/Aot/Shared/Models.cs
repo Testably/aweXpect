@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using aweXpect.Core.Metadata;
+
+[assembly: GenerateMetadata(typeof(aweXpect.Aot.Shipment))]
 
 namespace aweXpect.Aot;
 
@@ -11,6 +14,11 @@ public sealed class Order
 	public List<Item> Items { get; set; } = [];
 	public Dictionary<string, int> Tags { get; set; } = [];
 }
+
+/// <summary>
+///     Renders itself through a compiler-generated <c>ToString()</c>, which writes the notes as the name of their type.
+/// </summary>
+public sealed record Shipment(int Id, decimal Weight, List<string> Notes);
 
 public sealed class Customer
 {

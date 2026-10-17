@@ -668,6 +668,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private bool? _supportsCollectionRegistration;
 
+		private bool? _supportsRecordRegistration;
+
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
 		public void Seed(ITypeSymbol? type)
@@ -849,7 +851,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return;
 			}
 
-			string? source = EmitRegistration(type, members, explicitProperties, isCollection);
+			string? source = EmitRegistration(type, members, explicitProperties, isCollection,
+				!isCollection && IsCompilerGeneratedRecord(type));
 			if (source is not null)
 			{
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
@@ -863,6 +866,47 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
 				?.GetMembers("RegisterCollection").OfType<IMethodSymbol>()
 				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+
+		/// <remarks>
+		///     Mirrors <c>ValueFormatters.IsCompilerGeneratedRecord</c>, which reflects over the most derived
+		///     <c>ToString()</c> and <c>PrintMembers(StringBuilder)</c> of any accessibility, so the declarations are read
+		///     through <see cref="DeclaredMembers" /> to see a private <c>PrintMembers</c> in a referenced assembly. The
+		///     compiler marks what it synthesizes with <c>CompilerGeneratedAttribute</c> only when emitting, so a
+		///     declaration in source is recognized as implicitly declared instead. An aweXpect.Core that cannot register a
+		///     record recognizes it by reflection alone. The type is not required to be a record, because reflection
+		///     cannot tell either.
+		/// </remarks>
+		private bool IsCompilerGeneratedRecord(INamedTypeSymbol type)
+		{
+			_supportsRecordRegistration ??= compilation
+				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+				?.GetMembers("RegisterRecord").OfType<IMethodSymbol>()
+				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+			return _supportsRecordRegistration == true &&
+			       IsSynthesized(FindInstanceMethod(type, "ToString", [])) &&
+			       IsSynthesized(FindInstanceMethod(type, "PrintMembers", ["System.Text.StringBuilder",]));
+
+			static bool IsSynthesized(IMethodSymbol? method)
+				=> method is not null && (method.IsImplicitlyDeclared || IsCompilerGenerated(method));
+		}
+
+		private IMethodSymbol? FindInstanceMethod(INamedTypeSymbol type, string name, string[] parameterTypes)
+		{
+			for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+			{
+				bool isWalked = SymbolEqualityComparer.Default.Equals(current, type);
+				IMethodSymbol? method = DeclaredMembers(current).OfType<IMethodSymbol>().FirstOrDefault(x
+					=> x is { IsStatic: false, MethodKind: MethodKind.Ordinary, } && x.Name == name &&
+					   (isWalked || x.DeclaredAccessibility != Accessibility.Private) &&
+					   x.Parameters.Select(p => p.Type.ToDisplayString()).SequenceEqual(parameterTypes));
+				if (method is not null)
+				{
+					return method.OriginalDefinition;
+				}
+			}
+
+			return null;
+		}
 
 		/// <summary>
 		///     Returns the <paramref name="members" /> that the collection <paramref name="type" /> declares itself.
@@ -1339,11 +1383,11 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		private static string? EmitRegistration(INamedTypeSymbol type, List<Member> members,
-			List<IPropertySymbol> explicitProperties, bool isCollection)
+			List<IPropertySymbol> explicitProperties, bool isCollection, bool isRecord)
 		{
 			if (IsNameable(type))
 			{
-				return EmitNamedRegistration(type, members, explicitProperties, isCollection);
+				return EmitNamedRegistration(type, members, explicitProperties, isCollection, isRecord);
 			}
 
 			List<string> helpers = [];
@@ -1383,6 +1427,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				helpers.Add("static void RegisterCollection<T>(T p) => " + Registry + ".RegisterCollection<T>();");
 			}
 
+			if (isRecord)
+			{
+				sb.AppendLine("\t\tRegisterRecord(probe);");
+				helpers.Add("static void RegisterRecord<T>(T p) => " + Registry + ".RegisterRecord<T>();");
+			}
+
 			foreach (string helper in helpers)
 			{
 				sb.Append("\t\t").AppendLine(helper);
@@ -1392,7 +1442,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		private static string EmitNamedRegistration(INamedTypeSymbol type, List<Member> members,
-			List<IPropertySymbol> explicitProperties, bool isCollection)
+			List<IPropertySymbol> explicitProperties, bool isCollection, bool isRecord)
 		{
 			StringBuilder sb = new();
 			string typeName = type.ToDisplayString(TypeFormat);
@@ -1415,6 +1465,11 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			{
 				sb.Append("\t\t").Append(Registry).Append(".RegisterCollection<").Append(typeName)
 					.AppendLine(">();");
+			}
+
+			if (isRecord)
+			{
+				sb.Append("\t\t").Append(Registry).Append(".RegisterRecord<").Append(typeName).AppendLine(">();");
 			}
 
 			return sb.ToString();

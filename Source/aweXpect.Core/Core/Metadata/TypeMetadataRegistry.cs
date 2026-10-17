@@ -136,6 +136,18 @@ public static class TypeMetadataRegistry
 		=> Instance.AddCollection(typeof(T));
 
 	/// <summary>
+	///     Registers <typeparamref name="T" /> as a record whose <see cref="object.ToString()" /> and <c>PrintMembers</c>
+	///     the compiler generated, so that it is formatted from its registered members instead.
+	/// </summary>
+	/// <remarks>
+	///     The compiler-generated rendering of a record uses the current culture, does not quote strings and writes a
+	///     collection as its type name. Recognizing it otherwise needs reflection, which is switched off when publishing
+	///     with trimming or Native AOT enabled. Without registered members, the formatter cannot write the record either.
+	/// </remarks>
+	public static void RegisterRecord<T>()
+		=> Instance.AddRecord(typeof(T));
+
+	/// <summary>
 	///     Runs <paramref name="register" /> and publishes the registrations it makes on the calling thread together, once
 	///     it returns.
 	/// </summary>
@@ -192,6 +204,9 @@ public static class TypeMetadataRegistry
 
 		public void AddCollection(Type type)
 			=> Add(type, metadata => metadata.IsCollection = true);
+
+		public void AddRecord(Type type)
+			=> Add(type, metadata => metadata.IsCompilerGeneratedRecord = true);
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -296,6 +311,11 @@ public static class TypeMetadataRegistry
 		public bool IsCollection { get; set; }
 
 		/// <summary>
+		///     Whether the type is registered as a record whose rendering the compiler generated.
+		/// </summary>
+		public bool IsCompilerGeneratedRecord { get; set; }
+
+		/// <summary>
 		///     The registered events in the order of their registration.
 		/// </summary>
 		/// <remarks>
@@ -325,6 +345,7 @@ public static class TypeMetadataRegistry
 				KeyComparer = registered.KeyComparer ?? KeyComparer,
 				ItemComparer = registered.ItemComparer ?? ItemComparer,
 				IsCollection = registered.IsCollection || IsCollection,
+				IsCompilerGeneratedRecord = registered.IsCompilerGeneratedRecord || IsCompilerGeneratedRecord,
 			};
 			Merge(merged.Fields, Fields, registered.Fields);
 			Merge(merged.Properties, Properties, registered.Properties);

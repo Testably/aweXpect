@@ -676,6 +676,22 @@ public partial class ValueFormatters
 
 #if NET8_0_OR_GREATER
 		[Test]
+		public async Task WhenRecordIsRegisteredWithoutTheMark_ShouldStillRecognizeItByReflection()
+		{
+			using CultureOverride _ = new("de-DE");
+			TypeMetadataRegistry.RegisterProperty<RegisteredRecord, double>(nameof(RegisteredRecord.X), x => x.X);
+			object value = new RegisteredRecord(1.5);
+			string expectedResult = "ValueFormatters.ObjectTests.RegisteredRecord { X = 1.5 }";
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a generator older than aweXpect.Core registers the members of a record without marking it");
+		}
+#endif
+
+#if NET8_0_OR_GREATER
+		[Test]
 		public async Task WhenRecordStructIsCompilerGenerated_ShouldFormatMembersWithTheirFormatters()
 		{
 			using CultureOverride _ = new("de-DE");
@@ -708,6 +724,27 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult)
 				.Because("a registered type is formatted through its registration instead of by reflection");
 			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenRegisteredAsRecord_ShouldWriteTheMembersInsteadOfItsRendering()
+		{
+			TypeMetadataRegistry.RegisterBatch(() =>
+			{
+				TypeMetadataRegistry.RegisterProperty<RegisteredAsRecord, double>(nameof(RegisteredAsRecord.Value),
+					x => x.Value);
+				TypeMetadataRegistry.RegisterRecord<RegisteredAsRecord>();
+			});
+			object value = new RegisteredAsRecord
+			{
+				Value = 1.5,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.RegisteredAsRecord { Value = 1.5 }";
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the formatter trusts the registration, which the generator only makes for a compiler-generated record, instead of reflecting over the type");
 		}
 
 		[Test]
@@ -1024,6 +1061,13 @@ public partial class ValueFormatters
 				=> ToString(null, CultureInfo.CurrentCulture);
 		}
 
+		private sealed class RegisteredAsRecord
+		{
+			public double Value { get; set; }
+
+			public override string ToString() => "custom";
+		}
+
 		private sealed class RegisteredDummy
 		{
 			public int NotRegistered { get; set; }
@@ -1125,6 +1169,8 @@ public partial class ValueFormatters
 			public override string ToString()
 				=> "custom";
 		}
+
+		private sealed record RegisteredRecord(double X);
 #endif
 	}
 }

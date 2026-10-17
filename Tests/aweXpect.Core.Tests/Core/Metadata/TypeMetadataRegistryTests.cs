@@ -198,6 +198,30 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	[Test]
+	public async Task RegisterRecord_ShouldKeepTheMarkWhenAMemberIsRegisteredLater()
+	{
+		TypeMetadataRegistry.Registration registration = new();
+
+		registration.AddRecord(typeof(Dummy));
+		registration.AddProperty(typeof(Dummy), "Value", typeof(int), _ => 1);
+
+		registration.TryGet(typeof(Dummy), out TypeMetadataRegistry.TypeMetadata? metadata);
+		await That(metadata!.IsCompilerGeneratedRecord).IsTrue()
+			.Because("a later registration is merged into the published one");
+		await That(metadata.Properties.Keys).IsEqualTo(["Value",]);
+	}
+
+	[Test]
+	public async Task RegisterRecord_ShouldMarkTheTypeAsACompilerGeneratedRecord()
+	{
+		TypeMetadataRegistry.RegisterRecord<MarkedRecord>();
+
+		TypeMetadataRegistry.Instance.TryGet(typeof(MarkedRecord), out TypeMetadataRegistry.TypeMetadata? metadata);
+		await That(metadata?.IsCompilerGeneratedRecord).IsTrue()
+			.Because("the formatter writes a compiler-generated record member-wise without reflecting over it");
+	}
+
+	[Test]
 	public async Task RegisterSet_ShouldRegisterAReaderOfTheItemComparer()
 	{
 		HashSet<Batched> set = new(new SameValueComparer());
@@ -246,6 +270,8 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	private sealed class Marked : List<int>;
+
+	private sealed class MarkedRecord;
 
 	private sealed class SameValueComparer : IEqualityComparer<Batched>
 	{

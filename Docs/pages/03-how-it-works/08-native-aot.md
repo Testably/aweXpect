@@ -23,7 +23,10 @@ A type that has a registration is compared through it, every other type is refle
 with an error naming the fix where reflection is switched off. The registration also feeds the failure message: a
 registered object is rendered from its registered members, so the message keeps listing them after trimming, while an
 unregistered object is rendered as `{ *unregistered* }` where reflection is switched off. Either way the message lists
-public instance members only, without static members, indexers or properties that lack a public getter.
+public instance members only, without static members, indexers or properties that lack a public getter. A record whose
+`ToString()` the compiler generated is rendered from its members, too, because that `ToString()` depends on the current
+culture and writes a collection as its type name. Where reflection is switched off, only a registered record is
+recognized; an unregistered one keeps its own `ToString()`.
 
 For a collection type, the generator registers the members that the type declares itself, which are
 [compared in addition to its items](../04-values/13-equivalency.md#collections-and-dictionaries). Where reflection is

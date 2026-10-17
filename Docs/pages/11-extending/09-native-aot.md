@@ -66,6 +66,9 @@ that it should compare. The other methods cover the other kinds of metadata:
   type and the delegates that add and remove it.
 - `RegisterCollection` registers a collection type, so that a comparison with another collection also compares the
   members the type declares itself, besides its items.
+- `RegisterRecord` registers a record whose `ToString()` the compiler generated, so that a failure message writes its
+  registered members instead of that culture-dependent rendering. Leave it out for a record with a `ToString()` or
+  `PrintMembers` of its own.
 - `RegisterDictionary` and `RegisterSet` register the dictionaries and sets of the given type arguments, so that a
   comparison reads their key comparer or comparer.
 

@@ -592,4 +592,47 @@ public static class Corpus
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 	}
+
+	public record DerivedRecord(int Id, string Name, string Extra) : PositionalRecord(Id, Name);
+
+	public record GenericRecord<T>(T Value);
+
+	public record struct RecordStruct(int X);
+
+	public readonly record struct ReadOnlyRecordStruct(int X);
+
+	public record WithOwnPrintMembers(int Id)
+	{
+		protected virtual bool PrintMembers(StringBuilder builder) => builder.Append(Id) is not null;
+	}
+
+	public record InheritingOwnPrintMembers(int Id, string Name) : WithOwnPrintMembers(Id);
+
+	public sealed record SealedWithOwnPrintMembers(int Id)
+	{
+		private bool PrintMembers(StringBuilder builder) => builder.Append(Id) is not null;
+	}
+
+	public record WithSealedToString(int Id)
+	{
+		public sealed override string ToString() => "custom";
+	}
+
+	public record InheritingSealedToString(int Id, string Name) : WithSealedToString(Id);
+
+	public record struct RecordStructWithOwnToString(int X)
+	{
+		public override readonly string ToString() => "custom";
+	}
+
+	public class RecordLookalike
+	{
+		public int Id { get; set; }
+
+		[System.Runtime.CompilerServices.CompilerGenerated]
+		public override string ToString() => "custom";
+
+		[System.Runtime.CompilerServices.CompilerGenerated]
+		protected virtual bool PrintMembers(StringBuilder builder) => builder.Append(Id) is not null;
+	}
 }
