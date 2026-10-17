@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using aweXpect.Customization;
 using static aweXpect.Expect;
 
 namespace aweXpect.Snapshots.Aot;
@@ -20,6 +21,8 @@ internal static class Checks
 			() => ShouldPass(ObjectWithRulesMatchesItsSnapshot)),
 		new("a record matching its snapshot is written member-wise",
 			() => ShouldPass(RecordMatchesItsSnapshot)),
+		new("every snapshot is used by one of the checks above",
+			() => ShouldPass(EverySnapshotIsUsed)),
 	];
 
 	/// <remarks>
@@ -76,6 +79,16 @@ internal static class Checks
 			File.Delete(exception.Message.Substring(exception.Message.LastIndexOf('\n') + 1).Trim());
 			throw;
 		}
+	}
+
+	/// <remarks>
+	///     The snapshots are listed below the recorded project directory and matched with the mapped paths of the
+	///     deterministic build. Accepting is disabled, so that a snapshot is never deleted here.
+	/// </remarks>
+	private static async Task EverySnapshotIsUsed()
+	{
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(false);
+		await OrphanedSnapshots.CheckAsync(true);
 	}
 
 	private static async Task MatchesItsSnapshot()

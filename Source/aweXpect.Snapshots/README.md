@@ -31,13 +31,15 @@ The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file,
 test file. A missing or different snapshot fails the test and writes the actual value to
 `<Class>.<Method>.snapshot.pending.txt`; rename it to `<Class>.<Method>.snapshot.txt` to accept it, or set the
 environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to accept all changed snapshots of a test run.
+`OrphanedSnapshots.CheckAsync()` in the teardown of the test run reports the snapshots that no test uses any more on a
+build server, and deletes them while accepting changes.
 
 ## Overview
 
 | Expectation                                                                      | Subject  | Summary                                                 |
 |----------------------------------------------------------------------------------|----------|---------------------------------------------------------|
-| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-snapshots.md#matching-a-snapshot)              | `string` | matches the snapshot stored next to the test            |
-| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-snapshots.md#matching-a-snapshot-of-an-object) | any `T`  | matches the snapshot of the object, written by aweXpect |
+| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-matching-snapshots.md#strings)              | `string` | matches the snapshot stored next to the test            |
+| [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-matching-snapshots.md#objects) | any `T`  | matches the snapshot of the object, written by aweXpect |
 
 ## Documentation
 

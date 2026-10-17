@@ -1,0 +1,257 @@
+using System.IO;
+using aweXpect.Customization;
+using aweXpect.Snapshots.Tests.TestHelpers;
+
+namespace aweXpect.Snapshots.Tests;
+
+public sealed class OrphanedSnapshotsTests
+{
+	private string SourceFile { get; } = $"/src/{Guid.NewGuid():N}/AlbumTests.cs";
+
+	[Fact]
+	public async Task WhenEverySnapshotIsUsed_ShouldSucceed()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		await That("Abbey Road").MatchesSnapshot(SourceFile, "Describes");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenASnapshotIsNotUsed_ShouldFailWithoutDeletingIt()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
+			               AlbumTests.Describes
+			             """);
+		await That(store.Deleted).IsEmpty()
+			.Because("snapshots are only deleted while accepting changes");
+	}
+
+	[Fact]
+	public async Task WhenSeveralSnapshotsAreNotUsed_ShouldListThemInOrder()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes", "Let It Be")] = "Let It Be";
+		store.Snapshots[new SnapshotId(SourceFile, "Describes", "Abbey Road")] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that every snapshot is used by a test of this run, but 2 snapshots were not used by any test:
+			               AlbumTests.Describes.Abbey Road
+			               AlbumTests.Describes.Let It Be
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenOnlyAMismatchIsRecorded_ShouldReportIt()
+	{
+		InMemorySnapshotStore store = new();
+		store.Mismatches[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*1 snapshot was not used by any test:*AlbumTests.Describes").AsWildcard();
+	}
+
+	[Fact]
+	public async Task WhenTheSnapshotIsNamed_ShouldOnlyCountTheNamedSnapshotAsUsed()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+		store.Snapshots[new SnapshotId(SourceFile, "Describes", "Abbey Road")] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		await That("Abbey Road").MatchesSnapshot(SourceFile, "Describes").Named("Abbey Road");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*1 snapshot was not used by any test:*  AlbumTests.Describes").AsWildcard()
+			.Because("naming the snapshot moves it away from the unnamed one");
+	}
+
+	[Fact]
+	public async Task WhenTheSnapshotIsNotCompared_ShouldStillCountItAsUsed()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Let It Be";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		await That("Abbey Road").IsEqualTo("Abbey Road").Or.MatchesSnapshot(SourceFile, "Describes");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("the test still refers to the snapshot, although the other expectation already succeeded");
+	}
+
+	[Fact]
+	public async Task WhenTheSnapshotOnlyDiffersInCase_ShouldCountItAsUsed()
+	{
+		InMemorySnapshotStore store = new();
+		store.Snapshots[new SnapshotId(SourceFile.ToLowerInvariant(), "describes", "abbey road")] = "Abbey Road";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		await That("Abbey Road").IsEqualTo("Abbey Road")
+			.Or.MatchesSnapshot(SourceFile.ToUpperInvariant(), "Describes").Named("Abbey Road");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("on a file system that ignores the case it is the same file, which must never be deleted");
+	}
+
+	[Fact]
+	public async Task WhenAcceptingChanges_ShouldDeleteTheSnapshotsAndStillFail()
+	{
+		SnapshotId used = new(SourceFile, "Describes", "Abbey Road");
+		SnapshotId unused = new(SourceFile, "Describes", "Let It Be");
+		InMemorySnapshotStore store = new();
+		store.Snapshots[used] = "Abbey Road";
+		store.Snapshots[unused] = "Let It Be";
+		store.Mismatches[unused] = "Let It Be (Remastered)";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		await That("Abbey Road").MatchesSnapshot(SourceFile, "Describes").Named("Abbey Road");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
+			               AlbumTests.Describes.Let It Be (deleted)
+			             """)
+			.Because("a deletion must never go unnoticed");
+		await That(store.Deleted).IsEqualTo([unused,]);
+	}
+
+	[Fact]
+	public async Task WhenAcceptingChanges_AndDeletingThrows_ShouldNameTheErrorAndDeleteTheOthers()
+	{
+		SnapshotId readOnly = new(SourceFile, "Describes", "Abbey Road");
+		SnapshotId other = new(SourceFile, "Describes", "Let It Be");
+		InMemorySnapshotStore store = new();
+		store.Snapshots[readOnly] = "Abbey Road";
+		store.Snapshots[other] = "Let It Be";
+		store.DeleteExceptions[readOnly] = new IOException("read-only");
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that every snapshot is used by a test of this run, but 2 snapshots were not used by any test:
+			               AlbumTests.Describes.Abbey Road (could not be deleted: read-only)
+			               AlbumTests.Describes.Let It Be (deleted)
+			             """);
+		await That(store.Deleted).IsEqualTo([other,]);
+	}
+
+	[Fact]
+	public async Task WhenTheStoreCannotList_ShouldFail()
+	{
+		InMemorySnapshotStore store = new()
+		{
+			CanList = false,
+		};
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage(
+				"Expected that every snapshot is used by a test of this run, but the snapshot store InMemorySnapshotStore cannot list its snapshots, see SnapshotStore.ListAsync.")
+			.Because("a check that was asked for must not pass without checking anything");
+	}
+
+	[Fact]
+	public async Task WhenListingThrows_ShouldFailWithTheException()
+	{
+		IOException exception = new("access denied");
+		InMemorySnapshotStore store = new()
+		{
+			ListException = exception,
+		};
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage(
+				"Expected that every snapshot is used by a test of this run, but the snapshots could not be listed: access denied")
+			.And.WithInner<IOException>(inner => inner.IsSameAs(exception));
+	}
+
+	[Collection(nameof(EnvironmentCollection))]
+	public sealed class EnvironmentTests
+	{
+		private string SourceFile { get; } = $"/src/{Guid.NewGuid():N}/AlbumTests.cs";
+
+		[Fact]
+		public async Task WhenNotForced_AndNoBuildServerIsDetected_ShouldNotCheck()
+		{
+			using EnvironmentScope _ = new();
+			InMemorySnapshotStore store = new()
+			{
+				CanList = false,
+			};
+			using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+			async Task Act() => await OrphanedSnapshots.CheckAsync();
+
+			await That(Act).DoesNotThrow()
+				.Because("a local run that only runs some of the tests cannot be told apart from a complete one");
+		}
+
+		[Theory]
+		[InlineData("CI")]
+		[InlineData("TF_BUILD")]
+		[InlineData("JENKINS_URL")]
+		[InlineData("TEAMCITY_VERSION")]
+		public async Task WhenNotForced_AndABuildServerIsDetected_ShouldReportWithoutDeleting(string variable)
+		{
+			using EnvironmentScope _ = new((variable, "true"), ("AWEXPECT_ACCEPT_SNAPSHOTS", "1"));
+			InMemorySnapshotStore store = new();
+			store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+			using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+			async Task Act() => await OrphanedSnapshots.CheckAsync();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*1 snapshot was not used by any test:*  AlbumTests.Describes").AsWildcard();
+			await That(store.Deleted).IsEmpty()
+				.Because("the accept variable is ignored on a build server");
+		}
+
+		[Fact]
+		public async Task WhenForced_AndTheAcceptVariableIsSet_ShouldDelete()
+		{
+			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", "1"));
+			SnapshotId id = new(SourceFile, "Describes");
+			InMemorySnapshotStore store = new();
+			store.Snapshots[id] = "Abbey Road";
+			using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+			async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*  AlbumTests.Describes (deleted)").AsWildcard();
+			await That(store.Deleted).IsEqualTo([id,]);
+		}
+	}
+}

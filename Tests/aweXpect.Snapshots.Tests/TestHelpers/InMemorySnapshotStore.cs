@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using aweXpect.Snapshots;
 
@@ -11,6 +12,10 @@ internal sealed class InMemorySnapshotStore : SnapshotStore
 {
 	public Exception? AcceptException { get; set; }
 	public Dictionary<SnapshotId, string> Accepted { get; } = new();
+	public bool CanList { get; set; } = true;
+	public List<SnapshotId> Deleted { get; } = new();
+	public Dictionary<SnapshotId, Exception> DeleteExceptions { get; } = new();
+	public Exception? ListException { get; set; }
 	public List<SnapshotId> Matches { get; } = new();
 	public Dictionary<SnapshotId, string> Mismatches { get; } = new();
 	public Action? OnRead { get; set; }
@@ -61,6 +66,31 @@ internal sealed class InMemorySnapshotStore : SnapshotStore
 		}
 
 		Mismatches[id] = actual;
+		return default;
+	}
+
+	public override ValueTask<IReadOnlyList<SnapshotId>?> ListAsync(CancellationToken cancellationToken)
+	{
+		if (ListException is not null)
+		{
+			throw ListException;
+		}
+
+		return new ValueTask<IReadOnlyList<SnapshotId>?>(CanList
+			? Snapshots.Keys.Union(Mismatches.Keys).ToArray()
+			: null);
+	}
+
+	public override ValueTask DeleteAsync(SnapshotId id, CancellationToken cancellationToken)
+	{
+		if (DeleteExceptions.TryGetValue(id, out Exception? exception))
+		{
+			throw exception;
+		}
+
+		Deleted.Add(id);
+		Snapshots.Remove(id);
+		Mismatches.Remove(id);
 		return default;
 	}
 }

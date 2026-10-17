@@ -10,13 +10,41 @@ namespace aweXpect.Snapshots;
 /// </summary>
 internal sealed class SnapshotOptions
 {
+	private readonly string _memberName;
+	private readonly string _sourceFile;
+	private string? _name;
+
+	/// <remarks>
+	///     The snapshot is claimed right away, see <see cref="ClaimedSnapshots" />.
+	/// </remarks>
+	public SnapshotOptions(string sourceFile, string memberName)
+	{
+		_sourceFile = sourceFile;
+		_memberName = memberName;
+		ClaimedSnapshots.Claim(Id);
+	}
+
 	public bool? AcceptChanges { get; set; }
+
+	public SnapshotId Id => new(_sourceFile, _memberName, _name);
 
 	public List<SnapshotIgnoring> Ignorings { get; } = new();
 
 	public List<SnapshotMasking> Maskings { get; } = new();
 
-	public string? Name { get; set; }
+	/// <remarks>
+	///     A new name moves the claim of the snapshot to the named one.
+	/// </remarks>
+	public string? Name
+	{
+		get => _name;
+		set
+		{
+			ClaimedSnapshots.Release(Id);
+			_name = value;
+			ClaimedSnapshots.Claim(Id);
+		}
+	}
 
 	/// <summary>
 	///     Applies the text maskings of <see cref="Maskings" /> in the order in which they were added, then those of the

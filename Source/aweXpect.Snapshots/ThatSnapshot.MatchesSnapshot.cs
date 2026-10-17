@@ -131,12 +131,11 @@ public static class ThatSnapshot
 				nameof(callerFilePath)));
 		}
 
-		SnapshotOptions options = new();
+		SnapshotOptions options = new(SourceRoots.GetSourceFile(callerFilePath), callerMemberName);
 		return new SnapshotResult<T, IThat<T>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(SourceFile: SourceRoots.GetSourceFile(callerFilePath), MemberName: callerMemberName, Options: options,
-					Format: format),
+				(Options: options, Format: format),
 				static (state, it, grammars) => new MatchesSnapshotConstraint<T>(it, grammars, SnapshotSettings.Read(),
-					state.SourceFile, state.MemberName, state.Options, state.Format)),
+					state.Options, state.Format)),
 			subject,
 			options);
 	}
@@ -145,8 +144,6 @@ public static class ThatSnapshot
 		string it,
 		ExpectationGrammars grammars,
 		SnapshotSettings settings,
-		string sourceFile,
-		string memberName,
 		SnapshotOptions snapshotOptions,
 		Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
 		: ConstraintResult.WithNotNullValue<T>(it, grammars),
@@ -169,7 +166,7 @@ public static class ThatSnapshot
 		/// <inheritdoc />
 		public override Exception? FailureCause => (Exception?)_formatError ?? _maskingTimeout ?? _readError;
 
-		private SnapshotId Id => new(sourceFile, memberName, snapshotOptions.Name);
+		private SnapshotId Id => snapshotOptions.Id;
 
 		/// <remarks>
 		///     A subject that is nested too deeply to be written, or a snapshot that cannot be read, fails the expectation

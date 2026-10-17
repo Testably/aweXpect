@@ -20,7 +20,10 @@ internal static class AcceptEnvironment
 	private static readonly string[] BuildServerVariables = ["CI", "TF_BUILD", "JENKINS_URL", "TEAMCITY_VERSION",];
 
 	public static bool IsAccepting()
-		=> IsSet(AcceptVariable) && !BuildServerVariables.Any(IsSet);
+		=> IsSet(AcceptVariable) && !IsBuildServer();
+
+	public static bool IsBuildServer()
+		=> BuildServerVariables.Any(IsSet);
 
 	private static bool IsSet(string variable)
 		=> Environment.GetEnvironmentVariable(variable) is { Length: > 0, } value &&

@@ -23,4 +23,19 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+	    Records the directory of the project in the test assembly, so that `OrphanedSnapshots.CheckAsync()` only looks for
+	    snapshots of this project, and never for those of another project in the same repository. Like the recorded source
+	    root, it is the path on the machine that builds and runs the tests.
+	-->
+	<Target Name="_AweXpectSnapshotsRecordProjectDirectory"
+			BeforeTargets="GetAssemblyAttributes">
+		<ItemGroup>
+			<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+				<_Parameter1>aweXpect.Snapshots.ProjectDirectory</_Parameter1>
+				<_Parameter2>$(MSBuildProjectDirectory)</_Parameter2>
+			</AssemblyAttribute>
+		</ItemGroup>
+	</Target>
+
 </Project>

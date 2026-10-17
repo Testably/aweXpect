@@ -16,11 +16,14 @@ namespace aweXpect.Snapshots;
 ///     Each recorded value has the form <c>&lt;MappedPath&gt;=&lt;SourceRoot&gt;</c>, where the mapped path is the
 ///     source root itself, or the prefix such as <c>/_/</c> that a deterministic build emits instead of it. The loaded
 ///     assemblies are searched for the recorded values once, when the first snapshot needs them, and every assembly that
-///     is loaded afterwards adds its own.
+///     is loaded afterwards adds its own.<br />
+///     The directories of the test projects are recorded as well, so that <see cref="OrphanedSnapshots" /> only lists
+///     the snapshots of these projects.
 /// </remarks>
 internal static class SourceRoots
 {
 	private const string MetadataKey = "aweXpect.Snapshots.SourceRoot";
+	private const string ProjectDirectoryKey = "aweXpect.Snapshots.ProjectDirectory";
 
 	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
 		? StringComparison.OrdinalIgnoreCase
@@ -28,7 +31,12 @@ internal static class SourceRoots
 
 	private static readonly ConcurrentQueue<Assembly> LoadedAssemblies = new();
 	private static readonly object RecordedLock = new();
-	private static KeyValuePair<string, string>[]? _recorded;
+	private static Records? _records;
+
+	/// <summary>
+	///     The recorded source roots.
+	/// </summary>
+	private static KeyValuePair<string, string>[] Recorded => GetRecords().SourceRoots;
 
 	/// <summary>
 	///     The recorded values, read from the loaded assemblies on first use and extended by every assembly that is
@@ -36,44 +44,81 @@ internal static class SourceRoots
 	/// </summary>
 	/// <remarks>
 	///     The event is subscribed before the loaded assemblies are read, so that no assembly is missed in between; one
-	///     that is read twice only records the same source root twice, which counts as one.<br />
+	///     that is read twice only records the same value twice, which counts as one.<br />
 	///     An assembly loaded afterwards is only queued by the event and read on the next access, as the event of a
 	///     dynamic assembly is raised before its attributes exist, and as reading the attributes of every assembly that
-	///     is loaded would cost even when no snapshot needs them. The array is replaced instead of changed, so that the
-	///     common case of nothing new to read needs no lock.
+	///     is loaded would cost even when no snapshot needs them. The records are replaced instead of changed, so that
+	///     the common case of nothing new to read needs no lock.
 	/// </remarks>
-	private static KeyValuePair<string, string>[] Recorded
+	private static Records GetRecords()
 	{
-		get
+		Records? records = Volatile.Read(ref _records);
+		if (records is not null && LoadedAssemblies.IsEmpty)
 		{
-			KeyValuePair<string, string>[]? recorded = Volatile.Read(ref _recorded);
-			if (recorded is not null && LoadedAssemblies.IsEmpty)
+			return records;
+		}
+
+		lock (RecordedLock)
+		{
+			if (_records is null)
 			{
-				return recorded;
+				AppDomain.CurrentDomain.AssemblyLoad += (_, args) => LoadedAssemblies.Enqueue(args.LoadedAssembly);
+				Volatile.Write(ref _records, Read(AppDomain.CurrentDomain.GetAssemblies()));
 			}
 
-			lock (RecordedLock)
+			List<Assembly> loadedAssemblies = new();
+			while (LoadedAssemblies.TryDequeue(out Assembly? assembly))
 			{
-				if (_recorded is null)
-				{
-					AppDomain.CurrentDomain.AssemblyLoad += (_, args) => LoadedAssemblies.Enqueue(args.LoadedAssembly);
-					Volatile.Write(ref _recorded, ReadSourceRoots(AppDomain.CurrentDomain.GetAssemblies()));
-				}
+				loadedAssemblies.Add(assembly);
+			}
 
-				List<Assembly> loadedAssemblies = new();
-				while (LoadedAssemblies.TryDequeue(out Assembly? assembly))
-				{
-					loadedAssemblies.Add(assembly);
-				}
+			if (loadedAssemblies.Count > 0)
+			{
+				Records loaded = Read(loadedAssemblies);
+				Volatile.Write(ref _records, new Records(
+					[.. _records!.SourceRoots, .. loaded.SourceRoots,],
+					[.. _records.ProjectDirectories, .. loaded.ProjectDirectories,]));
+			}
 
-				if (loadedAssemblies.Count > 0)
-				{
-					Volatile.Write(ref _recorded, [.. _recorded!, .. ReadSourceRoots(loadedAssemblies),]);
-				}
+			return _records!;
+		}
+	}
 
-				return _recorded!;
+	/// <summary>
+	///     Returns the full path of every recorded project directory, each one once.
+	/// </summary>
+	public static string[] GetProjectDirectories()
+	{
+		List<string> projectDirectories = new();
+		foreach (string projectDirectory in GetRecords().ProjectDirectories)
+		{
+			string normalized = Normalize(projectDirectory);
+			if (!projectDirectories.Any(existing => string.Equals(Normalize(existing), normalized, PathComparison)))
+			{
+				projectDirectories.Add(projectDirectory);
 			}
 		}
+
+		return projectDirectories.ToArray();
+	}
+
+	/// <summary>
+	///     Returns the full <paramref name="path" /> of a test file on this machine relative to the source root that
+	///     contains it, like <see cref="GetSourceFile" /> returns it for the path that the compiler set.
+	/// </summary>
+	/// <remarks>
+	///     A deterministic build emits a mapped path, but a file found on this machine has the real path, so the real
+	///     source roots are matched instead of the mapped paths.
+	/// </remarks>
+	public static string GetSourceFileOfPath(string path)
+	{
+		string? sourceRoot = Recorded.Select(recorded => recorded.Value)
+			.Where(value => path.StartsWith(value, PathComparison))
+			.OrderByDescending(value => value.Length)
+			.FirstOrDefault();
+		return sourceRoot is null
+			? path
+			: path.Substring(sourceRoot.Length).Replace('\\', '/');
 	}
 
 	/// <summary>
@@ -204,13 +249,21 @@ internal static class SourceRoots
 	/// <remarks>
 	///     A mapped path never contains <c>=</c>, so the first one separates it from the source root.
 	/// </remarks>
-	private static KeyValuePair<string, string>[] ReadSourceRoots(IEnumerable<Assembly> assemblies)
-		=> assemblies.SelectMany(GetMetadata)
-			.Where(attribute => attribute.Key == MetadataKey && attribute.Value?.IndexOf('=') > 0)
-			.Select(attribute => new KeyValuePair<string, string>(
-				attribute.Value!.Substring(0, attribute.Value.IndexOf('=')),
-				attribute.Value.Substring(attribute.Value.IndexOf('=') + 1)))
-			.ToArray();
+	private static Records Read(IEnumerable<Assembly> assemblies)
+	{
+		AssemblyMetadataAttribute[] attributes = assemblies.SelectMany(GetMetadata).ToArray();
+		return new Records(
+			attributes
+				.Where(attribute => attribute.Key == MetadataKey && attribute.Value?.IndexOf('=') > 0)
+				.Select(attribute => new KeyValuePair<string, string>(
+					attribute.Value!.Substring(0, attribute.Value.IndexOf('=')),
+					attribute.Value.Substring(attribute.Value.IndexOf('=') + 1)))
+				.ToArray(),
+			attributes
+				.Where(attribute => attribute.Key == ProjectDirectoryKey && !string.IsNullOrEmpty(attribute.Value))
+				.Select(attribute => attribute.Value!)
+				.ToArray());
+	}
 
 	/// <remarks>
 	///     Reading the attributes of an assembly whose dependencies cannot be loaded throws, but such an assembly is not
@@ -227,4 +280,8 @@ internal static class SourceRoots
 			return [];
 		}
 	}
+
+	/// <param name="SourceRoots">Each recorded <c>&lt;MappedPath&gt;=&lt;SourceRoot&gt;</c> as key and value.</param>
+	/// <param name="ProjectDirectories">The full path of each recorded project directory.</param>
+	private sealed record Records(KeyValuePair<string, string>[] SourceRoots, string[] ProjectDirectories);
 }

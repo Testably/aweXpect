@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -62,4 +64,27 @@ public abstract class SnapshotStore
 	///     or returns <see langword="null" /> to leave it out.
 	/// </summary>
 	public virtual string? DescribeMismatch(SnapshotId id) => null;
+
+	/// <summary>
+	///     Lists the snapshots of the test project, including those of which only a recorded mismatch exists, so that
+	///     <see cref="OrphanedSnapshots.CheckAsync" /> can find those that no test uses any more.
+	/// </summary>
+	/// <returns>The ids, or <see langword="null" /> when the store cannot list its snapshots, which is the default.</returns>
+	/// <remarks>
+	///     Only list the snapshots of the current test project: every listed snapshot that no expectation of the test run
+	///     refers to is reported as orphaned, and deleted while accepting changes.
+	/// </remarks>
+	public virtual ValueTask<IReadOnlyList<SnapshotId>?> ListAsync(CancellationToken cancellationToken)
+		=> new((IReadOnlyList<SnapshotId>?)null);
+
+	/// <summary>
+	///     Deletes the snapshot with the <paramref name="id" /> and a recorded mismatch of it, which no test uses any more.
+	/// </summary>
+	/// <remarks>
+	///     It is only called by <see cref="OrphanedSnapshots.CheckAsync" /> while accepting changes, for a snapshot that
+	///     <see cref="ListAsync" /> listed. The default throws a <see cref="NotSupportedException" />, which is reported
+	///     for the snapshot.
+	/// </remarks>
+	public virtual ValueTask DeleteAsync(SnapshotId id, CancellationToken cancellationToken)
+		=> throw new NotSupportedException($"The snapshot store {GetType().Name} cannot delete snapshots.");
 }

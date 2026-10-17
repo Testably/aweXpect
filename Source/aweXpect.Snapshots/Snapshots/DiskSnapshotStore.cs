@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +27,15 @@ namespace aweXpect.Snapshots;
 internal sealed class DiskSnapshotStore : SnapshotStore
 {
 	public static readonly DiskSnapshotStore Instance = new();
+	private const string PendingSuffix = ".snapshot.pending.txt";
+	private const string SnapshotSuffix = ".snapshot.txt";
 	private static readonly Encoding Utf8WithoutBom = new UTF8Encoding(false);
+
+	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
+		? StringComparison.OrdinalIgnoreCase
+		: StringComparison.Ordinal;
+
+	private ConcurrentDictionary<SnapshotId, string> _listed = new(ClaimedSnapshots.Comparer);
 
 	private DiskSnapshotStore()
 	{
@@ -86,13 +98,160 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		}
 	}
 
-	public override string Describe(SnapshotId id) => GetSnapshotPath(id);
+	/// <remarks>
+	///     A snapshot that <see cref="ListAsync" /> listed is described by the file it was found in, which is the pending
+	///     file when only a mismatch was recorded.
+	/// </remarks>
+	public override string Describe(SnapshotId id)
+	{
+		if (!_listed.TryGetValue(id, out string? basePath))
+		{
+			return GetSnapshotPath(id);
+		}
+
+		return !File.Exists(basePath + SnapshotSuffix) && File.Exists(basePath + PendingSuffix)
+			? basePath + PendingSuffix
+			: basePath + SnapshotSuffix;
+	}
 
 	public override string DescribeMismatch(SnapshotId id) => GetPendingPath(id);
 
-	private static string GetSnapshotPath(SnapshotId id) => GetBasePath(id) + ".snapshot.txt";
+	/// <remarks>
+	///     Lists the snapshot and pending files below the directories of the test projects that the build targets
+	///     recorded, but not in output directories (<c>bin</c>, <c>obj</c>), hidden directories or the directories of
+	///     another project, so that the snapshots of another test project are never listed.<br />
+	///     A file is only listed when it can be read back into the id that it was written for, see
+	///     <see cref="TryGetId" />. The file of each listed id is remembered, so that <see cref="DeleteAsync" /> deletes
+	///     exactly that file, also when its test file was deleted and several source roots are recorded.
+	/// </remarks>
+	public override ValueTask<IReadOnlyList<SnapshotId>?> ListAsync(CancellationToken cancellationToken)
+	{
+		ConcurrentDictionary<SnapshotId, string> listed = new(ClaimedSnapshots.Comparer);
+		foreach (string projectDirectory in SourceRoots.GetProjectDirectories().Where(Directory.Exists))
+		{
+			CollectSnapshots(projectDirectory, listed, cancellationToken);
+		}
 
-	private static string GetPendingPath(SnapshotId id) => GetBasePath(id) + ".snapshot.pending.txt";
+		_listed = listed;
+		return new ValueTask<IReadOnlyList<SnapshotId>?>(listed.Keys.ToArray());
+	}
+
+	/// <remarks>
+	///     A snapshot that <see cref="ListAsync" /> listed is deleted in the file it was found in.
+	/// </remarks>
+	public override ValueTask DeleteAsync(SnapshotId id, CancellationToken cancellationToken)
+	{
+		string basePath = _listed.TryGetValue(id, out string? listedBasePath) ? listedBasePath : GetBasePath(id);
+		foreach (string path in new[] { basePath + SnapshotSuffix, basePath + PendingSuffix, }.Where(File.Exists))
+		{
+			File.Delete(path);
+		}
+
+		return default;
+	}
+
+	private static void CollectSnapshots(string directory, ConcurrentDictionary<SnapshotId, string> listed,
+		CancellationToken cancellationToken)
+	{
+		cancellationToken.ThrowIfCancellationRequested();
+		string[] files = Directory.GetFiles(directory);
+		foreach (string file in files)
+		{
+			string? baseName = GetSnapshotBaseName(Path.GetFileName(file));
+			if (baseName is not null && TryGetId(directory, baseName, files, out SnapshotId? id))
+			{
+				listed.TryAdd(id, Path.Combine(directory, baseName));
+			}
+		}
+
+		foreach (string subdirectory in Directory.GetDirectories(directory))
+		{
+			string name = Path.GetFileName(subdirectory);
+			if ((name.Length > 0 && name[0] == '.') ||
+			    name.Equals("bin", StringComparison.OrdinalIgnoreCase) ||
+			    name.Equals("obj", StringComparison.OrdinalIgnoreCase) ||
+			    Directory.EnumerateFiles(subdirectory, "*.*proj").Any())
+			{
+				continue;
+			}
+
+			CollectSnapshots(subdirectory, listed, cancellationToken);
+		}
+	}
+
+	private static string? GetSnapshotBaseName(string fileName)
+	{
+		if (fileName.EndsWith(PendingSuffix, StringComparison.OrdinalIgnoreCase))
+		{
+			return fileName.Substring(0, fileName.Length - PendingSuffix.Length);
+		}
+
+		return fileName.EndsWith(SnapshotSuffix, StringComparison.OrdinalIgnoreCase)
+			? fileName.Substring(0, fileName.Length - SnapshotSuffix.Length)
+			: null;
+	}
+
+	/// <summary>
+	///     Reads the <paramref name="baseName" /> of a snapshot file back into the id that it was written for.
+	/// </summary>
+	/// <remarks>
+	///     The class part is the name of a test file in the same directory, which may contain dots. The method and the
+	///     name follow, with their dots escaped, so the rest has one or two parts. When several test files fit, e.g.
+	///     <c>AlbumTests.cs</c> and <c>AlbumTests.Tracks.cs</c> for <c>AlbumTests.Tracks.Count</c>, the one for which a
+	///     test claimed the snapshot wins, so that a used snapshot is never listed as another, unused one; otherwise the
+	///     longest one wins. Without such a test file, which was then deleted or renamed, the last part is taken as the
+	///     method.<br />
+	///     The id is only used when it is escaped into the same file name again, so that a file that was not written by
+	///     the disk store, e.g. one with a name that is not escaped, is never listed.
+	/// </remarks>
+	private static bool TryGetId(string directory, string baseName, string[] files,
+		[NotNullWhen(true)] out SnapshotId? id)
+	{
+		List<string> testFiles = files
+			.Where(file => GetSnapshotBaseName(Path.GetFileName(file)) is null)
+			.Where(file => baseName.StartsWith(Path.GetFileNameWithoutExtension(file) + ".", PathComparison))
+			.OrderByDescending(file => Path.GetFileNameWithoutExtension(file).Length)
+			.ToList();
+		int lastDot = baseName.LastIndexOf('.');
+		if (testFiles.Count == 0 && lastDot > 0)
+		{
+			testFiles.Add(Path.Combine(directory, Path.ChangeExtension(baseName, ".cs")));
+		}
+
+		SnapshotId[] candidates = testFiles
+			.Select(testFile => TryGetIdOfTestFile(baseName, testFile))
+			.OfType<SnapshotId>()
+			.ToArray();
+		id = candidates.FirstOrDefault(ClaimedSnapshots.IsClaimed) ?? candidates.FirstOrDefault();
+		return id is not null;
+	}
+
+	private static SnapshotId? TryGetIdOfTestFile(string baseName, string testFile)
+	{
+		string className = baseName.Substring(0, Path.GetFileNameWithoutExtension(testFile).Length);
+		string[] parts = baseName.Substring(className.Length + 1).Split('.');
+		if (parts.Length > 2 || !TryUnescape(parts[0], out string? memberName) || memberName.Length == 0)
+		{
+			return null;
+		}
+
+		string? name = null;
+		if (parts.Length == 2 && (!TryUnescape(parts[1], out name) || name.Length == 0))
+		{
+			return null;
+		}
+
+		string escaped = name is null
+			? $"{className}.{EscapeFileNamePart(memberName)}"
+			: $"{className}.{EscapeFileNamePart(memberName)}.{EscapeFileNamePart(name)}";
+		return string.Equals(escaped, baseName, StringComparison.Ordinal)
+			? new SnapshotId(SourceRoots.GetSourceFileOfPath(testFile), memberName, name)
+			: null;
+	}
+
+	private static string GetSnapshotPath(SnapshotId id) => GetBasePath(id) + SnapshotSuffix;
+
+	private static string GetPendingPath(SnapshotId id) => GetBasePath(id) + PendingSuffix;
 
 	private static string GetBasePath(SnapshotId id)
 	{
@@ -131,6 +290,35 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		}
 
 		return escaped?.ToString() ?? part;
+	}
+
+	/// <summary>
+	///     Reverses <see cref="EscapeFileNamePart(string)" />, or returns <see langword="false" /> for a <c>%</c> that is
+	///     not followed by two hexadecimal digits.
+	/// </summary>
+	private static bool TryUnescape(string part, [NotNullWhen(true)] out string? unescaped)
+	{
+		StringBuilder builder = new(part.Length);
+		for (int i = 0; i < part.Length; i++)
+		{
+			if (part[i] != '%')
+			{
+				builder.Append(part[i]);
+				continue;
+			}
+
+			if (i + 2 >= part.Length || !Uri.IsHexDigit(part[i + 1]) || !Uri.IsHexDigit(part[i + 2]))
+			{
+				unescaped = null;
+				return false;
+			}
+
+			builder.Append((char)((Uri.FromHex(part[i + 1]) << 4) + Uri.FromHex(part[i + 2])));
+			i += 2;
+		}
+
+		unescaped = builder.ToString();
+		return true;
 	}
 
 	private static string RemoveFinalLineBreak(string snapshot)
