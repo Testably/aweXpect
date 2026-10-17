@@ -128,6 +128,82 @@ public sealed class DiskStoreTests
 	}
 
 	[Fact]
+	public async Task WhenSnapshotsWithAnotherExtensionAreUsed_ShouldReadTheirExtensionsBack()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile("AlbumTests.Describes.snapshot.json", "{}");
+		project.CreateFile("AlbumTests.Describes.snapshot.pending.json", "[]");
+		project.CreateFile($"AlbumTests.Describes.Abbey Road@{TemporaryProject.TargetFramework}.snapshot.html", "<h1/>");
+		await That("{}").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes").WithExtension("json");
+		await That("<h1/>").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes")
+			.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow()
+			.Because("the pending file is read back as the pending file of the snapshot, not as a snapshot with the extension 'pending.json'");
+	}
+
+	[Fact]
+	public async Task WhenASnapshotWithAnotherExtensionIsNotUsed_ShouldReportAndDeleteItAndItsPendingFile()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile("AlbumTests.Describes.snapshot.json", "{}");
+		project.CreateFile("AlbumTests.Describes.snapshot.pending.json", "[]");
+		project.CreateFile("AlbumTests.Describes.snapshot.txt", "Abbey Road");
+		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes");
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"""
+			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
+			                {project.GetFullPath("AlbumTests.Describes.snapshot.json")} (deleted)
+			              """)
+			.Because("the test uses the snapshot with the extension 'txt'");
+		await That(project.Exists("AlbumTests.Describes.snapshot.json")).IsFalse();
+		await That(project.Exists("AlbumTests.Describes.snapshot.pending.json")).IsFalse();
+		await That(project.Exists("AlbumTests.Describes.snapshot.txt")).IsTrue();
+	}
+
+	[Fact]
+	public async Task WhenOnlyAPendingFileWithAnotherExtensionIsLeft_ShouldReportAndDeleteIt()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile("AlbumTests.Describes.snapshot.pending.xml", "<album />");
+		project.CreateFile("AlbumTests.Describes.snapshot.txt", "Abbey Road");
+		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes");
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage($"*1 snapshot was not used by any test:*  {project.GetFullPath("AlbumTests.Describes.snapshot.pending.xml")} (deleted)")
+			.AsWildcard();
+		await That(project.Exists("AlbumTests.Describes.snapshot.pending.xml")).IsFalse();
+		await That(project.Exists("AlbumTests.Describes.snapshot.txt")).IsTrue();
+	}
+
+	[Fact]
+	public async Task WhenTheExtensionIsSnapshot_ShouldReadItBack()
+	{
+		using TemporaryProject project = new();
+		project.CreateFile("AlbumTests.cs");
+		project.CreateFile("AlbumTests.Describes.snapshot.snapshot", "Abbey Road");
+		project.CreateFile("AlbumTests.Describes.snapshot.pending.snapshot", "Let It Be");
+		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes")
+			.WithExtension("snapshot");
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
 	public async Task WhenTheClassNameContainsDots_ShouldReadTheMethodBack()
 	{
 		using TemporaryProject project = new();
@@ -232,6 +308,12 @@ public sealed class DiskStoreTests
 	[InlineData("Describes.snapshot.txt")]
 	[InlineData("AlbumTests.Describes@.snapshot.txt")]
 	[InlineData("AlbumTests.Describes@@x64.snapshot.txt")]
+	[InlineData("AlbumTests.Describes.snapshot")]
+	[InlineData("AlbumTests.Describes.snapshot.pending")]
+	[InlineData("AlbumTests.Describes.snapshot.pending.pending")]
+	[InlineData("AlbumTests.Describes.snapshot.j%on")]
+	[InlineData("AlbumTests.Describes.snapshot.js on")]
+	[InlineData("AlbumTests.Describes.json")]
 	public async Task WhenAFileWasNotWrittenByTheDiskStore_ShouldNeverListIt(string fileName)
 	{
 		using TemporaryProject project = new();

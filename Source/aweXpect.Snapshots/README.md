@@ -29,6 +29,9 @@ await Expect.That(album).MatchesSnapshot()
     .For.Members().WithName("Id").Mask()
     .For.Members().DeclaredIn<Album>().WithName("Released").OfType<DateTime>().Convert(released => released.Year);
 
+// store a JSON string as AlbumTests.Describes.snapshot.json, so that editors and diff tools highlight it
+await Expect.That(json).MatchesSnapshot().WithExtension("json");
+
 // keep a snapshot per target framework and operating system (AlbumTests.Describes@net8.0@windows.snapshot.txt)
 await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
 ```

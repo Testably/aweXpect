@@ -23,20 +23,22 @@ namespace aweXpect.Snapshots;
 ///     <see cref="SourceRoots" />.<br />
 ///     The method name and the name of the snapshot are escaped in the file name, see
 ///     <see cref="EscapeFileNamePart(string)" />, and a <see cref="SnapshotId.Variant" /> is appended after an <c>@</c>,
-///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>.
+///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>. The <see cref="SnapshotId.Extension" />
+///     replaces <c>txt</c>, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.json</c>.
 /// </remarks>
 internal sealed class DiskSnapshotStore : SnapshotStore
 {
 	public static readonly DiskSnapshotStore Instance = new();
-	private const string PendingSuffix = ".snapshot.pending.txt";
-	private const string SnapshotSuffix = ".snapshot.txt";
+	private const string PendingSuffix = ".snapshot.pending";
+	private const string SnapshotSuffix = ".snapshot";
 	private static readonly Encoding Utf8WithoutBom = new UTF8Encoding(false);
 
 	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
 		? StringComparison.OrdinalIgnoreCase
 		: StringComparison.Ordinal;
 
-	private ConcurrentDictionary<SnapshotId, string> _listed = new(ClaimedSnapshots.Comparer);
+	private ConcurrentDictionary<SnapshotId, (string BasePath, string Extension)> _listed =
+		new(ClaimedSnapshots.Comparer);
 
 	private DiskSnapshotStore()
 	{
@@ -105,14 +107,14 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	/// </remarks>
 	public override string Describe(SnapshotId id)
 	{
-		if (!_listed.TryGetValue(id, out string? basePath))
+		if (!_listed.TryGetValue(id, out (string BasePath, string Extension) listed))
 		{
 			return GetSnapshotPath(id);
 		}
 
-		return !File.Exists(basePath + SnapshotSuffix) && File.Exists(basePath + PendingSuffix)
-			? basePath + PendingSuffix
-			: basePath + SnapshotSuffix;
+		string snapshotPath = GetSnapshotPath(listed.BasePath, listed.Extension);
+		string pendingPath = GetPendingPath(listed.BasePath, listed.Extension);
+		return !File.Exists(snapshotPath) && File.Exists(pendingPath) ? pendingPath : snapshotPath;
 	}
 
 	public override string DescribeMismatch(SnapshotId id) => GetPendingPath(id);
@@ -127,7 +129,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	/// </remarks>
 	public override ValueTask<IReadOnlyList<SnapshotId>?> ListAsync(CancellationToken cancellationToken)
 	{
-		ConcurrentDictionary<SnapshotId, string> listed = new(ClaimedSnapshots.Comparer);
+		ConcurrentDictionary<SnapshotId, (string BasePath, string Extension)> listed = new(ClaimedSnapshots.Comparer);
 		foreach (string projectDirectory in SourceRoots.GetProjectDirectories().Where(Directory.Exists))
 		{
 			CollectSnapshots(projectDirectory, listed, cancellationToken);
@@ -142,8 +144,11 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	/// </remarks>
 	public override ValueTask DeleteAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
-		string basePath = _listed.TryGetValue(id, out string? listedBasePath) ? listedBasePath : GetBasePath(id);
-		foreach (string path in new[] { basePath + SnapshotSuffix, basePath + PendingSuffix, }.Where(File.Exists))
+		(string basePath, string extension) = _listed.TryGetValue(id, out (string, string) listed)
+			? listed
+			: (GetBasePath(id), id.Extension);
+		string[] paths = [GetSnapshotPath(basePath, extension), GetPendingPath(basePath, extension),];
+		foreach (string path in paths.Where(File.Exists))
 		{
 			File.Delete(path);
 		}
@@ -151,17 +156,19 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		return default;
 	}
 
-	private static void CollectSnapshots(string directory, ConcurrentDictionary<SnapshotId, string> listed,
+	private static void CollectSnapshots(string directory,
+		ConcurrentDictionary<SnapshotId, (string BasePath, string Extension)> listed,
 		CancellationToken cancellationToken)
 	{
 		cancellationToken.ThrowIfCancellationRequested();
 		string[] files = Directory.GetFiles(directory);
 		foreach (string file in files)
 		{
-			string? baseName = GetSnapshotBaseName(Path.GetFileName(file));
-			if (baseName is not null && TryGetId(directory, baseName, files, out SnapshotId? id))
+			(string BaseName, string Extension)? snapshotFile = ParseFileName(Path.GetFileName(file));
+			if (snapshotFile is { } parsed &&
+			    TryGetId(directory, parsed.BaseName, parsed.Extension, files, out SnapshotId? id))
 			{
-				listed.TryAdd(id, Path.Combine(directory, baseName));
+				listed.TryAdd(id, (Path.Combine(directory, parsed.BaseName), parsed.Extension));
 			}
 		}
 
@@ -180,17 +187,34 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		}
 	}
 
-	private static string? GetSnapshotBaseName(string fileName)
+	/// <summary>
+	///     Splits the name of a snapshot or pending file into the base name and the extension, or returns
+	///     <see langword="null" /> for any other file.
+	/// </summary>
+	/// <remarks>
+	///     The extension is the part after the last <c>.</c>, as it cannot contain one, so
+	///     <c>&lt;Base&gt;.snapshot.pending.json</c> is always the pending file of <c>&lt;Base&gt;.snapshot.json</c>, never a
+	///     snapshot with the extension <c>pending.json</c>. An extension that <c>.WithExtension(…)</c> does not allow,
+	///     e.g. <c>pending</c>, is no snapshot file.
+	/// </remarks>
+	private static (string BaseName, string Extension)? ParseFileName(string fileName)
 	{
-		if (fileName.EndsWith(PendingSuffix, StringComparison.OrdinalIgnoreCase))
+		int extensionStart = fileName.LastIndexOf('.') + 1;
+		string extension = fileName.Substring(extensionStart);
+		if (extensionStart == 0 || !SnapshotExtension.IsValid(extension))
 		{
-			return fileName.Substring(0, fileName.Length - PendingSuffix.Length);
+			return null;
 		}
 
-		return fileName.EndsWith(SnapshotSuffix, StringComparison.OrdinalIgnoreCase)
-			? fileName.Substring(0, fileName.Length - SnapshotSuffix.Length)
-			: null;
+		string withoutExtension = fileName.Substring(0, extensionStart - 1);
+		string? baseName = RemoveSuffix(withoutExtension, PendingSuffix) ?? RemoveSuffix(withoutExtension, SnapshotSuffix);
+		return baseName is null ? null : (baseName, extension);
 	}
+
+	private static string? RemoveSuffix(string fileName, string suffix)
+		=> fileName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)
+			? fileName.Substring(0, fileName.Length - suffix.Length)
+			: null;
 
 	/// <summary>
 	///     Reads the <paramref name="baseName" /> of a snapshot file back into the id that it was written for.
@@ -206,11 +230,11 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	///     The id is only used when it is escaped into the same file name again, so that a file that was not written by
 	///     the disk store, e.g. one with a name that is not escaped, is never listed.
 	/// </remarks>
-	private static bool TryGetId(string directory, string baseName, string[] files,
+	private static bool TryGetId(string directory, string baseName, string extension, string[] files,
 		[NotNullWhen(true)] out SnapshotId? id)
 	{
 		List<string> testFiles = files
-			.Where(file => GetSnapshotBaseName(Path.GetFileName(file)) is null)
+			.Where(file => ParseFileName(Path.GetFileName(file)) is null)
 			.Where(file => baseName.StartsWith(Path.GetFileNameWithoutExtension(file) + ".", PathComparison))
 			.OrderByDescending(file => Path.GetFileNameWithoutExtension(file).Length)
 			.ToList();
@@ -223,14 +247,14 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 		}
 
 		SnapshotId[] candidates = testFiles
-			.Select(testFile => TryGetIdOfTestFile(baseName, testFile))
+			.Select(testFile => TryGetIdOfTestFile(baseName, extension, testFile))
 			.OfType<SnapshotId>()
 			.ToArray();
 		id = candidates.FirstOrDefault(ClaimedSnapshots.IsClaimed) ?? candidates.FirstOrDefault();
 		return id is not null;
 	}
 
-	private static SnapshotId? TryGetIdOfTestFile(string baseName, string testFile)
+	private static SnapshotId? TryGetIdOfTestFile(string baseName, string extension, string testFile)
 	{
 		string className = baseName.Substring(0, Path.GetFileNameWithoutExtension(testFile).Length);
 		string[] variantParts = baseName.Substring(className.Length + 1).Split(SnapshotEnvironment.Separator);
@@ -258,13 +282,20 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 			? new SnapshotId(SourceRoots.GetSourceFileOfPath(testFile), memberName, name)
 			{
 				Variant = variant,
+				Extension = extension,
 			}
 			: null;
 	}
 
-	private static string GetSnapshotPath(SnapshotId id) => GetBasePath(id) + SnapshotSuffix;
+	private static string GetSnapshotPath(SnapshotId id) => GetSnapshotPath(GetBasePath(id), id.Extension);
 
-	private static string GetPendingPath(SnapshotId id) => GetBasePath(id) + PendingSuffix;
+	private static string GetSnapshotPath(string basePath, string extension)
+		=> $"{basePath}{SnapshotSuffix}.{extension}";
+
+	private static string GetPendingPath(SnapshotId id) => GetPendingPath(GetBasePath(id), id.Extension);
+
+	private static string GetPendingPath(string basePath, string extension)
+		=> $"{basePath}{PendingSuffix}.{extension}";
 
 	private static string GetBasePath(SnapshotId id)
 	{

@@ -55,6 +55,32 @@ Pending snapshot:
 
 A snapshot with several lines lists every line that differs.
 
+### File extension
+
+A string that is JSON, HTML, XML or code can be stored with a matching file extension, so that editors and diff tools
+highlight it:
+
+```csharp
+await Expect.That(json).MatchesSnapshot().WithExtension("json");
+```
+
+The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.snapshot.json` and
+`AlbumTests.Describes.snapshot.pending.json`, also together with a name or an environment, e.g.
+`AlbumTests.Describes.Abbey Road@net8.0.snapshot.html` for
+`.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html")`. It is kept as given and passed without the
+leading dot: it cannot be empty, contain a `.`, whitespace, control characters or any of `< > : " / \ | ? * % @`, or be
+`pending`; otherwise `WithExtension` throws an `ArgumentException`. Objects are always stored as `.txt`, so
+`WithExtension` is only offered for strings.
+
+A snapshot that was already used with another extension in the same test run fails, as the two files would otherwise
+drift apart:
+
+```text title="Failure message"
+Expected that json
+matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.json",
+but the snapshot was already used with the extension "txt" in this test run, so use one extension or name each one with .Named(…) or .NamedAfter(…)
+```
+
 ## Objects
 
 Any other value is written by the aweXpect formatter, completely and indented, so that a change in a single member

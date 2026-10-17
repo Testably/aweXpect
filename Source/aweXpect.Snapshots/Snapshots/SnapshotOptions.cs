@@ -16,6 +16,7 @@ internal sealed class SnapshotOptions
 	private readonly string _memberName;
 	private readonly string _sourceFile;
 	private readonly string?[] _variantParts = new string?[3];
+	private string _extension = SnapshotId.DefaultExtension;
 	private string? _name;
 	private string? _variant;
 
@@ -34,7 +35,23 @@ internal sealed class SnapshotOptions
 	public SnapshotId Id => new(_sourceFile, _memberName, _name)
 	{
 		Variant = _variant,
+		Extension = _extension,
 	};
+
+	/// <remarks>
+	///     A new extension moves the claim of the snapshot like a new name, so that a file with the previous extension is
+	///     an orphan.
+	/// </remarks>
+	public string Extension
+	{
+		get => _extension;
+		set
+		{
+			ClaimedSnapshots.Release(Id);
+			_extension = value;
+			ClaimedSnapshots.Claim(Id);
+		}
+	}
 
 	/// <summary>
 	///     The rules of the expectation, in the order in which they were added.

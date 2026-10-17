@@ -62,6 +62,8 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	/// </remarks>
 	public SnapshotUniqueFor<TType, TThat> UniqueFor => new(this, _options);
 
+	internal SnapshotOptions Options => _options;
+
 	/// <summary>
 	///     Names the snapshot, so that several snapshots of the same test method, e.g. of the cases of a parameterized
 	///     test, are kept apart.

@@ -41,7 +41,8 @@ public static class ThatSnapshot
 	///     replaces the snapshot instead, and the expectation still fails. Both only happen when the whole expectation
 	///     fails, not when e.g. another branch of an <c>Or</c> is met, and never for a negated snapshot.<br />
 	///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed
-	///     again when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
+	///     again when the snapshot is read, so that an editor which adds a final line break does not change it. Another
+	///     file extension, e.g. for JSON, is set with <c>.WithExtension(…)</c>.<br />
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
@@ -102,20 +103,43 @@ public static class ThatSnapshot
 					FormatValue = formatValue,
 				}));
 
+	/// <summary>
+	///     Stores the snapshot of a <see cref="string" /> with the file <paramref name="extension" /> instead of
+	///     <c>txt</c>, e.g. <c>json</c> in <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.json</c>, so that editors and diff
+	///     tools highlight it.
+	/// </summary>
+	/// <param name="result">The snapshot expectation of a string.</param>
+	/// <param name="extension">The file extension without a leading dot, e.g. <c>json</c>, <c>html</c> or <c>xml</c>.</param>
+	/// <remarks>
+	///     The pending file keeps the extension as well, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.json</c>.
+	///     The extension is kept as given, and a store receives it as <see cref="SnapshotId.Extension" />.<br />
+	///     It cannot be empty, contain a <c>.</c>, whitespace, control characters or any of
+	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />
+	///     A snapshot that was already used with another extension in the same test run fails.
+	/// </remarks>
+	public static SnapshotResult<string?, IThat<string?>> WithExtension(
+		this SnapshotResult<string?, IThat<string?>> result, string extension)
+	{
+		SnapshotExtension.ThrowIfInvalid(extension);
+		result.Options.Extension = extension;
+		return result;
+	}
+
 	private static readonly FormattingOptions SnapshotFormatting = FormattingOptions.Indented("") with
 	{
 		IsSnapshot = true,
 	};
 
 	/// <summary>
-	///     The hash code of the value that each snapshot was used for in this process.
+	///     The extension and the hash code of the value that each snapshot was used for in this process, by its id with the
+	///     default extension.
 	/// </summary>
 	/// <remarks>
-	///     Only another value counts as a conflict, so that a test which is retried or repeated, or run again by a test
-	///     runner that keeps its process, still compares with its snapshot. The hash code keeps large values out of
-	///     memory; a collision only misses a conflict.
+	///     Only another value or another extension counts as a conflict, so that a test which is retried or repeated, or
+	///     run again by a test runner that keeps its process, still compares with its snapshot. The hash code keeps large
+	///     values out of memory; a collision only misses a conflict.
 	/// </remarks>
-	private static readonly ConcurrentDictionary<SnapshotId, int> UsedSnapshots = new();
+	private static readonly ConcurrentDictionary<SnapshotId, (string Extension, int HashCode)> UsedSnapshots = new();
 
 	/// <param name="subject">The subject.</param>
 	/// <param name="callerFilePath">The path of the test file.</param>
@@ -164,6 +188,7 @@ public static class ThatSnapshot
 		private RegexMatchTimeoutException? _ruleTimeout;
 		private string? _snapshot;
 		private string? _timedOutRule;
+		private string? _usedExtension;
 		private string? _value;
 		private string? _writeError;
 
@@ -199,6 +224,7 @@ public static class ThatSnapshot
 			_isUsedForAnotherValue = false;
 			_ruleTimeout = null;
 			_timedOutRule = null;
+			_usedExtension = null;
 			_writeError = null;
 			_readError = null;
 			_snapshot = null;
@@ -242,7 +268,16 @@ public static class ThatSnapshot
 			_value = value;
 			SnapshotId id = Id;
 			int valueHashCode = StringComparer.Ordinal.GetHashCode(value);
-			if (UsedSnapshots.GetOrAdd(id, valueHashCode) != valueHashCode)
+			(string extension, int hashCode) = UsedSnapshots.GetOrAdd(
+				id with { Extension = SnapshotId.DefaultExtension, }, (id.Extension, valueHashCode));
+			if (extension != id.Extension)
+			{
+				_usedExtension = extension;
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			if (hashCode != valueHashCode)
 			{
 				_isUsedForAnotherValue = true;
 				Outcome = Outcome.FailureBothWays;
@@ -334,7 +369,8 @@ public static class ThatSnapshot
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (_value is null || _isMatch || _isUsedForAnotherValue || _readError is not null || IsNegated)
+			if (_value is null || _isMatch || _isUsedForAnotherValue || _usedExtension is not null ||
+			    _readError is not null || IsNegated)
 			{
 				return;
 			}
@@ -381,6 +417,12 @@ public static class ThatSnapshot
 				stringBuilder.Append(_timedOutRule).Append(Formatter.Format(_ruleTimeout.Pattern))
 					.Append(" did not complete within ").Append(Formatter.Format(_ruleTimeout.MatchTimeout))
 					.Append(". Simplify the pattern to avoid catastrophic backtracking");
+			}
+			else if (_usedExtension is not null)
+			{
+				stringBuilder.Append("the snapshot was already used with the extension ")
+					.Append(Formatter.Format(_usedExtension))
+					.Append(" in this test run, so use one extension or name each one with .Named(…) or .NamedAfter(…)");
 			}
 			else if (_isUsedForAnotherValue)
 			{

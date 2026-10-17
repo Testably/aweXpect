@@ -48,6 +48,7 @@ namespace aweXpect.Snapshots
     public sealed class SnapshotId : System.IEquatable<aweXpect.Snapshots.SnapshotId>
     {
         public SnapshotId(string SourceFile, string MemberName, string? Name = null) { }
+        public string Extension { get; init; }
         public string MemberName { get; init; }
         public string? Name { get; init; }
         public string SourceFile { get; init; }
@@ -161,5 +162,6 @@ namespace aweXpect
         public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SnapshotResult<T, aweXpect.Core.IThat<T>> MatchesSnapshot<[aweXpect.Core.Metadata.RequiresMemberMetadata]  T>(this aweXpect.Core.IThat<T> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> WithExtension(this aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> result, string extension) { }
     }
 }

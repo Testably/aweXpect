@@ -28,6 +28,18 @@ public sealed record SnapshotId(string SourceFile, string MemberName, string? Na
 	public string? Variant { get; init; }
 
 	/// <summary>
+	///     The file extension of the snapshot without a leading dot, e.g. <c>json</c>, which is <c>txt</c> unless set
+	///     by <c>.WithExtension(…)</c>.
+	/// </summary>
+	/// <remarks>
+	///     A store can use it e.g. as the content type. It does not tell two snapshots of the same test apart: a test run
+	///     that uses one snapshot with two extensions fails.
+	/// </remarks>
+	public string Extension { get; init; } = DefaultExtension;
+
+	internal const string DefaultExtension = "txt";
+
+	/// <summary>
 	///     Returns <c>&lt;Class&gt;.&lt;Method&gt;</c>, or <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;</c> with a
 	///     <see cref="Name" />, where <c>&lt;Class&gt;</c> is the name of the test file without its extension, followed
 	///     by <c>@&lt;Variant&gt;</c> with a <see cref="Variant" />.

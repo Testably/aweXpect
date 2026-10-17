@@ -377,6 +377,117 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension()
+			{
+				string subject = """
+				                 {
+				                   "title": "Abbey Road",
+				                   "year": 1969
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot().WithExtension("json");
+
+				await That(Act).DoesNotThrow()
+					.Because(
+						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension.snapshot.json' is committed next to this test file");
+			}
+
+			[Fact]
+			public async Task WithExtension_ShouldUseItInTheFileNames()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.json");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.json");
+				string subject = "{}";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.WithExtension("json");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but the snapshot did not exist
+
+					              Actual:
+					              {"{}"}
+
+					              Pending snapshot:
+					              {pendingPath}
+					              """);
+				await That(File.Exists(directory.PendingPath)).IsFalse()
+					.Because("the pending file has the extension of the snapshot");
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithExtension_WhenNamedAndUniqueForTheEnvironment_ShouldAppendTheExtensionAfterSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				string baseName = $"MyTests.MyTest.Abbey Road@{CurrentEnvironment.OperatingSystem}";
+				string snapshotPath = Path.Combine(directory.Path, $"{baseName}.snapshot.html");
+				string pendingPath = Path.Combine(directory.Path, $"{baseName}.snapshot.pending.html");
+				string subject = "<h1>Abbey Road</h1>";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.Named("Abbey Road")
+						.UniqueFor.OperatingSystem()
+						.WithExtension("html");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"*\"{snapshotPath}\"*Pending snapshot:*{pendingPath}").AsWildcard();
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithExtension_WhenAccepting_ShouldWriteTheSnapshotAndDeleteThePendingSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.xml");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.xml");
+				File.WriteAllText(pendingPath, "<outdated />");
+				directory.WriteSnapshot("<album />");
+				string subject = "<album />";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.WithExtension("xml").AcceptingChanges();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"*Accepted snapshot:*{snapshotPath}").AsWildcard()
+					.Because("the snapshot with the extension 'txt' is another file");
+				await That(File.ReadAllText(snapshotPath)).IsEqualTo(subject + Environment.NewLine);
+				await That(File.Exists(pendingPath)).IsFalse();
+				await That(File.Exists(directory.SnapshotPath)).IsTrue()
+					.Because("only the snapshot with the extension is written");
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithExtension_WhenSnapshotMatches_ShouldDeleteThePendingSnapshotWithTheExtension()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.json");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.json");
+				File.WriteAllText(snapshotPath, "[]");
+				File.WriteAllText(pendingPath, "[1]");
+				directory.WritePending("[2]");
+
+				await That("[]").MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+					.WithExtension("json");
+
+				await That(File.Exists(pendingPath)).IsFalse();
+				await That(File.Exists(directory.PendingPath)).IsTrue()
+					.Because("the pending snapshot with the extension 'txt' belongs to another snapshot");
+			}
+
+			[Fact]
 			public async Task WhenPendingSnapshotCannotBeDeleted_AndSnapshotMatches_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();

@@ -38,6 +38,8 @@ internal static class Checks
 			() => ShouldFail(IsMissingForTheEnvironment,
 				$"Checks.IsMissingForTheEnvironment@{ExpectedOperatingSystem()}@{ExpectedArchitecture()}.snapshot.txt",
 				"the snapshot did not exist")),
+		new("a string with the extension json matching its snapshot passes",
+			() => ShouldPass(JsonMatchesItsSnapshot)),
 		new("paths of the environment in a string of an object are masked",
 			() => ShouldPass(PathsAreMasked)),
 		new("every snapshot is used by one of the checks above",
@@ -163,6 +165,13 @@ internal static class Checks
 
 	private static async Task MatchesItsSnapshot()
 		=> await That("snapshot content").MatchesSnapshot();
+
+	/// <remarks>
+	///     The committed <c>.snapshot.json</c> is also listed back by the orphan check below.
+	/// </remarks>
+	private static async Task JsonMatchesItsSnapshot()
+		=> await That("{ \"title\": \"Abbey Road\", \"year\": 1969 }").MatchesSnapshot().WithExtension("json")
+			.AcceptingChanges(false);
 
 	private static async Task NamedAfterMatchesItsSnapshot(string title, int year)
 		=> await That($"{title} ({year})").MatchesSnapshot().NamedAfter(title, year).AcceptingChanges(false);

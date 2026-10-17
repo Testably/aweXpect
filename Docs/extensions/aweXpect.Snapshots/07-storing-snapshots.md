@@ -62,7 +62,9 @@ A `SnapshotId` consists of the path of the test file relative to the repository 
 `net8.0@windows`, see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)). It is a record,
 so it can be used as a key, and its `ToString()` returns `AlbumTests.Describes`, `AlbumTests.Describes.Abbey Road` or
 `AlbumTests.Describes.Abbey Road@net8.0@windows`. A listed snapshot whose `Variant` is for another environment is
-skipped by the check.
+skipped by the check. `Extension` is the file extension from
+[`.WithExtension(…)`](01-matching-snapshots.md#file-extension), `txt` by default, e.g. to choose a content type; it is
+not part of `ToString()`.
 
 Set the store for all tests, e.g. in an assembly-level setup, or only for the current async flow:
 
