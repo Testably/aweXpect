@@ -222,6 +222,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -261,7 +267,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -304,7 +311,8 @@ window.BENCHMARK_DATA = {
           9026.947104820838,
           6861.284078470866,
           12421.406861525316,
-          12496.73488323505
+          12496.73488323505,
+          13080.987020639273
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -352,7 +360,8 @@ window.BENCHMARK_DATA = {
           3088,
           3088,
           3096,
-          3096
+          3096,
+          3880
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -403,7 +412,8 @@ window.BENCHMARK_DATA = {
           244252.46236979167,
           205385.36598557694,
           378961.86875,
-          366736.21819196426
+          366736.21819196426,
+          383840.941796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -450,6 +460,7 @@ window.BENCHMARK_DATA = {
           590292,
           590289,
           590226,
+          590292,
           590292,
           590292
         ],
@@ -502,7 +513,8 @@ window.BENCHMARK_DATA = {
           14183.934397379557,
           12472.836968994141,
           20068.747473580497,
-          19177.849635532923
+          19177.849635532923,
+          19932.613854980467
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -514,6 +526,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -744,6 +757,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -776,7 +795,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -812,7 +832,8 @@ window.BENCHMARK_DATA = {
           208.46897268295288,
           207.12579550743104,
           319.7000914255778,
-          359.03796838124595
+          359.03796838124595,
+          326.2151486714681
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -824,6 +845,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -897,7 +919,8 @@ window.BENCHMARK_DATA = {
           413.80027470221887,
           378.2134840965271,
           519.9569649378459,
-          504.27239751815796
+          504.27239751815796,
+          536.68154519399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -909,6 +932,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -982,7 +1006,8 @@ window.BENCHMARK_DATA = {
           285.29169902801516,
           289.82909094492595,
           407.7315179824829,
-          403.92290452548434
+          403.92290452548434,
+          413.399849096934
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -994,6 +1019,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5837,6 +5863,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -6639,7 +6671,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -7445,7 +7478,8 @@ window.BENCHMARK_DATA = {
           120.1696959177653,
           104.08127458890279,
           174.27535274823506,
-          153.22138957977296
+          153.22138957977296,
+          162.44515345891315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8252,6 +8286,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9070,7 +9105,8 @@ window.BENCHMARK_DATA = {
           210.03958905537922,
           196.98380131721495,
           260.67188380559287,
-          268.07214767592296
+          268.07214767592296,
+          277.98049046198526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9263,6 +9299,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -9976,7 +10013,8 @@ window.BENCHMARK_DATA = {
           177.41626545588176,
           154.8402912457784,
           252.18514610926312,
-          248.56553770701092
+          248.56553770701092,
+          259.5931412378947
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9988,6 +10026,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10304,6 +10343,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -10343,7 +10388,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -10386,7 +10432,8 @@ window.BENCHMARK_DATA = {
           209.01274215258084,
           182.34853585561117,
           298.23871854373385,
-          281.43434371267045
+          281.43434371267045,
+          285.66499205430347
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10405,6 +10452,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10485,7 +10533,8 @@ window.BENCHMARK_DATA = {
           421.2854511578878,
           393.68072278683,
           589.0532191594442,
-          559.042838160197
+          559.042838160197,
+          585.0306126730783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10497,6 +10546,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -10584,7 +10634,8 @@ window.BENCHMARK_DATA = {
           251.81303720474244,
           227.4628293434779,
           360.1869178158896,
-          366.7763278325399
+          366.7763278325399,
+          362.4129788534982
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10596,6 +10647,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15446,6 +15498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -16248,7 +16306,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -17054,7 +17113,8 @@ window.BENCHMARK_DATA = {
           490.68322728474936,
           397.2413293031546,
           659.90538753782,
-          683.9723534266154
+          683.9723534266154,
+          702.9955768585205
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17864,6 +17924,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872
         ],
@@ -18679,7 +18740,8 @@ window.BENCHMARK_DATA = {
           1106.0817887624105,
           956.4516964594524,
           1503.5793655940465,
-          1455.674855295817
+          1455.674855295817,
+          1477.6917106628418
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19490,6 +19552,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -19585,7 +19648,8 @@ window.BENCHMARK_DATA = {
           488.85442905426027,
           420.7603173596518,
           779.9199893315633,
-          686.5302294322422
+          686.5302294322422,
+          705.9186899185181
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19597,6 +19661,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -24491,6 +24556,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -25293,7 +25364,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -26099,7 +26171,8 @@ window.BENCHMARK_DATA = {
           508.0350049336751,
           393.09915994008384,
           653.0178367614747,
-          694.6997187296549
+          694.6997187296549,
+          712.9865600722177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26909,6 +26982,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920
         ],
@@ -27724,7 +27798,8 @@ window.BENCHMARK_DATA = {
           15998.21986694336,
           11981.575541178385,
           28045.679953438896,
-          29119.16752726237
+          29119.16752726237,
+          28597.698056902205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28535,6 +28610,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -28630,7 +28706,8 @@ window.BENCHMARK_DATA = {
           586.7889182908194,
           519.8414870580037,
           952.3073452631633,
-          809.1234210087703
+          809.1234210087703,
+          827.8117097218832
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28642,6 +28719,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -29306,6 +29384,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -29403,7 +29487,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -29504,7 +29589,8 @@ window.BENCHMARK_DATA = {
           542.0618453979492,
           511.9858414967855,
           765.6373788197835,
-          776.9395786285401
+          776.9395786285401,
+          751.7218626022338
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29610,7 +29696,8 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
-          1848
+          1848,
+          1856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29719,7 +29806,8 @@ window.BENCHMARK_DATA = {
           51145.20411028181,
           31958.795033772785,
           86892.4383219401,
-          84208.5743367513
+          84208.5743367513,
+          84969.9701944987
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29824,6 +29912,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252
         ],
@@ -30409,6 +30498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -30506,7 +30601,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -30607,7 +30703,8 @@ window.BENCHMARK_DATA = {
           147.19169441858926,
           133.23548081715902,
           193.24924760205406,
-          188.47719389597574
+          188.47719389597574,
+          201.78900542259217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30684,6 +30781,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -30822,7 +30920,8 @@ window.BENCHMARK_DATA = {
           14262.032648359027,
           13757.90241800944,
           32224.892517089844,
-          32860.736685616626
+          32860.736685616626,
+          32836.915307617186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30928,6 +31027,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -31023,7 +31123,8 @@ window.BENCHMARK_DATA = {
           182.73601034971384,
           148.93192338943481,
           262.45795218149823,
-          255.68252026240032
+          255.68252026240032,
+          259.3531918525696
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31035,6 +31136,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -31351,6 +31453,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -31390,7 +31498,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -31433,7 +31542,8 @@ window.BENCHMARK_DATA = {
           267.4871409336726,
           246.2678359576634,
           375.8416256268819,
-          360.64861358006794
+          360.64861358006794,
+          386.1386714935303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31481,6 +31591,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744
         ],
         "borderColor": "#63A2AC",
@@ -31532,7 +31643,8 @@ window.BENCHMARK_DATA = {
           325.2118851457323,
           301.7702502250671,
           396.90675279072354,
-          376.1144390741984
+          376.1144390741984,
+          421.93366057078043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31544,6 +31656,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -31631,7 +31744,8 @@ window.BENCHMARK_DATA = {
           318.12597629002164,
           270.1760391553243,
           426.20220750172933,
-          403.9497693061829
+          403.9497693061829,
+          415.692871538798
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31643,6 +31757,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -31915,6 +32030,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -31954,7 +32075,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -31997,7 +32119,8 @@ window.BENCHMARK_DATA = {
           598.9251449902853,
           592.0035296122234,
           852.2483039220174,
-          839.5557680130005
+          839.5557680130005,
+          848.8291051864624
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32024,6 +32147,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -32096,7 +32220,8 @@ window.BENCHMARK_DATA = {
           1523.8900037912222,
           1451.777178700765,
           1990.7309013366698,
-          1959.3745323181151
+          1959.3745323181151,
+          2080.954852549235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32108,6 +32233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -32195,7 +32321,8 @@ window.BENCHMARK_DATA = {
           725.3409105936686,
           621.4610689603365,
           966.7443075815837,
-          950.560247484843
+          950.560247484843,
+          1049.845222745623
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32207,6 +32334,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -32479,6 +32607,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -32518,7 +32652,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -32561,7 +32696,8 @@ window.BENCHMARK_DATA = {
           8526.345937875602,
           7079.729796091716,
           12300.737869262695,
-          12418.78408930852
+          12418.78408930852,
+          12321.265700707068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32609,7 +32745,8 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
-          1720
+          1720,
+          1736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32660,7 +32797,8 @@ window.BENCHMARK_DATA = {
           26568.207509358723,
           22978.51051940918,
           41087.26018582858,
-          41183.82026367188
+          41183.82026367188,
+          41637.939457194014
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32708,6 +32846,7 @@ window.BENCHMARK_DATA = {
           18609,
           18608,
           18394,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -32759,7 +32898,8 @@ window.BENCHMARK_DATA = {
           8237.906922403972,
           6794.341003417969,
           11474.479409437914,
-          11364.65059879848
+          11364.65059879848,
+          11377.018030019906
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32771,6 +32911,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -33043,6 +33184,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:16:21 2026 \u002B0200",
         "message": "feat: suggest the closest key or item when a string was not found (#1847)"
+      },
+      {
+        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
+        "message": "chore: reset the build scope after the Core release (#1861)"
       }
     ],
     "labels": [
@@ -33082,7 +33229,8 @@ window.BENCHMARK_DATA = {
       "5c9b4b13",
       "4e4171de",
       "f0e1ed5e",
-      "f3aa460c"
+      "f3aa460c",
+      "e6bb38c8"
     ],
     "datasets": [
       {
@@ -33125,7 +33273,8 @@ window.BENCHMARK_DATA = {
           7891.028594970703,
           7041.386879475912,
           11663.701488201435,
-          12042.929080669697
+          12042.929080669697,
+          12015.968975947453
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33173,7 +33322,8 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
-          2208
+          2208,
+          2216
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33224,7 +33374,8 @@ window.BENCHMARK_DATA = {
           37925.41348031851,
           32192.377535306492,
           61600.718985421314,
-          60698.27840169271
+          60698.27840169271,
+          60178.56344095866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33272,7 +33423,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33323,7 +33475,8 @@ window.BENCHMARK_DATA = {
           15820.927850341797,
           13507.326941172281,
           22521.69926234654,
-          22486.292557779947
+          22486.292557779947,
+          22622.643391200476
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33335,6 +33488,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
