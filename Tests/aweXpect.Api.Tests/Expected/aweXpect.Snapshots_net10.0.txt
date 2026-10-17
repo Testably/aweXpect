@@ -13,6 +13,8 @@ namespace aweXpect.Results
         public aweXpect.Results.AndOrResult<TType, TThat> AcceptingChanges(bool accept = true) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Masking(System.Text.RegularExpressions.Regex pattern, string replacement) { }
         public aweXpect.Results.SnapshotMaskingResult<TType, TThat> Masking(string value, string replacement) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> MaskingDates() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> MaskingGuids() { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
     }
 }
@@ -25,6 +27,13 @@ namespace aweXpect.Snapshots
         public string? Name { get; init; }
         public string SourceFile { get; init; }
         public override string ToString() { }
+    }
+    public sealed class SnapshotMasking
+    {
+        public static aweXpect.Snapshots.SnapshotMasking Dates() { }
+        public static aweXpect.Snapshots.SnapshotMasking Guids() { }
+        public static aweXpect.Snapshots.SnapshotMasking Regex(System.Text.RegularExpressions.Regex pattern, string replacement) { }
+        public static aweXpect.Snapshots.SnapshotMasking Text(string value, string replacement) { }
     }
     public abstract class SnapshotStore
     {
@@ -42,6 +51,7 @@ namespace aweXpect.Snapshots
         public class SnapshotsCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<bool?> AcceptChanges { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotMasking>> Maskings { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
         }
     }

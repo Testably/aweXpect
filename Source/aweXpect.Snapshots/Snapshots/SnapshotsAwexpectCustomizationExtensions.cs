@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Customization;
 
@@ -34,6 +36,22 @@ public static class SnapshotsAwexpectCustomizationExtensions
 				});
 			AcceptChanges = new CustomizationValue<bool?>(awexpectCustomization,
 				"aweXpect.Snapshots.AcceptChanges", null);
+			Maskings = new CustomizationValue<IReadOnlyList<SnapshotMasking>>(awexpectCustomization,
+				"aweXpect.Snapshots.Maskings", Array.Empty<SnapshotMasking>(),
+				value =>
+				{
+					if (value is null)
+					{
+						throw Tracing.WriteException(
+							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
+					}
+
+					if (value.Any(masking => masking is null))
+					{
+						throw Tracing.WriteException(
+							new ArgumentException("The 'value' cannot contain null.", nameof(value)));
+					}
+				});
 		}
 
 		/// <summary>
@@ -46,6 +64,15 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		///     detected, so that a forgotten variable cannot change the snapshots on a build server.
 		/// </remarks>
 		public ICustomizationValueSetter<bool?> AcceptChanges { get; }
+
+		/// <summary>
+		///     The maskings that are applied to every snapshot, after the maskings of the expectation.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
+		///     <c>Set([.. Get(), extra])</c>.
+		/// </remarks>
+		public ICustomizationValueSetter<IReadOnlyList<SnapshotMasking>> Maskings { get; }
 
 		/// <summary>
 		///     The <see cref="SnapshotStore" /> that keeps the snapshots.

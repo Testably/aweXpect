@@ -8,13 +8,15 @@ namespace aweXpect.Results;
 /// </summary>
 public class SnapshotMaskingResult<TType, TThat> : SnapshotResult<TType, TThat>
 {
-	private readonly Masking _masking;
+	private readonly int _index;
+	private readonly SnapshotOptions _options;
 
 	internal SnapshotMaskingResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options,
-		Masking masking)
+		int index)
 		: base(expectationBuilder, returnValue, options)
 	{
-		_masking = masking;
+		_options = options;
+		_index = index;
 	}
 
 	/// <summary>
@@ -27,7 +29,7 @@ public class SnapshotMaskingResult<TType, TThat> : SnapshotResult<TType, TThat>
 	/// </remarks>
 	public SnapshotResult<TType, TThat> AsRegex()
 	{
-		_masking.AsRegex();
+		_options.Maskings[_index] = _options.Maskings[_index].AsRegex();
 		return this;
 	}
 }

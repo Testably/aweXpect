@@ -50,19 +50,9 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	/// </remarks>
 	public SnapshotMaskingResult<TType, TThat> Masking(string value, string replacement)
 	{
-		if (value is null)
-		{
-			throw Tracing.WriteException(new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
-		}
-
-		if (value.Length == 0)
-		{
-			throw Tracing.WriteException(new ArgumentException("The 'value' cannot be empty.", nameof(value)));
-		}
-
-		Masking masking = new(value, ThrowIfNull(replacement));
-		_options.Maskings.Add(masking);
-		return new SnapshotMaskingResult<TType, TThat>(ExpectationBuilder, _returnValue, _options, masking);
+		_options.Maskings.Add(SnapshotMasking.Text(value, replacement));
+		return new SnapshotMaskingResult<TType, TThat>(ExpectationBuilder, _returnValue, _options,
+			_options.Maskings.Count - 1);
 	}
 
 	/// <summary>
@@ -77,12 +67,35 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	/// </remarks>
 	public SnapshotResult<TType, TThat> Masking(Regex pattern, string replacement)
 	{
-		if (pattern is null)
-		{
-			throw Tracing.WriteException(new ArgumentNullException(nameof(pattern), "The 'pattern' cannot be null."));
-		}
+		_options.Maskings.Add(SnapshotMasking.Regex(pattern, replacement));
+		return this;
+	}
 
-		_options.Maskings.Add(new Masking(pattern, ThrowIfNull(replacement)));
+	/// <summary>
+	///     Replaces each date and date with time in ISO 8601 in the subject with a numbered placeholder, <c>Date_1</c>,
+	///     <c>Date_2</c> and so on, before it is compared with the snapshot, where the same text keeps the same number.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="SnapshotMasking.Dates()" /> for the matched formats. The maskings are applied in the order in
+	///     which they are added, and the numbers are counted after the maskings that come before.
+	/// </remarks>
+	public SnapshotResult<TType, TThat> MaskingDates()
+	{
+		_options.Maskings.Add(SnapshotMasking.Dates());
+		return this;
+	}
+
+	/// <summary>
+	///     Replaces each <see cref="Guid" /> in the subject with a numbered placeholder, <c>Guid_1</c>, <c>Guid_2</c> and
+	///     so on, before it is compared with the snapshot, where the same <see cref="Guid" /> keeps the same number.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="SnapshotMasking.Guids()" /> for the matched formats. The maskings are applied in the order in
+	///     which they are added, and the numbers are counted after the maskings that come before.
+	/// </remarks>
+	public SnapshotResult<TType, TThat> MaskingGuids()
+	{
+		_options.Maskings.Add(SnapshotMasking.Guids());
 		return this;
 	}
 
@@ -108,11 +121,4 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 		_options.Name = name;
 		return this;
 	}
-
-	/// <remarks>
-	///     An empty replacement removes the masked text.
-	/// </remarks>
-	private static string ThrowIfNull(string replacement)
-		=> replacement ?? throw Tracing.WriteException(
-			new ArgumentNullException(nameof(replacement), "The 'replacement' cannot be null."));
 }

@@ -9,17 +9,24 @@ internal sealed class SnapshotOptions
 {
 	public bool? AcceptChanges { get; set; }
 
-	public List<Masking> Maskings { get; } = new();
+	public List<SnapshotMasking> Maskings { get; } = new();
 
 	public string? Name { get; set; }
 
 	/// <summary>
-	///     Applies the <see cref="Maskings" /> in the order in which they were added.
+	///     Applies the <see cref="Maskings" /> in the order in which they were added, then the
+	///     <paramref name="globalMaskings" /> in their order, so that a specific masking of the expectation goes before
+	///     a general one for all snapshots.
 	/// </summary>
-	public string Mask(string value)
+	public string Mask(string value, IReadOnlyList<SnapshotMasking> globalMaskings)
 	{
 		string masked = value;
-		foreach (Masking masking in Maskings)
+		foreach (SnapshotMasking masking in Maskings)
+		{
+			masked = masking.Apply(masked);
+		}
+
+		foreach (SnapshotMasking masking in globalMaskings)
 		{
 			masked = masking.Apply(masked);
 		}

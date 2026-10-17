@@ -319,6 +319,33 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenMaskingGuidsAndDatesGlobally_ShouldMaskTheWrittenObject()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
+					SnapshotMasking.Guids(),
+					SnapshotMasking.Dates(),
+				]);
+				Guid parent = Guid.NewGuid();
+				SnapshotAudit subject = new(Guid.NewGuid(), parent, parent, DateTime.UtcNow);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           SnapshotAudit {
+				                                             Created = Date_1,
+				                                             Id = Guid_1,
+				                                             Owner = Guid_2,
+				                                             Parent = Guid_2
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the global maskings apply to the written object, and the same Guid keeps its number");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsAValueType_ShouldWriteIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -392,6 +419,8 @@ public enum SnapshotStatus
 public sealed record SnapshotLine(string Product, int Quantity, decimal Price);
 
 public sealed record SnapshotShipping(string Address);
+
+public sealed record SnapshotAudit(Guid Id, Guid Parent, Guid Owner, DateTime Created);
 
 public sealed record SnapshotOrder(
 	int Id,

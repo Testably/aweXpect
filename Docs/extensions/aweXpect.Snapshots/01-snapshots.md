@@ -206,6 +206,59 @@ The snapshot, the pending and the accepted snapshot and the failure contain the 
 Two values that only differ in a masked part count as the same value for the check of [named
 snapshots](#naming-a-snapshot).
 
+### Guids and dates
+
+`.MaskingGuids()` and `.MaskingDates()` replace every `Guid` and date with a numbered placeholder. The same value keeps
+the same number, so relations stay visible in the snapshot:
+
+```csharp
+await Expect.That(log).MatchesSnapshot().MaskingGuids().MaskingDates();
+```
+
+```text title="Snapshot"
+order Guid_1 created Date_1 by Guid_2
+order Guid_1 shipped Date_2
+```
+
+- A `Guid` is matched in the format `"D"` (`3f2504e0-4f89-11d3-9a0c-0305e82c3301`) in upper or lower case, also inside
+  braces or parentheses, which are kept. The format `"N"` without hyphens is not matched, as it cannot be told apart
+  from a hash.
+- A date is matched in ISO 8601: a date (`2026-10-17`) or a date with a time (`2026-10-17T09:30`), with optional seconds,
+  a fraction of up to seven digits and an offset or `Z`. This covers how `DateTime`, `DateTimeOffset` and `DateOnly`
+  write themselves with the round-trip format `"o"`, which the aweXpect formatter uses. Culture-specific formats, a space
+  instead of the `T` and a time on its own are not matched; mask them with a regex.
+
+The numbers are counted per subject in the order of appearance, and only after the maskings that come before, so
+`.Masking(order.Id.ToString(), "<order-id>").MaskingGuids()` numbers only the other `Guid`s.
+
+### For all snapshots
+
+Maskings that apply to every snapshot are set with `Customize.aweXpect.Snapshots().Maskings`, e.g. in an assembly-level
+setup, from the factories of `SnapshotMasking` in the namespace `aweXpect.Snapshots`:
+
+```csharp
+Customize.aweXpect.Global.Snapshots().Maskings.Set([
+    SnapshotMasking.Guids(),
+    SnapshotMasking.Dates(),
+    SnapshotMasking.Text(Environment.MachineName, "<machine>"),
+    SnapshotMasking.Regex(new Regex(@"localhost:\d+"), "localhost:<port>"),
+]);
+```
+
+They are applied after the maskings of the expectation, in the order of the list, so a specific masking of the
+expectation goes before a general one for all snapshots. Setting the value replaces the list; to extend an outer
+setting, e.g. for one async flow, include it:
+
+```csharp
+using (Customize.aweXpect.Snapshots().Maskings.Set([
+           .. Customize.aweXpect.Snapshots().Maskings.Get(),
+           SnapshotMasking.Text(tenant.Name, "<tenant>"),
+       ]))
+{
+    await Expect.That(report).MatchesSnapshot();
+}
+```
+
 ## Files
 
 The snapshot files are encoded as UTF-8. The pending file ends with an additional line break, which is removed again

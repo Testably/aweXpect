@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -42,7 +43,9 @@ public static class ThatSnapshot
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
-	///     Values that change from run to run can be replaced before comparing, see <c>.Masking(…)</c>.<br />
+	///     Values that change from run to run can be replaced before comparing, see <c>.Masking(…)</c>,
+	///     <c>.MaskingGuids()</c>, <c>.MaskingDates()</c> and, for all snapshots,
+	///     <c>Customize.aweXpect.Snapshots().Maskings</c>.<br />
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
 	///     subject.<br />
 	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a
@@ -124,8 +127,8 @@ public static class ThatSnapshot
 					SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization =
 						Customize.aweXpect.Snapshots();
 					return new MatchesSnapshotConstraint<T>(it, grammars, customization.Store.Get(),
-						customization.AcceptChanges.Get(), state.SourceFile, state.MemberName, state.Options,
-						state.Format);
+						customization.AcceptChanges.Get(), customization.Maskings.Get(), state.SourceFile,
+						state.MemberName, state.Options, state.Format);
 				}),
 			subject,
 			options);
@@ -136,6 +139,7 @@ public static class ThatSnapshot
 		ExpectationGrammars grammars,
 		SnapshotStore store,
 		bool? acceptChanges,
+		IReadOnlyList<SnapshotMasking> globalMaskings,
 		string sourceFile,
 		string memberName,
 		SnapshotOptions snapshotOptions,
@@ -192,7 +196,7 @@ public static class ThatSnapshot
 			string value;
 			try
 			{
-				value = snapshotOptions.Mask(format(actual));
+				value = snapshotOptions.Mask(format(actual), globalMaskings);
 			}
 			catch (InsufficientExecutionStackException exception)
 			{

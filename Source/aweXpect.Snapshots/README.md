@@ -19,6 +19,9 @@ await Expect.That(order).MatchesSnapshot();
 
 // replace values that change from run to run before comparing
 await Expect.That(html).MatchesSnapshot().Masking(@"id=\d+", "id=<id>").AsRegex();
+
+// replace every Guid and ISO 8601 date with a numbered placeholder (Guid_1, Date_1, …)
+await Expect.That(html).MatchesSnapshot().MaskingGuids().MaskingDates();
 ```
 
 The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the
