@@ -82,6 +82,15 @@ XML options:
  - ignore members: ["/order/@id", "@createdAt", path => path.EndsWith("/@etag")]
 ```
 
+A member to ignore that matched no compared path is named in a failure, with the path it most likely meant, as a
+misspelled member to ignore would otherwise ignore nothing without notice:
+
+```text title="Failure message"
+XML options:
+ - ignore members: ["@createdat"]
+   "@createdat" matched no member (did you mean "@createdAt"?)
+```
+
 ## Element order
 
 By default, the order of the child elements is significant. You can ignore it for all compared elements:

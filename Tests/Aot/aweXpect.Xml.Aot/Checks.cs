@@ -56,6 +56,10 @@ internal static class Checks
 			() => ShouldFail(async () => await That("<a><b x=\"3\"/><b x=\"2\"/></a>")
 					.IsEqualTo("<a><b x=\"1\"/><b x=\"2\"/></a>").AsXml(o => o.IgnoringElementOrder()),
 				"/a/b[1]/@x was \"3\" instead of \"1\"", "ignore element order")),
+		new("a misspelled member to ignore is named with the meant path",
+			() => ShouldFail(async () => await That("<a createdAt=\"1\"/>").IsEqualTo("<a createdAt=\"2\"/>")
+					.AsXml(o => o.IgnoringMember("@createdat")),
+				"\"@createdat\" matched no member (did you mean \"@createdAt\"?)")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)

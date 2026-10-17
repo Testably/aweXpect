@@ -15,6 +15,7 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 	private XmlComparer.XmlComparisonResult? _comparisonResult;
 	private XDocument? _expectedDocument;
 	private string? _expectedXml;
+	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 
 	/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
 	public bool InspectsSubject => true;
@@ -75,8 +76,21 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 		}
 
 		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options, false);
+		_unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_unmatchedMembersToIgnore,
+			_comparisonResult.GetUnmatchedMembersToIgnore());
 		return new ValueTask<StringMatchResult>(!_comparisonResult.HasError);
 	}
+
+	/// <summary>
+	///     Adds the "XML options" context with the members to ignore by path that matched no member in a failed
+	///     comparison.
+	/// </summary>
+	/// <remarks>
+	///     The items of a collection are compared one after the other with the same match type, so the members to ignore
+	///     of every failed comparison are kept, and a suggestion found for an item is not lost to a later item.
+	/// </remarks>
+	public void AddContext(ResultContextCollector contexts)
+		=> options.AddContext(contexts, _unmatchedMembersToIgnore);
 
 	/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
 	public string GetExpectation(string? expected, ExpectationGrammars grammars)

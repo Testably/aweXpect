@@ -45,8 +45,41 @@ internal abstract class XmlMemberToIgnore
 			return true;
 		}
 
+		/// <summary>
+		///     The pattern as specified by the user.
+		/// </summary>
+		public string Pattern { get; } = pattern;
+
+		/// <summary>
+		///     Returns the part of the <paramref name="path" /> that the pattern would have to equal to match it, as a
+		///     candidate for the pattern a user meant, or <see langword="null" /> if the pattern cannot cover the path.
+		/// </summary>
+		/// <remarks>
+		///     The position is removed from a segment of the path, when the pattern has none for it, so that the paths of
+		///     several siblings of the same name are one candidate instead of equally close ones, which suggest nothing.
+		/// </remarks>
+		public string? GetCandidate(string path)
+		{
+			string[] pathSegments = Split(path);
+			int offset = pathSegments.Length - _segments.Length;
+			if (offset < 0 || (_isAnchored && offset != 0))
+			{
+				return null;
+			}
+
+			string[] candidate = new string[_segments.Length];
+			for (int index = 0; index < _segments.Length; index++)
+			{
+				string pathSegment = pathSegments[offset + index];
+				candidate[index] = Parse(_segments[index]).Position is null ? Parse(pathSegment).Name : pathSegment;
+			}
+
+			string joined = string.Join(XmlComparer.PathSeparator.ToString(), candidate);
+			return _isAnchored ? XmlComparer.PathSeparator + joined : joined;
+		}
+
 		public override string ToString()
-			=> Formatter.Format(pattern);
+			=> Formatter.Format(Pattern);
 
 		internal static string[] Split(string path)
 			=> path.Split([XmlComparer.PathSeparator,], StringSplitOptions.RemoveEmptyEntries);

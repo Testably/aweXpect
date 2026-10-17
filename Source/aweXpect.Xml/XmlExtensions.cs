@@ -30,10 +30,11 @@ public static class XmlExtensions
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
-		result.Options.SetMatchType(new XmlMatchType(xmlOptions), nameof(AsXml));
+		XmlMatchType matchType = new(xmlOptions);
+		result.Options.SetMatchType(matchType, nameof(AsXml));
 		if (result is IOptionsProvider<ExpectationBuilder> expectationBuilder)
 		{
-			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => xmlOptions.AddContext(contexts));
+			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => matchType.AddContext(contexts));
 		}
 
 		return result;

@@ -91,7 +91,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 			contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
 		}
 
-		options.AddContext(contexts);
+		options.AddContext(contexts, _comparisonResult?.GetUnmatchedMembersToIgnore());
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

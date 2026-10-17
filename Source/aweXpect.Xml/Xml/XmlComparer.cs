@@ -35,9 +35,9 @@ internal static class XmlComparer
 	public static XmlComparisonResult Compare(XElement actual, XElement expected, XmlOptions options,
 		bool ignoreAdditionalNodes)
 	{
-		Comparison comparison = new(options, ignoreAdditionalNodes);
+		Comparison comparison = new(options, ignoreAdditionalNodes, new MembersToIgnoreTracker(options));
 		string path = PathSeparator + expected.Name.LocalName;
-		if (options.IsIgnored(path))
+		if (comparison.IsIgnored(path))
 		{
 			return comparison.Result;
 		}
@@ -85,7 +85,7 @@ internal static class XmlComparer
 				unpairedAttributes.Remove(actualAttribute);
 			}
 
-			if (comparison.Options.IsIgnored(attributePath))
+			if (comparison.IsIgnored(attributePath))
 			{
 				continue;
 			}
@@ -114,7 +114,7 @@ internal static class XmlComparer
 		foreach (XAttribute unexpectedAttribute in unpairedAttributes)
 		{
 			string attributePath = $"{path}{PathSeparator}@{unexpectedAttribute.Name.LocalName}";
-			if (!comparison.Options.IsIgnored(attributePath))
+			if (!comparison.IsIgnored(attributePath))
 			{
 				result.AddError(attributePath, "was unexpected");
 			}
@@ -171,7 +171,7 @@ internal static class XmlComparer
 		List<Content> expectedChildren, string path, Comparison comparison)
 	{
 		HashSet<string> ignoredKeys = new(actualChildren.Concat(expectedChildren)
-			.Where(child => comparison.Options.IsIgnored(child.Path))
+			.Where(child => comparison.IsIgnored(child.Path))
 			.Select(child => child.Key));
 		actualChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
 		expectedChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
@@ -205,8 +205,8 @@ internal static class XmlComparer
 	private static Dictionary<Content, Content> PairIgnoringOrder(List<Content> actualChildren,
 		List<Content> expectedChildren, Comparison comparison)
 	{
-		actualChildren.RemoveAll(child => comparison.Options.IsIgnored(child.Path));
-		expectedChildren.RemoveAll(child => comparison.Options.IsIgnored(child.Path));
+		actualChildren.RemoveAll(child => comparison.IsIgnored(child.Path));
+		expectedChildren.RemoveAll(child => comparison.IsIgnored(child.Path));
 		List<Content> unpairedChildren = new(actualChildren);
 		Dictionary<Content, Content> pairs = new();
 		foreach (Content expectedChild in expectedChildren)
@@ -239,7 +239,7 @@ internal static class XmlComparer
 			return actualChild.Text == expectedChild.Text;
 		}
 
-		Comparison candidate = new(comparison.Options, comparison.IgnoreAdditionalNodes);
+		Comparison candidate = new(comparison.Options, comparison.IgnoreAdditionalNodes, comparison.Tracker);
 		CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, candidate);
 		return !candidate.Result.HasError;
 	}
@@ -303,11 +303,19 @@ internal static class XmlComparer
 	private static string DescribeNamespace(XNamespace ns)
 		=> ns == XNamespace.None ? "no namespace" : $"namespace {Formatter.Format(ns.NamespaceName)}";
 
-	private sealed class Comparison(XmlOptions options, bool ignoreAdditionalNodes)
+	/// <remarks>
+	///     The <paramref name="tracker" /> is shared with the comparisons of the candidates for a pair, so that a member
+	///     to ignore that matched while looking for an equivalent child counts as matched.
+	/// </remarks>
+	private sealed class Comparison(XmlOptions options, bool ignoreAdditionalNodes, MembersToIgnoreTracker tracker)
 	{
 		public XmlOptions Options { get; } = options;
 		public bool IgnoreAdditionalNodes { get; } = ignoreAdditionalNodes;
-		public XmlComparisonResult Result { get; } = new();
+		public MembersToIgnoreTracker Tracker { get; } = tracker;
+		public XmlComparisonResult Result { get; } = new(tracker);
+
+		public bool IsIgnored(string path)
+			=> Tracker.IsIgnored(path);
 	}
 
 	/// <summary>
@@ -332,7 +340,7 @@ internal static class XmlComparer
 		public string Path => parentPath + PathSeparator + Segment;
 	}
 
-	internal sealed class XmlComparisonResult
+	internal sealed class XmlComparisonResult(MembersToIgnoreTracker tracker)
 	{
 		private readonly List<KeyValuePair<string, string>> _errors = new();
 
@@ -340,6 +348,13 @@ internal static class XmlComparer
 
 		public void AddError(string path, string error)
 			=> _errors.Add(new KeyValuePair<string, string>(path, error));
+
+		/// <summary>
+		///     Returns each member to ignore by path that matched no member, with the path it most likely meant, when the
+		///     comparison failed, otherwise <see langword="null" />.
+		/// </summary>
+		public Dictionary<string, string?>? GetUnmatchedMembersToIgnore()
+			=> HasError ? tracker.GetUnmatchedMembersToIgnore() : null;
 
 		public override string ToString()
 		{

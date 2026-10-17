@@ -125,6 +125,7 @@ public sealed partial class XmlOptionsTests
 				             XML options:
 				              - ignore element order
 				              - ignore members: ["@id"]
+				                "@id" matched no member
 				             """).AsWildcard();
 		}
 
