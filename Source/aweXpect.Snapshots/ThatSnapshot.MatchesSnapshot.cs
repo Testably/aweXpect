@@ -70,9 +70,9 @@ public static class ThatSnapshot
 	/// <remarks>
 	///     The subject is written completely and indented, like the values in a failure message, but without shortening
 	///     it, so that a change in a single member shows up as a changed line. Numbers and dates are written
-	///     independently of the current culture. A collection is written in the order it enumerates its items, so an
-	///     unordered collection like a <see cref="System.Collections.Generic.HashSet{T}" /> has to be ordered before,
-	///     e.g. with <c>OrderBy</c>, as its order can change between runs.<br />
+	///     independently of the current culture. A collection is written in the order it enumerates its items, except for
+	///     the hash-based collections whose order can change between runs (e.g. a
+	///     <see cref="System.Collections.Generic.HashSet{T}" />), whose items are sorted.<br />
 	///     A <see cref="string" /> subject is compared as raw text by the other overload; the static type decides, so a
 	///     string in an <see cref="object" /> subject is written in quotes like any other value.<br />
 	///     Otherwise it behaves like the overload for strings: see there for the files, accepting changes and the
@@ -94,7 +94,7 @@ public static class ThatSnapshot
 
 	private static readonly FormattingOptions SnapshotFormatting = FormattingOptions.Indented("") with
 	{
-		IsComplete = true,
+		IsSnapshot = true,
 	};
 
 	/// <summary>

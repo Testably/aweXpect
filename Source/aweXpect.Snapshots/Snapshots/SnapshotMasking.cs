@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
+using aweXpect.Customization;
 
 namespace aweXpect.Snapshots;
 
@@ -20,8 +21,8 @@ namespace aweXpect.Snapshots;
 public sealed class SnapshotMasking
 {
 	/// <summary>
-	///     The timeout of the built-in patterns and of a pattern passed as a string, the same as for the regex matching of
-	///     aweXpect.
+	///     The timeout that the built-in patterns and a pattern passed as a string are parsed with, which is replaced by
+	///     <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c> when the masking is applied.
 	/// </summary>
 	private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
 
@@ -54,19 +55,22 @@ public sealed class SnapshotMasking
 
 	private readonly string? _placeholder;
 	private readonly StringComparer _placeholderComparer = StringComparer.Ordinal;
-	private readonly System.Text.RegularExpressions.Regex? _regex;
 	private readonly string _replacement;
+	private readonly bool _usesDefaultTimeout;
 	private readonly string _value;
+	private System.Text.RegularExpressions.Regex? _regex;
 
-	private SnapshotMasking(string value, string replacement, System.Text.RegularExpressions.Regex? regex)
+	private SnapshotMasking(string value, string replacement, System.Text.RegularExpressions.Regex? regex,
+		bool usesDefaultTimeout)
 	{
 		_value = value;
 		_replacement = replacement;
 		_regex = regex;
+		_usesDefaultTimeout = usesDefaultTimeout;
 	}
 
 	private SnapshotMasking(System.Text.RegularExpressions.Regex regex, string placeholder, StringComparer comparer)
-		: this(regex.ToString(), "", regex)
+		: this(regex.ToString(), "", regex, true)
 	{
 		_placeholder = placeholder;
 		_placeholderComparer = comparer;
@@ -91,7 +95,7 @@ public sealed class SnapshotMasking
 			throw Tracing.WriteException(new ArgumentException("The 'value' cannot be empty.", nameof(value)));
 		}
 
-		return new SnapshotMasking(value, ThrowIfNull(replacement), null);
+		return new SnapshotMasking(value, ThrowIfNull(replacement), null, false);
 	}
 
 	/// <summary>
@@ -100,8 +104,9 @@ public sealed class SnapshotMasking
 	///     <c>$1</c>.
 	/// </summary>
 	/// <remarks>
-	///     The pattern has no options and a timeout of one second; for other options or another timeout, pass a
-	///     <see cref="System.Text.RegularExpressions.Regex" /> instead. An invalid pattern throws here, where it is
+	///     The pattern has no options, which can be set inline (e.g. <c>(?i)</c>), and the timeout of
+	///     <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c> when the masking is applied; for another timeout, pass
+	///     a <see cref="System.Text.RegularExpressions.Regex" /> instead. An invalid pattern throws here, where it is
 	///     written, instead of when the expectation is evaluated. An empty <paramref name="replacement" /> removes the
 	///     matches.
 	/// </remarks>
@@ -128,7 +133,7 @@ public sealed class SnapshotMasking
 				$"The 'pattern' is not a valid regex pattern: {exception.Message}", nameof(pattern), exception));
 		}
 
-		return new SnapshotMasking(pattern, ThrowIfNull(replacement), regex);
+		return new SnapshotMasking(pattern, ThrowIfNull(replacement), regex, true);
 	}
 
 	/// <summary>
@@ -147,7 +152,7 @@ public sealed class SnapshotMasking
 			throw Tracing.WriteException(new ArgumentNullException(nameof(pattern), "The 'pattern' cannot be null."));
 		}
 
-		return new SnapshotMasking(pattern.ToString(), ThrowIfNull(replacement), pattern);
+		return new SnapshotMasking(pattern.ToString(), ThrowIfNull(replacement), pattern, false);
 	}
 
 	/// <summary>
@@ -187,18 +192,19 @@ public sealed class SnapshotMasking
 	/// </remarks>
 	internal string Apply(string text)
 	{
-		if (_regex is null)
+		System.Text.RegularExpressions.Regex? regex = GetRegex();
+		if (regex is null)
 		{
 			return text.Replace(_value, _replacement);
 		}
 
 		if (_placeholder is null)
 		{
-			return _regex.Replace(text, _replacement);
+			return regex.Replace(text, _replacement);
 		}
 
 		Dictionary<string, string> placeholders = new(_placeholderComparer);
-		return _regex.Replace(text, match =>
+		return regex.Replace(text, match =>
 		{
 			if (!placeholders.TryGetValue(match.Value, out string? placeholder))
 			{
@@ -208,6 +214,33 @@ public sealed class SnapshotMasking
 
 			return placeholder;
 		});
+	}
+
+	/// <summary>
+	///     Returns the regex, with the current <c>Customize.aweXpect.Settings().DefaultRegexTimeout</c> unless it came
+	///     with its own timeout from the caller.
+	/// </summary>
+	/// <remarks>
+	///     The timeout of a <see cref="System.Text.RegularExpressions.Regex" /> is fixed when it is created, so the regex
+	///     is only created again when the setting differs from the last one, e.g. within a scope that sets it. A
+	///     concurrent evaluation with another setting uses its own regex and only replaces the remembered one.
+	/// </remarks>
+	private System.Text.RegularExpressions.Regex? GetRegex()
+	{
+		System.Text.RegularExpressions.Regex? regex = _regex;
+		if (regex is null || !_usesDefaultTimeout)
+		{
+			return regex;
+		}
+
+		TimeSpan timeout = Customize.aweXpect.Settings().DefaultRegexTimeout.Get();
+		if (regex.MatchTimeout != timeout)
+		{
+			regex = new System.Text.RegularExpressions.Regex(regex.ToString(), regex.Options, timeout);
+			_regex = regex;
+		}
+
+		return regex;
 	}
 
 	private static string ThrowIfNull(string replacement)

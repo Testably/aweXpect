@@ -82,8 +82,10 @@ Order {
   for the stack fails the expectation instead of being shortened.
 - The static type decides: a `string` is compared as raw text, but a string in an `object` subject is written in quotes
   like any other value.
-- A collection is written in the order it enumerates its items. The order of a hash-based collection, e.g. a
-  `HashSet<string>`, can change between runs, so order it before, e.g. with `OrderBy`.
+- A collection is written in the order it enumerates its items, except for the hash-based collections whose order can
+  change between runs: the items of a `HashSet<T>`, `ImmutableHashSet<T>`, `FrozenSet<T>` or `ConcurrentBag<T>` are
+  sorted by their written text, and the entries of a `ConcurrentDictionary`, `ImmutableDictionary`, `FrozenDictionary`
+  or `Hashtable` by their key. A `Dictionary<TKey, TValue>` keeps its insertion order.
 - Maskings apply to the written text, e.g. `.Masking.Guids()` for a `Guid` member.
 
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
@@ -190,9 +192,11 @@ await Expect.That(log).MatchesSnapshot()
     .Masking.Regex(@"(\w+\.local):\d+", "$1:<port>");   // "api.local:5001" → "api.local:<port>"
 ```
 
-A pattern passed as a string has a timeout of one second. For other options or another timeout, pass a `Regex`
-instead: `.Masking.Regex(new Regex(@"token=\w+", RegexOptions.IgnoreCase), "token=<token>")`. A pattern that times out
-fails the expectation, and an invalid pattern throws an `ArgumentException` where it is written.
+A pattern passed as a string, and the built-in maskings below, use the regex timeout of aweXpect,
+`Customize.aweXpect.Settings().DefaultRegexTimeout` (one second by default). Options can be set inline, e.g. `(?i)`; for
+a timeout of its own, pass a `Regex` instead:
+`.Masking.Regex(new Regex(@"token=\w+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(5)), "token=<token>")`. A pattern
+that times out fails the expectation, and an invalid pattern throws an `ArgumentException` where it is written.
 
 The maskings are applied in the order in which they are written, so put a specific masking before a general one:
 

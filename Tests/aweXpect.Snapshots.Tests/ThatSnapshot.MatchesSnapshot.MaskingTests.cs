@@ -276,6 +276,65 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenPatternIsAString_ShouldUseTheDefaultRegexTimeoutOfTheSettings()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime timeout =
+					Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromMilliseconds(1));
+				string subject = new string('a', 40) + "!";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Masking.Regex(@"^(\w+\s?)*$", "<x>");
+
+				XunitException exception = await That(Act).Throws<XunitException>();
+				await That(exception.InnerException).Is<RegexMatchTimeoutException>()
+					.Whose(timeoutException => timeoutException.MatchTimeout,
+						matchTimeout => matchTimeout.IsEqualTo(TimeSpan.FromMilliseconds(1)))
+					.Because("the setting is read when the masking is applied, so a scoped value applies");
+			}
+
+			[Fact]
+			public async Task WhenMaskingBuiltIn_ShouldUseTheDefaultRegexTimeoutOfTheSettings()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime timeout =
+					Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromMilliseconds(1));
+				string subject = string.Concat(Enumerable.Repeat("0123456789abcdef ", 200_000));
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
+
+				XunitException exception = await That(Act).Throws<XunitException>();
+				await That(exception.InnerException).Is<RegexMatchTimeoutException>()
+					.Whose(timeoutException => timeoutException.MatchTimeout,
+						matchTimeout => matchTimeout.IsEqualTo(TimeSpan.FromMilliseconds(1)))
+					.Because("the built-in maskings use the regex timeout of the settings as well");
+			}
+
+			[Fact]
+			public async Task WhenPatternIsARegex_ShouldKeepItsOwnTimeout()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime timeout =
+					Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromHours(1));
+				string subject = new string('a', 40) + "!";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Masking.Regex(BacktrackingRegex(), "<x>");
+
+				XunitException exception = await That(Act).Throws<XunitException>();
+				await That(exception.InnerException).Is<RegexMatchTimeoutException>()
+					.Whose(timeoutException => timeoutException.MatchTimeout,
+						matchTimeout => matchTimeout.IsEqualTo(TimeSpan.FromMilliseconds(1)))
+					.Because("a regex of the caller comes with its own timeout");
+			}
+
+			[Fact]
 			public async Task WhenRegexMaskingTimesOut_ShouldFailWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();

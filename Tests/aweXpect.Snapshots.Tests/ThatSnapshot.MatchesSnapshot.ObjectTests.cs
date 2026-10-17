@@ -14,6 +14,27 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
 			[Fact]
+			public async Task WhenSubjectContainsAHashSet_ShouldWriteItsItemsSorted()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				HashSet<string> subject = ["gift", "express", "fragile",];
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           [
+				                                             "express",
+				                                             "fragile",
+				                                             "gift"
+				                                           ]
+				                                           """).IgnoringNewlineStyle()
+					.Because("the order of a hash set depends on the randomized hash codes of strings, so it is sorted");
+			}
+
+			[Fact]
 			public async Task ShouldWriteTheObjectCompletelyAndIndented()
 			{
 				InMemorySnapshotStore store = new();
