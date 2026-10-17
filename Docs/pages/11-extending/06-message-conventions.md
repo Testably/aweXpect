@@ -140,6 +140,10 @@ of a collection puts each member on its own line; `FormattingOptions.SingleLine`
 `FormattingOptions.Snapshot`, or `IsSnapshot = true` on any other options, writes the value for a snapshot: without
 shortening it, and the items of collections whose order depends on hash codes or threads, like a `HashSet<T>` or a
 `ConcurrentDictionary<TKey, TValue>`, sorted by their formatted text or key, so that it is the same in every run.
+A snapshot writes an exception member-wise, e.g. `ArgumentException { Message = "…", ParamName = "track" }`, with its
+message, its own public members, its `Data` when it is not empty and its inner exceptions (all of them for an
+`AggregateException`), but without `StackTrace`, `TargetSite`, `Source`, `HelpLink` and `HResult`, which change between
+builds, runtimes and Native AOT.
 Register an `IValueFormatter` to format your own types, see [value formatters](./08-initialization.md#value-formatters).
 
 `FormatValue` on the `FormattingOptions` decides for every nested value whether it is written

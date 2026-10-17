@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Equivalency;
+using aweXpect.Formatting;
 using aweXpect.Recording;
 using static aweXpect.Expect;
 
@@ -242,6 +243,17 @@ internal static class Checks
 		new("a failure message renders the members of a record",
 			() => ShouldFail(async () => await That(new Shipment(1, 12.5m, ["a",])).IsNull(),
 				"Notes = [", "\"a\"", "Weight = 12.5")),
+		// The members of the framework exceptions are read without reflection, so a snapshot that silently degrades
+		// to the members of `System.Exception` is only visible from its text.
+		new("a snapshot writes a framework exception member-wise",
+			() =>
+			{
+				ArgumentException exception = new("bad track", "track", new InvalidOperationException("not running"));
+				string expected = "ArgumentException { InnerException = InvalidOperationException { Message = \"not running\" }, " +
+				                  $"Message = \"{exception.Message}\", ParamName = \"track\" }}";
+				string actual = Format.Formatter.Format((object)exception, FormattingOptions.Snapshot);
+				return Task.FromResult<string?>(actual == expected ? null : $"wrote {actual}");
+			}),
 	];
 
 	private static async IAsyncEnumerable<int> CountAsync()

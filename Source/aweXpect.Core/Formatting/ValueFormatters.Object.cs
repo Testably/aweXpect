@@ -519,17 +519,18 @@ public static partial class ValueFormatters
 			stringBuilder.Append(' ');
 		}
 
-		WriteTypeValues(obj, stringBuilder, type, options, context);
+		WriteTypeValues(obj, stringBuilder, value => GetMembers(value.GetType()), options, context);
 	}
 
 	/// <remarks>
 	///     The instance is only tracked while its own members are written, so that it is a recursion only within
-	///     itself, not when it appears a second time beside itself.
+	///     itself, not when it appears a second time beside itself. The members are only looked up when they are
+	///     written.
 	/// </remarks>
 	private static void WriteTypeValues(
 		object obj,
 		StringBuilder stringBuilder,
-		Type type,
+		Func<object, List<EquivalencyMember>?> getMembers,
 		FormattingOptions options,
 		FormattingContext context)
 	{
@@ -547,7 +548,7 @@ public static partial class ValueFormatters
 			}
 			else
 			{
-				WriteMembers(obj, stringBuilder, type, options, context);
+				WriteMembers(obj, stringBuilder, getMembers(obj), options, context);
 			}
 		}
 		finally
@@ -560,11 +561,10 @@ public static partial class ValueFormatters
 	private static void WriteMembers(
 		object obj,
 		StringBuilder stringBuilder,
-		Type type,
+		List<EquivalencyMember>? members,
 		FormattingOptions options,
 		FormattingContext context)
 	{
-		List<EquivalencyMember>? members = GetMembers(type);
 		if (members is null)
 		{
 			stringBuilder.Append("{ *unregistered* }");

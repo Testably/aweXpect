@@ -76,7 +76,7 @@ public static partial class ValueFormatters
 				formatter.Format(stringBuilder, typeValue, options);
 				return;
 			case Exception exceptionValue:
-				formatter.Format(stringBuilder, exceptionValue, options);
+				FormatException(stringBuilder, exceptionValue, options, context);
 				return;
 			case IEnumerable enumerableValue:
 				FormatEnumerable(formatter, stringBuilder, enumerableValue, options, context);

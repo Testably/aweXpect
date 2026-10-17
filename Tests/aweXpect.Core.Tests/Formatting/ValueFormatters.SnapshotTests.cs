@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -294,8 +295,8 @@ public partial class ValueFormatters
 			string lineBreakResult = Formatter.Format(lineBreak, FormattingOptions.Snapshot);
 			string backslashResult = Formatter.Format(backslash, FormattingOptions.Snapshot);
 
-			await That(lineBreakResult).IsEqualTo("InvalidOperationException: a\\nb");
-			await That(backslashResult).IsEqualTo("InvalidOperationException: a\\\\nb")
+			await That(lineBreakResult).IsEqualTo("InvalidOperationException { Message = \"a\\nb\" }");
+			await That(backslashResult).IsEqualTo("InvalidOperationException { Message = \"a\\\\nb\" }")
 				.Because("a snapshot must tell a line break from a backslash followed by an n");
 		}
 
@@ -443,6 +444,142 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenExceptionHasAFormatValueHook_ShouldOfferItsMembers()
+		{
+			ArgumentException value = new("message", "track");
+			value.Data["Track"] = "Come Together";
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot with
+			{
+				FormatValue = v => v.Name switch
+				{
+					nameof(Exception.Data) => ValueFormatting.Omit,
+					nameof(Exception.Message) => ValueFormatting.Replace("*masked*"),
+					_ => ValueFormatting.Write,
+				},
+			});
+
+			await That(result).IsEqualTo("ArgumentException { Message = \"*masked*\", ParamName = \"track\" }")
+				.Because("the members of an exception can be left out or replaced like those of any object");
+		}
+
+		[Test]
+		public async Task WhenExceptionHasARegisteredFormatter_ShouldUseIt()
+		{
+			using IDisposable _ = ValueFormatter.Register(new FormattedExceptionFormatter());
+			FormattedException value = new(42);
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo("FormattedException(42)")
+				.Because("a registered formatter wins over the member-wise snapshot of an exception");
+		}
+
+		[Test]
+		public async Task WhenExceptionHasAnInnerException_ShouldWriteItMemberWise()
+		{
+			ArgumentNullException inner = new("track");
+			InvalidOperationException value = new("outer", inner);
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo(
+				$"InvalidOperationException {{ InnerException = ArgumentNullException {{ Message = {Formatter.Format(inner.Message, FormattingOptions.Snapshot)}, ParamName = \"track\" }}, Message = \"outer\" }}");
+		}
+
+		[Test]
+		public async Task WhenExceptionHasCustomMembers_ShouldWriteThem()
+		{
+			CodedException value = new("failed", 42);
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo("ValueFormatters.SnapshotTests.CodedException { Code = 42, Message = \"failed\" }");
+		}
+
+		[Test]
+		public async Task WhenExceptionHasData_ShouldWriteIt()
+		{
+			InvalidOperationException value = new("failed");
+			value.Data["Track"] = "Come Together";
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo(
+				"InvalidOperationException { Data = {[\"Track\"] = \"Come Together\"}, Message = \"failed\" }");
+		}
+
+		[Test]
+		public async Task WhenExceptionHasMembers_WithIndentation_ShouldWriteEachOnItsOwnLine()
+		{
+			ArgumentOutOfRangeException value = new("playCount", -1, "Play count must be positive.");
+			value.Data["Track"] = "Come Together";
+
+			string result = Formatter.Format(value, FormattingOptions.Indented() with
+			{
+				IsSnapshot = true,
+			});
+
+			await That(result).IsEqualTo($$"""
+			                               ArgumentOutOfRangeException {
+			                                   ActualValue = -1,
+			                                   Data = {
+			                                     ["Track"] = "Come Together"
+			                                   },
+			                                   Message = {{Formatter.Format(value.Message, FormattingOptions.Snapshot)}},
+			                                   ParamName = "playCount"
+			                                 }
+			                               """);
+		}
+
+		[Test]
+		public async Task WhenExceptionIsAFileNotFoundException_ShouldWriteTheFileNameWithoutTheFusionLog()
+		{
+			FileNotFoundException value = new("missing", "track.mp3");
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo("FileNotFoundException { FileName = \"track.mp3\", Message = \"missing\" }")
+				.Because("the fusion log depends on the machine and the runtime");
+		}
+
+		[Test]
+		public async Task WhenExceptionIsAnAggregateException_ShouldWriteAllInnerExceptions()
+		{
+			AggregateException value = new("failed",
+				new InvalidOperationException("first"), new InvalidOperationException("second"));
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo(
+					$"AggregateException {{ InnerExceptions = [InvalidOperationException {{ Message = \"first\" }}, InvalidOperationException {{ Message = \"second\" }}], Message = {Formatter.Format(value.Message, FormattingOptions.Snapshot)} }}")
+				.Because("the inner exception of an aggregate exception only repeats the first of its inner exceptions");
+		}
+
+		[Test]
+		public async Task WhenExceptionIsNestedInAnObject_ShouldWriteItMemberWise()
+		{
+			ObjectDisposedException exception = new("player", "disposed");
+			Wrapper value = new(new[] { exception, });
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo(
+				$"ValueFormatters.SnapshotTests.Wrapper {{ Inner = [ObjectDisposedException {{ Message = {Formatter.Format(exception.Message, FormattingOptions.Snapshot)}, ObjectName = \"player\" }}] }}");
+		}
+
+		[Test]
+		public async Task WhenExceptionIsRecursive_ShouldWriteTheRecursion()
+		{
+			SelfReferencingException value = new();
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo(
+				"ValueFormatters.SnapshotTests.SelfReferencingException { Message = \"self\", Self = ValueFormatters.SnapshotTests.SelfReferencingException { *recursive* } }");
+		}
+
+		[Test]
 		public async Task WhenExceptionMessageIsLongerThanTheMaximumLength_ShouldWriteTheWholeMessage()
 		{
 			string message = new('x', 150);
@@ -450,7 +587,55 @@ public partial class ValueFormatters
 
 			string result = Formatter.Format(value, FormattingOptions.Snapshot);
 
-			await That(result).IsEqualTo($"InvalidOperationException: {message}");
+			await That(result).IsEqualTo($"InvalidOperationException {{ Message = \"{message}\" }}");
+		}
+
+		[Test]
+		public async Task WhenExceptionMessageThrows_ShouldWriteAPlaceholder()
+		{
+			ThrowingMessageException value = new();
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo(
+				"ValueFormatters.SnapshotTests.ThrowingMessageException { Message = [Message did throw an InvalidOperationException: broken] }");
+		}
+
+		[Test]
+		public async Task WhenExceptionWasThrown_ShouldLeaveOutTheMembersThatDependOnTheBuild()
+		{
+			InvalidOperationException value = Catch(() => throw new InvalidOperationException("failed"));
+
+			string result = Formatter.Format(value, FormattingOptions.Snapshot);
+
+			await That(result).IsEqualTo("InvalidOperationException { Message = \"failed\" }")
+				.Because("the stack trace, target site and source change between builds, runtimes and Native AOT");
+
+			static InvalidOperationException Catch(Action act)
+			{
+				try
+				{
+					act();
+				}
+				catch (InvalidOperationException exception)
+				{
+					return exception;
+				}
+
+				throw new InvalidOperationException("The action did not throw.");
+			}
+		}
+
+		[Test]
+		public async Task WhenExceptionWithMembers_WithoutSnapshotOption_ShouldWriteTheTypeAndMessage()
+		{
+			InvalidOperationException value = new("outer", new ArgumentNullException("track"));
+			value.Data["Track"] = "Come Together";
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo("InvalidOperationException: outer")
+				.Because("failure messages keep exceptions short");
 		}
 
 		[Test]
@@ -664,6 +849,30 @@ public partial class ValueFormatters
 			}
 		}
 
+		private sealed class CodedException(string message, int code) : Exception(message)
+		{
+			public int Code { get; } = code;
+		}
+
+		private sealed class FormattedException(int code) : Exception
+		{
+			public int Code { get; } = code;
+		}
+
+		private sealed class FormattedExceptionFormatter : IValueFormatter
+		{
+			public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+			{
+				if (value is not FormattedException exception)
+				{
+					return false;
+				}
+
+				stringBuilder.Append("FormattedException(").Append(exception.Code).Append(')');
+				return true;
+			}
+		}
+
 		private sealed class Item(string name)
 		{
 			public string Name { get; } = name;
@@ -700,6 +909,12 @@ public partial class ValueFormatters
 
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
+		}
+
+		private sealed class SelfReferencingException() : Exception("self")
+		{
+			// ReSharper disable once UnusedMember.Local
+			public Exception Self => this;
 		}
 
 		private sealed class SharingNode
@@ -745,6 +960,11 @@ public partial class ValueFormatters
 			}
 
 			IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<string>)this).GetEnumerator();
+		}
+
+		private sealed class ThrowingMessageException : Exception
+		{
+			public override string Message => throw new InvalidOperationException("broken");
 		}
 
 		private sealed class Wrapper(object inner)
