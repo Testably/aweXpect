@@ -35,7 +35,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();
@@ -52,7 +52,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(testFilePath, SnapshotDirectory.MemberName)
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -77,7 +77,7 @@ public sealed partial class ThatSnapshot
 
 					async Task Act()
 						=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-							.AcceptingChanges();
+							.Accepting(SnapshotAcceptance.All);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
@@ -109,7 +109,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -131,7 +131,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -160,7 +160,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.For.Text("42").Mask("<id>").AcceptingChanges();
+						.For.Text("42").Mask("<id>").Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("id=<id>" + Environment.NewLine);
@@ -343,7 +343,7 @@ public sealed partial class ThatSnapshot
 						.Named("Abbey Road")
 						.UniqueFor.Architecture()
 						.UniqueFor.OperatingSystem()
-						.AcceptingChanges(false);
+						.Accepting(SnapshotAcceptance.None);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -457,7 +457,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
-						.WithExtension("xml").AcceptingChanges();
+						.WithExtension("xml").Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"*Accepted snapshot:*{snapshotPath}").AsWildcard()

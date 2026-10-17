@@ -248,7 +248,7 @@ public sealed partial class ThatSnapshot
 						.For.Lines().Containing("ELAPSED").IgnoringCase().Ignore()
 						.Named("tracks")
 						.For.Guids().Mask()
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>

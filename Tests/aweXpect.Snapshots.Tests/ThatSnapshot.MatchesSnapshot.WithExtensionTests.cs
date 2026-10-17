@@ -99,7 +99,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That("<h1>Abbey Road</h1>").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.WithExtension("html").AcceptingChanges();
+						.WithExtension("html").Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted.Keys).IsEqualTo(new[] { Id with { Extension = "html", }, }).InAnyOrder();
@@ -119,7 +119,7 @@ public sealed partial class ThatSnapshot
 						.For.Guids().Mask()
 						.NamedAfter(title)
 						.UniqueFor.OperatingSystem()
-						.AcceptingChanges(false);
+						.Accepting(SnapshotAcceptance.None);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>

@@ -30,7 +30,7 @@ internal sealed class SnapshotOptions
 		ClaimedSnapshots.Claim(Id);
 	}
 
-	public bool? AcceptChanges { get; set; }
+	public SnapshotAcceptance? Acceptance { get; set; }
 
 	public SnapshotId Id => new(_sourceFile, _memberName, _name)
 	{

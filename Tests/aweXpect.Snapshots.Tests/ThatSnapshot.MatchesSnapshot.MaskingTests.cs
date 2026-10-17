@@ -37,7 +37,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.For.Text("42").Mask("<id>").AcceptingChanges();
+						.For.Text("42").Mask("<id>").Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -531,7 +531,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(@"\d+").AsRegex().Mask("<n>")
 						.Named("first")
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>

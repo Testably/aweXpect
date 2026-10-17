@@ -39,9 +39,10 @@ await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework
 The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the
 test file. A missing or different snapshot fails the test and writes the actual value to
 `<Class>.<Method>.snapshot.pending.txt`; rename it to `<Class>.<Method>.snapshot.txt` to accept it, or set the
-environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to accept all changed snapshots of a test run.
+environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to `all` to accept all changed snapshots of a test run (or to `new` to
+only add the missing ones).
 `OrphanedSnapshots.CheckAsync()` in the teardown of the test run reports the snapshots that no test uses any more on a
-build server, and deletes them while accepting changes.
+build server, and deletes them while accepting all changes.
 
 ## Overview
 

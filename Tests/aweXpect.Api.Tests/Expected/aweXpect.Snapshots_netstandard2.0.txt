@@ -6,7 +6,7 @@ namespace aweXpect.Results
     {
         public aweXpect.Snapshots.SnapshotFor<aweXpect.Results.SnapshotResult<TType, TThat>> For { get; }
         public aweXpect.Results.SnapshotUniqueFor<TType, TThat> UniqueFor { get; }
-        public aweXpect.Results.AndOrResult<TType, TThat> AcceptingChanges(bool accept = true) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
         public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
@@ -26,6 +26,12 @@ namespace aweXpect.Snapshots
     public static class OrphanedSnapshots
     {
         public static System.Threading.Tasks.Task CheckAsync(bool force = false, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public enum SnapshotAcceptance
+    {
+        None = 0,
+        New = 1,
+        All = 2,
     }
     public sealed class SnapshotEmptyCollections<TReturn>
     {
@@ -147,7 +153,7 @@ namespace aweXpect.Snapshots
         public static aweXpect.Snapshots.SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization Snapshots(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class SnapshotsCustomization
         {
-            public aweXpect.Customization.ICustomizationValueSetter<bool?> AcceptChanges { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotAcceptance?> Acceptance { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotRule>> Rules { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
         }

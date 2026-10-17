@@ -11,5 +11,5 @@ internal static class IgnoreAcceptEnvironment
 {
 	[ModuleInitializer]
 	internal static void Initialize()
-		=> Customize.aweXpect.Global.Snapshots().AcceptChanges.Set(false);
+		=> Customize.aweXpect.Global.Snapshots().Acceptance.Set(SnapshotAcceptance.None);
 }

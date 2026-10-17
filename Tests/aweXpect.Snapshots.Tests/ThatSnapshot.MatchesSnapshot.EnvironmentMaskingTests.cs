@@ -383,7 +383,8 @@ public sealed partial class ThatSnapshot
 				string subject = Path.Combine(TempPath, "abbey.tmp");
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).AcceptingChanges();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>

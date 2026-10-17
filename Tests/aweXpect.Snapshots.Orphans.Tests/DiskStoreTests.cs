@@ -80,7 +80,7 @@ public sealed class DiskStoreTests
 		using TemporaryProject project = new();
 		project.CreateFile("AlbumTests.cs");
 		project.CreateFile($"AlbumTests.Describes@{TemporaryProject.Variant}.snapshot.txt", "Abbey Road");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -97,7 +97,7 @@ public sealed class DiskStoreTests
 	{
 		using TemporaryProject project = new();
 		project.CreateFile($"AlbumTests.Describes.Let It Be@{TemporaryProject.Variant}.snapshot.txt", "Let It Be");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -118,7 +118,7 @@ public sealed class DiskStoreTests
 		using TemporaryProject project = new();
 		project.CreateFile("AlbumTests.cs");
 		project.CreateFile(fileName, "Abbey Road");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -154,7 +154,7 @@ public sealed class DiskStoreTests
 		project.CreateFile("AlbumTests.Describes.snapshot.pending.json", "[]");
 		project.CreateFile("AlbumTests.Describes.snapshot.txt", "Abbey Road");
 		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -177,7 +177,7 @@ public sealed class DiskStoreTests
 		project.CreateFile("AlbumTests.Describes.snapshot.pending.xml", "<album />");
 		project.CreateFile("AlbumTests.Describes.snapshot.txt", "Abbey Road");
 		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -251,7 +251,7 @@ public sealed class DiskStoreTests
 		using TemporaryProject project = new();
 		project.CreateFile("AlbumTests.cs");
 		project.CreateFile("AlbumTests.Describes.snapshot.pending.txt", "Abbey Road");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -262,14 +262,14 @@ public sealed class DiskStoreTests
 	}
 
 	[Fact]
-	public async Task WhenAcceptingChanges_ShouldDeleteTheSnapshotAndItsPendingFileAndStillFail()
+	public async Task WhenAcceptingAll_ShouldDeleteTheSnapshotAndItsPendingFileAndStillFail()
 	{
 		using TemporaryProject project = new();
 		project.CreateFile("AlbumTests.cs");
 		project.CreateFile("AlbumTests.Describes.Abbey Road.snapshot.txt", "Abbey Road");
 		project.CreateFile("AlbumTests.Describes.Let It Be.snapshot.txt", "Let It Be");
 		project.CreateFile("AlbumTests.Describes.Let It Be.snapshot.pending.txt", "Let It Be (Remastered)");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 		await That("Abbey Road").MatchesSnapshot(project.CallerFilePath("AlbumTests.cs"), "Describes")
 			.Named("Abbey Road");
 
@@ -291,7 +291,7 @@ public sealed class DiskStoreTests
 		using TemporaryProject project = new();
 		project.CreateFile("AlbumTests.Describes.snapshot.txt", "Abbey Road");
 		project.CreateFile("AlbumTests.Describes.Let It Be.snapshot.txt", "Let It Be");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -319,7 +319,7 @@ public sealed class DiskStoreTests
 		using TemporaryProject project = new();
 		project.CreateFile("AlbumTests.cs");
 		project.CreateFile(fileName, "Abbey Road");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -338,7 +338,7 @@ public sealed class DiskStoreTests
 		project.CreateFile("Other/Other.csproj");
 		project.CreateFile($"{directory}/AlbumTests.cs");
 		project.CreateFile($"{directory}/AlbumTests.Describes.snapshot.txt", "Abbey Road");
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 

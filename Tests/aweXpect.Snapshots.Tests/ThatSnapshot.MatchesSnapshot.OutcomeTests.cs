@@ -37,7 +37,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it
-						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).AcceptingChanges());
+						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Accepting(SnapshotAcceptance.All));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*a snapshot cannot be negated").AsWildcard();
@@ -71,7 +71,8 @@ public sealed partial class ThatSnapshot
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).AcceptingChanges()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Accepting(SnapshotAcceptance.All)
 						.Or.IsEqualTo("foo");
 
 				await That(Act).DoesNotThrow();

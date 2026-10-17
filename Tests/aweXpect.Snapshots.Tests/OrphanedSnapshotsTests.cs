@@ -163,7 +163,7 @@ public sealed class OrphanedSnapshotsTests
 		InMemorySnapshotStore store = new();
 		store.Snapshots[new SnapshotId(SourceFile, "Describes") { Variant = variant, }] = "Abbey Road";
 		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -187,7 +187,7 @@ public sealed class OrphanedSnapshotsTests
 	}
 
 	[Fact]
-	public async Task WhenAcceptingChanges_ShouldDeleteTheSnapshotsAndStillFail()
+	public async Task WhenAcceptingAll_ShouldDeleteTheSnapshotsAndStillFail()
 	{
 		SnapshotId used = new(SourceFile, "Describes", "Abbey Road");
 		SnapshotId unused = new(SourceFile, "Describes", "Let It Be");
@@ -196,7 +196,7 @@ public sealed class OrphanedSnapshotsTests
 		store.Snapshots[unused] = "Let It Be";
 		store.Mismatches[unused] = "Let It Be (Remastered)";
 		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 		await That("Abbey Road").MatchesSnapshot(SourceFile, "Describes").Named("Abbey Road");
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
@@ -211,7 +211,7 @@ public sealed class OrphanedSnapshotsTests
 	}
 
 	[Fact]
-	public async Task WhenAcceptingChanges_AndDeletingThrows_ShouldNameTheErrorAndDeleteTheOthers()
+	public async Task WhenAcceptingAll_AndDeletingThrows_ShouldNameTheErrorAndDeleteTheOthers()
 	{
 		SnapshotId readOnly = new(SourceFile, "Describes", "Abbey Road");
 		SnapshotId other = new(SourceFile, "Describes", "Let It Be");
@@ -220,7 +220,7 @@ public sealed class OrphanedSnapshotsTests
 		store.Snapshots[other] = "Let It Be";
 		store.DeleteExceptions[readOnly] = new IOException("read-only");
 		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
-		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().AcceptChanges.Set(true);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.All);
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
@@ -231,6 +231,23 @@ public sealed class OrphanedSnapshotsTests
 			               AlbumTests.Describes.Let It Be (deleted)
 			             """);
 		await That(store.Deleted).IsEqualTo([other,]);
+	}
+
+	[Fact]
+	public async Task WhenAcceptingNew_ShouldReportWithoutDeleting()
+	{
+		SnapshotId unused = new(SourceFile, "Describes", "Let It Be");
+		InMemorySnapshotStore store = new();
+		store.Snapshots[unused] = "Let It Be";
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);
+
+		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*  AlbumTests.Describes.Let It Be").AsWildcard();
+		await That(store.Deleted).IsEmpty()
+			.Because("accepting new snapshots only adds snapshots, it never removes one");
 	}
 
 	[Fact]
@@ -310,9 +327,41 @@ public sealed class OrphanedSnapshotsTests
 		}
 
 		[Fact]
-		public async Task WhenForced_AndTheAcceptVariableIsSet_ShouldDelete()
+		public async Task WhenForced_AndTheAcceptVariableIsNew_ShouldReportWithoutDeleting()
 		{
-			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", "1"));
+			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", "new"));
+			InMemorySnapshotStore store = new();
+			store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+			using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+			async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*  AlbumTests.Describes").AsWildcard();
+			await That(store.Deleted).IsEmpty();
+		}
+
+		[Fact]
+		public async Task WhenForced_AndTheAcceptVariableIsInvalid_ShouldThrow()
+		{
+			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", "yes"));
+			InMemorySnapshotStore store = new();
+			store.Snapshots[new SnapshotId(SourceFile, "Describes")] = "Abbey Road";
+			using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+			async Task Act() => await OrphanedSnapshots.CheckAsync(true);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("*AWEXPECT_ACCEPT_SNAPSHOTS*'yes'*").AsWildcard();
+			await That(store.Deleted).IsEmpty();
+		}
+
+		[Theory]
+		[InlineData("1")]
+		[InlineData("all")]
+		public async Task WhenForced_AndTheAcceptVariableIsSet_ShouldDelete(string value)
+		{
+			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", value));
 			SnapshotId id = new(SourceFile, "Describes");
 			InMemorySnapshotStore store = new();
 			store.Snapshots[id] = "Abbey Road";

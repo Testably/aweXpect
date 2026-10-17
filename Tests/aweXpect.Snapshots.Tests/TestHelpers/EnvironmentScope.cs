@@ -16,7 +16,7 @@ internal sealed class EnvironmentScope : IDisposable
 	private static readonly string[] Variables =
 		["AWEXPECT_ACCEPT_SNAPSHOTS", "CI", "TF_BUILD", "JENKINS_URL", "TEAMCITY_VERSION",];
 
-	private readonly CustomizationLifetime _acceptChanges;
+	private readonly CustomizationLifetime _acceptance;
 	private readonly Dictionary<string, string?> _originalValues = new();
 
 	public EnvironmentScope(params (string Variable, string Value)[] values)
@@ -32,12 +32,12 @@ internal sealed class EnvironmentScope : IDisposable
 			Environment.SetEnvironmentVariable(variable, value);
 		}
 
-		_acceptChanges = Customize.aweXpect.Snapshots().AcceptChanges.Set(null);
+		_acceptance = Customize.aweXpect.Snapshots().Acceptance.Set(null);
 	}
 
 	public void Dispose()
 	{
-		_acceptChanges.Dispose();
+		_acceptance.Dispose();
 		foreach (KeyValuePair<string, string?> originalValue in _originalValues)
 		{
 			Environment.SetEnvironmentVariable(originalValue.Key, originalValue.Value);

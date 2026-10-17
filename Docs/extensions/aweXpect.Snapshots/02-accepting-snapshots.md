@@ -15,9 +15,20 @@ snapshots with [another extension](01-matching-snapshots.md#file-extension), e.g
 *.snapshot.pending.*
 ```
 
-To accept many snapshots at once, set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` (to anything but `0` or
-`false`) and run the tests. A missing or different snapshot is then replaced by the actual value, and the expectation
-still fails, so that an accepted snapshot never goes unnoticed:
+To accept many snapshots at once, set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to one of the levels of
+`SnapshotAcceptance` and run the tests:
+
+| Level  | Variable                | A missing snapshot           | A different snapshot         |
+|--------|-------------------------|------------------------------|------------------------------|
+| `None` | `none`, `0` or `false`  | writes the pending file      | writes the pending file      |
+| `New`  | `new`                   | is accepted                  | writes the pending file      |
+| `All`  | `all`, `1` or `true`    | is accepted                  | is accepted                  |
+
+The value ignores case and surrounding whitespace; an empty or unset variable accepts nothing, and with any other value
+a snapshot that does not match throws an `InvalidOperationException` that names the allowed values, so that a typo
+does not silently accept nothing.
+`New` adds the snapshots of new tests without touching the reviewed ones. An accepted snapshot is replaced by the
+actual value, and the expectation still fails, so that it never goes unnoticed:
 
 ```text title="Failure message"
 Expected that description
@@ -39,12 +50,14 @@ set), so that a variable that was forgotten in a pipeline cannot change the snap
 instead, which also applies on a build server:
 
 ```csharp
-await Expect.That(description).MatchesSnapshot().AcceptingChanges();          // accepts
-await Expect.That(description).MatchesSnapshot().AcceptingChanges(isLocalRun); // accepts if isLocalRun is true
+await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.All);  // a missing or different snapshot
+await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.New);  // only a missing snapshot
+await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.None); // never accepts
 
-Customize.aweXpect.Snapshots().AcceptChanges.Set(true);                        // for the current async flow
+Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);               // for the current async flow
 ```
 
-`AcceptingChanges(…)` takes precedence over `Customize.aweXpect.Snapshots().AcceptChanges`, which takes precedence
-over the environment variable. `AcceptingChanges(…)` is always the last option of the expectation, so that it is easy to
-find and remove again.
+`Accepting(…)` takes precedence over `Customize.aweXpect.Snapshots().Acceptance`, which takes precedence over the
+environment variable, so `Accepting(SnapshotAcceptance.None)` keeps a snapshot from being accepted while the variable
+is set. The setting defaults to `null`, which leaves it to the environment variable.
+`Accepting(…)` is always the last option of the expectation, so that it is easy to find and remove again.

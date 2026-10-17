@@ -34,23 +34,23 @@ public static class SnapshotsAwexpectCustomizationExtensions
 							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
 					}
 				});
-			AcceptChanges = new CustomizationValue<bool?>(awexpectCustomization,
-				"aweXpect.Snapshots.AcceptChanges", null);
+			Acceptance = new CustomizationValue<SnapshotAcceptance?>(awexpectCustomization,
+				"aweXpect.Snapshots.Acceptance", null);
 			Rules = new CopyingSetter<SnapshotRule>(new CustomizationValue<IReadOnlyList<SnapshotRule>>(
 				awexpectCustomization, "aweXpect.Snapshots.Rules", Array.Empty<SnapshotRule>(),
 				ThrowIfNullOrContainsNull));
 		}
 
 		/// <summary>
-		///     Whether a missing or different snapshot is accepted, unless the expectation sets
-		///     <c>.AcceptingChanges(…)</c>.
+		///     Which snapshots are accepted, see <see cref="SnapshotAcceptance" />, unless the expectation sets
+		///     <c>.Accepting(…)</c>.
 		/// </summary>
 		/// <remarks>
-		///     Defaults to <see langword="null" />, which accepts when the environment variable
-		///     <c>AWEXPECT_ACCEPT_SNAPSHOTS</c> is set (to anything but <c>0</c> or <c>false</c>) and no build server is
-		///     detected, so that a forgotten variable cannot change the snapshots on a build server.
+		///     Defaults to <see langword="null" />, which leaves it to the environment variable
+		///     <c>AWEXPECT_ACCEPT_SNAPSHOTS</c> (<c>none</c>, <c>new</c> or <c>all</c>), which is ignored when a build server
+		///     is detected, so that a forgotten variable cannot change the snapshots on a build server.
 		/// </remarks>
-		public ICustomizationValueSetter<bool?> AcceptChanges { get; }
+		public ICustomizationValueSetter<SnapshotAcceptance?> Acceptance { get; }
 
 		/// <summary>
 		///     The rules that are applied to every snapshot, after the rules of the expectation, e.g.

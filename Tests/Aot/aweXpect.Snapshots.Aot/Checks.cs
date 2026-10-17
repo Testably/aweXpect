@@ -53,7 +53,7 @@ internal static class Checks
 	/// </remarks>
 	private static async Task RecordMatchesItsSnapshot()
 		=> await That(new Album("Abbey Road", 12.99m, ["Come Together", "Something",]))
-			.MatchesSnapshot().AcceptingChanges(false);
+			.MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The formatter offers the registered members to the member and value rules, so that they also apply without
@@ -69,7 +69,7 @@ internal static class Checks
 			.For.Members().WithName(nameof(Shipment.Status)).Ignore()
 			.For.Members().WithName(nameof(Shipment.Id)).Mask()
 			.For.Values().OfType<decimal>().Mask("{weight}")
-			.AcceptingChanges(false);
+			.Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The declaring types are compared without reflection, and the empty collections are recognized without
@@ -85,7 +85,7 @@ internal static class Checks
 			.For.Members().WhichAreEmptyCollections().Ignore()
 			.For.Members().DeclaredIn<Playlist>().WithName(nameof(Playlist.Id)).Ignore()
 			.For.Members().DeclaredIn<Song>().WithName(nameof(Song.Id)).Mask()
-			.AcceptingChanges(false);
+			.Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The converters are only called, never compiled, and the anonymous type that a converter returns is written
@@ -101,7 +101,7 @@ internal static class Checks
 			.For.Members().DeclaredIn<Concert>().WithName(nameof(Concert.Date)).OfType<DateTime>()
 			.Convert(date => new { date.Year, date.Month, })
 			.For.Members().OfType<TimeSpan>().Convert(duration => Math.Round(duration.TotalMinutes))
-			.AcceptingChanges(false);
+			.Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The members are only written when the source generator registered them for the call site, as this project
@@ -114,7 +114,7 @@ internal static class Checks
 			Id = 7,
 			Status = ShipmentStatus.Sent,
 			Parcels = [new Parcel { Weight = 1.25m, }, new Parcel { Weight = 3m, },],
-		}).MatchesSnapshot().AcceptingChanges(false);
+		}).MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The pending snapshot is deleted by the path on the last line of the failure, as the path of this file is
@@ -125,7 +125,7 @@ internal static class Checks
 	{
 		try
 		{
-			await That("snapshot differs").MatchesSnapshot().AcceptingChanges(false);
+			await That("snapshot differs").MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 		}
 		catch (FailException exception)
 		{
@@ -140,7 +140,7 @@ internal static class Checks
 	/// </remarks>
 	private static async Task EverySnapshotIsUsed()
 	{
-		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AcceptChanges.Set(false);
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.None);
 		await OrphanedSnapshots.CheckAsync(true);
 	}
 
@@ -158,7 +158,7 @@ internal static class Checks
 				$"{Trim(AppContext.BaseDirectory)}/abbey.tmp",
 				$"{Trim(Path.GetTempPath())}/let-it-be.tmp",
 				$"{Trim(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))}/Music",
-			])).MatchesSnapshot().AcceptingChanges(false);
+			])).MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
 		static string Trim(string path) => path.TrimEnd('\\', '/');
 	}
@@ -171,17 +171,17 @@ internal static class Checks
 	/// </remarks>
 	private static async Task JsonMatchesItsSnapshot()
 		=> await That("{ \"title\": \"Abbey Road\", \"year\": 1969 }").MatchesSnapshot().WithExtension("json")
-			.AcceptingChanges(false);
+			.Accepting(SnapshotAcceptance.None);
 
 	private static async Task NamedAfterMatchesItsSnapshot(string title, int year)
-		=> await That($"{title} ({year})").MatchesSnapshot().NamedAfter(title, year).AcceptingChanges(false);
+		=> await That($"{title} ({year})").MatchesSnapshot().NamedAfter(title, year).Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The target framework is recorded by the build targets, so that it is found without reflection.
 	/// </remarks>
 	private static async Task MatchesItsSnapshotForTheTargetFramework()
 		=> await That("snapshot content for net10.0").MatchesSnapshot().UniqueFor.TargetFramework()
-			.AcceptingChanges(false);
+			.Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     No snapshot is committed, as it would depend on the machine; the pending snapshot is deleted again by the path
@@ -193,7 +193,7 @@ internal static class Checks
 		{
 			await That("snapshot content for this machine").MatchesSnapshot()
 				.UniqueFor.Architecture().UniqueFor.OperatingSystem()
-				.AcceptingChanges(false);
+				.Accepting(SnapshotAcceptance.None);
 		}
 		catch (FailException exception)
 		{
@@ -227,7 +227,7 @@ internal static class Checks
 			.For.Lines().Containing("Track ?: *Live*").AsWildcard().Ignore()
 			.For.Lines().Containing(@"^\d{2}:\d{2} ").AsRegex().Ignore()
 			.For.Lines().Which(line => line.Length == 0).Ignore()
-			.AcceptingChanges(false);
+			.Accepting(SnapshotAcceptance.None);
 
 	private static async Task<string?> ShouldFail(Func<Task> act, params string[] parts)
 	{

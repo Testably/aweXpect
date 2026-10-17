@@ -23,7 +23,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.For.Guids().Mask().For.Dates().Mask().AcceptingChanges();
+						.For.Guids().Mask().For.Dates().Mask().Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Accepted[Id]).IsEqualTo("{Guid_1} {Date_1}");

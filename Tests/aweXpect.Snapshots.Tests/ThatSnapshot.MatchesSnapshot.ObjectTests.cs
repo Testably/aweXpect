@@ -296,7 +296,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task WhenAcceptingChanges_ShouldAcceptTheWrittenObject()
+			public async Task WhenAccepting_ShouldAcceptTheWrittenObject()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -304,7 +304,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("pen")
-						.AcceptingChanges();
+						.Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();

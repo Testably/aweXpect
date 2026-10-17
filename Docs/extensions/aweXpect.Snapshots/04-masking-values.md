@@ -50,7 +50,7 @@ The actions that each selection offers:
 
 A selection only offers the actions that fit it, so e.g. `.For.Paths().Mask()` or `.For.Text("…").Ignore()` does not
 compile. The filters are combined, so a value has to match all of them. After the action, the next rule starts with
-`.For` again, or the expectation continues with `.Named(…)`, `.UniqueFor` or `.AcceptingChanges()`.
+`.For` again, or the expectation continues with `.Named(…)`, `.UniqueFor` or `.Accepting(…)`.
 
 `.For.Members()` and `.For.Values()` only apply to a [snapshot of an object](01-matching-snapshots.md#objects), and
 `.For.Lines()` only to a snapshot of a `string`; written on the other kind of subject, the action throws an
