@@ -16,4 +16,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.XmlWhichResult IsValidXml(this aweXpect.Core.IThat<string?> source) { }
     }
+    public static class XmlExtensions
+    {
+        public static TResult AsXml<TResult>(this TResult result)
+            where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+    }
 }

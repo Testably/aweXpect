@@ -15,6 +15,9 @@ string xml = """<track title="Let It Be" artist="The Beatles" />""";
 
 // verify that a string is a well-formed XML document
 await Expect.That(xml).IsValidXml();
+
+// verify that a string is equal to the expected XML, compared by its content instead of its formatting
+await Expect.That(xml).IsEqualTo("""<track artist="The Beatles" title="Let It Be"></track>""").AsXml();
 ```
 
 If the element was not closed, i.e. `<track title="Let It Be" artist="The Beatles">`, the expectation would fail with:
@@ -27,13 +30,14 @@ but it could not be parsed: Unexpected end of file has occurred. The following e
 
 ## Overview
 
-| Expectation                                         | Subject  | Summary                                     |
-|-----------------------------------------------------|----------|---------------------------------------------|
-| [`IsValidXml`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation) | `string` | can be parsed as a well-formed XML document |
+| Expectation                                                                | Subject  | Summary                                           |
+|----------------------------------------------------------------------------|----------|---------------------------------------------------|
+| [`IsEqualTo(…).AsXml()`](../../Docs/extensions/aweXpect.Xml/01-strings.md#string-comparison-as-xml) | `string` | is equivalent to the expected XML, by its content |
+| [`IsValidXml`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation)                        | `string` | can be parsed as a well-formed XML document       |
 
 ## Documentation
 
 The full documentation is available at
 [docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Xml/):
 
-- [XML strings](../../Docs/extensions/aweXpect.Xml/01-strings.md): validating strings as XML
+- [XML strings](../../Docs/extensions/aweXpect.Xml/01-strings.md): comparing and validating strings as XML

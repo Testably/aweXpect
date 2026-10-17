@@ -1,4 +1,3 @@
-using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -6,6 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Formatting;
+using aweXpect.Helpers;
 using aweXpect.Results;
 using static aweXpect.Formatting.Format;
 
@@ -35,20 +35,6 @@ public static partial class ThatXmlString
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IValueConstraint<string?>
 	{
-		private static readonly XmlReaderSettings DtdProhibitingSettings = new()
-		{
-			DtdProcessing = DtdProcessing.Prohibit,
-			XmlResolver = null,
-			IgnoreWhitespace = true,
-		};
-
-		private static readonly XmlReaderSettings DtdSkippingSettings = new()
-		{
-			DtdProcessing = DtdProcessing.Ignore,
-			XmlResolver = null,
-			IgnoreWhitespace = true,
-		};
-
 		private bool _containsDtd;
 		private XDocument? _document;
 		private string? _parseError;
@@ -64,11 +50,11 @@ public static partial class ThatXmlString
 
 			try
 			{
-				_document = Load(actual, DtdProhibitingSettings);
+				_document = SecureXml.Load(actual);
 			}
 			catch (XmlException xmlException)
 			{
-				_containsDtd = IsCausedByDtd(actual, xmlException.Message);
+				_containsDtd = SecureXml.IsCausedByDtd(actual, xmlException);
 				_parseError = xmlException.Message;
 				Outcome = Outcome.Failure;
 				return this;
@@ -76,33 +62,6 @@ public static partial class ThatXmlString
 
 			Outcome = Outcome.Success;
 			return this;
-		}
-
-		/// <remarks>
-		///     The <see cref="XmlException" /> for a prohibited DTD cannot be told apart from other errors and its message
-		///     suggests enabling DTD processing. As everything but the DTD is read the same way whether the DTD is
-		///     prohibited or skipped, the DTD caused the error when skipping it changes the outcome.
-		/// </remarks>
-		private static bool IsCausedByDtd(string xml, string errorWhenProhibitingDtd)
-		{
-			try
-			{
-				Load(xml, DtdSkippingSettings);
-				return true;
-			}
-			catch (XmlException xmlException)
-			{
-				return xmlException.Message != errorWhenProhibitingDtd;
-			}
-		}
-
-		/// <remarks>
-		///     Insignificant whitespace is dropped, like by <see cref="XDocument.Parse(string)" />.
-		/// </remarks>
-		private static XDocument Load(string xml, XmlReaderSettings settings)
-		{
-			using XmlReader reader = XmlReader.Create(new StringReader(xml), settings);
-			return XDocument.Load(reader);
 		}
 
 		/// <remarks>

@@ -1,5 +1,59 @@
 # XML strings
 
+## String comparison as XML
+
+You can verify that a string is equal to the expected XML, compared by its content instead of its formatting:
+
+```csharp
+string order = """<order id="42"><item sku="A1" price="1.0"/></order>""";
+string expected = """
+                  <order id="42">
+                    <item price="1.00" sku="A1" />
+                  </order>
+                  """;
+
+await Expect.That(order).IsEqualTo(expected).AsXml();
+```
+
+As the price differs, the expectation fails with:
+
+```text title="Failure message"
+Expected that order
+is XML equivalent to <order id="42">
+  <item price="1.00" sku="A1" />
+</order>,
+but it differed as /order/item/@price was "1.0" instead of "1.00"
+
+Actual:
+<order id="42"><item sku="A1" price="1.0"/></order>
+
+Expected:
+<order id="42">
+  <item price="1.00" sku="A1" />
+</order>
+```
+
+The documents are equivalent, when they only differ in
+
+- the order of the attributes,
+- the prefixes of namespaces, as elements and attributes are compared by their namespace and local name,
+- whitespace-only text between elements, unless `xml:space="preserve"` keeps it,
+- comments, processing instructions and the XML declaration,
+- CDATA sections instead of escaped text, or `<a/>` instead of `<a></a>`.
+
+Texts and attribute values are compared exactly, including leading and trailing whitespace, and the order of the
+child elements is significant.
+
+Each difference names the path of the node: every element by its local name, followed by its position among the
+siblings of the same name, if there are several, e.g. `/order/item[2]/@price`, and every text as `text()`. The child
+elements are paired by this path, so an additional element is reported as unexpected instead of shifting the elements
+after it, and a different order is reported once for their parent.
+
+The expected string must be valid XML, otherwise an `ArgumentException` is thrown. Like for [validation](#validation),
+a document type definition (DTD) is prohibited in both strings. As XML is compared by its content, `AsXml()` cannot be
+combined with `IgnoringCase()` or `Using(comparer)`, and it is not available on `Contains` or `DoesNotContain` for a
+string subject. On a collection of strings, `Contains(expected).AsXml()` compares each item as XML.
+
 ## Validation
 
 You can verify that a string is a well-formed XML document:

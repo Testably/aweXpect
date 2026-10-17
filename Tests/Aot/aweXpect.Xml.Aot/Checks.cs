@@ -21,6 +21,12 @@ internal static class Checks
 		new("a failing expectation on the root element fails",
 			() => ShouldFail(async () => await That("<a/>").IsValidXml()
 				.Which(r => r.Satisfies(e => e!.Name.LocalName == "b")), "is valid XML which satisfies")),
+		new("equivalent XML strings pass",
+			() => ShouldPass(async () => await That("<a y=\"2\" x=\"1\"><b/></a>")
+				.IsEqualTo("<a x=\"1\" y=\"2\">\n  <b></b>\n</a>").AsXml())),
+		new("different XML strings fail and name the path of the difference",
+			() => ShouldFail(async () => await That("<a><b x=\"1\"/></a>").IsEqualTo("<a><b x=\"2\"/></a>").AsXml(),
+				"is XML equivalent to", "/a/b/@x was \"1\" instead of \"2\"")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)
