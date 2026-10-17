@@ -110,8 +110,7 @@ public partial class StringEqualityOptions
 				return new ValueTask<StringMatchResult>(false);
 			}
 
-			return new ValueTask<StringMatchResult>(Regex.IsMatch(FoldCase(actual, ignoreCase),
-				WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline, RegexTimeout));
+			return new ValueTask<StringMatchResult>(IsMatch(CreateRegex(expected, ignoreCase), actual, ignoreCase));
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

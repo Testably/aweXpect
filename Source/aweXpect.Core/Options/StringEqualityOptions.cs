@@ -18,7 +18,6 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 {
 	private const int DefaultMaxLength = 30;
 
-	private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(1000);
 	private readonly string _parameterName;
 	private IEqualityComparer<string>? _comparer;
 	private bool _ignoreCase;
@@ -833,12 +832,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     An <see cref="ArgumentException" /> is not wrapped by the expectation node, so that the pattern which has
-	///     to be simplified stays visible instead of being hidden behind a generic evaluation error.
+	///     to be simplified stays visible instead of being hidden behind a generic evaluation error.<br />
+	///     The timeout is taken from the <paramref name="innerException" />, because it is the one that applied, also
+	///     for a custom match type with a regex of its own.
 	/// </remarks>
 	private ArgumentException CreateTimeoutException(string? expected, RegexMatchTimeoutException innerException)
 		// ReSharper disable once LocalizableElement
 		=> Tracing.WriteException(new ArgumentException(
-			$"The {(_matchType is RegexMatchType ? "regex" : "wildcard pattern")} {Formatter.Format(expected)} did not complete within {Formatter.Format(RegexTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
+			$"The {(_matchType is RegexMatchType ? "regex" : "wildcard pattern")} {Formatter.Format(expected)} did not complete within {Formatter.Format(innerException.MatchTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
 			_parameterName, innerException));
 
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
@@ -1179,12 +1180,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 	/// <summary>
 	///     Returns the regex for the <paramref name="expected" /> pattern of the current match type, and parses it with
-	///     <paramref name="parse" /> only when the last parsed pattern was a different one.
+	///     <paramref name="parse" /> only when the last parsed pattern was a different one or has another timeout.
 	/// </summary>
 	private Regex GetParsedPattern(string expected, Func<IStringMatchType, string, bool, Regex> parse)
 	{
 		ParsedPattern? parsedPattern = _parsedPattern;
-		if (parsedPattern is not null && parsedPattern.IsFor(_matchType, expected, _ignoreCase))
+		if (parsedPattern is not null && parsedPattern.IsFor(_matchType, expected, _ignoreCase) &&
+		    parsedPattern.Regex.MatchTimeout == GetRegexTimeout())
 		{
 			return parsedPattern.Regex;
 		}

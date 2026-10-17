@@ -104,6 +104,22 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task AreConsideredEqual_WhenACustomMatchTypeTimesOut_ShouldNameItsTimeout()
+		{
+			RegexMatchTimeoutException exception = new("foo", "bar", TimeSpan.FromSeconds(3));
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new DelegatingMatchType(() => throw exception), "AsCustom");
+
+			async Task Act() => await sut.AreConsideredEqual("foo", "bar");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage(
+					"""The wildcard pattern "bar" did not complete within 0:03. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix()
+				.Because("the failure must name the timeout that applied instead of the configured default");
+		}
+
+		[Test]
 		[Arguments(false)]
 		[Arguments(true)]
 		public async Task AreConsideredEqual_WhenACustomMatchTypeTimesOut_ShouldThrowArgumentException(bool completesLater)

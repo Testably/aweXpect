@@ -3,6 +3,7 @@ using aweXpect.Chronology;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
+using aweXpect.Results;
 using aweXpect.Signaling;
 
 namespace aweXpect.Core.Tests.Customization;
@@ -95,6 +96,67 @@ public sealed class CustomizeSettingsTests
 			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(timeout)
 				.Because("-1 ms is the infinite timeout, which imposes no limit");
 		}
+	}
+
+	[Test]
+	public async Task DefaultRegexTimeout_ShouldApplyToTheExpectationsEvaluatedInTheScope()
+	{
+		string subject = new string('a', 30) + "!";
+		StringEqualityTypeResult<string?, IThat<string?>> expectation = That(subject).IsEqualTo("(a+)+$").AsRegex();
+
+		async Task ActInScope() => await expectation;
+		async Task ActAfterScope() => await That(subject).IsEqualTo("(a+)+$").AsRegex();
+
+		await That(Customize.aweXpect.Settings().DefaultRegexTimeout.Get()).IsEqualTo(1.Seconds());
+		using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(10.Milliseconds()))
+		{
+			await That(ActInScope).Throws<ArgumentException>()
+				.WithMessage(
+					"""The regex "(a+)+$" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix()
+				.Because("the expectation is built before the scope, but evaluated within it");
+		}
+
+		await That(ActAfterScope).Throws<ArgumentException>()
+			.WithMessage(
+				"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+			.AsPrefix()
+			.Because("the default timeout must be restored once the customization is disposed");
+	}
+
+	[Test]
+	[Arguments(-10_000L)]
+	[Arguments((int.MaxValue - 1) * 10_000L)]
+	public async Task DefaultRegexTimeout_WhenInfiniteOrMaximum_ShouldBeAccepted(long ticks)
+	{
+		TimeSpan timeout = TimeSpan.FromTicks(ticks);
+		string subject = "foo";
+
+		using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(timeout))
+		{
+			await That(Customize.aweXpect.Settings().DefaultRegexTimeout.Get()).IsEqualTo(timeout)
+				.Because("-1 ms is Regex.InfiniteMatchTimeout, and the regex engine accepts both values");
+			await That(subject).IsEqualTo("f.o").AsRegex();
+			await That(subject).IsEqualTo("f?o").AsWildcard();
+		}
+	}
+
+	[Test]
+	[Arguments(0L)]
+	[Arguments(-1L)]
+	[Arguments(-20_000L)]
+	[Arguments(int.MaxValue * 10_000L)]
+	public async Task DefaultRegexTimeout_WhenNotPositiveOrTooLarge_ShouldThrowArgumentOutOfRangeException(long ticks)
+	{
+		void Act() => Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromTicks(ticks));
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage(
+				"The timeout must be positive and at most Int32.MaxValue - 1 milliseconds, or Regex.InfiniteMatchTimeout.")
+			.AsPrefix()
+			.Because("the regex engine rejects these values, which must not surface only when a pattern is matched");
+		await That(Customize.aweXpect.Settings().DefaultRegexTimeout.Get()).IsEqualTo(1.Seconds());
 	}
 
 	[Test]

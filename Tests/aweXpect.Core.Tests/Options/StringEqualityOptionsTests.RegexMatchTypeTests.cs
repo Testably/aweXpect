@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using aweXpect.Chronology;
+using aweXpect.Customization;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -130,6 +132,39 @@ public sealed partial class StringEqualityOptionsTests
 				.WithParamName("expected").And
 				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
 				.Because("an unusable pattern must throw at the call instead of inside the returned task");
+		}
+
+		[Test]
+		public async Task AreConsideredEqual_WhenTheTimeoutChanges_ShouldNotReuseTheParsedRegex()
+		{
+			string catastrophicSubject = new string('a', 30) + "!";
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex();
+			StringEqualityOptions otherSut = new("expected");
+			otherSut.AsRegex();
+			bool result = await sut.AreConsideredEqual("aaa", "(a+)+$");
+
+			async Task Act() => await sut.AreConsideredEqual(catastrophicSubject, "(a+)+$");
+			async Task OtherAct() => await otherSut.AreConsideredEqual(catastrophicSubject, "(a+)+$");
+
+			await That(result).IsTrue();
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(10.Milliseconds()))
+			{
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix()
+					.Because("the options must not reuse the regex they parsed with the default timeout");
+			}
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(20.Milliseconds()))
+			{
+				await That(OtherAct).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:00.020. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix()
+					.Because("the shared cache must not reuse a regex that was parsed with another timeout");
+			}
 		}
 
 		[Test]

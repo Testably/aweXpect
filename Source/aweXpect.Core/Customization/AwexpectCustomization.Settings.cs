@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Signaling;
@@ -30,6 +31,11 @@ public partial class AwexpectCustomization
 		/// </summary>
 		internal const string TestCancellationKey = KeyPrefix + nameof(TestCancellation);
 
+		/// <summary>
+		///     The longest finite timeout that the <see cref="Regex" /> constructor accepts.
+		/// </summary>
+		private static readonly TimeSpan MaximumRegexTimeout = TimeSpan.FromMilliseconds(int.MaxValue - 1);
+
 		private readonly IAwexpectCustomization _awexpectCustomization;
 
 		internal SettingsCustomization(IAwexpectCustomization awexpectCustomization)
@@ -49,6 +55,18 @@ public partial class AwexpectCustomization
 			DefaultEventuallyTimeout = new CustomizationValue<TimeSpan>(awexpectCustomization,
 				KeyPrefix + nameof(DefaultEventuallyTimeout), TimeSpan.FromSeconds(30),
 				timeout => ThrowHelper.ThrowIfTimeoutIsNegative(timeout));
+			DefaultRegexTimeout = new CustomizationValue<TimeSpan>(awexpectCustomization,
+				KeyPrefix + nameof(DefaultRegexTimeout), TimeSpan.FromSeconds(1),
+				timeout =>
+				{
+					if (timeout != Regex.InfiniteMatchTimeout &&
+					    (timeout <= TimeSpan.Zero || timeout > MaximumRegexTimeout))
+					{
+						// ReSharper disable once LocalizableElement
+						throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(timeout),
+							"The timeout must be positive and at most Int32.MaxValue - 1 milliseconds, or Regex.InfiniteMatchTimeout."));
+					}
+				});
 			DefaultSignalerTimeout = new CustomizationValue<TimeSpan>(awexpectCustomization,
 				KeyPrefix + nameof(DefaultSignalerTimeout), TimeSpan.FromSeconds(30),
 				timeout => ThrowHelper.ThrowIfTimeoutIsNegative(timeout));
@@ -77,6 +95,19 @@ public partial class AwexpectCustomization
 		///     The default timeout until the expectations of <c>Eventually()</c> on a delegate must be met.
 		/// </summary>
 		public ICustomizationValueSetter<TimeSpan> DefaultEventuallyTimeout { get; }
+
+		/// <summary>
+		///     The timeout for matching a regex that aweXpect builds from a pattern, e.g. for <c>AsRegex()</c> or
+		///     <c>AsWildcard()</c>.
+		/// </summary>
+		/// <remarks>
+		///     It protects against catastrophic backtracking. A pattern that does not complete within it throws an
+		///     <see cref="ArgumentException" /> that names the timeout.<br />
+		///     The value is read when the pattern is matched, so a value set for a scope applies to every expectation
+		///     that is evaluated within it. It must be positive or <see cref="Regex.InfiniteMatchTimeout" />, which
+		///     imposes no limit.
+		/// </remarks>
+		public ICustomizationValueSetter<TimeSpan> DefaultRegexTimeout { get; }
 
 		/// <summary>
 		///     The default timeout for the <see cref="Signaler" />.

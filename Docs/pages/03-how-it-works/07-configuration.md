@@ -124,6 +124,7 @@ Under `Customize.aweXpect.Settings()`:
 | `TestCancellation`               | `TestCancellation` | none    | A [timeout or `CancellationToken`](./06-time-and-cancellation.md) that is applied to all expectations.              |
 | `DefaultCheckInterval`           | `TimeSpan`         | 100 ms  | The interval for re-checking a condition, e.g. for [`Eventually()`](./06-time-and-cancellation.md#eventually).      |
 | `DefaultEventuallyTimeout`       | `TimeSpan`         | 30 s    | How long [`Eventually()`](./06-time-and-cancellation.md#eventually) retries until the expectations must be met.     |
+| `DefaultRegexTimeout`            | `TimeSpan`         | 1 s     | How long a [wildcard or regex pattern](../04-values/03-string.md#match-types) may take to match.                    |
 | `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s    | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                     |
 | `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0       | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
 
@@ -131,6 +132,19 @@ See [time and cancellation](./06-time-and-cancellation.md#cancellationtoken) for
 
 The interval must be positive, and the timeouts must not be negative. `Timeout.InfiniteTimeSpan` retries or waits
 without a limit. See [waiting](./06-time-and-cancellation.md#waiting) for which expectations use the timeouts.
+
+The `DefaultRegexTimeout` protects against catastrophic backtracking. Like the `Regex` constructor, it accepts a
+positive value or `Regex.InfiniteMatchTimeout`, and rejects zero. It is read when a pattern is matched, so a scope can
+allow more time for a large subject on a slow build server:
+
+```csharp
+using aweXpect.Customization;
+
+using (Customize.aweXpect.Settings().DefaultRegexTimeout.Set(TimeSpan.FromSeconds(5)))
+{
+    // a wildcard or regex pattern may take up to five seconds to match here
+}
+```
 
 :::tip
 On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so

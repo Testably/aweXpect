@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Options;
 
 namespace aweXpect;
@@ -91,7 +92,7 @@ internal static class QuantifiedCollectionHelpers
 
 		// The count of a collection whose enumeration stopped early does not tell how many items remain.
 		Match truncation = Regex.Match(formattedItems, @"\(… and [^)]+ more\)(?=(\r?\n)?\]$)",
-			RegexOptions.None, TimeSpan.FromSeconds(1));
+			RegexOptions.None, Customize.aweXpect.Settings().DefaultRegexTimeout.Get());
 		if (truncation.Success)
 		{
 			return formattedItems[..truncation.Index] + MaybeMoreMarker +
