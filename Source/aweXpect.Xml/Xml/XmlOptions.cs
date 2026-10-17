@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
@@ -9,6 +10,8 @@ namespace aweXpect.Xml;
 /// </summary>
 public record XmlOptions
 {
+	internal bool IgnoreElementOrder { get; init; }
+
 	internal IReadOnlyList<XmlMemberToIgnore> MembersToIgnore { get; init; } = [];
 
 	internal bool IsIgnored(string path)
@@ -23,10 +26,21 @@ public record XmlOptions
 	/// </remarks>
 	internal void AddContext(ResultContextCollector contexts)
 	{
+		List<string> options = new();
+		if (IgnoreElementOrder)
+		{
+			options.Add(" - ignore element order");
+		}
+
 		if (MembersToIgnore.Count > 0)
 		{
-			contexts.Add(new ResultContext.Fixed("XML options",
-				$" - ignore members: [{string.Join(", ", MembersToIgnore)}]", int.MinValue));
+			options.Add($" - ignore members: [{string.Join(", ", MembersToIgnore)}]");
+		}
+
+		if (options.Count > 0)
+		{
+			contexts.Add(new ResultContext.Fixed("XML options", string.Join(Environment.NewLine, options),
+				int.MinValue));
 		}
 	}
 }

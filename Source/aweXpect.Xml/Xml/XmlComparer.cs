@@ -20,7 +20,7 @@ namespace aweXpect.Xml;
 ///     its 1-based position among the siblings of the same local name, if there are several, e.g.
 ///     <c>/order/item[2]/@price</c>, and every text as <c>text()</c>. The child nodes are paired by this name and
 ///     position, so that an additional or a missing element does not shift the elements after it, and their order is
-///     verified separately.
+///     verified separately, unless <see cref="XmlOptions.IgnoreElementOrder" /> is set.
 /// </remarks>
 internal static class XmlComparer
 {
@@ -121,27 +121,18 @@ internal static class XmlComparer
 		}
 	}
 
-	/// <remarks>
-	///     A child is ignored with its pair, when the path of either is ignored, so that the documents cannot disagree
-	///     about it, e.g. when only one of them has several siblings of the same name.
-	/// </remarks>
 	private static void CompareChildren(XElement actual, XElement expected, string path, Comparison comparison)
 	{
 		XmlComparisonResult result = comparison.Result;
 		List<Content> actualChildren = GetContent(actual, path);
 		List<Content> expectedChildren = GetContent(expected, path);
-		HashSet<string> ignoredKeys = new(actualChildren.Concat(expectedChildren)
-			.Where(child => comparison.Options.IsIgnored(child.Path))
-			.Select(child => child.Key));
-		actualChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
-		expectedChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
-		Dictionary<string, Content> actualChildrenByKey = actualChildren.ToDictionary(child => child.Key);
-		HashSet<string> expectedKeys = new(expectedChildren.Select(child => child.Key));
+		Dictionary<Content, Content> pairs = comparison.Options.IgnoreElementOrder
+			? PairIgnoringOrder(actualChildren, expectedChildren, comparison)
+			: PairByKey(actualChildren, expectedChildren, path, comparison);
 
-		CompareOrder(expectedChildren, actualChildrenByKey, path, result);
 		foreach (Content expectedChild in expectedChildren)
 		{
-			if (!actualChildrenByKey.TryGetValue(expectedChild.Key, out Content? actualChild))
+			if (!pairs.TryGetValue(expectedChild, out Content? actualChild))
 			{
 				result.AddError(expectedChild.Path, "was missing");
 			}
@@ -161,29 +152,96 @@ internal static class XmlComparer
 			return;
 		}
 
-		foreach (Content unexpectedChild in actualChildren.Where(child => !expectedKeys.Contains(child.Key)))
+		HashSet<Content> pairedChildren = new(pairs.Values);
+		foreach (Content unexpectedChild in actualChildren.Where(child => !pairedChildren.Contains(child)))
 		{
 			result.AddError(unexpectedChild.Path, "was unexpected");
 		}
 	}
 
 	/// <summary>
-	///     Verifies that the paired children of the subject are in the expected order.
+	///     Pairs every expected child with the child of the subject with the same <see cref="Content.Key" />, and
+	///     verifies that the paired children are in the expected order.
 	/// </summary>
-	private static void CompareOrder(List<Content> expectedChildren,
-		Dictionary<string, Content> actualChildrenByKey, string path, XmlComparisonResult result)
+	/// <remarks>
+	///     A child is ignored with its pair, when the path of either is ignored, so that the documents cannot disagree
+	///     about it, e.g. when only one of them has several siblings of the same name.
+	/// </remarks>
+	private static Dictionary<Content, Content> PairByKey(List<Content> actualChildren,
+		List<Content> expectedChildren, string path, Comparison comparison)
 	{
-		List<Content> pairedChildren = expectedChildren
+		HashSet<string> ignoredKeys = new(actualChildren.Concat(expectedChildren)
+			.Where(child => comparison.Options.IsIgnored(child.Path))
+			.Select(child => child.Key));
+		actualChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
+		expectedChildren.RemoveAll(child => ignoredKeys.Contains(child.Key));
+		Dictionary<string, Content> actualChildrenByKey = actualChildren.ToDictionary(child => child.Key);
+		Dictionary<Content, Content> pairs = expectedChildren
 			.Where(child => actualChildrenByKey.ContainsKey(child.Key))
-			.ToList();
-		List<Content> actualOrder = pairedChildren
-			.OrderBy(child => actualChildrenByKey[child.Key].Position)
-			.ToList();
+			.ToDictionary(child => child, child => actualChildrenByKey[child.Key]);
+
+		List<Content> pairedChildren = expectedChildren.Where(pairs.ContainsKey).ToList();
+		List<Content> actualOrder = pairedChildren.OrderBy(child => pairs[child].Position).ToList();
 		if (!actualOrder.SequenceEqual(pairedChildren))
 		{
-			result.AddError(path,
+			comparison.Result.AddError(path,
 				$"had the child nodes in the order {string.Join(", ", actualOrder.Select(child => child.Segment))} instead of {string.Join(", ", pairedChildren.Select(child => child.Segment))}");
 		}
+
+		return pairs;
+	}
+
+	/// <summary>
+	///     Pairs every expected child with the first unpaired child of the subject with the same name that is equivalent
+	///     to it, and then the remaining children of the same name in their order, so that their differences are
+	///     reported instead of a missing and an unexpected child.
+	/// </summary>
+	/// <remarks>
+	///     The children are ignored by their own path in each document, as a position no longer pairs them.
+	///     <para />
+	///     The pairing is greedy, so that an expected child can be paired with a child of the subject that a later
+	///     expected child would have needed, when additional nodes are ignored.
+	/// </remarks>
+	private static Dictionary<Content, Content> PairIgnoringOrder(List<Content> actualChildren,
+		List<Content> expectedChildren, Comparison comparison)
+	{
+		actualChildren.RemoveAll(child => comparison.Options.IsIgnored(child.Path));
+		expectedChildren.RemoveAll(child => comparison.Options.IsIgnored(child.Path));
+		List<Content> unpairedChildren = new(actualChildren);
+		Dictionary<Content, Content> pairs = new();
+		foreach (Content expectedChild in expectedChildren)
+		{
+			Pair(expectedChild, unpairedChildren.Find(child =>
+				child.Name == expectedChild.Name && IsEquivalent(child, expectedChild, comparison)));
+		}
+
+		foreach (Content expectedChild in expectedChildren.Where(child => !pairs.ContainsKey(child)))
+		{
+			Pair(expectedChild, unpairedChildren.Find(child => child.Name == expectedChild.Name));
+		}
+
+		return pairs;
+
+		void Pair(Content expectedChild, Content? actualChild)
+		{
+			if (actualChild is not null)
+			{
+				pairs.Add(expectedChild, actualChild);
+				unpairedChildren.Remove(actualChild);
+			}
+		}
+	}
+
+	private static bool IsEquivalent(Content actualChild, Content expectedChild, Comparison comparison)
+	{
+		if (expectedChild.Element is null)
+		{
+			return actualChild.Text == expectedChild.Text;
+		}
+
+		Comparison candidate = new(comparison.Options, comparison.IgnoreAdditionalNodes);
+		CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, candidate);
+		return !candidate.Result.HasError;
 	}
 
 	/// <summary>
@@ -268,6 +326,7 @@ internal static class XmlComparer
 		public XElement? Element { get; } = element;
 		public string? Text { get; } = text;
 		public int Position { get; } = position;
+		public string Name { get; } = name;
 		public string Key { get; } = $"{name}[{occurrence}]";
 		public string Segment { get; } = hasSiblingsOfSameName ? $"{name}[{occurrence}]" : name;
 		public string Path => parentPath + PathSeparator + Segment;

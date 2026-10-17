@@ -62,6 +62,7 @@ namespace aweXpect.Xml
     public static class XmlOptionsExtensions
     {
         public static aweXpect.Xml.XmlOptions Ignoring(this aweXpect.Xml.XmlOptions @this, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Xml.XmlOptions IgnoringElementOrder(this aweXpect.Xml.XmlOptions @this, bool ignoreElementOrder = true) { }
         public static aweXpect.Xml.XmlOptions IgnoringMember(this aweXpect.Xml.XmlOptions @this, string memberToIgnore) { }
     }
 }

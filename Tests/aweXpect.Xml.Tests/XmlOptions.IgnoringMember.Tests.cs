@@ -3,7 +3,7 @@ using aweXpect.Xml.Tests.Helpers;
 
 namespace aweXpect.Xml.Tests;
 
-public sealed class XmlOptionsTests
+public sealed partial class XmlOptionsTests
 {
 	[UseEnglishMessages]
 	public sealed class IgnoringMember

@@ -49,6 +49,13 @@ internal static class Checks
 			() => ShouldFail(async () => await That(XElement.Parse("<a id=\"1\" x=\"1\"/>"))
 					.Matches("<a id=\"2\" x=\"2\"/>", o => o.IgnoringMember("@id")),
 				"/a/@x was \"1\" instead of \"2\"", "ignore members: [\"@id\"]")),
+		new("reordered elements pass when ignoring the element order",
+			() => ShouldPass(async () => await That(XElement.Parse("<a><b x=\"2\"/><c/><b x=\"1\"/></a>"))
+				.MatchesExactly("<a><b x=\"1\"/><b x=\"2\"/><c/></a>", o => o.IgnoringElementOrder()))),
+		new("a reordered element that differs fails when ignoring the element order",
+			() => ShouldFail(async () => await That("<a><b x=\"3\"/><b x=\"2\"/></a>")
+					.IsEqualTo("<a><b x=\"1\"/><b x=\"2\"/></a>").AsXml(o => o.IgnoringElementOrder()),
+				"/a/b[1]/@x was \"3\" instead of \"1\"", "ignore element order")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)

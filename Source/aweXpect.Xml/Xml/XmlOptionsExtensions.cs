@@ -12,6 +12,27 @@ namespace aweXpect.Xml;
 public static class XmlOptionsExtensions
 {
 	/// <summary>
+	///     Ignores the order of the child nodes of all compared elements
+	///     when <paramref name="ignoreElementOrder" /> is <see langword="true" />
+	/// </summary>
+	/// <remarks>
+	///     Each expected child is paired with the first unpaired child of the subject with the same name that matches it,
+	///     and the remaining children of the same name are paired in their order, so that their differences are
+	///     reported. This greedy pairing can fail for <c>Matches</c>, which ignores additional nodes, when an expected
+	///     child matches several children of the subject, even when another pairing would succeed.
+	///     <para />
+	///     A position in a member to ignore, e.g. <c>item[2]</c>, refers to the child in each document by its own
+	///     position.
+	/// </remarks>
+	public static XmlOptions IgnoringElementOrder(
+		this XmlOptions @this,
+		bool ignoreElementOrder = true)
+		=> @this with
+		{
+			IgnoreElementOrder = ignoreElementOrder,
+		};
+
+	/// <summary>
 	///     Ignores the <paramref name="memberToIgnore" /> in the comparison.
 	/// </summary>
 	/// <remarks>

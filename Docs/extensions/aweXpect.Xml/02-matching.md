@@ -81,3 +81,23 @@ when the expectation fails:
 XML options:
  - ignore members: ["/order/@id", "@createdAt", path => path.EndsWith("/@etag")]
 ```
+
+## Element order
+
+By default, the order of the child elements is significant. You can ignore it for all compared elements:
+
+```csharp
+XElement order = XElement.Parse("""<order><item sku="B2" /><item sku="A1" /></order>""");
+
+await Expect.That(order).MatchesExactly("""<order><item sku="A1" /><item sku="B2" /></order>""",
+    o => o.IgnoringElementOrder());
+```
+
+Each expected child is paired with the first unpaired child of the subject with the same name that matches it. The
+remaining children of the same name are paired in their order, so that their differences are reported, e.g.
+`/order/item[1]/@sku was "C3" instead of "A1"`, and the children that are still unpaired are reported as missing or
+unexpected. This greedy pairing can fail for `Matches`, which ignores additional nodes, when an expected child matches
+several children of the subject, even if another pairing would succeed.
+
+As the children are no longer paired by their position, a position in a [member to ignore](#ignoring-members), e.g.
+`item[2]`, refers to the child at this position in each document.
