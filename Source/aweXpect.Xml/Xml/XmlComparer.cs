@@ -26,7 +26,12 @@ internal static class XmlComparer
 {
 	private const char PathSeparator = '/';
 
-	public static XmlComparisonResult Compare(XElement actual, XElement expected)
+	/// <param name="actual">The element of the subject.</param>
+	/// <param name="expected">The expected element.</param>
+	/// <param name="ignoreAdditionalNodes">
+	///     Whether the attributes and child nodes of the subject that are not paired with an expected one are ignored.
+	/// </param>
+	public static XmlComparisonResult Compare(XElement actual, XElement expected, bool ignoreAdditionalNodes)
 	{
 		XmlComparisonResult result = new();
 		string path = PathSeparator + expected.Name.LocalName;
@@ -36,14 +41,14 @@ internal static class XmlComparer
 		}
 		else
 		{
-			CompareElements(actual, expected, path, result);
+			CompareElements(actual, expected, path, ignoreAdditionalNodes, result);
 		}
 
 		return result;
 	}
 
 	private static void CompareElements(XElement actual, XElement expected, string path,
-		XmlComparisonResult result)
+		bool ignoreAdditionalNodes, XmlComparisonResult result)
 	{
 		if (actual.Name.Namespace != expected.Name.Namespace)
 		{
@@ -51,8 +56,8 @@ internal static class XmlComparer
 			return;
 		}
 
-		CompareAttributes(actual, expected, path, result);
-		CompareChildren(actual, expected, path, result);
+		CompareAttributes(actual, expected, path, ignoreAdditionalNodes, result);
+		CompareChildren(actual, expected, path, ignoreAdditionalNodes, result);
 	}
 
 	/// <remarks>
@@ -60,7 +65,7 @@ internal static class XmlComparer
 	///     difference is reported once instead of as a missing and an unexpected attribute.
 	/// </remarks>
 	private static void CompareAttributes(XElement actual, XElement expected, string path,
-		XmlComparisonResult result)
+		bool ignoreAdditionalNodes, XmlComparisonResult result)
 	{
 		List<XAttribute> unpairedAttributes = actual.Attributes().Where(a => !a.IsNamespaceDeclaration).ToList();
 		foreach (XAttribute expectedAttribute in expected.Attributes().Where(a => !a.IsNamespaceDeclaration))
@@ -88,6 +93,11 @@ internal static class XmlComparer
 			}
 		}
 
+		if (ignoreAdditionalNodes)
+		{
+			return;
+		}
+
 		foreach (XAttribute unexpectedAttribute in unpairedAttributes)
 		{
 			result.AddError($"{path}{PathSeparator}@{unexpectedAttribute.Name.LocalName}", "was unexpected");
@@ -95,7 +105,7 @@ internal static class XmlComparer
 	}
 
 	private static void CompareChildren(XElement actual, XElement expected, string path,
-		XmlComparisonResult result)
+		bool ignoreAdditionalNodes, XmlComparisonResult result)
 	{
 		List<Content> actualChildren = GetContent(actual, path);
 		List<Content> expectedChildren = GetContent(expected, path);
@@ -111,13 +121,19 @@ internal static class XmlComparer
 			}
 			else if (expectedChild.Element is not null)
 			{
-				CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, result);
+				CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, ignoreAdditionalNodes,
+					result);
 			}
 			else if (actualChild.Text != expectedChild.Text)
 			{
 				result.AddError(expectedChild.Path,
 					$"was {Formatter.Format(actualChild.Text)} instead of {Formatter.Format(expectedChild.Text)}");
 			}
+		}
+
+		if (ignoreAdditionalNodes)
+		{
+			return;
 		}
 
 		foreach (Content unexpectedChild in actualChildren.Where(child => !expectedKeys.Contains(child.Key)))

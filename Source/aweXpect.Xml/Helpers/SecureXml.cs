@@ -1,6 +1,8 @@
+using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -30,6 +32,42 @@ internal static class SecureXml
 	/// <exception cref="XmlException">The <paramref name="xml" /> is not a well-formed XML document.</exception>
 	public static XDocument Load(string xml)
 		=> Load(xml, DtdProhibitingSettings);
+
+	/// <summary>
+	///     Loads the <paramref name="expected" /> XML of an expectation.
+	/// </summary>
+	/// <remarks>
+	///     An expected value that is no XML is rejected, as it would differ from every subject, so that a negated
+	///     expectation could never fail.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
+	public static XDocument LoadExpected(string? expected)
+	{
+		if (expected is null)
+		{
+			throw Tracing.WriteException(new ArgumentNullException(nameof(expected), "The expected XML cannot be null."));
+		}
+
+		try
+		{
+			return Load(expected);
+		}
+		catch (XmlException e)
+		{
+			throw Tracing.WriteException(new ArgumentException(IsCausedByDtd(expected, e)
+				? "The expected XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons."
+				: $"The expected XML is invalid: {e.Message}", e));
+		}
+	}
+
+	/// <summary>
+	///     Describes why the subject <paramref name="xml" /> could not be loaded, following <c>which</c>.
+	/// </summary>
+	public static string DescribeLoadError(string xml, XmlException exception)
+		=> IsCausedByDtd(xml, exception)
+			? "could not be parsed as XML, because it contained a document type definition (DTD), which is prohibited for security reasons"
+			: $"could not be parsed as XML: {exception.Message}";
 
 	/// <remarks>
 	///     The <see cref="XmlException" /> for a prohibited DTD cannot be told apart from other errors and its message

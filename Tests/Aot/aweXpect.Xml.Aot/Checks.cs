@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static aweXpect.Expect;
 
 namespace aweXpect.Xml.Aot;
@@ -27,6 +28,14 @@ internal static class Checks
 		new("different XML strings fail and name the path of the difference",
 			() => ShouldFail(async () => await That("<a><b x=\"1\"/></a>").IsEqualTo("<a><b x=\"2\"/></a>").AsXml(),
 				"is XML equivalent to", "/a/b/@x was \"1\" instead of \"2\"")),
+		new("an element that contains the expected XML matches",
+			() => ShouldPass(async () => await That(XElement.Parse("<a x=\"1\" y=\"2\"><b/></a>")).Matches("<a x=\"1\"/>"))),
+		new("a document whose root has additional nodes does not match exactly",
+			() => ShouldFail(async () => await That(XDocument.Parse("<a x=\"1\"/>")).MatchesExactly("<a/>"),
+				"matches <a/> exactly", "/a/@x was unexpected")),
+		new("a valid XML string that differs from the expected XML fails",
+			() => ShouldFail(async () => await That("<a x=\"2\"/>").IsValidXmlMatching("<a x=\"1\"/>"),
+				"is valid XML which matches", "/a/@x was \"2\" instead of \"1\"")),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)

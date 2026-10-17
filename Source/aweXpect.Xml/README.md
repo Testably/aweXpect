@@ -30,10 +30,14 @@ but it could not be parsed: Unexpected end of file has occurred. The following e
 
 ## Overview
 
-| Expectation                                                                | Subject  | Summary                                           |
-|----------------------------------------------------------------------------|----------|---------------------------------------------------|
-| [`IsEqualTo(…).AsXml()`](../../Docs/extensions/aweXpect.Xml/01-strings.md#string-comparison-as-xml) | `string` | is equivalent to the expected XML, by its content |
-| [`IsValidXml`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation)                        | `string` | can be parsed as a well-formed XML document       |
+| Expectation                                                                       | Subject                 | Summary                                                       |
+|-----------------------------------------------------------------------------------|-------------------------|---------------------------------------------------------------|
+| [`IsEqualTo(…).AsXml()`](../../Docs/extensions/aweXpect.Xml/01-strings.md#string-comparison-as-xml)        | `string`                | is equivalent to the expected XML, by its content             |
+| [`IsValidXml`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation)                               | `string`                | can be parsed as a well-formed XML document                   |
+| [`IsValidXmlMatching`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation)                       | `string`                | is valid XML that matches the expected XML                    |
+| [`IsValidXmlMatchingExactly`](../../Docs/extensions/aweXpect.Xml/01-strings.md#validation)                | `string`                | is valid XML that matches the expected XML exactly            |
+| [`Matches`](../../Docs/extensions/aweXpect.Xml/02-matching.md#elements-and-documents)                     | `XElement`, `XDocument` | contains the expected XML, ignoring additional nodes          |
+| [`MatchesExactly`](../../Docs/extensions/aweXpect.Xml/02-matching.md#elements-and-documents)              | `XElement`, `XDocument` | is equivalent to the expected XML                             |
 
 ## Documentation
 
@@ -41,3 +45,4 @@ The full documentation is available at
 [docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Xml/):
 
 - [XML strings](../../Docs/extensions/aweXpect.Xml/01-strings.md): comparing and validating strings as XML
+- [Matching XML](../../Docs/extensions/aweXpect.Xml/02-matching.md): matching `XElement` and `XDocument` against an expected XML

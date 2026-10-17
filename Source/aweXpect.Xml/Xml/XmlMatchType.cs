@@ -70,14 +70,11 @@ internal sealed class XmlMatchType : IStringMatchType
 		}
 		catch (XmlException e)
 		{
-			string reason = SecureXml.IsCausedByDtd(actual, e)
-				? "could not be parsed as XML, because it contained a document type definition (DTD), which is prohibited for security reasons"
-				: $"could not be parsed as XML: {e.Message}";
-			return new ValueTask<StringMatchResult>(
-				StringMatchResult.NotComparable($"it was {Formatter.Format(actual)}, which {reason}", e));
+			return new ValueTask<StringMatchResult>(StringMatchResult.NotComparable(
+				$"it was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
 		}
 
-		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!);
+		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, false);
 		return new ValueTask<StringMatchResult>(!_comparisonResult.HasError);
 	}
 
@@ -129,33 +126,16 @@ internal sealed class XmlMatchType : IStringMatchType
 
 	/// <remarks>
 	///     The last parsed document is kept, because the expected value is validated and compared again for every item of
-	///     a collection. An expected value that is no XML differs from every subject, so that a negated expectation could
-	///     never fail.
+	///     a collection.
 	/// </remarks>
 	private XDocument GetExpectedDocument(string? expected)
 	{
-		if (expected is null)
+		if (_expectedDocument is null || !string.Equals(expected, _expectedXml, StringComparison.Ordinal))
 		{
-			throw Tracing.WriteException(new ArgumentNullException(nameof(expected), "The expected XML cannot be null."));
+			_expectedDocument = SecureXml.LoadExpected(expected);
+			_expectedXml = expected;
 		}
 
-		if (_expectedDocument is not null && string.Equals(expected, _expectedXml, StringComparison.Ordinal))
-		{
-			return _expectedDocument;
-		}
-
-		try
-		{
-			_expectedDocument = SecureXml.Load(expected);
-		}
-		catch (XmlException e)
-		{
-			throw Tracing.WriteException(new ArgumentException(SecureXml.IsCausedByDtd(expected, e)
-				? "The expected XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons."
-				: $"The expected XML is invalid: {e.Message}", e));
-		}
-
-		_expectedXml = expected;
 		return _expectedDocument;
 	}
 }

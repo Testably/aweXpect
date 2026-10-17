@@ -95,12 +95,29 @@ You can add further expectations on the root
 ```csharp
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
-await Expect.That(track).IsValidXml().Which(root => root.Satisfies(t => t!.Name == "track"));
+await Expect.That(track).IsValidXml().Which(root => root.Matches("""<track title="Let It Be" />"""));
 ```
 
 The expectations are only verified when the string is valid XML. Like with
 [`XDocument.Parse`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument.parse), whitespace-only text
 between elements is dropped, unless `xml:space="preserve"` keeps it.
+
+Or you can verify that the string is valid XML and [matches](./02-matching.md) an expected XML in one step:
+
+```csharp
+string track = """<track title="Let It Be" artist="The Beatles" />""";
+
+await Expect.That(track).IsValidXmlMatching("""<track title="Let It Be" />""");
+await Expect.That(track).IsValidXmlMatchingExactly("""<track artist="The Beatles" title="Let It Be" />""");
+```
+
+`IsValidXmlMatching("""<track title="Yesterday" />""")` would fail with:
+
+```text title="Failure message"
+Expected that track
+is valid XML which matches <track title="Yesterday" />,
+but it differed as /track/@title was "Let It Be" instead of "Yesterday"
+```
 
 You can also verify that a string is not valid XML:
 
