@@ -257,7 +257,7 @@ their type, while the object is written, so that they don't depend on the writte
 ```csharp
 await Expect.That(album).MatchesSnapshot()
     .Ignoring.Member("PlayCount")                     // left out with its name
-    .Ignoring.Type<DateTime>()                        // every DateTime left out
+    .Ignoring.Member<DateTime>()                      // every DateTime member left out
     .Masking.Member("Id")                             // numbered: Id = {Id_1}
     .Masking.Member("Artist.StreamToken", "{token}")  // fixed replacement
     .Masking.Type<Guid>();                            // numbered: {Guid_1}
@@ -280,7 +280,11 @@ Album {
   an equivalency comparison: `Id` matches `Id`, `Artist.Id` and `Tracks[0].Id`, but not `TrackId`; `Artist.Id` only
   matches the `Id` of an `Artist`.
 - A type matches the declared or the runtime type of a value, including `Nullable<T>` and derived types:
-  `.Ignoring.Type<DateTime>()` also leaves out a `DateTime?` member and a `DateTime` in an `object` member.
+  `.Ignoring.Member<DateTime>()` also leaves out a `DateTime?` member and a `DateTime` in an `object` member.
+- `.Ignoring.Member<T>()` only leaves out members: the items of a collection, the values of a dictionary and the items
+  of a tuple are kept, so that a `List<DateTime>` is not written as an empty list. `.Masking.Type<T>()` masks every value
+  of the type, also these items, so use it for them, or leave out a single item by its path, e.g.
+  `.Ignoring.Member("Releases[0]")`.
 - A numbered placeholder is named after the last segment of the member name or after the type, and shares its numbers
   with the other maskings of that name, e.g. `.Masking.Type<Guid>()` with `.Masking.Guids()`. A `null` value is not
   masked.
@@ -308,7 +312,7 @@ Customize.aweXpect.Global.Snapshots().Maskings.Set([
 They are applied after the maskings of the expectation, in the order of the list, so a specific masking of the
 expectation goes before a general one for all snapshots. Members and types are left out for all snapshots of objects
 with `Customize.aweXpect.Snapshots().Ignorings` and the factories of `SnapshotIgnoring`, e.g.
-`Ignorings.Set([SnapshotIgnoring.Type<DateTime>()])`. Member and type rules for all snapshots are ignored for a `string`
+`Ignorings.Set([SnapshotIgnoring.Member<DateTime>()])`. Member and type rules for all snapshots are ignored for a `string`
 subject. Setting a value replaces the list; to extend an outer setting, e.g. for one async flow, include it:
 
 ```csharp

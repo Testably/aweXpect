@@ -6,7 +6,7 @@ namespace aweXpect.Results
     public sealed class SnapshotIgnorings<TType, TThat>
     {
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName) { }
-        public aweXpect.Results.SnapshotResult<TType, TThat> Type<T>() { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Member<T>() { }
     }
     public sealed class SnapshotMaskings<TType, TThat>
     {
@@ -41,7 +41,7 @@ namespace aweXpect.Snapshots
     public sealed class SnapshotIgnoring
     {
         public static aweXpect.Snapshots.SnapshotIgnoring Member(string memberName) { }
-        public static aweXpect.Snapshots.SnapshotIgnoring Type<T>() { }
+        public static aweXpect.Snapshots.SnapshotIgnoring Member<T>() { }
     }
     public sealed class SnapshotMasking
     {

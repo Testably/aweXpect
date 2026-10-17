@@ -14,11 +14,13 @@ namespace aweXpect.Snapshots;
 /// </remarks>
 public sealed class SnapshotIgnoring
 {
+	private readonly bool _isMembersOnly;
 	private readonly SnapshotValueRule _rule;
 
-	private SnapshotIgnoring(SnapshotValueRule rule)
+	private SnapshotIgnoring(SnapshotValueRule rule, bool isMembersOnly)
 	{
 		_rule = rule;
+		_isMembersOnly = isMembersOnly;
 	}
 
 	/// <summary>
@@ -30,18 +32,22 @@ public sealed class SnapshotIgnoring
 	///     <c>Tracks[0].Id</c>, but not <c>TrackId</c>; <c>Artist.Id</c> only matches the <c>Id</c> of an <c>Artist</c>.
 	/// </remarks>
 	public static SnapshotIgnoring Member(string memberName)
-		=> new(SnapshotValueRule.ForMember(memberName));
+		=> new(SnapshotValueRule.ForMember(memberName), false);
 
 	/// <summary>
-	///     Leaves out each value of the type <typeparamref name="T" />.
+	///     Leaves out each member of the type <typeparamref name="T" />.
 	/// </summary>
 	/// <remarks>
-	///     A value matches by its declared or its runtime type, including <see cref="System.Nullable{T}" /> and derived
+	///     A member matches by its declared or its runtime type, including <see cref="System.Nullable{T}" /> and derived
 	///     types, e.g. <c>Type&lt;DateTime&gt;()</c> also leaves out a <c>DateTime?</c> member and a
-	///     <see cref="System.DateTime" /> in an <see cref="object" /> member.
+	///     <see cref="System.DateTime" /> in an <see cref="object" /> member.<br />
+	///     The items of a collection, the values of a dictionary and the items of a tuple are kept, so that a
+	///     <c>List&lt;DateTime&gt;</c> is not written as an empty list; mask them with <c>SnapshotMasking.Type&lt;T&gt;()</c>
+	///     instead.
 	/// </remarks>
-	public static SnapshotIgnoring Type<T>()
-		=> new(SnapshotValueRule.ForType(typeof(T)));
+	public static SnapshotIgnoring Member<T>()
+		=> new(SnapshotValueRule.ForType(typeof(T)), true);
 
-	internal bool Matches(FormattedValue value) => _rule.Matches(value);
+	internal bool Matches(FormattedValue value)
+		=> (!_isMembersOnly || value.Kind == FormattedValueKind.Member) && _rule.Matches(value);
 }

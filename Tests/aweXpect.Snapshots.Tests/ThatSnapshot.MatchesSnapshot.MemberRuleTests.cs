@@ -97,7 +97,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task IgnoringType_ShouldMatchDeclaredNullableRuntimeAndDerivedTypes()
+			public async Task IgnoringMemberOfType_ShouldMatchDeclaredNullableRuntimeAndDerivedTypes()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -112,8 +112,8 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Type<DateTime>()
-						.Ignoring.Type<Exception>();
+						.Ignoring.Member<DateTime>()
+						.Ignoring.Member<Exception>();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -125,7 +125,7 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
-			public async Task IgnoringType_WhenAnObjectMemberHoldsAnotherType_ShouldKeepIt()
+			public async Task IgnoringMemberOfType_WhenAnObjectMemberHoldsAnotherType_ShouldKeepIt()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
@@ -136,7 +136,7 @@ public sealed partial class ThatSnapshot
 				};
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Type<DateTime>();
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member<DateTime>();
 
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
@@ -150,6 +150,82 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task IgnoringMemberOfType_ShouldKeepTheItemsOfCollectionsAndDictionaries()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleCollections subject = RuleCollections.Create();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Ignoring.Member<DateTime>();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleCollections {
+				                                             Dates = [
+				                                               2026-10-17T00:00:00.0000000,
+				                                               2026-10-18T00:00:00.0000000
+				                                             ],
+				                                             Releases = {
+				                                               ["Abbey Road"] = 1969-09-26T00:00:00.0000000
+				                                             }
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("only members are left out by their type, so a list of DateTime is not written as an empty list");
+			}
+
+			[Fact]
+			public async Task IgnoringMemberOfType_WhenTheItemsAreMaskedByType_ShouldMaskThem()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleCollections subject = RuleCollections.Create();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Ignoring.Member<DateTime>()
+						.Masking.Type<DateTime>();
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleCollections {
+				                                             Dates = [
+				                                               {DateTime_1},
+				                                               {DateTime_2}
+				                                             ],
+				                                             Releases = {
+				                                               ["Abbey Road"] = {DateTime_3}
+				                                             }
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("the items keep their place and are masked instead");
+			}
+
+			[Fact]
+			public async Task IgnoringMember_WithThePathOfAnItem_ShouldLeaveOutTheItem()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleCollections subject = RuleCollections.Create();
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.Ignoring.Member("Dates[0]")
+						.Ignoring.Member("Created")
+						.Ignoring.Member("Releases");
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleCollections {
+				                                             Dates = [
+				                                               2026-10-18T00:00:00.0000000
+				                                             ]
+				                                           }
+				                                           """).IgnoringNewlineStyle()
+					.Because("an item can still be left out on purpose by its path");
+			}
+
+			[Fact]
 			public async Task WhenAGetterThrows_ShouldNeitherIgnoreNorMaskTheValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -158,7 +234,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
-						.Ignoring.Type<DateTime>()
+						.Ignoring.Member<DateTime>()
 						.Masking.Member("Value", "{value}");
 
 				await That(Act).Throws<XunitException>();
@@ -423,7 +499,7 @@ public sealed partial class ThatSnapshot
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				using CustomizationLifetime ignorings = Customize.aweXpect.Snapshots().Ignorings.Set([
-					SnapshotIgnoring.Type<string>(),
+					SnapshotIgnoring.Member<string>(),
 				]);
 				using CustomizationLifetime maskings = Customize.aweXpect.Snapshots().Maskings.Set([
 					SnapshotMasking.Type<string>("{text}"),
@@ -662,4 +738,22 @@ public sealed class RuleThrowing
 	private readonly string _message = "boom";
 
 	public object? Value => throw new InvalidOperationException(_message);
+}
+
+public sealed class RuleCollections
+{
+	public DateTime Created { get; set; }
+	public List<DateTime> Dates { get; set; } = [];
+	public Dictionary<string, DateTime> Releases { get; set; } = [];
+
+	public static RuleCollections Create()
+		=> new()
+		{
+			Created = new DateTime(2026, 10, 16),
+			Dates = [new DateTime(2026, 10, 17), new DateTime(2026, 10, 18),],
+			Releases = new Dictionary<string, DateTime>
+			{
+				["Abbey Road"] = new(1969, 9, 26),
+			},
+		};
 }

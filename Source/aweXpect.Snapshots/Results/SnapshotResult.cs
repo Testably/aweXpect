@@ -51,7 +51,7 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	/// </summary>
 	/// <remarks>
 	///     The ignorings have the same names and semantics as the factories of <see cref="SnapshotIgnoring" /> for all
-	///     snapshots, e.g. <c>.Ignoring.Member("ETag")</c> or <c>.Ignoring.Type&lt;DateTime&gt;()</c>, and win over every
+	///     snapshots, e.g. <c>.Ignoring.Member("ETag")</c> or <c>.Ignoring.Member&lt;DateTime&gt;()</c>, and win over every
 	///     masking. On a <see cref="string" /> subject, which is compared as raw text, they throw.
 	/// </remarks>
 	public SnapshotIgnorings<TType, TThat> Ignoring => new(this, _options);

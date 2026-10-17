@@ -25,9 +25,9 @@ public sealed class SnapshotIgnorings<TType, TThat>
 	public SnapshotResult<TType, TThat> Member(string memberName)
 		=> Add(SnapshotIgnoring.Member(memberName));
 
-	/// <inheritdoc cref="SnapshotIgnoring.Type{T}()" />
-	public SnapshotResult<TType, TThat> Type<T>()
-		=> Add(SnapshotIgnoring.Type<T>());
+	/// <inheritdoc cref="SnapshotIgnoring.Member{T}()" />
+	public SnapshotResult<TType, TThat> Member<T>()
+		=> Add(SnapshotIgnoring.Member<T>());
 
 	private SnapshotResult<TType, TThat> Add(SnapshotIgnoring ignoring)
 	{
