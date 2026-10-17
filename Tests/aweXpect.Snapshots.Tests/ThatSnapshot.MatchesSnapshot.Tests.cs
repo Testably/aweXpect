@@ -522,7 +522,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
-					             but the snapshot was already used for another value in this test run, so name each one with .Named(…)
+					             but the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)
 					             """);
 				await That(store.Mismatches).IsEmpty()
 					.Because("the values would overwrite each other's pending snapshot");

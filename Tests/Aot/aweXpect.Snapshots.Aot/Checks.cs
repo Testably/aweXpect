@@ -21,6 +21,8 @@ internal static class Checks
 			() => ShouldPass(ObjectWithRulesMatchesItsSnapshot)),
 		new("a record matching its snapshot is written member-wise",
 			() => ShouldPass(RecordMatchesItsSnapshot)),
+		new("a snapshot named after arguments matching its snapshot passes",
+			() => ShouldPass(() => NamedAfterMatchesItsSnapshot("Abbey Road", 1969))),
 		new("every snapshot is used by one of the checks above",
 			() => ShouldPass(EverySnapshotIsUsed)),
 	];
@@ -93,6 +95,9 @@ internal static class Checks
 
 	private static async Task MatchesItsSnapshot()
 		=> await That("snapshot content").MatchesSnapshot();
+
+	private static async Task NamedAfterMatchesItsSnapshot(string title, int year)
+		=> await That($"{title} ({year})").MatchesSnapshot().NamedAfter(title, year).AcceptingChanges(false);
 
 	private static async Task<string?> ShouldFail(Func<Task> act, params string[] parts)
 	{

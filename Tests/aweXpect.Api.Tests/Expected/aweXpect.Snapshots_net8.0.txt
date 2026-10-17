@@ -26,10 +26,15 @@ namespace aweXpect.Results
         public aweXpect.Results.SnapshotMaskings<TType, TThat> Masking { get; }
         public aweXpect.Results.AndOrResult<TType, TThat> AcceptingChanges(bool accept = true) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
     }
 }
 namespace aweXpect.Snapshots
 {
+    public readonly struct EndOfArguments { }
     public static class OrphanedSnapshots
     {
         public static System.Threading.Tasks.Task CheckAsync(bool force = false, System.Threading.CancellationToken cancellationToken = default) { }

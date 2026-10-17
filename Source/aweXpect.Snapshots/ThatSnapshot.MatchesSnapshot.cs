@@ -50,7 +50,7 @@ public static class ThatSnapshot
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
 	///     subject.<br />
 	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a
-	///     parameterized test, which have to be told apart with <c>.Named(…)</c>.
+	///     parameterized test, which have to be told apart with <c>.Named(…)</c> or <c>.NamedAfter(…)</c>.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
 	/// <param name="callerFilePath">
@@ -369,7 +369,7 @@ public static class ThatSnapshot
 			else if (_isUsedForAnotherValue)
 			{
 				stringBuilder.Append(
-					"the snapshot was already used for another value in this test run, so name each one with .Named(…)");
+					"the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)");
 			}
 			else if (_readError is not null)
 			{

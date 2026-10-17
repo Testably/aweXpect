@@ -26,10 +26,32 @@ other's pending snapshot:
 ```text title="Failure message"
 Expected that description
 matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
-but the snapshot was already used for another value in this test run, so name each one with .Named(…)
+but the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)
 ```
 
 The same value again is allowed, so that a retried or repeated test still compares with its snapshot.
 
 The test file and method are set by the compiler through optional parameters, so a name must not be passed as an
 argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points to `.Named(…)`.
+
+## Naming after the arguments
+
+`.NamedAfter(…)` names the snapshot after up to four arguments of the test. The compiler passes the name of each
+argument, so it works with every test framework and under Native AOT:
+
+```csharp
+[Theory]
+[InlineData("Abbey Road", 1969)]
+[InlineData("Let It Be", 1970)]
+public async Task Describes(string title, int year)
+{
+    string description = Describe(new Album(title, year));
+
+    await Expect.That(description).MatchesSnapshot().NamedAfter(title, year);
+}
+```
+
+Each argument is written as `<name>=<value>`, separated by `_`, e.g.
+`AlbumTests.Describes.title=Abbey Road_year=1969.snapshot.txt`. A member access is named like `nameof`, so
+`.NamedAfter(album.Title)` gives `Title=Abbey Road`; any other expression is used as written. Values are written in
+the invariant culture, `null` as `null`, and escaped like any other name.

@@ -308,6 +308,27 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenNamedAfterArguments_ShouldAppendTheirNamesAndValuesToTheFileNames()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.snapshot.txt");
+				string pendingPath =
+					Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.snapshot.pending.txt");
+				(string Artist, string Album) release = ("AC/DC", "Highway to Hell");
+				int year = 1979;
+
+				async Task Act()
+					=> await That("foo").MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.NamedAfter(release.Artist, year);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"*\"{snapshotPath}\"*").AsWildcard();
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow()
+					.Because("the name is escaped like any other, but a member access adds no dot to it");
+			}
+
+			[Fact]
 			public async Task WhenPendingSnapshotCannotBeDeleted_AndSnapshotMatches_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();
