@@ -36,6 +36,10 @@ public static class SnapshotsAwexpectCustomizationExtensions
 				});
 			Acceptance = new CustomizationValue<SnapshotAcceptance?>(awexpectCustomization,
 				"aweXpect.Snapshots.Acceptance", null);
+			Comparers = new CopyingSetter<SnapshotComparerRegistration>(
+				new CustomizationValue<IReadOnlyList<SnapshotComparerRegistration>>(awexpectCustomization,
+					"aweXpect.Snapshots.Comparers", Array.Empty<SnapshotComparerRegistration>(),
+					ThrowIfNullOrContainsNull));
 			Rules = new CopyingSetter<SnapshotRule>(new CustomizationValue<IReadOnlyList<SnapshotRule>>(
 				awexpectCustomization, "aweXpect.Snapshots.Rules", Array.Empty<SnapshotRule>(),
 				ThrowIfNullOrContainsNull));
@@ -54,6 +58,19 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		///     is detected, so that a forgotten variable cannot change the snapshots on a build server.
 		/// </remarks>
 		public ICustomizationValueSetter<SnapshotAcceptance?> Acceptance { get; }
+
+		/// <summary>
+		///     The comparers for the snapshots that their condition selects, e.g.
+		///     <c>SnapshotComparer.ForExtension("png", imageComparer)</c>, unless the expectation sets
+		///     <c>.ComparedWith(…)</c>.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to none, which compares text ignoring the newline style and binary data byte by byte. The first
+		///     comparer in the list whose condition matches is used. Setting a value replaces the list, so add a comparer
+		///     with <c>Set([.. Get(), comparer])</c>. The list is copied, so changing it afterwards does not change the
+		///     setting.
+		/// </remarks>
+		public ICustomizationValueSetter<IReadOnlyList<SnapshotComparerRegistration>> Comparers { get; }
 
 		/// <summary>
 		///     The reporters that are told about a recorded mismatch and a match, in this order, e.g. to open a diff tool.

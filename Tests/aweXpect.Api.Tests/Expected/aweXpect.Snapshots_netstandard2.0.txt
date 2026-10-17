@@ -19,6 +19,7 @@ namespace aweXpect.Results
     {
         public aweXpect.Results.SnapshotUniqueFor<TSelf> UniqueFor { get; }
         public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
+        public TSelf ComparedWith(aweXpect.Snapshots.SnapshotComparer comparer) { }
         public TSelf Named(string name) { }
         public TSelf NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
         public TSelf NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default, [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
@@ -50,11 +51,35 @@ namespace aweXpect.Snapshots
         New = 1,
         All = 2,
     }
+    public abstract class SnapshotComparer
+    {
+        protected SnapshotComparer() { }
+        public abstract System.Threading.Tasks.ValueTask<aweXpect.Snapshots.SnapshotComparison> CompareAsync(aweXpect.Snapshots.SnapshotComparisonContext context, System.Threading.CancellationToken cancellationToken);
+        public static aweXpect.Snapshots.SnapshotComparerRegistration ForExtension(string extension, aweXpect.Snapshots.SnapshotComparer comparer) { }
+        public static aweXpect.Snapshots.SnapshotComparerRegistration When(System.Func<aweXpect.Snapshots.SnapshotComparisonContext, bool> predicate, aweXpect.Snapshots.SnapshotComparer comparer) { }
+    }
+    public sealed class SnapshotComparerRegistration { }
+    public sealed class SnapshotComparison
+    {
+        public string? Description { get; }
+        public bool IsEqual { get; }
+        public static aweXpect.Snapshots.SnapshotComparison Equal { get; }
+        public static aweXpect.Snapshots.SnapshotComparison Different(string description) { }
+    }
+    public sealed class SnapshotComparisonContext
+    {
+        public SnapshotComparisonContext(aweXpect.Snapshots.SnapshotId id, aweXpect.Snapshots.SnapshotContent snapshot, aweXpect.Snapshots.SnapshotContent actual) { }
+        public aweXpect.Snapshots.SnapshotContent Actual { get; }
+        public aweXpect.Snapshots.SnapshotId Id { get; }
+        public aweXpect.Snapshots.SnapshotContent Snapshot { get; }
+    }
     public sealed class SnapshotContent
     {
         public byte[] Bytes { get; }
         public bool IsText { get; }
         public string? Text { get; }
+        public static aweXpect.Snapshots.SnapshotContent FromBytes(byte[] bytes) { }
+        public static aweXpect.Snapshots.SnapshotContent FromText(string text) { }
     }
     public sealed class SnapshotEmptyCollections<TReturn>
     {
@@ -195,6 +220,7 @@ namespace aweXpect.Snapshots
         public class SnapshotsCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotAcceptance?> Acceptance { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotComparerRegistration>> Comparers { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotReporter>> Reporters { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotRule>> Rules { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }

@@ -92,7 +92,7 @@ public static partial class ThatSnapshot
 			return true;
 		}
 
-		protected override ValueTask<bool> MatchesAsync(byte[] snapshot)
+		protected override ValueTask<bool> MatchesByDefaultAsync(byte[] snapshot)
 		{
 			byte[] content = _content!;
 			int length = Math.Min(content.Length, snapshot.Length);

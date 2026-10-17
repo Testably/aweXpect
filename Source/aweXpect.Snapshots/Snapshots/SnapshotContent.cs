@@ -12,6 +12,19 @@ public sealed class SnapshotContent
 	}
 
 	/// <summary>
+	///     Creates the content of a snapshot of binary data, e.g. to test a <see cref="SnapshotComparer" />.
+	/// </summary>
+	public static SnapshotContent FromBytes(byte[] bytes)
+		=> new(RuleArguments.ThrowIfNull(bytes, nameof(bytes)), null);
+
+	/// <summary>
+	///     Creates the content of a snapshot of the <paramref name="text" />, with the <see cref="Bytes" /> as a
+	///     <see cref="SnapshotStore" /> keeps them, e.g. to test a <see cref="SnapshotComparer" />.
+	/// </summary>
+	public static SnapshotContent FromText(string text)
+		=> new(SnapshotTextEncoding.Encode(RuleArguments.ThrowIfNull(text, nameof(text))), text);
+
+	/// <summary>
 	///     The bytes as a <see cref="SnapshotStore" /> keeps them, so that writing them to a file gives the same file as
 	///     the store.
 	/// </summary>

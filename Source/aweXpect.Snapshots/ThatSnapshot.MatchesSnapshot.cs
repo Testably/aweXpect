@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -46,7 +47,9 @@ public static partial class ThatSnapshot
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
 	///     <c>Customize.aweXpect.Snapshots().Store</c>, and a <see cref="SnapshotReporter" />, e.g. one that opens a diff
 	///     tool, is told about the recorded mismatch and a match, see <c>Customize.aweXpect.Snapshots().Reporters</c>.<br />
-	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
+	///     The newline style is ignored, because version control can change it when the snapshot is checked out. Another
+	///     <see cref="SnapshotComparer" />, e.g. one that ignores the order of JSON properties, is set with
+	///     <c>.ComparedWith(…)</c> or, for all snapshots, <c>Customize.aweXpect.Snapshots().Comparers</c>.<br />
 	///     Values that change from run to run can be replaced before comparing, and lines that are irrelevant for the test
 	///     left out, see <c>.For</c>, e.g. <c>.For.Guids().Mask()</c> or <c>.For.Lines().Containing("elapsed").Ignore()</c>,
 	///     and, for all snapshots, <c>Customize.aweXpect.Snapshots().Rules</c>. Paths of the environment, e.g. of the
@@ -121,8 +124,9 @@ public static partial class ThatSnapshot
 	///     extension from <c>.WithExtension(…)</c>, e.g. <c>png</c>.
 	/// </summary>
 	/// <remarks>
-	///     The data is compared byte by byte and stored unchanged; the failure names the first byte that differs and the
-	///     lengths, but never shows the bytes. It has no rules, and the rules for all snapshots are ignored.<br />
+	///     The data is compared byte by byte, unless a <see cref="SnapshotComparer" /> is set, and stored unchanged; the
+	///     failure names the first byte that differs and the lengths, but never shows the bytes. It has no rules, and the
+	///     rules for all snapshots are ignored.<br />
 	///     Otherwise it behaves like the overload for strings: see there for the files, accepting changes and the
 	///     failures.
 	/// </remarks>
@@ -245,15 +249,19 @@ public static partial class ThatSnapshot
 	};
 
 	/// <summary>
-	///     The extension and the hash code of the value that each snapshot was used for in this process, by its id with the
-	///     default extension.
+	///     The extension and the hash code of the first value that each snapshot was used for in this process, by its id
+	///     with the default extension, and the value itself while comparers are set.
 	/// </summary>
 	/// <remarks>
 	///     Only another value or another extension counts as a conflict, so that a test which is retried or repeated, or
 	///     run again by a test runner that keeps its process, still compares with its snapshot. The hash code keeps large
-	///     values out of memory; a collision only misses a conflict.
+	///     values out of memory; a collision only misses a conflict. A value with another hash code is no conflict either
+	///     when a <see cref="SnapshotComparer" /> considers it equal to the first value, which is only kept for that while
+	///     a comparer is set for the expectation or for all snapshots. An entry is never changed, so that concurrent tests
+	///     compare with the same first value.
 	/// </remarks>
-	private static readonly ConcurrentDictionary<SnapshotId, (string Extension, int HashCode)> UsedSnapshots = new();
+	private static readonly ConcurrentDictionary<SnapshotId, (string Extension, int HashCode, SnapshotContent? Content)>
+		UsedSnapshots = new();
 
 	/// <summary>
 	///     Returns the test file relative to the source root, see <see cref="SnapshotId.SourceFile" />.
@@ -322,7 +330,9 @@ public static partial class ThatSnapshot
 			IAsyncContextConstraint<T>
 	{
 		private string? _acceptError;
-		private byte[]? _content;
+		private SnapshotContent? _actualContent;
+		private Exception? _compareError;
+		private string? _difference;
 		private bool _hasSnapshot;
 		private bool _hasSubjectError;
 		private bool _hasWritten;
@@ -331,12 +341,12 @@ public static partial class ThatSnapshot
 		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
 		private Exception? _readError;
-		private byte[]? _snapshotBytes;
+		private SnapshotContent? _snapshotContent;
 		private string? _usedExtension;
 		private string? _writeError;
 
 		/// <inheritdoc />
-		public override Exception? FailureCause => SubjectError ?? _readError;
+		public override Exception? FailureCause => SubjectError ?? _readError ?? _compareError;
 
 		protected SnapshotSettings Settings => settings;
 
@@ -355,7 +365,7 @@ public static partial class ThatSnapshot
 		/// <summary>
 		///     The text of the existing snapshot, or <see langword="null" /> for binary data.
 		/// </summary>
-		protected virtual string? SnapshotText => null;
+		protected string? SnapshotText => _snapshotContent?.Text;
 
 		private SnapshotId Id => snapshotOptions.Id;
 
@@ -373,19 +383,7 @@ public static partial class ThatSnapshot
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_acceptError = null;
-			_content = null;
-			_hasSnapshot = false;
-			_hasSubjectError = false;
-			_hasWritten = false;
-			_isAccepted = false;
-			_isMatch = false;
-			_isMismatch = false;
-			_isUsedForAnotherValue = false;
-			_snapshotBytes = null;
-			_usedExtension = null;
-			_writeError = null;
-			_readError = null;
+			ResetState();
 			if (actual is null)
 			{
 				Outcome = Outcome.FailureBothWays;
@@ -400,21 +398,11 @@ public static partial class ThatSnapshot
 				return this;
 			}
 
-			_content = content;
+			SnapshotContent actualContent = new(content, ActualText);
+			_actualContent = actualContent;
 			SnapshotId id = Id;
-			int contentHashCode = GetHashCode(content);
-			(string extension, int hashCode) = UsedSnapshots.GetOrAdd(
-				id with { Extension = SnapshotId.DefaultExtension, }, (id.Extension, contentHashCode));
-			if (extension != id.Extension)
+			if (!await IsFirstUseOfTheSnapshotAsync(id, content, actualContent, cancellationToken))
 			{
-				_usedExtension = extension;
-				Outcome = Outcome.FailureBothWays;
-				return this;
-			}
-
-			if (hashCode != contentHashCode)
-			{
-				_isUsedForAnotherValue = true;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
@@ -432,22 +420,17 @@ public static partial class ThatSnapshot
 			}
 
 			_hasSnapshot = snapshot is not null;
-			_snapshotBytes = snapshot;
-			if (snapshot is not null && await MatchesAsync(snapshot))
+			if (snapshot is not null && await MatchesAsync(id, snapshot, actualContent, cancellationToken))
 			{
-				await ReportAsync(() => new SnapshotMatch(id, settings.Store),
-					static (reporter, match, token) => reporter.OnMatchAsync(match, token), cancellationToken);
-				try
-				{
-					await settings.Store.RecordMatchAsync(id, cancellationToken);
-				}
-				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
-				{
-					// The snapshot matched, see the remarks.
-				}
-
+				await RecordMatchAsync(id, cancellationToken);
 				_isMatch = true;
 				Outcome = Outcome.Success;
+				return this;
+			}
+
+			if (_compareError is not null)
+			{
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -461,6 +444,72 @@ public static partial class ThatSnapshot
 			return this;
 		}
 
+		private void ResetState()
+		{
+			_acceptError = null;
+			_actualContent = null;
+			_compareError = null;
+			_difference = null;
+			_hasSnapshot = false;
+			_hasSubjectError = false;
+			_hasWritten = false;
+			_isAccepted = false;
+			_isMatch = false;
+			_isMismatch = false;
+			_isUsedForAnotherValue = false;
+			_snapshotContent = null;
+			_usedExtension = null;
+			_writeError = null;
+			_readError = null;
+		}
+
+		/// <summary>
+		///     Whether the snapshot was not yet used in this test run for another value, or another extension.
+		/// </summary>
+		/// <remarks>
+		///     Identical bytes are recognized by their hash. A different value is only allowed when a comparer considers
+		///     it equal to the first value of the run, which is only kept while comparers are in use.
+		/// </remarks>
+		private async ValueTask<bool> IsFirstUseOfTheSnapshotAsync(SnapshotId id, byte[] content,
+			SnapshotContent actualContent, CancellationToken cancellationToken)
+		{
+			int contentHashCode = GetHashCode(content);
+			bool hasComparers = snapshotOptions.Comparer is not null || settings.Comparers.Count > 0;
+			(string extension, int hashCode, SnapshotContent? firstContent) = UsedSnapshots.GetOrAdd(
+				id with { Extension = SnapshotId.DefaultExtension, },
+				(id.Extension, contentHashCode, hasComparers ? actualContent : null));
+			if (extension != id.Extension)
+			{
+				_usedExtension = extension;
+				return false;
+			}
+
+			if (hashCode == contentHashCode)
+			{
+				return true;
+			}
+
+			SnapshotComparison? comparison = firstContent is null
+				? null
+				: await CompareAsync(new SnapshotComparisonContext(id, firstContent, actualContent), cancellationToken);
+			_isUsedForAnotherValue = _compareError is null && comparison?.IsEqual != true;
+			return _compareError is null && !_isUsedForAnotherValue;
+		}
+
+		private async ValueTask RecordMatchAsync(SnapshotId id, CancellationToken cancellationToken)
+		{
+			await ReportAsync(() => new SnapshotMatch(id, settings.Store),
+				static (reporter, match, token) => reporter.OnMatchAsync(match, token), cancellationToken);
+			try
+			{
+				await settings.Store.RecordMatchAsync(id, cancellationToken);
+			}
+			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
+			{
+				// The snapshot matched, see the remarks of IsMetBy.
+			}
+		}
+
 		/// <summary>
 		///     Returns the bytes that the snapshot of the <paramref name="actual" /> value consists of, or
 		///     <see langword="null" /> when it cannot be compared, which fails the expectation both ways and is described
@@ -469,9 +518,16 @@ public static partial class ThatSnapshot
 		protected abstract ValueTask<byte[]?> CreateContentAsync(T actual, CancellationToken cancellationToken);
 
 		/// <summary>
-		///     Compares the content with the bytes of the existing <paramref name="snapshot" />.
+		///     Compares the content with the bytes of the existing <paramref name="snapshot" /> when no
+		///     <see cref="SnapshotComparer" /> applies.
 		/// </summary>
-		protected abstract ValueTask<bool> MatchesAsync(byte[] snapshot);
+		protected abstract ValueTask<bool> MatchesByDefaultAsync(byte[] snapshot);
+
+		/// <summary>
+		///     Returns the text of the bytes of the existing <paramref name="snapshot" />, or <see langword="null" /> for
+		///     binary data.
+		/// </summary>
+		protected virtual string? ToText(byte[] snapshot) => null;
 
 		/// <summary>
 		///     Describes why the subject could not be compared, see <see cref="CreateContentAsync" />.
@@ -495,6 +551,64 @@ public static partial class ThatSnapshot
 			=> !(exception is OperationCanceledException && cancellationToken.IsCancellationRequested);
 
 		/// <summary>
+		///     Compares the <paramref name="actualContent" /> with the existing <paramref name="snapshot" /> by the
+		///     <see cref="SnapshotComparer" /> that applies, or else by <see cref="MatchesByDefaultAsync" />.
+		/// </summary>
+		/// <remarks>
+		///     A comparer that considers them different describes the difference for the failure.
+		/// </remarks>
+		private async ValueTask<bool> MatchesAsync(SnapshotId id, byte[] snapshot, SnapshotContent actualContent,
+			CancellationToken cancellationToken)
+		{
+			SnapshotContent snapshotContent = new(snapshot, ToText(snapshot));
+			_snapshotContent = snapshotContent;
+			SnapshotComparison? comparison = await CompareAsync(
+				new SnapshotComparisonContext(id, snapshotContent, actualContent), cancellationToken);
+			if (_compareError is not null)
+			{
+				return false;
+			}
+
+			if (comparison is null)
+			{
+				return await MatchesByDefaultAsync(snapshot);
+			}
+
+			_difference = comparison.Description;
+			return comparison.IsEqual;
+		}
+
+		/// <summary>
+		///     Compares by the comparer of the expectation, or else by the first comparer for all snapshots that applies
+		///     to the <paramref name="context" />, or returns <see langword="null" /> when none applies.
+		/// </summary>
+		/// <remarks>
+		///     An exception of a comparer or of its condition is kept as the <see cref="FailureCause" />, like an error
+		///     while reading the snapshot, so that a broken comparer neither records nor accepts anything.
+		/// </remarks>
+		private async ValueTask<SnapshotComparison?> CompareAsync(SnapshotComparisonContext context,
+			CancellationToken cancellationToken)
+		{
+			try
+			{
+				SnapshotComparer? comparer = snapshotOptions.Comparer ?? settings.Comparers
+					.FirstOrDefault(registration => registration.AppliesTo(context))?.Comparer;
+				if (comparer is null)
+				{
+					return null;
+				}
+
+				return await comparer.CompareAsync(context, cancellationToken) ??
+				       throw new InvalidOperationException($"The comparer {comparer.GetType().Name} returned null.");
+			}
+			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
+			{
+				_compareError = exception;
+				return null;
+			}
+		}
+
+		/// <summary>
 		///     Accepts the mismatch, or records it for review, once the whole expectation is decided.
 		/// </summary>
 		/// <remarks>
@@ -512,18 +626,19 @@ public static partial class ThatSnapshot
 		/// </remarks>
 		private async ValueTask WriteMismatchAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
 		{
-			if (evaluation.Outcome != Outcome.Failure || IsNegated || !_isMismatch || _content is null)
+			if (evaluation.Outcome != Outcome.Failure || IsNegated || !_isMismatch || _actualContent is null)
 			{
 				return;
 			}
 
 			_hasWritten = true;
 			SnapshotId id = Id;
+			SnapshotContent actualContent = _actualContent;
 			if (_isAccepted)
 			{
 				try
 				{
-					await settings.Store.AcceptAsync(id, _content, cancellationToken);
+					await settings.Store.AcceptAsync(id, actualContent.Bytes, cancellationToken);
 					return;
 				}
 				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
@@ -534,7 +649,7 @@ public static partial class ThatSnapshot
 
 			try
 			{
-				await settings.Store.RecordMismatchAsync(id, _content, cancellationToken);
+				await settings.Store.RecordMismatchAsync(id, actualContent.Bytes, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
@@ -542,11 +657,8 @@ public static partial class ThatSnapshot
 				return;
 			}
 
-			byte[] content = _content;
-			byte[]? snapshot = _snapshotBytes;
-			await ReportAsync(() => new SnapshotMismatch(id, settings.Store,
-					snapshot is null ? null : new SnapshotContent(snapshot, SnapshotText),
-					new SnapshotContent(content, ActualText)),
+			SnapshotContent? snapshotContent = _snapshotContent;
+			await ReportAsync(() => new SnapshotMismatch(id, settings.Store, snapshotContent, actualContent),
 				static (reporter, mismatch, token) => reporter.OnMismatchAsync(mismatch, token), cancellationToken);
 		}
 
@@ -598,8 +710,8 @@ public static partial class ThatSnapshot
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (_content is null || _isMatch || _isUsedForAnotherValue || _usedExtension is not null ||
-			    _readError is not null || IsNegated)
+			if (_actualContent is null || _isMatch || _isUsedForAnotherValue || _usedExtension is not null ||
+			    _readError is not null || _compareError is not null || IsNegated)
 			{
 				return;
 			}
@@ -654,9 +766,17 @@ public static partial class ThatSnapshot
 			{
 				stringBuilder.Append("the snapshot could not be read: ").Append(_readError.Message);
 			}
+			else if (_compareError is not null)
+			{
+				stringBuilder.Append("the snapshot could not be compared: ").Append(_compareError.Message);
+			}
 			else if (!_hasSnapshot)
 			{
 				stringBuilder.Append("the snapshot did not exist");
+			}
+			else if (_difference is not null)
+			{
+				stringBuilder.Append(It).Append(" differed: ").Append(_difference.Indent(indentation, false));
 			}
 			else
 			{
@@ -690,15 +810,12 @@ public static partial class ThatSnapshot
 		private readonly StringEqualityOptions _options = new StringEqualityOptions("snapshot").IgnoringNewlineStyle();
 		private InsufficientExecutionStackException? _formatError;
 		private RegexMatchTimeoutException? _ruleTimeout;
-		private string? _snapshot;
 		private string? _timedOutRule;
 		private string? _value;
 
 		protected override Exception? SubjectError => (Exception?)_formatError ?? _ruleTimeout;
 
 		protected override string? ActualText => _value;
-
-		protected override string? SnapshotText => _snapshot;
 
 		/// <remarks>
 		///     A subject that is nested too deeply to be written fails the expectation; the formatter writes every other
@@ -712,7 +829,6 @@ public static partial class ThatSnapshot
 		{
 			_formatError = null;
 			_ruleTimeout = null;
-			_snapshot = null;
 			_timedOutRule = null;
 			_value = null;
 			string value;
@@ -746,17 +862,16 @@ public static partial class ThatSnapshot
 			return SnapshotTextEncoding.Encode(value);
 		}
 
-		protected override async ValueTask<bool> MatchesAsync(byte[] snapshot)
-		{
-			_snapshot = SnapshotTextEncoding.Decode(snapshot);
-			return await _options.AreConsideredEqual(_value, _snapshot);
-		}
+		protected override async ValueTask<bool> MatchesByDefaultAsync(byte[] snapshot)
+			=> await _options.AreConsideredEqual(_value, SnapshotText);
+
+		protected override string ToText(byte[] snapshot) => SnapshotTextEncoding.Decode(snapshot);
 
 		protected override void AppendValueContexts(ResultContextCollector contexts)
 		{
-			contexts.AddStringDifferencesContext(_value, _snapshot, _options, Grammars);
+			contexts.AddStringDifferencesContext(_value, SnapshotText, _options, Grammars);
 			contexts.AddStringContext("Actual", _value, this);
-			contexts.AddStringContext("Snapshot", _snapshot, this);
+			contexts.AddStringContext("Snapshot", SnapshotText, this);
 		}
 
 		protected override void AppendSubjectError(StringBuilder stringBuilder)
@@ -774,7 +889,7 @@ public static partial class ThatSnapshot
 		}
 
 		protected override void AppendDifference(StringBuilder stringBuilder, string? indentation)
-			=> stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, _snapshot)
+			=> stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, SnapshotText)
 				.Indent(indentation, false));
 	}
 }

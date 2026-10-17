@@ -44,7 +44,9 @@ to `new` to only add the missing ones). Snapshots of version 0.1 are named `.sna
 [Migrating from 0.1](../../Docs/extensions/aweXpect.Snapshots/03-naming-snapshots.md#migrating-from-01).
 `OrphanedSnapshots.CheckAsync()` in the teardown of the test run reports the snapshots that no test uses any more on a
 build server, and deletes them while accepting all changes.
-[Reporters](../../Docs/extensions/aweXpect.Snapshots/08-reporters.md) are told about every missing, different or matching snapshot, e.g. to open a
+[Comparers](../../Docs/extensions/aweXpect.Snapshots/08-comparers.md) decide whether a value matches its snapshot instead of the built-in
+comparison, e.g. an image comparer that tolerates small differences of single pixels.
+[Reporters](../../Docs/extensions/aweXpect.Snapshots/09-reporters.md) are told about every missing, different or matching snapshot, e.g. to open a
 diff tool.
 
 ## Overview

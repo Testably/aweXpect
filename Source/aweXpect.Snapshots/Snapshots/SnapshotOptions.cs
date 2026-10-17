@@ -35,6 +35,11 @@ internal sealed class SnapshotOptions
 
 	public SnapshotAcceptance? Acceptance { get; set; }
 
+	/// <summary>
+	///     The comparer of the expectation, which goes before the comparers for all snapshots.
+	/// </summary>
+	public SnapshotComparer? Comparer { get; set; }
+
 	public SnapshotId Id => new(_sourceFile, _memberName, _name)
 	{
 		Variant = _variant,

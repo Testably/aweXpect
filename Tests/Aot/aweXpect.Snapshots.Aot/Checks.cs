@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Customization;
@@ -51,6 +52,8 @@ internal static class Checks
 			() => ShouldPass(() => WithoutBuildServer(ReporterIsToldAboutAMatch))),
 		new("a reporter is told about the recorded mismatch with the files of the store",
 			() => ShouldPass(() => WithoutBuildServer(ReporterIsToldAboutTheRecordedMismatch))),
+		new("a comparer of the expectation or for an extension decides whether the subject matches",
+			() => ShouldPass(ComparersDecideTheMatch)),
 		new("every snapshot is used by one of the checks above",
 			() => ShouldPass(EverySnapshotIsUsed)),
 	];
@@ -213,6 +216,49 @@ internal static class Checks
 		await That(isRecorded).IsTrue();
 		await That(mismatch.Snapshot).IsNull();
 		await That(mismatch.Actual.Text).IsEqualTo("reported mismatch");
+	}
+
+	/// <remarks>
+	///     The snapshot is kept in memory, so that no snapshot is committed that only differs in its case.
+	/// </remarks>
+	private static async Task ComparersDecideTheMatch()
+	{
+		using (Customize.aweXpect.Snapshots().Store.Set(new FixedSnapshotStore("Abbey Road")))
+		using (Customize.aweXpect.Snapshots().Comparers.Set([
+			       SnapshotComparer.ForExtension("bin", new IgnoringCaseComparer()),
+		       ]))
+		{
+			await That("ABBEY ROAD").MatchesSnapshot().ComparedWith(new IgnoringCaseComparer())
+				.Accepting(SnapshotAcceptance.None);
+			await That(Encoding.UTF8.GetBytes("abbey road")).MatchesSnapshot().WithExtension("bin").Named("cover")
+				.Accepting(SnapshotAcceptance.None);
+		}
+	}
+
+	private sealed class IgnoringCaseComparer : SnapshotComparer
+	{
+		public override ValueTask<SnapshotComparison> CompareAsync(SnapshotComparisonContext context,
+			CancellationToken cancellationToken)
+			=> new(string.Equals(Encoding.UTF8.GetString(context.Snapshot.Bytes).TrimEnd(),
+				Encoding.UTF8.GetString(context.Actual.Bytes).TrimEnd(), StringComparison.OrdinalIgnoreCase)
+				? SnapshotComparison.Equal
+				: SnapshotComparison.Different("the text differs in more than its case"));
+	}
+
+	/// <summary>
+	///     Returns the <paramref name="snapshot" /> for every id and writes nothing.
+	/// </summary>
+	private sealed class FixedSnapshotStore(string snapshot) : SnapshotStore
+	{
+		public override ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
+			=> new(Encoding.UTF8.GetBytes(snapshot));
+
+		public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual,
+			CancellationToken cancellationToken)
+			=> default;
+
+		public override ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
+			=> default;
 	}
 
 	/// <summary>

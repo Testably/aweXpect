@@ -85,6 +85,27 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	}
 
 	/// <summary>
+	///     Compares the subject with the snapshot by the <paramref name="comparer" />, e.g. an image comparer that
+	///     tolerates small differences of single pixels.
+	/// </summary>
+	/// <remarks>
+	///     It goes before the comparers of <c>Customize.aweXpect.Snapshots().Comparers</c>. The comparer is only called
+	///     when the snapshot exists, and gets the subject after the rules of the expectation were applied. When it
+	///     considers the subject equal, the snapshot is kept unchanged.
+	/// </remarks>
+	public TSelf ComparedWith(SnapshotComparer comparer)
+	{
+		if (comparer is null)
+		{
+			throw Tracing.WriteException(
+				new ArgumentNullException(nameof(comparer), "The 'comparer' cannot be null."));
+		}
+
+		_options.Comparer = comparer;
+		return (TSelf)this;
+	}
+
+	/// <summary>
 	///     Keeps a snapshot of its own for each environment, e.g. <c>.UniqueFor.TargetFramework()</c>, when the subject
 	///     legitimately differs between them.
 	/// </summary>

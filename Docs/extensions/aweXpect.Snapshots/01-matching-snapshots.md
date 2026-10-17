@@ -169,6 +169,7 @@ Pending snapshot:
   any other snapshot.
 - A `byte[]` is compared as binary data, not written by the formatter like other collections. As for a string, the
   static type decides, so a `byte[]` in an `object` subject is still written by the formatter.
+- A [comparer](08-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
 - Version control must not change the line breaks in a binary snapshot, so mark its extension as binary in
   `.gitattributes`, e.g. `*.png binary`, unless Git already detects it as binary.
 - A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to choose the overload for streams; before,
@@ -182,7 +183,7 @@ is removed again when the snapshot is read, so that an editor which adds a final
 snapshot.
 
 The newline style of a text snapshot is ignored when comparing, because version control can change it when the snapshot
-is checked out.
+is checked out. A [comparer](08-comparers.md) can compare it in another way.
 
 A snapshot that cannot be read, e.g. because another process locks it, fails the expectation with the reason. A pending
 file that cannot be written is named as such in the failure, and a leftover pending file that cannot be deleted does not

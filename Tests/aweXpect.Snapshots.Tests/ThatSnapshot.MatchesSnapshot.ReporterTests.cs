@@ -279,6 +279,47 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenComparerConsidersEqual_ShouldReportAMatch()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				RecordingReporter reporter = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Reporters.Set([reporter,]);
+				string subject = "bar";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.ComparedWith(FakeSnapshotComparer.Equal());
+
+				await That(Act).DoesNotThrow();
+				await That(reporter.Matches).HasSingle()
+					.Because("the comparer decides whether the snapshot matches");
+				await That(reporter.Mismatches).IsEmpty();
+			}
+
+			[Fact]
+			public async Task WhenComparerReportsDifference_ShouldReportTheMismatch()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id] = "foo";
+				RecordingReporter reporter = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				using CustomizationLifetime __ = Customize.aweXpect.Snapshots().Reporters.Set([reporter,]);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.ComparedWith(FakeSnapshotComparer.Different("louder"));
+
+				await That(Act).Throws<XunitException>();
+				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
+				await That(mismatch.Snapshot!.Text).IsEqualTo("foo");
+				await That(mismatch.Actual.Text).IsEqualTo("foo");
+				await That(reporter.Matches).IsEmpty();
+			}
+
+			[Fact]
 			public async Task WhenSeveralReporters_ShouldCallThemInOrder()
 			{
 				InMemorySnapshotStore store = new();
