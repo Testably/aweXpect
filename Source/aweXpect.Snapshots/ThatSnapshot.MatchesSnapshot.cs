@@ -44,7 +44,8 @@ public static partial class ThatSnapshot
 	///     again when the snapshot is read, so that an editor which adds a final line break does not change it. Another
 	///     file extension, e.g. for JSON, is set with <c>.WithExtension(…)</c>.<br />
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
-	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
+	///     <c>Customize.aweXpect.Snapshots().Store</c>, and a <see cref="SnapshotReporter" />, e.g. one that opens a diff
+	///     tool, is told about the recorded mismatch and a match, see <c>Customize.aweXpect.Snapshots().Reporters</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
 	///     Values that change from run to run can be replaced before comparing, and lines that are irrelevant for the test
 	///     left out, see <c>.For</c>, e.g. <c>.For.Guids().Mask()</c> or <c>.For.Lines().Containing("elapsed").Ignore()</c>,
@@ -328,6 +329,7 @@ public static partial class ThatSnapshot
 		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
 		private Exception? _readError;
+		private byte[]? _snapshotBytes;
 		private string? _usedExtension;
 		private string? _writeError;
 
@@ -343,6 +345,16 @@ public static partial class ThatSnapshot
 		/// </summary>
 		protected abstract Exception? SubjectError { get; }
 
+		/// <summary>
+		///     The text that was compared, or <see langword="null" /> for binary data.
+		/// </summary>
+		protected virtual string? ActualText => null;
+
+		/// <summary>
+		///     The text of the existing snapshot, or <see langword="null" /> for binary data.
+		/// </summary>
+		protected virtual string? SnapshotText => null;
+
 		private SnapshotId Id => snapshotOptions.Id;
 
 		/// <remarks>
@@ -351,7 +363,9 @@ public static partial class ThatSnapshot
 		///     success; the exception is kept as the <see cref="FailureCause" />.<br />
 		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
 		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
-		///     A mismatch is only written once the whole expectation is decided, see <see cref="WriteMismatchAsync" />.
+		///     A mismatch is only written once the whole expectation is decided, see <see cref="WriteMismatchAsync" />.<br />
+		///     The reporters are told about a match before the store records it, so that e.g. a diff tool that shows the
+		///     recorded mismatch is closed before the mismatch is deleted.
 		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -366,6 +380,7 @@ public static partial class ThatSnapshot
 			_isMatch = false;
 			_isMismatch = false;
 			_isUsedForAnotherValue = false;
+			_snapshotBytes = null;
 			_usedExtension = null;
 			_writeError = null;
 			_readError = null;
@@ -415,8 +430,11 @@ public static partial class ThatSnapshot
 			}
 
 			_hasSnapshot = snapshot is not null;
+			_snapshotBytes = snapshot;
 			if (snapshot is not null && await MatchesAsync(snapshot))
 			{
+				await ReportAsync(() => new SnapshotMatch(id, settings.Store),
+					static (reporter, match, token) => reporter.OnMatchAsync(match, token), cancellationToken);
 				try
 				{
 					await settings.Store.RecordMatchAsync(id, cancellationToken);
@@ -486,7 +504,9 @@ public static partial class ThatSnapshot
 		///     repeated check, and only writes when its last evaluation was a mismatch. It runs before the failure message
 		///     is built, so that the failure names the written snapshot or the error.<br />
 		///     A snapshot that cannot be accepted, e.g. because the file is read-only, is recorded as a mismatch instead,
-		///     so that it can still be reviewed and accepted by hand.
+		///     so that it can still be reviewed and accepted by hand.<br />
+		///     The reporters are only told about a mismatch that the store recorded, after it was recorded, so that e.g. a
+		///     diff tool finds the pending file; an accepted change is not reported.
 		/// </remarks>
 		private async ValueTask WriteMismatchAsync(CompletedEvaluation evaluation, CancellationToken cancellationToken)
 		{
@@ -517,6 +537,43 @@ public static partial class ThatSnapshot
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
 				_writeError = exception.Message;
+				return;
+			}
+
+			byte[] content = _content;
+			byte[]? snapshot = _snapshotBytes;
+			await ReportAsync(() => new SnapshotMismatch(id, settings.Store,
+					snapshot is null ? null : new SnapshotContent(snapshot, SnapshotText),
+					new SnapshotContent(content, ActualText)),
+				static (reporter, mismatch, token) => reporter.OnMismatchAsync(mismatch, token), cancellationToken);
+		}
+
+		/// <summary>
+		///     Tells the reporters about the outcome in their order, unless on a build server.
+		/// </summary>
+		/// <remarks>
+		///     The report is only created when there is a reporter to tell. An exception of a reporter is traced and
+		///     otherwise ignored, so that a reporter never changes the result of the expectation.
+		/// </remarks>
+		private async ValueTask ReportAsync<TReport>(Func<TReport> createReport,
+			Func<SnapshotReporter, TReport, CancellationToken, ValueTask> report, CancellationToken cancellationToken)
+		{
+			if (settings.Reporters.Count == 0 || AcceptEnvironment.IsBuildServer())
+			{
+				return;
+			}
+
+			TReport outcome = createReport();
+			foreach (SnapshotReporter reporter in settings.Reporters)
+			{
+				try
+				{
+					await report(reporter, outcome, cancellationToken);
+				}
+				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
+				{
+					Tracing.WriteException(exception);
+				}
 			}
 		}
 
@@ -636,6 +693,10 @@ public static partial class ThatSnapshot
 		private string? _value;
 
 		protected override Exception? SubjectError => (Exception?)_formatError ?? _ruleTimeout;
+
+		protected override string? ActualText => _value;
+
+		protected override string? SnapshotText => _snapshot;
 
 		/// <remarks>
 		///     A subject that is nested too deeply to be written fails the expectation; the formatter writes every other

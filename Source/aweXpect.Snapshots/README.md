@@ -43,6 +43,8 @@ environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to `all` to accept all changed 
 only add the missing ones).
 `OrphanedSnapshots.CheckAsync()` in the teardown of the test run reports the snapshots that no test uses any more on a
 build server, and deletes them while accepting all changes.
+[Reporters](../../Docs/extensions/aweXpect.Snapshots/08-reporters.md) are told about every missing, different or matching snapshot, e.g. to open a
+diff tool.
 
 ## Overview
 

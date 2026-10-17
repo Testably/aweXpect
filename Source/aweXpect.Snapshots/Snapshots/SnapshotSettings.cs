@@ -13,12 +13,13 @@ namespace aweXpect.Snapshots;
 internal sealed record SnapshotSettings(
 	SnapshotStore Store,
 	SnapshotAcceptance? Acceptance,
-	IReadOnlyList<SnapshotRule> Rules)
+	IReadOnlyList<SnapshotRule> Rules,
+	IReadOnlyList<SnapshotReporter> Reporters)
 {
 	public static SnapshotSettings Read()
 	{
 		SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
 		return new SnapshotSettings(customization.Store.Get(), customization.Acceptance.Get(),
-			customization.Rules.Get());
+			customization.Rules.Get(), customization.Reporters.Get());
 	}
 }

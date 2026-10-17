@@ -39,6 +39,9 @@ public static class SnapshotsAwexpectCustomizationExtensions
 			Rules = new CopyingSetter<SnapshotRule>(new CustomizationValue<IReadOnlyList<SnapshotRule>>(
 				awexpectCustomization, "aweXpect.Snapshots.Rules", Array.Empty<SnapshotRule>(),
 				ThrowIfNullOrContainsNull));
+			Reporters = new CopyingSetter<SnapshotReporter>(new CustomizationValue<IReadOnlyList<SnapshotReporter>>(
+				awexpectCustomization, "aweXpect.Snapshots.Reporters", Array.Empty<SnapshotReporter>(),
+				ThrowIfNullOrContainsNull));
 		}
 
 		/// <summary>
@@ -51,6 +54,16 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		///     is detected, so that a forgotten variable cannot change the snapshots on a build server.
 		/// </remarks>
 		public ICustomizationValueSetter<SnapshotAcceptance?> Acceptance { get; }
+
+		/// <summary>
+		///     The reporters that are told about a recorded mismatch and a match, in this order, e.g. to open a diff tool.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to none. Setting a value replaces the list, so add a reporter with <c>Set([.. Get(), reporter])</c>.
+		///     The list is copied, so changing it afterwards does not change the setting. The reporters are never called on
+		///     a build server.
+		/// </remarks>
+		public ICustomizationValueSetter<IReadOnlyList<SnapshotReporter>> Reporters { get; }
 
 		/// <summary>
 		///     The rules that are applied to every snapshot, after the rules of the expectation, e.g.

@@ -35,6 +35,11 @@ namespace aweXpect.Results
 namespace aweXpect.Snapshots
 {
     public readonly struct EndOfArguments { }
+    public interface IFileSnapshotStore
+    {
+        string GetPendingFile(aweXpect.Snapshots.SnapshotId id);
+        string GetSnapshotFile(aweXpect.Snapshots.SnapshotId id);
+    }
     public static class OrphanedSnapshots
     {
         public static System.Threading.Tasks.Task CheckAsync(bool force = false, System.Threading.CancellationToken cancellationToken = default) { }
@@ -44,6 +49,12 @@ namespace aweXpect.Snapshots
         None = 0,
         New = 1,
         All = 2,
+    }
+    public sealed class SnapshotContent
+    {
+        public byte[] Bytes { get; }
+        public bool IsText { get; }
+        public string? Text { get; }
     }
     public sealed class SnapshotEmptyCollections<TReturn>
     {
@@ -87,6 +98,11 @@ namespace aweXpect.Snapshots
         public TReturn Mask(string template) { }
         public aweXpect.Snapshots.SnapshotLines<TReturn> Which(System.Func<string, bool> predicate) { }
     }
+    public sealed class SnapshotMatch
+    {
+        public aweXpect.Snapshots.SnapshotId Id { get; }
+        public aweXpect.Snapshots.SnapshotStore Store { get; }
+    }
     public sealed class SnapshotMembersOfType<TReturn, TValue> : aweXpect.Snapshots.SnapshotMembers<TReturn, TValue>
     {
         public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, object> OrOfExactType<T>() { }
@@ -109,6 +125,13 @@ namespace aweXpect.Snapshots
         public aweXpect.Snapshots.SnapshotMembersWithName<TReturn, TValue> WithName(string name) { }
         public aweXpect.Snapshots.SnapshotMembers<TReturn, TValue> WithPath(string path) { }
     }
+    public sealed class SnapshotMismatch
+    {
+        public aweXpect.Snapshots.SnapshotContent Actual { get; }
+        public aweXpect.Snapshots.SnapshotId Id { get; }
+        public aweXpect.Snapshots.SnapshotContent? Snapshot { get; }
+        public aweXpect.Snapshots.SnapshotStore Store { get; }
+    }
     public sealed class SnapshotPaths<TReturn>
     {
         public TReturn Keep() { }
@@ -116,6 +139,12 @@ namespace aweXpect.Snapshots
     public class SnapshotPattern<TReturn>
     {
         public TReturn Mask(string template) { }
+    }
+    public abstract class SnapshotReporter
+    {
+        protected SnapshotReporter() { }
+        public virtual System.Threading.Tasks.ValueTask OnMatchAsync(aweXpect.Snapshots.SnapshotMatch match, System.Threading.CancellationToken cancellationToken) { }
+        public virtual System.Threading.Tasks.ValueTask OnMismatchAsync(aweXpect.Snapshots.SnapshotMismatch mismatch, System.Threading.CancellationToken cancellationToken) { }
     }
     public sealed class SnapshotRule
     {
@@ -166,6 +195,7 @@ namespace aweXpect.Snapshots
         public class SnapshotsCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotAcceptance?> Acceptance { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotReporter>> Reporters { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotRule>> Rules { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
         }

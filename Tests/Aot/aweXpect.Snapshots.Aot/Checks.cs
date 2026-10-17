@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Customization;
 using static aweXpect.Expect;
@@ -46,6 +47,10 @@ internal static class Checks
 			() => ShouldPass(LinerNotesMatchesItsSnapshot)),
 		new("paths of the environment in a string of an object are masked",
 			() => ShouldPass(PathsAreMasked)),
+		new("a reporter is told about a match",
+			() => ShouldPass(() => WithoutBuildServer(ReporterIsToldAboutAMatch))),
+		new("a reporter is told about the recorded mismatch with the files of the store",
+			() => ShouldPass(() => WithoutBuildServer(ReporterIsToldAboutTheRecordedMismatch))),
 		new("every snapshot is used by one of the checks above",
 			() => ShouldPass(EverySnapshotIsUsed)),
 	];
@@ -169,6 +174,90 @@ internal static class Checks
 
 	private static async Task MatchesItsSnapshot()
 		=> await That("snapshot content").MatchesSnapshot();
+
+	private static async Task ReporterIsToldAboutAMatch()
+	{
+		RecordingReporter reporter = new();
+		using (Customize.aweXpect.Snapshots().Reporters.Set([reporter,]))
+		{
+			await That("reported match").MatchesSnapshot().Accepting(SnapshotAcceptance.None);
+		}
+
+		await That(reporter.Match?.Id.MemberName).IsEqualTo(nameof(ReporterIsToldAboutAMatch));
+	}
+
+	/// <remarks>
+	///     No snapshot is committed, so that the pending snapshot is recorded; it is deleted again by the path that the
+	///     store reports.
+	/// </remarks>
+	private static async Task ReporterIsToldAboutTheRecordedMismatch()
+	{
+		RecordingReporter reporter = new();
+		using (Customize.aweXpect.Snapshots().Reporters.Set([reporter,]))
+		{
+			try
+			{
+				await That("reported mismatch").MatchesSnapshot().Accepting(SnapshotAcceptance.None);
+			}
+			catch (FailException)
+			{
+				// The snapshot is missing on purpose, see the remarks.
+			}
+		}
+
+		SnapshotMismatch mismatch = reporter.Mismatch ??
+		                            throw new InvalidOperationException("the reporter was not told about the mismatch");
+		string pendingFile = ((IFileSnapshotStore)mismatch.Store).GetPendingFile(mismatch.Id);
+		bool isRecorded = File.Exists(pendingFile);
+		File.Delete(pendingFile);
+		await That(isRecorded).IsTrue();
+		await That(mismatch.Snapshot).IsNull();
+		await That(mismatch.Actual.Text).IsEqualTo("reported mismatch");
+	}
+
+	/// <summary>
+	///     Runs the <paramref name="act" /> with the environment variables of build servers cleared, as the reporters are
+	///     never called on a build server.
+	/// </summary>
+	private static async Task WithoutBuildServer(Func<Task> act)
+	{
+		string[] variables = ["CI", "TF_BUILD", "JENKINS_URL", "TEAMCITY_VERSION",];
+		string?[] values = variables.Select(Environment.GetEnvironmentVariable).ToArray();
+		try
+		{
+			foreach (string variable in variables)
+			{
+				Environment.SetEnvironmentVariable(variable, null);
+			}
+
+			await act();
+		}
+		finally
+		{
+			for (int i = 0; i < variables.Length; i++)
+			{
+				Environment.SetEnvironmentVariable(variables[i], values[i]);
+			}
+		}
+	}
+
+	private sealed class RecordingReporter : SnapshotReporter
+	{
+		public SnapshotMatch? Match { get; private set; }
+		public SnapshotMismatch? Mismatch { get; private set; }
+
+		public override ValueTask OnMatchAsync(SnapshotMatch match, CancellationToken cancellationToken)
+		{
+			Match = match;
+			return default;
+		}
+
+		public override ValueTask OnMismatchAsync(SnapshotMismatch mismatch, CancellationToken cancellationToken)
+		{
+			Mismatch = mismatch;
+			return default;
+		}
+	}
 
 	/// <remarks>
 	///     The committed <c>.snapshot.json</c> is also listed back by the orphan check below.

@@ -25,7 +25,7 @@ namespace aweXpect.Snapshots;
 ///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>. The <see cref="SnapshotId.Extension" />
 ///     replaces <c>txt</c>, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.json</c>.
 /// </remarks>
-internal sealed class DiskSnapshotStore : SnapshotStore
+internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 {
 	public static readonly DiskSnapshotStore Instance = new();
 	private const string PendingSuffix = ".snapshot.pending";
@@ -115,6 +115,10 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	}
 
 	public override string DescribeMismatch(SnapshotId id) => GetPendingPath(id);
+
+	public string GetSnapshotFile(SnapshotId id) => GetSnapshotPath(id);
+
+	public string GetPendingFile(SnapshotId id) => GetPendingPath(id);
 
 	/// <remarks>
 	///     Lists the snapshot and pending files below the directories of the test projects that the build targets
