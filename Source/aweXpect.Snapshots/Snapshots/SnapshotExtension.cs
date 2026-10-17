@@ -12,7 +12,7 @@ namespace aweXpect.Snapshots;
 ///     must not contain a <c>.</c>, so that it is always the last part of a file name and can be read back. <c>%</c>,
 ///     <c>@</c> and whitespace are not allowed either, as <c>%</c> and <c>@</c> have a meaning in the other parts of a
 ///     file name, and Windows drops whitespace at the end. <c>pending</c> is not allowed, as
-///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending</c> would look like a pending file.
+///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending</c> would look like a pending file.
 /// </remarks>
 internal static class SnapshotExtension
 {

@@ -292,7 +292,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage(
 						"The 'extension' cannot be \"pending\", as it marks the pending file of a snapshot.*")
 					.AsWildcard()
-					.Because("'<Class>.<Method>.snapshot.pending' would look like a pending file");
+					.Because("'<Class>.<Method>.awexpect-snapshot.pending' would look like a pending file");
 			}
 
 			[Theory]

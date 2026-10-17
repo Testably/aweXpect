@@ -91,7 +91,7 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	/// <remarks>
 	///     Several environments are combined by repeating <c>.UniqueFor</c>, e.g.
 	///     <c>.UniqueFor.TargetFramework().UniqueFor.OperatingSystem()</c>, which is stored in
-	///     <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.awexpect-snapshot.txt</c>.
 	/// </remarks>
 	public SnapshotUniqueFor<TSelf> UniqueFor => new((TSelf)this, _options);
 
@@ -102,7 +102,8 @@ public class SnapshotResult<TType, TThat, TSelf> : AndOrResult<TType, TThat, TSe
 	///     test, are kept apart.
 	/// </summary>
 	/// <remarks>
-	///     The name is appended to the snapshot, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;.snapshot.txt</c>.
+	///     The name is appended to the snapshot, e.g.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;.awexpect-snapshot.txt</c>.
 	/// </remarks>
 	public TSelf Named(string name)
 	{

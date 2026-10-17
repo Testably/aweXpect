@@ -17,29 +17,30 @@ public class AlbumTests
 }
 ```
 
-The snapshot is the file `AlbumTests.Describes.snapshot.txt` in the directory of the test file: the first part is the
-name of the test file without its extension, the second part the name of the test method. Both are determined at
-compile time, so no reflection is needed and the expectation also works under Native AOT.
+The snapshot is the file `AlbumTests.Describes.awexpect-snapshot.txt` in the directory of the test file: the first part
+is the name of the test file without its extension, the second part the name of the test method. Both are determined at
+compile time, so no reflection is needed and the expectation also works under Native AOT. The marker
+`.awexpect-snapshot.` keeps the snapshots apart from other files, e.g. those of other snapshot tools.
 
 Before the first run the snapshot does not exist yet, so the expectation fails with:
 
 ```text title="Failure message"
 Expected that description
-matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
+matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot did not exist
 
 Actual:
 Abbey Road by The Beatles
 
 Pending snapshot:
-/src/Tests/AlbumTests.Describes.snapshot.pending.txt
+/src/Tests/AlbumTests.Describes.awexpect-snapshot.pending.txt
 ```
 
 If the snapshot contained "Abbey Road by the Beatles" instead, the expectation would fail with:
 
 ```text title="Failure message"
 Expected that description
-matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
+matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but it was "Abbey Road by The Beatles", which differs at index 14:
             ↓ (actual)
   "…Road by The Beatles"
@@ -50,7 +51,7 @@ Snapshot:
 Abbey Road by the Beatles
 
 Pending snapshot:
-/src/Tests/AlbumTests.Describes.snapshot.pending.txt
+/src/Tests/AlbumTests.Describes.awexpect-snapshot.pending.txt
 ```
 
 A snapshot with several lines lists every line that differs.
@@ -64,9 +65,9 @@ highlight it:
 await Expect.That(json).MatchesSnapshot().WithExtension("json");
 ```
 
-The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.snapshot.json` and
-`AlbumTests.Describes.snapshot.pending.json`, also together with a name or an environment, e.g.
-`AlbumTests.Describes.Abbey Road@net8.0.snapshot.html` for
+The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.awexpect-snapshot.json` and
+`AlbumTests.Describes.awexpect-snapshot.pending.json`, also together with a name or an environment, e.g.
+`AlbumTests.Describes.Abbey Road@net8.0.awexpect-snapshot.html` for
 `.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html")`. It is kept as given and passed without the
 leading dot: it cannot be empty, contain a `.`, whitespace, control characters or any of `< > : " / \ | ? * % @`, or be
 `pending`; otherwise `WithExtension` throws an `ArgumentException`. Objects are always stored as `.txt`, so
@@ -77,7 +78,7 @@ drift apart:
 
 ```text title="Failure message"
 Expected that json
-matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.json",
+matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.json",
 but the snapshot was already used with the extension "txt" in this test run, so use one extension or name each one with .Named(…) or .NamedAfter(…)
 ```
 
@@ -90,7 +91,7 @@ shows up as a changed line:
 await Expect.That(album).MatchesSnapshot();
 ```
 
-```text title="AlbumTests.Loads.snapshot.txt"
+```text title="AlbumTests.Loads.awexpect-snapshot.txt"
 Album {
   Artist = "The Beatles",
   Genre = Rock,
@@ -136,10 +137,10 @@ await Expect.That(coverArt).MatchesSnapshot().WithExtension("png");
 await Expect.That(linerNotesStream).MatchesSnapshot().WithExtension("pdf");
 ```
 
-The snapshot is `AlbumTests.Cover.snapshot.png` and a mismatch is written to `AlbumTests.Cover.snapshot.pending.png`,
-so both open in an image viewer. Without `.WithExtension(…)` the expectation cannot be awaited, so a missing extension
-does not compile. A `Stream` is read from its current position to the end; it does not need to be seekable and is neither
-reset nor disposed.
+The snapshot is `AlbumTests.Cover.awexpect-snapshot.png` and a mismatch is written to
+`AlbumTests.Cover.awexpect-snapshot.pending.png`, so both open in an image viewer. Without `.WithExtension(…)` the
+expectation cannot be awaited, so a missing extension does not compile. A `Stream` is read from its current position
+to the end; it does not need to be seekable and is neither reset nor disposed.
 
 A `FileInfo` is stored with the extension of the file, here `pdf`:
 
@@ -154,11 +155,11 @@ The failure never shows the bytes, but the first byte that differs, counted from
 
 ```text title="Failure message"
 Expected that coverArt
-matches the snapshot "/src/Tests/AlbumTests.Cover.snapshot.png",
+matches the snapshot "/src/Tests/AlbumTests.Cover.awexpect-snapshot.png",
 but it differed at byte 1024 (the snapshot has 4096 bytes, the subject 4100)
 
 Pending snapshot:
-/src/Tests/AlbumTests.Cover.snapshot.pending.png
+/src/Tests/AlbumTests.Cover.awexpect-snapshot.pending.png
 ```
 
 - The bytes are stored unchanged: no encoding, no additional final line break, and the newline style is not ignored.

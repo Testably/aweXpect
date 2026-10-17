@@ -19,7 +19,7 @@ public sealed partial class ThatSnapshot
 
 				await That(Act).DoesNotThrow()
 					.Because(
-						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName.snapshot.txt' is committed next to this test file");
+						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName.awexpect-snapshot.txt' is committed next to this test file");
 			}
 
 			[Theory]
@@ -191,7 +191,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches the snapshot "*MyTests.MyTest.snapshot.txt",
+					             matches the snapshot "*MyTests.MyTest.awexpect-snapshot.txt",
 					             but the snapshot could not be read: The path "/_9/Tests/MyTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
 					             """).AsWildcard();
 			}
@@ -201,7 +201,7 @@ public sealed partial class ThatSnapshot
 			{
 				using SnapshotDirectory directory = new();
 				string testFilePath = Path.Combine(directory.Path, "missing", "MyTests.cs");
-				string snapshotPath = Path.Combine(directory.Path, "missing", "MyTests.MyTest.snapshot.txt");
+				string snapshotPath = Path.Combine(directory.Path, "missing", "MyTests.MyTest.awexpect-snapshot.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -221,6 +221,29 @@ public sealed partial class ThatSnapshot
 					              """).AsWildcard();
 			}
 
+			[Fact]
+			public async Task WhenOnlyASnapshotWithTheOldMarkerExists_ShouldNotReadIt()
+			{
+				using SnapshotDirectory directory = new();
+				string oldSnapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.txt");
+				File.WriteAllText(oldSnapshotPath, "foo");
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{directory.SnapshotPath}",
+					              but the snapshot did not exist
+					              *
+					              """).AsWildcard()
+					.Because("there is no fallback for the '.snapshot.' files of version 0.1");
+				await That(File.Exists(directory.PendingPath)).IsTrue();
+				await That(File.ReadAllText(oldSnapshotPath)).IsEqualTo("foo");
+			}
+
 			[Theory]
 			[InlineData("de-DE", "de-DE")]
 			[InlineData("äöü", "äöü")]
@@ -233,8 +256,8 @@ public sealed partial class ThatSnapshot
 			public async Task WhenNamed_ShouldEscapeTheNameInTheFileNames(string name, string escapedName)
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.snapshot.txt");
-				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.snapshot.pending.txt");
+				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.awexpect-snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.awexpect-snapshot.pending.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -259,9 +282,9 @@ public sealed partial class ThatSnapshot
 				await That(async () => await That("second").MatchesSnapshot(directory.TestFilePath,
 					SnapshotDirectory.MemberName).Named("a%3Ab")).Throws<XunitException>();
 
-				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%3Ab.snapshot.pending.txt")))
+				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%3Ab.awexpect-snapshot.pending.txt")))
 					.IsEqualTo("first" + Environment.NewLine);
-				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%253Ab.snapshot.pending.txt")))
+				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%253Ab.awexpect-snapshot.pending.txt")))
 					.IsEqualTo("second" + Environment.NewLine)
 					.Because("the '%' is escaped as well, so that two names never share a file");
 			}
@@ -276,7 +299,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, "<Main>$");
 
 				await That(Act).Throws<XunitException>();
-				await That(File.Exists(Path.Combine(directory.Path, "MyTests.%3CMain%3E$.snapshot.pending.txt"))).IsTrue()
+				await That(File.Exists(Path.Combine(directory.Path, "MyTests.%3CMain%3E$.awexpect-snapshot.pending.txt"))).IsTrue()
 					.Because("top-level statements report the member name '<Main>$'");
 			}
 
@@ -284,8 +307,8 @@ public sealed partial class ThatSnapshot
 			public async Task WhenNamed_ShouldAppendTheNameToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.login.snapshot.txt");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.login.snapshot.pending.txt");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.login.awexpect-snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.login.awexpect-snapshot.pending.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -312,9 +335,9 @@ public sealed partial class ThatSnapshot
 			public async Task WhenNamedAfterArguments_ShouldAppendTheirNamesAndValuesToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.snapshot.txt");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.awexpect-snapshot.txt");
 				string pendingPath =
-					Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.snapshot.pending.txt");
+					Path.Combine(directory.Path, "MyTests.MyTest.Artist=AC%2FDC_year=1979.awexpect-snapshot.pending.txt");
 				(string Artist, string Album) release = ("AC/DC", "Highway to Hell");
 				int year = 1979;
 
@@ -334,8 +357,8 @@ public sealed partial class ThatSnapshot
 			{
 				using SnapshotDirectory directory = new();
 				string variant = $"{CurrentEnvironment.OperatingSystem}@{CurrentEnvironment.Architecture}";
-				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.snapshot.txt");
-				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.snapshot.pending.txt");
+				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.awexpect-snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.awexpect-snapshot.pending.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -373,7 +396,7 @@ public sealed partial class ThatSnapshot
 
 				await That(Act).DoesNotThrow()
 					.Because(
-						$"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenUniqueForTargetFramework_ShouldReadTheSnapshotOfTheTargetFramework@{CurrentEnvironment.TargetFramework}.snapshot.txt' is committed next to this test file for each target framework");
+						$"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenUniqueForTargetFramework_ShouldReadTheSnapshotOfTheTargetFramework@{CurrentEnvironment.TargetFramework}.awexpect-snapshot.txt' is committed next to this test file for each target framework");
 			}
 
 			[Fact]
@@ -391,15 +414,15 @@ public sealed partial class ThatSnapshot
 
 				await That(Act).DoesNotThrow()
 					.Because(
-						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension.snapshot.json' is committed next to this test file");
+						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension.awexpect-snapshot.json' is committed next to this test file");
 			}
 
 			[Fact]
 			public async Task WithExtension_ShouldUseItInTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.json");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.json");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.json");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.json");
 				string subject = "{}";
 
 				async Task Act()
@@ -429,8 +452,8 @@ public sealed partial class ThatSnapshot
 			{
 				using SnapshotDirectory directory = new();
 				string baseName = $"MyTests.MyTest.Abbey Road@{CurrentEnvironment.OperatingSystem}";
-				string snapshotPath = Path.Combine(directory.Path, $"{baseName}.snapshot.html");
-				string pendingPath = Path.Combine(directory.Path, $"{baseName}.snapshot.pending.html");
+				string snapshotPath = Path.Combine(directory.Path, $"{baseName}.awexpect-snapshot.html");
+				string pendingPath = Path.Combine(directory.Path, $"{baseName}.awexpect-snapshot.pending.html");
 				string subject = "<h1>Abbey Road</h1>";
 
 				async Task Act()
@@ -449,8 +472,8 @@ public sealed partial class ThatSnapshot
 			public async Task WithExtension_WhenAccepting_ShouldWriteTheSnapshotAndDeleteThePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.xml");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.xml");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.xml");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.xml");
 				File.WriteAllText(pendingPath, "<outdated />");
 				directory.WriteSnapshot("<album />");
 				string subject = "<album />";
@@ -473,8 +496,8 @@ public sealed partial class ThatSnapshot
 			public async Task WithExtension_WhenSnapshotMatches_ShouldDeleteThePendingSnapshotWithTheExtension()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.json");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.json");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.json");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.json");
 				File.WriteAllText(snapshotPath, "[]");
 				File.WriteAllText(pendingPath, "[1]");
 				directory.WritePending("[2]");
@@ -747,15 +770,15 @@ public sealed partial class ThatSnapshot
 
 				await That(Act).DoesNotThrow()
 					.Because(
-						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithBinaryData_ShouldReadTheCommittedSnapshot.snapshot.bin' is committed next to this test file, with both line break styles that a text snapshot would normalize");
+						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithBinaryData_ShouldReadTheCommittedSnapshot.awexpect-snapshot.bin' is committed next to this test file, with both line break styles that a text snapshot would normalize");
 			}
 
 			[Fact]
 			public async Task WithBinaryData_ShouldWriteThePendingSnapshotUnchanged()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.png");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.png");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.png");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.png");
 				byte[] subject = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,];
 
 				async Task Act()
@@ -782,8 +805,8 @@ public sealed partial class ThatSnapshot
 			public async Task WithBinaryData_WhenAccepting_ShouldWriteTheSnapshotUnchangedAndDeleteThePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.png");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.png");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.png");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.png");
 				File.WriteAllBytes(snapshotPath, [1, 2,]);
 				File.WriteAllBytes(pendingPath, [3,]);
 				byte[] subject = [1, 2, 3,];
@@ -811,8 +834,8 @@ public sealed partial class ThatSnapshot
 			{
 				using SnapshotDirectory directory = new();
 				using SnapshotDirectory output = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pdf");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pending.pdf");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pdf");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.pdf");
 				FileInfo subject = new(Path.Combine(output.Path, "liner-notes.pdf"));
 				File.WriteAllBytes(subject.FullName, [0x25, 0x50, 0x44, 0x46,]);
 
@@ -837,7 +860,7 @@ public sealed partial class ThatSnapshot
 			public async Task WithFileInfo_WhenTheFileDoesNotExist_ShouldNameTheSnapshotWithTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.snapshot.pdf");
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pdf");
 				FileInfo subject = new(Path.Combine(directory.Path, "liner-notes.pdf"));
 
 				async Task Act()

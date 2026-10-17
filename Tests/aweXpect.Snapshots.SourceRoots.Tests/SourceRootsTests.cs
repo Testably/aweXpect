@@ -96,7 +96,7 @@ public sealed class SourceRootsTests
 		using TemporarySourceRoot emptySourceRoot = new();
 		using TemporarySourceRoot otherSourceRoot = new();
 		otherSourceRoot.CreateFile("Tests/OtherTests.cs");
-		otherSourceRoot.CreateFile("Tests/OtherTests.MyTest.snapshot.txt", "from the other source root");
+		otherSourceRoot.CreateFile("Tests/OtherTests.MyTest.awexpect-snapshot.txt", "from the other source root");
 		RecordedSourceRoots.Record(emptySourceRoot.Path, emptySourceRoot.Path);
 		RecordedSourceRoots.Record(otherSourceRoot.Path, otherSourceRoot.Path);
 		string subject = "from the other source root";

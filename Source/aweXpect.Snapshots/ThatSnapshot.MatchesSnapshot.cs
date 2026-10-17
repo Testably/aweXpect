@@ -26,8 +26,8 @@ namespace aweXpect;
 public static partial class ThatSnapshot
 {
 	/// <summary>
-	///     Verifies that the subject matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.txt</c> next to the
-	///     test file.
+	///     Verifies that the subject matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c>
+	///     next to the test file.
 	/// </summary>
 	/// <remarks>
 	///     <c>&lt;Class&gt;</c> is the name of the test file without its extension and <c>&lt;Method&gt;</c> the name
@@ -35,10 +35,10 @@ public static partial class ThatSnapshot
 	///     which also holds under Native AOT and in async methods, and it is unique within its directory, which a class
 	///     name is not across namespaces.<br />
 	///     A missing or different snapshot fails the expectation and writes the subject to
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.txt</c>, which can be renamed to accept it; a matching
-	///     snapshot deletes a leftover pending file. While accepting changes, see <c>.Accepting(…)</c>, the subject
-	///     replaces the snapshot instead (with <see cref="SnapshotAcceptance.New" /> only a missing one), and the
-	///     expectation still fails. Both only happen when the whole expectation
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.txt</c>, which can be renamed to accept it; a
+	///     matching snapshot deletes a leftover pending file. While accepting changes, see <c>.Accepting(…)</c>, the
+	///     subject replaces the snapshot instead (with <see cref="SnapshotAcceptance.New" /> only a missing one), and
+	///     the expectation still fails. Both only happen when the whole expectation
 	///     fails, not when e.g. another branch of an <c>Or</c> is met, and never for a negated snapshot.<br />
 	///     The files are encoded as UTF-8 and the pending file ends with an additional line break, which is removed
 	///     again when the snapshot is read, so that an editor which adds a final line break does not change it. Another
@@ -71,7 +71,7 @@ public static partial class ThatSnapshot
 
 	/// <summary>
 	///     Verifies that the subject, written by the aweXpect formatter, matches the snapshot
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.txt</c> next to the test file.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
 	/// </summary>
 	/// <remarks>
 	///     The subject is written completely and indented, like the values in a failure message, but without shortening
@@ -116,8 +116,9 @@ public static partial class ThatSnapshot
 	}
 
 	/// <summary>
-	///     Verifies that the binary data matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.&lt;extension&gt;</c>
-	///     next to the test file, with the extension from <c>.WithExtension(…)</c>, e.g. <c>png</c>.
+	///     Verifies that the binary data matches the snapshot
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.&lt;extension&gt;</c> next to the test file, with the
+	///     extension from <c>.WithExtension(…)</c>, e.g. <c>png</c>.
 	/// </summary>
 	/// <remarks>
 	///     The data is compared byte by byte and stored unchanged; the failure names the first byte that differs and the
@@ -145,8 +146,8 @@ public static partial class ThatSnapshot
 
 	/// <summary>
 	///     Verifies that the content of the stream matches the snapshot
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.&lt;extension&gt;</c> next to the test file, with the extension from
-	///     <c>.WithExtension(…)</c>, e.g. <c>pdf</c>.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.&lt;extension&gt;</c> next to the test file, with the
+	///     extension from <c>.WithExtension(…)</c>, e.g. <c>pdf</c>.
 	/// </summary>
 	/// <remarks>
 	///     The stream is read from its current position to the end, so it does not need to be seekable, and is neither
@@ -174,8 +175,8 @@ public static partial class ThatSnapshot
 
 	/// <summary>
 	///     Verifies that the content of the file matches the snapshot
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.&lt;extension&gt;</c> next to the test file, with the extension of
-	///     the file, e.g. <c>pdf</c>.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.&lt;extension&gt;</c> next to the test file, with the
+	///     extension of the file, e.g. <c>pdf</c>.
 	/// </summary>
 	/// <remarks>
 	///     Another extension can be set with <c>.WithExtension(…)</c>, e.g. for a file without one, which fails the
@@ -199,13 +200,14 @@ public static partial class ThatSnapshot
 
 	/// <summary>
 	///     Stores the snapshot of a <see cref="string" /> with the file <paramref name="extension" /> instead of
-	///     <c>txt</c>, e.g. <c>json</c> in <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.json</c>, so that editors and diff
-	///     tools highlight it.
+	///     <c>txt</c>, e.g. <c>json</c> in <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.json</c>, so that editors
+	///     and diff tools highlight it.
 	/// </summary>
 	/// <param name="result">The snapshot expectation of a string.</param>
 	/// <param name="extension">The file extension without a leading dot, e.g. <c>json</c>, <c>html</c> or <c>xml</c>.</param>
 	/// <remarks>
-	///     The pending file keeps the extension as well, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.json</c>.
+	///     The pending file keeps the extension as well, e.g.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.json</c>.
 	///     The extension is kept as given, and a store receives it as <see cref="SnapshotId.Extension" />.<br />
 	///     It cannot be empty, contain a <c>.</c>, whitespace, control characters or any of
 	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />

@@ -22,8 +22,8 @@ internal sealed class SnapshotDirectory : IDisposable
 	public string Path { get; } = System.IO.Path.Combine(System.IO.Path.GetTempPath(),
 		$"aweXpect.Snapshots.Tests.{Guid.NewGuid():N}");
 
-	public string PendingPath => System.IO.Path.Combine(Path, $"MyTests.{MemberName}.snapshot.pending.txt");
-	public string SnapshotPath => System.IO.Path.Combine(Path, $"MyTests.{MemberName}.snapshot.txt");
+	public string PendingPath => System.IO.Path.Combine(Path, $"MyTests.{MemberName}.awexpect-snapshot.pending.txt");
+	public string SnapshotPath => System.IO.Path.Combine(Path, $"MyTests.{MemberName}.awexpect-snapshot.txt");
 	public string TestFilePath => System.IO.Path.Combine(Path, "MyTests.cs");
 
 	public void Dispose() => Directory.Delete(Path, true);

@@ -24,11 +24,13 @@ public sealed class BinarySnapshotWithoutExtension<TType, TThat>
 
 	/// <summary>
 	///     Stores the snapshot with the file <paramref name="extension" />, e.g. <c>png</c> in
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.png</c>, so that it can be opened with the matching application.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.png</c>, so that it can be opened with the matching
+	///     application.
 	/// </summary>
 	/// <param name="extension">The file extension without a leading dot, e.g. <c>png</c>, <c>pdf</c> or <c>bin</c>.</param>
 	/// <remarks>
-	///     The pending file keeps the extension as well, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.png</c>.
+	///     The pending file keeps the extension as well, e.g.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.png</c>.
 	///     The extension is kept as given, and a store receives it as <see cref="SnapshotId.Extension" />.<br />
 	///     It cannot be empty, contain a <c>.</c>, whitespace, control characters or any of
 	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />

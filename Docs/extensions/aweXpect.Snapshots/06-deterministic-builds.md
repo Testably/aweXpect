@@ -19,6 +19,6 @@ fails with:
 
 ```text title="Failure message"
 Expected that description
-matches the snapshot "/_/Tests/AlbumTests.Describes.snapshot.txt",
+matches the snapshot "/_/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot could not be read: The path "/_/Tests/AlbumTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
 ```

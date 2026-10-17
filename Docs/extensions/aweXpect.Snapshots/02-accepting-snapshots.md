@@ -1,18 +1,18 @@
 # Accepting snapshots
 
-A missing or different snapshot writes the actual value to `<Class>.<Method>.snapshot.pending.txt` next to the
-snapshot. Review it and rename it to `<Class>.<Method>.snapshot.txt` to accept it. The next run that matches the
-snapshot deletes a leftover pending file.
+A missing or different snapshot writes the actual value to `<Class>.<Method>.awexpect-snapshot.pending.txt` next to
+the snapshot. Review it and rename it to `<Class>.<Method>.awexpect-snapshot.txt` to accept it. The next run that
+matches the snapshot deletes a leftover pending file.
 
 The pending snapshot is only written, and a change only accepted, when the whole expectation fails. When the snapshot
 is combined with other expectations and another branch is met, e.g. `.Or.IsEqualTo(…)` or `Expect.ThatAny(…)`, the
 test passes and nothing is written, so that a passing test never changes a snapshot.
 
 Add the pending files to your `.gitignore`, so that they are not committed by accident; the pattern also covers
-snapshots with [another extension](01-matching-snapshots.md#file-extension), e.g. `.snapshot.pending.json`:
+snapshots with [another extension](01-matching-snapshots.md#file-extension), e.g. `.awexpect-snapshot.pending.json`:
 
 ```text title=".gitignore"
-*.snapshot.pending.*
+*.awexpect-snapshot.pending.*
 ```
 
 To accept many snapshots at once, set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to one of the levels of
@@ -32,14 +32,14 @@ actual value, and the expectation still fails, so that it never goes unnoticed:
 
 ```text title="Failure message"
 Expected that description
-matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
+matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
 but the snapshot did not exist
 
 Actual:
 Abbey Road by The Beatles
 
 Accepted snapshot:
-/src/Tests/AlbumTests.Describes.snapshot.txt
+/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt
 ```
 
 The next run compares with the accepted snapshot. Review the changed snapshots in version control before committing

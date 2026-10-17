@@ -44,7 +44,7 @@ e.g. after the case `"Let It Be"` was removed from `AlbumTests.Describes`:
 
 ```text title="Failure message"
 Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
-  /src/Tests/AlbumTests.Describes.Let It Be.snapshot.txt
+  /src/Tests/AlbumTests.Describes.Let It Be.awexpect-snapshot.txt
 ```
 
 While accepting all changes (`SnapshotAcceptance.All`, see [Accepting a snapshot](02-accepting-snapshots.md)), the
@@ -53,7 +53,7 @@ unnoticed; `SnapshotAcceptance.New` only adds snapshots, so it keeps them:
 
 ```text title="Failure message"
 Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
-  /src/Tests/AlbumTests.Describes.Let It Be.snapshot.txt (deleted)
+  /src/Tests/AlbumTests.Describes.Let It Be.awexpect-snapshot.txt (deleted)
 ```
 
 A test run that only runs some of the tests, e.g. a single test in the IDE, cannot be told apart from a complete one,
@@ -66,15 +66,16 @@ await OrphanedSnapshots.CheckAsync(force: true);
 ```
 
 Only the directory of the test project is searched, without `bin`, `obj`, hidden directories and the directories of
-other projects in it. A snapshot counts as used as soon as `MatchesSnapshot()` is called for it, even if it is not
+other projects in it, and only for files with the marker `.awexpect-snapshot.`, so that files of other tools are never
+reported or deleted. A snapshot counts as used as soon as `MatchesSnapshot()` is called for it, even if it is not
 compared, e.g. after `.Or` was already met. The check cannot know about tests that did not reach `MatchesSnapshot()`:
 
 - A skipped test, or one that fails before calling `MatchesSnapshot()`, leaves its snapshot unused.
 - A test that only exists for some target frameworks, e.g. behind `#if NET8_0_OR_GREATER`, leaves its snapshot unused
   in the test runs of the other target frameworks, so only check in the run of a target framework that has all tests.
 - A snapshot per environment (see [Snapshots per environment](03-naming-snapshots.md#snapshots-per-environment)), e.g.
-  `AlbumTests.Describes@net48@windows.snapshot.txt`, is only checked by a test run in that environment, here on
-  Windows for `net48`; the test runs of the other environments skip it.
+  `AlbumTests.Describes@net48@windows.awexpect-snapshot.txt`, is only checked by a test run in that environment, here
+  on Windows for `net48`; the test runs of the other environments skip it.
 - A file name that only differs in case from a used snapshot counts as used, as it is the same file on Windows and
   macOS.
 - Test projects that share a directory see each other's snapshots, so give each test project its own directory.

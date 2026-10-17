@@ -7,7 +7,8 @@ namespace aweXpect.Results;
 ///     differs between them, e.g. an exception message between .NET Framework and .NET.
 /// </summary>
 /// <remarks>
-///     Each one adds its value to the snapshot, e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>.
+///     Each one adds its value to the snapshot, e.g.
+///     <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.awexpect-snapshot.txt</c>.
 ///     Combined by repeating <c>.UniqueFor</c>, the values always keep the order target framework, operating system,
 ///     architecture, and adding one again changes nothing. A missing snapshot of the environment does not fall back to
 ///     the snapshot that every environment shares.

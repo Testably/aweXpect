@@ -18,7 +18,7 @@ internal static class Checks
 			() => ShouldPass(MatchesItsSnapshot)),
 		new("a string differing from its snapshot fails and names the difference",
 			() => ShouldFail(DiffersFromItsSnapshot,
-				"Checks.DiffersFromItsSnapshot.snapshot.txt", "differs at index 9")),
+				"Checks.DiffersFromItsSnapshot.awexpect-snapshot.txt", "differs at index 9")),
 		new("a string with ignored lines matching its snapshot passes",
 			() => ShouldPass(StringWithLineRulesMatchesItsSnapshot)),
 		new("an object matching its snapshot passes",
@@ -37,7 +37,7 @@ internal static class Checks
 			() => ShouldPass(MatchesItsSnapshotForTheTargetFramework)),
 		new("a snapshot unique for the operating system and architecture is named after them",
 			() => ShouldFail(IsMissingForTheEnvironment,
-				$"Checks.IsMissingForTheEnvironment@{ExpectedOperatingSystem()}@{ExpectedArchitecture()}.snapshot.txt",
+				$"Checks.IsMissingForTheEnvironment@{ExpectedOperatingSystem()}@{ExpectedArchitecture()}.awexpect-snapshot.txt",
 				"the snapshot did not exist")),
 		new("a string with the extension json matching its snapshot passes",
 			() => ShouldPass(JsonMatchesItsSnapshot)),
@@ -260,14 +260,15 @@ internal static class Checks
 	}
 
 	/// <remarks>
-	///     The committed <c>.snapshot.json</c> is also listed back by the orphan check below.
+	///     The committed <c>.awexpect-snapshot.json</c> is also listed back by the orphan check below.
 	/// </remarks>
 	private static async Task JsonMatchesItsSnapshot()
 		=> await That("{ \"title\": \"Abbey Road\", \"year\": 1969 }").MatchesSnapshot().WithExtension("json")
 			.Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
-	///     The committed <c>.snapshot.bin</c> contains both line break styles, which binary data keeps unchanged.
+	///     The committed <c>.awexpect-snapshot.bin</c> contains both line break styles, which binary data keeps
+	///     unchanged.
 	/// </remarks>
 	private static async Task CoverArtMatchesItsSnapshot()
 		=> await That(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, })

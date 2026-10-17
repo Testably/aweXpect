@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 namespace aweXpect.Snapshots;
 
 /// <summary>
-///     Keeps the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.txt</c> next to the test file and records a mismatch
-///     in <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.txt</c>, which can be renamed to accept it.
+///     Keeps the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file and
+///     records a mismatch in <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.txt</c>, which can be
+///     renamed to accept it.
 /// </summary>
 /// <remarks>
 ///     The bytes are written and read unchanged, so that a pending file can be renamed to accept it.<br />
@@ -22,14 +23,17 @@ namespace aweXpect.Snapshots;
 ///     <see cref="SourceRoots" />.<br />
 ///     The method name and the name of the snapshot are escaped in the file name, see
 ///     <see cref="EscapeFileNamePart(string)" />, and a <see cref="SnapshotId.Variant" /> is appended after an <c>@</c>,
-///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.snapshot.txt</c>. The <see cref="SnapshotId.Extension" />
-///     replaces <c>txt</c>, e.g. <c>&lt;Class&gt;.&lt;Method&gt;.snapshot.pending.json</c>.
+///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.awexpect-snapshot.txt</c>. The
+///     <see cref="SnapshotId.Extension" /> replaces <c>txt</c>, e.g.
+///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.json</c>.<br />
+///     The distinctive marker <c>.awexpect-snapshot.</c> keeps files of other tools, e.g. <c>*.snapshot.*</c>, from
+///     being read or listed as snapshots.
 /// </remarks>
 internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 {
 	public static readonly DiskSnapshotStore Instance = new();
-	private const string PendingSuffix = ".snapshot.pending";
-	private const string SnapshotSuffix = ".snapshot";
+	private const string PendingSuffix = ".awexpect-snapshot.pending";
+	private const string SnapshotSuffix = ".awexpect-snapshot";
 
 	private static readonly StringComparison PathComparison = Path.DirectorySeparatorChar == '\\'
 		? StringComparison.OrdinalIgnoreCase
@@ -194,9 +198,10 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// </summary>
 	/// <remarks>
 	///     The extension is the part after the last <c>.</c>, as it cannot contain one, so
-	///     <c>&lt;Base&gt;.snapshot.pending.json</c> is always the pending file of <c>&lt;Base&gt;.snapshot.json</c>, never a
-	///     snapshot with the extension <c>pending.json</c>. An extension that <c>.WithExtension(…)</c> does not allow,
-	///     e.g. <c>pending</c>, is no snapshot file.
+	///     <c>&lt;Base&gt;.awexpect-snapshot.pending.json</c> is always the pending file of
+	///     <c>&lt;Base&gt;.awexpect-snapshot.json</c>, never a snapshot with the extension <c>pending.json</c>. An
+	///     extension that <c>.WithExtension(…)</c> does not allow, e.g. <c>pending</c>, is no snapshot file, nor is a
+	///     file without the marker, e.g. <c>&lt;Base&gt;.snapshot.txt</c>.
 	/// </remarks>
 	private static (string BaseName, string Extension)? ParseFileName(string fileName)
 	{
