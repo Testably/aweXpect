@@ -49,7 +49,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("<name> Guid_1");
+				await That(store.Mismatches[Id]).IsEqualTo("<name> {Guid_1}");
 			}
 
 			[Fact]
@@ -67,7 +67,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("Guid_1 Date_1 Guid_2");
+				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Date_1} {Guid_2}");
 			}
 
 			[Fact]
@@ -139,7 +139,7 @@ public sealed partial class ThatSnapshot
 						.Masking.Text(FirstGuid, "<order-id>");
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer Guid_1")
+				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer {Guid_1}")
 					.Because("a specific masking of the expectation goes before a general one for all snapshots");
 			}
 

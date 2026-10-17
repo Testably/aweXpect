@@ -208,16 +208,16 @@ snapshots](#naming-a-snapshot).
 
 ### Guids and dates
 
-`.Masking.Guids()` and `.Masking.Dates()` replace every `Guid` and date with a numbered placeholder. The same value
-keeps the same number, so relations stay visible in the snapshot:
+`.Masking.Guids()` and `.Masking.Dates()` replace every `Guid` and date with a numbered placeholder in braces, so that it
+stands out from the surrounding text. The same value keeps the same number, so relations stay visible in the snapshot:
 
 ```csharp
 await Expect.That(log).MatchesSnapshot().Masking.Guids().Masking.Dates();
 ```
 
 ```text title="Snapshot"
-order Guid_1 created Date_1 by Guid_2
-order Guid_1 shipped Date_2
+order {Guid_1} created {Date_1} by {Guid_2}
+order {Guid_1} shipped {Date_2}
 ```
 
 - A `Guid` is matched in the format `"D"` (`3f2504e0-4f89-11d3-9a0c-0305e82c3301`) in upper or lower case, also inside

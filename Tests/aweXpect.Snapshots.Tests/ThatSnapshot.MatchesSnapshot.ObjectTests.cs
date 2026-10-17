@@ -336,10 +336,10 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<XunitException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           SnapshotAudit {
-				                                             Created = Date_1,
-				                                             Id = Guid_1,
-				                                             Owner = Guid_2,
-				                                             Parent = Guid_2
+				                                             Created = {Date_1},
+				                                             Id = {Guid_1},
+				                                             Owner = {Guid_2},
+				                                             Parent = {Guid_2}
 				                                           }
 				                                           """).IgnoringNewlineStyle()
 					.Because("the global maskings apply to the written object, and the same Guid keeps its number");

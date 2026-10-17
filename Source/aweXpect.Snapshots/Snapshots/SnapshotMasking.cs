@@ -151,8 +151,8 @@ public sealed class SnapshotMasking
 	}
 
 	/// <summary>
-	///     Replaces each <see cref="Guid" /> with a numbered placeholder, <c>Guid_1</c>, <c>Guid_2</c> and so on, where the
-	///     same <see cref="Guid" /> keeps the same number.
+	///     Replaces each <see cref="Guid" /> with a numbered placeholder, <c>{Guid_1}</c>, <c>{Guid_2}</c> and so on, where
+	///     the same <see cref="Guid" /> keeps the same number.
 	/// </summary>
 	/// <remarks>
 	///     A <see cref="Guid" /> is matched in the format <c>"D"</c> (<c>3f2504e0-4f89-11d3-9a0c-0305e82c3301</c>) in
@@ -164,8 +164,8 @@ public sealed class SnapshotMasking
 		=> new(GuidPattern, "Guid", StringComparer.OrdinalIgnoreCase);
 
 	/// <summary>
-	///     Replaces each date and date with time in ISO 8601 with a numbered placeholder, <c>Date_1</c>, <c>Date_2</c> and
-	///     so on, where the same text keeps the same number.
+	///     Replaces each date and date with time in ISO 8601 with a numbered placeholder, <c>{Date_1}</c>, <c>{Date_2}</c>
+	///     and so on, where the same text keeps the same number.
 	/// </summary>
 	/// <remarks>
 	///     It matches a date (<c>2026-10-17</c>) and a date with a time (<c>2026-10-17T09:30</c>), with optional seconds,
@@ -202,7 +202,7 @@ public sealed class SnapshotMasking
 		{
 			if (!placeholders.TryGetValue(match.Value, out string? placeholder))
 			{
-				placeholder = $"{_placeholder}_{placeholders.Count + 1}";
+				placeholder = $"{{{_placeholder}_{placeholders.Count + 1}}}";
 				placeholders.Add(match.Value, placeholder);
 			}
 

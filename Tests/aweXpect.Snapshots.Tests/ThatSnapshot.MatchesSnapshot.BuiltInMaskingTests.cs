@@ -26,7 +26,7 @@ public sealed partial class ThatSnapshot
 						.Masking.Guids().Masking.Dates().AcceptingChanges();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Accepted[Id]).IsEqualTo("Guid_1 Date_1");
+				await That(store.Accepted[Id]).IsEqualTo("{Guid_1} {Date_1}");
 			}
 
 			[Theory]
@@ -48,7 +48,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("created: Date_1.");
+				await That(store.Mismatches[Id]).IsEqualTo("created: {Date_1}.");
 			}
 
 			[Fact]
@@ -65,7 +65,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("Date_1 Date_2 Date_3")
+				await That(store.Mismatches[Id]).IsEqualTo("{Date_1} {Date_2} {Date_3}")
 					.Because("the aweXpect formatter writes dates with the round-trip format \"o\"");
 			}
 
@@ -80,7 +80,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("from Date_1 to Date_2, created Date_1");
+				await That(store.Mismatches[Id]).IsEqualTo("from {Date_1} to {Date_2}, created {Date_1}");
 			}
 
 			[Theory]
@@ -117,7 +117,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Dates();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("Date_1 09:30:15")
+				await That(store.Mismatches[Id]).IsEqualTo("{Date_1} 09:30:15")
 					.Because("only ISO 8601 with a 'T' between the date and the time is matched as one");
 			}
 
@@ -132,7 +132,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} (Guid_2)");
+				await That(store.Mismatches[Id]).IsEqualTo("{{Guid_1}} ({Guid_2})");
 			}
 
 			[Fact]
@@ -146,7 +146,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("Guid_1 Guid_1");
+				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Guid_1}");
 			}
 
 			[Fact]
@@ -160,7 +160,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("order_Guid_1_x");
+				await That(store.Mismatches[Id]).IsEqualTo("order_{Guid_1}_x");
 			}
 
 			[Fact]
@@ -174,7 +174,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("Guid_1, Guid_2, Guid_1")
+				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1}, {Guid_2}, {Guid_1}")
 					.Because("the same Guid keeps the same number, so relations stay visible");
 			}
 
@@ -209,7 +209,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Masking.Guids().Masking.Dates();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("Guid_1 Date_1 Guid_2 Date_2");
+				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Date_1} {Guid_2} {Date_2}");
 			}
 
 			[Fact]
@@ -224,7 +224,7 @@ public sealed partial class ThatSnapshot
 						.Masking.Text(FirstGuid, "<order-id>").Masking.Guids();
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer Guid_1");
+				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer {Guid_1}");
 			}
 
 			[Fact]
@@ -239,7 +239,7 @@ public sealed partial class ThatSnapshot
 						.Masking.Guids().Masking.Text(FirstGuid, "<order-id>");
 
 				await That(Act).Throws<XunitException>();
-				await That(store.Mismatches[Id]).IsEqualTo("order Guid_1, customer Guid_2")
+				await That(store.Mismatches[Id]).IsEqualTo("order {Guid_1}, customer {Guid_2}")
 					.Because("the maskings are applied in the order in which they are added");
 			}
 
@@ -247,7 +247,7 @@ public sealed partial class ThatSnapshot
 			public async Task WhenNegated_ShouldStillFail()
 			{
 				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Guid_1";
+				store.Snapshots[Id] = "{Guid_1}";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = FirstGuid;
 
@@ -267,7 +267,7 @@ public sealed partial class ThatSnapshot
 			public async Task WhenSnapshotContainsTheNumberedPlaceholders_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "Guid_1 created Date_1";
+				store.Snapshots[Id] = "{Guid_1} created {Date_1}";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = $"{Guid.NewGuid()} created {DateTime.UtcNow:o}";
 
@@ -300,7 +300,7 @@ public sealed partial class ThatSnapshot
 			public async Task WhenTwoValuesOnlyDifferInTheirGuids_ShouldNotConflict()
 			{
 				InMemorySnapshotStore store = new();
-				store.Snapshots[Id] = "id=Guid_1";
+				store.Snapshots[Id] = "id={Guid_1}";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 
 				async Task Act()
