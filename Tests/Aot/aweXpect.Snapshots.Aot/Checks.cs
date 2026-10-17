@@ -16,6 +16,8 @@ internal static class Checks
 		new("a string differing from its snapshot fails and names the difference",
 			() => ShouldFail(DiffersFromItsSnapshot,
 				"Checks.DiffersFromItsSnapshot.snapshot.txt", "differs at index 9")),
+		new("a string with ignored lines matching its snapshot passes",
+			() => ShouldPass(StringWithLineRulesMatchesItsSnapshot)),
 		new("an object matching its snapshot passes",
 			() => ShouldPass(ObjectMatchesItsSnapshot)),
 		new("an object with ignored and masked members matching its snapshot passes",
@@ -146,6 +148,18 @@ internal static class Checks
 		=> RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows"
 			: RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx"
 			: "linux";
+
+	/// <remarks>
+	///     The line rules match with the string options of aweXpect, also as a wildcard or regex pattern.
+	/// </remarks>
+	private static async Task StringWithLineRulesMatchesItsSnapshot()
+		=> await That($"Abbey Road\r\nELAPSED {DateTime.Now.Ticks} ms\r\nTrack 2: Help! (Live)\r\n09:30 Let It Be\r\n\r\nBack in Black")
+			.MatchesSnapshot()
+			.Ignoring.LinesContaining("elapsed").IgnoringCase()
+			.Ignoring.LinesContaining("Track ?: *Live*").AsWildcard()
+			.Ignoring.LinesContaining(@"^\d{2}:\d{2} ").AsRegex()
+			.Ignoring.Lines(line => line.Length == 0)
+			.AcceptingChanges(false);
 
 	private static async Task<string?> ShouldFail(Func<Task> act, params string[] parts)
 	{

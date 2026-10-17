@@ -51,12 +51,14 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	public SnapshotMaskings<TType, TThat> Masking => new(this, _options);
 
 	/// <summary>
-	///     Leaves values out of a snapshot of an object, e.g. a member that is irrelevant for the test.
+	///     Leaves values out of a snapshot, e.g. a member of an object or a line of a string that is irrelevant for the
+	///     test.
 	/// </summary>
 	/// <remarks>
 	///     The ignorings have the same names and semantics as the factories of <see cref="SnapshotIgnoring" /> for all
-	///     snapshots, e.g. <c>.Ignoring.Member("ETag")</c> or <c>.Ignoring.Member&lt;DateTime&gt;()</c>, and win over every
-	///     masking. On a <see cref="string" /> subject, which is compared as raw text, they throw.
+	///     snapshots, e.g. <c>.Ignoring.Member("ETag")</c>, <c>.Ignoring.Member&lt;DateTime&gt;()</c> or
+	///     <c>.Ignoring.LinesContaining("elapsed")</c>, and win over every masking. A member or type rule throws on a
+	///     <see cref="string" /> subject, which is compared as raw text, and a line rule on any other subject.
 	/// </remarks>
 	public SnapshotIgnorings<TType, TThat> Ignoring => new(this, _options);
 
@@ -170,4 +172,7 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 		=> (value is IFormattable formattable
 			? formattable.ToString(null, CultureInfo.InvariantCulture)
 			: value?.ToString()) ?? "null";
+
+	internal SnapshotLinesContainingResult<TType, TThat> WithLineRule(SnapshotIgnoringLinesContaining ignoring)
+		=> new(ExpectationBuilder, _returnValue, _options, ignoring);
 }

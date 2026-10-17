@@ -46,7 +46,9 @@ public static class ThatSnapshot
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
 	///     Values that change from run to run can be replaced before comparing, see <c>.Masking</c>, e.g.
-	///     <c>.Masking.Guids()</c>, and, for all snapshots, <c>Customize.aweXpect.Snapshots().Maskings</c>.<br />
+	///     <c>.Masking.Guids()</c>, and, for all snapshots, <c>Customize.aweXpect.Snapshots().Maskings</c>. Lines that are
+	///     irrelevant for the test can be left out before, see <c>.Ignoring.Lines(…)</c> and
+	///     <c>.Ignoring.LinesContaining(…)</c>, and, for all snapshots, <c>Customize.aweXpect.Snapshots().Ignorings</c>.<br />
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
 	///     subject.<br />
 	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a
@@ -157,6 +159,7 @@ public static class ThatSnapshot
 		private bool _isMatch;
 		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
+		private RegexMatchTimeoutException? _lineRuleTimeout;
 		private RegexMatchTimeoutException? _maskingTimeout;
 		private Exception? _readError;
 		private string? _snapshot;
@@ -164,7 +167,8 @@ public static class ThatSnapshot
 		private string? _writeError;
 
 		/// <inheritdoc />
-		public override Exception? FailureCause => (Exception?)_formatError ?? _maskingTimeout ?? _readError;
+		public override Exception? FailureCause
+			=> (Exception?)_formatError ?? _lineRuleTimeout ?? _maskingTimeout ?? _readError;
 
 		private SnapshotId Id => snapshotOptions.Id;
 
@@ -176,9 +180,11 @@ public static class ThatSnapshot
 		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
 		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
 		///     A mismatch is only written once the whole expectation is decided, see <see cref="WriteMismatchAsync" />.<br />
-		///     Everything after the masking only sees the masked value, so that the comparison, the stored snapshot and
-		///     the failure agree, and two values that only differ in a masked part are no conflict. A masking that times
-		///     out fails the expectation both ways, with the exception as the <see cref="FailureCause" />.
+		///     The line rules of a <see cref="string" /> subject remove its lines before the masking, so that they don't use
+		///     up numbered placeholders. Everything after the masking only sees the masked value, so that the comparison,
+		///     the stored snapshot and the failure agree, and two values that only differ in a masked part are no
+		///     conflict. A line rule or a masking that times out fails the expectation both ways, with the exception as the
+		///     <see cref="FailureCause" />.
 		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -190,6 +196,7 @@ public static class ThatSnapshot
 			_isMatch = false;
 			_isMismatch = false;
 			_isUsedForAnotherValue = false;
+			_lineRuleTimeout = null;
 			_maskingTimeout = null;
 			_writeError = null;
 			_readError = null;
@@ -203,16 +210,28 @@ public static class ThatSnapshot
 			}
 
 			string value;
+			bool isMasking = false;
 			try
 			{
 				SnapshotNumbering numbering = new();
-				value = snapshotOptions.Mask(
-					format(actual, snapshotOptions.CreateFormatValue(settings.Ignorings, settings.Maskings, numbering)),
-					settings.Maskings, numbering);
+				value = format(actual, snapshotOptions.CreateFormatValue(settings.Ignorings, settings.Maskings, numbering));
+				if (typeof(T) == typeof(string))
+				{
+					value = await snapshotOptions.RemoveLines(value, settings.Ignorings);
+				}
+
+				isMasking = true;
+				value = snapshotOptions.Mask(value, settings.Maskings, numbering);
 			}
 			catch (InsufficientExecutionStackException exception)
 			{
 				_formatError = exception;
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+			catch (RegexMatchTimeoutException exception) when (!isMasking)
+			{
+				_lineRuleTimeout = exception;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
@@ -359,6 +378,12 @@ public static class ThatSnapshot
 			if (_formatError is not null)
 			{
 				stringBuilder.Append(It).Append(" could not be written: ").Append(_formatError.Message);
+			}
+			else if (_lineRuleTimeout is not null)
+			{
+				stringBuilder.Append("the line rule with the pattern ").Append(Formatter.Format(_lineRuleTimeout.Pattern))
+					.Append(" did not complete within ").Append(Formatter.Format(_lineRuleTimeout.MatchTimeout))
+					.Append(". Simplify the pattern to avoid catastrophic backtracking");
 			}
 			else if (_maskingTimeout is not null)
 			{

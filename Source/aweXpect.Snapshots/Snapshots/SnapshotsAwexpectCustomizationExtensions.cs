@@ -45,13 +45,13 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		}
 
 		/// <summary>
-		///     The ignorings that are applied to every snapshot of an object, together with the ignorings of the
-		///     expectation.
+		///     The ignorings that are applied to every snapshot, together with the ignorings of the expectation.
 		/// </summary>
 		/// <remarks>
 		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
 		///     <c>Set([.. Get(), extra])</c>. The list is copied, so changing it afterwards does not change the setting.
-		///     They are ignored for a snapshot of a <see cref="string" />, which is compared as raw text.
+		///     Member and type rules are ignored for a snapshot of a <see cref="string" />, which is compared as raw text,
+		///     and line rules for a snapshot of an object.
 		/// </remarks>
 		public ICustomizationValueSetter<IReadOnlyList<SnapshotIgnoring>> Ignorings { get; }
 

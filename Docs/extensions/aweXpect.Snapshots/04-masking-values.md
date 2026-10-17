@@ -61,6 +61,31 @@ album {Guid_1} played {Date_2}
 The numbers are counted per subject in the order of appearance, and only after the maskings that come before, so
 `.Masking.Text(album.Id.ToString(), "<album-id>").Masking.Guids()` numbers only the other `Guid`s.
 
+## Lines of a string
+
+Lines that are only noise, such as durations, timestamps or banners, can be left out of a `string` snapshot:
+
+```csharp
+await Expect.That(log).MatchesSnapshot()
+    .Ignoring.LinesContaining("elapsed").IgnoringCase()
+    .Ignoring.LinesContaining("Track ?: *Live*").AsWildcard()
+    .Ignoring.LinesContaining(@"^\d{2}:\d{2} ").AsRegex()
+    .Ignoring.Lines(line => line.Length == 0)
+    .Masking.Guids();
+```
+
+- `.Ignoring.LinesContaining(text)` leaves out each line that contains the text anywhere, compared ordinally like
+  aweXpect's `Contains`. `.IgnoringCase()`, `.AsWildcard()` and `.AsRegex()` directly after it apply to this line rule
+  only, not to the comparison with the snapshot. A pattern uses the regex timeout of aweXpect; a pattern that times out
+  fails the expectation, and an invalid pattern throws an `ArgumentException` when the expectation is evaluated.
+- `.Ignoring.Lines(predicate)` leaves out each line for which the predicate returns `true`.
+- A line ends with `\r\n`, `\n` or `\r` and is checked without it. A removed line takes its line break with it, and
+  removing the last line also removes the line break before it; the other lines keep their newline style.
+- The lines are removed before the maskings, so they don't use up numbered placeholders like `{Guid_1}`.
+
+An object is written by the formatter, so a line rule on any other subject than a `string` throws an
+`InvalidOperationException`; leave out its members instead.
+
 ## Members and types of an object
 
 In a [snapshot of an object](01-matching-snapshots.md#objects), members can be left out or masked by their name or
@@ -122,10 +147,11 @@ Customize.aweXpect.Global.Snapshots().Maskings.Set([
 ```
 
 They are applied after the maskings of the expectation, in the order of the list, so a specific masking of the
-expectation goes before a general one for all snapshots. Members and types are left out for all snapshots of objects
-with `Customize.aweXpect.Snapshots().Ignorings` and the factories of `SnapshotIgnoring`, e.g.
-`Ignorings.Set([SnapshotIgnoring.Member<DateTime>()])`. Member and type rules for all snapshots are ignored for a `string`
-subject. Setting a value replaces the list; to extend an outer setting, e.g. for one async flow, include it:
+expectation goes before a general one for all snapshots. Members, types and lines are left out for all snapshots with
+`Customize.aweXpect.Snapshots().Ignorings` and the factories of `SnapshotIgnoring`, e.g.
+`Ignorings.Set([SnapshotIgnoring.Member<DateTime>(), SnapshotIgnoring.LinesContaining("Build date").IgnoringCase()])`.
+Member and type rules for all snapshots are ignored for a `string` subject, and line rules for any other subject.
+Setting a value replaces the list; to extend an outer setting, e.g. for one async flow, include it:
 
 ```csharp
 using (Customize.aweXpect.Snapshots().Maskings.Set([

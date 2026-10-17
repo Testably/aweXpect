@@ -4,9 +4,12 @@ namespace aweXpect.Results
 {
     public sealed class SnapshotIgnorings<TType, TThat>
     {
+        public aweXpect.Results.SnapshotResult<TType, TThat> Lines(System.Func<string, bool> predicate) { }
+        public aweXpect.Results.SnapshotLinesContainingResult<TType, TThat> LinesContaining(string text) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member(string memberName) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Member<T>() { }
     }
+    public sealed class SnapshotLinesContainingResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
     public sealed class SnapshotMaskings<TType, TThat>
     {
         public aweXpect.Results.SnapshotResult<TType, TThat> Dates() { }
@@ -54,11 +57,14 @@ namespace aweXpect.Snapshots
         public string? Variant { get; init; }
         public override string ToString() { }
     }
-    public sealed class SnapshotIgnoring
+    public class SnapshotIgnoring
     {
+        public static aweXpect.Snapshots.SnapshotIgnoring Lines(System.Func<string, bool> predicate) { }
+        public static aweXpect.Snapshots.SnapshotIgnoringLinesContaining LinesContaining(string text) { }
         public static aweXpect.Snapshots.SnapshotIgnoring Member(string memberName) { }
         public static aweXpect.Snapshots.SnapshotIgnoring Member<T>() { }
     }
+    public sealed class SnapshotIgnoringLinesContaining : aweXpect.Snapshots.SnapshotIgnoring, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
     public sealed class SnapshotMasking
     {
         public static aweXpect.Snapshots.SnapshotMasking Dates() { }
