@@ -32,6 +32,24 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenTheListIsChangedAfterSetting_ShouldKeepTheMaskingsOfTheSetting()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				List<SnapshotMasking> maskings = [SnapshotMasking.Text("Bob", "<name>"),];
+				using CustomizationLifetime setting = Customize.aweXpect.Snapshots().Maskings.Set(maskings);
+				maskings.Add(SnapshotMasking.Text("Alice", "<name>"));
+				string subject = "Bob Alice";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<XunitException>();
+				await That(store.Mismatches[Id]).IsEqualTo("<name> Alice")
+					.Because("the setting keeps a copy of the list, so a later change of the list does not affect it");
+			}
+
+			[Fact]
 			public async Task WhenExtendingAnOuterSetting_ShouldApplyBoth()
 			{
 				InMemorySnapshotStore store = new();

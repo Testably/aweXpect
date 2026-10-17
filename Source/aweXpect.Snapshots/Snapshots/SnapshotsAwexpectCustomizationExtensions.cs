@@ -36,8 +36,8 @@ public static class SnapshotsAwexpectCustomizationExtensions
 				});
 			AcceptChanges = new CustomizationValue<bool?>(awexpectCustomization,
 				"aweXpect.Snapshots.AcceptChanges", null);
-			Maskings = new CustomizationValue<IReadOnlyList<SnapshotMasking>>(awexpectCustomization,
-				"aweXpect.Snapshots.Maskings", Array.Empty<SnapshotMasking>(),
+			Maskings = new CopyingSetter<SnapshotMasking>(new CustomizationValue<IReadOnlyList<SnapshotMasking>>(
+				awexpectCustomization, "aweXpect.Snapshots.Maskings", Array.Empty<SnapshotMasking>(),
 				value =>
 				{
 					if (value is null)
@@ -51,7 +51,7 @@ public static class SnapshotsAwexpectCustomizationExtensions
 						throw Tracing.WriteException(
 							new ArgumentException("The 'value' cannot contain null.", nameof(value)));
 					}
-				});
+				}));
 		}
 
 		/// <summary>
@@ -70,7 +70,7 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		/// </summary>
 		/// <remarks>
 		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
-		///     <c>Set([.. Get(), extra])</c>.
+		///     <c>Set([.. Get(), extra])</c>. The list is copied, so changing it afterwards does not change the setting.
 		/// </remarks>
 		public ICustomizationValueSetter<IReadOnlyList<SnapshotMasking>> Maskings { get; }
 
@@ -81,5 +81,21 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		///     Defaults to a store that keeps every snapshot in a file next to its test file.
 		/// </remarks>
 		public ICustomizationValueSetter<SnapshotStore> Store { get; }
+
+		/// <summary>
+		///     Stores a copy of the list, as a setting would otherwise change with a mutable list it was set from.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> list is passed on unchanged, so that the validation of the
+		///     <paramref name="inner" /> value rejects it.
+		/// </remarks>
+		private sealed class CopyingSetter<TItem>(ICustomizationValueSetter<IReadOnlyList<TItem>> inner)
+			: ICustomizationValueSetter<IReadOnlyList<TItem>>
+		{
+			public IReadOnlyList<TItem> Get() => inner.Get();
+
+			public CustomizationLifetime Set(IReadOnlyList<TItem> value)
+				=> inner.Set(value is null ? value! : value.ToArray());
+		}
 	}
 }
