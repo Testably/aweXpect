@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
+using aweXpect.Customization;
 
 namespace aweXpect.Options;
 
@@ -29,10 +30,11 @@ public partial class StringEqualityOptions
 	/// </summary>
 	/// <remarks>
 	///     The culture is part of the key, because it affects a pattern that ignores the casing without
-	///     <see cref="RegexOptions.CultureInvariant" />. The cache is cleared when it is full, so that generated
-	///     patterns cannot grow it without limit.
+	///     <see cref="RegexOptions.CultureInvariant" />, and so is the timeout, because a regex keeps the one it was
+	///     parsed with. The cache is cleared when it is full, so that generated patterns cannot grow it without limit.
 	/// </remarks>
-	private static readonly ConcurrentDictionary<(string Pattern, RegexOptions Options, string Culture), Regex>
+	private static readonly
+		ConcurrentDictionary<(string Pattern, RegexOptions Options, string Culture, TimeSpan Timeout), Regex>
 		ParsedRegexes = new();
 
 	/// <summary>
@@ -99,15 +101,23 @@ public partial class StringEqualityOptions
 		}
 	}
 
+	/// <remarks>
+	///     The timeout is read whenever a regex is needed, so that a value set for a scope applies to the expectations
+	///     that are evaluated within it.
+	/// </remarks>
+	private static TimeSpan GetRegexTimeout()
+		=> Customize.aweXpect.Settings().DefaultRegexTimeout.Get();
+
 	private static Regex GetOrParseRegex(string pattern, RegexOptions options)
 	{
-		(string, RegexOptions, string) key = (pattern, options, CultureInfo.CurrentCulture.Name);
+		TimeSpan timeout = GetRegexTimeout();
+		(string, RegexOptions, string, TimeSpan) key = (pattern, options, CultureInfo.CurrentCulture.Name, timeout);
 		if (ParsedRegexes.TryGetValue(key, out Regex? regex))
 		{
 			return regex;
 		}
 
-		regex = new Regex(pattern, options, RegexTimeout);
+		regex = new Regex(pattern, options, timeout);
 		if (ParsedRegexes.Count >= MaximumParsedRegexes)
 		{
 			ParsedRegexes.Clear();

@@ -235,8 +235,10 @@ await Expect.That(title).IsEqualTo("Road").AsSuffix();
 - An empty regex, prefix or suffix throws an `ArgumentException`, because it would match every subject. An empty
   wildcard pattern is allowed and matches only an empty subject.
 - An invalid regex throws an `ArgumentException` that carries the parse error as its inner exception.
-- Matching a pattern is limited to one second. A pattern that takes longer, e.g. because of catastrophic backtracking,
-  throws an `ArgumentException` that asks you to simplify the pattern.
+- Matching a pattern is limited to the
+  [`DefaultRegexTimeout`](../03-how-it-works/07-configuration.md#settings), one second by default. A pattern that
+  takes longer, e.g. because of catastrophic backtracking, throws an `ArgumentException` that names the timeout and
+  asks you to simplify the pattern.
 
 A pattern is validated whichever subject it is matched against, and so is every expected
 string item of a [collection expectation](../05-collections/index.md) or of `IsOneOf`. Only a lazily evaluated sequence

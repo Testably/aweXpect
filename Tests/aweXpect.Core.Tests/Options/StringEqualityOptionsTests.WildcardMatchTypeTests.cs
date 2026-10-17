@@ -1,4 +1,6 @@
-﻿using aweXpect.Options;
+﻿using aweXpect.Chronology;
+using aweXpect.Customization;
+using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
 
@@ -117,6 +119,26 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo(expectMatch)
 				.Because("a character outside the Basic Multilingual Plane is one character, although it consists of two UTF-16 code units");
+		}
+
+		[Test]
+		public async Task AreConsideredEqual_WhenTheTimeoutChanges_ShouldNotReuseTheParsedRegex()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsWildcard();
+			bool result = await sut.AreConsideredEqual("aaaaaaaaaab", CatastrophicPattern);
+
+			async Task Act() => await sut.AreConsideredEqual(new string('a', 100), CatastrophicPattern);
+
+			await That(result).IsTrue();
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(10.Milliseconds()))
+			{
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						$"""The wildcard pattern "{CatastrophicPattern}" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix()
+					.Because("the options must not reuse the regex they parsed with the default timeout");
+			}
 		}
 
 		[Test]
@@ -260,6 +282,24 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("a character outside the Basic Multilingual Plane is one character, although it consists of two UTF-16 code units");
+		}
+
+		[Test]
+		public async Task CountOccurrences_WhenTheTimeoutIsSet_ShouldNameIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsWildcard();
+
+			async Task Act() => await sut.CountOccurrences(new string('a', 100), CatastrophicPattern);
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultRegexTimeout.Set(10.Milliseconds()))
+			{
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						$"""The wildcard pattern "{CatastrophicPattern}" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix()
+					.Because("counting the occurrences parses the pattern with the timeout that applies");
+			}
 		}
 
 		[Test]
