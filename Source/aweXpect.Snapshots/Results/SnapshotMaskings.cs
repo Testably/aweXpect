@@ -29,6 +29,14 @@ public sealed class SnapshotMaskings<TType, TThat>
 	public SnapshotResult<TType, TThat> Guids()
 		=> Add(SnapshotMasking.Guids());
 
+	/// <inheritdoc cref="SnapshotMasking.Member(string)" />
+	public SnapshotResult<TType, TThat> Member(string memberName)
+		=> AddStructural(SnapshotMasking.Member(memberName));
+
+	/// <inheritdoc cref="SnapshotMasking.Member(string, string)" />
+	public SnapshotResult<TType, TThat> Member(string memberName, string replacement)
+		=> AddStructural(SnapshotMasking.Member(memberName, replacement));
+
 	/// <inheritdoc cref="SnapshotMasking.Regex(string, string)" />
 	public SnapshotResult<TType, TThat> Regex(string pattern, string replacement)
 		=> Add(SnapshotMasking.Regex(pattern, replacement));
@@ -41,9 +49,23 @@ public sealed class SnapshotMaskings<TType, TThat>
 	public SnapshotResult<TType, TThat> Text(string value, string replacement)
 		=> Add(SnapshotMasking.Text(value, replacement));
 
+	/// <inheritdoc cref="SnapshotMasking.Type{T}()" />
+	public SnapshotResult<TType, TThat> Type<T>()
+		=> AddStructural(SnapshotMasking.Type<T>());
+
+	/// <inheritdoc cref="SnapshotMasking.Type{T}(string)" />
+	public SnapshotResult<TType, TThat> Type<T>(string replacement)
+		=> AddStructural(SnapshotMasking.Type<T>(replacement));
+
 	private SnapshotResult<TType, TThat> Add(SnapshotMasking masking)
 	{
 		_options.Maskings.Add(masking);
 		return _result;
+	}
+
+	private SnapshotResult<TType, TThat> AddStructural(SnapshotMasking masking)
+	{
+		StructuralRules.ThrowIfString<TType>();
+		return Add(masking);
 	}
 }

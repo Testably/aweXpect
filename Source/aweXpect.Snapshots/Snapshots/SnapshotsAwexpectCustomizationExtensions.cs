@@ -36,23 +36,24 @@ public static class SnapshotsAwexpectCustomizationExtensions
 				});
 			AcceptChanges = new CustomizationValue<bool?>(awexpectCustomization,
 				"aweXpect.Snapshots.AcceptChanges", null);
+			Ignorings = new CopyingSetter<SnapshotIgnoring>(new CustomizationValue<IReadOnlyList<SnapshotIgnoring>>(
+				awexpectCustomization, "aweXpect.Snapshots.Ignorings", Array.Empty<SnapshotIgnoring>(),
+				ThrowIfNullOrContainsNull));
 			Maskings = new CopyingSetter<SnapshotMasking>(new CustomizationValue<IReadOnlyList<SnapshotMasking>>(
 				awexpectCustomization, "aweXpect.Snapshots.Maskings", Array.Empty<SnapshotMasking>(),
-				value =>
-				{
-					if (value is null)
-					{
-						throw Tracing.WriteException(
-							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
-					}
-
-					if (value.Any(masking => masking is null))
-					{
-						throw Tracing.WriteException(
-							new ArgumentException("The 'value' cannot contain null.", nameof(value)));
-					}
-				}));
+				ThrowIfNullOrContainsNull));
 		}
+
+		/// <summary>
+		///     The ignorings that are applied to every snapshot of an object, together with the ignorings of the
+		///     expectation.
+		/// </summary>
+		/// <remarks>
+		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
+		///     <c>Set([.. Get(), extra])</c>. The list is copied, so changing it afterwards does not change the setting.
+		///     They are ignored for a snapshot of a <see cref="string" />, which is compared as raw text.
+		/// </remarks>
+		public ICustomizationValueSetter<IReadOnlyList<SnapshotIgnoring>> Ignorings { get; }
 
 		/// <summary>
 		///     Whether a missing or different snapshot is accepted, unless the expectation sets
@@ -66,7 +67,8 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		public ICustomizationValueSetter<bool?> AcceptChanges { get; }
 
 		/// <summary>
-		///     The maskings that are applied to every snapshot, after the maskings of the expectation.
+		///     The maskings that are applied to every snapshot, after the maskings of the expectation; member and type
+		///     maskings are ignored for a snapshot of a <see cref="string" />.
 		/// </summary>
 		/// <remarks>
 		///     Defaults to none. Setting a value replaces the list, so extend an outer setting with
@@ -81,6 +83,21 @@ public static class SnapshotsAwexpectCustomizationExtensions
 		///     Defaults to a store that keeps every snapshot in a file next to its test file.
 		/// </remarks>
 		public ICustomizationValueSetter<SnapshotStore> Store { get; }
+
+		private static void ThrowIfNullOrContainsNull<TItem>(IReadOnlyList<TItem> value)
+		{
+			if (value is null)
+			{
+				throw Tracing.WriteException(
+					new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
+			}
+
+			if (value.Any(item => item is null))
+			{
+				throw Tracing.WriteException(
+					new ArgumentException("The 'value' cannot contain null.", nameof(value)));
+			}
+		}
 
 		/// <summary>
 		///     Stores a copy of the list, as a setting would otherwise change with a mutable list it was set from.

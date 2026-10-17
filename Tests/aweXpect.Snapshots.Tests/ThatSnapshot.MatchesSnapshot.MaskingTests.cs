@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Customization;
@@ -245,23 +244,12 @@ public sealed partial class ThatSnapshot
 			[Fact]
 			public async Task MaskingProperty_ShouldOfferEveryFactoryOfSnapshotMasking()
 			{
-				string[] factories = typeof(SnapshotMasking)
-					.GetMethods(BindingFlags.Public | BindingFlags.Static)
-					.Select(GetSignature)
-					.OrderBy(signature => signature, StringComparer.Ordinal)
-					.ToArray();
-				string[] maskings = typeof(SnapshotMaskings<string, IThat<string>>)
-					.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-					.Select(GetSignature)
-					.OrderBy(signature => signature, StringComparer.Ordinal)
-					.ToArray();
+				string[] factories = ApiParity.GetFactories(typeof(SnapshotMasking));
+				string[] maskings = ApiParity.GetMethods(typeof(SnapshotMaskings<string, IThat<string>>));
 
 				await That(maskings).IsEqualTo(factories)
-					.Because("a masking of the expectation has the same name and parameters as for all snapshots");
+					.Because("a masking of the expectation has the same name, generic arity and parameters as for all snapshots");
 			}
-
-			private static string GetSignature(MethodInfo method)
-				=> $"{method.Name}({string.Join(", ", method.GetParameters().Select(p => $"{p.ParameterType.FullName} {p.Name}"))})";
 
 			[Fact]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()

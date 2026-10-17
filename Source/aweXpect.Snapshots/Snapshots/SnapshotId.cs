@@ -7,7 +7,7 @@ namespace aweXpect.Snapshots;
 /// </summary>
 /// <param name="SourceFile">
 ///     The path of the test file relative to the source root of the project with <c>/</c> as separator, e.g.
-///     <c>Tests/Orders/OrderTests.cs</c>, so that it is the same on every machine and in deterministic builds. It is the
+///     <c>Tests/Albums/AlbumTests.cs</c>, so that it is the same on every machine and in deterministic builds. It is the
 ///     full path when the build of the test project recorded no source root, e.g. without source control information.
 /// </param>
 /// <param name="MemberName">The name of the test method.</param>

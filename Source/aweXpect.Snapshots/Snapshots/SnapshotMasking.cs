@@ -1,8 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Customization;
+using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -15,6 +17,9 @@ namespace aweXpect.Snapshots;
 ///     substitutions of <see cref="System.Text.RegularExpressions.Regex.Replace(string, string)" />, e.g. <c>$1</c>.
 ///     <see cref="Guids" /> and <see cref="Dates" /> number their placeholders, so that the same value keeps the same
 ///     placeholder within one subject.<br />
+///     <see cref="Member(string)" /> and <see cref="Type{T}()" /> replace values nested in an object snapshot while it is
+///     written, so they apply before the maskings of the text, and only to snapshots of objects; the first one that
+///     matches a value wins. Numbered placeholders of the same name share their numbers across all maskings.<br />
 ///     Set maskings for all snapshots with <c>Customize.aweXpect.Snapshots().Maskings</c>; they are applied after the
 ///     maskings of the expectation.
 /// </remarks>
@@ -53,9 +58,10 @@ public sealed class SnapshotMasking
 		"(?![0-9])",
 		RegexOptions.None, RegexTimeout);
 
+	private readonly bool _ignoresCase;
 	private readonly string? _placeholder;
-	private readonly StringComparer _placeholderComparer = StringComparer.Ordinal;
-	private readonly string _replacement;
+	private readonly string? _replacement;
+	private readonly SnapshotValueRule? _rule;
 	private readonly bool _usesDefaultTimeout;
 	private readonly string _value;
 	private System.Text.RegularExpressions.Regex? _regex;
@@ -69,12 +75,24 @@ public sealed class SnapshotMasking
 		_usesDefaultTimeout = usesDefaultTimeout;
 	}
 
-	private SnapshotMasking(System.Text.RegularExpressions.Regex regex, string placeholder, StringComparer comparer)
+	private SnapshotMasking(System.Text.RegularExpressions.Regex regex, string placeholder, bool ignoresCase)
 		: this(regex.ToString(), "", regex, true)
 	{
 		_placeholder = placeholder;
-		_placeholderComparer = comparer;
+		_ignoresCase = ignoresCase;
 	}
+
+	private SnapshotMasking(SnapshotValueRule rule, string? replacement)
+	{
+		_value = "";
+		_rule = rule;
+		_replacement = replacement;
+	}
+
+	/// <summary>
+	///     Whether the masking replaces values nested in an object snapshot while it is written, instead of the text.
+	/// </summary>
+	internal bool IsStructural => _rule is not null;
 
 	/// <summary>
 	///     Replaces each occurrence of the <paramref name="value" /> with the <paramref name="replacement" />, e.g. an id
@@ -166,7 +184,7 @@ public sealed class SnapshotMasking
 	///     The numbers are counted per subject in the order of appearance, after the maskings that come before.
 	/// </remarks>
 	public static SnapshotMasking Guids()
-		=> new(GuidPattern, "Guid", StringComparer.OrdinalIgnoreCase);
+		=> new(GuidPattern, "Guid", true);
 
 	/// <summary>
 	///     Replaces each date and date with time in ISO 8601 with a numbered placeholder, <c>{Date_1}</c>, <c>{Date_2}</c>
@@ -181,39 +199,124 @@ public sealed class SnapshotMasking
 	///     The numbers are counted per subject in the order of appearance, after the maskings that come before.
 	/// </remarks>
 	public static SnapshotMasking Dates()
-		=> new(DatePattern, "Date", StringComparer.Ordinal);
+		=> new(DatePattern, "Date", false);
 
 	/// <summary>
-	///     Applies the masking to the <paramref name="text" />.
+	///     Replaces the value of each member whose path ends with the <paramref name="memberName" /> in an object snapshot
+	///     with a numbered placeholder, e.g. <c>{Id_1}</c>, where the same value keeps the same number.
 	/// </summary>
 	/// <remarks>
-	///     The numbers of the placeholders start at 1 for each <paramref name="text" />, so that they only depend on the
-	///     subject itself.
+	///     The <paramref name="memberName" /> matches whole segments of the path, ignoring the case, at any depth, like an
+	///     ignored member of an equivalency comparison: <c>Id</c> matches <c>Id</c>, <c>Artist.Id</c> and
+	///     <c>Tracks[0].Id</c>, but not <c>TrackId</c>. The placeholder is named after the last segment, e.g. <c>Id</c> for
+	///     <c>Artist.Id</c>, and shares its numbers with the other maskings of that name. A <see langword="null" />
+	///     value is not masked.
 	/// </remarks>
-	internal string Apply(string text)
+	public static SnapshotMasking Member(string memberName)
+		=> new(SnapshotValueRule.ForMember(memberName), null);
+
+	/// <summary>
+	///     Replaces the value of each member whose path ends with the <paramref name="memberName" /> in an object snapshot
+	///     with the <paramref name="replacement" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="memberName" /> matches like in <see cref="Member(string)" />. The
+	///     <paramref name="replacement" /> is written as it is, without quotes. A <see langword="null" /> value is not
+	///     masked.
+	/// </remarks>
+	public static SnapshotMasking Member(string memberName, string replacement)
+		=> new(SnapshotValueRule.ForMember(memberName), ThrowIfNull(replacement));
+
+	/// <summary>
+	///     Replaces each value of the type <typeparamref name="T" /> in an object snapshot with a numbered placeholder
+	///     named after the type, e.g. <c>{Guid_1}</c>, where the same value keeps the same number.
+	/// </summary>
+	/// <remarks>
+	///     A value matches by its declared or its runtime type, including <see cref="Nullable{T}" /> and derived types.
+	///     The placeholder is named after the type without its generic arity and shares its numbers with the other
+	///     maskings of that name, e.g. <c>Type&lt;Guid&gt;()</c> with <see cref="Guids" />. A <see langword="null" />
+	///     value is not masked.
+	/// </remarks>
+	public static SnapshotMasking Type<T>()
+		=> new(SnapshotValueRule.ForType(typeof(T)), null);
+
+	/// <summary>
+	///     Replaces each value of the type <typeparamref name="T" /> in an object snapshot with the
+	///     <paramref name="replacement" />.
+	/// </summary>
+	/// <remarks>
+	///     A value matches like in <see cref="Type{T}()" />. The <paramref name="replacement" /> is written as it is,
+	///     without quotes. A <see langword="null" /> value is not masked.
+	/// </remarks>
+	public static SnapshotMasking Type<T>(string replacement)
+		=> new(SnapshotValueRule.ForType(typeof(T)), ThrowIfNull(replacement));
+
+	/// <summary>
+	///     Applies the masking to the <paramref name="text" />, unless it is a structural masking.
+	/// </summary>
+	/// <remarks>
+	///     The numbered placeholders come from the <paramref name="numbering" /> of the subject, so that they only depend
+	///     on the subject itself and are shared with the other maskings of the same name.
+	/// </remarks>
+	internal string Apply(string text, SnapshotNumbering numbering)
 	{
+		if (_rule is not null)
+		{
+			return text;
+		}
+
 		System.Text.RegularExpressions.Regex? regex = GetRegex();
 		if (regex is null)
 		{
-			return text.Replace(_value, _replacement);
+			return text.Replace(_value, _replacement!);
 		}
 
 		if (_placeholder is null)
 		{
-			return regex.Replace(text, _replacement);
+			return regex.Replace(text, _replacement!);
 		}
 
-		Dictionary<string, string> placeholders = new(_placeholderComparer);
-		return regex.Replace(text, match =>
-		{
-			if (!placeholders.TryGetValue(match.Value, out string? placeholder))
-			{
-				placeholder = $"{{{_placeholder}_{placeholders.Count + 1}}}";
-				placeholders.Add(match.Value, placeholder);
-			}
+		return regex.Replace(text, match => numbering.GetPlaceholder(_placeholder,
+			_ignoresCase ? match.Value.ToLowerInvariant() : match.Value));
+	}
 
-			return placeholder;
-		});
+	/// <summary>
+	///     Returns the replacement of the <paramref name="value" /> nested in an object snapshot, or
+	///     <see langword="null" /> when this structural masking does not apply to it.
+	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> value, or one that cannot be read, is not masked, so that it stays visible; the
+	///     formatter writes the exception of a value that cannot be read. The key of a numbered placeholder is the text of
+	///     the value, in lower case for a <see cref="Guid" /> like in <see cref="Guids" />, so that both share a number.
+	/// </remarks>
+	internal SnapshotPlaceholder? GetReplacement(FormattedValue value, SnapshotNumbering numbering)
+	{
+		if (_rule is null || !_rule.Matches(value))
+		{
+			return null;
+		}
+
+		object? actual;
+		try
+		{
+			actual = value.GetValue();
+		}
+		catch (Exception)
+		{
+			return null;
+		}
+
+		if (actual is null)
+		{
+			return null;
+		}
+
+		return new SnapshotPlaceholder(_replacement ?? numbering.GetPlaceholder(_rule.PlaceholderName, actual switch
+		{
+			string text => text,
+			IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
+			_ => Formatter.Format(actual, FormattingOptions.Snapshot),
+		}));
 	}
 
 	/// <summary>

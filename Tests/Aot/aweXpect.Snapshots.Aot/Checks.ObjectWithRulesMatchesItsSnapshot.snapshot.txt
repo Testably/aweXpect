@@ -1,0 +1,11 @@
+Shipment {
+  Id = {Id_1},
+  Parcels = [
+    Parcel {
+      Weight = {weight}
+    },
+    Parcel {
+      Weight = {weight}
+    }
+  ]
+}

@@ -63,7 +63,7 @@ public static class ThatSnapshot
 		this IThat<string?> subject,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddSnapshot(subject, callerFilePath, callerMemberName, static value => value!);
+		=> AddSnapshot(subject, callerFilePath, callerMemberName, static (value, _) => value!);
 
 	/// <summary>
 	///     Verifies that the subject, written by the aweXpect formatter, matches the snapshot
@@ -92,7 +92,12 @@ public static class ThatSnapshot
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
 		=> AddSnapshot(subject, callerFilePath, callerMemberName,
-			static value => Formatter.Format(value, SnapshotFormatting));
+			static (value, formatValue) => Formatter.Format(value, formatValue is null
+				? SnapshotFormatting
+				: SnapshotFormatting with
+				{
+					FormatValue = formatValue,
+				}));
 
 	private static readonly FormattingOptions SnapshotFormatting = FormattingOptions.Indented("") with
 	{
@@ -109,8 +114,15 @@ public static class ThatSnapshot
 	/// </remarks>
 	private static readonly ConcurrentDictionary<SnapshotId, int> UsedSnapshots = new();
 
+	/// <param name="subject">The subject.</param>
+	/// <param name="callerFilePath">The path of the test file.</param>
+	/// <param name="callerMemberName">The name of the test method.</param>
+	/// <param name="format">
+	///     Writes the subject as text, with the decision about each nested value from the member and type rules, which
+	///     is <see langword="null" /> without such rules and which a <see cref="string" /> subject ignores.
+	/// </param>
 	private static SnapshotResult<T, IThat<T>> AddSnapshot<T>(IThat<T> subject, string callerFilePath,
-		string callerMemberName, Func<T, string> format)
+		string callerMemberName, Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
 	{
 		if (!Path.IsPathRooted(callerFilePath))
 		{
@@ -123,14 +135,8 @@ public static class ThatSnapshot
 		return new SnapshotResult<T, IThat<T>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(SourceFile: SourceRoots.GetSourceFile(callerFilePath), MemberName: callerMemberName, Options: options,
 					Format: format),
-				static (state, it, grammars) =>
-				{
-					SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization =
-						Customize.aweXpect.Snapshots();
-					return new MatchesSnapshotConstraint<T>(it, grammars, customization.Store.Get(),
-						customization.AcceptChanges.Get(), customization.Maskings.Get(), state.SourceFile,
-						state.MemberName, state.Options, state.Format);
-				}),
+				static (state, it, grammars) => new MatchesSnapshotConstraint<T>(it, grammars, SnapshotSettings.Read(),
+					state.SourceFile, state.MemberName, state.Options, state.Format)),
 			subject,
 			options);
 	}
@@ -138,13 +144,11 @@ public static class ThatSnapshot
 	private sealed class MatchesSnapshotConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
-		SnapshotStore store,
-		bool? acceptChanges,
-		IReadOnlyList<SnapshotMasking> globalMaskings,
+		SnapshotSettings settings,
 		string sourceFile,
 		string memberName,
 		SnapshotOptions snapshotOptions,
-		Func<T, string> format)
+		Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
 		: ConstraintResult.WithNotNullValue<T>(it, grammars),
 			IAsyncContextConstraint<T>
 	{
@@ -204,7 +208,10 @@ public static class ThatSnapshot
 			string value;
 			try
 			{
-				value = snapshotOptions.Mask(format(actual), globalMaskings);
+				SnapshotNumbering numbering = new();
+				value = snapshotOptions.Mask(
+					format(actual, snapshotOptions.CreateFormatValue(settings.Ignorings, settings.Maskings, numbering)),
+					settings.Maskings, numbering);
 			}
 			catch (InsufficientExecutionStackException exception)
 			{
@@ -231,7 +238,7 @@ public static class ThatSnapshot
 
 			try
 			{
-				_snapshot = await store.ReadAsync(id, cancellationToken);
+				_snapshot = await settings.Store.ReadAsync(id, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
@@ -244,7 +251,7 @@ public static class ThatSnapshot
 			{
 				try
 				{
-					await store.RecordMatchAsync(id, cancellationToken);
+					await settings.Store.RecordMatchAsync(id, cancellationToken);
 				}
 				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 				{
@@ -256,7 +263,7 @@ public static class ThatSnapshot
 				return this;
 			}
 
-			_isAccepted = snapshotOptions.AcceptChanges ?? acceptChanges ?? AcceptEnvironment.IsAccepting();
+			_isAccepted = snapshotOptions.AcceptChanges ?? settings.AcceptChanges ?? AcceptEnvironment.IsAccepting();
 			_isMismatch = true;
 			context.OnCompleted(WriteMismatchAsync);
 			Outcome = Outcome.FailureBothWays;
@@ -290,7 +297,7 @@ public static class ThatSnapshot
 			{
 				try
 				{
-					await store.AcceptAsync(id, _value, cancellationToken);
+					await settings.Store.AcceptAsync(id, _value, cancellationToken);
 					return;
 				}
 				catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
@@ -301,7 +308,7 @@ public static class ThatSnapshot
 
 			try
 			{
-				await store.RecordMismatchAsync(id, _value, cancellationToken);
+				await settings.Store.RecordMismatchAsync(id, _value, cancellationToken);
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
 			{
@@ -330,7 +337,7 @@ public static class ThatSnapshot
 			if (_isAccepted)
 			{
 				contexts.Add(new ResultContext.Fixed("Accepted snapshot",
-					_acceptError is null ? store.Describe(Id) : $"could not be written: {_acceptError}"));
+					_acceptError is null ? settings.Store.Describe(Id) : $"could not be written: {_acceptError}"));
 				if (_acceptError is null)
 				{
 					return;
@@ -338,7 +345,7 @@ public static class ThatSnapshot
 			}
 
 			string? mismatch = _writeError is null
-				? store.DescribeMismatch(Id)
+				? settings.Store.DescribeMismatch(Id)
 				: $"could not be written: {_writeError}";
 			if (mismatch is not null)
 			{
@@ -348,7 +355,7 @@ public static class ThatSnapshot
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("matches", "match")).Append(" the snapshot \"")
-				.Append(store.Describe(Id)).Append('"');
+				.Append(settings.Store.Describe(Id)).Append('"');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -384,7 +391,7 @@ public static class ThatSnapshot
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not match", "do not match")).Append(" the snapshot \"")
-				.Append(store.Describe(Id)).Append('"');
+				.Append(settings.Store.Describe(Id)).Append('"');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("a snapshot cannot be negated");

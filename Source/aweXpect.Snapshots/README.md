@@ -12,16 +12,19 @@ Snapshot testing for [aweXpect](https://github.com/Testably/aweXpect).
 
 ```csharp
 // compare a string with the snapshot that is stored next to the test
-await Expect.That(html).MatchesSnapshot();
+await Expect.That(description).MatchesSnapshot();
 
 // compare an object, written completely and indented by the aweXpect formatter
-await Expect.That(order).MatchesSnapshot();
+await Expect.That(album).MatchesSnapshot();
 
 // replace values that change from run to run before comparing
-await Expect.That(html).MatchesSnapshot().Masking.Regex(@"id=\d+", "id=<id>");
+await Expect.That(playlist).MatchesSnapshot().Masking.Regex(@"plays=\d+", "plays=<count>");
 
 // replace every Guid and ISO 8601 date with a numbered placeholder ({Guid_1}, {Date_1}, …)
-await Expect.That(html).MatchesSnapshot().Masking.Guids().Masking.Dates();
+await Expect.That(playlist).MatchesSnapshot().Masking.Guids().Masking.Dates();
+
+// leave out or mask members of an object by their name or type
+await Expect.That(album).MatchesSnapshot().Ignoring.Member("PlayCount").Masking.Member("Id");
 ```
 
 The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the

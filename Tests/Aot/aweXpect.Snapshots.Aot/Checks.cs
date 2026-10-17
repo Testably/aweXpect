@@ -16,7 +16,25 @@ internal static class Checks
 				"Checks.DiffersFromItsSnapshot.snapshot.txt", "differs at index 9")),
 		new("an object matching its snapshot passes",
 			() => ShouldPass(ObjectMatchesItsSnapshot)),
+		new("an object with ignored and masked members matching its snapshot passes",
+			() => ShouldPass(ObjectWithRulesMatchesItsSnapshot)),
 	];
+
+	/// <remarks>
+	///     The formatter offers the registered members to the member and type rules, so that they also apply without
+	///     reflection.
+	/// </remarks>
+	private static async Task ObjectWithRulesMatchesItsSnapshot()
+		=> await That(new Shipment
+			{
+				Id = 7,
+				Status = ShipmentStatus.Sent,
+				Parcels = [new Parcel { Weight = 1.25m, }, new Parcel { Weight = 3m, },],
+			}).MatchesSnapshot()
+			.Ignoring.Member("Status")
+			.Masking.Member("Id")
+			.Masking.Type<decimal>("{weight}")
+			.AcceptingChanges(false);
 
 	/// <remarks>
 	///     The members are only written when the source generator registered them for the call site, as this project

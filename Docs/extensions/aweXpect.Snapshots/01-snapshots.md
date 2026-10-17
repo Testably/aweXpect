@@ -5,49 +5,52 @@
 You can verify that a string matches the snapshot that is stored next to the test:
 
 ```csharp
-public class GreetingTests
+public class AlbumTests
 {
     [Fact]
-    public async Task Greets()
+    public async Task Describes()
     {
-        string greeting = "Hello, World!";
+        string description = Describe(new Album("Abbey Road"));
 
-        await Expect.That(greeting).MatchesSnapshot();
+        await Expect.That(description).MatchesSnapshot();
     }
 }
 ```
 
-The snapshot is the file `GreetingTests.Greets.snapshot.txt` in the directory of the test file: the first part is the
+The snapshot is the file `AlbumTests.Describes.snapshot.txt` in the directory of the test file: the first part is the
 name of the test file without its extension, the second part the name of the test method. Both are determined at
 compile time, so no reflection is needed and the expectation also works under Native AOT.
 
 Before the first run the snapshot does not exist yet, so the expectation fails with:
 
 ```text title="Failure message"
-Expected that greeting
-matches the snapshot "/src/Tests/GreetingTests.Greets.snapshot.txt",
+Expected that description
+matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
 but the snapshot did not exist
 
 Actual:
-Hello, World!
+Abbey Road by The Beatles
 
 Pending snapshot:
-/src/Tests/GreetingTests.Greets.snapshot.pending.txt
+/src/Tests/AlbumTests.Describes.snapshot.pending.txt
 ```
 
-If the snapshot contained "Hello, world!" instead, the expectation would fail with:
+If the snapshot contained "Abbey Road by the Beatles" instead, the expectation would fail with:
 
 ```text title="Failure message"
-Expected that greeting
-matches the snapshot "/src/Tests/GreetingTests.Greets.snapshot.txt",
-but it was "Hello, World!", which differs at index 7:
-          ↓ (actual)
-  "Hello, World!"
-  "Hello, world!"
-          ↑ (expected)
+Expected that description
+matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
+but it was "Abbey Road by The Beatles", which differs at index 14:
+            ↓ (actual)
+  "…Road by The Beatles"
+  "…Road by the Beatles"
+            ↑ (expected)
+
+Snapshot:
+Abbey Road by the Beatles
 
 Pending snapshot:
-/src/Tests/GreetingTests.Greets.snapshot.pending.txt
+/src/Tests/AlbumTests.Describes.snapshot.pending.txt
 ```
 
 A snapshot with several lines lists every line that differs.
@@ -58,21 +61,26 @@ Any other value is written by the aweXpect formatter, completely and indented, s
 shows up as a changed line:
 
 ```csharp
-await Expect.That(order).MatchesSnapshot();
+await Expect.That(album).MatchesSnapshot();
 ```
 
-```text title="OrderTests.Creates.snapshot.txt"
-Order {
-  Created = 2026-10-17T09:30:00.0000000Z,
-  Id = 42,
-  Lines = [
-    Line {
-      Price = 1.5,
-      Product = "Pen"
-    }
-  ],
+```text title="AlbumTests.Loads.snapshot.txt"
+Album {
+  Artist = "The Beatles",
+  Genre = Rock,
   Note = <null>,
-  Status = Closed
+  Released = 1969-09-26T00:00:00.0000000,
+  Title = "Abbey Road",
+  Tracks = [
+    Track {
+      Number = 1,
+      Title = "Come Together"
+    },
+    Track {
+      Number = 2,
+      Title = "Something"
+    }
+  ]
 }
 ```
 
@@ -113,15 +121,15 @@ To accept many snapshots at once, set the environment variable `AWEXPECT_ACCEPT_
 still fails, so that an accepted snapshot never goes unnoticed:
 
 ```text title="Failure message"
-Expected that greeting
-matches the snapshot "/src/Tests/GreetingTests.Greets.snapshot.txt",
+Expected that description
+matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
 but the snapshot did not exist
 
 Actual:
-Hello, World!
+Abbey Road by The Beatles
 
 Accepted snapshot:
-/src/Tests/GreetingTests.Greets.snapshot.txt
+/src/Tests/AlbumTests.Describes.snapshot.txt
 ```
 
 The next run compares with the accepted snapshot. Review the changed snapshots in version control before committing
@@ -132,10 +140,10 @@ set), so that a variable that was forgotten in a pipeline cannot change the snap
 instead, which also applies on a build server:
 
 ```csharp
-await Expect.That(greeting).MatchesSnapshot().AcceptingChanges();          // accepts
-await Expect.That(greeting).MatchesSnapshot().AcceptingChanges(isLocalRun); // accepts if isLocalRun is true
+await Expect.That(description).MatchesSnapshot().AcceptingChanges();          // accepts
+await Expect.That(description).MatchesSnapshot().AcceptingChanges(isLocalRun); // accepts if isLocalRun is true
 
-Customize.aweXpect.Snapshots().AcceptChanges.Set(true);                     // for the current async flow
+Customize.aweXpect.Snapshots().AcceptChanges.Set(true);                        // for the current async flow
 ```
 
 `AcceptingChanges(…)` takes precedence over `Customize.aweXpect.Snapshots().AcceptChanges`, which takes precedence
@@ -149,27 +157,27 @@ The cases of a parameterized test share the name of the test method, so give eac
 
 ```csharp
 [Theory]
-[InlineData("de-DE")]
-[InlineData("en-US")]
-public async Task Greets(string culture)
+[InlineData("Abbey Road")]
+[InlineData("Let It Be")]
+public async Task Describes(string title)
 {
-    string greeting = Greet(culture);
+    string description = Describe(new Album(title));
 
-    await Expect.That(greeting).MatchesSnapshot().Named(culture);
+    await Expect.That(description).MatchesSnapshot().Named(title);
 }
 ```
 
-The name is appended to the file names, e.g. `GreetingTests.Greets.de-DE.snapshot.txt`. The same applies to several
+The name is appended to the file names, e.g. `AlbumTests.Describes.Abbey Road.snapshot.txt`. The same applies to several
 snapshots in one test method. Characters that a file name cannot hold on every operating system
 (`< > : " / \ | ? *` and control characters), as well as `%` and `.`, are escaped as `%XX` in the file name, e.g.
-`.Named("10:30")` is stored in `ReportTests.Renders.10%3A30.snapshot.txt`.
+`.Named("AC/DC")` is stored in `ArtistTests.Describes.AC%2FDC.snapshot.txt`.
 
 A snapshot that was already used for another value in the same test run fails, so that the cases cannot overwrite each
 other's pending snapshot:
 
 ```text title="Failure message"
-Expected that greeting
-matches the snapshot "/src/Tests/GreetingTests.Greets.snapshot.txt",
+Expected that description
+matches the snapshot "/src/Tests/AlbumTests.Describes.snapshot.txt",
 but the snapshot was already used for another value in this test run, so name each one with .Named(…)
 ```
 
@@ -185,7 +193,7 @@ compared, so that the snapshot stays stable:
 
 ```csharp
 await Expect.That(json).MatchesSnapshot()
-    .Masking.Text(order.Id.ToString(), "<order-id>");
+    .Masking.Text(album.Id.ToString(), "<album-id>");
 ```
 
 `.Masking.Text(…)` replaces literal text. `.Masking.Regex(…)` takes a regex pattern instead, and the replacement can
@@ -193,7 +201,7 @@ use the substitutions of `Regex.Replace`, e.g. `$1` for the first group, to keep
 
 ```csharp
 await Expect.That(log).MatchesSnapshot()
-    .Masking.Regex(@"(\w+\.local):\d+", "$1:<port>");   // "api.local:5001" → "api.local:<port>"
+    .Masking.Regex(@"(\w+\.fm):\d+", "$1:<port>");   // "radio.fm:8000" → "radio.fm:<port>"
 ```
 
 A pattern passed as a string, and the built-in maskings below, use the regex timeout of aweXpect,
@@ -205,7 +213,7 @@ that times out fails the expectation, and an invalid pattern throws an `Argument
 The maskings are applied in the order in which they are written, so put a specific masking before a general one:
 
 ```csharp
-await Expect.That(report).MatchesSnapshot()
+await Expect.That(playlist).MatchesSnapshot()
     .Masking.Text(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), "<today>")
     .Masking.Regex(@"\d{4}-\d{2}-\d{2}", "<date>");
 ```
@@ -226,8 +234,8 @@ await Expect.That(log).MatchesSnapshot().Masking.Guids().Masking.Dates();
 ```
 
 ```text title="Snapshot"
-order {Guid_1} created {Date_1} by {Guid_2}
-order {Guid_1} shipped {Date_2}
+album {Guid_1} added {Date_1} by {Guid_2}
+album {Guid_1} played {Date_2}
 ```
 
 - A `Guid` is matched in the format `"D"` (`3f2504e0-4f89-11d3-9a0c-0305e82c3301`) in upper or lower case, also inside
@@ -239,7 +247,48 @@ order {Guid_1} shipped {Date_2}
   instead of the `T` and a time on its own are not matched; mask them with a regex.
 
 The numbers are counted per subject in the order of appearance, and only after the maskings that come before, so
-`.Masking.Text(order.Id.ToString(), "<order-id>").Masking.Guids()` numbers only the other `Guid`s.
+`.Masking.Text(album.Id.ToString(), "<album-id>").Masking.Guids()` numbers only the other `Guid`s.
+
+### Members and types of an object
+
+In a [snapshot of an object](#matching-a-snapshot-of-an-object), members can be left out or masked by their name or
+their type, while the object is written, so that they don't depend on the written text:
+
+```csharp
+await Expect.That(album).MatchesSnapshot()
+    .Ignoring.Member("PlayCount")                     // left out with its name
+    .Ignoring.Type<DateTime>()                        // every DateTime left out
+    .Masking.Member("Id")                             // numbered: Id = {Id_1}
+    .Masking.Member("Artist.StreamToken", "{token}")  // fixed replacement
+    .Masking.Type<Guid>();                            // numbered: {Guid_1}
+```
+
+```text title="Snapshot"
+Album {
+  Artist = Artist {
+    CatalogId = {Guid_1},
+    Id = {Id_1},
+    StreamToken = {token}
+  },
+  CatalogId = {Guid_2},
+  Id = {Id_2},
+  Title = "Abbey Road"
+}
+```
+
+- A member name matches whole segments of the member path, ignoring the case, at any depth, like an ignored member of
+  an equivalency comparison: `Id` matches `Id`, `Artist.Id` and `Tracks[0].Id`, but not `TrackId`; `Artist.Id` only
+  matches the `Id` of an `Artist`.
+- A type matches the declared or the runtime type of a value, including `Nullable<T>` and derived types:
+  `.Ignoring.Type<DateTime>()` also leaves out a `DateTime?` member and a `DateTime` in an `object` member.
+- A numbered placeholder is named after the last segment of the member name or after the type, and shares its numbers
+  with the other maskings of that name, e.g. `.Masking.Type<Guid>()` with `.Masking.Guids()`. A `null` value is not
+  masked.
+- Ignoring wins over masking, the first masking that matches a value replaces it, and the rules of the expectation come
+  before those for all snapshots. They apply before the maskings of the text.
+
+A `string` is compared as raw text and has no members, so a member or type rule on a `string` subject throws an
+`InvalidOperationException`.
 
 ### For all snapshots
 
@@ -257,16 +306,18 @@ Customize.aweXpect.Global.Snapshots().Maskings.Set([
 ```
 
 They are applied after the maskings of the expectation, in the order of the list, so a specific masking of the
-expectation goes before a general one for all snapshots. Setting the value replaces the list; to extend an outer
-setting, e.g. for one async flow, include it:
+expectation goes before a general one for all snapshots. Members and types are left out for all snapshots of objects
+with `Customize.aweXpect.Snapshots().Ignorings` and the factories of `SnapshotIgnoring`, e.g.
+`Ignorings.Set([SnapshotIgnoring.Type<DateTime>()])`. Member and type rules for all snapshots are ignored for a `string`
+subject. Setting a value replaces the list; to extend an outer setting, e.g. for one async flow, include it:
 
 ```csharp
 using (Customize.aweXpect.Snapshots().Maskings.Set([
            .. Customize.aweXpect.Snapshots().Maskings.Get(),
-           SnapshotMasking.Text(tenant.Name, "<tenant>"),
+           SnapshotMasking.Text(library.Owner, "<owner>"),
        ]))
 {
-    await Expect.That(report).MatchesSnapshot();
+    await Expect.That(playlist).MatchesSnapshot();
 }
 ```
 
@@ -288,11 +339,11 @@ changes.
 ## Deterministic builds
 
 A deterministic build, e.g. with `ContinuousIntegrationBuild=true` on a build server, replaces the path of the
-repository with `/_/` in the compiled code, so the path of the test file, e.g. `/_/Tests/GreetingTests.cs`, no longer
+repository with `/_/` in the compiled code, so the path of the test file, e.g. `/_/Tests/AlbumTests.cs`, no longer
 leads to its snapshots. The package records the real path of the repository in the test assembly when it is built, so
 the snapshots are found in such a build as well, without any configuration.
 
-A snapshot is identified by the path of its test file relative to the repository, e.g. `Tests/GreetingTests.cs`, which
+A snapshot is identified by the path of its test file relative to the repository, e.g. `Tests/AlbumTests.cs`, which
 is the same on every machine and in every build.
 
 This needs two things, which a usual setup provides:
@@ -305,9 +356,9 @@ Without them, a snapshot is identified by the full path of its test file, and in
 fails with:
 
 ```text title="Failure message"
-Expected that greeting
-matches the snapshot "/_/Tests/GreetingTests.Greets.snapshot.txt",
-but the snapshot could not be read: The path "/_/Tests/GreetingTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
+Expected that description
+matches the snapshot "/_/Tests/AlbumTests.Describes.snapshot.txt",
+but the snapshot could not be read: The path "/_/Tests/AlbumTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
 ```
 
 ## Storing snapshots elsewhere
@@ -365,9 +416,9 @@ apart from the reviewed snapshot:
 `RecordMatchAsync`, `Describe` and `DescribeMismatch` are optional. A cancellation of the evaluation still aborts it.
 
 A `SnapshotId` consists of the path of the test file relative to the repository (`SourceFile`, e.g.
-`Tests/GreetingTests.cs`, see [Deterministic builds](#deterministic-builds)), the name of the test method
+`Tests/AlbumTests.cs`, see [Deterministic builds](#deterministic-builds)), the name of the test method
 (`MemberName`) and the name from `.Named(…)` (`Name`). It is a record, so it can be used as a key, and its `ToString()`
-returns `GreetingTests.Greets` or `GreetingTests.Greets.de-DE`.
+returns `AlbumTests.Describes` or `AlbumTests.Describes.Abbey Road`.
 
 Set the store for all tests, e.g. in an assembly-level setup, or only for the current async flow:
 
@@ -376,7 +427,7 @@ Customize.aweXpect.Global.Snapshots().Store.Set(new FolderSnapshotStore("/shared
 
 using (Customize.aweXpect.Snapshots().Store.Set(new FolderSnapshotStore("/shared/snapshots")))
 {
-    await Expect.That(greeting).MatchesSnapshot();
+    await Expect.That(description).MatchesSnapshot();
 }
 ```
 
