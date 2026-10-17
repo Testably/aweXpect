@@ -88,6 +88,21 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder();
 			}
 
+			[Fact]
+			public async Task WhenNamedWithCharactersAFileNameCannotHold_ShouldPassTheNameUnchangedToTheStore()
+			{
+				InMemorySnapshotStore store = new();
+				store.Snapshots[Id with { Name = "10:30/v1.2", }] = "foo";
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("10:30/v1.2");
+
+				await That(Act).DoesNotThrow()
+					.Because("only the disk store escapes names for its file names");
+			}
+
 			[Theory]
 			[InlineData("")]
 			[InlineData(" ")]

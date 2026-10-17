@@ -154,7 +154,9 @@ public async Task Greets(string culture)
 ```
 
 The name is appended to the file names, e.g. `GreetingTests.Greets.de-DE.snapshot.txt`. The same applies to several
-snapshots in one test method.
+snapshots in one test method. Characters that a file name cannot hold on every operating system
+(`< > : " / \ | ? *` and control characters), as well as `%` and `.`, are escaped as `%XX` in the file name, e.g.
+`.Named("10:30")` is stored in `ReportTests.Renders.10%3A30.snapshot.txt`.
 
 A snapshot that was already used for another value in the same test run fails, so that the cases cannot overwrite each
 other's pending snapshot:

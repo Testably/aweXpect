@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -15,7 +16,9 @@ namespace aweXpect.Snapshots;
 ///     when the snapshot is read, so that an editor which adds a final line break does not change it.<br />
 ///     The files are accessed synchronously, as netstandard2.0 lacks the asynchronous methods of <see cref="File" />.<br />
 ///     A relative <see cref="SnapshotId.SourceFile" /> is resolved against the recorded source root, see
-///     <see cref="SourceRoots" />.
+///     <see cref="SourceRoots" />.<br />
+///     The method name and the name of the snapshot are escaped in the file name, see
+///     <see cref="EscapeFileNamePart(string)" />.
 /// </remarks>
 internal sealed class DiskSnapshotStore : SnapshotStore
 {
@@ -95,8 +98,39 @@ internal sealed class DiskSnapshotStore : SnapshotStore
 	{
 		string testFilePath = SourceRoots.GetPath(id.SourceFile);
 		return Path.Combine(Path.GetDirectoryName(testFilePath) ?? "", id.Name is null
-			? $"{Path.GetFileNameWithoutExtension(testFilePath)}.{id.MemberName}"
-			: $"{Path.GetFileNameWithoutExtension(testFilePath)}.{id.MemberName}.{id.Name}");
+			? $"{Path.GetFileNameWithoutExtension(testFilePath)}.{EscapeFileNamePart(id.MemberName)}"
+			: $"{Path.GetFileNameWithoutExtension(testFilePath)}.{EscapeFileNamePart(id.MemberName)}.{EscapeFileNamePart(id.Name)}");
+	}
+
+	/// <summary>
+	///     Escapes each character as <c>%XX</c> that a file name cannot hold on every operating system
+	///     (<c>&lt; &gt; : " / \ | ? *</c> and control characters), as the snapshots are committed and checked out on other
+	///     machines, as well as <c>%</c> and <c>.</c>.
+	/// </summary>
+	/// <remarks>
+	///     Escaping <c>%</c> keeps the file names of two different names apart, e.g. <c>a:b</c> and <c>a%3Ab</c>, and
+	///     escaping <c>.</c> keeps the dots in <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;</c> as the only separators,
+	///     so that a file name can be read back into its parts. A name without such characters is used unchanged.
+	/// </remarks>
+	private static string EscapeFileNamePart(string part)
+	{
+		StringBuilder? escaped = null;
+		for (int i = 0; i < part.Length; i++)
+		{
+			char character = part[i];
+			if (char.IsControl(character) ||
+			    character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '.')
+			{
+				escaped ??= new StringBuilder(part, 0, i, part.Length + 8);
+				escaped.Append('%').Append(((int)character).ToString("X2", CultureInfo.InvariantCulture));
+			}
+			else
+			{
+				escaped?.Append(character);
+			}
+		}
+
+		return escaped?.ToString() ?? part;
 	}
 
 	private static string RemoveFinalLineBreak(string snapshot)

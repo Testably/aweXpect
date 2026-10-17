@@ -221,6 +221,64 @@ public sealed partial class ThatSnapshot
 					              """).AsWildcard();
 			}
 
+			[Theory]
+			[InlineData("de-DE", "de-DE")]
+			[InlineData("äöü", "äöü")]
+			[InlineData("10:30", "10%3A30")]
+			[InlineData("v1.2", "v1%2E2")]
+			[InlineData("50%", "50%25")]
+			[InlineData("a<b>c\"d/e\\f|g?h*i", "a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai")]
+			[InlineData("a\tb", "a%09b")]
+			public async Task WhenNamed_ShouldEscapeTheNameInTheFileNames(string name, string escapedName)
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.snapshot.pending.txt");
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.Named(name);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"*\"{snapshotPath}\"*").AsWildcard();
+				await That(File.Exists(pendingPath)).IsTrue();
+				File.Move(pendingPath, snapshotPath);
+				await That(Act).DoesNotThrow()
+					.Because("the escaped file name is valid on every operating system and leads back to the snapshot");
+			}
+
+			[Fact]
+			public async Task WhenNamesOnlyDifferInAnEscapedCharacter_ShouldKeepTheirFilesApart()
+			{
+				using SnapshotDirectory directory = new();
+
+				await That(async () => await That("first").MatchesSnapshot(directory.TestFilePath,
+					SnapshotDirectory.MemberName).Named("a:b")).Throws<XunitException>();
+				await That(async () => await That("second").MatchesSnapshot(directory.TestFilePath,
+					SnapshotDirectory.MemberName).Named("a%3Ab")).Throws<XunitException>();
+
+				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%3Ab.snapshot.pending.txt")))
+					.IsEqualTo("first" + Environment.NewLine);
+				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%253Ab.snapshot.pending.txt")))
+					.IsEqualTo("second" + Environment.NewLine)
+					.Because("the '%' is escaped as well, so that two names never share a file");
+			}
+
+			[Fact]
+			public async Task WhenMemberNameContainsCharactersAFileNameCannotHold_ShouldEscapeThem()
+			{
+				using SnapshotDirectory directory = new();
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, "<Main>$");
+
+				await That(Act).Throws<XunitException>();
+				await That(File.Exists(Path.Combine(directory.Path, "MyTests.%3CMain%3E$.snapshot.pending.txt"))).IsTrue()
+					.Because("top-level statements report the member name '<Main>$'");
+			}
+
 			[Fact]
 			public async Task WhenNamed_ShouldAppendTheNameToTheFileNames()
 			{
