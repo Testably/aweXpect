@@ -117,6 +117,34 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Fact]
+			public async Task WhenMasking_AndAccepting_ShouldWriteThePlaceholderToTheSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				string subject = "id=42";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.Masking("42", "<id>").AcceptingChanges();
+
+				await That(Act).Throws<XunitException>();
+				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("id=<id>" + Environment.NewLine);
+			}
+
+			[Fact]
+			public async Task WhenMasking_ShouldWriteThePlaceholderToThePendingSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				string subject = "id=42";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.Masking(@"\d+", "<id>").AsRegex();
+
+				await That(Act).Throws<XunitException>();
+				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("id=<id>" + Environment.NewLine);
+			}
+
+			[Fact]
 			public async Task WhenPathComesFromDeterministicBuild_WithoutRecordedSourceRoot_ShouldFail()
 			{
 				string subject = "foo";

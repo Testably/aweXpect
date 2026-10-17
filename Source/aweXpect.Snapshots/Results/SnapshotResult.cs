@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Snapshots;
 
@@ -36,6 +37,56 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 	}
 
 	/// <summary>
+	///     Replaces each occurrence of the <paramref name="value" /> in the subject with the
+	///     <paramref name="replacement" /> before it is compared with the snapshot, e.g. an id that changes from run to
+	///     run.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="value" /> is literal text; <c>.AsRegex()</c> interprets it as a regex pattern instead,
+	///     whose matches are replaced with the substitutions of <see cref="Regex.Replace(string, string)" />, e.g.
+	///     <c>$1</c>.<br />
+	///     The maskings are applied in the order in which they are added, so a specific one goes before a general one.
+	///     The snapshot and the failure contain the masked subject.
+	/// </remarks>
+	public SnapshotMaskingResult<TType, TThat> Masking(string value, string replacement)
+	{
+		if (value is null)
+		{
+			throw Tracing.WriteException(new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
+		}
+
+		if (value.Length == 0)
+		{
+			throw Tracing.WriteException(new ArgumentException("The 'value' cannot be empty.", nameof(value)));
+		}
+
+		Masking masking = new(value, ThrowIfNull(replacement));
+		_options.Maskings.Add(masking);
+		return new SnapshotMaskingResult<TType, TThat>(ExpectationBuilder, _returnValue, _options, masking);
+	}
+
+	/// <summary>
+	///     Replaces each match of the <paramref name="pattern" /> in the subject with the
+	///     <paramref name="replacement" />, which can use the substitutions of
+	///     <see cref="Regex.Replace(string, string)" />, e.g. <c>$1</c>, before it is compared with the snapshot.
+	/// </summary>
+	/// <remarks>
+	///     The options and the timeout of the <paramref name="pattern" /> apply.<br />
+	///     The maskings are applied in the order in which they are added, so a specific one goes before a general one.
+	///     The snapshot and the failure contain the masked subject.
+	/// </remarks>
+	public SnapshotResult<TType, TThat> Masking(Regex pattern, string replacement)
+	{
+		if (pattern is null)
+		{
+			throw Tracing.WriteException(new ArgumentNullException(nameof(pattern), "The 'pattern' cannot be null."));
+		}
+
+		_options.Maskings.Add(new Masking(pattern, ThrowIfNull(replacement)));
+		return this;
+	}
+
+	/// <summary>
 	///     Names the snapshot, so that several snapshots of the same test method, e.g. of the cases of a parameterized
 	///     test, are kept apart.
 	/// </summary>
@@ -57,4 +108,11 @@ public class SnapshotResult<TType, TThat> : AndOrResult<TType, TThat, SnapshotRe
 		_options.Name = name;
 		return this;
 	}
+
+	/// <remarks>
+	///     An empty replacement removes the masked text.
+	/// </remarks>
+	private static string ThrowIfNull(string replacement)
+		=> replacement ?? throw Tracing.WriteException(
+			new ArgumentNullException(nameof(replacement), "The 'replacement' cannot be null."));
 }

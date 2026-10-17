@@ -4,9 +4,15 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName=".NET 10.0")]
 namespace aweXpect.Results
 {
+    public class SnapshotMaskingResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat>
+    {
+        public aweXpect.Results.SnapshotResult<TType, TThat> AsRegex() { }
+    }
     public class SnapshotResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
     {
         public aweXpect.Results.AndOrResult<TType, TThat> AcceptingChanges(bool accept = true) { }
+        public aweXpect.Results.SnapshotResult<TType, TThat> Masking(System.Text.RegularExpressions.Regex pattern, string replacement) { }
+        public aweXpect.Results.SnapshotMaskingResult<TType, TThat> Masking(string value, string replacement) { }
         public aweXpect.Results.SnapshotResult<TType, TThat> Named(string name) { }
     }
 }

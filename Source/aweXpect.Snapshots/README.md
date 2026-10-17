@@ -13,6 +13,9 @@ Snapshot testing for [aweXpect](https://github.com/Testably/aweXpect).
 ```csharp
 // compare a string with the snapshot that is stored next to the test
 await Expect.That(html).MatchesSnapshot();
+
+// replace values that change from run to run before comparing
+await Expect.That(html).MatchesSnapshot().Masking(@"id=\d+", "id=<id>").AsRegex();
 ```
 
 The snapshot is stored as `<Class>.<Method>.snapshot.txt` next to the test file, where `<Class>` is the name of the

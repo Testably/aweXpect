@@ -132,6 +132,42 @@ The same value again is allowed, so that a retried or repeated test still compar
 The test file and method are set by the compiler through optional parameters, so a name must not be passed as an
 argument: `MatchesSnapshot("login")` throws an `ArgumentException` that points to `.Named(…)`.
 
+## Masking values
+
+Values that change from run to run, such as ids or timestamps, can be replaced with a placeholder before the subject is
+compared, so that the snapshot stays stable:
+
+```csharp
+await Expect.That(json).MatchesSnapshot()
+    .Masking(order.Id.ToString(), "<order-id>");
+```
+
+The value is replaced as literal text. With `.AsRegex()` it is a regex pattern instead, and the replacement can use the
+substitutions of `Regex.Replace`, e.g. `$1` for the first group, to keep part of the match (`$$` inserts a `$`):
+
+```csharp
+await Expect.That(log).MatchesSnapshot()
+    .Masking(@"(\w+\.local):\d+", "$1:<port>").AsRegex();   // "api.local:5001" → "api.local:<port>"
+```
+
+The pattern has a timeout of one second. For other options or another timeout, pass a `Regex` instead:
+`.Masking(new Regex(@"token=\w+", RegexOptions.IgnoreCase), "token=<token>")`. A pattern that times out fails the
+expectation, and an invalid pattern throws an `ArgumentException` where it is written.
+
+The maskings are applied in the order in which they are written, so put a specific masking before a general one:
+
+```csharp
+await Expect.That(report).MatchesSnapshot()
+    .Masking(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture), "<today>")
+    .Masking(@"\d{4}-\d{2}-\d{2}", "<date>").AsRegex();
+```
+
+In the other order, the general masking would already have replaced today's date with `<date>`.
+
+The snapshot, the pending and the accepted snapshot and the failure contain the masked value, as it is what is compared.
+Two values that only differ in a masked part count as the same value for the check of [named
+snapshots](#naming-a-snapshot).
+
 ## Files
 
 The snapshot files are encoded as UTF-8. The pending file ends with an additional line break, which is removed again

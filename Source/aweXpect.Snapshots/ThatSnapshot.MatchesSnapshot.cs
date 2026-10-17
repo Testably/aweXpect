@@ -3,15 +3,18 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
+using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.Snapshots;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect;
 
@@ -38,6 +41,7 @@ public static class ThatSnapshot
 	///     Another <see cref="SnapshotStore" /> can keep the snapshots elsewhere, see
 	///     <c>Customize.aweXpect.Snapshots().Store</c>.<br />
 	///     The newline style is ignored, because version control can change it when the snapshot is checked out.<br />
+	///     Values that change from run to run can be replaced before comparing, see <c>.Masking(…)</c>.<br />
 	///     A snapshot cannot be negated, so a negated expectation always fails, as does a <see langword="null" />
 	///     subject.<br />
 	///     A snapshot that was already used for another value in the same test run fails, e.g. for the cases of a
@@ -101,12 +105,14 @@ public static class ThatSnapshot
 		private bool _isAccepted;
 		private bool _isMatch;
 		private bool _isUsedForAnotherValue;
+		private RegexMatchTimeoutException? _maskingTimeout;
 		private Exception? _readError;
 		private string? _snapshot;
+		private string? _value;
 		private string? _writeError;
 
 		/// <inheritdoc />
-		public override Exception? FailureCause => _readError;
+		public override Exception? FailureCause => (Exception?)_maskingTimeout ?? _readError;
 
 		private SnapshotId Id => new(sourceFile, memberName, snapshotOptions.Name);
 
@@ -116,7 +122,10 @@ public static class ThatSnapshot
 		///     <see cref="FailureCause" />.<br />
 		///     A mismatch that cannot be recorded or accepted must not hide why the expectation failed, so the error is
 		///     reported with the failure, and an error while recording a match is ignored, as the snapshot matched.<br />
-		///     An accepted snapshot still fails the expectation, so that accepting by accident never goes unnoticed.
+		///     An accepted snapshot still fails the expectation, so that accepting by accident never goes unnoticed.<br />
+		///     Everything after the masking only sees the masked value, so that the comparison, the stored snapshot and
+		///     the failure agree, and two values that only differ in a masked part are no conflict. A masking that times
+		///     out fails the expectation both ways, with the exception as the <see cref="FailureCause" />.
 		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
@@ -124,17 +133,31 @@ public static class ThatSnapshot
 			_isAccepted = false;
 			_isMatch = false;
 			_isUsedForAnotherValue = false;
+			_maskingTimeout = null;
 			_writeError = null;
 			_readError = null;
 			_snapshot = null;
+			_value = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
+			try
+			{
+				_value = snapshotOptions.Mask(actual);
+			}
+			catch (RegexMatchTimeoutException exception)
+			{
+				_maskingTimeout = exception;
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			string value = _value;
 			SnapshotId id = Id;
-			int valueHashCode = StringComparer.Ordinal.GetHashCode(actual);
+			int valueHashCode = StringComparer.Ordinal.GetHashCode(value);
 			if (UsedSnapshots.GetOrAdd(id, valueHashCode) != valueHashCode)
 			{
 				_isUsedForAnotherValue = true;
@@ -153,7 +176,7 @@ public static class ThatSnapshot
 				return this;
 			}
 
-			if (_snapshot is not null && await _options.AreConsideredEqual(actual, _snapshot))
+			if (_snapshot is not null && await _options.AreConsideredEqual(value, _snapshot))
 			{
 				try
 				{
@@ -174,11 +197,11 @@ public static class ThatSnapshot
 			{
 				if (_isAccepted)
 				{
-					await store.AcceptAsync(id, actual, cancellationToken);
+					await store.AcceptAsync(id, value, cancellationToken);
 				}
 				else
 				{
-					await store.RecordMismatchAsync(id, actual, cancellationToken);
+					await store.RecordMismatchAsync(id, value, cancellationToken);
 				}
 			}
 			catch (Exception exception) when (IsNotCanceled(exception, cancellationToken))
@@ -195,13 +218,13 @@ public static class ThatSnapshot
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			if (Actual is null || _isMatch || _isUsedForAnotherValue || _readError is not null || IsNegated)
+			if (_value is null || _isMatch || _isUsedForAnotherValue || _readError is not null || IsNegated)
 			{
 				return;
 			}
 
-			contexts.AddStringDifferencesContext(Actual, _snapshot, _options, Grammars);
-			contexts.AddStringContext("Actual", Actual, this);
+			contexts.AddStringDifferencesContext(_value, _snapshot, _options, Grammars);
+			contexts.AddStringContext("Actual", _value, this);
 			contexts.AddStringContext("Snapshot", _snapshot, this);
 			if (_isAccepted)
 			{
@@ -225,7 +248,13 @@ public static class ThatSnapshot
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_isUsedForAnotherValue)
+			if (_maskingTimeout is not null)
+			{
+				stringBuilder.Append("the masking with the regex ").Append(Formatter.Format(_maskingTimeout.Pattern))
+					.Append(" did not complete within ").Append(Formatter.Format(_maskingTimeout.MatchTimeout))
+					.Append(". Simplify the pattern to avoid catastrophic backtracking");
+			}
+			else if (_isUsedForAnotherValue)
 			{
 				stringBuilder.Append(
 					"the snapshot was already used for another value in this test run, so name each one with .Named(…)");
@@ -240,7 +269,7 @@ public static class ThatSnapshot
 			}
 			else
 			{
-				stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, Actual, _snapshot)
+				stringBuilder.Append(_options.GetExtendedFailure(It, Grammars, _value, _snapshot)
 					.Indent(indentation, false));
 			}
 		}
