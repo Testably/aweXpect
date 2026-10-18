@@ -4,10 +4,6 @@
 		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj"/>
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="aweXpect.Core"/>
-	</ItemGroup>
-
 	<PropertyGroup>
 		<SignAssembly>True</SignAssembly>
 		<!-- CS0436: on net48 the Nullable polyfill attributes are compiled into this project and are also visible

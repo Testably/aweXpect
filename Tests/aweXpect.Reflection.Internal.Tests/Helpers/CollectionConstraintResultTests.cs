@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
@@ -119,6 +122,10 @@ public sealed class CollectionConstraintResultTests
 	private sealed class EvaluationContextStub : IEvaluationContext
 	{
 		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
+
+		public void OnCompleted(Func<CompletedEvaluation, CancellationToken, ValueTask> callback)
+		{
+		}
 
 		public void Store<T>(string key, T value)
 		{

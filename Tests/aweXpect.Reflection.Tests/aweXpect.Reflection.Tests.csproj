@@ -9,7 +9,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="aweXpect.Core"/>
 		<!-- Only the test project depends on Mono.Cecil (for the example dependency resolver);
 		     the library stays dependency-free. -->
 		<PackageReference Include="Mono.Cecil"/>
