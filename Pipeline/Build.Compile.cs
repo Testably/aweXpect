@@ -144,6 +144,7 @@ partial class Build
 			{
 				projects.Add(Solution.Tests.aweXpect_Core_Tests, Configuration.Debug);
 				projects.Add(Solution.Tests.aweXpect_Generators_Tests, Configuration.Debug);
+				projects.Add(Solution.Tests.aweXpect_Api_Tests, Configuration.Debug);
 			}
 
 			foreach (var (project, configuration) in projects)

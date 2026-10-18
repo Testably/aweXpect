@@ -25,6 +25,7 @@
       "type": "string",
       "enum": [
         "AotSmokeTests",
+        "ApiChecks",
         "BenchmarkComment",
         "BenchmarkDotNet",
         "BenchmarkReport",

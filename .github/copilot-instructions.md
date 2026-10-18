@@ -119,7 +119,7 @@ To communicate intent to the consumers of your library, the title of the pull re
 - **aweXpect.Tests**: Main test suite (12,000+ tests)
 - **aweXpect.Core.Tests**: Core library tests
 - **aweXpect.Internal.Tests**: Internal functionality tests
-- **aweXpect.Api.Tests**: explicit test that records the public API surface in Source/*/PublicAPI, which Microsoft.CodeAnalysis.PublicApiAnalyzers enforces during the build
+- **aweXpect.Api.Tests**: public API snapshots of aweXpect and aweXpect.Core per target framework, verified with aweXpect.Snapshots.PublicApi
 - **Frameworks/**: Framework-specific integration tests
 
 ### Key Configuration Files
@@ -156,7 +156,7 @@ Always validate extensions work with all supported frameworks:
 ### Before Committing
 Always run these validation steps:
 1. Full build and test cycle
-2. Public API surface recorded in `Source/*/PublicAPI` (the build fails otherwise)
+2. Public API snapshots in `Tests/aweXpect.Api.Tests` accepted (`./build.sh ApiChecks` fails otherwise)
 3. Ensure all tests pass (12,000+ tests expected)
 
 ### CI/CD Pipeline
