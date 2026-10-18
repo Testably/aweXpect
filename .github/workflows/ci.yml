@@ -37,7 +37,33 @@ jobs:
                     path: |
                         ./Artifacts/*
                         ./TestResults/*.trx
-    
+
+    api-tests:
+        name: "API tests"
+        runs-on: ubuntu-latest
+        env:
+            DOTNET_NOLOGO: true
+        steps:
+            -   uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+                with:
+                    dotnet-version: |
+                        8.0.x
+                        10.0.3xx
+            -   name: API checks
+                run: ./build.sh ApiChecks
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+                with:
+                    name: API-tests
+                    path: |
+                        ./Artifacts/*
+                        ./TestResults/*.trx
+
     aot-smoke-tests:
         name: "AOT smoke tests"
         strategy:
@@ -201,7 +227,7 @@ jobs:
     
     publish-test-results:
         name: "Publish Tests Results"
-        needs: [ unit-tests, aot-smoke-tests ]
+        needs: [ api-tests, unit-tests, aot-smoke-tests ]
         runs-on: ubuntu-latest
         permissions:
             checks: write

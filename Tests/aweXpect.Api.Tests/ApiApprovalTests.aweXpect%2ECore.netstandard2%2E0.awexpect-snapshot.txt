@@ -1,0 +1,2014 @@
+[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.git")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("aweXpect.Core.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010091e3b299f2a31c904fbc5c2150944568b101ba409f5ee4cd95561c0c8cf50c1960d74f682c7f462f792ab37fe315ece00775c5bdda68c06d3abb67c1d531bf8c40d85d3d36ecf19fb05cc890ca7a5f39904e04ff754a55463236c5884f41083fae1ea626eb1f9b8c5c33f7bada7e650bed6ced9f0a75413d7e919f94f804efc9")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName = ".NET Standard 2.0")]
+namespace aweXpect
+{
+    public static class CollectionIndexOptionsExtensions
+    {
+        public static TResult AtIndex<TResult>(this TResult result, int index) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions> { }
+        public static TResult AtIndexFromEnd<TResult>(this TResult result, int index) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions> { }
+    }
+    public static class CollectionMatchOptionsExtensions
+    {
+        public static TResult IgnoringDuplicates<TResult>(this TResult result, bool ignoreDuplicates = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions> { }
+        public static TResult IgnoringInterspersedItems<TResult>(this TResult result, bool ignoreInterspersedItems = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Results.ICollectionContainmentOptions { }
+        public static TResult InAnyOrder<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions> { }
+        public static TResult Properly<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Results.IProperContainmentOptions { }
+    }
+    public static class Expect
+    {
+        public static aweXpect.Core.IThatSubject<T> That<T>(System.Threading.Tasks.Task<T> subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Core.IThatSubject<T> That<T>(System.Threading.Tasks.ValueTask<T> subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Core.IThatSubject<T> That<T>(T subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Core.IThatSubject<T[]?> That<T>(T[]? subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Core.ThatBoolSubject That(bool subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithValue<TValue> That<TValue>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<TValue>> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithValue<TValue> That<TValue>(System.Func<System.Threading.CancellationToken, TValue> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithValue<TValue> That<TValue>(System.Func<System.Threading.Tasks.Task<TValue>> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithValue<TValue> That<TValue>(System.Func<TValue> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithoutValue That(System.Action @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithoutValue That(System.Action<System.Threading.CancellationToken> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithoutValue That(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithoutValue That(System.Func<System.Threading.Tasks.Task> @delegate, [System.Runtime.CompilerServices.CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithoutValue That(System.Threading.Tasks.Task subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Delegates.ThatDelegate.WithoutValue That(System.Threading.Tasks.ValueTask subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Core.Expectation.Combination.All ThatAll(params aweXpect.Core.Expectation[] expectations) { }
+        public static aweXpect.Core.Expectation.Combination.Any ThatAny(params aweXpect.Core.Expectation[] expectations) { }
+    }
+    [System.Diagnostics.StackTraceHidden]
+    public static class Fail
+    {
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        public static void Inconclusive(string reason) { }
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        public static void Test(string reason) { }
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        public static void Test(string reason, System.Exception? innerException) { }
+        public static void Unless([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition, string reason) { }
+        public static void Unless([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition, string reason, System.Exception? innerException) { }
+        public static void When([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition, string reason) { }
+        public static void When([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition, string reason, System.Exception? innerException) { }
+    }
+    public class FailException : System.Exception
+    {
+        public FailException(string message) { }
+        public FailException(string message, System.Exception? innerException) { }
+    }
+    public interface IEnumerableElements<out TItem>
+    {
+        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<out TItem>?> Subject { get; }
+    }
+    public interface IEnumerableStringElements
+    {
+        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> Subject { get; }
+    }
+    public interface INonGenericEnumerableElements<out TEnumerable> where TEnumerable : System.Collections.IEnumerable?
+    {
+        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        aweXpect.Core.IThat<out TEnumerable?> Subject { get; }
+    }
+    public interface IStructEnumerableElements<out TEnumerable, TItem> where TEnumerable : struct, System.Collections.Generic.IEnumerable<TItem>
+    {
+        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        aweXpect.Core.IThat<out TEnumerable> Subject { get; }
+    }
+    public interface IStructEnumerableStringElements<out TEnumerable> where TEnumerable : struct, System.Collections.Generic.IEnumerable<string?>
+    {
+        aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        aweXpect.Core.IThat<out TEnumerable> Subject { get; }
+    }
+    public class InconclusiveException : System.Exception
+    {
+        public InconclusiveException(string message) { }
+    }
+    public static class ObjectEqualityOptionsExtensions
+    {
+        public static TSelf Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement> result, System.Collections.Generic.IEqualityComparer<TElement> comparer) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, TElement> { }
+        public static TSelf Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement> result, System.Collections.Generic.IEqualityComparer<object> comparer) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, TElement> { }
+        public static TSelf Within<TSelf, TElement, TTolerance>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance> result, TTolerance tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance> { }
+        public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, byte> result, byte tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, byte> { }
+        public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, sbyte> result, sbyte tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, sbyte> { }
+        public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, short> result, short tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, short> { }
+        public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, uint> result, uint tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, uint> { }
+        public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ulong> result, ulong tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ulong> { }
+        public static TSelf Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ushort> result, ushort tolerance) where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ushort> { }
+    }
+    public abstract class QuantifiedCollectionConstraint<TValue, TItem> : aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>
+    {
+        protected QuantifiedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier, System.Func<aweXpect.Core.ExpectationGrammars, string> expectationText, string verb) { }
+        protected override sealed string Verb { get; }
+        protected override sealed void AppendItemExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation) { }
+    }
+    public abstract class QuantifiedCollectionConstraintBase<TValue, TItem> : aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<TValue>
+    {
+        protected QuantifiedCollectionConstraintBase(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
+        protected bool IsDetermined { get; }
+        protected virtual System.Type ItemType { get; }
+        protected aweXpect.Options.EnumerableQuantifier Quantifier { get; }
+        protected abstract string Verb { get; }
+        public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        protected abstract void AppendItemExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string? indentation);
+        protected override void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected void Complete() { }
+        protected void CompleteEarly() { }
+        protected void Record(TItem item, aweXpect.Core.Constraints.ConstraintResult itemResult) { }
+        protected void Record(TItem item, bool isMatch) { }
+        protected void StartEvaluation() { }
+    }
+    public static class QuantifierExtensions
+    {
+        public static TResult AtLeast<TResult>(this TResult result, aweXpect.Core.Times minimum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static aweXpect.Results.CountTimesResult<TResult> AtLeast<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult AtMost<TResult>(this TResult result, aweXpect.Core.Times maximum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static aweXpect.Results.CountTimesResult<TResult> AtMost<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static aweXpect.Results.BetweenResult<TResult> Between<TResult>(this TResult result, int minimum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult Exactly<TResult>(this TResult result, aweXpect.Core.Times expected) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult LessThan<TResult>(this TResult result, aweXpect.Core.Times maximum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static aweXpect.Results.CountTimesResult<TResult> LessThan<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult MoreThan<TResult>(this TResult result, aweXpect.Core.Times minimum) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static aweXpect.Results.CountTimesResult<TResult> MoreThan<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult Never<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult Once<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+        public static TResult Twice<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+    }
+    public static class SignalerOptionsExtensions
+    {
+        public static TSelf With<TSelf, TParameter>(this aweXpect.Results.ISignalerResult<TSelf, TParameter> result, System.Func<TParameter, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TSelf : aweXpect.Results.ISignalerResult<TSelf, TParameter> { }
+        public static TResult Within<TResult>(this TResult result, System.TimeSpan timeout) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions> { }
+    }
+    [System.Diagnostics.StackTraceHidden]
+    public static class Skip
+    {
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        public static void Test(string reason) { }
+        public static void Unless([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition, string reason) { }
+        public static void When([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition, string reason) { }
+    }
+    public class SkipException : System.Exception
+    {
+        public SkipException(string message) { }
+    }
+    public static class StringEqualityOptionsExtensions
+    {
+        public static TResult AsPrefix<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+        public static TResult AsRegex<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
+        public static TResult AsRegex<TResult>(this TResult result, System.Text.RegularExpressions.RegexOptions regexOptions) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
+        public static TResult AsSuffix<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+        public static TResult AsWildcard<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions { }
+        public static TResult IgnoringCase<TResult>(this TResult result, bool ignoreCase = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+        public static TResult IgnoringIndentation<TResult>(this TResult result, bool ignoreIndentation = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+        public static TResult IgnoringLeadingWhiteSpace<TResult>(this TResult result, bool ignoreLeadingWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+        public static TResult IgnoringNewlineStyle<TResult>(this TResult result, bool ignoreNewlineStyle = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+        public static TResult IgnoringTrailingWhiteSpace<TResult>(this TResult result, bool ignoreTrailingWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+        public static TResult NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+        public static TResult Using<TResult>(this TResult result, System.Collections.Generic.IEqualityComparer<string> comparer) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
+    }
+    public static class ThatDelegateExtensions
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.ExpectationResult IsCollectedAfter<T>(this aweXpect.Delegates.ThatDelegate.WithValue<T> source, System.Action<T> cleanup, [System.Runtime.CompilerServices.CallerArgumentExpression("cleanup")] string doNotPopulateThisValue = "") where T : class { }
+    }
+    public static class ToleranceExtensions
+    {
+        public static TResult Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, decimal> result) { }
+        public static TResult Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, double> result) { }
+        public static TResult Percent<TResult>(this aweXpect.Results.IWithinToleranceResult<TResult, float> result) { }
+        public static TResult Within<TResult>(this TResult result, System.TimeSpan tolerance) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.TimeTolerance> { }
+        public static TSelf Within<TSelf, TNumber>(this aweXpect.Results.INumberToleranceResult<TSelf, TNumber> result, TNumber tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, TNumber> where TNumber : struct, System.IComparable<TNumber> { }
+        public static TSelf Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, byte> result, byte tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, byte> { }
+        public static TSelf Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, sbyte> result, sbyte tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, sbyte> { }
+        public static TSelf Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, short> result, short tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, short> { }
+        public static TSelf Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, uint> result, uint tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, uint> { }
+        public static TSelf Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ulong> result, ulong tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, ulong> { }
+        public static TSelf Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ushort> result, ushort tolerance) where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, ushort> { }
+    }
+}
+namespace aweXpect.Core
+{
+    [System.Diagnostics.StackTraceHidden]
+    public abstract class Expectation
+    {
+        protected Expectation() { }
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public override bool Equals(object? obj) { }
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public override int GetHashCode() { }
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public System.Type GetType() { }
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public override string? ToString() { }
+        public abstract class Combination : aweXpect.Core.Expectation
+        {
+            protected Combination(aweXpect.Core.Expectation[] expectations) { }
+            protected abstract aweXpect.Core.Constraints.Outcome CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current);
+            public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
+            protected abstract string GetSubjectLine();
+            public class All : aweXpect.Core.Expectation.Combination
+            {
+                public All(aweXpect.Core.Expectation[] expectations) { }
+                protected override aweXpect.Core.Constraints.Outcome CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) { }
+                protected override string GetSubjectLine() { }
+            }
+            public class Any : aweXpect.Core.Expectation.Combination
+            {
+                public Any(aweXpect.Core.Expectation[] expectations) { }
+                protected override aweXpect.Core.Constraints.Outcome CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) { }
+                protected override string GetSubjectLine() { }
+            }
+        }
+    }
+    public abstract class ExpectationBuilder
+    {
+        public System.Threading.CancellationToken? CancellationToken { get; }
+        public aweXpect.Core.ExpectationGrammars ExpectationGrammars { get; }
+        public System.TimeSpan? Timeout { get; }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TState, TValue>(TState state, System.Func<TState, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder, string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddSubjectContexts<TValue>(System.Action<TValue, aweXpect.Core.ResultContextCollector> appendContexts) { }
+        public aweXpect.Core.ExpectationBuilder And(string textSeparator = " and ") { }
+        public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, System.Threading.Tasks.Task<TTarget>> memberAccessor, System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder>? expectationTextGenerator = null, bool replaceIt = true) { }
+        public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, TTarget> memberAccessor, System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder>? expectationTextGenerator = null, bool replaceIt = true) { }
+        public aweXpect.Core.ExpectationBuilder ForWhich<TSource, TTarget>(System.Func<TSource, System.Threading.Tasks.Task<TTarget?>> asyncMemberAccessor, string? separator = null) { }
+        public aweXpect.Core.ExpectationBuilder ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?> memberAccessor, string? separator = null, string? subjectName = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null, bool negateMemberOnly = false, string? contextMember = null) { }
+        public aweXpect.Core.ExpectationBuilder Or(string textSeparator = " or ") { }
+        public void WithCancellation(System.Threading.CancellationToken cancellationToken) { }
+        public void WithTimeout(System.TimeSpan timeout) { }
+        public class MemberExpectationBuilder<TSource, TMember>
+        {
+            public aweXpect.Core.ExpectationBuilder AddExpectations(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) { }
+            public aweXpect.Core.ExpectationBuilder AddExpectations<TNarrowed>(System.Action<aweXpect.Core.ExpectationBuilder> expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) where TNarrowed : TMember { }
+            public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> Validate(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TSource>> constraintBuilder) { }
+        }
+    }
+    public static class ExpectationBuilderExtensions
+    {
+        public static aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForMember<TSource, TTarget>(this aweXpect.Core.ExpectationBuilder expectationBuilder, System.Func<TSource, TTarget> memberAccessor, string displayName, bool replaceIt = true) { }
+    }
+    [System.Flags]
+    public enum ExpectationGrammars
+    {
+        None = 0,
+        Nested = 2,
+        Plural = 4,
+        Active = 8,
+        Negated = 16,
+        Introduced = 32,
+    }
+    public static class ExpectationGrammarsExtensions
+    {
+        public static bool HasAnyFlag(this aweXpect.Core.ExpectationGrammars grammars, params aweXpect.Core.ExpectationGrammars[] flags) { }
+        public static bool IsNegated(this aweXpect.Core.ExpectationGrammars grammars) { }
+        public static bool IsNested(this aweXpect.Core.ExpectationGrammars grammars) { }
+        public static bool IsPlural(this aweXpect.Core.ExpectationGrammars grammars) { }
+        public static aweXpect.Core.ExpectationGrammars Negate(this aweXpect.Core.ExpectationGrammars grammars) { }
+        public static string SubjectVerb(this aweXpect.Core.ExpectationGrammars grammars, string it, string singular, string plural) { }
+        public static string Verb(this aweXpect.Core.ExpectationGrammars grammars, string singular, string plural) { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public sealed class GuaranteesNotNullAttribute : System.Attribute
+    {
+        public GuaranteesNotNullAttribute() { }
+    }
+    public interface ICollectionMatcher<in T, out T2> where T : out T2
+    {
+        bool IsDetermined { get; }
+        System.Threading.Tasks.ValueTask<(bool, string?)> Verify(string it, T value, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
+        System.Threading.Tasks.ValueTask<(bool, string?)> VerifyComplete(string it, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
+    }
+    public interface IDescribableSubject
+    {
+        string GetDescription();
+    }
+    public interface IExpectThat<out T> : aweXpect.Core.IThat<out T>
+    {
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+        aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+    }
+    public interface IObjectMatchResult
+    {
+        bool IsMatch { get; }
+        string GetExtendedFailure(string it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected, string? indentation = null);
+    }
+    public interface IObjectMatchType
+    {
+        void AppendContexts(aweXpect.Core.ResultContextCollector contexts);
+        System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected);
+        System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual, TExpected expected);
+        string GetExpectation(string expected, aweXpect.Core.ExpectationGrammars grammars);
+        string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null);
+    }
+    public interface IOptionsEquality<in TSubject>
+    {
+        System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected);
+    }
+    public interface IOptionsProvider<out TOptions>
+    {
+        TOptions Options { get; }
+    }
+    public interface IStringMatchType
+    {
+        bool InspectsSubject { get; }
+        System.Threading.Tasks.ValueTask<aweXpect.Core.StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer);
+        string GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars);
+        string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string> comparer, aweXpect.Core.StringDifferenceSettings? settings);
+        string GetOptionString(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer);
+        string GetTypeString();
+        void ValidateExpected(string? expected);
+        void ValidateOptions(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer);
+    }
+    public interface IThat<out T>
+    {
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        bool Equals(object? obj);
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        int GetHashCode();
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        System.Type GetType();
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        string? ToString();
+    }
+    public interface IThatDelegateThrows<TException> : aweXpect.Core.IExpectThat<TException>, aweXpect.Core.IThat<TException> where TException : System.Exception?
+    {
+        aweXpect.Core.IThat<TException> Which { get; }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(2)]
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> Whose<TMember>(System.Func<TException, System.Threading.Tasks.Task<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "");
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "");
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> Whose<TMember>(System.Func<TException, TMember?> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "");
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner();
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations);
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type);
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations);
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>() where TInnerException : System.Exception?;
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations) where TInnerException : System.Exception;
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner();
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner(System.Type type);
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner<TInnerException>() where TInnerException : System.Exception?;
+    }
+    public interface IThatSubject<T> : aweXpect.Core.IThat<T>
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> Is<TType>();
+        [aweXpect.Core.GuaranteesNotNull]
+        aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> IsExactly<TType>();
+        [aweXpect.Core.GuaranteesNotNull]
+        aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNot<TType>();
+        [aweXpect.Core.GuaranteesNotNull]
+        aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNotExactly<TType>();
+    }
+    public static class KeyComparers
+    {
+        public static System.Collections.Generic.ISet<TKey> CreateKeySet<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> dictionary) { }
+    }
+    public sealed class ManualExpectationBuilder<TValue> : aweXpect.Core.ExpectationBuilder, System.Collections.Generic.IEqualityComparer<aweXpect.Core.ManualExpectationBuilder<TValue>>
+    {
+        public ManualExpectationBuilder(aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+        public void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        public void AppendReasons(System.Text.StringBuilder stringBuilder) { }
+        public bool Equals(aweXpect.Core.ManualExpectationBuilder<TValue>? x, aweXpect.Core.ManualExpectationBuilder<TValue>? y) { }
+        public override bool Equals(object? obj) { }
+        public int GetHashCode(aweXpect.Core.ManualExpectationBuilder<TValue> obj) { }
+        public override int GetHashCode() { }
+        public string GetResultVerb() { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TValue value, System.Threading.CancellationToken cancellationToken) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        public System.Threading.Tasks.Task PrepareExpectation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        public override string ToString() { }
+    }
+    public abstract class MemberAccessor
+    {
+        protected MemberAccessor(string name) { }
+        public override string ToString() { }
+    }
+    public class MemberAccessor<TSource, TTarget> : aweXpect.Core.MemberAccessor
+    {
+        public override bool Equals(object? obj) { }
+        public override int GetHashCode() { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromExpression(System.Linq.Expressions.Expression<System.Func<TSource, TTarget>> expression) { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFunc(System.Func<TSource, TTarget> func, string name) { }
+        public static aweXpect.Core.MemberAccessor<TSource, TTarget> FromFuncAsMemberAccessor(System.Func<TSource, TTarget> func, string name) { }
+    }
+    public static class ReflectionFallback
+    {
+        public static bool IsSupported { get; }
+    }
+    public abstract class ResultContext
+    {
+        protected ResultContext(string title, int priority = 0) { }
+        public int Priority { get; }
+        public string Title { get; }
+        public abstract System.Threading.Tasks.Task<string?> GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        public class AsyncCallback : aweXpect.Core.ResultContext
+        {
+            public AsyncCallback(string title, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<string?>> callback, int priority = 0) { }
+            public override System.Threading.Tasks.Task<string?> GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        }
+        public class Fixed : aweXpect.Core.ResultContext
+        {
+            public Fixed(string title, string? content, int priority = 0) { }
+            public override System.Threading.Tasks.Task<string?> GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        }
+        public class SyncCallback : aweXpect.Core.ResultContext
+        {
+            public SyncCallback(string title, System.Func<string?> callback, int priority = 0) { }
+            public override System.Threading.Tasks.Task<string?> GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        }
+    }
+    public sealed class ResultContextCollector
+    {
+        public void Add(aweXpect.Core.ResultContext context) { }
+        public void Visit(aweXpect.Core.Constraints.ConstraintResult result) { }
+        public void VisitItem(int index, aweXpect.Core.Constraints.ConstraintResult result) { }
+        public void VisitMember(string member, aweXpect.Core.Constraints.ConstraintResult result) { }
+    }
+    public static class ResultContextCollectorExtensions
+    {
+        public static void AddCollectionContext(this aweXpect.Core.ResultContextCollector contexts, System.Collections.IEnumerable? collection, bool isIncomplete = false) { }
+        public static void AddCollectionContext<TItem>(this aweXpect.Core.ResultContextCollector contexts, System.Collections.Generic.IEnumerable<TItem>? collection, bool isIncomplete = false, int? totalCount = null) { }
+        public static void AddDictionaryContext<TKey, TValue>(this aweXpect.Core.ResultContextCollector contexts, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? dictionary) { }
+        public static void AddEqualityOptionsContexts<T>(this aweXpect.Core.ResultContextCollector contexts, aweXpect.Core.IOptionsEquality<T> options) { }
+        public static void AddEquivalencyContext(this aweXpect.Core.ResultContextCollector contexts, aweXpect.Equivalency.EquivalencyOptions equivalencyOptions) { }
+        public static void AddExpectedValuesContext<TItem>(this aweXpect.Core.ResultContextCollector contexts, string? expectedExpression, System.Collections.Generic.IEnumerable<TItem> values, aweXpect.Core.ExpectationGrammars grammars) { }
+        public static void AddStringContext(this aweXpect.Core.ResultContextCollector contexts, string title, string? value, aweXpect.Core.Constraints.ConstraintResult result) { }
+        public static void AddStringDifferencesContext(this aweXpect.Core.ResultContextCollector contexts, string? actual, string? expected, aweXpect.Options.StringEqualityOptions options, aweXpect.Core.ExpectationGrammars grammars) { }
+    }
+    public sealed class StringDifference
+    {
+        public StringDifference(string? actual, string? expected, System.Collections.Generic.IEqualityComparer<string>? comparer = null, aweXpect.Core.StringDifferenceSettings? settings = null) { }
+        public int IndexOfFirstMismatch(aweXpect.Core.StringDifference.MatchType matchType) { }
+        public override string ToString() { }
+        public string ToString(string prefix) { }
+        public enum MatchType
+        {
+            Equality = 0,
+            Wildcard = 1,
+            Regex = 2,
+            Prefix = 3,
+            Suffix = 4,
+        }
+    }
+    public class StringDifferenceSettings
+    {
+        public StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns) { }
+        public StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns, System.Collections.Generic.IReadOnlyList<int>? ignoredColumnsPerLine) { }
+        public System.Collections.Generic.IReadOnlyList<int>? IgnoredColumnsPerLine { get; }
+        public int IgnoredTrailingColumns { get; }
+        public int IgnoredTrailingLines { get; }
+        public aweXpect.Core.StringDifference.MatchType MatchType { get; }
+    }
+    public static class StringDifferenceSettingsExtensions
+    {
+        public static aweXpect.Core.StringDifferenceSettings WithMatchType(this aweXpect.Core.StringDifferenceSettings? settings, aweXpect.Core.StringDifference.MatchType matchType) { }
+    }
+    public readonly struct StringMatchResult
+    {
+        public bool IsEqual { get; }
+        public static aweXpect.Core.StringMatchResult NotComparable(string reason, System.Exception? cause = null) { }
+        public static implicit operator aweXpect.Core.StringMatchResult(bool isEqual) { }
+    }
+    [System.Diagnostics.DebuggerDisplay("ThatBoolSubject: {ExpectationBuilder}")]
+    public class ThatBoolSubject : aweXpect.Results.ExpectationResult<bool>, aweXpect.Core.IExpectThat<bool>, aweXpect.Core.IThat<bool>
+    {
+        public ThatBoolSubject(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+    }
+    [System.Diagnostics.DebuggerDisplay("ThatSubject<{typeof(T)}>: {ExpectationBuilder}")]
+    public readonly struct ThatSubject<T> : aweXpect.Core.IExpectThat<T>, aweXpect.Core.IThat<T>, aweXpect.Core.IThatSubject<T>
+    {
+        public ThatSubject(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        public aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> Is<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> IsExactly<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNot<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNotExactly<TType>() { }
+    }
+    public readonly struct Times
+    {
+        public Times(int value) { }
+        public int Value { get; }
+        public static implicit operator aweXpect.Core.Times(int value) { }
+        public static implicit operator int(aweXpect.Core.Times value) { }
+    }
+    public static class TimesExtensions
+    {
+        public static aweXpect.Core.Times Times(this int value) { }
+    }
+    public static class Tracing
+    {
+        public static TException WriteException<TException>(TException exception) where TException : System.Exception { }
+    }
+    public static class UserCode
+    {
+        public static TResult Invoke<TArgument, TResult>(System.Func<TArgument, TResult> callback, TArgument argument, string? thrower = null) { }
+        public static TResult Invoke<TResult>(System.Func<TResult> callback, string? thrower = null) { }
+        public static System.Threading.Tasks.ValueTask<TResult> InvokeAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<TResult>> callback, string? thrower = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+    }
+}
+namespace aweXpect.Core.Adapters
+{
+    public interface ITestFrameworkAdapter
+    {
+        bool IsAvailable { get; }
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        void Fail(string message);
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        void Fail(string message, System.Exception innerException);
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        void Inconclusive(string message);
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        void Skip(string message);
+    }
+    public static class TestFrameworkRegistry
+    {
+        public static void Register(aweXpect.Core.Adapters.ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
+    }
+}
+namespace aweXpect.Core.Constraints
+{
+    public abstract class ConstraintResult
+    {
+        protected ConstraintResult(aweXpect.Core.Constraints.FurtherProcessingStrategy furtherProcessingStrategy) { }
+        protected ConstraintResult(aweXpect.Core.ExpectationGrammars grammars) { }
+        public virtual System.Exception? FailureCause { get; }
+        public aweXpect.Core.Constraints.FurtherProcessingStrategy FurtherProcessingStrategy { get; protected set; }
+        public aweXpect.Core.ExpectationGrammars Grammars { get; protected set; }
+        public virtual string? LeadingSubject { get; }
+        public virtual aweXpect.Core.Constraints.Outcome Outcome { get; protected set; }
+        public virtual string? TrailingSubject { get; }
+        public virtual void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        public abstract void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
+        public abstract void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
+        protected string? GetSubjectOfResult(string it) { }
+        public abstract aweXpect.Core.Constraints.ConstraintResult Negate();
+        public abstract bool TryGetStoredValue<TValue>(out TValue? value);
+        public bool TryGetValue<TValue>([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out TValue? value) { }
+        protected static void AppendCanceledResult(System.Text.StringBuilder stringBuilder, string it) { }
+        public class ExpectationOnly<T> : aweXpect.Core.Constraints.ConstraintResult, aweXpect.Core.Constraints.IConstraint, aweXpect.Core.Constraints.IValueConstraint<T>
+        {
+            public ExpectationOnly(aweXpect.Core.ExpectationGrammars grammars, string? expectation = null, string? negatedExpectation = null) { }
+            public override aweXpect.Core.Constraints.Outcome Outcome { get; protected set; }
+            public override void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            protected virtual void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            protected virtual void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            public override void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            public aweXpect.Core.Constraints.ConstraintResult IsMetBy(T actual) { }
+            public override aweXpect.Core.Constraints.ConstraintResult Negate() { }
+            public override bool TryGetStoredValue<TValue>(out TValue? value) { }
+        }
+        public abstract class WithEqualToValue<T> : aweXpect.Core.Constraints.ConstraintResult.WithValue<T>
+        {
+            protected WithEqualToValue(string it, aweXpect.Core.ExpectationGrammars grammars, bool isExpectedNull) { }
+        }
+        public abstract class WithNotNullValue<T> : aweXpect.Core.Constraints.ConstraintResult.WithValue<T>
+        {
+            protected WithNotNullValue(string it, aweXpect.Core.ExpectationGrammars grammars) { }
+        }
+        public abstract class WithValue<T> : aweXpect.Core.Constraints.ConstraintResult
+        {
+            protected WithValue(string it, aweXpect.Core.ExpectationGrammars grammars) { }
+            protected T? Actual { get; set; }
+            protected bool IsNegated { get; }
+            protected string It { get; }
+            public override string? LeadingSubject { get; }
+            public override sealed aweXpect.Core.Constraints.Outcome Outcome { get; protected set; }
+            public override string? TrailingSubject { get; }
+            public override sealed void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            protected abstract void AppendNegatedExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
+            protected abstract void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
+            protected abstract void AppendNormalExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
+            protected abstract void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null);
+            public override sealed void AppendResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            protected virtual void AppendUndecidedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+            public override aweXpect.Core.Constraints.ConstraintResult Negate() { }
+            public override bool TryGetStoredValue<TValue>(out TValue? value) { }
+        }
+    }
+    public static class ConstraintResultExtensions
+    {
+        public static aweXpect.Core.Constraints.ConstraintResult AppendExpectationText(this aweXpect.Core.Constraints.ConstraintResult inner, System.Action<System.Text.StringBuilder>? suffix) { }
+        public static aweXpect.Core.Constraints.ConstraintResult Fail<T>(this aweXpect.Core.Constraints.ConstraintResult inner, string failure, T value) { }
+        public static bool HasSameResultTextAs(this aweXpect.Core.Constraints.ConstraintResult left, aweXpect.Core.Constraints.ConstraintResult right) { }
+        public static T Invert<T>(this T constraintResult) where T : aweXpect.Core.Constraints.ConstraintResult { }
+        public static aweXpect.Core.Constraints.ConstraintResult PrependExpectationText(this aweXpect.Core.Constraints.ConstraintResult inner, System.Action<System.Text.StringBuilder>? prefix) { }
+        public static aweXpect.Core.Constraints.ConstraintResult UseValue<T>(this aweXpect.Core.Constraints.ConstraintResult inner, T value) { }
+    }
+    public enum FurtherProcessingStrategy
+    {
+        Continue = 0,
+        IgnoreCompletely = 1,
+        IgnoreResult = 2,
+    }
+    public interface IAsyncConstraint<in TValue> : aweXpect.Core.Constraints.IConstraint
+    {
+        System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TValue actual, System.Threading.CancellationToken cancellationToken);
+    }
+    public interface IAsyncContextConstraint<in TValue> : aweXpect.Core.Constraints.IConstraint
+    {
+        System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken);
+    }
+    public interface IConstraint
+    {
+        void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null);
+    }
+    public interface IContextConstraint<in TValue> : aweXpect.Core.Constraints.IConstraint
+    {
+        aweXpect.Core.Constraints.ConstraintResult IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext context);
+    }
+    public interface IExpectationTextConstraint : aweXpect.Core.Constraints.IConstraint
+    {
+        System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> GetExpectationResult(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken);
+    }
+    public interface IValueConstraint<in TValue> : aweXpect.Core.Constraints.IConstraint
+    {
+        aweXpect.Core.Constraints.ConstraintResult IsMetBy(TValue actual);
+    }
+    public enum Outcome
+    {
+        Success = 0,
+        Failure = 1,
+        Undecided = 2,
+        FailureBothWays = 3,
+    }
+}
+namespace aweXpect.Core.EvaluationContext
+{
+    public enum CancellationReason
+    {
+        None = 0,
+        Timeout = 1,
+        Caller = 2,
+    }
+    public sealed class CompletedEvaluation
+    {
+        public aweXpect.Core.Constraints.Outcome Outcome { get; }
+    }
+    public sealed class EvaluationCancellation
+    {
+        public aweXpect.Core.EvaluationContext.CancellationReason Reason { get; }
+        public System.TimeSpan? Timeout { get; }
+        public System.Threading.CancellationToken Token { get; }
+        public static aweXpect.Core.EvaluationContext.EvaluationCancellation None { get; }
+        public bool HasWaitElapsed(System.TimeSpan waitTimeout, System.TimeSpan waited) { }
+    }
+    public static class EvaluationContextExtensions
+    {
+        public static System.TimeSpan GetElapsedTime(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, long startTimestamp) { }
+        public static long GetTimestamp(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext) { }
+        public static bool TryGetItem<TItem>(this aweXpect.Core.EvaluationContext.IMaterializedEnumerable<TItem> materialized, int index, out TItem item) { }
+        public static System.Collections.Generic.IEnumerable<TItem> UseMaterializedEnumerable<TItem>(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, System.Collections.Generic.IEnumerable<TItem> collection) { }
+        [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("collection")]
+        public static System.Collections.IEnumerable? UseMaterializedEnumerable(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, System.Collections.IEnumerable? collection) { }
+        public static System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>> WaitForSignalsAsync<TParameter>(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, aweXpect.Signaling.Signaler<TParameter> signaler, aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate, System.TimeSpan? timeout, System.Threading.CancellationToken cancellationToken) { }
+        public static System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult> WaitForSignalsAsync(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, aweXpect.Signaling.Signaler signaler, aweXpect.Core.Times amount, System.TimeSpan? timeout, System.Threading.CancellationToken cancellationToken) { }
+    }
+    public interface ICountable
+    {
+        int? Count { get; }
+    }
+    public interface IEvaluationContext
+    {
+        aweXpect.Core.EvaluationContext.EvaluationCancellation Cancellation { get; }
+        void OnCompleted(System.Func<aweXpect.Core.EvaluationContext.CompletedEvaluation, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask> callback);
+        void Store<T>(string key, T value);
+        bool TryReceive<T>(string key, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out T? value);
+    }
+    public interface IMaterializedEnumerable : System.Collections.IEnumerable, aweXpect.Core.EvaluationContext.ICountable
+    {
+        System.Collections.Generic.IReadOnlyList<object?> MaterializedItems { get; }
+    }
+    public interface IMaterializedEnumerable<out T> : System.Collections.Generic.IEnumerable<out T>, System.Collections.IEnumerable, aweXpect.Core.EvaluationContext.ICountable
+    {
+        System.Collections.Generic.IReadOnlyList<out T> MaterializedItems { get; }
+    }
+}
+namespace aweXpect.Core.Extending
+{
+    public static class ClosestMatch
+    {
+        public static void AppendHint(System.Text.StringBuilder stringBuilder, string value, System.Collections.Generic.IEnumerable<string> candidates) { }
+        public static string? Find(string value, System.Collections.Generic.IEnumerable<string> candidates) { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Parameter)]
+    public sealed class EvaluationCancellationTokenAttribute : System.Attribute
+    {
+        public EvaluationCancellationTokenAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public sealed class GenerateCollectionExpectationAttribute : System.Attribute
+    {
+        public GenerateCollectionExpectationAttribute(string name, string expectationText, string pluralExpectationText) { }
+        public GenerateCollectionExpectationAttribute(string name, string pluralExpectationText) { }
+        public string? ExpectationText { get; }
+        public string Name { get; }
+        public bool NullableOverload { get; set; }
+        public string PluralExpectationText { get; }
+        public string? Remarks { get; set; }
+        public string? Summary { get; set; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public sealed class GenerateExpectationAttribute : System.Attribute
+    {
+        public GenerateExpectationAttribute(string name, string expectationText) { }
+        public string ExpectationText { get; }
+        public string Name { get; }
+        public string? NegatedExpectationText { get; set; }
+        public string? NegatedName { get; set; }
+        public string? NegatedRemarks { get; set; }
+        public string? NegatedSummary { get; set; }
+        public bool NullableOverload { get; set; }
+        public string? Remarks { get; set; }
+        public string? Result { get; set; }
+        public string? Summary { get; set; }
+    }
+    public abstract class GeneratedCollectionConstraint<TCollection, TItem> : aweXpect.QuantifiedCollectionConstraintBase<TCollection, TItem>, aweXpect.Core.Constraints.IAsyncContextConstraint<TCollection>, aweXpect.Core.Constraints.IConstraint where TCollection : System.Collections.Generic.IEnumerable<TItem>?
+    {
+        protected GeneratedCollectionConstraint(string it, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Options.EnumerableQuantifier quantifier) { }
+        public override void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        protected override void AppendNegatedResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected override void AppendNormalResult(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        protected abstract System.Threading.Tasks.ValueTask<aweXpect.Core.Extending.PredicateResult> IsMatch(TItem item, System.Threading.CancellationToken cancellationToken);
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy(TCollection actual, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+    }
+    public readonly struct PredicateResult
+    {
+        public aweXpect.Core.Constraints.Outcome Outcome { get; }
+        public string? Reason { get; }
+        public static aweXpect.Core.Extending.PredicateResult FailureBothWays(string reason) { }
+        public static implicit operator aweXpect.Core.Extending.PredicateResult(bool isMet) { }
+    }
+    public static class StringExtensions
+    {
+        [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("value")]
+        public static string? Indent(this string? value, string? indentation = "  ", bool indentFirstLine = true) { }
+        public static string PrependAOrAn(this string value) { }
+        public static string TrimCommonWhiteSpace(this string value) { }
+    }
+    public static class ThatExtensions
+    {
+        public static aweXpect.Core.IExpectThat<T> Get<T>(this aweXpect.Core.IThat<T> subject) { }
+    }
+}
+namespace aweXpect.Core.Internal
+{
+    public interface ITimeSystem
+    {
+        void CancelAfter(System.Threading.CancellationTokenSource cancellationTokenSource, System.TimeSpan delay);
+        System.Threading.Tasks.Task Delay(System.TimeSpan delay, System.Threading.CancellationToken cancellationToken);
+        System.TimeSpan GetElapsedTime(long startTimestamp);
+        long GetTimestamp();
+    }
+    public static class TimeSystemExtensions
+    {
+        public static TExpectation WithTimeSystem<TExpectation>(this TExpectation expectation, aweXpect.Core.Internal.ITimeSystem timeSystem) where TExpectation : aweXpect.Core.Expectation { }
+    }
+}
+namespace aweXpect.Core.Metadata
+{
+    [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
+    public sealed class GenerateMetadataAttribute : System.Attribute
+    {
+        public GenerateMetadataAttribute(System.Type type) { }
+        public System.Type Type { get; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Parameter | System.AttributeTargets.GenericParameter)]
+    public sealed class RequiresEventMetadataAttribute : System.Attribute
+    {
+        public RequiresEventMetadataAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Parameter | System.AttributeTargets.GenericParameter)]
+    public sealed class RequiresMemberMetadataAttribute : System.Attribute
+    {
+        public RequiresMemberMetadataAttribute() { }
+    }
+    public static class TypeMetadataRegistry
+    {
+        public static void RegisterBatch(System.Action register) { }
+        public static void RegisterCollection<T>() { }
+        public static void RegisterDictionary<TKey, TValue>() { }
+        public static void RegisterEvent<T>(string name, System.Func<System.Action<object?[]>, System.Delegate> createHandler, System.Action<T, System.Delegate> addHandler, System.Action<T, System.Delegate> removeHandler) { }
+        public static void RegisterExplicitProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterField<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterField<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterProperty<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterRecord<T>() { }
+        public static void RegisterSet<T>() { }
+    }
+}
+namespace aweXpect.Core.Sources
+{
+    public class DelegateValue
+    {
+        public DelegateValue(System.Exception? exception, System.TimeSpan duration, bool isNull = false) { }
+        public System.TimeSpan Duration { get; }
+        public System.TimeSpan? ExceededTimeout { get; private protected set; }
+        public System.Exception? Exception { get; }
+        public bool IsNull { get; }
+        public override string ToString() { }
+    }
+    public class DelegateValue<TValue> : aweXpect.Core.Sources.DelegateValue
+    {
+        public DelegateValue(in TValue? value, System.Exception? exception, System.TimeSpan duration, bool isNull = false) { }
+        public TValue? Value { get; }
+        public override string ToString() { }
+    }
+}
+namespace aweXpect.Customization
+{
+    public class AwexpectCustomization : aweXpect.Customization.IAwexpectCustomization
+    {
+        public AwexpectCustomization() { }
+        public aweXpect.Customization.AwexpectCustomization Global { get; }
+        public aweXpect.Customization.CustomizationLifetime EnableTracing(aweXpect.Customization.ITraceWriter traceWriter) { }
+        public aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization Equivalency() { }
+        public aweXpect.Customization.AwexpectCustomization.FormattingCustomization Formatting() { }
+        public aweXpect.Customization.AwexpectCustomization.ReflectionCustomization Reflection() { }
+        public aweXpect.Customization.AwexpectCustomization.SettingsCustomization Settings() { }
+        public class EquivalencyCustomization : aweXpect.Customization.IAwexpectCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Equivalency.EquivalencyOptions> DefaultEquivalencyOptions { get; }
+        }
+        public class FormattingCustomization : aweXpect.Customization.IAwexpectCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<int> MaximumNumberOfCollectionItems { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<int> MaximumStringLength { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<int> MinimumNumberOfCharactersAfterStringDifference { get; }
+        }
+        public class ReflectionCustomization : aweXpect.Customization.IAwexpectCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
+        }
+        public class SettingsCustomization : aweXpect.Customization.IAwexpectCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultCheckInterval { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultEventuallyTimeout { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultRegexTimeout { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultSignalerTimeout { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultTimeComparisonTolerance { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.TestCancellation?> TestCancellation { get; }
+        }
+    }
+    public sealed class CustomizationLifetime : System.IDisposable
+    {
+        public CustomizationLifetime(System.Action callback) { }
+        public void Dispose() { }
+    }
+    public sealed class CustomizationValue<TValue> : aweXpect.Customization.ICustomizationValueSetter<TValue>
+    {
+        public CustomizationValue(aweXpect.Customization.IAwexpectCustomization customization, string key, TValue defaultValue, System.Action<TValue>? validate = null) { }
+        public TValue Get() { }
+        public aweXpect.Customization.CustomizationLifetime Set(TValue value) { }
+    }
+    public static class Customize
+    {
+        public static aweXpect.Customization.AwexpectCustomization aweXpect { get; }
+    }
+    public interface IAwexpectCustomization
+    {
+        TValue Get<TValue>(string key, TValue defaultValue);
+        aweXpect.Customization.CustomizationLifetime Set<TValue>(string key, TValue value);
+    }
+    public interface ICustomizationValueSetter<TValue>
+    {
+        TValue Get();
+        aweXpect.Customization.CustomizationLifetime Set(TValue value);
+    }
+    public interface ITraceWriter
+    {
+        void WriteException(System.Exception exception);
+        void WriteMessage(string message);
+    }
+    public class TestCancellation
+    {
+        public static aweXpect.Customization.TestCancellation FromCancellationToken(System.Func<System.Threading.CancellationToken> cancellationTokenFactory) { }
+        public static aweXpect.Customization.TestCancellation FromTimeout(System.TimeSpan timeout) { }
+        public static aweXpect.Customization.TestCancellation None() { }
+    }
+}
+namespace aweXpect.Delegates
+{
+    [System.Diagnostics.DebuggerDisplay("EventuallySubject<{typeof(T)}>: {_expectationBuilder}")]
+    public readonly struct EventuallySubject<T> : aweXpect.Core.IExpectThat<T>, aweXpect.Core.IThat<T>, aweXpect.Core.IThatSubject<T>
+    {
+        public aweXpect.Delegates.EventuallySubject<T> CheckEvery(System.TimeSpan interval) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> Is<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> IsExactly<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNot<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNotExactly<TType>() { }
+        public aweXpect.Delegates.EventuallySubject<T> Within(System.TimeSpan timeout) { }
+    }
+    public abstract class ThatDelegate
+    {
+        protected ThatDelegate(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Delegates.ThatDelegateThrows<System.Exception> Throws() { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Delegates.ThatDelegateThrows<System.Exception> Throws(System.Type type) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Delegates.ThatDelegateThrows<TException> Throws<TException>() where TException : System.Exception { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Delegates.ThatDelegateThrows<System.Exception> ThrowsExactly(System.Type type) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Delegates.ThatDelegateThrows<TException> ThrowsExactly<TException>() where TException : System.Exception { }
+        public class ThrowsOption
+        {
+            public ThrowsOption() { }
+            public bool DoCheckThrow { get; set; }
+            public aweXpect.Options.ExecutionTimeOptions? ExecutionTimeOptions { get; set; }
+        }
+        public sealed class WithValue<T> : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithValue<T>>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<T>>
+        {
+            public WithValue(aweXpect.Core.ExpectationBuilder expectationBuilder, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>> subject) { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.DelegateWithOptionalValueResult<T> DoesNotThrow(System.Type type) { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.DelegateWithOptionalValueResult<T> DoesNotThrow<TException>() where TException : System.Exception { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrow() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.DelegateWithOptionalValueResult<T> DoesNotThrowExactly(System.Type type) { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.DelegateWithOptionalValueResult<T> DoesNotThrowExactly<TException>() where TException : System.Exception { }
+            public aweXpect.Delegates.EventuallySubject<T> Eventually() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>>> ExecutesIn() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>>> ExecutesIn(System.TimeSpan expected) { }
+        }
+        public sealed class WithoutValue : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithoutValue>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue>
+        {
+            public WithoutValue(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExpectationResult DoesNotThrow() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExpectationResult DoesNotThrow(System.Type type) { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExpectationResult DoesNotThrow<TException>() where TException : System.Exception { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExpectationResult DoesNotThrowExactly(System.Type type) { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExpectationResult DoesNotThrowExactly<TException>() where TException : System.Exception { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue>> ExecutesIn() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue>> ExecutesIn(System.TimeSpan expected) { }
+        }
+    }
+    public class ThatDelegateThrows<TException> : aweXpect.Results.ExpectationResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>>, aweXpect.Core.IExpectThat<TException>, aweXpect.Core.IThat<TException>, aweXpect.Core.IThatDelegateThrows<TException> where TException : System.Exception?
+    {
+        public ThatDelegateThrows(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Delegates.ThatDelegate.ThrowsOption throwOptions) { }
+        public aweXpect.Core.IThat<TException> Which { get; }
+        public aweXpect.Delegates.ThatDelegateThrows<TException?> OnlyIf(bool condition) { }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(2)]
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> Whose<TMember>(System.Func<TException, System.Threading.Tasks.Task<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> Whose<TMember>(System.Func<TException, TMember?> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner() { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type) { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>() where TInnerException : System.Exception? { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations) where TInnerException : System.Exception { }
+        public aweXpect.Delegates.ThatDelegateThrows<TException> Within(System.TimeSpan timeout) { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner() { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner(System.Type type) { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner<TInnerException>() where TInnerException : System.Exception? { }
+    }
+}
+namespace aweXpect.Equivalency
+{
+    public static class EquivalencyComparison
+    {
+        public static System.Threading.Tasks.ValueTask<bool> Compare<TActual, TExpected>([aweXpect.Core.Metadata.RequiresMemberMetadata] TActual actual, [aweXpect.Core.Metadata.RequiresMemberMetadata] TExpected expected, aweXpect.Equivalency.EquivalencyOptions equivalencyOptions, System.Text.StringBuilder failureBuilder) { }
+        public static System.Threading.Tasks.ValueTask<bool> Compare<TActual, TExpected>([aweXpect.Core.Metadata.RequiresMemberMetadata] TActual actual, [aweXpect.Core.Metadata.RequiresMemberMetadata] TExpected expected, aweXpect.Equivalency.EquivalencyOptions equivalencyOptions, System.Text.StringBuilder failureBuilder, aweXpect.Core.EvaluationContext.IEvaluationContext? evaluation, System.Threading.CancellationToken cancellationToken) { }
+    }
+    public enum EquivalencyComparisonType
+    {
+        ByValue = 0,
+        ByMembers = 1,
+    }
+    public static class EquivalencyDefaults
+    {
+        public static aweXpect.Equivalency.EquivalencyComparisonType DefaultComparisonType(System.Type type) { }
+    }
+    public abstract class EquivalencyExpectationBuilder : aweXpect.Core.ExpectationBuilder
+    {
+        public void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy<TValue>(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+    }
+    public sealed class EquivalencyMatchType : aweXpect.Core.IObjectMatchResult, aweXpect.Core.IObjectMatchType
+    {
+        public EquivalencyMatchType(aweXpect.Equivalency.EquivalencyOptions equivalencyOptions) { }
+        public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual, TExpected expected) { }
+        public string GetExpectation(string expected, aweXpect.Core.ExpectationGrammars grammars) { }
+        public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null) { }
+        public override string ToString() { }
+    }
+    public record EquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions, System.IEquatable<aweXpect.Equivalency.EquivalencyOptions>
+    {
+        protected EquivalencyOptions(aweXpect.Equivalency.EquivalencyOptions original) { }
+        public EquivalencyOptions() { }
+        public System.Func<System.Type, aweXpect.Equivalency.EquivalencyComparisonType> DefaultComparisonTypeSelector { get; init; }
+        protected override System.Type EqualityContract { get; }
+        public int MaxRecursionDepth { get; init; }
+        public override bool Equals(object? obj) { }
+        public override sealed bool Equals(aweXpect.Equivalency.EquivalencyTypeOptions? other) { }
+        public virtual bool Equals(aweXpect.Equivalency.EquivalencyOptions? other) { }
+        public aweXpect.Equivalency.EquivalencyOptions For<TMember>(System.Func<aweXpect.Equivalency.EquivalencyTypeOptions, aweXpect.Equivalency.EquivalencyTypeOptions> options) { }
+        public override int GetHashCode() { }
+        public aweXpect.Equivalency.EquivalencyTypeOptions GetOptionsFor(System.Type type) { }
+        protected override bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Equivalency.EquivalencyOptions? left, aweXpect.Equivalency.EquivalencyOptions? right) { }
+        public static bool operator !=(aweXpect.Equivalency.EquivalencyOptions? left, aweXpect.Equivalency.EquivalencyOptions? right) { }
+    }
+    public record EquivalencyOptions<TExpected> : aweXpect.Equivalency.EquivalencyOptions, System.IEquatable<aweXpect.Equivalency.EquivalencyOptions<TExpected>>
+    {
+        protected EquivalencyOptions(aweXpect.Equivalency.EquivalencyOptions<TExpected> original) { }
+        public EquivalencyOptions(aweXpect.Equivalency.EquivalencyOptions inner) { }
+        protected override System.Type EqualityContract { get; }
+        public override bool Equals(object? obj) { }
+        public override sealed bool Equals(aweXpect.Equivalency.EquivalencyOptions? other) { }
+        public virtual bool Equals(aweXpect.Equivalency.EquivalencyOptions<TExpected>? other) { }
+        public aweXpect.Equivalency.EquivalencyOptions<TExpected> For<TMember>(System.Func<aweXpect.Equivalency.EquivalencyTypeOptions, aweXpect.Equivalency.EquivalencyTypeOptions> options) { }
+        public override int GetHashCode() { }
+        protected override bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Equivalency.EquivalencyOptions<TExpected>? left, aweXpect.Equivalency.EquivalencyOptions<TExpected>? right) { }
+        public static bool operator !=(aweXpect.Equivalency.EquivalencyOptions<TExpected>? left, aweXpect.Equivalency.EquivalencyOptions<TExpected>? right) { }
+    }
+    public record EquivalencyTypeOptions : System.IEquatable<aweXpect.Equivalency.EquivalencyTypeOptions>
+    {
+        protected EquivalencyTypeOptions(aweXpect.Equivalency.EquivalencyTypeOptions original) { }
+        public EquivalencyTypeOptions() { }
+        public aweXpect.Equivalency.EquivalencyComparisonType? ComparisonType { get; init; }
+        protected virtual System.Type EqualityContract { get; }
+        public aweXpect.Equivalency.IncludeMembers Fields { get; init; }
+        public bool IgnoreCollectionOrder { get; init; }
+        public aweXpect.Equivalency.MemberToIgnore[] MembersToIgnore { get; init; }
+        public aweXpect.Equivalency.IncludeMembers Properties { get; init; }
+        public override bool Equals(object? obj) { }
+        public virtual bool Equals(aweXpect.Equivalency.EquivalencyTypeOptions? other) { }
+        public override int GetHashCode() { }
+        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Equivalency.EquivalencyTypeOptions? left, aweXpect.Equivalency.EquivalencyTypeOptions? right) { }
+        public static bool operator !=(aweXpect.Equivalency.EquivalencyTypeOptions? left, aweXpect.Equivalency.EquivalencyTypeOptions? right) { }
+    }
+    public static class EquivalencyTypeOptionsExtensions
+    {
+        public static aweXpect.Equivalency.EquivalencyOptions Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyOptions options, System.Func<TActual, TExpected, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Equivalency.EquivalencyTypeOptions Comparing<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyTypeOptions options, System.Func<TActual, TExpected, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Equivalency.EquivalencyOptions Mapping(this aweXpect.Equivalency.EquivalencyOptions options, string actualMember, string expectedMember) { }
+        public static aweXpect.Equivalency.EquivalencyOptions Mapping<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyOptions options, System.Linq.Expressions.Expression<System.Func<TActual, object?>> actualMember, System.Linq.Expressions.Expression<System.Func<TExpected, object?>> expectedMember) { }
+        public static aweXpect.Equivalency.EquivalencyTypeOptions Mapping(this aweXpect.Equivalency.EquivalencyTypeOptions options, string actualMember, string expectedMember) { }
+        public static aweXpect.Equivalency.EquivalencyTypeOptions Mapping<TActual, TExpected>(this aweXpect.Equivalency.EquivalencyTypeOptions options, System.Linq.Expressions.Expression<System.Func<TActual, object?>> actualMember, System.Linq.Expressions.Expression<System.Func<TExpected, object?>> expectedMember) { }
+    }
+    [System.Flags]
+    public enum IncludeMembers
+    {
+        None = 0,
+        Public = 2,
+        Internal = 4,
+    }
+    public static class It
+    {
+        public static aweXpect.Equivalency.It.IsEquivalent<T> Is<T>() { }
+        public class IsEquivalent<T> : aweXpect.Results.ExpectationResult, aweXpect.Core.IExpectThat<T>, aweXpect.Core.IThat<T>
+        {
+            public IsEquivalent() { }
+            public aweXpect.Core.IThat<T> That { get; }
+            public override string? ToString() { }
+        }
+    }
+    public abstract class MemberToIgnore
+    {
+        protected MemberToIgnore() { }
+        public abstract bool IgnoreMember(string memberPath, System.Type memberType);
+        public sealed class ByFieldPredicate : aweXpect.Equivalency.MemberToIgnore.ByPredicate
+        {
+            public ByFieldPredicate(System.Func<string, System.Type, bool> predicate, string description) { }
+        }
+        public class ByName : aweXpect.Equivalency.MemberToIgnore
+        {
+            public ByName(string memberName) { }
+            public override bool IgnoreMember(string memberPath, System.Type memberType) { }
+            public override string ToString() { }
+        }
+        public class ByPredicate : aweXpect.Equivalency.MemberToIgnore
+        {
+            public ByPredicate(System.Func<string, System.Type, bool> predicate, string description) { }
+            public override bool IgnoreMember(string memberPath, System.Type memberType) { }
+            public override string ToString() { }
+        }
+        public sealed class ByPropertyPredicate : aweXpect.Equivalency.MemberToIgnore.ByPredicate
+        {
+            public ByPropertyPredicate(System.Func<string, System.Type, bool> predicate, string description) { }
+        }
+    }
+}
+namespace aweXpect.Formatting
+{
+    public static class Format
+    {
+        public static aweXpect.Formatting.ValueFormatter Formatter { get; }
+    }
+    public sealed class FormattedValue
+    {
+        public System.Type DeclaringType { get; }
+        public aweXpect.Formatting.FormattedValueKind Kind { get; }
+        public string Name { get; }
+        public string Path { get; }
+        public System.Type Type { get; }
+        public object? GetValue() { }
+    }
+    public enum FormattedValueKind
+    {
+        Member = 0,
+        TupleItem = 1,
+        CollectionItem = 2,
+    }
+    public class FormattingContext
+    {
+        public FormattingContext() { }
+        public System.Collections.Generic.HashSet<object> FormattedObjects { get; }
+    }
+    public record FormattingOptions : System.IEquatable<aweXpect.Formatting.FormattingOptions>
+    {
+        protected FormattingOptions(aweXpect.Formatting.FormattingOptions original) { }
+        public FormattingOptions() { }
+        protected virtual System.Type EqualityContract { get; }
+        public System.Func<aweXpect.Formatting.FormattedValue, aweXpect.Formatting.ValueFormatting>? FormatValue { get; init; }
+        public bool IncludeType { get; init; }
+        public string Indentation { get; init; }
+        public bool IsSnapshot { get; init; }
+        public int? TotalItemCount { get; init; }
+        public bool UseLineBreaks { get; init; }
+        public static aweXpect.Formatting.FormattingOptions MultipleLines { get; }
+        public static aweXpect.Formatting.FormattingOptions SingleLine { get; }
+        public static aweXpect.Formatting.FormattingOptions Snapshot { get; }
+        public static aweXpect.Formatting.FormattingOptions WithType { get; }
+        public override bool Equals(object? obj) { }
+        public virtual bool Equals(aweXpect.Formatting.FormattingOptions? other) { }
+        public override int GetHashCode() { }
+        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public static aweXpect.Formatting.FormattingOptions Indented(string? indentation = null, bool includeType = false) { }
+        public static bool operator ==(aweXpect.Formatting.FormattingOptions? left, aweXpect.Formatting.FormattingOptions? right) { }
+        public static bool operator !=(aweXpect.Formatting.FormattingOptions? left, aweXpect.Formatting.FormattingOptions? right) { }
+    }
+    public interface IKeyedCollection
+    {
+        string Format();
+        string Format(System.Collections.Generic.IEnumerable<int> indices, int? totalCount);
+    }
+    public interface IValueFormatter
+    {
+        bool TryFormat(System.Text.StringBuilder stringBuilder, object value, aweXpect.Formatting.FormattingOptions? options);
+    }
+    public class ValueFormatter
+    {
+        public static readonly string NullString;
+        public static System.IDisposable Register(aweXpect.Formatting.IValueFormatter formatter) { }
+    }
+    public static class ValueFormatters
+    {
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTime? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Exception? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.TimeSpan value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.TimeSpan? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Type? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, bool value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, bool? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, byte value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, byte? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, char value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, char? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, decimal value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, decimal? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, double value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, double? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, float value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, float? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, int value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, int? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, long value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, long? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, nint value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, nint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, nuint value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, nuint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, object? value, aweXpect.Formatting.FormattingOptions? options = null, aweXpect.Formatting.FormattingContext? context = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, sbyte value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, sbyte? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, short value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, short? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, string? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, uint value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, uint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ulong value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ulong? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ushort value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ushort? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format<T>(this aweXpect.Formatting.ValueFormatter formatter, System.Collections.Generic.IEnumerable<T>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Collections.Generic.KeyValuePair<TKey, TValue> value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.IEnumerable? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.DateTime? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Exception? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.TimeSpan value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.TimeSpan? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Type? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, bool value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, bool? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, byte value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, byte? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, char value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, char? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, decimal value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, decimal? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, double value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, double? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, float value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, float? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, int value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, int? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, long value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, long? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, nint value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, nint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, nuint value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, nuint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, object? value, aweXpect.Formatting.FormattingOptions? options = null, aweXpect.Formatting.FormattingContext? context = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, sbyte value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, sbyte? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, short value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, short? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, string? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, uint value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, uint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, ulong value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, ulong? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, ushort value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, ushort? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format<T>(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.Generic.IEnumerable<T>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.Generic.KeyValuePair<TKey, TValue> value, aweXpect.Formatting.FormattingOptions? options = null) { }
+    }
+    public sealed class ValueFormatting
+    {
+        public static aweXpect.Formatting.ValueFormatting Omit { get; }
+        public static aweXpect.Formatting.ValueFormatting Write { get; }
+        public static aweXpect.Formatting.ValueFormatting Replace(object? value) { }
+    }
+}
+namespace aweXpect.Options
+{
+    public class CollectionIndexOptions
+    {
+        public CollectionIndexOptions() { }
+        public aweXpect.Options.CollectionIndexOptions.IMatch Match { get; }
+        public void AtIndex(int index) { }
+        public void AtIndexFromEnd(int index) { }
+        public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match) { }
+        public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match, string option) { }
+        public interface IMatch
+        {
+            string GetDescription();
+            bool OnlySingleIndex();
+        }
+        public interface IMatchFromBeginning : aweXpect.Options.CollectionIndexOptions.IMatch
+        {
+            aweXpect.Options.CollectionIndexOptions.IMatchFromEnd FromEnd();
+            bool? MatchesIndex(int index);
+        }
+        public interface IMatchFromEnd : aweXpect.Options.CollectionIndexOptions.IMatch
+        {
+            bool? MatchesIndex(int index, int? count);
+        }
+    }
+    public class CollectionMatchOptions
+    {
+        public CollectionMatchOptions(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelations = aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent) { }
+        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<T, bool>>> expected) where T : T2 { }
+        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T> expected) where T : T2 { }
+        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T> expected, int[]? dimensions) where T : T2 { }
+        public aweXpect.Core.ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<aweXpect.Options.CollectionMatchOptions.ExpectationItem<T>> expected) where T : T2 { }
+        public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
+        public string GetNegatedResultVerb(string it, aweXpect.Core.ExpectationGrammars grammars) { }
+        public void IgnoringDuplicates(bool ignoreDuplicates = true) { }
+        public void IgnoringInterspersedItems(bool ignoreInterspersedItems = true) { }
+        public void InAnyOrder() { }
+        public void Properly() { }
+        public void SetEquivalenceRelation(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelation) { }
+        [System.Flags]
+        public enum EquivalenceRelations
+        {
+            Equivalent = 1,
+            IsContainedIn = 4,
+            IsContainedInProperly = 6,
+            Contains = 8,
+            ContainsProperly = 10,
+        }
+        public sealed class ExpectationItem<TItem>
+        {
+            public ExpectationItem(System.Action<aweXpect.Core.IThatSubject<TItem?>> expectation, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+            public bool IsUndecided { get; }
+            public override bool Equals(object? obj) { }
+            public override int GetHashCode() { }
+            public System.Threading.Tasks.ValueTask<bool> IsMetBy(TItem value) { }
+            public System.Threading.Tasks.Task PrepareExpectation() { }
+            public override string ToString() { }
+        }
+    }
+    public record CollectionOrderOptions<TItem> : System.IEquatable<aweXpect.Options.CollectionOrderOptions<TItem>>
+    {
+        protected CollectionOrderOptions(aweXpect.Options.CollectionOrderOptions<TItem> original) { }
+        public CollectionOrderOptions() { }
+        protected virtual System.Type EqualityContract { get; }
+        public bool HasComparer { get; }
+        public override bool Equals(object? obj) { }
+        public virtual bool Equals(aweXpect.Options.CollectionOrderOptions<TItem>? other) { }
+        public System.Collections.Generic.IComparer<TItem> GetComparer() { }
+        public override int GetHashCode() { }
+        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
+        public void SetComparer(System.Collections.Generic.IComparer<TItem> comparer) { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Options.CollectionOrderOptions<TItem>? left, aweXpect.Options.CollectionOrderOptions<TItem>? right) { }
+        public static bool operator !=(aweXpect.Options.CollectionOrderOptions<TItem>? left, aweXpect.Options.CollectionOrderOptions<TItem>? right) { }
+    }
+    public sealed class DayTolerance : aweXpect.Options.TimeTolerance
+    {
+        public DayTolerance() { }
+        public override System.TimeSpan GetToleranceOrDefault() { }
+        public override void SetTolerance(System.TimeSpan tolerance) { }
+        public override string ToString() { }
+    }
+    public abstract class EnumerableQuantifier
+    {
+        public void AppendExpectation(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, System.Action<System.Text.StringBuilder, aweXpect.Core.ExpectationGrammars> appendItemExpectation) { }
+        public abstract void AppendResult(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammars, string it, int matchingCount, int notMatchingCount, int? totalCount, string? verb = null);
+        public aweXpect.Core.ExpectationGrammars GetItemGrammars(aweXpect.Core.ExpectationGrammars grammars) { }
+        public abstract aweXpect.Core.Constraints.Outcome GetOutcome(int matchingCount, int notMatchingCount, int? totalCount);
+        public virtual aweXpect.Options.EnumerableQuantifier.QuantifierContexts GetQuantifierContext() { }
+        public abstract bool IsDeterminable(int matchingCount, int notMatchingCount);
+        public abstract bool IsSingle();
+        public static aweXpect.Options.EnumerableQuantifier All() { }
+        public static aweXpect.Options.EnumerableQuantifier AtLeast(int minimum) { }
+        public static aweXpect.Options.EnumerableQuantifier AtMost(int maximum) { }
+        public static aweXpect.Options.EnumerableQuantifier Between(int minimum, int maximum) { }
+        public static aweXpect.Options.EnumerableQuantifier Exactly(int? expected) { }
+        public static aweXpect.Options.EnumerableQuantifier LessThan(int maximum) { }
+        public static aweXpect.Options.EnumerableQuantifier MoreThan(int minimum) { }
+        public static aweXpect.Options.EnumerableQuantifier None(aweXpect.Core.ExpectationGrammars expectationGrammars = aweXpect.Core.ExpectationGrammars.None) { }
+        [System.Flags]
+        public enum QuantifierContexts
+        {
+            None = 0,
+            MatchingItems = 2,
+            NotMatchingItems = 4,
+        }
+    }
+    public class ExecutionTimeOptions
+    {
+        public ExecutionTimeOptions() { }
+        public void AppendFailureResult(System.Text.StringBuilder stringBuilder, System.TimeSpan actual) { }
+        public void AppendTo(System.Text.StringBuilder stringBuilder, string prefix) { }
+        public void AtLeast(System.TimeSpan minimum) { }
+        public void AtMost(System.TimeSpan maximum) { }
+        public void Between(System.TimeSpan minimum, System.TimeSpan maximum) { }
+        public bool IsWithinLimit(System.TimeSpan? actual) { }
+        public void Within(System.TimeSpan duration) { }
+    }
+    public interface IRelativeToleranceOptions<TTolerance>
+    {
+        void UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit);
+    }
+    public class NumberTolerance<TNumber> : aweXpect.Options.IRelativeToleranceOptions<TNumber> where TNumber : struct, System.IComparable<TNumber>
+    {
+        public NumberTolerance(System.Func<TNumber, TNumber, TNumber?> calculateDifference) { }
+        public TNumber? Tolerance { get; }
+        public TNumber? CalculateDifference(TNumber? actual, TNumber? expected) { }
+        public bool IsWithinTolerance(TNumber? actual, TNumber? expected) { }
+        public void SetTolerance(TNumber tolerance) { }
+        public override string ToString() { }
+        public TNumber? ToleranceFor(TNumber expected) { }
+        public void UseRelativeTolerance(System.Func<TNumber, TNumber, TNumber> absoluteTolerance, string unit) { }
+    }
+    public class ObjectEqualityOptions<TSubject> : aweXpect.Core.IOptionsEquality<TSubject>
+    {
+        protected aweXpect.Core.IObjectMatchType MatchType;
+        public ObjectEqualityOptions() { }
+        public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
+        public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult> AreConsideredEqualWithExplanation<TExpected>(TSubject actual, TExpected expected) { }
+        public aweXpect.Options.ObjectEqualityOptions<TSubject> Equals() { }
+        public virtual aweXpect.Options.ObjectEqualityOptions<TSubject> ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
+        public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null) { }
+        public void SetMatchType(aweXpect.Core.IObjectMatchType matchType) { }
+        public void SetMatchType(aweXpect.Core.IObjectMatchType matchType, string optionName) { }
+        public override string? ToString() { }
+        public aweXpect.Options.ObjectEqualityOptions<TSubject> Using(System.Collections.Generic.IEqualityComparer<TSubject> comparer) { }
+        public aweXpect.Options.ObjectEqualityOptions<TSubject> Using(System.Collections.Generic.IEqualityComparer<object> comparer) { }
+    }
+    public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance> : aweXpect.Options.ObjectEqualityOptions<TSubject>, aweXpect.Options.IRelativeToleranceOptions<TTolerance>
+    {
+        public ObjectEqualityWithToleranceOptions(System.Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance, System.Func<TTolerance, string>? toString = null) { }
+        public override aweXpect.Options.ObjectEqualityOptions<TSubject> ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
+        public void UseRelativeTolerance(System.Func<TTolerance, TTolerance, TTolerance> absoluteTolerance, string unit) { }
+        public aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithDefaultTolerance(System.Func<TTolerance> defaultTolerance) { }
+        public aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithToleranceValidation(System.Action<TTolerance> validation) { }
+        public aweXpect.Options.ObjectEqualityOptions<TSubject> Within(TTolerance tolerance) { }
+    }
+    public class Quantifier
+    {
+        public Quantifier() { }
+        public int DeterminableAmount { get; }
+        public void AtLeast(int minimum) { }
+        public void AtMost(int maximum) { }
+        public void Between(int minimum, int maximum) { }
+        public bool? Check(int amount, bool isLast, bool isNegated = false) { }
+        public void Exactly(int expected) { }
+        public bool IsNever(bool isNegated) { }
+        public void LessThan(int maximum) { }
+        public void MoreThan(int minimum) { }
+        public override string ToString() { }
+        public string ToString(bool isNegated) { }
+        public static aweXpect.Options.Quantifier Never() { }
+    }
+    public class RepeatedCheckOptions
+    {
+        public RepeatedCheckOptions() { }
+        public System.TimeSpan Interval { get; }
+        public bool IsRepeated { get; }
+        public System.TimeSpan Timeout { get; }
+        public void CheckEvery(System.TimeSpan interval) { }
+        public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.Outcome> CheckRepeatedly(System.Func<aweXpect.Core.EvaluationContext.IEvaluationContext, System.Threading.Tasks.ValueTask<bool>> check, aweXpect.Core.EvaluationContext.IEvaluationContext context) { }
+        public override string ToString() { }
+        public void Within(System.TimeSpan timeout) { }
+    }
+    public record SignalerOptions : System.IEquatable<aweXpect.Options.SignalerOptions>
+    {
+        protected SignalerOptions(aweXpect.Options.SignalerOptions original) { }
+        public SignalerOptions() { }
+        protected virtual System.Type EqualityContract { get; }
+        public System.TimeSpan? Timeout { get; set; }
+        public override bool Equals(object? obj) { }
+        public virtual bool Equals(aweXpect.Options.SignalerOptions? other) { }
+        public override int GetHashCode() { }
+        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Options.SignalerOptions? left, aweXpect.Options.SignalerOptions? right) { }
+        public static bool operator !=(aweXpect.Options.SignalerOptions? left, aweXpect.Options.SignalerOptions? right) { }
+    }
+    public record SignalerOptions<TParameter> : aweXpect.Options.SignalerOptions, System.IEquatable<aweXpect.Options.SignalerOptions<TParameter>>
+    {
+        protected SignalerOptions(aweXpect.Options.SignalerOptions<TParameter> original) { }
+        public SignalerOptions() { }
+        protected override System.Type EqualityContract { get; }
+        public override bool Equals(object? obj) { }
+        public override sealed bool Equals(aweXpect.Options.SignalerOptions? other) { }
+        public virtual bool Equals(aweXpect.Options.SignalerOptions<TParameter>? other) { }
+        public override int GetHashCode() { }
+        public bool Matches(TParameter parameter) { }
+        protected override bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public void WithPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
+        public static bool operator ==(aweXpect.Options.SignalerOptions<TParameter>? left, aweXpect.Options.SignalerOptions<TParameter>? right) { }
+        public static bool operator !=(aweXpect.Options.SignalerOptions<TParameter>? left, aweXpect.Options.SignalerOptions<TParameter>? right) { }
+    }
+    public class StringEqualityOptions : aweXpect.Core.IOptionsEquality<string?>
+    {
+        public StringEqualityOptions(string parameterName) { }
+        public bool ComparesByOrdinalEquality { get; }
+        public bool InspectsSubject { get; }
+        public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected) { }
+        public aweXpect.Options.StringEqualityOptions AsBlock() { }
+        public aweXpect.Options.StringEqualityOptions AsPrefix() { }
+        public aweXpect.Options.StringEqualityOptions AsRegex() { }
+        public aweXpect.Options.StringEqualityOptions AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) { }
+        public aweXpect.Options.StringEqualityOptions AsSuffix() { }
+        public aweXpect.Options.StringEqualityOptions AsWildcard() { }
+        public aweXpect.Options.StringEqualityOptions Containing() { }
+        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected) { }
+        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected, int maximum) { }
+        public string FormatExpectedItem(string? expected) { }
+        public string GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) { }
+        public string GetExtendedFailure(string it, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected) { }
+        public string GetExtendedMemberFailure(string it, string member, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected) { }
+        public string GetOccurrenceDetails(string actual, string expected, int count) { }
+        public aweXpect.Options.StringEqualityOptions IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Options.StringEqualityOptions IgnoringIndentation(bool ignoreIndentation = true) { }
+        public aweXpect.Options.StringEqualityOptions IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
+        public aweXpect.Options.StringEqualityOptions IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
+        public aweXpect.Options.StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
+        public aweXpect.Options.StringEqualityOptions NormalizingWhiteSpace(bool normalizeWhiteSpace = true) { }
+        public void SetMatchType(aweXpect.Core.IStringMatchType matchType, string optionName) { }
+        public override string ToString() { }
+        public aweXpect.Options.StringEqualityOptions Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+        public void ValidateExpected(string? expected) { }
+    }
+    public class TimeTolerance
+    {
+        public TimeTolerance() { }
+        public System.TimeSpan? Tolerance { get; }
+        public virtual System.TimeSpan GetToleranceOrDefault() { }
+        public virtual void SetTolerance(System.TimeSpan tolerance) { }
+        public string ToDayString() { }
+        public override string ToString() { }
+    }
+    public class TriggerEventFilter
+    {
+        public TriggerEventFilter() { }
+        public void AddPredicate(System.Func<object?[], bool> predicate, string predicateExpression) { }
+        public bool IsMatch(object?[] parameters) { }
+        public override string ToString() { }
+    }
+}
+namespace aweXpect.Recording
+{
+    public interface IDisposableEventRecording<TSubject> : System.IDisposable, aweXpect.Recording.IEventRecording<TSubject>
+    {
+    }
+    public interface IEventRecording<TSubject>
+    {
+        System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult> StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult, bool> areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+    public interface IEventRecordingResult
+    {
+        int GetEventCount(string eventName, System.Func<object?[], bool>? filter = null);
+        string ToString(string eventName);
+    }
+    public static class RecordExtensions
+    {
+        public static aweXpect.Recording.RecordingFactory<TSubject> Record<TSubject>([aweXpect.Core.Metadata.RequiresEventMetadata] this TSubject subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") where TSubject : notnull { }
+        public static aweXpect.Recording.IDisposableEventRecording<TSubject> UntilDisposed<TSubject>(this aweXpect.Recording.IEventRecording<TSubject> recording) where TSubject : notnull { }
+    }
+    public class RecordingFactory<TSubject> where TSubject : notnull
+    {
+        public RecordingFactory(TSubject subject, string subjectExpression) { }
+        public aweXpect.Recording.IEventRecording<TSubject> Events(params string[] eventNames) { }
+    }
+}
+namespace aweXpect.Results
+{
+    public class AndOrResult<TThat> : aweXpect.Results.ExpectationResult
+    {
+        public AndOrResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+        public TThat And { get; }
+        public TThat Or { get; }
+    }
+    public class AndOrResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.AndOrResult<TType, TThat>>
+    {
+        public AndOrResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+    }
+    public class AndOrResult<TType, TThat, TSelf> : aweXpect.Results.ExpectationResult<TType, TSelf> where TSelf : aweXpect.Results.AndOrResult<TType, TThat, TSelf>
+    {
+        public AndOrResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+        public TThat And { get; }
+        public TThat Or { get; }
+    }
+    public class AndOrWhoseResult<TType, TThat> : aweXpect.Results.AndOrWhoseResult<TType, TThat, aweXpect.Results.AndOrWhoseResult<TType, TThat>>
+    {
+        public AndOrWhoseResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+    }
+    public class AndOrWhoseResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, TThat, TSelf> where TSelf : aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>
+    {
+        public AndOrWhoseResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(2)]
+        public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult Whose<TMember>(System.Func<TType, System.Threading.Tasks.Task<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult Whose<TMember>(System.Func<TType, System.Threading.Tasks.ValueTask<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult Whose<TMember>(System.Func<TType, TMember?> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public class AdditionalAndOrWhoseResult : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult>
+        {
+            public AdditionalAndOrWhoseResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+            [System.Runtime.CompilerServices.OverloadResolutionPriority(2)]
+            public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult AndWhose<TMember>(System.Func<TType, System.Threading.Tasks.Task<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+            [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+            public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult AndWhose<TMember>(System.Func<TType, System.Threading.Tasks.ValueTask<TMember>> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+            public aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult AndWhose<TMember>(System.Func<TType, TMember?> memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        }
+    }
+    public class AndResult<TThat> : aweXpect.Results.ExpectationResult
+    {
+        public AndResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+        public TThat And { get; }
+    }
+    public class AndResult<TType, TThat> : aweXpect.Results.AndResult<TType, TThat, aweXpect.Results.AndResult<TType, TThat>>
+    {
+        public AndResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+    }
+    public class AndResult<TType, TThat, TSelf> : aweXpect.Results.ExpectationResult<TType, TSelf> where TSelf : aweXpect.Results.AndResult<TType, TThat, TSelf>
+    {
+        public AndResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue) { }
+        public TThat And { get; }
+    }
+    public class BetweenResult<TTarget>
+    {
+        public BetweenResult(System.Func<int, TTarget> callback) { }
+        public TTarget And(aweXpect.Core.Times maximum) { }
+    }
+    public class BetweenResult<TTarget, TType>
+    {
+        public BetweenResult(System.Func<TType, TTarget> callback) { }
+        public TTarget And(TType maximum) { }
+    }
+    public class CollectionCountResult<TReturn>
+    {
+        public CollectionCountResult(System.Func<aweXpect.Options.EnumerableQuantifier, bool, TReturn> factory) { }
+        public aweXpect.Results.BetweenResult<TReturn, int?> Between(int? minimum) { }
+        public TReturn EqualTo(int? expected) { }
+        public TReturn GreaterThan(int? expected) { }
+        public TReturn GreaterThanOrEqualTo(int? expected) { }
+        public TReturn LessThan(int? expected) { }
+        public TReturn LessThanOrEqualTo(int? expected) { }
+        public aweXpect.Results.BetweenResult<TReturn, int?> NotBetween(int? minimum) { }
+        public TReturn NotEqualTo(int? unexpected) { }
+        public TReturn NotGreaterThan(int? unexpected) { }
+        public TReturn NotGreaterThanOrEqualTo(int? unexpected) { }
+        public TReturn NotLessThan(int? unexpected) { }
+        public TReturn NotLessThanOrEqualTo(int? unexpected) { }
+    }
+    public class CollectionOrderResult<TMember, TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionOrderOptions<TMember>>
+    {
+        public CollectionOrderResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.CollectionOrderOptions<TMember> options) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> Using(System.Collections.Generic.IComparer<TMember> comparer) { }
+    }
+    public class CountResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.CountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
+    {
+        public CountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier) { }
+    }
+    public class CountTimesResult<TTarget>
+    {
+        public CountTimesResult(System.Func<int, TTarget> callback) { }
+        public TTarget Once() { }
+        public TTarget Twice() { }
+    }
+    public class DelegateWithOptionalValueResult<T> : aweXpect.Results.ExpectationResult
+    {
+        public DelegateWithOptionalValueResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        public aweXpect.Core.IThat<T> WhoseResult { get; }
+    }
+    public class DelegateWithValueResult<T> : aweXpect.Results.ExpectationResult<T>
+    {
+        public DelegateWithValueResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        public aweXpect.Core.IThat<T> WhoseResult { get; }
+    }
+    public class ExecutesInResult<TResult> : aweXpect.Core.IOptionsProvider<aweXpect.Options.ExecutionTimeOptions>
+    {
+        public ExecutesInResult(TResult returnValue, aweXpect.Options.ExecutionTimeOptions options) { }
+        public aweXpect.Results.ExecutesInResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
+        public TResult AtLeast(System.TimeSpan minimum) { }
+        public TResult AtMost(System.TimeSpan maximum) { }
+        public aweXpect.Results.ExecutesInResult<TResult>.BetweenResult Between(System.TimeSpan minimum) { }
+        public class BetweenResult
+        {
+            public BetweenResult(System.Func<System.TimeSpan, TResult> callback) { }
+            public TResult And(System.TimeSpan maximum) { }
+        }
+    }
+    public class ExecutesInToleranceResult<TResult>
+    {
+        public ExecutesInToleranceResult(TResult returnValue, aweXpect.Options.ExecutionTimeOptions options, System.TimeSpan expected) { }
+        public aweXpect.Results.ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
+        public TResult Within(System.TimeSpan tolerance) { }
+    }
+    [System.Diagnostics.StackTraceHidden]
+    public class ExpectationResult : aweXpect.Core.Expectation, aweXpect.Core.IOptionsProvider<aweXpect.Core.ExpectationBuilder>
+    {
+        public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        protected aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+        public aweXpect.Results.ExpectationResult Because(System.Threading.Tasks.Task<string?> reason) { }
+        public aweXpect.Results.ExpectationResult Because(string? reason) { }
+        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
+        public override string? ToString() { }
+        public aweXpect.Results.ExpectationResult WithCancellation(System.Threading.CancellationToken cancellationToken) { }
+        public aweXpect.Results.ExpectationResult WithTimeout(System.TimeSpan timeout) { }
+    }
+    public class ExpectationResult<TType> : aweXpect.Results.ExpectationResult<TType, aweXpect.Results.ExpectationResult<TType>>
+    {
+        public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+    }
+    [System.Diagnostics.StackTraceHidden]
+    public class ExpectationResult<TType, TSelf> : aweXpect.Core.Expectation, aweXpect.Core.IOptionsProvider<aweXpect.Core.ExpectationBuilder> where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf>
+    {
+        public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+        protected aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+        public TSelf Because(System.Threading.Tasks.Task<string?> reason) { }
+        public TSelf Because(string? reason) { }
+        [System.Diagnostics.StackTraceHidden]
+        public System.Runtime.CompilerServices.ValueTaskAwaiter<TType> GetAwaiter() { }
+        public override string? ToString() { }
+        public TSelf WithCancellation(System.Threading.CancellationToken cancellationToken) { }
+        public TSelf WithTimeout(System.TimeSpan timeout) { }
+    }
+    public class HasItemResult<TCollection> : aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>, aweXpect.Results.HasItemResult<TCollection>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+    {
+        public HasItemResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TCollection?> collection, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+    }
+    public interface ICollectionContainmentOptions
+    {
+    }
+    public interface INumberToleranceResult<TSelf, TNumber> : aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TNumber>> where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, TNumber> where TNumber : struct, System.IComparable<TNumber>
+    {
+    }
+    public interface IObjectEqualityResult<TSelf, TElement> : aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>> where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, TElement>
+    {
+    }
+    public interface IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance> : aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>>, aweXpect.Results.IObjectEqualityResult<TSelf, TElement> where TSelf : aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>
+    {
+    }
+    public interface IProperContainmentOptions
+    {
+    }
+    public interface ISignalerResult<TSelf, TParameter> : aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions<TParameter>> where TSelf : aweXpect.Results.ISignalerResult<TSelf, TParameter>
+    {
+    }
+    public interface IStringMatchTypeOptions : aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+    }
+    public interface IStringPatternMatchTypeOptions
+    {
+    }
+    public interface IWithinToleranceResult<TResult, TTolerance> : aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TTolerance>>
+    {
+        TResult Result { get; }
+    }
+    public class NullableNumberToleranceResult<TType, TThat> : aweXpect.Results.AndOrResult<TType?, TThat, aweXpect.Results.NullableNumberToleranceResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TType>>, aweXpect.Results.INumberToleranceResult<aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, TType> where TType : struct, System.IComparable<TType>
+    {
+        public NullableNumberToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType> options) { }
+        public aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.WithinResult Within(TType tolerance) { }
+        public sealed class WithinResult : aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TType>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NullableNumberToleranceResult<TType, TThat>, TType>
+        {
+            public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType> options) { }
+        }
+    }
+    public class NumberToleranceResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.NumberToleranceResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TType>>, aweXpect.Results.INumberToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat>, TType> where TType : struct, System.IComparable<TType>
+    {
+        public NumberToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType> options) { }
+        public aweXpect.Results.NumberToleranceResult<TType, TThat>.WithinResult Within(TType tolerance) { }
+        public sealed class WithinResult : aweXpect.Results.NumberToleranceResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TType>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.NumberToleranceResult<TType, TThat>, TType>
+        {
+            public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType> options) { }
+        }
+    }
+    public class ObjectCountResult<TType, TThat, TElement> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectCountResult<TType, TThat, TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectCountResult<TType, TThat, TElement>, TElement>
+    {
+        public ObjectCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.ObjectEqualityOptions<TElement> options) { }
+    }
+    public class ObjectEqualityResult<TType, TThat, TElement> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>, TElement>
+    {
+        public ObjectEqualityResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement> options) { }
+    }
+    public class ObjectHasItemResult<TCollection, TItem> : aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>, aweXpect.Results.ObjectHasItemResult<TCollection, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TItem>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ObjectHasItemResult<TCollection, TItem>, TItem>
+    {
+        public ObjectHasItemResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TCollection?> collection, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.ObjectEqualityOptions<TItem> options) { }
+    }
+    public static class PropertyResult
+    {
+        public class DateTimeKind<TItem> : aweXpect.Results.PropertyResult.DateTimeKind<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public DateTimeKind(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.DateTimeKind?> mapper, string propertyExpression) { }
+        }
+        public class DateTimeKind<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public DateTimeKind(TThat subject, System.Func<TValue, System.DateTimeKind?> mapper, string propertyExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(System.DateTimeKind? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(System.DateTimeKind? unexpected) { }
+        }
+        public class Int<TItem> : aweXpect.Results.PropertyResult.Int<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public Int(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null) { }
+        }
+        public class Int<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public Int(TThat subject, System.Func<TValue, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, int?> Between(int? minimum) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(int? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThan(int? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThanOrEqualTo(int? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> LessThan(int? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> LessThanOrEqualTo(int? expected) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, int?> NotBetween(int? minimum) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(int? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThan(int? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(int? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(int? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(int? unexpected) { }
+        }
+        public class Long<TItem> : aweXpect.Results.PropertyResult.Long<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public Long(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null) { }
+        }
+        public class Long<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public Long(TThat subject, System.Func<TValue, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, long?> Between(long? minimum) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(long? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThan(long? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThanOrEqualTo(long? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> LessThan(long? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> LessThanOrEqualTo(long? expected) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, long?> NotBetween(long? minimum) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(long? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThan(long? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(long? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(long? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(long? unexpected) { }
+        }
+        public class String<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> Containing(string expected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> EndingWith(string expected) { }
+            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo(string? expected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining(string unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotEndingWith(string unexpected) { }
+            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo(string? unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotStartingWith(string unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> StartingWith(string expected) { }
+        }
+        public class TimeSpan<TItem> : aweXpect.Results.PropertyResult.TimeSpan<TItem, TItem, aweXpect.Core.IThat<TItem>>
+        {
+            public TimeSpan(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null) { }
+        }
+        public class TimeSpan<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        {
+            public TimeSpan(TThat subject, System.Func<TValue, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, System.TimeSpan?> Between(System.TimeSpan? minimum) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(System.TimeSpan? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThan(System.TimeSpan? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThanOrEqualTo(System.TimeSpan? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> LessThan(System.TimeSpan? expected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> LessThanOrEqualTo(System.TimeSpan? expected) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, System.TimeSpan?> NotBetween(System.TimeSpan? minimum) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(System.TimeSpan? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThan(System.TimeSpan? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(System.TimeSpan? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(System.TimeSpan? unexpected) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(System.TimeSpan? unexpected) { }
+        }
+    }
+    public class RepeatedCheckResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.RepeatedCheckOptions>
+    {
+        public RepeatedCheckResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.RepeatedCheckOptions options) { }
+        public aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition Within(System.TimeSpan timeout) { }
+        public class WithRepetition : aweXpect.Results.AndOrResult<TType, TThat>
+        {
+            public WithRepetition(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.RepeatedCheckOptions options) { }
+            public aweXpect.Results.AndOrResult<TType, TThat> CheckEvery(System.TimeSpan interval) { }
+        }
+    }
+    public class StringBlockCountResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringBlockCountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
+    {
+        public StringBlockCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
+    public class StringBlockHasItemResult<TCollection> : aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>, aweXpect.Results.StringBlockHasItemResult<TCollection>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+    {
+        public StringBlockHasItemResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TCollection?> collection, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockHasItemResult<TCollection> IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Results.StringBlockHasItemResult<TCollection> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
+    public class StringBlockResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringBlockResult<TType, TThat>>
+    {
+        public StringBlockResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockResult<TType, TThat> IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Results.StringBlockResult<TType, TThat> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
+    public class StringCountResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringCountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    {
+        public StringCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
+    }
+    public class StringEqualityResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringEqualityResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    {
+        public StringEqualityResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options) { }
+    }
+    public class StringEqualityTypeCountResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+        public StringEqualityTypeCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> AsBlock() { }
+    }
+    public class StringEqualityTypeResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringEqualityTypeResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+        public StringEqualityTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockResult<TType, TThat> AsBlock() { }
+    }
+    public class StringHasItemResult<TCollection> : aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>, aweXpect.Results.StringHasItemResult<TCollection>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+        public StringHasItemResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TCollection?> collection, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockHasItemResult<TCollection> AsBlock() { }
+    }
+    public class StringOccurrenceCountResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringOccurrenceCountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+        public StringOccurrenceCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> AsBlock() { }
+    }
+    public class TimeToleranceResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.TimeToleranceResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.TimeTolerance>
+    {
+        public TimeToleranceResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.TimeTolerance options) { }
+    }
+    public class ToleranceEqualityResult<TType, TThat, TElement, TTolerance> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityOptions<TElement>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>>, aweXpect.Results.IObjectEqualityResult<aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>, TElement>, aweXpect.Results.IObjectEqualityWithToleranceResult<aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>, TElement, TTolerance>
+    {
+        public ToleranceEqualityResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance> options) { }
+        public aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.WithinResult Within(TTolerance tolerance) { }
+        public sealed class WithinResult : aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TTolerance>>, aweXpect.Results.IWithinToleranceResult<aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>, TTolerance>
+        {
+            public WithinResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance> options) { }
+        }
+    }
+}
+namespace aweXpect.Signaling
+{
+    public class Signaler
+    {
+        public Signaler() { }
+        public bool IsSignaled(aweXpect.Core.Times? amount = null) { }
+        public void Signal() { }
+        public aweXpect.Signaling.SignalerResult Wait(System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        public aweXpect.Signaling.SignalerResult Wait(aweXpect.Core.Times amount, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        public System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult> WaitAsync(System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        public System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult> WaitAsync(aweXpect.Core.Times amount, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+    }
+    public class Signaler<TParameter>
+    {
+        public Signaler() { }
+        public bool IsSignaled(aweXpect.Core.Times? amount = null) { }
+        public void Signal(TParameter parameter) { }
+        public aweXpect.Signaling.SignalerResult<TParameter> Wait(System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        public aweXpect.Signaling.SignalerResult<TParameter> Wait(aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        public System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>> WaitAsync(System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+        public System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>> WaitAsync(aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+    }
+    public class SignalerResult
+    {
+        public SignalerResult(bool isSuccess, int counter) { }
+        public int Count { get; }
+        public bool IsSuccess { get; }
+    }
+    public class SignalerResult<TParameter> : aweXpect.Signaling.SignalerResult
+    {
+        public SignalerResult(bool isSuccess, TParameter[] parameters) { }
+        public TParameter[] Parameters { get; }
+    }
+}
+namespace aweXpect.Synchronous
+{
+    public static class Synchronously
+    {
+        public static TType Verify<TType, TSelf>(aweXpect.Results.ExpectationResult<TType, TSelf> result) where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf> { }
+        public static void Verify(aweXpect.Results.ExpectationResult result) { }
+    }
+    public static class SynchronouslyExtensions
+    {
+        public static TType VerifySynchronously<TType, TSelf>(this aweXpect.Results.ExpectationResult<TType, TSelf> result) where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf> { }
+        public static void VerifySynchronously(this aweXpect.Results.ExpectationResult result) { }
+    }
+}
+
