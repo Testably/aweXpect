@@ -363,3 +363,17 @@ but it was null
 
 Use the general `IsNull()` expectation of aweXpect to verify that a node is the JSON value `null`, so there is no
 JSON-specific `IsNull()` for a `JsonNode`.
+
+## Newtonsoft.Json
+
+There are no expectations for a `JToken` of Newtonsoft.Json. Convert it to a `JsonElement` through its JSON text to
+use all expectations of a `JsonElement`:
+
+```csharp
+JObject token = JObject.Parse("""{"title": "Let It Be"}""");
+JsonElement track = JsonDocument.Parse(token.ToString()).RootElement;
+
+await Expect.That(track).Matches(new { title = "Let It Be" });
+```
+
+The values are compared as their JSON text, so e.g. a date token is a JSON string.
