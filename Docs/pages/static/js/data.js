@@ -294,6 +294,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -345,7 +351,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -400,7 +407,8 @@ window.BENCHMARK_DATA = {
           11794.890930175781,
           12818.675210135323,
           10349.539958408901,
-          12964.154532296317
+          12964.154532296317,
+          6617.728448232015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -449,6 +457,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -523,7 +532,8 @@ window.BENCHMARK_DATA = {
           328350.16848958336,
           364254.76297433034,
           252534.35611979166,
-          389620.8383413461
+          389620.8383413461,
+          183201.66775948662
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -583,7 +593,8 @@ window.BENCHMARK_DATA = {
           590264,
           590292,
           590288,
-          590292
+          590292,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -646,7 +657,8 @@ window.BENCHMARK_DATA = {
           21286.254239763533,
           19390.247021484374,
           14037.03092956543,
-          19412.483731951033
+          19412.483731951033,
+          10714.093688964844
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -658,6 +670,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -972,6 +985,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -1016,7 +1035,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -1064,7 +1084,8 @@ window.BENCHMARK_DATA = {
           306.7526693979899,
           261.3753019650777,
           211.09927250657762,
-          288.19499187469484
+          288.19499187469484,
+          138.07931208610535
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1076,6 +1097,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1173,7 +1195,8 @@ window.BENCHMARK_DATA = {
           542.1926608403523,
           509.1243022038386,
           396.7708267211914,
-          575.3932268142701
+          575.3932268142701,
+          273.9447385583605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1185,6 +1208,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1282,7 +1306,8 @@ window.BENCHMARK_DATA = {
           407.7694233258565,
           390.13769273757936,
           284.6508791446686,
-          410.1552434285482
+          410.1552434285482,
+          204.17142051060995
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1294,6 +1319,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6221,6 +6247,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -7035,7 +7067,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -7853,7 +7886,8 @@ window.BENCHMARK_DATA = {
           160.04863365491232,
           149.2138098716736,
           114.1418496455465,
-          148.2970512231191
+          148.2970512231191,
+          79.97838434378306
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8660,6 +8694,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9502,7 +9537,8 @@ window.BENCHMARK_DATA = {
           287.89420897165934,
           250.26464541753134,
           201.05605228741965,
-          253.9572864850362
+          253.9572864850362,
+          140.77810134206499
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9695,6 +9731,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10432,7 +10469,8 @@ window.BENCHMARK_DATA = {
           234.37090652783712,
           245.3975014368693,
           179.87825328963143,
-          273.7245542208354
+          273.7245542208354,
+          127.64832734266916
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10444,6 +10482,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10844,6 +10883,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -10895,7 +10940,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -10950,7 +10996,8 @@ window.BENCHMARK_DATA = {
           279.57944924490795,
           269.99796741349354,
           206.03680364290872,
-          273.4967151006063
+          273.4967151006063,
+          145.45707950225244
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10969,6 +11016,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11073,7 +11121,8 @@ window.BENCHMARK_DATA = {
           606.3762814839681,
           513.0510356267293,
           418.1746428196247,
-          529.3715762297312
+          529.3715762297312,
+          277.931499004364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11085,6 +11134,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -11196,7 +11246,8 @@ window.BENCHMARK_DATA = {
           341.5048158963521,
           338.7734914847783,
           253.63701531092326,
-          347.82684059143065
+          347.82684059143065,
+          180.17031400998434
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11208,6 +11259,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -16142,6 +16194,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -16956,7 +17014,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -17774,7 +17833,8 @@ window.BENCHMARK_DATA = {
           652.9441392262777,
           658.3477563858032,
           498.4819164276123,
-          653.4242701848348
+          653.4242701848348,
+          331.6790075668922
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18584,6 +18644,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -19423,7 +19484,8 @@ window.BENCHMARK_DATA = {
           1459.1769915262857,
           1456.5350372314454,
           1081.7140031814574,
-          1433.8262049357097
+          1433.8262049357097,
+          713.0394509860447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20246,6 +20308,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -20353,7 +20416,8 @@ window.BENCHMARK_DATA = {
           729.9966931709877,
           663.8180686405727,
           475.9581543849065,
-          655.4781394322713
+          655.4781394322713,
+          363.53120354243686
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20365,6 +20429,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -25343,6 +25408,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -26157,7 +26228,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -26975,7 +27047,8 @@ window.BENCHMARK_DATA = {
           657.9023790359497,
           674.3025136311849,
           522.0402937669021,
-          679.827542368571
+          679.827542368571,
+          334.66838782174244
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27785,6 +27858,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -28624,7 +28698,8 @@ window.BENCHMARK_DATA = {
           24970.86871119908,
           27839.95926513672,
           15632.304302978515,
-          27691.77243276743
+          27691.77243276743,
+          11201.227149454753
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29447,6 +29522,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -29554,7 +29630,8 @@ window.BENCHMARK_DATA = {
           806.9539963404337,
           814.7511683146159,
           574.7838907241821,
-          776.757730620248
+          776.757730620248,
+          437.5274109159197
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29566,6 +29643,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -30314,6 +30392,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -30423,7 +30507,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -30536,7 +30621,8 @@ window.BENCHMARK_DATA = {
           756.0724611282349,
           722.9062935284206,
           535.0376574993134,
-          742.9608598709107
+          742.9608598709107,
+          375.674444548289
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30643,6 +30729,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -30775,7 +30862,8 @@ window.BENCHMARK_DATA = {
           63089.287339430586,
           83301.78872070313,
           53239.889900716145,
-          84175.25460379464
+          84175.25460379464,
+          29088.252829415458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30893,7 +30981,8 @@ window.BENCHMARK_DATA = {
           5254,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31549,6 +31638,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -31658,7 +31753,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -31771,7 +31867,8 @@ window.BENCHMARK_DATA = {
           196.44773149490356,
           180.5028217315674,
           147.0572420279185,
-          181.34621766408284
+          181.34621766408284,
+          102.86315651450839
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31848,6 +31945,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -32010,7 +32108,8 @@ window.BENCHMARK_DATA = {
           24657.9951171875,
           32122.775530133928,
           14712.405218760172,
-          32667.3033976237
+          32667.3033976237,
+          10477.848943074545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32128,7 +32227,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32235,7 +32335,8 @@ window.BENCHMARK_DATA = {
           244.74296995798747,
           245.36394078390938,
           202.7752752120678,
-          250.12489426930745
+          250.12489426930745,
+          142.79237132413047
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32247,6 +32348,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -32647,6 +32749,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -32698,7 +32806,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -32753,7 +32862,8 @@ window.BENCHMARK_DATA = {
           372.1178477605184,
           353.8201157251994,
           276.32053543971136,
-          364.57042706807454
+          364.57042706807454,
+          193.2752918463487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32801,6 +32911,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -32876,7 +32987,8 @@ window.BENCHMARK_DATA = {
           414.6842158317566,
           379.98477615628923,
           307.97275117465426,
-          383.97077452341716
+          383.97077452341716,
+          216.09783410109006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32888,6 +33000,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -32999,7 +33112,8 @@ window.BENCHMARK_DATA = {
           411.49845382145475,
           432.3907095835759,
           325.10727211407254,
-          422.7968292872111
+          422.7968292872111,
+          209.61525537172955
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33011,6 +33125,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -33367,6 +33482,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -33418,7 +33539,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -33473,7 +33595,8 @@ window.BENCHMARK_DATA = {
           813.2197011947632,
           780.3192954381307,
           589.8561369578043,
-          832.5288061777751
+          832.5288061777751,
+          430.2988192694528
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33500,6 +33623,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -33596,7 +33720,8 @@ window.BENCHMARK_DATA = {
           2086.1502838134766,
           1943.3497042338054,
           1477.6345549992152,
-          2403.065929667155
+          2403.065929667155,
+          1068.9572648366293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33608,6 +33733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -33719,7 +33845,8 @@ window.BENCHMARK_DATA = {
           915.8488569259644,
           928.3552958624704,
           702.5293542226156,
-          1007.1506331125895
+          1007.1506331125895,
+          463.8951059977214
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33731,6 +33858,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -34087,6 +34215,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -34138,7 +34272,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -34193,7 +34328,8 @@ window.BENCHMARK_DATA = {
           11491.192349947416,
           12381.836118425641,
           8657.478093828473,
-          12204.482846941266
+          12204.482846941266,
+          6794.2167728130635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34242,6 +34378,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -34316,7 +34453,8 @@ window.BENCHMARK_DATA = {
           36423.257055664064,
           41024.64057922363,
           26722.085592416617,
-          40320.78360188802
+          40320.78360188802,
+          19875.8828511556
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34371,6 +34509,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -34439,7 +34578,8 @@ window.BENCHMARK_DATA = {
           10678.307658604213,
           11431.701652526855,
           8253.343404134115,
-          11215.832321166992
+          11215.832321166992,
+          6475.845528235803
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34451,6 +34591,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -34807,6 +34948,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 20:38:34 2026 \u002B0200",
         "message": "test: run the API tests on TUnit (#1875)"
+      },
+      {
+        "sha": "e4ce201082b1ed8e4ff5c38a1b63b1bbc7b9dfb5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 21:57:49 2026 \u002B0200",
+        "message": "feat: exclude TUnit assemblies by default (#1877)"
       }
     ],
     "labels": [
@@ -34858,7 +35005,8 @@ window.BENCHMARK_DATA = {
       "0d03437a",
       "45b0f694",
       "e5cd2868",
-      "0a5cfe8b"
+      "0a5cfe8b",
+      "e4ce2010"
     ],
     "datasets": [
       {
@@ -34913,7 +35061,8 @@ window.BENCHMARK_DATA = {
           11234.641191755023,
           11657.028650137094,
           8143.233657836914,
-          11851.369173177083
+          11851.369173177083,
+          6236.243513743083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34962,6 +35111,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -35036,7 +35186,8 @@ window.BENCHMARK_DATA = {
           52282.7963823591,
           59897.96903404823,
           38703.91960797991,
-          59910.86433919271
+          59910.86433919271,
+          27981.78483229417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35092,6 +35243,7 @@ window.BENCHMARK_DATA = {
           23554,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -35159,7 +35311,8 @@ window.BENCHMARK_DATA = {
           20957.08510945638,
           22257.361407940203,
           16141.418673001803,
-          22400.82074584961
+          22400.82074584961,
+          12626.77300480434
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35171,6 +35324,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
