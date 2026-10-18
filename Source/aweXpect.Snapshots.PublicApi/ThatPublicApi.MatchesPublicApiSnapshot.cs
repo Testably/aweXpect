@@ -36,6 +36,26 @@ public static class ThatPublicApi
 		=> AddPublicApiSnapshot(subject, PublicApiDeclarations.GenerateFrom, callerFilePath, callerMemberName);
 
 	/// <summary>
+	///     Verifies that the public API of the assembly, generated with the <paramref name="options" />, matches the
+	///     snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
+	/// </summary>
+	/// <remarks>
+	///     Otherwise, it behaves like the overload without options.
+	/// </remarks>
+	/// <param name="subject">The subject.</param>
+	/// <param name="options">The options for generating the public API, e.g. <c>o => o.ExcludingForwardedTypes()</c>.</param>
+	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
+	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
+	[GuaranteesNotNull]
+	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
+		this IThat<Assembly?> subject,
+		Func<PublicApiOptions, PublicApiOptions> options,
+		[CallerFilePath] string callerFilePath = "",
+		[CallerMemberName] string callerMemberName = "")
+		=> AddPublicApiSnapshot(subject, assembly => PublicApiDeclarations.GenerateFrom(assembly, options),
+			callerFilePath, callerMemberName);
+
+	/// <summary>
 	///     Verifies that the public API of the assembly in the file matches the snapshot
 	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
 	/// </summary>
@@ -54,6 +74,26 @@ public static class ThatPublicApi
 		[CallerMemberName] string callerMemberName = "")
 		=> AddPublicApiSnapshot(subject, PublicApiDeclarations.GenerateFrom, callerFilePath,
 			callerMemberName);
+
+	/// <summary>
+	///     Verifies that the public API of the assembly in the file, generated with the <paramref name="options" />,
+	///     matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
+	/// </summary>
+	/// <remarks>
+	///     Otherwise, it behaves like the overload without options.
+	/// </remarks>
+	/// <param name="subject">The subject.</param>
+	/// <param name="options">The options for generating the public API, e.g. <c>o => o.ExcludingForwardedTypes()</c>.</param>
+	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
+	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
+	[GuaranteesNotNull]
+	public static SnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
+		this IThat<FileInfo?> subject,
+		Func<PublicApiOptions, PublicApiOptions> options,
+		[CallerFilePath] string callerFilePath = "",
+		[CallerMemberName] string callerMemberName = "")
+		=> AddPublicApiSnapshot(subject, file => PublicApiDeclarations.GenerateFrom(file, options),
+			callerFilePath, callerMemberName);
 
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]

@@ -42,6 +42,15 @@ that version, which installs its reference assemblies. When a referenced assembl
 version, the expectation throws an `InvalidOperationException` that names it, instead of writing a public API that
 differs from machine to machine.
 
+The types that the assembly forwards to another assembly are written as
+`[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(…))]`, as removing a forward breaks the consumers
+that were compiled against the assembly. Options configure what is written, for the expectation and for
+`PublicApiDeclarations.GenerateFrom(…)`:
+
+```csharp
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.ExcludingForwardedTypes());
+```
+
 The assembly is read with Roslyn, so the package depends on a recent version of `Microsoft.CodeAnalysis.CSharp` that
 reads all extension members correctly. A test project that needs an older Roslyn, e.g. for testing an analyzer, cannot
 use the package, so verify the public API in a separate test project.

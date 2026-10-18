@@ -1,5 +1,6 @@
 using System.Reflection;
 using aweXpect.Snapshots.PublicApi.Fixture;
+using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;
 
 namespace aweXpect.Snapshots.PublicApi.Tests;
 
@@ -12,6 +13,11 @@ public sealed partial class ThatPublicApi
 			[Fact]
 			public async Task ShouldDescribeThePublicApiOfTheFixture()
 				=> await That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
+
+			[Fact]
+			public async Task WhenExcludingForwardedTypes_ShouldNotIncludeThem()
+				=> await That(Assembly.LoadFile(WriteForwardingLibrary().FullName))
+					.MatchesPublicApiSnapshot(o => o.ExcludingForwardedTypes());
 
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()

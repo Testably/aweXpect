@@ -5,12 +5,23 @@ namespace aweXpect.Snapshots.PublicApi
     public static class PublicApiDeclarations
     {
         public static string GenerateFrom(System.IO.FileInfo assemblyFile) { }
+        public static string GenerateFrom(System.IO.FileInfo assemblyFile, System.Func<aweXpect.Snapshots.PublicApi.PublicApiOptions, aweXpect.Snapshots.PublicApi.PublicApiOptions> options) { }
         public static string GenerateFrom(System.Reflection.Assembly assembly) { }
+        public static string GenerateFrom(System.Reflection.Assembly assembly, System.Func<aweXpect.Snapshots.PublicApi.PublicApiOptions, aweXpect.Snapshots.PublicApi.PublicApiOptions> options) { }
+    }
+    public sealed class PublicApiOptions
+    {
+        public PublicApiOptions() { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingForwardedTypes() { }
     }
     public static class ThatPublicApi
     {
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesPublicApiSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, System.Func<aweXpect.Snapshots.PublicApi.PublicApiOptions, aweXpect.Snapshots.PublicApi.PublicApiOptions> options, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesPublicApiSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesPublicApiSnapshot(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, System.Func<aweXpect.Snapshots.PublicApi.PublicApiOptions, aweXpect.Snapshots.PublicApi.PublicApiOptions> options, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesPublicApiSnapshot(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
     }

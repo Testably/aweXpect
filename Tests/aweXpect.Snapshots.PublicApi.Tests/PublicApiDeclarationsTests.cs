@@ -46,6 +46,42 @@ public sealed class PublicApiDeclarationsTests
 	}
 
 	[Fact]
+	public async Task GenerateFrom_ShouldIncludeForwardedTypes()
+	{
+		FileInfo library = WriteForwardingLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).StartsWith("""
+		                              [assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Dependency.Box<>))]
+		                              [assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Dependency.Gate))]
+		                              [assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Dependency.Outer))]
+		                              namespace Library
+		                              """).IgnoringNewlineStyle()
+			.Because("removing a forwarded type breaks the consumers that were compiled against the assembly");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingForwardedTypes_ShouldNotIncludeThem()
+	{
+		FileInfo library = WriteForwardingLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingForwardedTypes());
+
+		await That(result).DoesNotContain("TypeForwardedTo");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingForwardedTypesOfAnAssembly_ShouldNotIncludeThem()
+	{
+		Assembly assembly = Assembly.LoadFile(WriteForwardingLibrary().FullName);
+
+		string result = PublicApiDeclarations.GenerateFrom(assembly, o => o.ExcludingForwardedTypes());
+
+		await That(result).DoesNotContain("TypeForwardedTo");
+	}
+
+	[Fact]
 	public async Task GenerateFrom_WhenAReferenceIsMissing_ShouldThrowInvalidOperationException()
 	{
 		byte[] dependency = Compile("Dependency", "2.0.0.0", DependencySource);

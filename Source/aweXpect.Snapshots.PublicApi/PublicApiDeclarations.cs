@@ -121,6 +121,20 @@ public static class PublicApiDeclarations
 	///     would change the generated public API.
 	/// </exception>
 	public static string GenerateFrom(Assembly assembly)
+		=> GenerateFrom(assembly, static options => options);
+
+	/// <summary>
+	///     Generates the public API of the <paramref name="assembly" />, which must be loaded from a file, with the
+	///     <paramref name="options" />.
+	/// </summary>
+	/// <remarks>
+	///     The file of the assembly is read like by <see cref="GenerateFrom(FileInfo)" />.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     An assembly that the <paramref name="assembly" /> references cannot be resolved, or only in a lower version, which
+	///     would change the generated public API.
+	/// </exception>
+	public static string GenerateFrom(Assembly assembly, Func<PublicApiOptions, PublicApiOptions> options)
 	{
 		if (assembly.IsDynamic || string.IsNullOrEmpty(assembly.Location))
 		{
@@ -129,7 +143,7 @@ public static class PublicApiDeclarations
 				nameof(assembly));
 		}
 
-		return GenerateFrom(new FileInfo(assembly.Location));
+		return GenerateFrom(new FileInfo(assembly.Location), options);
 	}
 
 	/// <summary>
@@ -145,9 +159,23 @@ public static class PublicApiDeclarations
 	///     generated public API.
 	/// </exception>
 	public static string GenerateFrom(FileInfo assemblyFile)
-		=> WriteFile(assemblyFile.FullName, GetReferencePack(assemblyFile.FullName));
+		=> GenerateFrom(assemblyFile, static options => options);
 
-	private static string WriteFile(string assemblyFile, string? referencePack)
+	/// <summary>
+	///     Generates the public API of the assembly in the <paramref name="assemblyFile" /> with the
+	///     <paramref name="options" /> without loading it.
+	/// </summary>
+	/// <remarks>
+	///     The assembly is read like by <see cref="GenerateFrom(FileInfo)" />.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     An assembly that the assembly references cannot be resolved, or only in a lower version, which would change the
+	///     generated public API.
+	/// </exception>
+	public static string GenerateFrom(FileInfo assemblyFile, Func<PublicApiOptions, PublicApiOptions> options)
+		=> WriteFile(assemblyFile.FullName, GetReferencePack(assemblyFile.FullName), options(new PublicApiOptions()));
+
+	private static string WriteFile(string assemblyFile, string? referencePack, PublicApiOptions options)
 	{
 		MetadataReference target = MetadataReference.CreateFromFile(assemblyFile);
 		CSharpCompilation compilation = CSharpCompilation.Create("PublicApi",
@@ -156,7 +184,9 @@ public static class PublicApiDeclarations
 		ThrowIfReferencesAreUnresolved(assemblyFile, compilation, assembly);
 
 		StringBuilder sb = new();
-		foreach (string attribute in Attributes(assembly))
+		foreach (string attribute in Attributes(assembly)
+			         .Concat(options.IncludesForwardedTypes ? ForwardedTypes(assembly) : [])
+			         .OrderBy(attribute => attribute, StringComparer.Ordinal))
 		{
 			sb.Append("[assembly: ").Append(attribute).Append("]\n");
 		}
@@ -169,26 +199,34 @@ public static class PublicApiDeclarations
 				         : type.ContainingNamespace.ToDisplayString())
 			         .OrderBy(group => group.Key, StringComparer.Ordinal))
 		{
-			bool isGlobalNamespace = types.Key.Length == 0;
-			if (!isGlobalNamespace)
-			{
-				sb.Append("namespace ").Append(types.Key).Append('\n');
-				sb.Append("{\n");
-			}
-
-			foreach (INamedTypeSymbol type in types.OrderBy(type => type.Name, StringComparer.Ordinal)
-				         .ThenBy(type => type.Arity))
-			{
-				WriteType(sb, type, isGlobalNamespace ? "" : Indentation);
-			}
-
-			if (!isGlobalNamespace)
-			{
-				sb.Append("}\n");
-			}
+			WriteNamespace(sb, types);
 		}
 
 		return sb.ToString();
+	}
+
+	/// <remarks>
+	///     The types in the global namespace, whose key is empty, are written without a namespace.
+	/// </remarks>
+	private static void WriteNamespace(StringBuilder sb, IGrouping<string, INamedTypeSymbol> types)
+	{
+		bool isGlobalNamespace = types.Key.Length == 0;
+		if (!isGlobalNamespace)
+		{
+			sb.Append("namespace ").Append(types.Key).Append('\n');
+			sb.Append("{\n");
+		}
+
+		foreach (INamedTypeSymbol type in types.OrderBy(type => type.Name, StringComparer.Ordinal)
+			         .ThenBy(type => type.Arity))
+		{
+			WriteType(sb, type, isGlobalNamespace ? "" : Indentation);
+		}
+
+		if (!isGlobalNamespace)
+		{
+			sb.Append("}\n");
+		}
 	}
 
 	/// <remarks>
@@ -330,6 +368,17 @@ public static class PublicApiDeclarations
 
 	private static IEnumerable<INamespaceSymbol> GetNamespaces(INamespaceSymbol ns)
 		=> ns.GetNamespaceMembers().SelectMany(GetNamespaces).Prepend(ns);
+
+	/// <remarks>
+	///     A forwarded type is stored in the metadata of the assembly instead of as an attribute, but removing it breaks
+	///     the consumers that were compiled against the assembly. A nested type is forwarded with its containing type.
+	/// </remarks>
+	private static IEnumerable<string> ForwardedTypes(IAssemblySymbol assembly)
+		=> assembly.GetForwardedTypes()
+			.Where(type => type.ContainingType is null)
+			.Select(type => "System.Runtime.CompilerServices.TypeForwardedTo(typeof(" +
+			                (type.IsGenericType ? type.ConstructUnboundGenericType() : type)
+			                .ToDisplayString(MemberFormat) + "))");
 
 	private static bool IsVisible(ISymbol symbol)
 		=> (symbol.CanBeReferencedByName || symbol is IPropertySymbol { IsIndexer: true, } or IMethodSymbol

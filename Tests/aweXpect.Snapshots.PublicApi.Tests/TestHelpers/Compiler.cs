@@ -31,6 +31,29 @@ public static class Compiler
 	}
 
 	/// <summary>
+	///     Writes a library that forwards a type, a generic type and a type with a nested type to the dependency next to
+	///     it.
+	/// </summary>
+	public static FileInfo WriteForwardingLibrary()
+	{
+		byte[] dependency = Compile("Dependency", "1.0.0.0", """
+			namespace Dependency;
+			public class Gate { }
+			public class Box<T> { }
+			public class Outer { public class Inner { } }
+			""");
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
+			[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Dependency.Gate))]
+			[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Dependency.Box<>))]
+			[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(Dependency.Outer))]
+			namespace Library;
+			public class Api { }
+			""", [MetadataReference.CreateFromImage(dependency),]));
+		WriteFile("Dependency.dll", dependency, library.DirectoryName);
+		return library;
+	}
+
+	/// <summary>
 	///     Writes the <paramref name="bytes" /> of an assembly as <paramref name="fileName" /> into a new directory, or
 	///     into the <paramref name="directory" />.
 	/// </summary>
