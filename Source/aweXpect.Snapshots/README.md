@@ -53,13 +53,17 @@ comparison, e.g. an image comparer that tolerates small differences of single pi
 [Reporters](../../Docs/extensions/aweXpect.Snapshots/09-reporters.md) are told about every missing, different or matching snapshot, e.g. to open a
 diff tool.
 
+Reference [aweXpect.Snapshots.DiffEngine](https://www.nuget.org/packages/aweXpect.Snapshots.DiffEngine) as well, and a
+missing or different snapshot opens a diff tool with [DiffEngine](https://github.com/VerifyTests/DiffEngine), in which
+the change can be taken over into the snapshot; see [Diff tools](../../Docs/extensions/aweXpect.Snapshots/10-diff-tools.md).
+
 ## Overview
 
 | Expectation                                                                      | Subject  | Summary                                                 |
 |----------------------------------------------------------------------------------|----------|---------------------------------------------------------|
 | [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-matching-snapshots.md#strings)              | `string` | matches the snapshot stored next to the test            |
 | [`MatchesSnapshot`](../../Docs/extensions/aweXpect.Snapshots/01-matching-snapshots.md#objects) | any `T`  | matches the snapshot of the object, written by aweXpect |
-| [`MatchesPublicApiSnapshot`](../../Docs/extensions/aweXpect.Snapshots/10-public-api.md) | `Assembly` | matches the snapshot of the public API of the assembly |
+| [`MatchesPublicApiSnapshot`](../../Docs/extensions/aweXpect.Snapshots/11-public-api.md) | `Assembly` | matches the snapshot of the public API of the assembly |
 
 ## Documentation
 
