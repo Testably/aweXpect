@@ -13,6 +13,11 @@ namespace aweXpect.Snapshots.PublicApi;
 public sealed class PublicApiOptions
 {
 	/// <summary>
+	///     Selects how the public API is formatted.
+	/// </summary>
+	public PublicApiFormatting Formatting => new(this);
+
+	/// <summary>
 	///     Selects what is left out of the public API.
 	/// </summary>
 	public PublicApiIgnoring Ignoring => new(this);
@@ -29,6 +34,7 @@ public sealed class PublicApiOptions
 	internal bool IncludesForwardedTypes { get; set; } = true;
 	internal HashSet<string> NamespacesToRestrictTo { get; } = new(StringComparer.Ordinal);
 	internal HashSet<string> TypesToRestrictTo { get; } = new(StringComparer.Ordinal);
+	internal bool WritesParametersOnSeparateLines { get; set; }
 
 	/// <summary>
 	///     The name of the <paramref name="type" /> like <see cref="Type.FullName" />, for a generic type the one of its

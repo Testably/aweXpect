@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text.RegularExpressions;
 using aweXpect.Snapshots.PublicApi.Fixture;
 using Microsoft.CodeAnalysis;
 using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;
@@ -80,6 +81,185 @@ public sealed class PublicApiDeclarationsTests
 	                                         public record struct Point(int X, int Y) { public override string ToString() => ""; }
 	                                     }
 	                                     """;
+
+	private const string ParametersSource = """
+	                                        namespace Library
+	                                        {
+	                                            public enum Mode { Slow, Fast }
+	                                            public delegate T Factory<T>(int count, [System.Runtime.CompilerServices.CallerMemberName] string name = "") where T : class;
+	                                            public delegate void Callback(int count);
+	                                            public class Api
+	                                            {
+	                                                public Api(int a, string b) { }
+	                                                public Api(int a) { }
+	                                                public int this[int a, string b = "x"] => 0;
+	                                                public int this[int a] => 0;
+	                                                public void None() { }
+	                                                public void One(int a) { }
+	                                                public T Call<T>(scoped ref int a, Mode mode = Mode.Fast, [System.Runtime.CompilerServices.CallerMemberName] string name = "", params T[] values) where T : struct => default;
+	                                                public static Api operator +(Api left, Api right) => left;
+	                                                public static explicit operator int(Api api) => 0;
+	                                                public class Nested
+	                                                {
+	                                                    public void Two(int a, int b) { }
+	                                                }
+	                                            }
+	                                            public static class Extensions
+	                                            {
+	                                                public static void Extend(this Api api, int count) { }
+	                                            }
+	                                        }
+	                                        public class Global
+	                                        {
+	                                            public void Two(int a, int b) { }
+	                                        }
+	                                        """;
+
+	[Fact]
+	public async Task GenerateFrom_ShouldWriteTheParametersOnASingleLineByDefault()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("\n        public Api(int a, string b) { }\n")
+			.And.Contains("\n        public int this[int a, string b = \"x\"] { get; }\n")
+			.And.Contains("\n        public T Call<T>(scoped ref int a, Library.Mode mode = Library.Mode.Fast, " +
+			              "[System.Runtime.CompilerServices.CallerMemberName] string name = \"\", params T[] values) " +
+			              "where T : struct { }\n")
+			.And.Contains("\n    public delegate T Factory<T>(int count, " +
+			              "[System.Runtime.CompilerServices.CallerMemberName] string name = \"\") where T : class;\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAMethod()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n        public T Call<T>(\n" +
+		                            "            scoped ref int a,\n" +
+		                            "            Library.Mode mode = Library.Mode.Fast,\n" +
+		                            "            [System.Runtime.CompilerServices.CallerMemberName] string name = \"\",\n" +
+		                            "            params T[] values) where T : struct { }\n")
+			.Because("the modifiers, attributes and default values stay with their parameter and the constraints on the last line");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAnExtensionMethod()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n        public static void Extend(\n" +
+		                            "            this Library.Api api,\n" +
+		                            "            int count) { }\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAConstructor()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n        public Api(\n" +
+		                            "            int a,\n" +
+		                            "            string b) { }\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAnOperator()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n        public static Library.Api operator +(\n" +
+		                            "            Library.Api left,\n" +
+		                            "            Library.Api right) { }\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfADelegate()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n    public delegate T Factory<T>(\n" +
+		                            "        int count,\n" +
+		                            "        [System.Runtime.CompilerServices.CallerMemberName] string name = \"\") where T : class;\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAnIndexer()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n        public int this[\n" +
+		                            "            int a,\n" +
+		                            "            string b = \"x\"] { get; }\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldKeepASingleParameterOnTheSameLine()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n        public Api(int a) { }\n")
+			.And.Contains("\n        public int this[int a] { get; }\n")
+			.And.Contains("\n        public void One(int a) { }\n")
+			.And.Contains("\n        public static explicit operator int(Library.Api api) { }\n")
+			.And.Contains("\n    public delegate void Callback(int count);\n")
+			.And.Contains("\n        public void None() { }\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldIndentThemRelativeToTheDeclaration()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).Contains("\n            public void Two(\n" +
+		                            "                int a,\n" +
+		                            "                int b) { }\n")
+			.And.StartsWith("public class Global\n" +
+			                "{\n" +
+			                "    public Global() { }\n" +
+			                "    public void Two(\n" +
+			                "        int a,\n" +
+			                "        int b) { }\n")
+			.Because("a nested type and the global namespace indent their members differently");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldOnlySplitTheParameters()
+	{
+		Assembly assembly = typeof(Album).Assembly;
+
+		string result = PublicApiDeclarations.GenerateFrom(assembly, o => o.Formatting.ParametersOnSeparateLines());
+
+		await That(result).IsNotEqualTo(PublicApiDeclarations.GenerateFrom(assembly))
+			.Because("the fixture has declarations with several parameters");
+		await That(JoinParameterLines(result)).IsEqualTo(PublicApiDeclarations.GenerateFrom(assembly))
+			.Because("joining the parameters back on a single line, the declarations and their order are unchanged");
+	}
+
+	/// <summary>
+	///     Joins the parameters after an opening parenthesis or bracket at the end of a line, which are on the following
+	///     lines with the same deeper indentation, onto that line.
+	/// </summary>
+	private static string JoinParameterLines(string publicApi)
+		=> Regex.Replace(publicApi, @"([(\[])\n( +)((?:.*,\n\2)*)",
+			match => match.Groups[1].Value + match.Groups[3].Value.Replace(",\n" + match.Groups[2].Value, ", "));
 
 	[Fact]
 	public async Task GenerateFrom_ShouldWriteTheAttributesOfTheLibrary()

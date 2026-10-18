@@ -550,8 +550,8 @@ public static class PublicApiDeclarations
 					MemberFormat.RemoveGenericsOptions(SymbolDisplayGenericsOptions.IncludeVariance))).Append(' ')
 				.Append(type.ToDisplayString(TypeNameFormat)).Append(TypeParameterList(type.TypeParameters, options))
 				.Append('(')
-				.Append(string.Join(", ",
-					invoke.Parameters.Select(parameter => Parameter(parameter, false, options))))
+				.Append(ParameterList(invoke.Parameters.Select(parameter => Parameter(parameter, false, options)),
+					ParameterIndent(indent, options)))
 				.Append(')')
 				.Append(Constraints(type.TypeParameters)).Append(";\n");
 			return;
@@ -624,27 +624,34 @@ public static class PublicApiDeclarations
 				         MethodKind: MethodKind.Constructor, IsImplicitlyDeclared: true,
 			         })
 			         .Where(member => options.IncludesCompilerGeneratedMembers || !IsCompilerGenerated(member))
-			         .Select(member => (Member: member, Declaration: Declaration(member, options)))
+			         .Select(member => (Member: member, Declaration: Declaration(member, null, options)))
 			         .OrderBy(member => Rank(member.Member))
 			         .ThenBy(member => member.Member.IsStatic)
 			         .ThenBy(member => member.Member.Name, StringComparer.Ordinal)
 			         .ThenBy(member => member.Declaration, StringComparer.Ordinal))
 		{
 			WriteAttributes(sb, member.Member, indent, options);
-			sb.Append(indent).Append(member.Declaration).Append('\n');
+			sb.Append(indent).Append(ParameterIndent(indent, options) is { } parameterIndent
+				? Declaration(member.Member, parameterIndent, options)
+				: member.Declaration).Append('\n');
 		}
 	}
 
 	private static bool IsCompilerGenerated(ISymbol member)
 		=> member.GetAttributes().Any(attribute => attribute.AttributeClass?.ToDisplayString() == CompilerGeneratedAttribute);
 
-	private static string Declaration(ISymbol member, PublicApiOptions options) => InterfaceModifiers(member) + member switch
+	/// <remarks>
+	///     The members are ordered by their declaration on a single line, i.e. without a <paramref name="parameterIndent" />,
+	///     so that writing the parameters on separate lines does not change the order.
+	/// </remarks>
+	private static string Declaration(ISymbol member, string? parameterIndent, PublicApiOptions options) => InterfaceModifiers(member) + member switch
 	{
 		IMethodSymbol method => MethodHeader(method, options) + "(" +
-		                        string.Join(", ", method.Parameters.Select((parameter, index)
-			                        => Parameter(parameter, index == 0 && method.IsExtensionMethod, options))) + ")" +
+		                        ParameterList(method.Parameters.Select((parameter, index)
+			                        => Parameter(parameter, index == 0 && method.IsExtensionMethod, options)),
+			                        parameterIndent) + ")" +
 		                        Constraints(method.TypeParameters) + (method.IsAbstract || method.IsExtern ? ";" : " { }"),
-		IPropertySymbol property => Property(property, options),
+		IPropertySymbol property => Property(property, parameterIndent, options),
 		IEventSymbol => member.ToDisplayString(EventFormat) + ";",
 		IFieldSymbol { IsFixedSizeBuffer: true, } field => AccessibilityKeyword(field) + " fixed " +
 		                                                   ((IPointerTypeSymbol)field.Type).PointedAtType
@@ -687,7 +694,7 @@ public static class PublicApiDeclarations
 	/// <summary>
 	///     The display does not include the attributes of the accessors, which are inserted before their keywords.
 	/// </summary>
-	private static string Property(IPropertySymbol property, PublicApiOptions options)
+	private static string Property(IPropertySymbol property, string? parameterIndent, PublicApiOptions options)
 	{
 		string declaration = property.ToDisplayString(MemberFormat);
 		int accessorsStart = declaration.LastIndexOf(" { ", StringComparison.Ordinal);
@@ -699,8 +706,51 @@ public static class PublicApiDeclarations
 				                    ? property.GetMethod!
 				                    : property.SetMethod!, options).Select(attribute => $"[{attribute}] ")) +
 			                    accessor + ";");
-		return declaration.Remove(accessorsStart) + " { " + string.Join(" ", accessors) + " }";
+		return IndexerParameters(declaration.Remove(accessorsStart), property, parameterIndent) +
+		       " { " + string.Join(" ", accessors) + " }";
 	}
+
+	/// <remarks>
+	///     The display of an indexer ends with its parameters, which are split there instead of written again, so that
+	///     they stay exactly as on a single line.
+	/// </remarks>
+	private static string IndexerParameters(string declaration, IPropertySymbol property, string? parameterIndent)
+	{
+		if (!property.IsIndexer || parameterIndent is null)
+		{
+			return declaration;
+		}
+
+		string[] parameters = property.Parameters.Select(parameter => parameter.ToDisplayString(MemberFormat)).ToArray();
+		string singleLine = "[" + string.Join(", ", parameters) + "]";
+		return declaration.EndsWith(singleLine, StringComparison.Ordinal)
+			? declaration.Remove(declaration.Length - singleLine.Length) + "[" + ParameterList(parameters, parameterIndent) +
+			  "]"
+			: declaration;
+	}
+
+	/// <summary>
+	///     Joins the <paramref name="parameters" /> on a single line, or, with a <paramref name="parameterIndent" />, more
+	///     than one on separate lines, indented one level deeper than the declaration.
+	/// </summary>
+	private static string ParameterList(IEnumerable<string> parameters, string? parameterIndent)
+	{
+		string[] list = parameters.ToArray();
+		if (parameterIndent is null || list.Length < 2)
+		{
+			return string.Join(", ", list);
+		}
+
+		string separator = "\n" + parameterIndent + Indentation;
+		return separator + string.Join("," + separator, list);
+	}
+
+	/// <summary>
+	///     The indentation of a declaration at the <paramref name="indent" /> when its parameters are written on separate
+	///     lines, or else <see langword="null" />.
+	/// </summary>
+	private static string? ParameterIndent(string indent, PublicApiOptions options)
+		=> options.WritesParametersOnSeparateLines ? indent : null;
 
 	/// <remarks>
 	///     The display ends with the type parameters of the method, which are replaced to include their attributes.

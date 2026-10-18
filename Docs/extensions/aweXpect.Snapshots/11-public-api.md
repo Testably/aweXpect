@@ -91,6 +91,28 @@ A type is selected by its type or by its full name like `Type.FullName`, for a g
 A nested type is written with its containing type, so `Within.Type` throws an `ArgumentException` for one; the filters
 also apply to the forwarded types.
 
+Every declaration is written on a single line by default. To see a change of a single parameter as a change of a single
+line, write the parameters of methods, constructors, operators, delegates and indexers with more than one parameter on
+separate lines:
+
+```csharp
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Formatting.ParametersOnSeparateLines());
+```
+
+So instead of
+
+```csharp
+public Album(string title, [System.Runtime.CompilerServices.CallerMemberName] string source = "") { }
+```
+
+the declaration is written as
+
+```csharp
+public Album(
+    string title,
+    [System.Runtime.CompilerServices.CallerMemberName] string source = "") { }
+```
+
 The assembly is read with Roslyn, so the package depends on a recent version of `Microsoft.CodeAnalysis.CSharp` that
 reads all extension members correctly. A test project that needs an older Roslyn, e.g. for testing an analyzer, cannot
 use the package, so verify the public API in a separate test project.
