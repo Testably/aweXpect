@@ -103,7 +103,7 @@ Under `Customize.aweXpect.Reflection()`:
 
 | Option                     | Type       | Default                                              | Description                                                                               |
 |----------------------------|------------|------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| `ExcludedAssemblyPrefixes` | `string[]` | `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `Castle`, `DynamicProxyGenAssembly2` | The assemblies that are not scanned for a test framework adapter, matched by name prefix. |
+| `ExcludedAssemblyPrefixes` | `string[]` | `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `TUnit`, `Castle`, `DynamicProxyGenAssembly2` | The assemblies that are not scanned for a test framework adapter, matched by name prefix. |
 
 A prefix matches at a segment boundary of the assembly name, so `System` excludes `System.Net.Http`, but not an
 assembly named `Systemics`.

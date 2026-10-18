@@ -49,6 +49,7 @@ public sealed class CustomizeReflectionTests
 			"WindowsBase",
 			"JetBrains",
 			"xunit",
+			"TUnit",
 			"Castle",
 			"DynamicProxyGenAssembly2",
 		]).InAnyOrder();

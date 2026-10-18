@@ -32,6 +32,8 @@ public sealed class AweXpectInitializationTests
 	[Arguments("netstandard")]
 	[Arguments("WindowsBase")]
 	[Arguments("xunit.core")]
+	[Arguments("TUnit.Core")]
+	[Arguments("TUnit.Engine")]
 	[Arguments("DynamicProxyGenAssembly2")]
 	public async Task IsAssemblyNameIncluded_WhenExcludedByDefault_ShouldReturnFalse(string assemblyName, string? because = null)
 	{
