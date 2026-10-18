@@ -10,7 +10,7 @@
 | `Tests/aweXpect.Generators.Tests` | TUnit, `dotnet run` | `net8.0` | All source generators, and parity of generated metadata with the reflection fallback |
 | `Tests/aweXpect.Analyzers.Tests` | TUnit, `dotnet run` | `net8.0` | Analyzers, code fixers and the `IsNotNullSuppressor` |
 | `Tests/aweXpect.Docs.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Compiles the code blocks in `Docs/pages`, checks that the API is documented |
-| `Tests/aweXpect.Api.Tests` | NUnit, `dotnet test` | `net8.0` | Public API snapshots of `aweXpect` and `aweXpect.Core` per target framework |
+| `Tests/aweXpect.Api.Tests` | TUnit, `dotnet run` | `net8.0` | Public API snapshots of `aweXpect` and `aweXpect.Core` per target framework |
 | `Tests/Frameworks/*` | per framework | `net10.0` (NUnit: `net8.0`) | Integration with MSTest, NUnit, xUnit, TUnit and the fallback without a framework |
 | `Tests/Aot/*` | executables | `net10.0` | Smoke checks under Native AOT (TUnit, xUnit v3) |
 
@@ -43,8 +43,10 @@ the `Debug` library builds.
 When the API changed on purpose, accept the new surface in one of these ways and commit the updated snapshots:
 
 - run with `AWEXPECT_ACCEPT_SNAPSHOTS=all` (ignored on a build server):
-  `$env:AWEXPECT_ACCEPT_SNAPSHOTS = 'all'; dotnet test Tests/aweXpect.Api.Tests`
-- run the explicit test `AcceptApiChanges`
+  `$env:AWEXPECT_ACCEPT_SNAPSHOTS = 'all'; dotnet run --project Tests/aweXpect.Api.Tests`
+- run the explicit test `AcceptApiChanges`, which a plain run skips:
+  `dotnet run --project Tests/aweXpect.Api.Tests -- --treenode-filter "/*/*/ApiApprovalTests/AcceptApiChanges"`.
+  TUnit runs an explicit test only when the filter matches nothing but explicit tests.
 - rename the `*.awexpect-snapshot.pending.txt` file that a failed run left next to the snapshot
 
 Never commit a pending file. CI runs the snapshots in the `ApiChecks` target.

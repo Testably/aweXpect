@@ -24,13 +24,13 @@ Arguments after `--` go to the test application.
 dotnet run --project Tests/aweXpect.Tests -f net10.0
 dotnet run --project Tests/aweXpect.Tests -f net10.0 -- --treenode-filter "/*/*/ThatString+IsEqualTo+AsPrefixTests/*"
 dotnet run --project Tests/aweXpect.Docs.Tests -f net10.0 -- --treenode-filter "/*/*/*/*[Category=Slow]"
-dotnet test Tests/aweXpect.Api.Tests
+dotnet run --project Tests/aweXpect.Api.Tests
 ```
 
 - The tree-node filter is `/<assembly>/<namespace>/<class>/<test>`; nested classes are joined with `+`.
 - `net48` runs only on Windows.
-- `aweXpect.Api.Tests` and the VSTest projects under `Tests/Frameworks` (MSTest, NUnit, xUnit v2, Fallback) run with
-  `dotnet test`; the TUnit and xUnit v3 projects under `Tests/Frameworks` run with `dotnet run`.
+- The VSTest projects under `Tests/Frameworks` (MSTest, NUnit, xUnit v2, Fallback) run with `dotnet test`; the TUnit
+  and xUnit v3 projects under `Tests/Frameworks` run with `dotnet run`.
 - See [testing](testing.md) for which projects to run and how to accept snapshot changes.
 
 ## Benchmarks

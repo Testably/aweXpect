@@ -38,4 +38,12 @@ Slow tests are marked with both `[Explicit]` and `[Category(TestCategories.Slow)
 `--treenode-filter "/*/*/*/*[Category=Slow]"`. The first slow test of a project requires adding the project to
 `ProjectsWithSlowTests` in `Pipeline/Build.UnitTest.cs`.
 
-`aweXpect.Api.Tests` and the projects under `Tests/Frameworks` still run with `dotnet test`.
+The public API of `aweXpect` and `aweXpect.Core` is compared with the snapshots in `Tests/aweXpect.Api.Tests`. After an
+intended API change, accept the new surface with the explicit test `AcceptApiChanges` and commit the updated snapshots:
+
+```shell
+dotnet run --project Tests/aweXpect.Api.Tests -- --treenode-filter "/*/*/ApiApprovalTests/AcceptApiChanges"
+```
+
+The MSTest, NUnit and xUnit v2 projects under `Tests/Frameworks` still run with `dotnet test`; the TUnit and xUnit v3
+projects there run with `dotnet run`.

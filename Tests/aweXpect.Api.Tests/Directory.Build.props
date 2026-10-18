@@ -4,8 +4,8 @@
 			Condition="Exists('$(MSBuildThisFileDirectory)/../../Directory.Build.props')"/>
 
 	<!--
-	    The API tests run on NUnit through VSTest, unlike the unit tests next to them, so they do not share the
-	    settings of `Tests/Directory.Build.props`.
+	    The API tests do not share the settings of `Tests/Directory.Build.props`, because its shared test helpers need
+	    the `aweXpect` assembly, which the API tests only read as a build output and do not reference.
 	-->
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
@@ -15,6 +15,12 @@
 		<IsTestProject>true</IsTestProject>
 		<NoWarn>701;1702;CA1845;S2699</NoWarn>
 		<WarningsAsErrors>$(WarningsAsErrors);CS8620</WarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<EnableTUnitSourceGeneration>false</EnableTUnitSourceGeneration>
+		<TUnitImplicitUsings>false</TUnitImplicitUsings>
 	</PropertyGroup>
 
 </Project>
