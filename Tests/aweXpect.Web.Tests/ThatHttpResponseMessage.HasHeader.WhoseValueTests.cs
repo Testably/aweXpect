@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WhoseValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -20,7 +20,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader(otherKey).WhoseValue(v => v.IsEqualTo(value));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-some-other-key" header whose value is equal to "some header",
@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExistsAndValueDoesNotSatisfyTheExpectations_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -46,7 +46,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader(name).WhoseValue(v => v.IsEqualTo(expectedValue));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose value is equal to "some other header",
@@ -64,7 +64,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExistsAndValueSatisfiesTheExpectations_ShouldSucceed()
 			{
 				string name = "x-my-header";
@@ -78,7 +78,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -86,7 +86,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-key").WhoseValue(v => v.IsEmpty());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-key" header whose value is empty,

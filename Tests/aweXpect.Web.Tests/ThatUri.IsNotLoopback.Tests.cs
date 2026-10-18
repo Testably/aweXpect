@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				Uri[] subjects = [new Uri("http://localhost/"),];
@@ -16,12 +16,12 @@ public sealed partial class ThatUri
 						.Whose(x => x.Uris, items => items.All()
 							.ComplyWith(item => item.IsNotLoopback()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Uris do not reference the local host for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -29,7 +29,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsNotLoopback();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not reference the local host,
@@ -37,7 +37,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -45,7 +45,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsNotLoopback();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not reference the local host,
@@ -53,10 +53,10 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Theory]
-			[InlineData("127.0.0.1")]
-			[InlineData("loopback")]
-			[InlineData("localhost")]
+			[Test]
+			[Arguments("127.0.0.1")]
+			[Arguments("loopback")]
+			[Arguments("localhost")]
 			public async Task WhenSubjectIsNotLoopback_ShouldFail(string uriString)
 			{
 				Uri subject = new UriBuilder(uriString).Uri;
@@ -64,7 +64,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsNotLoopback();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not reference the local host,
@@ -72,7 +72,7 @@ public sealed partial class ThatUri
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotLoopback_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com");
@@ -86,7 +86,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -94,7 +94,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotLoopback());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             references the local host,
@@ -102,7 +102,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -110,7 +110,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotLoopback());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             references the local host,
@@ -119,7 +119,7 @@ public sealed partial class ThatUri
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotLoopback_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com");
@@ -127,7 +127,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotLoopback());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             references the local host,
@@ -135,10 +135,10 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Theory]
-			[InlineData("127.0.0.1")]
-			[InlineData("loopback")]
-			[InlineData("localhost")]
+			[Test]
+			[Arguments("127.0.0.1")]
+			[Arguments("loopback")]
+			[Arguments("localhost")]
 			public async Task WhenSubjectIsNotLoopback_ShouldSucceed(string uriString)
 			{
 				Uri subject = new UriBuilder(uriString).Uri;

@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPort().EqualTo(443);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has port equal to 443,
@@ -22,7 +22,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/tracks/1", UriKind.Relative);
@@ -30,7 +30,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPort().EqualTo(443);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has port equal to 443,
@@ -38,7 +38,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_WhenSubjectPortIsInRange_ShouldSucceed()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -49,7 +49,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedPort_ShouldFail()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -57,7 +57,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPort().EqualTo(5000);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has port equal to 5000,
@@ -65,7 +65,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedPort_ShouldSucceed()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -76,7 +76,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectUsesTheDefaultPort_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com");
@@ -88,7 +88,7 @@ public sealed partial class ThatUri
 					.Because("the port of a URI without an explicit port is the default port of its scheme");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Shorthand_WhenSubjectDoesNotEqualTheExpectedPort_ShouldFail()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -96,7 +96,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPort(4000);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has port equal to 4000,
@@ -104,7 +104,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Shorthand_WhenSubjectEqualsExpectedPort_ShouldSucceed()
 			{
 				Uri subject = new("https://localhost:4000/health");
@@ -115,7 +115,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Shorthand_WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/tracks/1", UriKind.Relative);
@@ -123,7 +123,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPort(4000);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has port equal to 4000,
@@ -134,7 +134,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -142,7 +142,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPort().EqualTo(443));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have port equal to 443,
@@ -150,7 +150,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/tracks/1", UriKind.Relative);
@@ -158,7 +158,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPort().EqualTo(443));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have port equal to 443,
@@ -167,7 +167,7 @@ public sealed partial class ThatUri
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedPort_ShouldSucceed()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -178,7 +178,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedPort_ShouldFail()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -186,7 +186,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPort().EqualTo(5001));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have port equal to 5001,
@@ -194,7 +194,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Shorthand_WhenSubjectDoesNotEqualTheExpectedPort_ShouldSucceed()
 			{
 				Uri subject = new("https://localhost:5001/health");
@@ -205,7 +205,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Shorthand_WhenSubjectEqualsExpectedPort_ShouldFail()
 			{
 				Uri subject = new("https://localhost:4000/health");
@@ -213,7 +213,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPort(4000));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have port equal to 4000,

@@ -8,7 +8,7 @@ public sealed partial class ThatHttpRequestMessage
 	{
 		public sealed class WithValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_Negated_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -16,12 +16,12 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasHeader("x-my-key").WithValue("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was <null>").AsWildcard()
 					.Because("a null subject fails the expectation and its negation alike");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -33,7 +33,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasHeader(otherKey).WithValue(value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-some-other-key" header whose value is equal to "some header",
@@ -45,7 +45,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExistsAndValueDoesNotSatisfyTheExpectations_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -57,7 +57,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasHeader(name).WithValue(expectedValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose value is equal to "some other header",
@@ -73,7 +73,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExistsAndValueSatisfiesTheExpectations_ShouldSucceed()
 			{
 				string name = "x-my-header";
@@ -87,7 +87,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderValueIsNull_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -98,7 +98,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasHeader(otherKey).WithValue("some header");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-some-other-key" header whose value is equal to "some header",
@@ -110,7 +110,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -118,7 +118,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-key").WithValue("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-key" header whose value is equal to "foo",
@@ -129,7 +129,7 @@ public sealed partial class ThatHttpRequestMessage
 
 		public sealed class NegatedWithValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExistsAndValueDiffers_ShouldSucceed()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -142,7 +142,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExistsAndValueIsEqual_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -151,7 +151,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasHeader("x-my-header").WithValue("some header"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an "x-my-header" header whose value is equal to "some header",

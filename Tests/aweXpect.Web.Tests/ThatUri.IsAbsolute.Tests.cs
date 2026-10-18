@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				Uri[] subjects = [new Uri("/foo", UriKind.Relative),];
@@ -16,12 +16,12 @@ public sealed partial class ThatUri
 						.Whose(x => x.Uris, items => items.All()
 							.ComplyWith(item => item.IsAbsolute()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Uris are absolute URIs for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -29,7 +29,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsAbsolute();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an absolute URI,
@@ -37,7 +37,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAbsolute_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com");
@@ -48,7 +48,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotAbsolute_ShouldFail()
 			{
 				Uri subject = new Uri("https://www.awexpect.com")
@@ -57,7 +57,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsAbsolute();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an absolute URI,
@@ -68,7 +68,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -76,7 +76,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsAbsolute());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an absolute URI,
@@ -84,7 +84,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAbsolute_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com");
@@ -92,7 +92,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsAbsolute());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an absolute URI,
@@ -100,7 +100,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotAbsolute_ShouldSucceed()
 			{
 				Uri subject = new Uri("https://www.awexpect.com")

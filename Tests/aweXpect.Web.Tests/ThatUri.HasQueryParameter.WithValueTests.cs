@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class WithValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenQueryParameterDoesNotExist_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -14,7 +14,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("genre").WithValue("jazz");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "genre" whose value is equal to "jazz",
@@ -22,7 +22,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenQueryParameterHasMultipleValues_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
@@ -30,7 +30,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValue("live");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose value is equal to "live",
@@ -38,7 +38,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueDiffers_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -46,7 +46,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("page").WithValue("3");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "page" whose value is equal to "3",
@@ -58,7 +58,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueDiffersOnlyInCaseAndIgnoringCase_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?genre=Jazz");
@@ -69,14 +69,14 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("https://awexpect.com/tracks?page=2", "page", "2")]
-			[InlineData("https://awexpect.com/tracks?q=a%20b", "q", "a b")]
-			[InlineData("https://awexpect.com/tracks?q=a+b", "q", "a b")]
-			[InlineData("https://awexpect.com/tracks?q=a%3Db", "q", "a=b")]
-			[InlineData("https://awexpect.com/tracks?q=a=b", "q", "a=b")]
-			[InlineData("https://awexpect.com/tracks?explicit", "explicit", "")]
-			[InlineData("https://awexpect.com/tracks?page=", "page", "")]
+			[Test]
+			[Arguments("https://awexpect.com/tracks?page=2", "page", "2")]
+			[Arguments("https://awexpect.com/tracks?q=a%20b", "q", "a b")]
+			[Arguments("https://awexpect.com/tracks?q=a+b", "q", "a b")]
+			[Arguments("https://awexpect.com/tracks?q=a%3Db", "q", "a=b")]
+			[Arguments("https://awexpect.com/tracks?q=a=b", "q", "a=b")]
+			[Arguments("https://awexpect.com/tracks?explicit", "explicit", "")]
+			[Arguments("https://awexpect.com/tracks?page=", "page", "")]
 			public async Task WhenValueIsEqual_ShouldSucceed(string uri, string name, string value)
 			{
 				Uri subject = new(uri);
@@ -87,7 +87,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -95,7 +95,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("page").WithValue("2");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "page" whose value is equal to "2",
@@ -103,7 +103,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks?page=2", UriKind.Relative);
@@ -111,7 +111,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("page").WithValue("2");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "page" whose value is equal to "2",
@@ -122,7 +122,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedWithValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenQueryParameterDoesNotExist_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -133,7 +133,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueDiffers_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -144,7 +144,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsEqual_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -152,7 +152,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasQueryParameter("page").WithValue("2"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a query parameter "page" whose value is equal to "2",
@@ -161,7 +161,7 @@ public sealed partial class ThatUri
 					.Because("the negation applies to the query parameter as a whole, like the negated text of a `Whose`");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks", UriKind.Relative);
@@ -169,7 +169,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasQueryParameter("page").WithValue("2"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was relative").AsWildcard()
 					.Because("a relative URI has no query to inspect, so it fails the expectation and its negation alike");
 			}

@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasHost().EqualTo("awexpect.com");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has host equal to "awexpect.com",
@@ -22,7 +22,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/tracks/1", UriKind.Relative);
@@ -30,7 +30,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasHost().EqualTo("awexpect.com");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has host equal to "awexpect.com",
@@ -38,7 +38,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EndingWith_WhenSubjectHostEndsWithTheExpectedValue_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -49,7 +49,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedHost_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -57,7 +57,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasHost().EqualTo("awexpect.com");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has host equal to "awexpect.com",
@@ -69,7 +69,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedHost_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:8080/tracks/1");
@@ -80,7 +80,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectDoesNotEqualTheExpectedHost_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -91,7 +91,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectEqualsExpectedHost_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -99,7 +99,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasHost().NotEqualTo("www.awexpect.com");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have host equal to "www.awexpect.com",
@@ -110,7 +110,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -118,7 +118,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasHost().EqualTo("awexpect.com"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have host equal to "awexpect.com",
@@ -126,7 +126,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/tracks/1", UriKind.Relative);
@@ -134,7 +134,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasHost().EqualTo("awexpect.com"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have host equal to "awexpect.com",
@@ -143,7 +143,7 @@ public sealed partial class ThatUri
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedHost_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -154,7 +154,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedHost_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -162,7 +162,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasHost().EqualTo("www.awexpect.com"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have host equal to "www.awexpect.com",

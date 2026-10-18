@@ -9,7 +9,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class ExpectationsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -22,7 +22,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentDiffersFromExpected_ShouldFail()
 			{
 				string expected = "other content";
@@ -32,7 +32,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContent(which => which.IsEqualTo(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content which is equal to "other content",
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentEqualsExpected_ShouldSucceed()
 			{
 				string expected = "some content";
@@ -63,7 +63,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -71,7 +71,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContent(which => which.IsEmpty());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content which is empty,

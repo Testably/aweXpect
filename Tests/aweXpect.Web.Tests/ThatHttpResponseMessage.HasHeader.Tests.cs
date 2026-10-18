@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder,];
@@ -18,12 +18,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.HasHeader("x-my-header")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have an "x-my-header" header for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -36,12 +36,12 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("Accept-Ranges", "an")]
-			[InlineData("ETag", "an")]
-			[InlineData("Server", "a")]
-			[InlineData("Upgrade", "an")]
-			[InlineData("X-Request-Id", "an")]
+			[Test]
+			[Arguments("Accept-Ranges", "an")]
+			[Arguments("ETag", "an")]
+			[Arguments("Server", "a")]
+			[Arguments("Upgrade", "an")]
+			[Arguments("X-Request-Id", "an")]
 			public async Task ShouldUseTheIndefiniteArticleOfTheHeaderName(string name, string article)
 			{
 				HttpResponseMessage? subject = null;
@@ -49,7 +49,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader(name);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has {article} "{name}" header,
@@ -57,7 +57,7 @@ public sealed partial class ThatHttpResponseMessage
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -67,7 +67,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader(name);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header,
@@ -81,7 +81,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderExists_ShouldSucceed()
 			{
 				string name = "x-my-header";
@@ -94,7 +94,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -102,7 +102,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-header");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header,

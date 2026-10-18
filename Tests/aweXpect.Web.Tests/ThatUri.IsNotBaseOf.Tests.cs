@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				Uri[] subjects = [new Uri("https://awexpect.com/api/"),];
@@ -16,12 +16,12 @@ public sealed partial class ThatUri
 						.Whose(x => x.Uris, items => items.All()
 							.ComplyWith(item => item.IsNotBaseOf("https://awexpect.com/api/tracks")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Uris are not base URIs of https://awexpect.com/api/tracks for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedStringIsNull_ShouldThrowArgumentNullException()
 			{
 				Uri? subject = null;
@@ -34,7 +34,7 @@ public sealed partial class ThatUri
 					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedUriIsNull_ShouldThrowArgumentNullException()
 			{
 				Uri? subject = null;
@@ -47,10 +47,10 @@ public sealed partial class ThatUri
 					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData("not a uri")]
-			[InlineData("https://")]
+			[Test]
+			[Arguments("")]
+			[Arguments("not a uri")]
+			[Arguments("https://")]
 			public async Task WhenUnexpectedStringIsNoValidAbsoluteUri_ShouldThrowArgumentException(string unexpected)
 			{
 				Uri? subject = null;
@@ -63,7 +63,7 @@ public sealed partial class ThatUri
 					.WithMessage("The 'unexpected' must be a valid absolute URI.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedUriIsRelative_ShouldThrowArgumentException()
 			{
 				Uri? subject = null;
@@ -77,7 +77,7 @@ public sealed partial class ThatUri
 					.Because("a relative URI would be resolved against the subject and thus always be based on it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsBaseOfUnexpected_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/api/");
@@ -85,7 +85,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsNotBaseOf(new Uri("https://awexpect.com/api/tracks/1"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a base URI of https://awexpect.com/api/tracks/1,
@@ -93,7 +93,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotBaseOfUnexpected_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/api/");
@@ -104,7 +104,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotBaseOfUnexpectedString_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/api/");
@@ -115,7 +115,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -123,7 +123,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsNotBaseOf("https://awexpect.com/api/tracks/1");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a base URI of https://awexpect.com/api/tracks/1,
@@ -131,7 +131,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/api/", UriKind.Relative);
@@ -139,7 +139,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).IsNotBaseOf("https://awexpect.com/api/tracks/1");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a base URI of https://awexpect.com/api/tracks/1,
@@ -150,7 +150,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsBaseOfUnexpected_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/api/");
@@ -161,7 +161,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotBaseOfUnexpected_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/api/");
@@ -169,7 +169,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotBaseOf("https://example.com/api/tracks/1"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a base URI of https://example.com/api/tracks/1,
@@ -177,7 +177,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -185,7 +185,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotBaseOf("https://awexpect.com/api/tracks/1"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a base URI of https://awexpect.com/api/tracks/1,
@@ -193,7 +193,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("/api/", UriKind.Relative);
@@ -201,7 +201,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotBaseOf("https://awexpect.com/api/tracks/1"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a base URI of https://awexpect.com/api/tracks/1,

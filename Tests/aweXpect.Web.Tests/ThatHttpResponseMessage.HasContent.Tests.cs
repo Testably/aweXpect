@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
@@ -18,12 +18,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.DoesNotComplyWith(response => response.HasContent("foo"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses do not have a string content equal to "foo" for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
@@ -33,12 +33,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.HasContent("bar")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have a string content equal to "bar" for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -51,7 +51,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentDiffersFromExpected_ShouldFail()
 			{
 				string expected = "other content";
@@ -61,7 +61,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContent(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content equal to "other content",
@@ -79,7 +79,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentEqualsExpected_ShouldSucceed()
 			{
 				string expected = "some content";
@@ -92,7 +92,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -100,7 +100,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContent("some content");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content equal to "some content",
@@ -111,7 +111,7 @@ public sealed partial class ThatHttpResponseMessage
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenContentDiffersFromExpected_ShouldSucceed()
 			{
 				string expected = "other content";
@@ -124,7 +124,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentEqualsExpected_ShouldFail()
 			{
 				string expected = "some content";
@@ -134,7 +134,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasContent(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a string content equal to "some content",
@@ -148,7 +148,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -156,7 +156,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasContent("some content"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a string content equal to "some content",

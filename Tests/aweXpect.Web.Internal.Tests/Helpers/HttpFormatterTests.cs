@@ -9,7 +9,7 @@ namespace aweXpect.Web.Internal.Tests;
 
 public sealed class HttpFormatterTests
 {
-	[Fact]
+	[Test]
 	public async Task Format_HttpRequestMessage_WhenNull_ShouldReturnNullString()
 	{
 		HttpRequestMessage? sut = null;
@@ -19,7 +19,7 @@ public sealed class HttpFormatterTests
 		await That(result).IsEqualTo("<null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Format_HttpRequestMessage_WhenFormattedTwice_ShouldReturnSameText()
 	{
 		HttpRequestMessage sut = new(HttpMethod.Post, "https://aweXpect.com")
@@ -34,10 +34,10 @@ public sealed class HttpFormatterTests
 			.Because("the failure message shows equal contexts only once");
 	}
 
-	[Theory]
-	[InlineData(null, "*Content with unknown length*")]
-	[InlineData("application/my-type", "*Content (application/my-type) with unknown length*")]
-	[InlineData("image/png", "*Content is binary (image/png) with unknown length*")]
+	[Test]
+	[Arguments(null, "*Content with unknown length*")]
+	[Arguments("application/my-type", "*Content (application/my-type) with unknown length*")]
+	[Arguments("image/png", "*Content is binary (image/png) with unknown length*")]
 	public async Task Format_HttpRequestMessage_WhenLengthIsUnknown_ShouldStateThatTheLengthIsUnknown(
 		string? mediaType, string expectedContentLine)
 	{
@@ -64,7 +64,7 @@ public sealed class HttpFormatterTests
 			.Because("the context must not read the content to find out its length");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Format_HttpResponseMessage_WhenFormattedTwice_ShouldReturnSameText()
 	{
 		HttpResponseMessage sut = new()
@@ -79,9 +79,9 @@ public sealed class HttpFormatterTests
 			.Because("the failure message shows equal contexts only once");
 	}
 
-	[Theory]
-	[InlineData("text/plain", "foo")]
-	[InlineData("application/json", "{\"foo\":1}")]
+	[Test]
+	[Arguments("text/plain", "foo")]
+	[Arguments("application/json", "{\"foo\":1}")]
 	public async Task Format_HttpResponseMessage_WhenLengthIsInitiallyUnknown_ShouldReturnSameText(
 		string mediaType, string body)
 	{
@@ -100,10 +100,10 @@ public sealed class HttpFormatterTests
 			.Because("the failure message shows equal contexts only once");
 	}
 
-	[Theory]
-	[InlineData(null, "*Content with unknown length*")]
-	[InlineData("application/my-type", "*Content (application/my-type) with unknown length*")]
-	[InlineData("image/png", "*Content is binary (image/png) with unknown length*")]
+	[Test]
+	[Arguments(null, "*Content with unknown length*")]
+	[Arguments("application/my-type", "*Content (application/my-type) with unknown length*")]
+	[Arguments("image/png", "*Content is binary (image/png) with unknown length*")]
 	public async Task Format_HttpResponseMessage_WhenLengthIsUnknown_ShouldStateThatTheLengthIsUnknown(
 		string? mediaType, string expectedContentLine)
 	{
@@ -130,7 +130,7 @@ public sealed class HttpFormatterTests
 			.Because("the context must not read the content to find out its length");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Format_HttpResponseMessage_WhenNull_ShouldReturnNullString()
 	{
 		HttpResponseMessage? sut = null;

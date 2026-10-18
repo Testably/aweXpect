@@ -8,7 +8,7 @@ public sealed partial class ThatHttpRequestMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
 			{
 				HttpRequestMessage[] subjects = [RequestBuilder,];
@@ -18,12 +18,12 @@ public sealed partial class ThatHttpRequestMessage
 						.Whose(x => x.Requests, items => items.All()
 							.ComplyWith(item => item.DoesNotComplyWith(request => request.HasMethod(HttpMethod.Head))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Requests do not have a HEAD method for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpRequestMessage[] subjects = [RequestBuilder,];
@@ -33,12 +33,12 @@ public sealed partial class ThatHttpRequestMessage
 						.Whose(x => x.Requests, items => items.All()
 							.ComplyWith(item => item.HasMethod(HttpMethod.Get)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Requests have a GET method for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;
@@ -51,10 +51,10 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("HEAD", "a")]
-			[InlineData("OPTIONS", "an")]
-			[InlineData("PATCH", "a")]
+			[Test]
+			[Arguments("HEAD", "a")]
+			[Arguments("OPTIONS", "an")]
+			[Arguments("PATCH", "a")]
 			public async Task ShouldUseTheIndefiniteArticleOfTheMethod(string method, string article)
 			{
 				HttpRequestMessage? subject = null;
@@ -62,7 +62,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasMethod(new HttpMethod(method));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has {article} {method} method,
@@ -70,7 +70,7 @@ public sealed partial class ThatHttpRequestMessage
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodDiffers_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -80,7 +80,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasMethod(HttpMethod.Post);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a POST method,
@@ -91,7 +91,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsExpected_ShouldSucceed()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -103,7 +103,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -111,7 +111,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasMethod(HttpMethod.Delete);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a DELETE method,
@@ -122,10 +122,10 @@ public sealed partial class ThatHttpRequestMessage
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("HEAD", "a")]
-			[InlineData("OPTIONS", "an")]
-			[InlineData("PATCH", "a")]
+			[Test]
+			[Arguments("HEAD", "a")]
+			[Arguments("OPTIONS", "an")]
+			[Arguments("PATCH", "a")]
 			public async Task ShouldUseTheIndefiniteArticleOfTheMethod(string method, string article)
 			{
 				HttpRequestMessage? subject = null;
@@ -133,7 +133,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasMethod(new HttpMethod(method)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have {article} {method} method,
@@ -141,7 +141,7 @@ public sealed partial class ThatHttpRequestMessage
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodDiffers_ShouldSucceed()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -154,7 +154,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsExpected_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -163,7 +163,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasMethod(HttpMethod.Put));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a PUT method,
@@ -174,7 +174,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -182,7 +182,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasMethod(HttpMethod.Delete));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a DELETE method,

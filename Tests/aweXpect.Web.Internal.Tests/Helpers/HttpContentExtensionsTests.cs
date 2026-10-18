@@ -7,7 +7,7 @@ namespace aweXpect.Web.Internal.Tests;
 
 public sealed class HttpContentExtensionsTests
 {
-	[Fact]
+	[Test]
 	public async Task IsNullOrDisposed_WhenDisposed_ShouldReturnTrue()
 	{
 		HttpContent content = new StringContent("");
@@ -18,7 +18,7 @@ public sealed class HttpContentExtensionsTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullOrDisposed_WhenNull_ShouldReturnTrue()
 	{
 		HttpContent? content = null;
@@ -27,7 +27,7 @@ public sealed class HttpContentExtensionsTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetContentLength_WhenDisposed_ShouldReturnFalse()
 	{
 		HttpContent content = new ByteArrayContent([]);
@@ -39,7 +39,7 @@ public sealed class HttpContentExtensionsTests
 		await That(length).IsEqualTo(0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetContentLength_WhenEmpty_ShouldReturnTrue()
 	{
 		HttpContent content = new ByteArrayContent([]);
@@ -50,7 +50,7 @@ public sealed class HttpContentExtensionsTests
 		await That(length).IsEqualTo(0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetContentLength_WhenUnknown_ShouldReturnFalse()
 	{
 		HttpContent content = new StreamContent(new NonSeekableStream([0x1,]));
@@ -62,7 +62,7 @@ public sealed class HttpContentExtensionsTests
 		await That(length).IsEqualTo(0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetMediaType_WhenDisposed_ShouldReturnMediaType()
 	{
 		HttpContent content = new StringContent("");

@@ -8,9 +8,9 @@ public sealed partial class ContentProcessor
 {
 	public sealed class JsonContentProcessorTests
 	{
-		[Theory]
-		[InlineData("application/json")]
-		[InlineData("application/problem+json")]
+		[Test]
+		[Arguments("application/json")]
+		[Arguments("application/problem+json")]
 		public async Task JsonContent_WithInvalidJson_ShouldIncludeRawTextInFailureMessage(
 			string contentType)
 		{
@@ -21,7 +21,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that httpResponse
 				               has status code 202 Accepted,
@@ -36,9 +36,9 @@ public sealed partial class ContentProcessor
 				               """);
 		}
 
-		[Theory]
-		[InlineData("application/json")]
-		[InlineData("application/problem+json")]
+		[Test]
+		[Arguments("application/json")]
+		[Arguments("application/problem+json")]
 		public async Task JsonContent_WithValidJson_ShouldIncludePrettifiedJsonInFailureMessage(
 			string contentType)
 		{
@@ -49,7 +49,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that httpResponse
 				               has status code 202 Accepted,

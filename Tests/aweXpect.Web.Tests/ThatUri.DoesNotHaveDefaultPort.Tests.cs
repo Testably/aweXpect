@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				Uri[] subjects = [new Uri("https://awexpect.com/"),];
@@ -16,12 +16,12 @@ public sealed partial class ThatUri
 						.Whose(x => x.Uris, items => items.All()
 							.ComplyWith(item => item.DoesNotHaveDefaultPort()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Uris do not have the default port for the used scheme for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -29,7 +29,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotHaveDefaultPort();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have the default port for the used scheme,
@@ -37,7 +37,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -45,7 +45,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotHaveDefaultPort();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have the default port for the used scheme,
@@ -53,9 +53,9 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Theory]
-			[InlineData("https://www.awexpect.com:80")]
-			[InlineData("http://www.example.com:443")]
+			[Test]
+			[Arguments("https://www.awexpect.com:80")]
+			[Arguments("http://www.example.com:443")]
 			public async Task WhenSubjectDoesNotHaveTheDefaultPort_ShouldSucceed(string uriString)
 			{
 				Uri subject = new(uriString);
@@ -66,10 +66,10 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("https://www.awexpect.com")]
-			[InlineData("https://www.awexpect.com:443")]
-			[InlineData("http://www.example.com:80")]
+			[Test]
+			[Arguments("https://www.awexpect.com")]
+			[Arguments("https://www.awexpect.com:443")]
+			[Arguments("http://www.example.com:80")]
 			public async Task WhenSubjectHasTheDefaultPort_ShouldFail(string uriString)
 			{
 				Uri subject = new(uriString);
@@ -77,7 +77,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotHaveDefaultPort();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have the default port for the used scheme,
@@ -88,7 +88,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -96,7 +96,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotHaveDefaultPort());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has the default port for the used scheme,
@@ -104,7 +104,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -112,7 +112,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotHaveDefaultPort());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has the default port for the used scheme,
@@ -121,9 +121,9 @@ public sealed partial class ThatUri
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
-			[Theory]
-			[InlineData("https://www.awexpect.com:80")]
-			[InlineData("http://www.example.com:443")]
+			[Test]
+			[Arguments("https://www.awexpect.com:80")]
+			[Arguments("http://www.example.com:443")]
 			public async Task WhenSubjectDoesNotHaveTheDefaultPort_ShouldFail(string uriString)
 			{
 				Uri subject = new(uriString);
@@ -131,7 +131,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotHaveDefaultPort());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has the default port for the used scheme,
@@ -139,10 +139,10 @@ public sealed partial class ThatUri
 					              """);
 			}
 
-			[Theory]
-			[InlineData("https://www.awexpect.com")]
-			[InlineData("https://www.awexpect.com:443")]
-			[InlineData("http://www.example.com:80")]
+			[Test]
+			[Arguments("https://www.awexpect.com")]
+			[Arguments("https://www.awexpect.com:443")]
+			[Arguments("http://www.example.com:80")]
 			public async Task WhenSubjectHasTheDefaultPort_ShouldSucceed(string uriString)
 			{
 				Uri subject = new(uriString);

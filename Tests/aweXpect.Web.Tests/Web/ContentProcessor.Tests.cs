@@ -8,7 +8,7 @@ public sealed partial class ContentProcessor
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task WithDisposedContent_ShouldReturnDefaultText()
 		{
 			StringContent content = new("foo");
@@ -20,7 +20,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that httpResponse
 				             has status code 202 Accepted,
@@ -33,7 +33,7 @@ public sealed partial class ContentProcessor
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithoutContent_ShouldReturnDefaultText()
 		{
 			HttpResponseMessage httpResponse = new HttpResponseBuilder()
@@ -42,7 +42,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that httpResponse
 				             has status code 202 Accepted,

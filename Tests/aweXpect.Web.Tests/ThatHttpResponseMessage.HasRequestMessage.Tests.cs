@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -21,7 +21,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRequestHasDifferentContent_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -32,7 +32,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasRequestMessage(request => request.HasContent("bar"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a request message which has a string content equal to "bar",
@@ -56,7 +56,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRequestHasMatchingContent_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

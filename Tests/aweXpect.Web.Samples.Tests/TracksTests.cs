@@ -2,14 +2,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Xunit;
-using Xunit.Sdk;
 
 namespace aweXpect.Web.Samples.Tests;
 
-public class TracksTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+[ClassDataSource<WebApplicationFactory<Program>>(Shared = SharedType.PerClass)]
+public class TracksTests(WebApplicationFactory<Program> factory)
 {
-	[Fact]
+	[Test]
 	public async Task GetTrack_WhenCheckingForInvalidStatusCode_ShouldHaveFailureMessageFromReadme()
 	{
 		HttpClient httpClient = factory.CreateClient();
@@ -21,7 +20,7 @@ public class TracksTests(WebApplicationFactory<Program> factory) : IClassFixture
 			await Expect.That(response).HasStatusCode(HttpStatusCode.NotFound);
 		}
 
-		await Expect.That(Act).Throws<XunitException>()
+		await Expect.That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that response
 			             has status code 404 NotFound,
@@ -44,7 +43,7 @@ public class TracksTests(WebApplicationFactory<Program> factory) : IClassFixture
 			.Because("the README shows this code and its failure message");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetTracks_ShouldReturn200Ok()
 	{
 		HttpClient client = factory.CreateClient();
@@ -54,7 +53,7 @@ public class TracksTests(WebApplicationFactory<Program> factory) : IClassFixture
 		await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetTracks_ShouldReturnExpectedBody()
 	{
 		HttpClient client = factory.CreateClient();
@@ -76,7 +75,7 @@ public class TracksTests(WebApplicationFactory<Program> factory) : IClassFixture
 			]));
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetTracks_WhenCheckingForInvalidStatusCode_ShouldHaveCorrectFailureMessage()
 	{
 		HttpClient client = factory.CreateClient();
@@ -85,7 +84,7 @@ public class TracksTests(WebApplicationFactory<Program> factory) : IClassFixture
 
 		async Task Act() => await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.NotFound);
 
-		await Expect.That(Act).Throws<XunitException>()
+		await Expect.That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that response
 			             has status code 404 NotFound,

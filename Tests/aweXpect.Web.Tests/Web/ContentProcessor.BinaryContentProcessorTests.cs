@@ -8,7 +8,7 @@ public sealed partial class ContentProcessor
 {
 	public sealed class BinaryContentProcessorTests
 	{
-		[Fact]
+		[Test]
 		public async Task BinaryContentProcessor_Test()
 		{
 			HttpResponseMessage httpResponse = new HttpResponseBuilder().WithContent("foo").WithContentType("text/css");
@@ -16,7 +16,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that httpResponse
 				             has status code 202 Accepted,
@@ -30,14 +30,14 @@ public sealed partial class ContentProcessor
 				             """);
 		}
 
-		[Theory]
-		[InlineData("audio/mp3")]
-		[InlineData("audio/mpeg")]
-		[InlineData("video/mp4")]
-		[InlineData("video/mpeg")]
-		[InlineData("image/gif")]
-		[InlineData("image/webp")]
-		[InlineData("application/pdf")]
+		[Test]
+		[Arguments("audio/mp3")]
+		[Arguments("audio/mpeg")]
+		[Arguments("video/mp4")]
+		[Arguments("video/mpeg")]
+		[Arguments("image/gif")]
+		[Arguments("image/webp")]
+		[Arguments("application/pdf")]
 		public async Task WhenContentTypeIsInterpretedAsBinaryContent_ShouldIncludeContentTypeAndLengthInFailureMessage(
 			string contentType)
 		{
@@ -49,7 +49,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that httpResponse
 				               has status code 202 Accepted,

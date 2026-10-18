@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPath().EqualTo("/tracks/1");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has path equal to "/tracks/1",
@@ -22,7 +22,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -30,7 +30,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPath().EqualTo("tracks/1");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has path equal to "tracks/1",
@@ -38,7 +38,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPathIsEscaped_ShouldCompareTheDecodedPath()
 			{
 				Uri subject = new("https://music.example.com/my%20song/1");
@@ -49,7 +49,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPathContainsPlus_ShouldKeepThePlus()
 			{
 				Uri subject = new("https://music.example.com/rock+roll");
@@ -61,7 +61,7 @@ public sealed partial class ThatUri
 					.Because("a '+' is only a space in form-encoded query strings, not in paths");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasNoPath_ShouldBeSlash()
 			{
 				Uri subject = new("https://music.example.com");
@@ -72,7 +72,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task StartingWith_WhenSubjectPathStartsWithTheExpectedValue_ShouldSucceed()
 			{
 				Uri subject = new("https://music.example.com/tracks/1?page=2#lyrics");
@@ -83,7 +83,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedPath_ShouldFail()
 			{
 				Uri subject = new("https://music.example.com/tracks/1");
@@ -91,7 +91,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPath().EqualTo("/tracks/2");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has path equal to "/tracks/2",
@@ -103,7 +103,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedPath_ShouldSucceed()
 			{
 				Uri subject = new("https://music.example.com/tracks/1?page=2#lyrics");
@@ -114,7 +114,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectEqualsTheExpectedPath_ShouldFail()
 			{
 				Uri subject = new("https://music.example.com/tracks/1");
@@ -122,7 +122,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasPath().NotEqualTo("/tracks/1");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have path equal to "/tracks/1",
@@ -130,7 +130,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectDoesNotEqualTheExpectedPath_ShouldSucceed()
 			{
 				Uri subject = new("https://music.example.com/tracks/1");
@@ -144,7 +144,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -152,7 +152,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPath().EqualTo("/tracks/1"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have path equal to "/tracks/1",
@@ -160,7 +160,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -168,7 +168,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPath().EqualTo("/tracks/2"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have path equal to "/tracks/2",
@@ -177,7 +177,7 @@ public sealed partial class ThatUri
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedPath_ShouldSucceed()
 			{
 				Uri subject = new("https://music.example.com/tracks/1");
@@ -188,7 +188,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedPath_ShouldFail()
 			{
 				Uri subject = new("https://music.example.com/tracks/1");
@@ -196,7 +196,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasPath().EqualTo("/tracks/1"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have path equal to "/tracks/1",
@@ -204,7 +204,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectEqualsExpectedPath_ShouldSucceed()
 			{
 				Uri subject = new("https://music.example.com/tracks/1");

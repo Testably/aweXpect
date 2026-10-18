@@ -7,7 +7,7 @@ public sealed partial class ThatHttpResponseMessage
 {
 	public sealed class CombinedTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAllItemsFailSeveralExpectations_ShouldShowResponseOfItemOnce()
 		{
 			HttpResponseMessage[] subject =
@@ -20,7 +20,7 @@ public sealed partial class ThatHttpResponseMessage
 				=> await That(subject).All().ComplyWith(response
 					=> response.HasHeader("x-b").And.HasStatusCode().Success());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an "x-b" header and has a success status code (2xx) for all items,
@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenDoesNotHaveHeaderAndHasStatusCodeFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -44,7 +44,7 @@ public sealed partial class ThatHttpResponseMessage
 			async Task Act()
 				=> await That(subject).DoesNotHaveHeader("x-a").And.HasStatusCode().Success();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an "x-a" header and has a success status code (2xx),
@@ -58,7 +58,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasContentAndHasStatusCodeFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -70,7 +70,7 @@ public sealed partial class ThatHttpResponseMessage
 					.And.HasContent("baz")
 					.And.HasStatusCode().Success();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a string content which is equal to "bar" and has a string content equal to "baz" and has a success status code (2xx),
@@ -94,7 +94,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasHeaderAndHasStatusCodeFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -104,7 +104,7 @@ public sealed partial class ThatHttpResponseMessage
 				=> await That(subject).HasHeader("x-a").WhoseValue(value => value.IsEqualTo("2"))
 					.And.HasStatusCode().EqualTo(HttpStatusCode.Created);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an "x-a" header whose value is equal to "2" and has status code 201 Created,
@@ -123,7 +123,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasRequestMessageAndHasHeaderFail_ShouldShowRequestAndResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -134,7 +134,7 @@ public sealed partial class ThatHttpResponseMessage
 			async Task Act()
 				=> await That(subject).HasRequestMessage(request => request.HasHeader("y")).And.HasHeader("x");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a request message which has a "y" header and has an "x" header,
@@ -153,7 +153,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasRequestMessageAndHasStatusCodeFail_ShouldShowRequestAndResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -165,7 +165,7 @@ public sealed partial class ThatHttpResponseMessage
 				=> await That(subject).HasRequestMessage(request => request.HasMethod(HttpMethod.Post))
 					.And.HasStatusCode().Success();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a request message which has a POST method and has a success status code (2xx),
@@ -184,7 +184,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasStatusCodeAndHasContentTypeFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -194,7 +194,7 @@ public sealed partial class ThatHttpResponseMessage
 			async Task Act()
 				=> await That(subject).HasStatusCode().Success().And.HasContentType("application/json");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a success status code (2xx) and has a `Content-Type` header equal to "application/json",
@@ -212,7 +212,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasStatusCodeAndHasHeaderFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -222,7 +222,7 @@ public sealed partial class ThatHttpResponseMessage
 			async Task Act()
 				=> await That(subject).HasStatusCode().Success().And.HasHeader("x-missing");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a success status code (2xx) and has an "x-missing" header,
@@ -236,7 +236,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasStatusCodeOrHasHeaderFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -246,7 +246,7 @@ public sealed partial class ThatHttpResponseMessage
 			async Task Act()
 				=> await That(subject).HasStatusCode().Success().Or.HasHeader("x-missing");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a success status code (2xx) or has an "x-missing" header,
@@ -260,7 +260,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyOtherExpectationOnResponseFails_ShouldShowResponse()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -270,7 +270,7 @@ public sealed partial class ThatHttpResponseMessage
 				=> await That(subject).HasStatusCode().Success()
 					.And.Satisfies(response => response?.Headers.Contains("x-b") == true);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a success status code (2xx) and satisfies response => response?.Headers.Contains("x-b") == true,
@@ -284,7 +284,7 @@ public sealed partial class ThatHttpResponseMessage
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoStatusCodeExpectationsFail_ShouldShowResponseOnce()
 		{
 			HttpResponseMessage subject = ResponseBuilder
@@ -294,7 +294,7 @@ public sealed partial class ThatHttpResponseMessage
 			async Task Act()
 				=> await That(subject).HasStatusCode().EqualTo(HttpStatusCode.OK).And.HasStatusCode().Success();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has status code 200 OK and has a success status code (2xx),

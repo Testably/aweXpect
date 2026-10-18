@@ -8,7 +8,7 @@ public sealed partial class ThatHttpRequestMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
 			{
 				HttpRequestMessage[] subjects = [RequestBuilder,];
@@ -18,12 +18,12 @@ public sealed partial class ThatHttpRequestMessage
 						.Whose(x => x.Requests, items => items.All()
 							.ComplyWith(item => item.DoesNotComplyWith(request => request.HasRequestUri("https://awexpect.com/"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Requests do not have a request URI equal to "https://awexpect.com/" ignoring case for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpRequestMessage[] subjects = [RequestBuilder,];
@@ -33,12 +33,12 @@ public sealed partial class ThatHttpRequestMessage
 						.Whose(x => x.Requests, items => items.All()
 							.ComplyWith(item => item.HasRequestUri("https://example.com/")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Requests have a request URI equal to "https://example.com/" ignoring case for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;
@@ -51,7 +51,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedUriIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;
@@ -64,10 +64,10 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData("not a uri")]
-			[InlineData("https://")]
+			[Test]
+			[Arguments("")]
+			[Arguments("not a uri")]
+			[Arguments("https://")]
 			public async Task WhenExpectedStringIsNoValidAbsoluteUri_ShouldThrowArgumentException(string expected)
 			{
 				HttpRequestMessage? subject = null;
@@ -80,7 +80,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("The 'expected' must be a valid absolute URI.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -88,7 +88,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasRequestUri(new Uri("https://awexpect.com"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a request URI equal to "https://awexpect.com/" ignoring case,
@@ -96,7 +96,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUriDiffers_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -106,7 +106,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasRequestUri("https://awexpect.com/awexpect.Web");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a request URI equal to "https://awexpect.com/awexpect.…" ignoring case,
@@ -118,7 +118,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUriHasDifferentCaseBeforeTheDifference_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -128,7 +128,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasRequestUri("https://awexpect.com/abd");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a request URI equal to "https://awexpect.com/abd" ignoring case,
@@ -144,7 +144,7 @@ public sealed partial class ThatHttpRequestMessage
 					.Because("the request URI is compared ignoring case, so the difference in case is not reported");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUriIsExpected_ShouldSucceed()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -159,7 +159,7 @@ public sealed partial class ThatHttpRequestMessage
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -167,7 +167,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasRequestUri(new Uri("https://awexpect.com")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a request URI equal to "https://awexpect.com/" ignoring case,
@@ -175,7 +175,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUriDiffers_ShouldSucceed()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -189,7 +189,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUriIsExpected_ShouldFail()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -198,7 +198,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasRequestUri("https://awexpect.com"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a request URI equal to "https://awexpect.com/" ignoring case,

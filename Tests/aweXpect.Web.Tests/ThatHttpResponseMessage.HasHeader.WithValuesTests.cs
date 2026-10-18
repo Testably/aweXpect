@@ -9,7 +9,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WithValuesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -22,7 +22,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -31,7 +31,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-some-other-key").WithValues("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-some-other-key" header whose values are equal to collection ["foo", "bar"] in order,
@@ -46,7 +46,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderHasAdditionalValues_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -55,7 +55,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
@@ -71,7 +71,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderHasFewerValues_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -80,7 +80,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
@@ -94,7 +94,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderHasSameValuesInDifferentOrder_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -103,7 +103,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,
@@ -119,7 +119,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the values have to match in the order of the header");
 			}
 
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_WhenHeaderHasSameValuesInDifferentOrder_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -131,7 +131,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenHeaderValuesDifferInCasing_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -143,7 +143,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCaseInAnyOrder_WhenHeaderValuesDiffer_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -152,7 +152,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-header").WithValues("foo", "baz").IgnoringCase().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-header" header whose values are equal to collection ["foo", "baz"] ignoring case in any order,
@@ -167,7 +167,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderHasSameValuesInSameOrder_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -179,7 +179,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderHasSingleExpectedValue_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -191,7 +191,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsPassedAsCollection_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -204,7 +204,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKnownHeaderHasCommaSeparatedValues_ShouldCompareTheParsedValues()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -217,7 +217,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("HttpClient parses the comma-separated values of known headers into separate values");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnknownHeaderHasCommaSeparatedValue_ShouldCompareTheWholeValue()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -230,7 +230,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("HttpClient does not split the values of headers it does not know");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -238,7 +238,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasHeader("x-my-key").WithValues("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an "x-my-key" header whose values are equal to collection ["foo", "bar"] in order,
@@ -246,7 +246,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_Negated_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -254,7 +254,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasHeader("x-my-key").WithValues("foo", "bar"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was <null>").AsWildcard()
 					.Because("a null subject fails the expectation and its negation alike");
 			}
@@ -262,7 +262,7 @@ public sealed partial class ThatHttpResponseMessage
 
 		public sealed class NegatedWithValuesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenHeaderValuesDiffer_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -275,7 +275,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenHeaderValuesAreEqual_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -285,7 +285,7 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.HasHeader("x-my-header").WithValues("foo", "bar"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an "x-my-header" header whose values are equal to collection ["foo", "bar"] in order,

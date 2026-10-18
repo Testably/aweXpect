@@ -8,7 +8,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class WithValuesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				Uri? subject = null;
@@ -21,7 +21,7 @@ public sealed partial class ThatUri
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedArrayIsNull_ShouldThrowArgumentNullException()
 			{
 				Uri? subject = null;
@@ -34,7 +34,7 @@ public sealed partial class ThatUri
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenQueryParameterDoesNotExist_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -42,7 +42,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValues("live", "remastered");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
@@ -50,7 +50,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreEqual_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&page=2&tag=remastered");
@@ -61,7 +61,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreEqualAsCollection_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
@@ -73,7 +73,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSingleValueIsEqual_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?page=2");
@@ -84,7 +84,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreInDifferentOrder_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
@@ -92,7 +92,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValues("remastered", "live");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["remastered", "live"] in order,
@@ -101,7 +101,7 @@ public sealed partial class ThatUri
 					.Because("the values are compared in the order in which they appear in the URI");
 			}
 
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_WhenValuesAreInDifferentOrder_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
@@ -112,7 +112,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenValuesDifferInCasing_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=Live&tag=Remastered");
@@ -123,7 +123,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCaseInAnyOrder_WhenValuesDiffer_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=Remastered&tag=Live");
@@ -132,7 +132,7 @@ public sealed partial class ThatUri
 					=> await That(subject).HasQueryParameter("tag").WithValues("live", "acoustic").IgnoringCase()
 						.InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live", "acoustic"] ignoring case in any order,
@@ -140,7 +140,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesContainAdditionalItems_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
@@ -148,7 +148,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValues("live");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
@@ -156,7 +156,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreMissingItems_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live");
@@ -164,7 +164,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValues("live", "remastered");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
@@ -172,7 +172,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -180,7 +180,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValues("live");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
@@ -188,7 +188,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks?tag=live", UriKind.Relative);
@@ -196,7 +196,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasQueryParameter("tag").WithValues("live");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a query parameter "tag" whose values are equal to collection ["live"] in order,
@@ -207,7 +207,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedWithValuesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreEqual_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
@@ -216,7 +216,7 @@ public sealed partial class ThatUri
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.HasQueryParameter("tag").WithValues("live", "remastered"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a query parameter "tag" whose values are equal to collection ["live", "remastered"] in order,
@@ -224,7 +224,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks?tag=live", UriKind.Relative);
@@ -232,12 +232,12 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasQueryParameter("tag").WithValues("live"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was relative").AsWildcard()
 					.Because("a relative URI has no query to inspect, so it fails the expectation and its negation alike");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesDiffer_ShouldSucceed()
 			{
 				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");

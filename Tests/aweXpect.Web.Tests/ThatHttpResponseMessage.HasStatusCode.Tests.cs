@@ -9,7 +9,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder,];
@@ -19,12 +19,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.HasStatusCode(HttpStatusCode.NotFound)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have status code 404 NotFound for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFailing_ShouldIncludeRequestInMessage()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -36,7 +36,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has status code 200 OK,
@@ -56,7 +56,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFailing_ShouldIncludeResponseContentAndStatusCodeInMessage()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -66,7 +66,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has status code 200 OK,
@@ -80,7 +80,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenResponseHasNoContent_ShouldIncludeResponseInMessage()
 			{
 				HttpResponseMessage subject = new(HttpStatusCode.BadRequest);
@@ -88,7 +88,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has status code 200 OK,
@@ -100,7 +100,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the content of a new response is null on the .NET Framework and empty otherwise");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStatusCodeDiffersFromExpected_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -109,14 +109,14 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Theory]
-			[MemberData(nameof(SuccessStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(RedirectStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ClientErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ServerErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(SuccessStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(RedirectStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ClientErrorStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ServerErrorStatusCodes))]
 			public async Task WhenStatusCodeIsExpected_ShouldSucceed(HttpStatusCode statusCode)
 			{
 				HttpStatusCode expected = statusCode;
@@ -129,7 +129,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -137,7 +137,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode(HttpStatusCode.Accepted);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has status code 202 Accepted,

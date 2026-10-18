@@ -9,7 +9,7 @@ public sealed partial class ThatHttpRequestMessage
 	{
 		public sealed class ExpectationsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;
@@ -22,7 +22,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentDiffersFromExpected_ShouldFail()
 			{
 				string expected = "other content";
@@ -32,7 +32,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasContent(which => which.IsEqualTo(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content which is equal to "other content",
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentEqualsExpected_ShouldSucceed()
 			{
 				string expected = "some content";
@@ -63,7 +63,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentIsNull_ShouldFail()
 			{
 				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");
@@ -71,7 +71,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasContent(which => which.IsEmpty());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content which is empty,
@@ -82,7 +82,7 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -90,7 +90,7 @@ public sealed partial class ThatHttpRequestMessage
 				async Task Act()
 					=> await That(subject).HasContent(which => which.IsEmpty());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a string content which is empty,

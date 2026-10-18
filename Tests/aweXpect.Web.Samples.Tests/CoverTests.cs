@@ -2,14 +2,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Xunit;
-using Xunit.Sdk;
 
 namespace aweXpect.Web.Samples.Tests;
 
-public class CoverTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+[ClassDataSource<WebApplicationFactory<Program>>(Shared = SharedType.PerClass)]
+public class CoverTests(WebApplicationFactory<Program> factory)
 {
-	[Fact]
+	[Test]
 	public async Task GetCover_ShouldReturnStatusCode200Ok()
 	{
 		HttpClient client = factory.CreateClient();
@@ -19,7 +18,7 @@ public class CoverTests(WebApplicationFactory<Program> factory) : IClassFixture<
 		await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetCover_WhenContentTypeDoesNotMatch_ShouldFail()
 	{
 		HttpClient client = factory.CreateClient();
@@ -29,7 +28,7 @@ public class CoverTests(WebApplicationFactory<Program> factory) : IClassFixture<
 		async Task Act() =>
 			await Expect.That(response).HasContentType("image/jpg");
 
-		await Expect.That(Act).Throws<XunitException>()
+		await Expect.That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that response
 			             has a `Content-Type` header equal to "image/jpg",

@@ -11,9 +11,9 @@ public sealed partial class ContentProcessor
 {
 	public sealed class StringContentProcessorTests
 	{
-		[Theory]
-		[InlineData("application/json")]
-		[InlineData("application/problem+json")]
+		[Test]
+		[Arguments("application/json")]
+		[Arguments("application/problem+json")]
 		public async Task JsonString_WithoutJsonProcessor_ShouldIncludeTextContentInFailureMessage(
 			string contentType)
 		{
@@ -26,7 +26,7 @@ public sealed partial class ContentProcessor
 				async Task Act()
 					=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that httpResponse
 					               has status code 202 Accepted,
@@ -41,7 +41,7 @@ public sealed partial class ContentProcessor
 			}
 		}
 
-		[Fact]
+		[Test]
 		public async Task TextFile_ShouldIncludeTextContentInFailureMessage()
 		{
 			string content = """
@@ -56,7 +56,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that httpResponse
 				               has status code 202 Accepted,
@@ -72,12 +72,12 @@ public sealed partial class ContentProcessor
 				               """);
 		}
 
-		[Theory]
-		[InlineData("application/xml")]
-		[InlineData("application/html")]
-		[InlineData("text/plain")]
-		[InlineData("text/csv")]
-		[InlineData("text/html")]
+		[Test]
+		[Arguments("application/xml")]
+		[Arguments("application/html")]
+		[Arguments("text/plain")]
+		[Arguments("text/csv")]
+		[Arguments("text/html")]
 		public async Task WhenContentTypeIsInterpretedAsStringContent_ShouldIncludeTextContentInFailureMessage(
 			string contentType)
 		{
@@ -88,7 +88,7 @@ public sealed partial class ContentProcessor
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that httpResponse
 				               has status code 202 Accepted,

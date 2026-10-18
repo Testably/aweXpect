@@ -6,7 +6,7 @@ public sealed partial class ThatUri
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasScheme().EqualTo("https");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has scheme equal to "https",
@@ -22,7 +22,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -30,7 +30,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasScheme().EqualTo("https");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has scheme equal to "https",
@@ -38,7 +38,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -49,7 +49,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -57,7 +57,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasScheme().EqualTo("http");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has scheme equal to "http",
@@ -66,7 +66,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedScheme_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -77,7 +77,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -85,7 +85,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).HasScheme().NotEqualTo("https");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have scheme equal to "https",
@@ -93,7 +93,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectEqualsExpectedScheme_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -107,7 +107,7 @@ public sealed partial class ThatUri
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Uri? subject = null;
@@ -115,7 +115,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have scheme equal to "https",
@@ -123,7 +123,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsRelative_ShouldFail()
 			{
 				Uri subject = new("tracks/1", UriKind.Relative);
@@ -131,7 +131,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have scheme equal to "https",
@@ -140,7 +140,7 @@ public sealed partial class ThatUri
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -148,7 +148,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().Containing("http"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have scheme containing "http",
@@ -156,7 +156,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -167,7 +167,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenSubjectEqualsExpectedScheme_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -175,7 +175,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have scheme equal to "https",
@@ -183,7 +183,7 @@ public sealed partial class ThatUri
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -194,7 +194,7 @@ public sealed partial class ThatUri
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenSubjectEqualsExpectedScheme_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -202,7 +202,7 @@ public sealed partial class ThatUri
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().NotEqualTo("http"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has scheme equal to "http",

@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WithTitleTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTitleIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -21,7 +21,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second title would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second title would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'title' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleIsNullAfterStatus_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'title' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleDiffersInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -77,9 +77,9 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar")]
-			[InlineData("foo", "FOO")]
+			[Test]
+			[Arguments("foo", "bar")]
+			[Arguments("foo", "FOO")]
 			public async Task WhenTitleDoesNotMatch_ShouldFail(string actualTitle, string expectedTitle)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -93,7 +93,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithTitle(expectedTitle);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type and title "{{expectedTitle}}",
@@ -114,7 +114,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleDoesNotMatch_WithIgnoringCase_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -128,7 +128,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithTitle("FOX").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with any type and title "FOX" ignoring case,
@@ -150,7 +150,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the title is compared ignoring case, so the difference in case is not reported");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleMatches_AndContentHasDetailAndInstance_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -170,7 +170,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the detail and instance are not compared, when they are not expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTitleMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

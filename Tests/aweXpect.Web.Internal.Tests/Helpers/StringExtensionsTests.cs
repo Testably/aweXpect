@@ -4,9 +4,9 @@ namespace aweXpect.Web.Internal.Tests;
 
 public sealed class StringExtensionsTests
 {
-	[Theory]
-	[InlineData(null)]
-	[InlineData("foo")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("foo")]
 	public async Task Indent_WhenIndentationIsEmpty_ShouldReturnInput(string? input)
 	{
 		string? result = input.Indent("");
@@ -14,9 +14,9 @@ public sealed class StringExtensionsTests
 		await That(result).IsEqualTo(input);
 	}
 
-	[Theory]
-	[InlineData(null)]
-	[InlineData("foo")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("foo")]
 	public async Task Indent_WhenIndentationIsNull_ShouldReturnInput(string? input)
 	{
 		string? result = input.Indent(null);
@@ -24,7 +24,7 @@ public sealed class StringExtensionsTests
 		await That(result).IsEqualTo(input);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Indent_WhenNull_ShouldReturnNull()
 	{
 		string? input = null;
@@ -34,12 +34,12 @@ public sealed class StringExtensionsTests
 		await That(result).IsNull();
 	}
 
-	[Theory]
-	[InlineData(true, """
+	[Test]
+	[Arguments(true, """
 	                    foo
 	                    bar
 	                  """)]
-	[InlineData(false, """
+	[Arguments(false, """
 	                   foo
 	                     bar
 	                   """)]

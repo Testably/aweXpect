@@ -9,8 +9,8 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class ClientErrorTests
 		{
-			[Theory]
-			[MemberData(nameof(ClientErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ClientErrorStatusCodes))]
 			public async Task WhenStatusCodeIsExpected_ShouldSucceed(HttpStatusCode statusCode)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -22,10 +22,10 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(SuccessStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(RedirectStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ServerErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(SuccessStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(RedirectStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ServerErrorStatusCodes))]
 			public async Task WhenStatusCodeIsUnexpected_ShouldFail(HttpStatusCode statusCode)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -34,12 +34,12 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode().ClientError();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*has a client error status code (4xx)*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode().ClientError();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a client error status code (4xx),

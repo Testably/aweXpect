@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
@@ -18,12 +18,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.DoesNotComplyWith(response => response.HasProblemDetailsContent())));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses do not have a ProblemDetails content for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
@@ -33,12 +33,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.HasProblemDetailsContent()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have a ProblemDetails content with any type for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldCombineMultipleChecks()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -56,7 +56,7 @@ public sealed partial class ThatHttpResponseMessage
 						.WithStatus(404)
 						.WithInstance("could-be-SOME-guid ").IgnoringTrailingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with type "FOO" ignoring case, title "BAR", status 404 and instance "could-be-SOME-guid " ignoring trailing whitespace,
@@ -84,7 +84,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentHasMembersThatAreNotExpected_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -105,9 +105,9 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("only the expected members of the problem details are compared");
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData("  ")]
+			[Test]
+			[Arguments("")]
+			[Arguments("  ")]
 			public async Task WhenContentIsEmpty_ShouldFail(string content)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -116,7 +116,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with type "foo",
@@ -130,11 +130,11 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("an empty body cannot be inspected and must not let the JSON exception escape");
 			}
 
-			[Theory]
-			[InlineData("[]")]
-			[InlineData("\"foo\"")]
-			[InlineData("42")]
-			[InlineData("null")]
+			[Test]
+			[Arguments("[]")]
+			[Arguments("\"foo\"")]
+			[Arguments("42")]
+			[Arguments("null")]
 			public async Task WhenContentIsNotAJsonObject_ShouldFail(string content)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -143,7 +143,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent("foo").WithTitle("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has a ProblemDetails content with type "foo" and title "bar",
@@ -158,7 +158,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("problem details must be a JSON object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentIsNotJson_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -167,7 +167,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with type "foo",
@@ -182,14 +182,14 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a non-JSON body must fail the expectation instead of letting the JSON exception escape");
 			}
 
-			[Theory]
-			[InlineData("type", "42", "was a Number, not a String")]
-			[InlineData("title", "{}", "was an Object, not a String")]
-			[InlineData("detail", "[]", "was an Array, not a String")]
-			[InlineData("instance", "true", "was a Boolean, not a String")]
-			[InlineData("status", "\"400\"", "was a String, not a Number")]
-			[InlineData("status", "400.5", "was 400.5, which is not a 32-bit integer")]
-			[InlineData("status", "2147483648", "was 2147483648, which is not a 32-bit integer")]
+			[Test]
+			[Arguments("type", "42", "was a Number, not a String")]
+			[Arguments("title", "{}", "was an Object, not a String")]
+			[Arguments("detail", "[]", "was an Array, not a String")]
+			[Arguments("instance", "true", "was a Boolean, not a String")]
+			[Arguments("status", "\"400\"", "was a String, not a Number")]
+			[Arguments("status", "400.5", "was 400.5, which is not a 32-bit integer")]
+			[Arguments("status", "2147483648", "was 2147483648, which is not a 32-bit integer")]
 			public async Task WhenMemberHasWrongType_ShouldFail(string member, string value, string reason)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -202,7 +202,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type,
@@ -219,7 +219,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a wrongly typed standard member must fail the expectation instead of letting the JSON exception escape");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMembersAreNull_ShouldTreatThemAsAbsent()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -240,7 +240,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a null optional member is equivalent to an absent one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeIsSpecified_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -253,7 +253,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with type "foo",
@@ -269,7 +269,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -277,7 +277,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with type "foo",
@@ -285,7 +285,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDiffersInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -301,9 +301,9 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar")]
-			[InlineData("foo", "FOO")]
+			[Test]
+			[Arguments("foo", "bar")]
+			[Arguments("foo", "FOO")]
 			public async Task WhenTypeDoesNotMatch_ShouldFail(string actualType, string expectedType)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -316,7 +316,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent(expectedType);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with type "{{expectedType}}",
@@ -336,7 +336,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -355,7 +355,7 @@ public sealed partial class ThatHttpResponseMessage
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenContentIsEmpty_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -364,7 +364,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a ProblemDetails content with type "foo",
@@ -378,7 +378,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a subject that cannot be inspected fails both ways");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentIsNotAJsonObject_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -387,7 +387,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a ProblemDetails content,
@@ -402,7 +402,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a subject that cannot be inspected fails both ways");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentIsNotJson_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -411,7 +411,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a ProblemDetails content with type "foo",
@@ -426,14 +426,14 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a subject that cannot be inspected fails both ways");
 			}
 
-			[Theory]
-			[InlineData("type", "42", "was a Number, not a String")]
-			[InlineData("title", "{}", "was an Object, not a String")]
-			[InlineData("detail", "[]", "was an Array, not a String")]
-			[InlineData("instance", "true", "was a Boolean, not a String")]
-			[InlineData("status", "\"400\"", "was a String, not a Number")]
-			[InlineData("status", "400.5", "was 400.5, which is not a 32-bit integer")]
-			[InlineData("status", "2147483648", "was 2147483648, which is not a 32-bit integer")]
+			[Test]
+			[Arguments("type", "42", "was a Number, not a String")]
+			[Arguments("title", "{}", "was an Object, not a String")]
+			[Arguments("detail", "[]", "was an Array, not a String")]
+			[Arguments("instance", "true", "was a Boolean, not a String")]
+			[Arguments("status", "\"400\"", "was a String, not a Number")]
+			[Arguments("status", "400.5", "was 400.5, which is not a 32-bit integer")]
+			[Arguments("status", "2147483648", "was 2147483648, which is not a 32-bit integer")]
 			public async Task WhenMemberHasWrongType_ShouldFail(string member, string value, string reason)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -446,7 +446,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               does not have a ProblemDetails content,
@@ -463,9 +463,9 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a subject that cannot be inspected fails both ways");
 			}
 
-			[Theory]
-			[InlineData("foo", "bar")]
-			[InlineData("foo", "FOO")]
+			[Test]
+			[Arguments("foo", "bar")]
+			[Arguments("foo", "FOO")]
 			public async Task WhenTypeDoesNotMatch_ShouldSucceed(string actualType, string expectedType)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -481,7 +481,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatches_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -494,7 +494,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a ProblemDetails content with type "foo",

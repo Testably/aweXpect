@@ -9,7 +9,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
@@ -19,12 +19,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.HasContentType("application/json")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have a `Content-Type` header equal to "application/json" for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -37,7 +37,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'expected' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentTypeDiffersFromExpected_ShouldFail()
 			{
 				string expected = "text/content-type";
@@ -48,7 +48,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContentType(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a `Content-Type` header equal to "text/content-type",
@@ -66,7 +66,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentTypeEqualsExpected_ShouldSucceed()
 			{
 				string expected = "some/content";
@@ -79,7 +79,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentTypeHeaderIsNotSet_ShouldFail()
 			{
 				string expected = "text/content-type";
@@ -89,7 +89,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContentType(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a `Content-Type` header equal to "text/content-type",
@@ -102,7 +102,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -110,7 +110,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasContentType("some content").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a `Content-Type` header equal to "some content" ignoring case,
@@ -121,7 +121,7 @@ public sealed partial class ThatHttpResponseMessage
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenContentTypeDiffersFromExpected_ShouldFail()
 			{
 				string expected = "text/content-type";
@@ -135,7 +135,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentTypeEqualsExpected_ShouldFail()
 			{
 				string expected = "some/content-type";
@@ -145,7 +145,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasContentType(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a `Content-Type` header equal to "some/content-type",
@@ -159,7 +159,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentTypeHeaderIsNotSet_ShouldSucceed()
 			{
 				string expected = "text/content-type";

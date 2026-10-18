@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WithStatusTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenStatusIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -21,7 +21,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second status would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStatusIsSpecifiedTwiceAroundTitle_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -34,9 +34,9 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second status would silently replace the first one");
 			}
 
-			[Theory]
-			[InlineData(200, 400)]
-			[InlineData(404, 201)]
+			[Test]
+			[Arguments(200, 400)]
+			[Arguments(404, 201)]
 			public async Task WhenStatusDoesNotMatch_ShouldFail(int actualStatus, int expectedStatus)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithStatus(expectedStatus);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type and status {{expectedStatus}},
@@ -67,7 +67,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStatusMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

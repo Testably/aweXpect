@@ -6,7 +6,7 @@ namespace aweXpect.Tests.Web;
 
 public sealed class WebAwexpectCustomizationExtensionsTests
 {
-	[Fact]
+	[Test]
 	public async Task ContentProcessors_Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()
 	{
 		AwexpectCustomization customization = new();
@@ -27,7 +27,7 @@ public sealed class WebAwexpectCustomizationExtensionsTests
 			.Because("after all lifetimes in the current flow are disposed, the global value applies again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ContentProcessors_Get_ShouldDefaultToJsonStringAndBinaryContentProcessors()
 	{
 		AwexpectCustomization customization = new();
@@ -40,7 +40,7 @@ public sealed class WebAwexpectCustomizationExtensionsTests
 		await That(result[2]).Is<BinaryContentProcessor>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ContentProcessors_SetGlobal_ShouldApplyToAsyncFlowsThatDidNotSetTheValue()
 	{
 		AwexpectCustomization customization = new();
@@ -52,7 +52,7 @@ public sealed class WebAwexpectCustomizationExtensionsTests
 			.Because("a global value is visible to all async flows, also to the caller of the method that set it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ContentProcessors_SetNull_ShouldThrowArgumentNullExceptionAndKeepValue()
 	{
 		AwexpectCustomization customization = new();

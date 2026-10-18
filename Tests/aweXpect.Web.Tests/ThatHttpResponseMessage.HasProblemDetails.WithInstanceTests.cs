@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WithInstanceTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenInstanceIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -21,7 +21,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second instance would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInstanceIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second instance would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInstanceIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'instance' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInstanceIsNullAfterStatus_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'instance' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInstanceDiffersInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -77,9 +77,9 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar")]
-			[InlineData("foo", "FOO")]
+			[Test]
+			[Arguments("foo", "bar")]
+			[Arguments("foo", "FOO")]
 			public async Task WhenInstanceDoesNotMatch_ShouldFail(string actualInstance, string expectedInstance)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -93,7 +93,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithInstance(expectedInstance);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type and instance "{{expectedInstance}}",
@@ -114,7 +114,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInstanceMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

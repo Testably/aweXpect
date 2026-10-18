@@ -8,7 +8,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WithDetailTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDetailIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -21,7 +21,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second detail would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDetailIsSpecifiedTwiceAroundStatus_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -34,7 +34,7 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("the second detail would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDetailIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'detail' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDetailIsNullAfterStatus_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("The 'detail' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDetailDiffersInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -77,9 +77,9 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar")]
-			[InlineData("foo", "FOO")]
+			[Test]
+			[Arguments("foo", "bar")]
+			[Arguments("foo", "FOO")]
 			public async Task WhenDetailDoesNotMatch_ShouldFail(string actualDetail, string expectedDetail)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -93,7 +93,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasProblemDetailsContent().WithDetail(expectedDetail);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type and detail "{{expectedDetail}}",
@@ -114,7 +114,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDetailMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

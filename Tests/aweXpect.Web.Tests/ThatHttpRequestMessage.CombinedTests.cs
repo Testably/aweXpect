@@ -6,7 +6,7 @@ public sealed partial class ThatHttpRequestMessage
 {
 	public sealed class CombinedTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenHasContentAndHasRequestUriFail_ShouldShowRequestOnce()
 		{
 			HttpRequestMessage subject = RequestBuilder
@@ -16,7 +16,7 @@ public sealed partial class ThatHttpRequestMessage
 			async Task Act()
 				=> await That(subject).HasContent("bar").And.HasRequestUri("https://example.com");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a string content equal to "bar" and has a request URI equal to "https://example.com/" ignoring case,
@@ -39,7 +39,7 @@ public sealed partial class ThatHttpRequestMessage
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHasMethodAndHasHeaderFail_ShouldShowRequestOnce()
 		{
 			HttpRequestMessage subject = RequestBuilder
@@ -50,7 +50,7 @@ public sealed partial class ThatHttpRequestMessage
 			async Task Act()
 				=> await That(subject).HasMethod(HttpMethod.Post).And.HasHeader("y");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a POST method and has a "y" header,

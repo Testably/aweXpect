@@ -8,7 +8,7 @@ public sealed partial class ThatIPAddress
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				IPAddress[] subjects = [IPAddress.Loopback,];
@@ -18,12 +18,12 @@ public sealed partial class ThatIPAddress
 						.Whose(x => x.Addresses, items => items.All()
 							.ComplyWith(item => item.IsNotIPv4()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Addresses are not IPv4 addresses for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsIPv4_ShouldFail()
 			{
 				IPAddress subject = IPAddress.Parse("10.0.0.1");
@@ -31,7 +31,7 @@ public sealed partial class ThatIPAddress
 				async Task Act()
 					=> await That(subject).IsNotIPv4();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an IPv4 address,
@@ -39,7 +39,7 @@ public sealed partial class ThatIPAddress
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsIPv6_ShouldSucceed()
 			{
 				IPAddress subject = IPAddress.Parse("2001:db8::1");
@@ -50,7 +50,7 @@ public sealed partial class ThatIPAddress
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IPAddress? subject = null;
@@ -58,7 +58,7 @@ public sealed partial class ThatIPAddress
 				async Task Act()
 					=> await That(subject).IsNotIPv4();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an IPv4 address,
@@ -69,7 +69,7 @@ public sealed partial class ThatIPAddress
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsIPv4_ShouldSucceed()
 			{
 				IPAddress subject = IPAddress.Parse("10.0.0.1");
@@ -80,7 +80,7 @@ public sealed partial class ThatIPAddress
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsIPv6_ShouldFail()
 			{
 				IPAddress subject = IPAddress.Parse("2001:db8::1");
@@ -88,7 +88,7 @@ public sealed partial class ThatIPAddress
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotIPv4());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an IPv4 address,
@@ -96,7 +96,7 @@ public sealed partial class ThatIPAddress
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IPAddress? subject = null;
@@ -104,7 +104,7 @@ public sealed partial class ThatIPAddress
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotIPv4());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an IPv4 address,

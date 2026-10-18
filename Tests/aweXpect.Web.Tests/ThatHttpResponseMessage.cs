@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using aweXpect.Web.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
@@ -10,7 +11,7 @@ public sealed partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Status codes indicating a client error (4xx)
 	/// </summary>
-	public static TheoryData<HttpStatusCode> ClientErrorStatusCodes()
+	public static IEnumerable<HttpStatusCode> ClientErrorStatusCodes()
 		=>
 		[
 			HttpStatusCode.BadRequest,
@@ -36,7 +37,7 @@ public sealed partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Status codes indicating a redirect (3xx)
 	/// </summary>
-	public static TheoryData<HttpStatusCode> RedirectStatusCodes()
+	public static IEnumerable<HttpStatusCode> RedirectStatusCodes()
 		=>
 		[
 			HttpStatusCode.MultipleChoices,
@@ -52,7 +53,7 @@ public sealed partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Status codes indicating a server error (5xx)
 	/// </summary>
-	public static TheoryData<HttpStatusCode> ServerErrorStatusCodes()
+	public static IEnumerable<HttpStatusCode> ServerErrorStatusCodes()
 		=>
 		[
 			HttpStatusCode.InternalServerError,
@@ -66,7 +67,7 @@ public sealed partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Status codes indicating success (2xx)
 	/// </summary>
-	public static TheoryData<HttpStatusCode> SuccessStatusCodes()
+	public static IEnumerable<HttpStatusCode> SuccessStatusCodes()
 		=>
 		[
 			HttpStatusCode.OK,

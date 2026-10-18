@@ -9,7 +9,7 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class DifferentToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder,];
@@ -19,12 +19,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.DoesNotComplyWith(response => response.HasStatusCode().DifferentTo(HttpStatusCode.NotFound))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have status code 404 NotFound for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder,];
@@ -34,12 +34,12 @@ public sealed partial class ThatHttpResponseMessage
 						.Whose(x => x.Responses, items => items.All()
 							.ComplyWith(item => item.HasStatusCode().DifferentTo(HttpStatusCode.OK)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""*whose Responses have status code different to 200 OK for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStatusCodeDiffersFromExpected_ShouldSucceed()
 			{
 				HttpStatusCode unexpected = HttpStatusCode.OK;
@@ -52,11 +52,11 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(SuccessStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(RedirectStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ClientErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ServerErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(SuccessStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(RedirectStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ClientErrorStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ServerErrorStatusCodes))]
 			public async Task WhenStatusCodeIsUnexpected_ShouldFail(HttpStatusCode statusCode)
 			{
 				HttpStatusCode unexpected = statusCode;
@@ -66,12 +66,12 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode().DifferentTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*status code different to*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -79,7 +79,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode().DifferentTo(HttpStatusCode.Accepted);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has status code different to 202 Accepted,

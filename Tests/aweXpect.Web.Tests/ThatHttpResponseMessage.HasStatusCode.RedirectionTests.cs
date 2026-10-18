@@ -9,8 +9,8 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class RedirectionTests
 		{
-			[Theory]
-			[MemberData(nameof(RedirectStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(RedirectStatusCodes))]
 			public async Task WhenStatusCodeIsExpected_ShouldSucceed(HttpStatusCode statusCode)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -22,10 +22,10 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(SuccessStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ClientErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
-			[MemberData(nameof(ServerErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(SuccessStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ClientErrorStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ServerErrorStatusCodes))]
 			public async Task WhenStatusCodeIsUnexpected_ShouldFail(HttpStatusCode statusCode)
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -34,12 +34,12 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode().Redirection();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*has a redirection status code (3xx)*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatHttpResponseMessage
 				async Task Act()
 					=> await That(subject).HasStatusCode().Redirection();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a redirection status code (3xx),
