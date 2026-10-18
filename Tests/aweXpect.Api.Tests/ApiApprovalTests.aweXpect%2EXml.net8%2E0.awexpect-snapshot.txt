@@ -1,12 +1,6 @@
+[assembly: System.Reflection.AssemblyMetadata("IsTrimmable", "True")]
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Xml.git")]
-[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
-namespace aweXpect.Results
-{
-    public sealed class XmlWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
-    {
-        public aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> Which(System.Action<aweXpect.Core.IThat<System.Xml.Linq.XElement?>> expectations) { }
-    }
-}
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName = ".NET 8.0")]
 namespace aweXpect
 {
     public static class ThatXDocument
@@ -46,8 +40,14 @@ namespace aweXpect
     }
     public static class XmlExtensions
     {
-        public static TResult AsXml<TResult>(this TResult result, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null)
-            where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+        public static TResult AsXml<TResult>(this TResult result, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+    }
+}
+namespace aweXpect.Results
+{
+    public sealed class XmlWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
+    {
+        public aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> Which(System.Action<aweXpect.Core.IThat<System.Xml.Linq.XElement?>> expectations) { }
     }
 }
 namespace aweXpect.Xml
@@ -63,3 +63,4 @@ namespace aweXpect.Xml
         public static aweXpect.Xml.XmlOptions IgnoringMember(this aweXpect.Xml.XmlOptions @this, string memberToIgnore) { }
     }
 }
+
