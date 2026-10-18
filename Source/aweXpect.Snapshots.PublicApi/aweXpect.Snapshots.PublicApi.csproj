@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Description>Public API snapshots for aweXpect.</Description>
+		<!-- Roslyn, which reads the assembly, can neither be trimmed nor published with Native AOT. -->
+		<IsTrimmable>false</IsTrimmable>
+		<IsAotCompatible>false</IsAotCompatible>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+	</ItemGroup>
+
+</Project>

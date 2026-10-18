@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+	    A library whose public API covers the language features, so that the tests compare its written public API. Its
+	    code exists for the shapes of its declarations, e.g. public fields or unused type parameters, so it is not analyzed.
+	-->
+	<PropertyGroup>
+		<IsTestProject>false</IsTestProject>
+		<SonarQubeExclude>true</SonarQubeExclude>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Remove="xunit"/>
+		<PackageReference Remove="xunit.runner.visualstudio"/>
+		<PackageReference Remove="Microsoft.NET.Test.Sdk"/>
+		<PackageReference Remove="coverlet.collector"/>
+		<PackageReference Remove="aweXpect"/>
+	</ItemGroup>
+
+</Project>

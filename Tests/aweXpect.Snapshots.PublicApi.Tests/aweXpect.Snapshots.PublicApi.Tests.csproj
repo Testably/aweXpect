@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.PublicApi\aweXpect.Snapshots.PublicApi.csproj"/>
+		<ProjectReference Include="..\aweXpect.Snapshots.PublicApi.Fixture\aweXpect.Snapshots.PublicApi.Fixture.csproj"/>
+	</ItemGroup>
+
+</Project>

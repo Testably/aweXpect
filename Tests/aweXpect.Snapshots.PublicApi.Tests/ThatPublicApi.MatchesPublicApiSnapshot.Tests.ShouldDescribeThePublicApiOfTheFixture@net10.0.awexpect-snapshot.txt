@@ -1,0 +1,291 @@
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+public class GlobalType
+{
+    public GlobalType() { }
+    public int Generated { get; set; }
+}
+namespace aweXpect.Snapshots.PublicApi.Fixture
+{
+    public abstract class Album : System.IComparable<aweXpect.Snapshots.PublicApi.Fixture.Album>
+    {
+        public static readonly aweXpect.Snapshots.PublicApi.Fixture.Album? Empty;
+        public const int MaxTracks = 99;
+        protected Album(string title) { }
+        public string? Cover { [return: aweXpect.Snapshots.PublicApi.Fixture.Marker("getter")] get; [aweXpect.Snapshots.PublicApi.Fixture.Marker("setter")] set; }
+        public string? Note { get; set; }
+        public string Title { get; }
+        public string this[int track] { get; }
+        public event System.EventHandler? Played;
+        public int CompareTo(aweXpect.Snapshots.PublicApi.Fixture.Album? other) { }
+        public override bool Equals(object? obj) { }
+        public override int GetHashCode() { }
+        public virtual void Play(params System.Collections.Generic.IEnumerable<string> tracks) { }
+        public abstract System.Collections.Generic.IEnumerable<string> Tracks();
+        protected internal virtual bool TryGetTrack(int number, out string? track, ref int position, in System.DateTime at) { }
+        public static bool operator ==(aweXpect.Snapshots.PublicApi.Fixture.Album? left, aweXpect.Snapshots.PublicApi.Fixture.Album? right) { }
+        public static explicit operator string(aweXpect.Snapshots.PublicApi.Fixture.Album album) { }
+        public static bool operator >(aweXpect.Snapshots.PublicApi.Fixture.Album? left, aweXpect.Snapshots.PublicApi.Fixture.Album? right) { }
+        public static bool operator >=(aweXpect.Snapshots.PublicApi.Fixture.Album? left, aweXpect.Snapshots.PublicApi.Fixture.Album? right) { }
+        public static bool operator !=(aweXpect.Snapshots.PublicApi.Fixture.Album? left, aweXpect.Snapshots.PublicApi.Fixture.Album? right) { }
+        public static bool operator <(aweXpect.Snapshots.PublicApi.Fixture.Album? left, aweXpect.Snapshots.PublicApi.Fixture.Album? right) { }
+        public static bool operator <=(aweXpect.Snapshots.PublicApi.Fixture.Album? left, aweXpect.Snapshots.PublicApi.Fixture.Album? right) { }
+        protected class Edition
+        {
+            public Edition() { }
+            public int Year { get; init; }
+        }
+        public sealed class Track
+        {
+            public Track() { }
+            public int Number { get; init; }
+        }
+    }
+    public record Artist : System.IEquatable<aweXpect.Snapshots.PublicApi.Fixture.Artist>
+    {
+        protected Artist(aweXpect.Snapshots.PublicApi.Fixture.Artist original) { }
+        public Artist(string Name, aweXpect.Snapshots.PublicApi.Fixture.Genres Genres = aweXpect.Snapshots.PublicApi.Fixture.Genres.Rock) { }
+        protected virtual System.Type EqualityContract { get; }
+        public aweXpect.Snapshots.PublicApi.Fixture.Genres Genres { get; init; }
+        public string Name { get; init; }
+        public void Deconstruct(out string Name, out aweXpect.Snapshots.PublicApi.Fixture.Genres Genres) { }
+        public override bool Equals(object? obj) { }
+        public virtual bool Equals(aweXpect.Snapshots.PublicApi.Fixture.Artist? other) { }
+        public override int GetHashCode() { }
+        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Snapshots.PublicApi.Fixture.Artist? left, aweXpect.Snapshots.PublicApi.Fixture.Artist? right) { }
+        public static bool operator !=(aweXpect.Snapshots.PublicApi.Fixture.Artist? left, aweXpect.Snapshots.PublicApi.Fixture.Artist? right) { }
+    }
+    public struct Buffer
+    {
+        public fixed byte Data[16];
+    }
+    public static class Constraints
+    {
+        public static void Delegate<T, TBase>() where T : System.Delegate, TBase { }
+        public static void Enum<T>() where T : struct, System.Enum { }
+        public static void Nullable<T>() where T : class?, System.Collections.Generic.IEnumerable<T>?, new() { }
+        public static void Unmanaged<T>() where T : unmanaged, System.IComparable<T> { }
+    }
+    public delegate TResult Converter<in TSource, out TResult>(TSource source) where TSource : notnull;
+    [return: aweXpect.Snapshots.PublicApi.Fixture.Marker("delegate")]
+    public delegate ref int Counter();
+    public ref struct Cursor
+    {
+        public int Position;
+    }
+    public static class Defaults
+    {
+        public const double Fraction = 0.1;
+        public const double Infinity = double.PositiveInfinity;
+        public const char Letter = '\'';
+        public const ulong Maximum = 18446744073709551615;
+        public const long Minimum = -9223372036854775808;
+        public const double NotANumber = double.NaN;
+        public const string? Nothing = null;
+        public const float Single = 1.5;
+        public const string Text = "line\n\t\"quoted\"\\";
+        public static dynamic Dynamic(dynamic value) { }
+        public static T? Generic<T>(T? value = default(T?)) { }
+        public static nint Native(nuint value) { }
+        public static void References(ref readonly int value, scoped ref int other, in int third = 3) { }
+        [aweXpect.Snapshots.PublicApi.Fixture.Marker("special", Threshold = double.NaN)]
+        public static void Special() { }
+        public static (int Count, string Name) Summary() { }
+        public static void Values(string? text = null, char letter = 'x', double fraction = 2.5, decimal amount = 1.25, System.DateTime when = default(System.DateTime), int? count = 3, aweXpect.Snapshots.PublicApi.Fixture.Genres? genres = aweXpect.Snapshots.PublicApi.Fixture.Genres.Jazz, object? value = null, double limit = double.NegativeInfinity, float ratio = float.NaN) { }
+    }
+    public readonly struct Duration
+    {
+        public Duration(int seconds) { }
+        public int Seconds { get; }
+        public static System.ReadOnlySpan<char> Format(scoped System.ReadOnlySpan<char> pattern) { }
+    }
+    public static class ExtensionMembers
+    {
+        public static bool IsNew([aweXpect.Snapshots.PublicApi.Fixture.Marker("this")] this string text) { }
+        public static bool IsOld(this string text) { }
+        extension<T>(System.Collections.Generic.IEnumerable<T> source) where T : class
+        {
+            public T? FirstOrNothing() { }
+        }
+        extension([aweXpect.Snapshots.PublicApi.Fixture.Marker("receiver")] System.Collections.Generic.IList<string> list)
+        {
+            public bool IsEmpty { get; }
+        }
+        extension(string)
+        {
+            public static string Default { get; set; }
+            public static string Create(char character, int count) { }
+        }
+        extension(string text)
+        {
+            public bool IsBlank { get; }
+            public bool IsLongerThan(int length = 10) { }
+        }
+    }
+    [System.Flags]
+    public enum Genres : byte
+    {
+        None = 0,
+        Rock = 1,
+        Jazz = 2,
+        All = 3,
+        Pop = 4,
+    }
+    public interface IChannel
+    {
+        const int Capacity = 8;
+        protected static int Count { get; }
+        static string Name { get; }
+        protected internal static int Total { get; }
+        event System.EventHandler? Opened;
+        sealed void Close() { }
+    }
+    public interface IParser<TSelf> where TSelf : aweXpect.Snapshots.PublicApi.Fixture.IParser<TSelf>
+    {
+        static abstract TSelf Default { get; }
+        static virtual bool CanParse(string text) { }
+        static abstract TSelf Parse(string text);
+    }
+    public interface IPlayer<in TAlbum> where TAlbum : aweXpect.Snapshots.PublicApi.Fixture.Album
+    {
+        string Name { get; }
+        void Play(TAlbum album, bool shuffle = false);
+    }
+    public interface IRecorder
+    {
+        bool IsRecording { get; }
+        [aweXpect.Snapshots.PublicApi.Fixture.Tag<int>]
+        void Record();
+    }
+    public enum Large : ulong
+    {
+        Zero = 0,
+        Alias = 0,
+        Big = 18446744073709551615,
+        [System.Obsolete("Use Big.")]
+        Huge = 18446744073709551615,
+    }
+    public static class Library
+    {
+        [aweXpect.Snapshots.PublicApi.Fixture.Marker("arguments", Numbers = new int[] { 1, 2 }, Targets = System.AttributeTargets.Class | System.AttributeTargets.Struct, Type = typeof(aweXpect.Snapshots.PublicApi.Fixture.Album))]
+        public static void Annotated() { }
+        public static T? Find<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate) where T : class, new() { }
+        [return: aweXpect.Snapshots.PublicApi.Fixture.Marker("result")]
+        public static object? Lookup(string key) { }
+        public static void Reset<T>(ref T value) where T : unmanaged { }
+        [System.Obsolete("Use Find instead.")]
+        public static object? Search(string query) { }
+    }
+    public class Listener
+    {
+        public Listener() { }
+        [System.Diagnostics.CodeAnalysis.SetsRequiredMembers]
+        public Listener(string name) { }
+        public required string Name { get; init; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.All)]
+    public sealed class MarkerAttribute : System.Attribute
+    {
+        public MarkerAttribute(string name) { }
+        public string Name { get; }
+        public int[]? Numbers { get; set; }
+        public System.AttributeTargets Targets { get; set; }
+        public double Threshold { get; set; }
+        public System.Type? Type { get; set; }
+    }
+    public readonly struct Money
+    {
+        public Money(decimal amount) { }
+        public decimal Amount { get; }
+        public static aweXpect.Snapshots.PublicApi.Fixture.Money operator +(aweXpect.Snapshots.PublicApi.Fixture.Money left, aweXpect.Snapshots.PublicApi.Fixture.Money right) { }
+        public static aweXpect.Snapshots.PublicApi.Fixture.Money operator checked +(aweXpect.Snapshots.PublicApi.Fixture.Money left, aweXpect.Snapshots.PublicApi.Fixture.Money right) { }
+        public static bool operator false(aweXpect.Snapshots.PublicApi.Fixture.Money value) { }
+        public static implicit operator decimal(aweXpect.Snapshots.PublicApi.Fixture.Money value) { }
+        public static bool operator true(aweXpect.Snapshots.PublicApi.Fixture.Money value) { }
+        public static aweXpect.Snapshots.PublicApi.Fixture.Money operator -(aweXpect.Snapshots.PublicApi.Fixture.Money value) { }
+        public static aweXpect.Snapshots.PublicApi.Fixture.Money operator >>>(aweXpect.Snapshots.PublicApi.Fixture.Money value, int shift) { }
+    }
+    public enum Mood : sbyte
+    {
+        Sad = -1,
+        Neutral = 0,
+        Happy = 1,
+    }
+    public class Outer<T>
+    {
+        public Outer() { }
+        public class Inner<TOther>
+        {
+            public Inner() { }
+            public aweXpect.Snapshots.PublicApi.Fixture.Outer<int>.Inner<string>? Sibling { get; set; }
+        }
+        public class Plain
+        {
+            public Plain() { }
+            public T? Value { get; set; }
+        }
+    }
+    public class Pointers
+    {
+        public delegate*<int, void> Managed;
+        public int* Raw;
+        public delegate* unmanaged[Cdecl]<int, int> Unmanaged;
+        public Pointers() { }
+        public static void* Address(void* value) { }
+    }
+    public readonly struct Rating : System.IEquatable<aweXpect.Snapshots.PublicApi.Fixture.Rating>
+    {
+        public Rating(int Stars) { }
+        public int Stars { get; init; }
+        public void Deconstruct(out int Stars) { }
+        public bool Equals(aweXpect.Snapshots.PublicApi.Fixture.Rating other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Snapshots.PublicApi.Fixture.Rating left, aweXpect.Snapshots.PublicApi.Fixture.Rating right) { }
+        public static bool operator !=(aweXpect.Snapshots.PublicApi.Fixture.Rating left, aweXpect.Snapshots.PublicApi.Fixture.Rating right) { }
+    }
+    public ref struct Span2
+    {
+        public ref int First;
+        public ref readonly int Second;
+    }
+    [System.AttributeUsage(System.AttributeTargets.All)]
+    public sealed class TagAttribute<T> : System.Attribute
+    {
+        public TagAttribute() { }
+    }
+    public class Vault : System.IDisposable
+    {
+        public volatile int Openings;
+        public const aweXpect.Snapshots.PublicApi.Fixture.Genres Favorite = aweXpect.Snapshots.PublicApi.Fixture.Genres.Jazz;
+        public const aweXpect.Snapshots.PublicApi.Fixture.Genres Mixed = aweXpect.Snapshots.PublicApi.Fixture.Genres.Rock | aweXpect.Snapshots.PublicApi.Fixture.Genres.Pop;
+        public Vault() { }
+        public string? Code { get; }
+        public string? Key { set; }
+        public string? Label { get; protected set; }
+        [System.Runtime.CompilerServices.IndexerName("Slot")]
+        public string this[string name] { get; }
+        public void Dispose() { }
+        public override sealed string ToString() { }
+        public static @class Echo<@class>(@class value) { }
+        public static void Filter(aweXpect.Snapshots.PublicApi.Fixture.Genres genres = aweXpect.Snapshots.PublicApi.Fixture.Genres.Rock | aweXpect.Snapshots.PublicApi.Fixture.Genres.Pop) { }
+        public static ref readonly int Peek() { }
+    }
+    public struct Volume
+    {
+        public Volume() { }
+        public readonly int Level { get; }
+    }
+    public class Wallet
+    {
+        public Wallet() { }
+        public decimal Total { get; }
+        public event System.EventHandler? Changed;
+        public static event System.Action? Reset;
+        protected internal virtual void Shown() { }
+        public void operator +=(aweXpect.Snapshots.PublicApi.Fixture.Money value) { }
+    }
+}
+

@@ -1,0 +1,18 @@
+[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Snapshots.git")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName = ".NET Standard 2.0")]
+namespace aweXpect.Snapshots.PublicApi
+{
+    public static class PublicApiDeclarations
+    {
+        public static string GenerateFrom(System.IO.FileInfo assemblyFile) { }
+        public static string GenerateFrom(System.Reflection.Assembly assembly) { }
+    }
+    public static class ThatPublicApi
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesPublicApiSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesPublicApiSnapshot(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+    }
+}
+
