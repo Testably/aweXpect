@@ -110,6 +110,39 @@ public sealed class PublicApiDeclarationsTests
 	}
 
 	[Fact]
+	public async Task GenerateFrom_ShouldWriteInternalFeatureSwitchAttributes()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
+			namespace Library
+			{
+			    public static class Features
+			    {
+			        [System.Diagnostics.CodeAnalysis.FeatureGuard(typeof(Features))]
+			        [System.Diagnostics.CodeAnalysis.FeatureSwitchDefinition("Library.IsSupported")]
+			        public static bool IsSupported => true;
+			    }
+			}
+			namespace System.Diagnostics.CodeAnalysis
+			{
+			    internal sealed class FeatureGuardAttribute(System.Type featureType) : System.Attribute
+			    {
+			        public System.Type FeatureType { get; } = featureType;
+			    }
+			    internal sealed class FeatureSwitchDefinitionAttribute(string switchName) : System.Attribute
+			    {
+			        public string SwitchName { get; } = switchName;
+			    }
+			}
+			"""));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("[System.Diagnostics.CodeAnalysis.FeatureGuard(typeof(Library.Features))]")
+			.And.Contains("[System.Diagnostics.CodeAnalysis.FeatureSwitchDefinition(\"Library.IsSupported\")]")
+			.Because("trim and AOT analyzers read polyfilled feature switch attributes by their name");
+	}
+
+	[Fact]
 	public async Task GenerateFrom_WhenIgnoringAnAttribute_ShouldExcludeItEverywhere()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));

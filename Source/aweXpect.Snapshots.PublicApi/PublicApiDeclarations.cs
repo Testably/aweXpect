@@ -133,6 +133,8 @@ public static class PublicApiDeclarations
 		"System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute",
 		"System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute",
 		"System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute",
+		"System.Diagnostics.CodeAnalysis.FeatureGuardAttribute",
+		"System.Diagnostics.CodeAnalysis.FeatureSwitchDefinitionAttribute",
 		"System.Runtime.CompilerServices.CallerArgumentExpressionAttribute",
 		"System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute",
 		"System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute",
