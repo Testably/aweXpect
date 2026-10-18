@@ -581,7 +581,7 @@ public sealed partial class ThatNullableJsonElement
 			}
 		}
 
-		public sealed class NumbersWithinTests
+		public sealed class ComparingNumbersWithinTests
 		{
 			[Test]
 			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
@@ -589,7 +589,7 @@ public sealed partial class ThatNullableJsonElement
 				JsonElement? subject = FromString("[0.99, 2.01]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.02));
+					=> await That(subject).MatchesExactly([1, 2,], o => o.ComparingNumbersWithin(0.02));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -600,7 +600,7 @@ public sealed partial class ThatNullableJsonElement
 				JsonElement? subject = FromString("[0.99, 2.03]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.02));
+					=> await That(subject).MatchesExactly([1, 2,], o => o.ComparingNumbersWithin(0.02));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -115,12 +115,12 @@ public class JsonOptionsTests
 	}
 
 	[Test]
-	public async Task NumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
+	public async Task ComparingNumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		JsonOptions sut = new();
 
 		void Act()
-			=> sut.NumbersWithin(-0.1);
+			=> sut.ComparingNumbersWithin(-0.1);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
@@ -128,12 +128,12 @@ public class JsonOptionsTests
 	}
 
 	[Test]
-	public async Task NumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+	public async Task ComparingNumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		JsonOptions sut = new();
 
 		void Act()
-			=> sut.NumbersWithin(double.NaN);
+			=> sut.ComparingNumbersWithin(double.NaN);
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithParamName("tolerance").And
@@ -141,27 +141,27 @@ public class JsonOptionsTests
 	}
 
 	[Test]
-	public async Task NumbersWithin_ShouldNotChangeTheOriginalOptions()
+	public async Task ComparingNumbersWithin_ShouldNotChangeTheOriginalOptions()
 	{
 		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
 		JsonOptions sut = new();
 
-		_ = sut.NumbersWithin(1);
+		_ = sut.ComparingNumbersWithin(1);
 
 		async Task Act()
 			=> await That(subject).MatchesExactly(1, _ => sut);
 
 		await That(Act).Throws<FailException>()
-			.Because("NumbersWithin returns new options instead of changing the original ones");
+			.Because("ComparingNumbersWithin returns new options instead of changing the original ones");
 	}
 
 	[Test]
-	public async Task NumbersWithin_WhenCalledAgain_ShouldReplaceTheTolerance()
+	public async Task ComparingNumbersWithin_WhenCalledAgain_ShouldReplaceTheTolerance()
 	{
 		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
 
 		async Task Act()
-			=> await That(subject).MatchesExactly(1, o => o.NumbersWithin(1).IgnoringArrayOrder().NumbersWithin(0.1));
+			=> await That(subject).MatchesExactly(1, o => o.ComparingNumbersWithin(1).IgnoringArrayOrder().ComparingNumbersWithin(0.1));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -179,7 +179,7 @@ public class JsonOptionsTests
 	public async Task Percent_ShouldNotAffectCopiesMadeBefore()
 	{
 		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
-		JsonNumbersWithinOptions withinOptions = new JsonOptions().NumbersWithin(5);
+		JsonNumbersWithinOptions withinOptions = new JsonOptions().ComparingNumbersWithin(5);
 		JsonOptions copyBeforePercent = withinOptions.IgnoringArrayOrder();
 
 		JsonOptions percentOptions = withinOptions.Percent();
@@ -201,15 +201,15 @@ public class JsonOptionsTests
 	{
 		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
 		JsonOptions sut = new();
-		JsonOptions absoluteOptions = sut.NumbersWithin(5);
+		JsonOptions absoluteOptions = sut.ComparingNumbersWithin(5);
 
-		_ = sut.NumbersWithin(5).Percent();
+		_ = sut.ComparingNumbersWithin(5).Percent();
 
 		async Task Act()
 			=> await That(subject).MatchesExactly(0.1, _ => absoluteOptions);
 
 		await That(Act).DoesNotThrow()
-			.Because("each call of NumbersWithin creates its own tolerance");
+			.Because("each call of ComparingNumbersWithin creates its own tolerance");
 	}
 
 	[Test]

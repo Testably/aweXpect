@@ -2279,7 +2279,7 @@ public sealed partial class ThatJsonElement
 			}
 		}
 
-		public sealed class NumbersWithinTests
+		public sealed class ComparingNumbersWithinTests
 		{
 			[Test]
 			public async Task WhenMatchingNumberIsWithinTheTolerance_ShouldSucceed()
@@ -2290,7 +2290,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsObject(o => o.With("foo").Matching(new
 					{
 						bar = 1,
-					}), o => o.NumbersWithin(0.05));
+					}), o => o.ComparingNumbersWithin(0.05));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -2304,7 +2304,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsObject(o => o.With("foo").Matching(new
 					{
 						bar = 1,
-					}), o => o.NumbersWithin(0.05));
+					}), o => o.ComparingNumbersWithin(0.05));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

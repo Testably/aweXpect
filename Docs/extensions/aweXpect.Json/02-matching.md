@@ -79,7 +79,7 @@ something on takes an optional `bool`:
 | [`IgnoringAdditionalArrayElements()`](#additional-array-elements)  | ignores additional elements of arrays                  |
 | [`IgnoringArrayOrder()`](#array-order)                             | the elements of arrays can be in any order             |
 | [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
-| [`NumbersWithin(tolerance)`](#numbers-within-a-tolerance)          | numbers match within an absolute or relative tolerance |
+| [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance) | numbers match within an absolute or relative tolerance |
 | [`WithJsonOptions(…)`](./05-customization.md)                      | the `JsonDocumentOptions` used to parse JSON strings   |
 
 ### Treating `null` as absent
@@ -200,24 +200,24 @@ JSON options:
 
 ### Numbers within a tolerance
 
-Calculated numbers rarely match an expected literal exactly. With `NumbersWithin(tolerance)`, a number matches when it
-differs from the expected number by at most the tolerance, and with `NumbersWithin(tolerance).Percent()` by at most the
-percentage of the expected number. The option can be combined with the other options:
+Calculated numbers rarely match an expected literal exactly. With `ComparingNumbersWithin(tolerance)`, a number matches
+when it differs from the expected number by at most the tolerance, and with `ComparingNumbersWithin(tolerance).Percent()`
+by at most the percentage of the expected number. The option can be combined with the other options:
 
 ```csharp
 JsonElement invoice = JsonDocument.Parse("""{"total": 0.30000000000000004, "tax": 0.0575}""").RootElement;
 
 await Expect.That(invoice).MatchesExactly(new { total = 0.3, tax = 0.057m },
-    o => o.NumbersWithin(0.001));
+    o => o.ComparingNumbersWithin(0.001));
 await Expect.That(invoice).MatchesExactly(new { tax = 0.057m },
-    o => o.NumbersWithin(1).Percent().IgnoringAdditionalProperties());
+    o => o.ComparingNumbersWithin(1).Percent().IgnoringAdditionalProperties());
 ```
 
 The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. Like the
 [tolerance in aweXpect](https://docs.testably.org/aweXpect/values/number#tolerance), a relative tolerance only matches
 an equal number when the expected number is `0`. The numbers are compared as `double`, so numbers outside its range are
 compared by their text. For a product `{"name": "Guitar", "price": 110}`,
-`MatchesExactly(new { name = "Guitar", price = 100 }, o => o.NumbersWithin(5).Percent())` would fail with:
+`MatchesExactly(new { name = "Guitar", price = 100 }, o => o.ComparingNumbersWithin(5).Percent())` would fail with:
 
 ```text title="Failure message"
 Expected that product

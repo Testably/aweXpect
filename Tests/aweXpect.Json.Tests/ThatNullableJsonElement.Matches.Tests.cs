@@ -846,7 +846,7 @@ public sealed partial class ThatNullableJsonElement
 			}
 		}
 
-		public sealed class NumbersWithinTests
+		public sealed class ComparingNumbersWithinTests
 		{
 			[Test]
 			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
@@ -857,7 +857,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).Matches(new
 					{
 						price = 100,
-					}, o => o.NumbersWithin(5).Percent());
+					}, o => o.ComparingNumbersWithin(5).Percent());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -871,7 +871,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).Matches(new
 					{
 						price = 100,
-					}, o => o.NumbersWithin(5).Percent());
+					}, o => o.ComparingNumbersWithin(5).Percent());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

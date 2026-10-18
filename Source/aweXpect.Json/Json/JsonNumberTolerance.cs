@@ -5,7 +5,7 @@ using aweXpect.Options;
 namespace aweXpect.Json;
 
 /// <summary>
-///     The tolerance of <see cref="JsonOptionsExtensions.NumbersWithin" />, which is never changed once created.
+///     The tolerance of <see cref="JsonOptionsExtensions.ComparingNumbersWithin" />, which is never changed once created.
 /// </summary>
 /// <remarks>
 ///     The tolerance is rendered like a JSON number, e.g. <c> ± 5%</c>, as aweXpect would render a

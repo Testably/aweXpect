@@ -1863,7 +1863,7 @@ public sealed partial class ThatJsonElement
 			}
 		}
 
-		public sealed class NumbersWithinTests
+		public sealed class ComparingNumbersWithinTests
 		{
 			[Test]
 			public async Task WhenNumbersAreClose_ShouldSucceedAsDocumentedInTheReadme()
@@ -1872,11 +1872,11 @@ public sealed partial class ThatJsonElement
 
 				async Task ActAbsolute()
 					=> await That(invoice).MatchesExactly(new { total = 0.3, tax = 0.057m },
-						o => o.NumbersWithin(0.001));
+						o => o.ComparingNumbersWithin(0.001));
 
 				async Task ActRelative()
 					=> await That(invoice).MatchesExactly(new { tax = 0.057m },
-						o => o.NumbersWithin(1).Percent().IgnoringAdditionalProperties());
+						o => o.ComparingNumbersWithin(1).Percent().IgnoringAdditionalProperties());
 
 				await That(ActAbsolute).DoesNotThrow();
 				await That(ActRelative).DoesNotThrow();
@@ -1889,7 +1889,7 @@ public sealed partial class ThatJsonElement
 
 				async Task Act()
 					=> await That(product).MatchesExactly(new { name = "Guitar", price = 100 },
-						o => o.NumbersWithin(5).Percent());
+						o => o.ComparingNumbersWithin(5).Percent());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -1913,7 +1913,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString(json);
 
 				async Task Act()
-					=> await That(subject).MatchesExactly(10, o => o.NumbersWithin(0.5));
+					=> await That(subject).MatchesExactly(10, o => o.ComparingNumbersWithin(0.5));
 
 				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
 					.WithMessage($"""
@@ -1937,7 +1937,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString(json);
 
 				async Task Act()
-					=> await That(subject).MatchesExactly(100, o => o.NumbersWithin(5).Percent());
+					=> await That(subject).MatchesExactly(100, o => o.ComparingNumbersWithin(5).Percent());
 
 				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
 					.WithMessage($"""
@@ -1960,7 +1960,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString(json);
 
 				async Task Act()
-					=> await That(subject).MatchesExactly(-100, o => o.NumbersWithin(5).Percent());
+					=> await That(subject).MatchesExactly(-100, o => o.ComparingNumbersWithin(5).Percent());
 
 				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
 					.WithMessage($"""
@@ -1983,7 +1983,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString(json);
 
 				async Task Act()
-					=> await That(subject).MatchesExactly(0, o => o.NumbersWithin(50).Percent());
+					=> await That(subject).MatchesExactly(0, o => o.ComparingNumbersWithin(50).Percent());
 
 				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
 					.WithMessage($"""
@@ -2007,7 +2007,7 @@ public sealed partial class ThatJsonElement
 					{
 						id = 42,
 						count = 2,
-					}, o => o.NumbersWithin(1));
+					}, o => o.ComparingNumbersWithin(1));
 
 				await That(Act).DoesNotThrow()
 					.Because("the tolerance applies to all numbers, also to integers such as ids or counts");
@@ -2019,7 +2019,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[1.0, 2]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 3,], o => o.NumbersWithin(0));
+					=> await That(subject).MatchesExactly([1, 3,], o => o.ComparingNumbersWithin(0));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -2054,7 +2054,7 @@ public sealed partial class ThatJsonElement
 								tags = new[] { 3, },
 							},
 						},
-					}, o => o.NumbersWithin(0.05));
+					}, o => o.ComparingNumbersWithin(0.05));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -2088,7 +2088,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[2.01, 0.99]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringArrayOrder().NumbersWithin(0.02));
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringArrayOrder().ComparingNumbersWithin(0.02));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -2099,7 +2099,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[2.5, 0.99]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.02).IgnoringArrayOrder());
+					=> await That(subject).MatchesExactly([1, 2,], o => o.ComparingNumbersWithin(0.02).IgnoringArrayOrder());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -2122,7 +2122,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).MatchesExactly(new
 					{
 						values = new[] { 100, },
-					}, o => o.NumbersWithin(5).Percent().IgnoringAdditionalProperties().IgnoringAdditionalArrayElements());
+					}, o => o.ComparingNumbersWithin(5).Percent().IgnoringAdditionalProperties().IgnoringAdditionalArrayElements());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -2136,7 +2136,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).MatchesExactly(new
 					{
 						value = 1,
-					}, o => o.NumbersWithin(1));
+					}, o => o.ComparingNumbersWithin(1));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -2162,7 +2162,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).MatchesExactly(new
 					{
 						value = It.Is<double>().That.IsEqualTo(1),
-					}, o => o.NumbersWithin(1));
+					}, o => o.ComparingNumbersWithin(1));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -2180,7 +2180,7 @@ public sealed partial class ThatJsonElement
 			}
 		}
 
-		public sealed class NumbersWithinNegatedTests
+		public sealed class ComparingNumbersWithinNegatedTests
 		{
 			[Test]
 			[Arguments("10.4", true)]
@@ -2190,7 +2190,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString(json);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(10, o => o.NumbersWithin(0.5)));
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(10, o => o.ComparingNumbersWithin(0.5)));
 
 				await That(Act).Throws<FailException>().OnlyIf(isWithin)
 					.WithMessage($"""

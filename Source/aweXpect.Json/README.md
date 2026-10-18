@@ -63,7 +63,7 @@ JSON options:
 | [`IsJsonSerializedAs`](../../Docs/extensions/aweXpect.Json/04-serialization.md#serialized-as-json)   | `object`                  | serialized by the JSON serializer as the expected JSON    |
 
 The comparisons can be relaxed with options like `TreatingNullAsAbsent()`, `IgnoringArrayOrder()`,
-`IgnoringMember(name)` or `NumbersWithin(tolerance)`, see [Matching JSON](../../Docs/extensions/aweXpect.Json/02-matching.md).
+`IgnoringMember(name)` or `ComparingNumbersWithin(tolerance)`, see [Matching JSON](../../Docs/extensions/aweXpect.Json/02-matching.md).
 
 ## Documentation
 

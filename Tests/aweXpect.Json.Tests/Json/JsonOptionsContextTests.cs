@@ -103,7 +103,7 @@ public sealed class JsonOptionsContextTests
 				=> await That(subject).MatchesExactly(new
 				{
 					tax = 0.057m,
-				}, o => o.NumbersWithin(0.001));
+				}, o => o.ComparingNumbersWithin(0.001));
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -128,7 +128,7 @@ public sealed class JsonOptionsContextTests
 				=> await That(subject).MatchesExactly(new
 				{
 					price = 100,
-				}, o => o.NumbersWithin(5).Percent());
+				}, o => o.ComparingNumbersWithin(5).Percent());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -151,7 +151,7 @@ public sealed class JsonOptionsContextTests
 
 			async Task Act()
 				=> await That(subject).MatchesExactly([2, 1,], o => o
-					.NumbersWithin(0.5)
+					.ComparingNumbersWithin(0.5)
 					.TreatingNullAsAbsent()
 					.IgnoringArrayOrder()
 					.IgnoringAdditionalArrayElements()
@@ -1040,8 +1040,8 @@ public sealed class JsonOptionsContextTests
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
 
 			async Task Act()
-				=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.5))
-					.And.MatchesExactly([1, 4,], o => o.NumbersWithin(0.5));
+				=> await That(subject).MatchesExactly([1, 2,], o => o.ComparingNumbersWithin(0.5))
+					.And.MatchesExactly([1, 4,], o => o.ComparingNumbersWithin(0.5));
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

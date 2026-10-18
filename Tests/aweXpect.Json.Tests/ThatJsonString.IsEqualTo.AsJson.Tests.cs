@@ -1226,7 +1226,7 @@ public sealed partial class ThatJsonString
 				}
 			}
 
-			public sealed class NumbersWithinTests
+			public sealed class ComparingNumbersWithinTests
 			{
 				[Test]
 				public async Task WhenNumbersAreWithinTheTolerance_ShouldSucceed()
@@ -1235,7 +1235,7 @@ public sealed partial class ThatJsonString
 
 					async Task Act()
 						=> await That(subject).IsEqualTo("""{"total": 0.3, "tax": 0.057}""")
-							.AsJson(o => o.NumbersWithin(0.001));
+							.AsJson(o => o.ComparingNumbersWithin(0.001));
 
 					await That(Act).DoesNotThrow();
 				}
@@ -1247,7 +1247,7 @@ public sealed partial class ThatJsonString
 
 					async Task Act()
 						=> await That(result).IsEqualTo("""{"total": 0.3, "tax": 0.057}""")
-							.AsJson(o => o.NumbersWithin(0.001));
+							.AsJson(o => o.ComparingNumbersWithin(0.001));
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -1274,7 +1274,7 @@ public sealed partial class ThatJsonString
 					bool isMatch)
 				{
 					async Task Act()
-						=> await That(json).IsEqualTo("1e400").AsJson(o => o.NumbersWithin(1e300));
+						=> await That(json).IsEqualTo("1e400").AsJson(o => o.ComparingNumbersWithin(1e300));
 
 					await That(Act).Throws<FailException>().OnlyIf(!isMatch)
 						.WithMessage($"""
@@ -1300,7 +1300,7 @@ public sealed partial class ThatJsonString
 					string subject = "[1.05, 2]";
 
 					async Task Act()
-						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.NumbersWithin(0.1));
+						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.ComparingNumbersWithin(0.1));
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -1322,7 +1322,7 @@ public sealed partial class ThatJsonString
 					string subject = "[1.2, 2]";
 
 					async Task Act()
-						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.NumbersWithin(0.1));
+						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.ComparingNumbersWithin(0.1));
 
 					await That(Act).DoesNotThrow();
 				}

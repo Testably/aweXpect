@@ -6,8 +6,8 @@ using aweXpect.Results;
 namespace aweXpect.Json;
 
 /// <summary>
-///     The <see cref="JsonOptions" /> directly after <see cref="JsonOptionsExtensions.NumbersWithin" />, whose tolerance
-///     can still be made relative to the expected value, e.g. via <c>Percent()</c>.
+///     The <see cref="JsonOptions" /> directly after <see cref="JsonOptionsExtensions.ComparingNumbersWithin" />, whose
+///     tolerance can still be made relative to the expected value, e.g. via <c>Percent()</c>.
 /// </summary>
 public sealed record JsonNumbersWithinOptions
 	: JsonOptions, IWithinToleranceResult<JsonOptions, double>, IRelativeToleranceOptions<double>

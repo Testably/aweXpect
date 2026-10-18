@@ -1102,7 +1102,7 @@ public sealed partial class ThatJsonString
 			}
 		}
 
-		public sealed class NumbersWithinTests
+		public sealed class ComparingNumbersWithinTests
 		{
 			[Test]
 			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
@@ -1113,7 +1113,7 @@ public sealed partial class ThatJsonString
 					=> await That(subject).IsValidJsonMatching(new
 					{
 						price = 10,
-					}, o => o.NumbersWithin(0.05));
+					}, o => o.ComparingNumbersWithin(0.05));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -1127,7 +1127,7 @@ public sealed partial class ThatJsonString
 					=> await That(subject).IsValidJsonMatching(new
 					{
 						price = 10,
-					}, o => o.NumbersWithin(0.05));
+					}, o => o.ComparingNumbersWithin(0.05));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

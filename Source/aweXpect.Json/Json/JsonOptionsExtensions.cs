@@ -105,7 +105,7 @@ public static class JsonOptionsExtensions
 	///     its range are compared by their text.
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative or NaN.</exception>
-	public static JsonNumbersWithinOptions NumbersWithin(
+	public static JsonNumbersWithinOptions ComparingNumbersWithin(
 		this JsonOptions @this,
 		double tolerance)
 		=> new(@this, tolerance);
