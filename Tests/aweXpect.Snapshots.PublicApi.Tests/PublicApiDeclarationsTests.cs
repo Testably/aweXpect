@@ -247,6 +247,19 @@ public sealed class PublicApiDeclarationsTests
 	}
 
 	[Fact]
+	public async Task GenerateFrom_WhenAReferenceIsAPackageOfTheLibrary_ShouldResolveItFromTheNuGetPackages()
+	{
+		FileInfo library = new(typeof(PublicApiDeclarationsTests).Assembly
+			.GetCustomAttributes<AssemblyMetadataAttribute>()
+			.Single(attribute => attribute.Key == "PackageFixture").Value!);
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("public System.Text.Json.Nodes.JsonNode? Root { get; set; }")
+			.Because("the build output of the library does not contain System.Text.Json 10.0, which it references");
+	}
+
+	[Fact]
 	public async Task GenerateFrom_WhenAReferenceIsOnlyFoundInALowerVersion_ShouldThrowInvalidOperationException()
 	{
 		byte[] dependency = Compile("Dependency", "2.0.0.0", DependencySource);

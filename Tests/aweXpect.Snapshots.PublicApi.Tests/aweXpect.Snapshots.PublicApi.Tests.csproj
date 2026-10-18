@@ -5,4 +5,16 @@
 		<ProjectReference Include="..\aweXpect.Snapshots.PublicApi.Fixture\aweXpect.Snapshots.PublicApi.Fixture.csproj"/>
 	</ItemGroup>
 
+	<!--
+	    The package fixture is only built, as referencing it would copy its packages into the output of the tests.
+	-->
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Snapshots.PublicApi.PackageFixture\aweXpect.Snapshots.PublicApi.PackageFixture.csproj"
+		                  ReferenceOutputAssembly="false" PrivateAssets="all"/>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>PackageFixture</_Parameter1>
+			<_Parameter2>$(MSBuildThisFileDirectory)..\aweXpect.Snapshots.PublicApi.PackageFixture\bin\$(Configuration)\netstandard2.0\aweXpect.Snapshots.PublicApi.PackageFixture.dll</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+
 </Project>

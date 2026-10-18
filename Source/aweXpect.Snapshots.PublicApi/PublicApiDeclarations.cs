@@ -8,7 +8,10 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using SymbolDisplayFormat = Microsoft.CodeAnalysis.SymbolDisplayFormat;
@@ -191,7 +194,8 @@ public static class PublicApiDeclarations
 	/// </summary>
 	/// <remarks>
 	///     The types in signatures are resolved from the assemblies next to it, of the application, of the .NET version
-	///     it targets (when the .NET SDK is installed) and of the current runtime.
+	///     it targets (when the .NET SDK is installed) and of the current runtime, or else from the NuGet packages that its
+	///     <c>deps.json</c> lists.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
 	///     An assembly that the assembly references cannot be resolved, or only in a lower version, which would change the
@@ -296,7 +300,8 @@ public static class PublicApiDeclarations
 			throw new InvalidOperationException(
 				$"The public API of '{Path.GetFileName(assemblyFile)}' cannot be generated, because its references " +
 				$"{string.Join(", ", unresolved.Select(reference => $"'{reference}'"))} could not be resolved. " +
-				"Copy them next to the assembly or into the output of the tests, or install the .NET SDK of its target framework.");
+				"Copy them next to the assembly or into the output of the tests, restore the NuGet packages of the assembly " +
+				"into the global packages folder, or install the .NET SDK of its target framework.");
 		}
 	}
 
@@ -304,7 +309,9 @@ public static class PublicApiDeclarations
 	///     The build output of a library does not contain its dependencies, which the application, e.g. the tests,
 	///     does. The .NET Framework keeps the facades, e.g. <c>netstandard.dll</c>, in a subdirectory of the runtime.<br />
 	///     Of the files with the same name, the highest version is used, as the application can contain an older package
-	///     of an assembly that is part of the newer .NET the assembly targets, e.g. <c>System.Reflection.Metadata</c>.
+	///     of an assembly that is part of the newer .NET the assembly targets, e.g. <c>System.Reflection.Metadata</c>.<br />
+	///     The NuGet packages of the assembly come last and replace only a lower version, so they are a fallback for the
+	///     assemblies that are missing or only found in a lower version.
 	/// </remarks>
 	private static IEnumerable<MetadataReference> GetReferences(string assemblyFile, string? referencePack)
 	{
@@ -313,22 +320,71 @@ public static class PublicApiDeclarations
 		string[] frameworkDirectories = referencePack is null
 			? [runtimeDirectory, Path.Combine(runtimeDirectory, "Facades"),]
 			: [referencePack,];
-		return new[]
+		Dictionary<string, (Version Version, MetadataReference Reference)> references =
+			new(StringComparer.OrdinalIgnoreCase);
+		foreach (string file in new[]
+			         {
+				         Path.GetDirectoryName(assemblyFile)!, AppDomain.CurrentDomain.BaseDirectory,
+			         }.Concat(frameworkDirectories)
+			         .Where(Directory.Exists)
+			         .SelectMany(directory => Directory.EnumerateFiles(directory, "*.dll"))
+			         .Concat(GetPackageFiles(assemblyFile)))
+		{
+			string name = Path.GetFileName(file);
+			if (!string.Equals(name, assemblyName, StringComparison.OrdinalIgnoreCase) &&
+			    References.GetOrAdd(file, ReadReference) is { } reference &&
+			    (!references.TryGetValue(name, out (Version Version, MetadataReference Reference) found) ||
+			     found.Version < reference.Version))
 			{
-				Path.GetDirectoryName(assemblyFile)!, AppDomain.CurrentDomain.BaseDirectory,
-			}.Concat(frameworkDirectories)
-			.Where(Directory.Exists)
-			.SelectMany(directory => Directory.EnumerateFiles(directory, "*.dll"))
-			.Where(file => !string.Equals(Path.GetFileName(file), assemblyName, StringComparison.OrdinalIgnoreCase))
-			.GroupBy(Path.GetFileName, StringComparer.OrdinalIgnoreCase)
-			.Select(files => files
-				.Select(file => References.GetOrAdd(file, ReadReference))
-				.OfType<(Version Version, MetadataReference Reference)>()
-				.OrderByDescending(reference => reference.Version)
-				.Select(reference => reference.Reference)
-				.FirstOrDefault())
-			.OfType<MetadataReference>();
+				references[name] = reference;
+			}
+		}
+
+		return references.Values.Select(reference => reference.Reference);
 	}
+
+	/// <summary>
+	///     Returns the runtime assemblies of the NuGet packages that the <c>deps.json</c> next to the
+	///     <paramref name="assemblyFile" /> lists, from the global packages folder, as the build output of a library does
+	///     not contain its packages.
+	/// </summary>
+	/// <remarks>
+	///     The JSON is read as XML, as <c>System.Text.Json</c> is not part of .NET Standard 2.0. Names that are invalid
+	///     in XML, e.g. <c>System.Text.Json/10.0.3</c>, are kept in the <c>item</c> attribute.
+	/// </remarks>
+	private static IEnumerable<string> GetPackageFiles(string assemblyFile)
+	{
+		string depsFile = Path.ChangeExtension(assemblyFile, ".deps.json");
+		if (!File.Exists(depsFile))
+		{
+			return [];
+		}
+
+		XElement deps;
+		using (FileStream stream = File.OpenRead(depsFile))
+		using (XmlDictionaryReader reader =
+		       JsonReaderWriterFactory.CreateJsonReader(stream, XmlDictionaryReaderQuotas.Max))
+		{
+			deps = XElement.Load(reader);
+		}
+
+		string packagesFolder = Environment.GetEnvironmentVariable("NUGET_PACKAGES") is { Length: > 0, } folder
+			? folder
+			: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "packages");
+		Dictionary<string, string> packagePaths = (deps.Element("libraries")?.Elements() ?? [])
+			.Where(library => library.Element("type")?.Value == "package" && library.Element("path") is not null)
+			.ToDictionary(JsonName, library => library.Element("path")!.Value);
+		string? runtimeTarget = deps.Element("runtimeTarget")?.Element("name")?.Value;
+		return (deps.Element("targets")?.Elements().FirstOrDefault(target => JsonName(target) == runtimeTarget)
+				?.Elements() ?? [])
+			.Where(library => packagePaths.ContainsKey(JsonName(library)))
+			.SelectMany(library => (library.Element("runtime")?.Elements() ?? [])
+				.Select(asset => Path.Combine(packagesFolder, packagePaths[JsonName(library)], JsonName(asset))))
+			.Where(File.Exists);
+	}
+
+	private static string JsonName(XElement element)
+		=> element.Attribute("item")?.Value ?? element.Name.LocalName;
 
 	/// <summary>
 	///     Returns the reference assemblies of the .NET version that the <paramref name="assemblyFile" /> targets, which the

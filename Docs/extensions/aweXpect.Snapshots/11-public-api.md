@@ -37,10 +37,12 @@ await Expect.That(new FileInfo(path)).MatchesPublicApiSnapshot().Named("netstand
 ```
 
 The types in the signatures are resolved from the assemblies next to the assembly, in the output of the tests, of the
-.NET version it targets and of the current runtime. A build for a newer .NET than the tests run on needs the .NET SDK of
-that version, which installs its reference assemblies. When a referenced assembly cannot be resolved, or only in a lower
-version, the expectation throws an `InvalidOperationException` that names it, instead of writing a public API that
-differs from machine to machine.
+.NET version it targets and of the current runtime. The NuGet packages of the library, which its build output does not
+contain, fill in the assemblies that are missing or only found in a lower version: they are read from the global packages
+folder with the versions that the `deps.json` next to the assembly lists. A build for a newer .NET than the tests run on
+needs the .NET SDK of that version, which installs its reference assemblies. When a referenced assembly cannot be
+resolved, or only in a lower version, the expectation throws an `InvalidOperationException` that names it, instead of
+writing a public API that differs from machine to machine.
 
 The types that the assembly forwards to another assembly are written as
 `[assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(…))]`, as removing a forward breaks the consumers
