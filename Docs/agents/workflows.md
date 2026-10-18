@@ -53,8 +53,11 @@ dotnet run -c Debug -p:Optimize=true --project Benchmarks/aweXpect.Benchmarks --
 ## Mutation tests
 
 Stryker.NET mutates `aweXpect` (`MutationTestsMain`, tested by `aweXpect.Tests` and `aweXpect.Internal.Tests`) and
-`aweXpect.Core` (`MutationTestsCore`, tested by `aweXpect.Core.Tests` and the framework projects).
+`aweXpect.Core` (`MutationTestsCore`, tested by `aweXpect.Core.Tests`).
 
+- Stryker starts in the folder of the mutated project (project mode), so it runs only the configured `test-projects`;
+  started from the solution folder it would ignore them and run every test project. The framework projects run on
+  VSTest, which Stryker's runner for the Microsoft.Testing.Platform (`--test-runner mtp`) cannot execute.
 - They are currently switched off by `DisableMutationTests = true` in `Pipeline/Build.MutationTests.cs`, because
   Stryker's runner for the Microsoft.Testing.Platform cannot capture coverage within the job time limit. The CI and
   nightly jobs still exist and skip the targets.
