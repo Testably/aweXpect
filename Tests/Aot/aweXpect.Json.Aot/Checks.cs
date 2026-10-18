@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using aweXpect.Equivalency;
 using aweXpect.Formatting;
 using static aweXpect.Expect;
 using static aweXpect.Formatting.Format;
@@ -65,11 +66,18 @@ internal static partial class Checks
 			{
 				a = 1,
 			}))),
-		new("a property compared with an expected value fails loudly",
-			() => ShouldFailLoudly(async () => await That(Parse("{\"a\": 1}"))
+		new("an element matching an expected node passes",
+			() => ShouldPass(async () => await That(Parse("{\"a\": [1, 2]}"))
+				.Matches(new JsonObject { ["a"] = new JsonArray(1, 2), }))),
+		new("a property compared with an expected value passes",
+			() => ShouldPass(async () => await That(Parse("{\"a\": 1}"))
 				.IsObject(o => o.With("a").Matching(1)))),
-		new("array elements compared with expected values fail loudly",
-			() => ShouldFailLoudly(async () => await That(Parse("[1, 2]"))
+		new("a property compared with an It.Is expectation fails and names it",
+			() => ShouldFail(async () => await That(Parse("{\"a\": 1}"))
+					.IsObject(o => o.With("a").Matching(It.Is<int>().That.IsGreaterThan(1))),
+				"$.a was 1")),
+		new("array elements compared with expected values pass",
+			() => ShouldPass(async () => await That(Parse("[1, 2]"))
 				.IsArray(a => a.WithElements(1, 2)))),
 		new("a node with the expected structure passes",
 			() => ShouldPass(async () => await That(JsonNode.Parse("{\"a\": [1, 2]}"))

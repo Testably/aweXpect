@@ -130,4 +130,10 @@ internal partial class TrackContext : JsonSerializerContext;
 await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""", TrackContext.Default.Track,
     o => o.TreatingNullAsAbsent());
 ```
+
+Expected values in any expectation, e.g. in `Matches` or `With("a").Matching(...)`, are serialized by reflection as
+well, so an anonymous object always needs it. Only values that consist of `null`, strings, characters, booleans,
+numbers, `JsonElement`, `JsonDocument`, `JsonNode` (unless a `JsonValue` wraps another type), `It.Is…` expectations
+and collections of them are written without reflection and work in such an application, e.g.
+`With("count").Matching(2)` or `WithElements(1, 2)`.
 :::
