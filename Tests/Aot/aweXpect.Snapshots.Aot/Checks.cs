@@ -32,6 +32,10 @@ internal static class Checks
 			() => ShouldPass(ObjectWithConvertedMembersMatchesItsSnapshot)),
 		new("a record matching its snapshot is written member-wise",
 			() => ShouldPass(RecordMatchesItsSnapshot)),
+		new("a framework exception matching its snapshot is written member-wise",
+			() => ShouldPass(FrameworkExceptionMatchesItsSnapshot)),
+		new("a custom exception matching its snapshot is written without its own members",
+			() => ShouldPass(CustomExceptionMatchesItsSnapshot)),
 		new("a snapshot named after arguments matching its snapshot passes",
 			() => ShouldPass(() => NamedAfterMatchesItsSnapshot("Abbey Road", 1969))),
 		new("a string unique for the target framework matches the snapshot of its target framework",
@@ -66,6 +70,32 @@ internal static class Checks
 	private static async Task RecordMatchesItsSnapshot()
 		=> await That(new Album("Abbey Road", 12.99m, ["Come Together", "Something",]))
 			.MatchesSnapshot().Accepting(SnapshotAcceptance.None);
+
+	/// <remarks>
+	///     The members of the framework exceptions are read without reflection. The message does not name the actual
+	///     value, as it would on a line of its own with the line break of the operating system.
+	/// </remarks>
+	private static async Task FrameworkExceptionMatchesItsSnapshot()
+		=> await That(() => throw new ArgumentOutOfRangeException("playCount", "Play count must be positive.")
+			{
+				Data =
+				{
+					["Track"] = "Come Together",
+				},
+			}).Throws<ArgumentOutOfRangeException>()
+			.Which.MatchesSnapshot().Accepting(SnapshotAcceptance.None);
+
+	/// <remarks>
+	///     The source generator of aweXpect registers no type derived from <see cref="Exception" />, as
+	///     <see cref="Exception.TargetSite" /> requires unreferenced code, so without the reflection fallback that this
+	///     project disables, the own members of a custom exception, here <see cref="RecordPlayerException.Side" />, are
+	///     left out, while its message and inner exception are still written.
+	/// </remarks>
+	private static async Task CustomExceptionMatchesItsSnapshot()
+		=> await That(() => throw new RecordPlayerException("The record is stuck", 3,
+				new InvalidOperationException("The record player is not running")))
+			.Throws<RecordPlayerException>()
+			.Which.MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
 	///     The formatter offers the registered members to the member and value rules, so that they also apply without

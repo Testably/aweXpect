@@ -127,6 +127,63 @@ Album {
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
 generator of aweXpect registers them for the call site, which it does for `MatchesSnapshot()`.
 
+### Exceptions
+
+An exception is written member-wise as well, e.g. the one that a record player throws for a negative play count:
+
+```csharp
+public void Play(Album album, int playCount)
+{
+    if (playCount < 0)
+    {
+        throw new ArgumentOutOfRangeException(nameof(playCount), playCount, "Play count must be positive.")
+        {
+            Data = { ["Album"] = album.Title },
+        };
+    }
+}
+```
+
+```csharp
+await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
+```
+
+```text title="PlayerTests.Rejects.awexpect-snapshot.txt"
+ArgumentOutOfRangeException {
+  ActualValue = -1,
+  Data = {
+    ["Album"] = "Abbey Road"
+  },
+  Message = "Play count must be positive. (Parameter 'playCount')\nActual value was -1.",
+  ParamName = "playCount"
+}
+```
+
+- The `Message`, the `Data` when it is not empty, the `InnerException` when it is set, and the other public members of
+  the type are written, sorted like the members of any other object. An inner exception is written member-wise, too,
+  and an `AggregateException` writes its `InnerExceptions` instead of its `InnerException`, which only repeats the first
+  of them.
+- The `StackTrace`, `TargetSite`, `Source`, `HelpLink` and `HResult`, and the `FusionLog` of the exceptions that load
+  assemblies, are left out, as they differ between builds, runtimes, machines and Native AOT.
+- The message of a framework exception can differ between the runtimes, operating systems and cultures: the message
+  above names the actual value on a line of its own, with the line break of the operating system, and .NET Framework
+  words it differently. Leave out or mask such members with the [member rules](04-masking-values.md#members-and-values),
+  or keep a snapshot per target framework and operating system with
+  [`.UniqueFor`](03-naming-snapshots.md#snapshots-per-environment):
+
+  ```csharp
+  await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot()
+      .For.Members().WithName("Message").Ignore()
+      .For.Members().WithName("ActualValue").Mask();
+  ```
+
+- In a trimmed application or under Native AOT, the own members of a custom exception, e.g. a `Side` property of a
+  `RecordPlayerException`, are left out: the source generator of aweXpect registers no type derived from `Exception`,
+  because its `TargetSite` requires unreferenced code. The message, data and inner exceptions are still written, and so
+  are the `ParamName`, `ActualValue`, `ObjectName` and `FileName` of the framework exceptions, which are read without
+  reflection.
+- A failure message still writes an exception as its type and message.
+
 ## Binary data and files
 
 Binary data, e.g. the cover art an album service renders, is compared byte by byte. A `byte[]` or a `Stream` does not

@@ -17,6 +17,9 @@ await Expect.That(description).MatchesSnapshot();
 // compare an object, written completely and indented by the aweXpect formatter
 await Expect.That(album).MatchesSnapshot();
 
+// compare an exception member-wise, without the members that differ between builds and machines, like the stack trace
+await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
+
 // replace values that change from run to run before comparing
 await Expect.That(playlist).MatchesSnapshot().For.Text(@"plays=\d+").AsRegex().Mask("plays=<count>");
 
