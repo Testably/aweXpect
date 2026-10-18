@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using aweXpect.Core.Metadata;
 
 [assembly: GenerateMetadata(typeof(aweXpect.Aot.Shipment))]
+[assembly: GenerateMetadata(typeof(aweXpect.Aot.RecordPlayerException))]
 
 namespace aweXpect.Aot;
 
@@ -77,6 +78,12 @@ public sealed class ReadOnlyTags(Dictionary<string, int> entries) : IReadOnlyDic
 	public IEnumerator<KeyValuePair<string, int>> GetEnumerator() => entries.GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
+
+public sealed class RecordPlayerException(string message, int side, Exception? innerException = null)
+	: Exception(message, innerException)
+{
+	public int Side { get; } = side;
 }
 
 /// <summary>

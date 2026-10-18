@@ -254,6 +254,18 @@ internal static class Checks
 				string actual = Format.Formatter.Format((object)exception, FormattingOptions.Snapshot);
 				return Task.FromResult<string?>(actual == expected ? null : $"wrote {actual}");
 			}),
+		new("a snapshot writes the own members of a custom exception",
+			() =>
+			{
+				RecordPlayerException exception = new("stuck", 3, new InvalidOperationException("not running"));
+				const string expected = "RecordPlayerException { InnerException = InvalidOperationException { Message = \"not running\" }, " +
+				                        "Message = \"stuck\", Side = 3 }";
+				string actual = Format.Formatter.Format((object)exception, FormattingOptions.Snapshot);
+				return Task.FromResult<string?>(actual == expected ? null : $"wrote {actual}");
+			}),
+		new("a custom exception is compared by the members of System.Exception as well",
+			() => ShouldFail(async () => await That(new RecordPlayerException("stuck", 3))
+				.IsEquivalentTo(new RecordPlayerException("jammed", 3)), "Message differed")),
 	];
 
 	private static async IAsyncEnumerable<int> CountAsync()

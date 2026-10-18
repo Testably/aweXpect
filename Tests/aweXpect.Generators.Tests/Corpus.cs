@@ -253,6 +253,11 @@ public static class Corpus
 			=> $"{_private}{Internal}{Protected}{Public}{ProtectedInternal}{PrivateProtected}";
 	}
 
+	public class CustomException(string message, int side) : Exception(message)
+	{
+		public int Side { get; } = side;
+	}
+
 	public interface IHasEvent
 	{
 		event EventHandler Happened;

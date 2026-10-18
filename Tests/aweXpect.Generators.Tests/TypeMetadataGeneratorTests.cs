@@ -789,6 +789,61 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenExceptionDeclaresAnUnreferenceableMember_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models
+			{
+				public class TrimmedException : System.Exception
+				{
+					public string Detail
+					{
+						[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("reflects")]
+						get => "";
+					}
+				}
+			}
+			""",
+			Call("Expect.That(new Models.TrimmedException()).IsEquivalentTo(new Models.TrimmedException());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("TrimmedException")
+			.Because("only the target site of System.Exception is known to be safe to read");
+	}
+
+	[Test]
+	public async Task WhenExceptionIsCustom_ShouldRegisterItWithTheTargetSiteSuppressed()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models
+			{
+				public class RecordPlayerException(string message, int side) : System.Exception(message)
+				{
+					public int Side { get; } = side;
+				}
+			}
+			""",
+			Call("Expect.That(new Models.RecordPlayerException(\"stuck\", 3)).IsEquivalentTo(new Models.RecordPlayerException(\"stuck\", 3));"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.RecordPlayerException, int>(\"Side\"").And
+			.Contains("RegisterProperty<global::Models.RecordPlayerException, global::System.Reflection.MethodBase>(\"TargetSite\"")
+			.Because("the members of System.Exception are compared by reflection, so the registration has to include them");
+		await That(result.Generated).Contains(
+				"[global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage(\"Trimming\", \"IL2026\", Justification = \"TargetSite returns null when its metadata is trimmed.\")]" +
+				Environment.NewLine + "\t\tprivate static void Register")
+			.Because("reading the target site would otherwise warn on publish");
+	}
+
+	[Test]
 	public async Task WhenFieldHidesAProperty_ShouldRegisterBoth()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
