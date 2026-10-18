@@ -36,6 +36,7 @@ public partial class AwexpectCustomization
 					"WindowsBase",
 					"JetBrains",
 					"xunit",
+					"TUnit",
 					"Castle",
 					"DynamicProxyGenAssembly2",
 				],
@@ -54,6 +55,7 @@ public partial class AwexpectCustomization
 		///     - WindowsBase<br />
 		///     - JetBrains<br />
 		///     - xunit<br />
+		///     - TUnit<br />
 		///     - Castle<br />
 		///     - DynamicProxyGenAssembly2
 		/// </remarks>
