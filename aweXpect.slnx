@@ -37,6 +37,7 @@
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
+    <File Path="AGENTS.md" />
     <File Path="aweXpect.sln.DotSettings" />
     <File Path="CODE_OF_CONDUCT.md" />
     <File Path="CONTRIBUTING.md" />
@@ -48,7 +49,6 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/_/.github/">
-    <File Path=".github/copilot-instructions.md" />
     <File Path=".github/dependabot.yml" />
     <File Path=".github/mergify.yml" />
   </Folder>
