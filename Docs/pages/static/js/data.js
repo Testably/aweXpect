@@ -246,6 +246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -289,7 +295,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -336,7 +343,8 @@ window.BENCHMARK_DATA = {
           13080.987020639273,
           13147.132938091572,
           13598.723541259766,
-          13293.002032688686
+          13293.002032688686,
+          13028.998110257662
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -385,6 +393,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -443,7 +452,8 @@ window.BENCHMARK_DATA = {
           383840.941796875,
           376214.4415364583,
           364686.4015625,
-          371310.4979073661
+          371310.4979073661,
+          384593.88033854164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -490,6 +500,7 @@ window.BENCHMARK_DATA = {
           590292,
           590289,
           590226,
+          590292,
           590292,
           590292,
           590292,
@@ -550,7 +561,8 @@ window.BENCHMARK_DATA = {
           19932.613854980467,
           19449.401745605468,
           19253.25876726423,
-          19835.15870259603
+          19835.15870259603,
+          18673.556202479773
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -562,6 +574,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -820,6 +833,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -856,7 +875,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -896,7 +916,8 @@ window.BENCHMARK_DATA = {
           326.2151486714681,
           269.3584834734599,
           264.1281935373942,
-          291.1105140686035
+          291.1105140686035,
+          279.0935493151347
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -908,6 +929,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -989,7 +1011,8 @@ window.BENCHMARK_DATA = {
           536.68154519399,
           493.8878744761149,
           474.7976480892726,
-          511.89917073931014
+          511.89917073931014,
+          505.37972558339436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1001,6 +1024,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1082,7 +1106,8 @@ window.BENCHMARK_DATA = {
           413.399849096934,
           406.1844599246979,
           393.373293363131,
-          386.25254176457724
+          386.25254176457724,
+          391.07301743825275
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1094,6 +1119,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -5965,6 +5991,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -6771,7 +6803,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -7581,7 +7614,8 @@ window.BENCHMARK_DATA = {
           162.44515345891315,
           151.5168959924153,
           141.64324133736747,
-          148.05791873931884
+          148.05791873931884,
+          149.93918204307556
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8388,6 +8422,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9214,7 +9249,8 @@ window.BENCHMARK_DATA = {
           277.98049046198526,
           244.37976859410603,
           240.3306016581399,
-          257.29163605826244
+          257.29163605826244,
+          264.8336030755724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9407,6 +9443,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10128,7 +10165,8 @@ window.BENCHMARK_DATA = {
           259.5931412378947,
           240.0195998509725,
           232.143625497818,
-          249.62575272151403
+          249.62575272151403,
+          260.77045140947615
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10140,6 +10178,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10484,6 +10523,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -10527,7 +10572,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -10574,7 +10620,8 @@ window.BENCHMARK_DATA = {
           285.66499205430347,
           275.98561099597384,
           271.1075716018677,
-          266.4064359664917
+          266.4064359664917,
+          279.3268327372415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10593,6 +10640,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10681,7 +10729,8 @@ window.BENCHMARK_DATA = {
           585.0306126730783,
           524.1911427815755,
           502.1813769658407,
-          500.3217079456036
+          500.3217079456036,
+          547.2152682622274
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10693,6 +10742,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -10788,7 +10838,8 @@ window.BENCHMARK_DATA = {
           362.4129788534982,
           356.1902251879374,
           327.125620396932,
-          333.9159442901611
+          333.9159442901611,
+          335.30863270392786
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10800,6 +10851,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15678,6 +15730,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -16484,7 +16542,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -17294,7 +17353,8 @@ window.BENCHMARK_DATA = {
           702.9955768585205,
           672.7664096832275,
           649.1604520161947,
-          662.2252889046302
+          662.2252889046302,
+          660.4853057861328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18104,6 +18164,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -18927,7 +18988,8 @@ window.BENCHMARK_DATA = {
           1477.6917106628418,
           1384.177633013044,
           1303.84288520813,
-          1353.119752747672
+          1353.119752747672,
+          1376.7663205010551
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19742,6 +19804,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -19841,7 +19904,8 @@ window.BENCHMARK_DATA = {
           705.9186899185181,
           644.3552690505982,
           622.0333005360195,
-          628.4520183290754
+          628.4520183290754,
+          670.4638763427735
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19853,6 +19917,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -24775,6 +24840,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -25581,7 +25652,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -26391,7 +26463,8 @@ window.BENCHMARK_DATA = {
           712.9865600722177,
           634.71514913014,
           619.0734684626261,
-          636.2824704306466
+          636.2824704306466,
+          657.7209793499538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27201,6 +27274,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -28024,7 +28098,8 @@ window.BENCHMARK_DATA = {
           28597.698056902205,
           27523.385920933313,
           27846.110729980468,
-          26881.503814697266
+          26881.503814697266,
+          28057.280844116212
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28839,6 +28914,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -28938,7 +29014,8 @@ window.BENCHMARK_DATA = {
           827.8117097218832,
           779.6573479334513,
           768.9006327220371,
-          783.0848929087321
+          783.0848929087321,
+          806.8213864008586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -28950,6 +29027,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -29642,6 +29720,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -29743,7 +29827,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -29848,7 +29933,8 @@ window.BENCHMARK_DATA = {
           751.7218626022338,
           721.9878223419189,
           713.779235294887,
-          717.6700445810953
+          717.6700445810953,
+          741.8510872295925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29955,6 +30041,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -30071,7 +30158,8 @@ window.BENCHMARK_DATA = {
           84969.9701944987,
           81701.1803917518,
           82598.69792683919,
-          83440.01062011719
+          83440.01062011719,
+          83792.33763020833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30176,6 +30264,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -30789,6 +30878,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -30890,7 +30985,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -30995,7 +31091,8 @@ window.BENCHMARK_DATA = {
           201.78900542259217,
           176.96644123395285,
           174.70611706801824,
-          171.95323034695215
+          171.95323034695215,
+          198.55873828274864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31072,6 +31169,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -31218,7 +31316,8 @@ window.BENCHMARK_DATA = {
           32836.915307617186,
           30277.19969998873,
           31428.427734375,
-          31346.55486188616
+          31346.55486188616,
+          32983.70612880162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31328,6 +31427,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -31427,7 +31527,8 @@ window.BENCHMARK_DATA = {
           259.3531918525696,
           243.56041056315104,
           234.0013231890542,
-          257.14557699056775
+          257.14557699056775,
+          257.1986229760306
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31439,6 +31540,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -31783,6 +31885,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -31826,7 +31934,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -31873,7 +31982,8 @@ window.BENCHMARK_DATA = {
           386.1386714935303,
           356.05538924535114,
           361.50086283683777,
-          363.08627436711237
+          363.08627436711237,
+          422.8749184926351
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31921,6 +32031,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -31980,7 +32091,8 @@ window.BENCHMARK_DATA = {
           421.93366057078043,
           379.3646048545837,
           377.5147665977478,
-          388.9661487170628
+          388.9661487170628,
+          391.9173193613688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31992,6 +32104,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -32087,7 +32200,8 @@ window.BENCHMARK_DATA = {
           415.692871538798,
           406.5985387166341,
           399.0806342874254,
-          416.40186166763306
+          416.40186166763306,
+          423.628520933787
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32099,6 +32213,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -32399,6 +32514,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -32442,7 +32563,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -32489,7 +32611,8 @@ window.BENCHMARK_DATA = {
           848.8291051864624,
           784.5412870815823,
           831.8279237747192,
-          787.7022106170655
+          787.7022106170655,
+          831.9412786620004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32516,6 +32639,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -32596,7 +32720,8 @@ window.BENCHMARK_DATA = {
           2080.954852549235,
           1876.5497653667744,
           1843.5725727081299,
-          1917.0557583400182
+          1917.0557583400182,
+          2005.0719724019368
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32608,6 +32733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -32703,7 +32829,8 @@ window.BENCHMARK_DATA = {
           1049.845222745623,
           925.6240917205811,
           875.5670867647443,
-          932.1957081476847
+          932.1957081476847,
+          957.545662244161
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32715,6 +32842,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -33015,6 +33143,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -33058,7 +33192,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -33105,7 +33240,8 @@ window.BENCHMARK_DATA = {
           12321.265700707068,
           12389.441782633463,
           12349.681902204242,
-          12239.604544321695
+          12239.604544321695,
+          12242.142596905049
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33154,6 +33290,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -33212,7 +33349,8 @@ window.BENCHMARK_DATA = {
           41637.939457194014,
           41065.19112141927,
           41290.5967569987,
-          41551.96260892428
+          41551.96260892428,
+          41068.647775503305
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33260,6 +33398,7 @@ window.BENCHMARK_DATA = {
           18609,
           18608,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -33319,7 +33458,8 @@ window.BENCHMARK_DATA = {
           11377.018030019906,
           11357.496549479167,
           11626.344766235352,
-          11410.476727999174
+          11410.476727999174,
+          11501.51890345982
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33331,6 +33471,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -33631,6 +33772,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
         "message": "ci: gate the push on the test jobs directly (#1867)"
+      },
+      {
+        "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
+        "message": "test: verify the public API with aweXpect.Snapshots.PublicApi (#1868)"
       }
     ],
     "labels": [
@@ -33674,7 +33821,8 @@ window.BENCHMARK_DATA = {
       "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
-      "352482a0"
+      "352482a0",
+      "08682ffa"
     ],
     "datasets": [
       {
@@ -33721,7 +33869,8 @@ window.BENCHMARK_DATA = {
           12015.968975947453,
           11763.05514831543,
           11949.894220205453,
-          11580.283666992187
+          11580.283666992187,
+          11809.492108154296
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33770,6 +33919,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -33828,7 +33978,8 @@ window.BENCHMARK_DATA = {
           60178.56344095866,
           58970.817065429685,
           58984.840584891186,
-          59072.35305786133
+          59072.35305786133,
+          61230.2866398738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33880,7 +34031,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33935,7 +34087,8 @@ window.BENCHMARK_DATA = {
           22622.643391200476,
           22581.593056233723,
           22705.601449148995,
-          22516.468935452976
+          22516.468935452976,
+          22593.27073786809
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33947,6 +34100,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
