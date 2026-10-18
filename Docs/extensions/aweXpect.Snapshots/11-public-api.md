@@ -64,6 +64,10 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
     .Ignoring.Attribute("MyLibrary.Internal.MarkerAttribute"));
 ```
 
+`[Serializable]`, `[DllImport(…)]` and `[Optional]` are written, although the compiler stores them as flags in the
+metadata instead of as attributes, as removing them breaks consumers, e.g. of serialization or interop; they can be
+ignored like any other attribute.
+
 A record is written with the members that the compiler synthesizes for it, e.g. `Equals`, `GetHashCode`, `ToString`,
 `Deconstruct`, the copy constructor and the equality operators. The members that are marked as `[CompilerGenerated]` can
 be ignored, which keeps the primary constructor, the positional properties and the hand-written members of the record:

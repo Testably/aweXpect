@@ -31,6 +31,9 @@ public static class PublicApiDeclarations
 	private const string Indentation = "    ";
 	private const string IndexerNameAttribute = "System.Runtime.CompilerServices.IndexerNameAttribute";
 	private const string TypeForwardedToAttribute = "System.Runtime.CompilerServices.TypeForwardedToAttribute";
+	private const string SerializableAttribute = "System.SerializableAttribute";
+	private const string DllImportAttribute = "System.Runtime.InteropServices.DllImportAttribute";
+	private const string OptionalAttribute = "System.Runtime.InteropServices.OptionalAttribute";
 
 	private static readonly SymbolDisplayFormat MemberFormat = new(
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
@@ -640,7 +643,7 @@ public static class PublicApiDeclarations
 		IMethodSymbol method => MethodHeader(method, options) + "(" +
 		                        string.Join(", ", method.Parameters.Select((parameter, index)
 			                        => Parameter(parameter, index == 0 && method.IsExtensionMethod, options))) + ")" +
-		                        Constraints(method.TypeParameters) + (method.IsAbstract ? ";" : " { }"),
+		                        Constraints(method.TypeParameters) + (method.IsAbstract || method.IsExtern ? ";" : " { }"),
 		IPropertySymbol property => Property(property, options),
 		IEventSymbol => member.ToDisplayString(EventFormat) + ";",
 		IFieldSymbol { IsFixedSizeBuffer: true, } field => AccessibilityKeyword(field) + " fixed " +
@@ -923,10 +926,14 @@ public static class PublicApiDeclarations
 		=> Attributes(method, options).Concat(ReturnAttributes(method, options));
 
 	private static IEnumerable<string> ReturnAttributes(IMethodSymbol method, PublicApiOptions options)
-		=> Attributes(method.GetReturnTypeAttributes(), options).Select(attribute => $"return: {attribute}");
+		=> Attributes(method.GetReturnTypeAttributes(), options)
+			.OrderBy(attribute => attribute, StringComparer.Ordinal)
+			.Select(attribute => $"return: {attribute}");
 
 	private static IEnumerable<string> Attributes(ISymbol symbol, PublicApiOptions options)
-		=> Attributes(symbol.GetAttributes(), options);
+		=> Attributes(symbol.GetAttributes(), options)
+			.Concat(PseudoAttributes(symbol, options))
+			.OrderBy(attribute => attribute, StringComparer.Ordinal);
 
 	private static IEnumerable<string> Attributes(IEnumerable<AttributeData> attributes, PublicApiOptions options)
 		=> attributes
@@ -934,8 +941,56 @@ public static class PublicApiDeclarations
 			                    IsWritten(attributeClass) &&
 			                    !options.AttributesToIgnore.Contains(MetadataFullName(attributeClass)) &&
 			                    !IsSnapshotsMetadata(attribute))
-			.Select(AttributeText)
-			.OrderBy(attribute => attribute, StringComparer.Ordinal);
+			.Select(AttributeText);
+
+	/// <summary>
+	///     The attributes that are stored as flags in the metadata instead of as attributes, but whose removal breaks
+	///     consumers, e.g. of serialization or interop.
+	/// </summary>
+	/// <remarks>
+	///     A parameter with a default value is also optional, which its default value already shows.
+	/// </remarks>
+	private static IEnumerable<string> PseudoAttributes(ISymbol symbol, PublicApiOptions options)
+	{
+		(string FullName, string Text)? attribute = symbol switch
+		{
+			INamedTypeSymbol { IsSerializable: true, } => (SerializableAttribute, "System.Serializable"),
+			IMethodSymbol method when method.GetDllImportData() is { } data => (DllImportAttribute, DllImport(method, data)),
+			IParameterSymbol { IsOptional: true, HasExplicitDefaultValue: false, } =>
+				(OptionalAttribute, "System.Runtime.InteropServices.Optional"),
+			_ => null,
+		};
+		return attribute is { } pseudo && !options.AttributesToIgnore.Contains(pseudo.FullName) ? [pseudo.Text,] : [];
+	}
+
+	/// <summary>
+	///     Writes only the named arguments that differ from the values of <c>[DllImport("…")]</c> without them.
+	/// </summary>
+	private static string DllImport(IMethodSymbol method, DllImportData data)
+	{
+		string?[] arguments =
+		[
+			SymbolDisplay.FormatLiteral(data.ModuleName!, true),
+			data.EntryPointName is { } entryPoint && entryPoint != method.MetadataName
+				? $"EntryPoint = {SymbolDisplay.FormatLiteral(entryPoint, true)}"
+				: null,
+			data.CharacterSet != CharSet.None
+				? $"CharSet = System.Runtime.InteropServices.CharSet.{data.CharacterSet}"
+				: null,
+			data.SetLastError ? "SetLastError = true" : null,
+			data.ExactSpelling ? "ExactSpelling = true" : null,
+			data.CallingConvention != CallingConvention.Winapi
+				? $"CallingConvention = System.Runtime.InteropServices.CallingConvention.{data.CallingConvention}"
+				: null,
+			data.BestFitMapping is { } bestFitMapping ? $"BestFitMapping = {Literal(bestFitMapping)}" : null,
+			data.ThrowOnUnmappableCharacter is { } throwOnUnmappableChar
+				? $"ThrowOnUnmappableChar = {Literal(throwOnUnmappableChar)}"
+				: null,
+		];
+		return $"System.Runtime.InteropServices.DllImport({string.Join(", ", arguments.OfType<string>())})";
+	}
+
+	private static string Literal(bool value) => value ? "true" : "false";
 
 	/// <summary>
 	///     An attribute is written when consumers can see its class, or when compilers or analyzers read it by its

@@ -54,6 +54,44 @@ public static class Compiler
 	}
 
 	/// <summary>
+	///     Writes a library with the attributes that are stored as metadata flags, and with types for which the compiler
+	///     could set them implicitly.
+	/// </summary>
+	/// <remarks>
+	///     The .NET Framework declares <c>DefaultParameterValueAttribute</c> in <c>System.dll</c> and no
+	///     <c>IsExternalInit</c>, which records require.
+	/// </remarks>
+	public static FileInfo WritePseudoAttributesLibrary()
+		=> WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
+			namespace Library
+			{
+			    [System.Serializable] public class Payload { }
+			    public class Plain { }
+			    public enum Kind { A }
+			    public delegate void Handler();
+			    public record Note(int Id);
+			    public static class Native
+			    {
+			        [System.Runtime.InteropServices.DllImport("x")]
+			        public static extern void Beep();
+			        [System.Runtime.InteropServices.DllImport("x", EntryPoint = "send",
+			            CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true, ExactSpelling = true,
+			            CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl,
+			            BestFitMapping = false, ThrowOnUnmappableChar = true)]
+			        public static extern int Send(string message);
+			        public static void Configure([System.Runtime.InteropServices.Optional] int retries,
+			            [System.Runtime.InteropServices.Optional, System.Runtime.InteropServices.DefaultParameterValue(3)] int depth,
+			            int timeout = 5, [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+			            params int[] values) { }
+			    }
+			}
+			namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
+			""", [
+			MetadataReference.CreateFromFile(typeof(System.Runtime.InteropServices.DefaultParameterValueAttribute).Assembly
+				.Location),
+		]));
+
+	/// <summary>
 	///     Writes the <paramref name="bytes" /> of an assembly as <paramref name="fileName" /> into a new directory, or
 	///     into the <paramref name="directory" />.
 	/// </summary>

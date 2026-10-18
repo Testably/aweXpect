@@ -228,6 +228,93 @@ public sealed class PublicApiDeclarationsTests
 	}
 
 	[Fact]
+	public async Task GenerateFrom_ShouldWriteTheAttributesThatAreStoredAsMetadataFlags()
+	{
+		FileInfo library = WritePseudoAttributesLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Type("Library.Note"));
+
+		await That(result).IsEqualTo("""
+		                             namespace Library
+		                             {
+		                                 public delegate void Handler();
+		                                 public enum Kind
+		                                 {
+		                                     A = 0,
+		                                 }
+		                                 public static class Native
+		                                 {
+		                                     [System.Runtime.InteropServices.DllImport("x")]
+		                                     public static extern void Beep();
+		                                     public static void Configure([System.Runtime.InteropServices.Optional] int retries, int depth = 3, int timeout = 5, [System.Runtime.CompilerServices.CallerMemberName] string caller = "", params int[] values) { }
+		                                     [System.Runtime.InteropServices.DllImport("x", EntryPoint = "send", CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true, ExactSpelling = true, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+		                                     public static extern int Send(string message);
+		                                 }
+		                                 [System.Serializable]
+		                                 public class Payload
+		                                 {
+		                                     public Payload() { }
+		                                 }
+		                                 public class Plain
+		                                 {
+		                                     public Plain() { }
+		                                 }
+		                             }
+
+		                             """).IgnoringNewlineStyle()
+			.Because("[Serializable] is written only where it is declared, e.g. not on enums or delegates, [Optional] " +
+			         "only without a default value, which C# also stores as optional, and [DllImport] only with the " +
+			         "arguments that differ from a plain [DllImport(\"x\")]");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_ShouldNotWriteSerializableForRecords()
+	{
+		FileInfo library = WritePseudoAttributesLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Within.Type("Library.Note"));
+
+		await That(result).StartsWith("""
+		                              namespace Library
+		                              {
+		                                  public record Note
+		                              """).IgnoringNewlineStyle()
+			.Because("the compiler does not mark a record as serializable unless it declares [Serializable]");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringSerializable_ShouldNotWriteIt()
+	{
+		FileInfo library = WritePseudoAttributesLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Attribute<SerializableAttribute>());
+
+		await That(result).DoesNotContain("Serializable").And.Contains("public class Payload");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringDllImport_ShouldNotWriteIt()
+	{
+		FileInfo library = WritePseudoAttributesLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.Ignoring.Attribute<System.Runtime.InteropServices.DllImportAttribute>());
+
+		await That(result).DoesNotContain("DllImport").And.Contains("public static extern void Beep();");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringOptional_ShouldNotWriteIt()
+	{
+		FileInfo library = WritePseudoAttributesLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.Ignoring.Attribute<System.Runtime.InteropServices.OptionalAttribute>());
+
+		await That(result).Contains("Configure(int retries, int depth = 3, int timeout = 5,");
+	}
+
+	[Fact]
 	public async Task GenerateFrom_ShouldWriteAllTypesOfTheLibrary()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
