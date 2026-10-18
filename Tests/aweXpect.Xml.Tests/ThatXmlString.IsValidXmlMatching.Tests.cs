@@ -9,7 +9,7 @@ public sealed partial class ThatXmlString
 		[UseEnglishMessages]
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectContainsTheExpectedXml_ShouldSucceed()
 			{
 				string subject = "<a x=\"1\" y=\"2\"><b/></a>";
@@ -20,7 +20,7 @@ public sealed partial class ThatXmlString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDiffers_ShouldFail()
 			{
 				string subject = "<a x=\"2\"/>";
@@ -28,7 +28,7 @@ public sealed partial class ThatXmlString
 				async Task Act()
 					=> await That(subject).IsValidXmlMatching("<a x=\"1\"/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is valid XML which matches <a x="1"/>,
@@ -36,7 +36,7 @@ public sealed partial class ThatXmlString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsInvalidXml_ShouldFail()
 			{
 				string subject = "<a><b>";
@@ -44,7 +44,7 @@ public sealed partial class ThatXmlString
 				async Task Act()
 					=> await That(subject).IsValidXmlMatching("<a/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is valid XML which matches <a/>,
@@ -52,7 +52,7 @@ public sealed partial class ThatXmlString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectContainsDtd_ShouldFail()
 			{
 				string subject = "<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>";
@@ -60,7 +60,7 @@ public sealed partial class ThatXmlString
 				async Task Act()
 					=> await That(subject).IsValidXmlMatching("<a>x</a>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is valid XML which matches <a>x</a>,
@@ -68,7 +68,7 @@ public sealed partial class ThatXmlString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -76,7 +76,7 @@ public sealed partial class ThatXmlString
 				async Task Act()
 					=> await That(subject).IsValidXmlMatching("<a/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is valid XML which matches <a/>,
@@ -84,7 +84,7 @@ public sealed partial class ThatXmlString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsInvalidXml_ShouldThrowArgumentException()
 			{
 				string subject = "<a/>";
@@ -100,7 +100,7 @@ public sealed partial class ThatXmlString
 		[UseEnglishMessages]
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsInvalidXml_ShouldSucceed()
 			{
 				string subject = "<a>";
@@ -112,7 +112,7 @@ public sealed partial class ThatXmlString
 					.Because("a subject that is no valid XML is not valid XML which matches the expected XML either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreInvalidXml_ShouldThrowArgumentException()
 			{
 				string subject = "<a><b>";
@@ -125,7 +125,7 @@ public sealed partial class ThatXmlString
 					.Because("an invalid expected XML would let the negation pass for every subject that is no valid XML");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectMatches_ShouldFail()
 			{
 				string subject = "<a x=\"1\"/>";
@@ -133,7 +133,7 @@ public sealed partial class ThatXmlString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsValidXmlMatching("<a/>"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not valid XML which matches <a/>,
@@ -148,7 +148,7 @@ public sealed partial class ThatXmlString
 		[UseEnglishMessages]
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAdditionalNodes_ShouldFail()
 			{
 				string subject = "<a x=\"1\" y=\"2\"/>";
@@ -156,7 +156,7 @@ public sealed partial class ThatXmlString
 				async Task Act()
 					=> await That(subject).IsValidXmlMatchingExactly("<a x=\"1\"/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is valid XML which matches <a x="1"/> exactly,
@@ -164,7 +164,7 @@ public sealed partial class ThatXmlString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEquivalent_ShouldSucceed()
 			{
 				string subject = "<a y=\"2\" x=\"1\"/>";

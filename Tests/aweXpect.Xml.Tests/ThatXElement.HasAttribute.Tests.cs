@@ -8,7 +8,7 @@ public sealed partial class ThatXElement
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAttributeExists_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
@@ -19,7 +19,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeDoesNotExist_ShouldFail()
 			{
 				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
@@ -27,7 +27,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasAttribute("artist");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has attribute "artist",
@@ -35,7 +35,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsInAnotherNamespace_ShouldFail()
 			{
 				XElement element = XElement.Parse("<track xmlns:m=\"urn:meta\" m:title=\"Let It Be\"/>");
@@ -43,7 +43,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasAttribute("title");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has attribute "title",
@@ -52,7 +52,7 @@ public sealed partial class ThatXElement
 					.Because("the attribute is looked up by its namespace and local name, like by XElement.Attribute");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsInTheSpecifiedNamespace_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<track xmlns:m=\"urn:meta\" m:title=\"Let It Be\"/>");
@@ -65,7 +65,7 @@ public sealed partial class ThatXElement
 					.Because("the prefix of the attribute is not compared");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeInNamespaceDoesNotExist_ShouldNameTheNamespace()
 			{
 				XElement element = XElement.Parse("<track/>");
@@ -74,7 +74,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasAttribute(meta + "title");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has attribute "{urn:meta}title",
@@ -82,7 +82,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueSatisfiesTheExpectation_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<item price=\"1.00\"/>");
@@ -93,7 +93,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueDoesNotSatisfyTheExpectation_ShouldFail()
 			{
 				XElement element = XElement.Parse("<item price=\"2.00\"/>");
@@ -101,7 +101,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasAttribute("price", value => value.IsEqualTo("1.00"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has attribute "price" whose value is equal to "1.00",
@@ -110,7 +110,7 @@ public sealed partial class ThatXElement
 					.Because("the value is verified with the string expectations of aweXpect");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeDoesNotExist_ShouldNotVerifyItsValue()
 			{
 				XElement element = XElement.Parse("<item/>");
@@ -118,7 +118,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasAttribute("price", value => value.IsEqualTo("1.00"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has attribute "price" whose value is equal to "1.00",
@@ -127,7 +127,7 @@ public sealed partial class ThatXElement
 					.Because("the value of a missing attribute is not compared");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithAnd_ShouldVerifyAllAttributes()
 			{
 				XElement element = XElement.Parse("<item sku=\"A1\" price=\"2.00\"/>");
@@ -141,7 +141,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSecondOfCombinedValuesDiffers_ShouldNameItsAttribute()
 			{
 				XElement element = XElement.Parse("<item sku=\"A1\" price=\"2.00\"/>");
@@ -151,7 +151,7 @@ public sealed partial class ThatXElement
 						.HasAttribute("sku", value => value.IsEqualTo("A1")).And
 						.HasAttribute("price", value => value.IsEqualTo("1.00"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has attribute "sku" whose value is equal to "A1" and has attribute "price" whose value is equal to "1.00",
@@ -159,7 +159,7 @@ public sealed partial class ThatXElement
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndValueMatches_ShouldFail()
 			{
 				XElement element = XElement.Parse("<item price=\"1.00\"/>");
@@ -167,7 +167,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).DoesNotComplyWith(it => it.HasAttribute("price", value => value.IsEqualTo("1.00")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             does not have attribute "price" whose value is equal to "1.00",
@@ -175,9 +175,9 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("<item price=\"2.00\"/>")]
-			[InlineData("<item/>")]
+			[Test]
+			[Arguments("<item price=\"2.00\"/>")]
+			[Arguments("<item/>")]
 			public async Task WhenNegatedAndValueDiffersOrAttributeIsMissing_ShouldSucceed(string subject)
 			{
 				XElement element = XElement.Parse(subject);
@@ -188,7 +188,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("track");
@@ -200,7 +200,7 @@ public sealed partial class ThatXElement
 					.WithParamName("expectations");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsNullWithExpectations_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("track");
@@ -212,7 +212,7 @@ public sealed partial class ThatXElement
 					.WithParamName("name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				XElement? subject = null;
@@ -220,7 +220,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(subject).HasAttribute("title");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has attribute "title",
@@ -228,7 +228,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("track");
@@ -246,7 +246,7 @@ public sealed partial class ThatXElement
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAttributeDoesNotExist_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
@@ -257,7 +257,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeExists_ShouldFail()
 			{
 				XElement element = XElement.Parse("<track title=\"Let It Be\"/>");
@@ -265,7 +265,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).DoesNotHaveAttribute("title");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             does not have attribute "title",
@@ -273,7 +273,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				XElement? subject = null;
@@ -281,7 +281,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(subject).DoesNotHaveAttribute("title");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have attribute "title",
@@ -289,7 +289,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("track");

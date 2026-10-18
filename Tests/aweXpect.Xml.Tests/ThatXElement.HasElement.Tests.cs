@@ -8,7 +8,7 @@ public sealed partial class ThatXElement
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenChildElementExists_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<order><item/></order>");
@@ -19,7 +19,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyDescendantExists_ShouldFail()
 			{
 				XElement element = XElement.Parse("<order><items><item/></items></order>");
@@ -27,7 +27,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasElement("item");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has element "item",
@@ -36,7 +36,7 @@ public sealed partial class ThatXElement
 					.Because("only the child elements are looked up, like by XElement.Element");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChildElementIsInTheSpecifiedNamespace_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<s:order xmlns:s=\"urn:shop\"><s:item/></s:order>");
@@ -48,7 +48,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChildElementIsInAnotherNamespace_ShouldFail()
 			{
 				XElement element = XElement.Parse("<order xmlns=\"urn:shop\"><item/></order>");
@@ -56,7 +56,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasElement("item");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has element "item",
@@ -65,7 +65,7 @@ public sealed partial class ThatXElement
 					.Because("the child element inherits the default namespace, so it is not in no namespace");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChildElementSatisfiesTheExpectations_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<order><item sku=\"A1\" price=\"1.00\"/></order>");
@@ -76,7 +76,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChildElementDoesNotSatisfyTheExpectations_ShouldFail()
 			{
 				XElement element = XElement.Parse("<order><item sku=\"B2\"/></order>");
@@ -84,7 +84,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasElement("item", item => item.HasAttribute("sku", value => value.IsEqualTo("A1")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has element "item" which has attribute "sku" whose value is equal to "A1",
@@ -93,7 +93,7 @@ public sealed partial class ThatXElement
 					.Because("the value is verified with the string expectations of aweXpect");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSeveralChildElementsExist_ShouldVerifyTheFirst()
 			{
 				XElement element = XElement.Parse("<order><item sku=\"A1\"/><item sku=\"B2\"/></order>");
@@ -101,7 +101,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasElement("item", item => item.Matches("<item sku=\"B2\"/>"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has element "item" which matches <item sku="B2"/>,
@@ -110,7 +110,7 @@ public sealed partial class ThatXElement
 					.Because("the first child element with the name is verified, like by XElement.Element");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChildElementDoesNotExist_ShouldNotVerifyIt()
 			{
 				XElement element = XElement.Parse("<order/>");
@@ -118,7 +118,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).HasElement("item", item => item.HasAttribute("sku"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has element "item" which has attribute "sku",
@@ -126,7 +126,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNested_ShouldVerifyEachLevel()
 			{
 				XElement element = XElement.Parse("<order><customer><address city=\"Liverpool\"/></customer></order>");
@@ -136,7 +136,7 @@ public sealed partial class ThatXElement
 						.HasElement("address", address => address
 							.HasAttribute("city", city => city.IsEqualTo("London"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             has element "customer" which has element "address" which has attribute "city" whose value is equal to "London",
@@ -145,7 +145,7 @@ public sealed partial class ThatXElement
 					.Because("the value is verified with the string expectations of aweXpect");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndChildElementSatisfiesTheExpectations_ShouldFail()
 			{
 				XElement element = XElement.Parse("<order><item sku=\"A1\"/></order>");
@@ -153,7 +153,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).DoesNotComplyWith(it => it.HasElement("item", item => item.HasAttribute("sku")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             does not have element "item" which has attribute "sku",
@@ -161,7 +161,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreNull_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("order");
@@ -173,7 +173,7 @@ public sealed partial class ThatXElement
 					.WithParamName("expectations");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				XElement? subject = null;
@@ -181,7 +181,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(subject).HasElement("item");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has element "item",
@@ -189,7 +189,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("order");
@@ -207,7 +207,7 @@ public sealed partial class ThatXElement
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenChildElementDoesNotExist_ShouldSucceed()
 			{
 				XElement element = XElement.Parse("<order><item/></order>");
@@ -218,7 +218,7 @@ public sealed partial class ThatXElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChildElementExists_ShouldFail()
 			{
 				XElement element = XElement.Parse("<order><note/></order>");
@@ -226,7 +226,7 @@ public sealed partial class ThatXElement
 				async Task Act()
 					=> await That(element).DoesNotHaveElement("note");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that element
 					             does not have element "note",
@@ -234,7 +234,7 @@ public sealed partial class ThatXElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				XElement element = new("order");

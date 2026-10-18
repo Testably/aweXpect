@@ -13,20 +13,20 @@ public sealed partial class ThatXmlString
 			[UseEnglishMessages]
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData("<a><b>1</b></a>", "<a>\n  <b>1</b>\n</a>", "whitespace-only text between elements is ignored")]
-				[InlineData("<a x=\"1\" y=\"2\"/>", "<a y='2' x='1'/>", "the order of attributes is ignored")]
-				[InlineData("<p:a xmlns:p=\"urn:x\"><p:b/></p:a>", "<a xmlns=\"urn:x\"><b/></a>", "prefixes are not compared")]
-				[InlineData("<a xmlns:unused=\"urn:y\"/>", "<a/>", "namespace declarations are no attributes")]
-				[InlineData("<a/>", "<a></a>", "an empty element can be written in both forms")]
-				[InlineData("<a><![CDATA[<b>]]></a>", "<a>&lt;b&gt;</a>", "CDATA sections are compared as text")]
-				[InlineData("<a>x<![CDATA[y]]>z</a>", "<a>xyz</a>", "adjacent text and CDATA sections are joined")]
-				[InlineData("<a><![CDATA[]]></a>", "<a/>", "an empty CDATA section is no text")]
-				[InlineData("<a>x<!-- comment -->y</a>", "<a>xy</a>", "comments are ignored")]
-				[InlineData("<?xml version=\"1.0\"?><!-- c --><?pi data?><a><?pi data?></a>", "<a/>",
+				[Test]
+				[Arguments("<a><b>1</b></a>", "<a>\n  <b>1</b>\n</a>", "whitespace-only text between elements is ignored")]
+				[Arguments("<a x=\"1\" y=\"2\"/>", "<a y='2' x='1'/>", "the order of attributes is ignored")]
+				[Arguments("<p:a xmlns:p=\"urn:x\"><p:b/></p:a>", "<a xmlns=\"urn:x\"><b/></a>", "prefixes are not compared")]
+				[Arguments("<a xmlns:unused=\"urn:y\"/>", "<a/>", "namespace declarations are no attributes")]
+				[Arguments("<a/>", "<a></a>", "an empty element can be written in both forms")]
+				[Arguments("<a><![CDATA[<b>]]></a>", "<a>&lt;b&gt;</a>", "CDATA sections are compared as text")]
+				[Arguments("<a>x<![CDATA[y]]>z</a>", "<a>xyz</a>", "adjacent text and CDATA sections are joined")]
+				[Arguments("<a><![CDATA[]]></a>", "<a/>", "an empty CDATA section is no text")]
+				[Arguments("<a>x<!-- comment -->y</a>", "<a>xy</a>", "comments are ignored")]
+				[Arguments("<?xml version=\"1.0\"?><!-- c --><?pi data?><a><?pi data?></a>", "<a/>",
 					"the XML declaration, comments and processing instructions are ignored")]
-				[InlineData("<a>&#65;&#x42;&amp;</a>", "<a>AB&amp;</a>", "character and entity references are resolved")]
-				[InlineData("<a>x\r\ny</a>", "<a>x\ny</a>", "line endings are normalized")]
+				[Arguments("<a>&#65;&#x42;&amp;</a>", "<a>AB&amp;</a>", "character and entity references are resolved")]
+				[Arguments("<a>x\r\ny</a>", "<a>x\ny</a>", "line endings are normalized")]
 				public async Task WhenDocumentsAreEquivalent_ShouldSucceed(string subject, string expected, string because)
 				{
 					async Task Act()
@@ -35,37 +35,37 @@ public sealed partial class ThatXmlString
 					await That(Act).DoesNotThrow().Because(because);
 				}
 
-				[Theory]
-				[InlineData("<a x=\"1\"/>", "<a x=\"2\"/>", "/a/@x was \"1\" instead of \"2\"")]
-				[InlineData("<a/>", "<a x=\"2\"/>", "/a/@x was missing")]
-				[InlineData("<a x=\"1\"/>", "<a/>", "/a/@x was unexpected")]
-				[InlineData("<a xmlns:p=\"urn:p\" p:x=\"1\"/>", "<a x=\"1\"/>",
+				[Test]
+				[Arguments("<a x=\"1\"/>", "<a x=\"2\"/>", "/a/@x was \"1\" instead of \"2\"")]
+				[Arguments("<a/>", "<a x=\"2\"/>", "/a/@x was missing")]
+				[Arguments("<a x=\"1\"/>", "<a/>", "/a/@x was unexpected")]
+				[Arguments("<a xmlns:p=\"urn:p\" p:x=\"1\"/>", "<a x=\"1\"/>",
 					"/a/@x was in namespace \"urn:p\" instead of no namespace")]
-				[InlineData("<b/>", "<a/>", "/a was <b> instead of <a>")]
-				[InlineData("<a xmlns=\"urn:v1\"/>", "<a xmlns=\"urn:v2\"/>",
+				[Arguments("<b/>", "<a/>", "/a was <b> instead of <a>")]
+				[Arguments("<a xmlns=\"urn:v1\"/>", "<a xmlns=\"urn:v2\"/>",
 					"/a was in namespace \"urn:v1\" instead of namespace \"urn:v2\"")]
-				[InlineData("<a>1.0</a>", "<a>1.00</a>", "/a/text() was \"1.0\" instead of \"1.00\"")]
-				[InlineData("<a> x </a>", "<a>x</a>", "/a/text() was \" x \" instead of \"x\"")]
-				[InlineData("<a xml:space=\"preserve\"> </a>", "<a xml:space=\"preserve\"/>", "/a/text() was unexpected")]
-				[InlineData("<a/>", "<a>x</a>", "/a/text() was missing")]
-				[InlineData("<a><b>1</b><b>3</b></a>", "<a><b>1</b><b>2</b></a>", "/a/b[2]/text() was \"3\" instead of \"2\"")]
-				[InlineData("<a><b/></a>", "<a><b/><b/></a>", "/a/b[2] was missing")]
-				[InlineData("<a><b/><b/></a>", "<a><b/></a>", "/a/b[2] was unexpected")]
-				[InlineData("<a><b/><c/></a>", "<a><b/></a>", "/a/c was unexpected")]
-				[InlineData("<a><x/><b/><c/></a>", "<a><b/><c/></a>", "/a/x was unexpected")]
-				[InlineData("<a><c/><b/></a>", "<a><b/><c/></a>", "/a had the child nodes in the order c, b instead of b, c")]
-				[InlineData("<a><b>1</b><c/><b>2</b></a>", "<a><b>1</b><b>2</b><c/></a>",
+				[Arguments("<a>1.0</a>", "<a>1.00</a>", "/a/text() was \"1.0\" instead of \"1.00\"")]
+				[Arguments("<a> x </a>", "<a>x</a>", "/a/text() was \" x \" instead of \"x\"")]
+				[Arguments("<a xml:space=\"preserve\"> </a>", "<a xml:space=\"preserve\"/>", "/a/text() was unexpected")]
+				[Arguments("<a/>", "<a>x</a>", "/a/text() was missing")]
+				[Arguments("<a><b>1</b><b>3</b></a>", "<a><b>1</b><b>2</b></a>", "/a/b[2]/text() was \"3\" instead of \"2\"")]
+				[Arguments("<a><b/></a>", "<a><b/><b/></a>", "/a/b[2] was missing")]
+				[Arguments("<a><b/><b/></a>", "<a><b/></a>", "/a/b[2] was unexpected")]
+				[Arguments("<a><b/><c/></a>", "<a><b/></a>", "/a/c was unexpected")]
+				[Arguments("<a><x/><b/><c/></a>", "<a><b/><c/></a>", "/a/x was unexpected")]
+				[Arguments("<a><c/><b/></a>", "<a><b/><c/></a>", "/a had the child nodes in the order c, b instead of b, c")]
+				[Arguments("<a><b>1</b><c/><b>2</b></a>", "<a><b>1</b><b>2</b><c/></a>",
 					"/a had the child nodes in the order b[1], c, b[2] instead of b[1], b[2], c")]
-				[InlineData("<a><b/>x</a>", "<a>x<b/></a>", "/a had the child nodes in the order b, text() instead of text(), b")]
-				[InlineData("<a xmlns:p=\"urn:p\"><p:b/></a>", "<a><b/></a>", "/a/b was in namespace \"urn:p\" instead of no namespace")]
-				[InlineData("<a>x<b/>y</a>", "<a>x<b/>z</a>", "/a/text()[2] was \"y\" instead of \"z\"")]
-				[InlineData("<a><b><c d=\"1\"/></b></a>", "<a><b><c d=\"2\"/></b></a>", "/a/b/c/@d was \"1\" instead of \"2\"")]
+				[Arguments("<a><b/>x</a>", "<a>x<b/></a>", "/a had the child nodes in the order b, text() instead of text(), b")]
+				[Arguments("<a xmlns:p=\"urn:p\"><p:b/></a>", "<a><b/></a>", "/a/b was in namespace \"urn:p\" instead of no namespace")]
+				[Arguments("<a>x<b/>y</a>", "<a>x<b/>z</a>", "/a/text()[2] was \"y\" instead of \"z\"")]
+				[Arguments("<a><b><c d=\"1\"/></b></a>", "<a><b><c d=\"2\"/></b></a>", "/a/b/c/@d was \"1\" instead of \"2\"")]
 				public async Task WhenDocumentsDiffer_ShouldFail(string subject, string expected, string difference)
 				{
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is XML equivalent to {expected},
@@ -79,7 +79,7 @@ public sealed partial class ThatXmlString
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenRootElementDiffersByName_ShouldNotCompareItsContent()
 				{
 					string subject = "<b x=\"1\"><c/></b>";
@@ -88,12 +88,12 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("*but it differed as /a was <b> instead of <a>*").AsWildcard()
 						.Because("the content of different elements cannot be compared meaningfully");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenElementDiffersByNamespace_ShouldNotCompareItsContent()
 				{
 					string subject = "<a xmlns=\"urn:v1\"><b x=\"1\"/></a>";
@@ -102,22 +102,22 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("*but it differed as /a was in namespace \"urn:v1\" instead of namespace \"urn:v2\"*").AsWildcard()
 						.Because("the children are in the namespace of the element as well and would only repeat the difference");
 				}
 
-				[Theory]
-				[InlineData("<a><b/></a>", "<a><c/></a>", "/a/c was missing", "/a/b was unexpected")]
-				[InlineData("<a><b/></a>", "<a>x</a>", "/a/text() was missing", "/a/b was unexpected")]
-				[InlineData("<a>x</a>", "<a><b/></a>", "/a/b was missing", "/a/text() was unexpected")]
+				[Test]
+				[Arguments("<a><b/></a>", "<a><c/></a>", "/a/c was missing", "/a/b was unexpected")]
+				[Arguments("<a><b/></a>", "<a>x</a>", "/a/text() was missing", "/a/b was unexpected")]
+				[Arguments("<a>x</a>", "<a><b/></a>", "/a/b was missing", "/a/text() was unexpected")]
 				public async Task WhenChildDiffersByName_ShouldReportMissingAndUnexpectedChild(string subject,
 					string expected, string missing, string unexpected)
 				{
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is XML equivalent to {expected},
@@ -134,7 +134,7 @@ public sealed partial class ThatXmlString
 						.Because("the children are paired by their name, so that their paths name the same node in both documents");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDocumentsHaveMultipleDifferences_ShouldListAllDifferences()
 				{
 					string subject = """
@@ -154,7 +154,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is XML equivalent to {expected},
@@ -173,7 +173,7 @@ public sealed partial class ThatXmlString
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContainsMoreThanMaximumNumberOfCollectionItemsDifferences_ShouldLimitListOfDifferences()
 				{
 					using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2);
@@ -183,7 +183,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is XML equivalent to <a/>,
@@ -200,16 +200,16 @@ public sealed partial class ThatXmlString
 						             """);
 				}
 
-				[Theory]
-				[InlineData("foo", "Data at the root level is invalid. Line 1, position 1.")]
-				[InlineData("<a><b>", "Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.")]
-				[InlineData("<a/><b/>", "There are multiple root elements. Line 1, position 6.")]
+				[Test]
+				[Arguments("foo", "Data at the root level is invalid. Line 1, position 1.")]
+				[Arguments("<a><b>", "Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.")]
+				[Arguments("<a/><b/>", "There are multiple root elements. Line 1, position 6.")]
 				public async Task WhenSubjectIsInvalidXml_ShouldFail(string subject, string errorMessage)
 				{
 					async Task Act()
 						=> await That(subject).IsEqualTo("<a/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is XML equivalent to <a/>,
@@ -223,7 +223,7 @@ public sealed partial class ThatXmlString
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectContainsDtd_ShouldFail()
 				{
 					string subject = "<!DOCTYPE a [<!ENTITY e \"x\">]><a>&e;</a>";
@@ -231,7 +231,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsEqualTo("<a>x</a>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is XML equivalent to <a>x</a>,
@@ -246,7 +246,7 @@ public sealed partial class ThatXmlString
 						.Because("DTD processing is prohibited to prevent XXE and entity expansion attacks");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					string? subject = null;
@@ -254,7 +254,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsEqualTo("<a/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is XML equivalent to <a/>,
@@ -262,9 +262,9 @@ public sealed partial class ThatXmlString
 						             """);
 				}
 
-				[Theory]
-				[InlineData("foo", "Data at the root level is invalid. Line 1, position 1.")]
-				[InlineData("<a><b>", "Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.")]
+				[Test]
+				[Arguments("foo", "Data at the root level is invalid. Line 1, position 1.")]
+				[Arguments("<a><b>", "Unexpected end of file has occurred. The following elements are not closed: b, a. Line 1, position 7.")]
 				public async Task WhenExpectedIsInvalidXml_ShouldThrowArgumentException(string expected, string errorMessage)
 				{
 					async Task Act()
@@ -274,7 +274,7 @@ public sealed partial class ThatXmlString
 						.WithMessage($"The expected XML is invalid: {errorMessage}");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedContainsDtd_ShouldThrowArgumentException()
 				{
 					async Task Act()
@@ -284,7 +284,7 @@ public sealed partial class ThatXmlString
 						.WithMessage("The expected XML is invalid, because it contains a document type definition (DTD), which is prohibited for security reasons.");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					async Task Act()
@@ -295,7 +295,7 @@ public sealed partial class ThatXmlString
 						.WithMessage("The expected XML cannot be null.*").AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenIgnoringCase_ShouldThrowInvalidOperationException()
 				{
 					async Task Act()
@@ -306,7 +306,7 @@ public sealed partial class ThatXmlString
 						.Because("XML is compared by its content, so the casing option cannot be honoured");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUsingComparer_ShouldThrowInvalidOperationException()
 				{
 					async Task Act()
@@ -317,7 +317,7 @@ public sealed partial class ThatXmlString
 						.Because("XML is compared by its content, so a custom comparer cannot be honoured");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCombinedWithAnotherMatchType_ShouldThrowInvalidOperationException()
 				{
 					async Task Act()
@@ -327,7 +327,7 @@ public sealed partial class ThatXmlString
 						.WithMessage("AsWildcard cannot be combined with AsXml.");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 				{
 					async Task Act()
@@ -337,9 +337,9 @@ public sealed partial class ThatXmlString
 						.WithMessage("AsXml cannot be specified more than once.");
 				}
 
-				[Theory]
-				[InlineData(nameof(ThatString.Contains))]
-				[InlineData(nameof(ThatString.DoesNotContain))]
+				[Test]
+				[Arguments(nameof(ThatString.Contains))]
+				[Arguments(nameof(ThatString.DoesNotContain))]
 				public async Task ForStringContains_ShouldNotBeAvailable(string methodName)
 				{
 					Type result = typeof(ThatString)
@@ -353,7 +353,7 @@ public sealed partial class ThatXmlString
 						.Because("parts of an XML string are usually no XML document, so IsEqualTo(…).AsXml() should be used instead");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForCollections_ShouldCompareEachItem()
 				{
 					string[] subject = ["<a/>", "<a></a>", "<b/>",];
@@ -361,7 +361,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("<a/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is XML equivalent to <a/> for all items,
@@ -381,7 +381,7 @@ public sealed partial class ThatXmlString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForCollections_WhenItemIsInvalidXml_ShouldFail()
 				{
 					string[] subject = ["<a/>", "foo",];
@@ -389,7 +389,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("<a/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is XML equivalent to <a/> for all items,
@@ -397,7 +397,7 @@ public sealed partial class ThatXmlString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForCollections_WhenEmptyAndExpectedIsInvalidXml_ShouldThrowArgumentException()
 				{
 					string[] subject = [];
@@ -410,7 +410,7 @@ public sealed partial class ThatXmlString
 						.Because("an invalid expected XML is rejected also when no item is compared with it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForCollectionContains_ShouldCompareEachItem()
 				{
 					string[] subject = ["<a x=\"2\"/>",];
@@ -418,7 +418,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).Contains("<a x=\"1\"/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             contains an item XML equivalent to <a x="1"/> at least once,
@@ -431,7 +431,7 @@ public sealed partial class ThatXmlString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithMessage_ShouldCompareTheMessageAsXml()
 				{
 					Action subject = () => throw new InvalidOperationException("<a x=\"2\"/>");
@@ -439,7 +439,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).Throws<InvalidOperationException>().WithMessage("<a x=\"1\"/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws an InvalidOperationException with message XML equivalent to <a x="1"/>,
@@ -454,7 +454,7 @@ public sealed partial class ThatXmlString
 			[UseEnglishMessages]
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsEquivalent_ShouldFail()
 				{
 					string subject = "<a y=\"2\" x=\"1\"/>";
@@ -462,7 +462,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("<a x=\"1\" y=\"2\"></a>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not XML equivalent to <a x="1" y="2"></a>,
@@ -473,7 +473,7 @@ public sealed partial class ThatXmlString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNotEquivalent_ShouldSucceed()
 				{
 					async Task Act()
@@ -482,7 +482,7 @@ public sealed partial class ThatXmlString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsInvalidXml_ShouldFail()
 				{
 					string subject = "foo";
@@ -490,7 +490,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("<a/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not XML equivalent to <a/>,
@@ -505,7 +505,7 @@ public sealed partial class ThatXmlString
 						.Because("a subject that is no XML is not different from the unexpected XML either");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsInvalidXml_ShouldThrowArgumentException()
 				{
 					async Task Act()
@@ -516,7 +516,7 @@ public sealed partial class ThatXmlString
 						.Because("an invalid expected XML would let the negation pass for every subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					string? subject = null;
@@ -524,7 +524,7 @@ public sealed partial class ThatXmlString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("<a/>").AsXml();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not XML equivalent to <a/>,

@@ -8,7 +8,7 @@ public sealed partial class XmlOptionsTests
 	[UseEnglishMessages]
 	public sealed class UnmatchedMembersToIgnore
 	{
-		[Fact]
+		[Test]
 		public async Task WhenMemberToIgnoreMatchesNoMember_ShouldSuggestTheClosestPath()
 		{
 			string subject = "<order createdAt=\"today\" status=\"open\"/>";
@@ -17,7 +17,7 @@ public sealed partial class XmlOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringMember("@createdat"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is XML equivalent to <order createdAt="yesterday" status="open"/>,
@@ -36,33 +36,33 @@ public sealed partial class XmlOptionsTests
 				.Because("the names are compared case-sensitively, so a misspelled casing ignores nothing");
 		}
 
-		[Theory]
-		[InlineData("@createdAd", "<a createdAt=\"1\"/>", "<a createdAt=\"2\"/>", "@createdAt")]
-		[InlineData("itme/@id", "<o><item id=\"1\"/><item id=\"2\"/></o>", "<o><item id=\"3\"/><item id=\"2\"/></o>",
+		[Test]
+		[Arguments("@createdAd", "<a createdAt=\"1\"/>", "<a createdAt=\"2\"/>", "@createdAt")]
+		[Arguments("itme/@id", "<o><item id=\"1\"/><item id=\"2\"/></o>", "<o><item id=\"3\"/><item id=\"2\"/></o>",
 			"item/@id")]
-		[InlineData("/order/@idd", "<order id=\"1\"/>", "<order id=\"2\"/>", "/order/@id")]
-		[InlineData("prise", "<a><price>1</price></a>", "<a><price>2</price></a>", "price")]
+		[Arguments("/order/@idd", "<order id=\"1\"/>", "<order id=\"2\"/>", "/order/@id")]
+		[Arguments("prise", "<a><price>1</price></a>", "<a><price>2</price></a>", "price")]
 		public async Task WhenMemberToIgnoreIsMisspelled_ShouldSuggestTheMeantPath(string memberToIgnore,
 			string subject, string expected, string suggestion)
 		{
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringMember(memberToIgnore));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"*\"{memberToIgnore}\" matched no member (did you mean \"{suggestion}\"?)*").AsWildcard();
 		}
 
-		[Theory]
-		[InlineData("@unrelated", "<a x=\"1\"/>", "<a x=\"2\"/>")]
-		[InlineData("item[3]/@id", "<o><item id=\"1\"/><item id=\"2\"/></o>", "<o><item id=\"3\"/><item id=\"2\"/></o>")]
-		[InlineData("/a/b/@x", "<a x=\"1\"/>", "<a x=\"2\"/>")]
+		[Test]
+		[Arguments("@unrelated", "<a x=\"1\"/>", "<a x=\"2\"/>")]
+		[Arguments("item[3]/@id", "<o><item id=\"1\"/><item id=\"2\"/></o>", "<o><item id=\"3\"/><item id=\"2\"/></o>")]
+		[Arguments("/a/b/@x", "<a x=\"1\"/>", "<a x=\"2\"/>")]
 		public async Task WhenNoPathIsCloseOrSeveralAreEquallyClose_ShouldNotSuggestAPath(string memberToIgnore,
 			string subject, string expected)
 		{
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringMember(memberToIgnore));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              *
 				              XML options:
@@ -72,7 +72,7 @@ public sealed partial class XmlOptionsTests
 				.Because("a wrong suggestion misleads more than none");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMemberToIgnoreMatched_ShouldNotNameIt()
 		{
 			string subject = "<a id=\"1\" x=\"1\"/>";
@@ -81,7 +81,7 @@ public sealed partial class XmlOptionsTests
 				=> await That(subject).IsEqualTo("<a id=\"2\" x=\"2\"/>")
 					.AsXml(o => o.IgnoringMember("@id").Ignoring(path => path.EndsWith("/@etag")));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             *
 				             XML options:
@@ -90,7 +90,7 @@ public sealed partial class XmlOptionsTests
 				.Because("a matched member to ignore and a predicate, which cannot be named, are not listed as unmatched");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenComparisonSucceeds_ShouldNotFailBecauseOfAnUnmatchedMemberToIgnore()
 		{
 			async Task Act()
@@ -99,7 +99,7 @@ public sealed partial class XmlOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithMatches_ShouldSuggestTheClosestPath()
 		{
 			XElement element = XElement.Parse("<order etag=\"x1\"/>");
@@ -107,7 +107,7 @@ public sealed partial class XmlOptionsTests
 			async Task Act()
 				=> await That(element).Matches("<order etag=\"x2\"/>", o => o.IgnoringMember("@eTag"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that element
 				             matches <order etag="x2"/>,
@@ -119,7 +119,7 @@ public sealed partial class XmlOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithIgnoringElementOrder_ShouldCountMembersMatchedWhilePairing()
 		{
 			string subject = "<a><b id=\"1\" x=\"1\"/><b id=\"2\" x=\"2\"/></a>";
@@ -128,7 +128,7 @@ public sealed partial class XmlOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringElementOrder().IgnoringMember("@id"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             *
 				             XML options:
@@ -138,7 +138,7 @@ public sealed partial class XmlOptionsTests
 				.Because("the member to ignore matched while looking for equivalent elements");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ForCollections_ShouldNameTheUnmatchedMemberToIgnoreOnce()
 		{
 			string[] subject = ["<a createdAt=\"1\"/>", "<a createdAt=\"2\"/>",];
@@ -147,7 +147,7 @@ public sealed partial class XmlOptionsTests
 				=> await That(subject).All().AreEqualTo("<a createdAt=\"3\"/>")
 					.AsXml(o => o.IgnoringMember("@createdat"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             *
 				             XML options:

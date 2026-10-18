@@ -10,7 +10,7 @@ public sealed class ThatXDocument
 		[UseEnglishMessages]
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenRootContainsTheExpectedXml_ShouldSucceed()
 			{
 				XDocument document = XDocument.Parse("<?xml version=\"1.0\"?><!-- c --><a x=\"1\" y=\"2\"><b/></a>");
@@ -22,7 +22,7 @@ public sealed class ThatXDocument
 					.Because("the root element is compared, ignoring its additional nodes");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRootDiffers_ShouldFail()
 			{
 				XDocument document = XDocument.Parse("<a x=\"2\"/>");
@@ -30,7 +30,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(document).Matches("<a x=\"1\"/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that document
 					             matches <a x="1"/>,
@@ -38,7 +38,7 @@ public sealed class ThatXDocument
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDocumentHasNoRoot_ShouldFail()
 			{
 				XDocument document = new();
@@ -46,7 +46,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(document).Matches("<a/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that document
 					             matches <a/>,
@@ -54,7 +54,7 @@ public sealed class ThatXDocument
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				XDocument? subject = null;
@@ -62,7 +62,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(subject).Matches("<a/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches <a/>,
@@ -74,7 +74,7 @@ public sealed class ThatXDocument
 		[UseEnglishMessages]
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDocumentHasNoRoot_ShouldFail()
 			{
 				XDocument document = new();
@@ -82,7 +82,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(document).DoesNotComplyWith(it => it.Matches("<a/>"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that document
 					             does not match <a/>,
@@ -91,7 +91,7 @@ public sealed class ThatXDocument
 					.Because("a document without a root element cannot be compared with the expected XML");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRootMatches_ShouldFail()
 			{
 				XDocument document = XDocument.Parse("<a x=\"1\"/>");
@@ -99,7 +99,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(document).DoesNotComplyWith(it => it.Matches("<a/>"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that document
 					             does not match <a/>,
@@ -117,7 +117,7 @@ public sealed class ThatXDocument
 		[UseEnglishMessages]
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenRootHasAdditionalNodes_ShouldFail()
 			{
 				XDocument document = XDocument.Parse("<a x=\"1\"><b/></a>");
@@ -125,7 +125,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(document).MatchesExactly("<a/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that document
 					             matches <a/> exactly,
@@ -135,7 +135,7 @@ public sealed class ThatXDocument
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRootIsEquivalent_ShouldSucceed()
 			{
 				XDocument document = XDocument.Parse("<?xml version=\"1.0\"?><a y='2' x='1'/>");
@@ -146,7 +146,7 @@ public sealed class ThatXDocument
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDocumentHasNoRoot_ShouldFail()
 			{
 				XDocument document = new();
@@ -154,7 +154,7 @@ public sealed class ThatXDocument
 				async Task Act()
 					=> await That(document).MatchesExactly("<a/>");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that document
 					             matches <a/> exactly,
