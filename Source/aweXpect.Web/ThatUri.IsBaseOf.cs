@@ -61,7 +61,7 @@ public static partial class ThatUri
 	public static AndOrResult<Uri, IThat<Uri?>> IsNotBaseOf(this IThat<Uri?> subject, string unexpected)
 		=> subject.IsNotBaseOf(ToAbsoluteUri(unexpected, nameof(unexpected)));
 
-	private static Uri ToAbsoluteUri(string value, string paramName)
+	internal static Uri ToAbsoluteUri(string value, string paramName)
 	{
 		ThrowHelper.ThrowIfNull(value, paramName);
 		if (!Uri.TryCreate(value, UriKind.Absolute, out Uri? uri))

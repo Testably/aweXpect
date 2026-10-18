@@ -19,7 +19,7 @@ public sealed partial class ThatHttpRequestMessage
 							.ComplyWith(item => item.DoesNotComplyWith(request => request.HasRequestUri("https://awexpect.com/"))));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Requests do not have a request URI equal to "https://awexpect.com/" ignoring case for all items,*""").AsWildcard()
+					.WithMessage("""*whose Requests do not have a request URI equal to "https://awexpect.com/" for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
@@ -34,7 +34,7 @@ public sealed partial class ThatHttpRequestMessage
 							.ComplyWith(item => item.HasRequestUri("https://example.com/")));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*whose Requests have a request URI equal to "https://example.com/" ignoring case for all items,*""").AsWildcard()
+					.WithMessage("""*whose Requests have a request URI equal to "https://example.com/" for all items,*""").AsWildcard()
 					.Because("the verb agrees with the plural member");
 			}
 
@@ -91,7 +91,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI equal to "https://awexpect.com/" ignoring case,
+					             has a request URI equal to "https://awexpect.com/",
 					             but it was <null>
 					             """);
 			}
@@ -109,7 +109,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI equal to "https://awexpect.com/awexpect.…" ignoring case,
+					             has a request URI equal to "https://awexpect.com/awexpect.…",
 					             but it had request URI "https://awexpect.com/" with a length of 21, which is shorter than the expected length of 33 and misses:
 					               "awexpect.Web"
 
@@ -131,17 +131,17 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI equal to "https://awexpect.com/abd" ignoring case,
-					             but it had request URI "https://awexpect.com/ABC", which differs at index 23:
+					             has a request URI equal to "https://awexpect.com/abd",
+					             but it had request URI "https://awexpect.com/ABC", which differs at index 21:
 					                           ↓ (actual)
-					               "…ect.com/ABC"
-					               "…ect.com/abd"
+					               "…xpect.com/ABC"
+					               "…xpect.com/abd"
 					                           ↑ (expected)
 
 					             HTTP-Request:
 					               GET https://awexpect.com/ABC HTTP/1.1
 					             """)
-					.Because("the request URI is compared ignoring case, so the difference in case is not reported");
+					.Because("the path is compared case-sensitively, so the first difference is the case of the first character");
 			}
 
 			[Test]
@@ -170,7 +170,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a request URI equal to "https://awexpect.com/" ignoring case,
+					             does not have a request URI equal to "https://awexpect.com/",
 					             but it was <null>
 					             """);
 			}
@@ -201,7 +201,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have a request URI equal to "https://awexpect.com/" ignoring case,
+					             does not have a request URI equal to "https://awexpect.com/",
 					             but it had
 					             
 					             HTTP-Request:

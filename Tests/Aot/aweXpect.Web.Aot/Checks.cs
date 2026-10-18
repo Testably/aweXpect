@@ -74,6 +74,13 @@ internal static class Checks
 			() => ShouldPass(async () => await That(Request(Json)).HasContent(Json)
 				.And.HasRequestUri("https://awexpect.com/tracks")
 				.And.HasMethod(HttpMethod.Post))),
+		new("a request without the unexpected content, request URI and method passes",
+			() => ShouldPass(async () => await That(Request(Json)).DoesNotHaveContent("{}")
+				.And.DoesNotHaveRequestUri("https://awexpect.com/albums")
+				.And.DoesNotHaveMethod(HttpMethod.Get))),
+		new("an unexpected content type fails and is named",
+			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, Json)).DoesNotHaveContentType("application/json"),
+				"does not have a `Content-Type` header equal to \"application/json\"")),
 		new("matching problem details pass",
 			() => ShouldPass(async () => await That(ProblemDetailsResponse())
 				.HasProblemDetailsContent("https://awexpect.com/not-found")

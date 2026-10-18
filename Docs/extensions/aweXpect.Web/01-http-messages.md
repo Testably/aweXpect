@@ -4,12 +4,12 @@ Describes the possible expectations for `HttpRequestMessage` and `HttpResponseMe
 
 Expectations for [`HttpRequestMessage`](#httprequestmessage):
 
-| Expectation                      | Negated             | Summary                               |
-|----------------------------------|---------------------|---------------------------------------|
-| [`HasMethod`](#method)           |                     | has the expected HTTP method          |
-| [`HasRequestUri`](#request-uri)  |                     | has the expected request URI          |
-| [`HasHeader`](#request-headers)  | `DoesNotHaveHeader` | has a header, optionally with a value |
-| [`HasContent`](#request-content) |                     | has the expected string content       |
+| Expectation                      | Negated                 | Summary                               |
+|----------------------------------|-------------------------|---------------------------------------|
+| [`HasMethod`](#method)           | `DoesNotHaveMethod`     | has the expected HTTP method          |
+| [`HasRequestUri`](#request-uri)  | `DoesNotHaveRequestUri` | has the expected request URI          |
+| [`HasHeader`](#request-headers)  | `DoesNotHaveHeader`     | has a header, optionally with a value |
+| [`HasContent`](#request-content) | `DoesNotHaveContent`    | has the expected string content       |
 
 Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 
@@ -17,32 +17,34 @@ Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 |------------------------------------------------|-------------------------------|-------------------------------------------------|
 | [`HasStatusCode`](#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
 | [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
-| [`HasContentType`](#content-type)              |                               | has the expected media type                     |
-| [`HasContent`](#response-content)              |                               | has the expected string content                 |
-| [`HasProblemDetailsContent`](#problem-details) |                               | has a `ProblemDetails` content                  |
+| [`HasContentType`](#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
+| [`HasContent`](#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
+| [`HasProblemDetailsContent`](#problem-details) | `DoesNotComplyWith`           | has a `ProblemDetails` content                  |
 | [`HasRequestMessage`](#request-message)        |                               | the request message meets nested expectations   |
 
 ## `HttpRequestMessage`
 
 ### Method
 
-You can verify that the `HttpRequestMessage` has the expected method:
+You can verify that the `HttpRequestMessage` has the expected method, or that it does not have it:
 
 ```csharp
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 
 await Expect.That(request).HasMethod(HttpMethod.Get);
+await Expect.That(request).DoesNotHaveMethod(HttpMethod.Delete);
 ```
 
 ### Request URI
 
-You can verify that the `HttpRequestMessage` has the expected request URI:
+You can verify that the `HttpRequestMessage` has the expected request URI, or that it does not have it:
 
 ```csharp
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 
 await Expect.That(request).HasRequestUri("https://music.example.com/tracks/1");
 await Expect.That(request).HasRequestUri(new Uri("https://music.example.com/tracks/1"));
+await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/admin");
 ```
 
 ### Request headers
@@ -111,7 +113,7 @@ HTTP-Request:
 
 ### Request content
 
-You can verify that the `HttpRequestMessage` has the expected string content:
+You can verify that the `HttpRequestMessage` has the expected string content, or that it does not have it:
 
 ```csharp
 HttpRequestMessage request = new(HttpMethod.Post, "https://music.example.com/tracks")
@@ -121,10 +123,13 @@ HttpRequestMessage request = new(HttpMethod.Post, "https://music.example.com/tra
 
 await Expect.That(request).HasContent("*Let It Be*").AsWildcard();
 await Expect.That(request).HasContent(content => content.Contains("Let It Be"));
+await Expect.That(request).DoesNotHaveContent("");
 ```
 
 The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. A request without
+content does not have the unexpected content. To negate the nested expectations, use
+`DoesNotComplyWith(it => it.HasContent(content => ...))`.
 
 ## `HttpResponseMessage`
 
@@ -226,7 +231,10 @@ HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
 
 await Expect.That(response).HasContentType("application/json");
 await Expect.That(response).HasContentType("application/*").AsWildcard();
+await Expect.That(response).DoesNotHaveContentType("text/html");
 ```
+
+A response without a `Content-Type` header does not have the unexpected media type.
 
 For example, expecting plain text from an endpoint that returns JSON
 
@@ -264,17 +272,19 @@ HTTP-Response:
 
 ### Response content
 
-You can verify that the `HttpResponseMessage` has the expected string content:
+You can verify that the `HttpResponseMessage` has the expected string content, or that it does not have it:
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
 await Expect.That(response).HasContent(content => content.Contains("The Beatles"));
+await Expect.That(response).DoesNotHaveContent("*error*").AsWildcard().IgnoringCase();
 ```
 
 The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. With
+[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. To negate the nested
+expectations, use `DoesNotComplyWith(it => it.HasContent(content => ...))`. With
 [aweXpect.Json](https://github.com/Testably/aweXpect.Json), the nested expectations can also verify JSON content:
 
 ```csharp
@@ -303,6 +313,16 @@ await Expect.That(response)
 The type, title, detail and instance support the same
 [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
+
+There is no dedicated negation. `DoesNotComplyWith` succeeds when the content is a `ProblemDetails` object that differs
+in any of the given parts, and still fails when the content is no valid `ProblemDetails` object:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
+
+await Expect.That(response).DoesNotComplyWith(it => it
+    .HasProblemDetailsContent().WithStatus(500));
+```
 
 ### Request message
 

@@ -52,6 +52,32 @@ public static partial class ThatHttpRequestMessage
 			subject);
 	}
 
+	/// <summary>
+	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the <paramref name="unexpected" />
+	///     <see cref="HttpRequestMessage.RequestUri" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		DoesNotHaveRequestUri(this IThat<HttpRequestMessage?> subject, string unexpected)
+		=> subject.DoesNotHaveRequestUri(ThatUri.ToAbsoluteUri(unexpected, nameof(unexpected)));
+
+	/// <summary>
+	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the <paramref name="unexpected" />
+	///     <see cref="HttpRequestMessage.RequestUri" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		DoesNotHaveRequestUri(this IThat<HttpRequestMessage?> subject, Uri unexpected)
+	{
+		ThatUri.ThrowIfNotAbsolute(unexpected, nameof(unexpected));
+		return new(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(unexpected.ToString(), static (unexpected, it, grammars) =>
+					new HasRequestUriConstraint(it, grammars, unexpected).Invert()),
+			subject);
+	}
+
 	private sealed class HasRequestUriConstraint(
 		string it,
 		ExpectationGrammars grammars,
@@ -59,7 +85,7 @@ public static partial class ThatHttpRequestMessage
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IValueConstraint<HttpRequestMessage>
 	{
-		private readonly StringEqualityOptions _options = new StringEqualityOptions(nameof(expected)).IgnoringCase();
+		private readonly StringEqualityOptions _options = new(nameof(expected));
 		private string? _requestUri;
 
 		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
@@ -72,7 +98,7 @@ public static partial class ThatHttpRequestMessage
 			}
 
 			_requestUri = actual.RequestUri?.ToString();
-			if (_requestUri?.Equals(expected, StringComparison.OrdinalIgnoreCase) == true)
+			if (_requestUri?.Equals(expected, StringComparison.Ordinal) == true)
 			{
 				Outcome = Outcome.Success;
 				return this;
@@ -91,7 +117,7 @@ public static partial class ThatHttpRequestMessage
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a request URI ", "do not have a request URI "))
-				.Append(_options.GetExpectation(expected, ExpectationGrammars.None));
+				.Append(_options.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

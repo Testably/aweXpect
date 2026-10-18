@@ -51,6 +51,24 @@ public static partial class ThatHttpRequestMessage
 			subject);
 	}
 
+	/// <summary>
+	///     Verifies that the string content is not equal to <paramref name="unexpected" />
+	/// </summary>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		DoesNotHaveContent(this IThat<HttpRequestMessage?> subject, string unexpected)
+	{
+		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint((unexpected, options), static (state, it, grammars) =>
+					new HasContentConstraint(it, grammars, state.unexpected, state.options).Invert()),
+			subject,
+			options);
+	}
+
 	private sealed class HasContentConstraint(
 		string it,
 		ExpectationGrammars grammars,

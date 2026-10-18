@@ -26,6 +26,22 @@ public static partial class ThatHttpRequestMessage
 			subject);
 	}
 
+	/// <summary>
+	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the <paramref name="unexpected" /> method.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		DoesNotHaveMethod(this IThat<HttpRequestMessage?> subject, HttpMethod unexpected)
+	{
+		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+		return new(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
+					new HasMethodConstraint(it, grammars, unexpected).Invert()),
+			subject);
+	}
+
 	private sealed class HasMethodConstraint(
 		string it,
 		ExpectationGrammars grammars,

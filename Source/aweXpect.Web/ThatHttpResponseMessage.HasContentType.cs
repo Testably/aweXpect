@@ -37,6 +37,30 @@ public static partial class ThatHttpResponseMessage
 			options);
 	}
 
+	/// <summary>
+	///     Verifies that the <see cref="HttpResponseMessage" /> does not have the <paramref name="unexpected" /> content type.
+	/// </summary>
+	/// <remarks>
+	///     This compares the <paramref name="unexpected" /> value against the media type in the <c>Content-Type</c> header,
+	///     so a response without a <c>Content-Type</c> header succeeds.
+	///     <br />
+	///     <seealso href="https://www.iana.org/assignments/media-types/media-types.xhtml" />
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
+		DoesNotHaveContentType(this IThat<HttpResponseMessage?> subject, string unexpected)
+	{
+		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+				.AddConstraint((unexpected, options), static (state, it, grammars) =>
+					new HasContentTypeConstraint(it, grammars, state.unexpected, state.options).Invert()),
+			subject,
+			options);
+	}
+
 	private sealed class HasContentTypeConstraint(
 		string it,
 		ExpectationGrammars grammars,

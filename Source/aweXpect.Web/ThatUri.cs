@@ -23,7 +23,7 @@ public static partial class ThatUri
 		return subject;
 	}
 
-	private static void ThrowIfNotAbsolute(Uri value, string paramName)
+	internal static void ThrowIfNotAbsolute(Uri value, string paramName)
 	{
 		ThrowHelper.ThrowIfNull(value, paramName);
 		if (!value.IsAbsoluteUri)

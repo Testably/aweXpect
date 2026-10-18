@@ -19,7 +19,7 @@ public sealed partial class ThatHttpRequestMessage
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
-				             has a string content equal to "bar" and has a request URI equal to "https://example.com/" ignoring case,
+				             has a string content equal to "bar" and has a request URI equal to "https://example.com/",
 				             but it had string content "foo", which differs at index 0:
 				                ↓ (actual)
 				               "foo"
