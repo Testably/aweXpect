@@ -1001,7 +1001,7 @@ public sealed partial class ThatEnum
 			[Arguments(EnumLong.Int64Min, long.MinValue)]
 			[Arguments(EnumLong.Int64LessOne, long.MaxValue - 1)]
 			[Arguments(EnumLong.Int64Max, long.MaxValue)]
-			public async Task WhenExpectedComesFromInlineData_ShouldSucceed(EnumLong subject, long expected)
+			public async Task WhenExpectedComesFromAttributeArguments_ShouldSucceed(EnumLong subject, long expected)
 			{
 				async Task Act()
 					=> await That(subject).HasValue(expected);
@@ -1122,7 +1122,8 @@ public sealed partial class ThatEnum
 			[Arguments(EnumULong.Int64Max, (ulong)long.MaxValue)]
 			[Arguments(EnumULong.Int64MaxPlusOne, 9223372036854775808UL)]
 			[Arguments(EnumULong.UInt64Max, ulong.MaxValue)]
-			public async Task WhenUnsignedExpectedComesFromInlineData_ShouldSucceed(EnumULong subject, ulong expected)
+			public async Task WhenUnsignedExpectedComesFromAttributeArguments_ShouldSucceed(EnumULong subject,
+				ulong expected)
 			{
 				async Task Act()
 					=> await That(subject).HasValue(expected);
