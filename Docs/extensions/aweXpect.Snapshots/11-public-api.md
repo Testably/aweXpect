@@ -89,7 +89,8 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
 
 A type is selected by its type or by its full name like `Type.FullName`, for a generic type with any type arguments.
 A nested type is written with its containing type, so `Within.Type` throws an `ArgumentException` for one; the filters
-also apply to the forwarded types.
+also apply to the forwarded types. An empty namespace is the global namespace, while an empty type or attribute name
+throws an `ArgumentException`, as it could never match.
 
 Every declaration is written on a single line by default. To see a change of a single parameter as a change of a single
 line, write the parameters of methods, constructors, operators, delegates and indexers with more than one parameter on

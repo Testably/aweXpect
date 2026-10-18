@@ -52,8 +52,11 @@ public static class ThatPublicApi
 		Func<PublicApiOptions, PublicApiOptions> options,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddPublicApiSnapshot(subject, assembly => PublicApiDeclarations.GenerateFrom(assembly, options),
+	{
+		ArgumentChecks.ThrowIfNull(options, nameof(options));
+		return AddPublicApiSnapshot(subject, assembly => PublicApiDeclarations.GenerateFrom(assembly, options),
 			callerFilePath, callerMemberName);
+	}
 
 	/// <summary>
 	///     Verifies that the public API of the assembly in the file matches the snapshot
@@ -92,8 +95,11 @@ public static class ThatPublicApi
 		Func<PublicApiOptions, PublicApiOptions> options,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddPublicApiSnapshot(subject, file => PublicApiDeclarations.GenerateFrom(file, options),
+	{
+		ArgumentChecks.ThrowIfNull(options, nameof(options));
+		return AddPublicApiSnapshot(subject, file => PublicApiDeclarations.GenerateFrom(file, options),
 			callerFilePath, callerMemberName);
+	}
 
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]

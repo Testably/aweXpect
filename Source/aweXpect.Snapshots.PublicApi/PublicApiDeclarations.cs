@@ -12,6 +12,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using aweXpect.Core;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using SymbolDisplayFormat = Microsoft.CodeAnalysis.SymbolDisplayFormat;
@@ -186,11 +187,13 @@ public static class PublicApiDeclarations
 	/// </exception>
 	public static string GenerateFrom(Assembly assembly, Func<PublicApiOptions, PublicApiOptions> options)
 	{
+		ArgumentChecks.ThrowIfNull(assembly, nameof(assembly));
+		ArgumentChecks.ThrowIfNull(options, nameof(options));
 		if (assembly.IsDynamic || string.IsNullOrEmpty(assembly.Location))
 		{
-			throw new ArgumentException(
+			throw Tracing.WriteException(new ArgumentException(
 				$"The assembly '{assembly.GetName().Name}' was not loaded from a file, so its public API cannot be read.",
-				nameof(assembly));
+				nameof(assembly)));
 		}
 
 		return GenerateFrom(new FileInfo(assembly.Location), options);
@@ -224,7 +227,11 @@ public static class PublicApiDeclarations
 	///     generated public API.
 	/// </exception>
 	public static string GenerateFrom(FileInfo assemblyFile, Func<PublicApiOptions, PublicApiOptions> options)
-		=> WriteFile(assemblyFile.FullName, GetReferencePack(assemblyFile.FullName), options(new PublicApiOptions()));
+	{
+		ArgumentChecks.ThrowIfNull(assemblyFile, nameof(assemblyFile));
+		ArgumentChecks.ThrowIfNull(options, nameof(options));
+		return WriteFile(assemblyFile.FullName, GetReferencePack(assemblyFile.FullName), options(new PublicApiOptions()));
+	}
 
 	private static string WriteFile(string assemblyFile, string? referencePack, PublicApiOptions options)
 	{
@@ -305,11 +312,11 @@ public static class PublicApiDeclarations
 			.ToArray();
 		if (unresolved.Length > 0)
 		{
-			throw new InvalidOperationException(
+			throw Tracing.WriteException(new InvalidOperationException(
 				$"The public API of '{Path.GetFileName(assemblyFile)}' cannot be generated, because its references " +
 				$"{string.Join(", ", unresolved.Select(reference => $"'{reference}'"))} could not be resolved. " +
 				"Copy them next to the assembly or into the output of the tests, restore the NuGet packages of the assembly " +
-				"into the global packages folder, or install the .NET SDK of its target framework.");
+				"into the global packages folder, or install the .NET SDK of its target framework."));
 		}
 	}
 

@@ -34,7 +34,7 @@ public sealed class PublicApiIgnoring
 	/// </remarks>
 	public PublicApiOptions Attribute(string fullName)
 	{
-		_options.AttributesToIgnore.Add(fullName);
+		_options.AttributesToIgnore.Add(ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)));
 		return _options;
 	}
 
@@ -69,11 +69,11 @@ public sealed class PublicApiIgnoring
 	/// </summary>
 	/// <remarks>
 	///     The namespace matches whole segments, so <c>MyLibrary.Generated</c> does not ignore
-	///     <c>MyLibrary.GeneratedTools</c>.
+	///     <c>MyLibrary.GeneratedTools</c>. An empty <paramref name="namespace" /> is the global namespace.
 	/// </remarks>
 	public PublicApiOptions Namespace(string @namespace)
 	{
-		_options.NamespacesToIgnore.Add(@namespace);
+		_options.NamespacesToIgnore.Add(ArgumentChecks.ThrowIfNull(@namespace, nameof(@namespace)));
 		return _options;
 	}
 
@@ -94,7 +94,7 @@ public sealed class PublicApiIgnoring
 	/// </remarks>
 	public PublicApiOptions Type(string fullName)
 	{
-		_options.TypesToIgnore.Add(fullName);
+		_options.TypesToIgnore.Add(ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)));
 		return _options;
 	}
 }

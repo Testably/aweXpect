@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
+using aweXpect.Customization;
 using aweXpect.Snapshots.PublicApi.Fixture;
+using aweXpect.Snapshots.PublicApi.Tests.TestHelpers;
 using Microsoft.CodeAnalysis;
 using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;
 
@@ -812,6 +814,81 @@ public sealed class PublicApiDeclarationsTests
 		await That(Act).Throws<ArgumentException>()
 			.WithMessage("The assembly 'InMemory' was not loaded from a file, so its public API cannot be read.*")
 			.AsWildcard();
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenAssemblyIsNotLoadedFromAFile_ShouldTraceTheException()
+	{
+		AssemblyBuilder assembly =
+			AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("InMemory"), AssemblyBuilderAccess.Run);
+		RecordingTraceWriter traceWriter = new();
+		using CustomizationLifetime _ = Customize.aweXpect.EnableTracing(traceWriter);
+
+		Exception? exception = Record.Exception(() => PublicApiDeclarations.GenerateFrom(assembly));
+
+		await That(exception).IsNotNull();
+		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenAReferenceIsMissing_ShouldTraceTheException()
+	{
+		byte[] dependency = Compile("Dependency", "2.0.0.0", DependencySource);
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", LibrarySource,
+			[MetadataReference.CreateFromImage(dependency),]));
+		RecordingTraceWriter traceWriter = new();
+		using CustomizationLifetime _ = Customize.aweXpect.EnableTracing(traceWriter);
+
+		Exception? exception = Record.Exception(() => PublicApiDeclarations.GenerateFrom(library));
+
+		await That(exception).IsNotNull();
+		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenAssemblyIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> PublicApiDeclarations.GenerateFrom((Assembly)null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("assembly").And
+			.WithMessage("The 'assembly' cannot be null.*").AsWildcard();
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenAssemblyFileIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> PublicApiDeclarations.GenerateFrom((FileInfo)null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("assemblyFile").And
+			.WithMessage("The 'assemblyFile' cannot be null.*").AsWildcard();
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenOptionsOfAnAssemblyAreNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("options").And
+			.WithMessage("The 'options' cannot be null.*").AsWildcard();
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenOptionsOfAFileAreNull_ShouldThrowArgumentNullException()
+	{
+		FileInfo file = new(typeof(Album).Assembly.Location);
+
+		void Act()
+			=> PublicApiDeclarations.GenerateFrom(file, null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("options").And
+			.WithMessage("The 'options' cannot be null.*").AsWildcard();
 	}
 
 	[Fact]

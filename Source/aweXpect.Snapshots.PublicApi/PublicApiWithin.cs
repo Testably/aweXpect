@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 
 namespace aweXpect.Snapshots.PublicApi;
 
@@ -22,11 +23,12 @@ public sealed class PublicApiWithin
 	///     Restricts the public API to the types in the <paramref name="namespace" /> and in its sub-namespaces.
 	/// </summary>
 	/// <remarks>
-	///     The namespace matches whole segments, so <c>MyLibrary</c> does not include <c>MyLibraryTools</c>.
+	///     The namespace matches whole segments, so <c>MyLibrary</c> does not include <c>MyLibraryTools</c>. An empty
+	///     <paramref name="namespace" /> is the global namespace.
 	/// </remarks>
 	public PublicApiOptions Namespace(string @namespace)
 	{
-		_options.NamespacesToRestrictTo.Add(@namespace);
+		_options.NamespacesToRestrictTo.Add(ArgumentChecks.ThrowIfNull(@namespace, nameof(@namespace)));
 		return _options;
 	}
 
@@ -46,14 +48,16 @@ public sealed class PublicApiWithin
 	///     The <paramref name="fullName" /> is the one of <see cref="System.Type.FullName" />, e.g.
 	///     <c>MyNamespace.Box`1</c> for a generic type.
 	/// </remarks>
-	/// <exception cref="ArgumentException">The <paramref name="fullName" /> is the one of a nested type.</exception>
+	/// <exception cref="ArgumentException">
+	///     The <paramref name="fullName" /> is empty or the one of a nested type.
+	/// </exception>
 	public PublicApiOptions Type(string fullName)
 	{
-		if (fullName.IndexOf('+') >= 0)
+		if (ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)).IndexOf('+') >= 0)
 		{
-			throw new ArgumentException(
+			throw Tracing.WriteException(new ArgumentException(
 				$"The type '{fullName}' is nested, so it is written with its containing type: restrict the public API to the containing type instead.",
-				nameof(fullName));
+				nameof(fullName)));
 		}
 
 		_options.TypesToRestrictTo.Add(fullName);

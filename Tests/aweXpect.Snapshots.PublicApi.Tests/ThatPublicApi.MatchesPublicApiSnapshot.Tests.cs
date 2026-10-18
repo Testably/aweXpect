@@ -20,6 +20,21 @@ public sealed partial class ThatPublicApi
 					.MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 
 			[Fact]
+			public async Task WhenOptionsAreNull_ShouldThrowWhenCalled()
+			{
+				Assembly subject = typeof(Album).Assembly;
+				Func<PublicApiOptions, PublicApiOptions> options = null!;
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot(options);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("options").And
+					.WithMessage("The 'options' cannot be null.*").AsWildcard()
+					.Because("a check while the expectation is evaluated would fail it instead of throwing");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
