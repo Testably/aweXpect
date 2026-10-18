@@ -19,16 +19,16 @@ public static partial class ThatHttpRequestMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
-		HasContent(this IThat<HttpRequestMessage?> source, string expected)
+		HasContent(this IThat<HttpRequestMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
 					new HasContentConstraint(it, grammars, state.expected, state.options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -36,11 +36,11 @@ public static partial class ThatHttpRequestMessage
 	///     Verifies that the string content satisfies the <paramref name="expectations" />
 	/// </summary>
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
-		HasContent(this IThat<HttpRequestMessage?> source, Action<IThat<string?>> expectations)
+		HasContent(this IThat<HttpRequestMessage?> subject, Action<IThat<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.ForAsyncMember(MemberAccessor<HttpRequestMessage, Task<string?>>.FromFunc(
 						async m => m.Content == null ? null : await m.Content.ReadAsStringAsync(),
@@ -48,7 +48,7 @@ public static partial class ThatHttpRequestMessage
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
 				.AddExpectations(e => expectations(new ThatSubject<string?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
-			source);
+			subject);
 	}
 
 	private sealed class HasContentConstraint(

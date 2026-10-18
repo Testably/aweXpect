@@ -13,8 +13,8 @@ public static partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject…
 	/// </summary>
-	public static StatusCodeResult HasStatusCode(this IThat<HttpResponseMessage?> source)
-		=> new(source, a => a.StatusCode);
+	public static StatusCodeResult HasStatusCode(this IThat<HttpResponseMessage?> subject)
+		=> new(subject, a => a.StatusCode);
 
 	/// <summary>
 	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject
@@ -22,9 +22,9 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> HasStatusCode(
-		this IThat<HttpResponseMessage?> source,
+		this IThat<HttpResponseMessage?> subject,
 		HttpStatusCode? expected)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 			.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 			.AddConstraint(expected, static (expected, it, grammars) =>
 				new StatusCodeResult.PropertyConstraint(
@@ -32,5 +32,5 @@ public static partial class ThatHttpResponseMessage
 					expected,
 					m => m.StatusCode,
 					(a, e) => a.Equals(e),
-					$"status code {Formatter.Format(expected)}")), source);
+					$"status code {Formatter.Format(expected)}")), subject);
 }

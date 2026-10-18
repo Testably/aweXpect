@@ -18,10 +18,10 @@ public static partial class ThatIPAddress
 	///     <seealso cref="AddressFamily.InterNetwork" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsIPv4(this IThat<IPAddress?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsIPv4(this IThat<IPAddress?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsKindConstraint(it, grammars, IsIPv4Address, "an IPv4 address", "IPv4 addresses")),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not an IPv4 address.
@@ -31,10 +31,10 @@ public static partial class ThatIPAddress
 	///     <seealso cref="AddressFamily.InterNetwork" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotIPv4(this IThat<IPAddress?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotIPv4(this IThat<IPAddress?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsKindConstraint(it, grammars, IsIPv4Address, "an IPv4 address", "IPv4 addresses").Invert()),
-			source);
+			subject);
 
 	private static bool IsIPv4Address(IPAddress address)
 		=> address.AddressFamily == AddressFamily.InterNetwork;

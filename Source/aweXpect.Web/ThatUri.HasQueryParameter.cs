@@ -19,13 +19,13 @@ public static partial class ThatUri
 	///     The name is compared case-sensitively after URL-decoding.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasQueryParameterValueResult HasQueryParameter(this IThat<Uri?> source, string name)
+	public static HasQueryParameterValueResult HasQueryParameter(this IThat<Uri?> subject, string name)
 	{
 		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
-		return new(source.FailIfRelative().Get().ExpectationBuilder
+		return new(subject.FailIfRelative().Get().ExpectationBuilder
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasQueryParameterConstraint(it, grammars, name)),
-			source,
+			subject,
 			name);
 	}
 
@@ -36,13 +36,13 @@ public static partial class ThatUri
 	///     The name is compared case-sensitively after URL-decoding.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveQueryParameter(this IThat<Uri?> source, string name)
+	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveQueryParameter(this IThat<Uri?> subject, string name)
 	{
 		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
-		return new(source.FailIfRelative().Get().ExpectationBuilder
+		return new(subject.FailIfRelative().Get().ExpectationBuilder
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasQueryParameterConstraint(it, grammars, name).Invert()),
-			source);
+			subject);
 	}
 
 	private sealed class HasQueryParameterConstraint(string it, ExpectationGrammars grammars, string name)

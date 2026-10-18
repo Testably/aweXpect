@@ -20,11 +20,11 @@ public static partial class ThatIPAddress
 	///     and an IPv4-mapped IPv6 subject is compared as IPv4 address against an IPv4 subnet.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsInSubnet(this IThat<IPAddress?> source, string subnet)
-		=> new(source.Get().ExpectationBuilder.AddConstraint(Subnet.Parse(subnet, nameof(subnet)),
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsInSubnet(this IThat<IPAddress?> subject, string subnet)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(Subnet.Parse(subnet, nameof(subnet)),
 				static (subnet, it, grammars) =>
 					new IsKindConstraint(it, grammars, subnet.Contains, subnet.Expectation, subnet.Expectation)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not in the <paramref name="subnet" /> given in CIDR notation, e.g. "10.0.0.0/8".
@@ -34,12 +34,12 @@ public static partial class ThatIPAddress
 	///     and an IPv4-mapped IPv6 subject is compared as IPv4 address against an IPv4 subnet.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotInSubnet(this IThat<IPAddress?> source, string subnet)
-		=> new(source.Get().ExpectationBuilder.AddConstraint(Subnet.Parse(subnet, nameof(subnet)),
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotInSubnet(this IThat<IPAddress?> subject, string subnet)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(Subnet.Parse(subnet, nameof(subnet)),
 				static (subnet, it, grammars) =>
 					new IsKindConstraint(it, grammars, subnet.Contains, subnet.Expectation, subnet.Expectation)
 						.Invert()),
-			source);
+			subject);
 
 	private sealed class Subnet(IPAddress network, byte[] networkBytes, int prefixLength)
 	{

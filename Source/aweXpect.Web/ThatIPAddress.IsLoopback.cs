@@ -16,10 +16,10 @@ public static partial class ThatIPAddress
 	///     <seealso cref="IPAddress.IsLoopback(IPAddress)" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsLoopback(this IThat<IPAddress?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsLoopback(this IThat<IPAddress?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsKindConstraint(it, grammars, IPAddress.IsLoopback, "a loopback address", "loopback addresses")),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not a loopback address.
@@ -28,9 +28,9 @@ public static partial class ThatIPAddress
 	///     <seealso cref="IPAddress.IsLoopback(IPAddress)" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotLoopback(this IThat<IPAddress?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotLoopback(this IThat<IPAddress?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsKindConstraint(it, grammars, IPAddress.IsLoopback, "a loopback address", "loopback addresses")
 					.Invert()),
-			source);
+			subject);
 }

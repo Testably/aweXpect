@@ -15,12 +15,12 @@ public static partial class ThatUri
 	/// <summary>
 	///     Fails both ways for a relative URI, whose components cannot be accessed, and stops further processing.
 	/// </summary>
-	private static IThat<Uri?> FailIfRelative(this IThat<Uri?> source)
+	private static IThat<Uri?> FailIfRelative(this IThat<Uri?> subject)
 	{
-		source.Get().ExpectationBuilder
+		subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new FailIfRelativeConstraint(it, grammars))
 			.And("");
-		return source;
+		return subject;
 	}
 
 	private static void ThrowIfNotAbsolute(Uri value, string paramName)

@@ -17,10 +17,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsUnc" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsUnc(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsUnc(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsUncConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not a UNC path.
@@ -29,10 +29,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsUnc" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsNotUnc(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotUnc(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsUncConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsUncConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),

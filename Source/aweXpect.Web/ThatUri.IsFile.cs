@@ -17,10 +17,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsFile" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsFile(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsFile(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFileConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not a file URI.
@@ -29,10 +29,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsFile" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsNotFile(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotFile(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFileConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsFileConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),

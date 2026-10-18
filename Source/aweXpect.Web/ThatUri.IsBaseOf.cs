@@ -18,12 +18,12 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsBaseOf(Uri)" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsBaseOf(this IThat<Uri?> source, Uri expected)
+	public static AndOrResult<Uri, IThat<Uri?>> IsBaseOf(this IThat<Uri?> subject, Uri expected)
 	{
 		ThrowIfNotAbsolute(expected, nameof(expected));
-		return new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars) =>
+		return new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars) =>
 				new IsBaseOfConstraint(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -33,8 +33,8 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsBaseOf(Uri)" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsBaseOf(this IThat<Uri?> source, string expected)
-		=> source.IsBaseOf(ToAbsoluteUri(expected, nameof(expected)));
+	public static AndOrResult<Uri, IThat<Uri?>> IsBaseOf(this IThat<Uri?> subject, string expected)
+		=> subject.IsBaseOf(ToAbsoluteUri(expected, nameof(expected)));
 
 	/// <summary>
 	///     Verifies that the subject is not a base URI of the <paramref name="unexpected" /> URI.
@@ -43,12 +43,12 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsBaseOf(Uri)" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsNotBaseOf(this IThat<Uri?> source, Uri unexpected)
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotBaseOf(this IThat<Uri?> subject, Uri unexpected)
 	{
 		ThrowIfNotAbsolute(unexpected, nameof(unexpected));
-		return new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars) =>
+		return new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars) =>
 				new IsBaseOfConstraint(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -58,8 +58,8 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsBaseOf(Uri)" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsNotBaseOf(this IThat<Uri?> source, string unexpected)
-		=> source.IsNotBaseOf(ToAbsoluteUri(unexpected, nameof(unexpected)));
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotBaseOf(this IThat<Uri?> subject, string unexpected)
+		=> subject.IsNotBaseOf(ToAbsoluteUri(unexpected, nameof(unexpected)));
 
 	private static Uri ToAbsoluteUri(string value, string paramName)
 	{

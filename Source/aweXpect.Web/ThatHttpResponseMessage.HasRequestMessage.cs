@@ -13,10 +13,10 @@ public static partial class ThatHttpResponseMessage
 	///     Verifies that the response has a request message which satisfies the <paramref name="expectations" />.
 	/// </summary>
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
-		HasRequestMessage(this IThat<HttpResponseMessage?> source, Action<IThat<HttpRequestMessage>> expectations)
+		HasRequestMessage(this IThat<HttpResponseMessage?> subject, Action<IThat<HttpRequestMessage>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		return new(source.Get().ExpectationBuilder
+		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.ForMember(MemberAccessor<HttpResponseMessage?, HttpRequestMessage?>.FromFunc(
 						response => response?.RequestMessage,
@@ -26,6 +26,6 @@ public static partial class ThatHttpResponseMessage
 				.AddExpectations(expectationBuilder =>
 						expectations(new ThatSubject<HttpRequestMessage>(expectationBuilder)),
 					grammars => grammars | ExpectationGrammars.Nested),
-			source);
+			subject);
 	}
 }

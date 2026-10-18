@@ -18,7 +18,7 @@ public static partial class ThatHttpRequestMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
-		HasRequestUri(this IThat<HttpRequestMessage?> source, string expected)
+		HasRequestUri(this IThat<HttpRequestMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		if (!Uri.TryCreate(expected, UriKind.Absolute, out Uri? expectedUri))
@@ -28,11 +28,11 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		return new(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint(expectedUri.ToString(), static (expected, it, grammars) =>
 					new HasRequestUriConstraint(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -41,15 +41,15 @@ public static partial class ThatHttpRequestMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
-		HasRequestUri(this IThat<HttpRequestMessage?> source, Uri expected)
+		HasRequestUri(this IThat<HttpRequestMessage?> subject, Uri expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		return new(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint(expected.ToString(), static (expected, it, grammars) =>
 					new HasRequestUriConstraint(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	private sealed class HasRequestUriConstraint(

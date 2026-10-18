@@ -7,105 +7,105 @@ namespace aweXpect
     public static class ThatHttpRequestMessage
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string unexpected) { }
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasMethod(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Net.Http.HttpMethod expected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasMethod(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Net.Http.HttpMethod expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Uri expected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Uri expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string expected) { }
     }
     public static class ThatHttpResponseMessage
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string unexpected) { }
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContentType(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContentType(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string? type = null) { }
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage>> expectations) { }
+        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string? type = null) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
-        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Net.HttpStatusCode? expected) { }
+        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
     }
     public static class ThatIPAddress
     {
         public static TSelf IgnoringIPv4MappedToIPv6<TSelf>(this aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> result) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> { }
         public static aweXpect.Results.ObjectEqualityResult<System.Net.IPAddress?, aweXpect.Core.IThat<System.Net.IPAddress?>, System.Net.IPAddress?> IsEqualTo(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, System.Net.IPAddress? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> source, string subnet) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, string subnet) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> subject) { }
         public static aweXpect.Results.ObjectEqualityResult<System.Net.IPAddress?, aweXpect.Core.IThat<System.Net.IPAddress?>, System.Net.IPAddress?> IsNotEqualTo(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, System.Net.IPAddress? unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotIPv6(this aweXpect.Core.IThat<System.Net.IPAddress?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> source, string subnet) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotInSubnet(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, string subnet) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsNotLoopback(this aweXpect.Core.IThat<System.Net.IPAddress?> subject) { }
     }
     public static class ThatUri
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> DoesNotHaveQueryParameter(this aweXpect.Core.IThat<System.Uri?> source, string name) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> DoesNotHaveQueryParameter(this aweXpect.Core.IThat<System.Uri?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasFragment(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasFragment(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasHost(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasHost(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPath(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPath(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> source, int expected) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.Int<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.PropertyResult.Int<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Web.Results.HasQueryParameterValueResult HasQueryParameter(this aweXpect.Core.IThat<System.Uri?> source, string name) { }
+        public static aweXpect.Web.Results.HasQueryParameterValueResult HasQueryParameter(this aweXpect.Core.IThat<System.Uri?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasScheme(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasScheme(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsAbsolute(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsAbsolute(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsBaseOf(this aweXpect.Core.IThat<System.Uri?> source, System.Uri expected) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsBaseOf(this aweXpect.Core.IThat<System.Uri?> subject, System.Uri expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsBaseOf(this aweXpect.Core.IThat<System.Uri?> source, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsBaseOf(this aweXpect.Core.IThat<System.Uri?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsFile(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsFile(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsLoopback(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsLoopback(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotAbsolute(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotAbsolute(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotBaseOf(this aweXpect.Core.IThat<System.Uri?> source, System.Uri unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotBaseOf(this aweXpect.Core.IThat<System.Uri?> subject, System.Uri unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotBaseOf(this aweXpect.Core.IThat<System.Uri?> source, string unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotBaseOf(this aweXpect.Core.IThat<System.Uri?> subject, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotFile(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotFile(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotLoopback(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotLoopback(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotUnc(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotUnc(this aweXpect.Core.IThat<System.Uri?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsUnc(this aweXpect.Core.IThat<System.Uri?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsUnc(this aweXpect.Core.IThat<System.Uri?> subject) { }
     }
 }
 namespace aweXpect.Web

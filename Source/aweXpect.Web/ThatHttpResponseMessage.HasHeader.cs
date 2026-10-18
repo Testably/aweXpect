@@ -18,15 +18,15 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HasHeaderValueResult<HttpResponseMessage, IThat<HttpResponseMessage?>> HasHeader(
-		this IThat<HttpResponseMessage?> source,
+		this IThat<HttpResponseMessage?> subject,
 		string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		return new(source.Get().ExpectationBuilder
+		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(expected, static (expected, it, grammars) =>
 					new HasHeaderConstraint(it, grammars, expected)),
-			source,
+			subject,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
 	}
 
@@ -35,15 +35,15 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> DoesNotHaveHeader(
-		this IThat<HttpResponseMessage?> source,
+		this IThat<HttpResponseMessage?> subject,
 		string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		return new(source.Get().ExpectationBuilder
+		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
 					new HasHeaderConstraint(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 	}
 
 	private sealed class HasHeaderConstraint(

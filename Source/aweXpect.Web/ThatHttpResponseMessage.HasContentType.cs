@@ -24,16 +24,16 @@ public static partial class ThatHttpResponseMessage
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
-		HasContentType(this IThat<HttpResponseMessage?> source, string expected)
+		HasContentType(this IThat<HttpResponseMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((expected, options), static (state, it, grammars) =>
 					new HasContentTypeConstraint(it, grammars, state.expected, state.options)),
-			source,
+			subject,
 			options);
 	}
 

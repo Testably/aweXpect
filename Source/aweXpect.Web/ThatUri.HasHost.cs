@@ -15,6 +15,6 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.Host" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasHost(this IThat<Uri?> source)
-		=> new(source.FailIfRelative(), u => u?.Host, "host");
+	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasHost(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative(), u => u?.Host, "host");
 }

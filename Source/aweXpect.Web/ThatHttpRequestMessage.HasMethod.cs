@@ -15,15 +15,15 @@ public static partial class ThatHttpRequestMessage
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
-		HasMethod(this IThat<HttpRequestMessage?> source, HttpMethod expected)
+		HasMethod(this IThat<HttpRequestMessage?> subject, HttpMethod expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		return new(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.AddConstraint(expected, static (expected, it, grammars) =>
 					new HasMethodConstraint(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	private sealed class HasMethodConstraint(

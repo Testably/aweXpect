@@ -17,10 +17,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsLoopback" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsLoopback(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsLoopback(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLoopbackConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject does not reference the local host.
@@ -29,10 +29,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsLoopback" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsNotLoopback(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotLoopback(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLoopbackConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsLoopbackConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),

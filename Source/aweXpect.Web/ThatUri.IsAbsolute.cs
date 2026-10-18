@@ -17,10 +17,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsAbsoluteUri" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsAbsolute(this IThat<Uri?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsAbsolute(this IThat<Uri?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAbsoluteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not an absolute URI.
@@ -29,10 +29,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsAbsoluteUri" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> IsNotAbsolute(this IThat<Uri?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotAbsolute(this IThat<Uri?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAbsoluteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsAbsoluteConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),

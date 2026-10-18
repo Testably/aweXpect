@@ -15,6 +15,6 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.Scheme" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasScheme(this IThat<Uri?> source)
-		=> new(source.FailIfRelative(), u => u?.Scheme, "scheme");
+	public static PropertyResult.String<Uri?, Uri, IThat<Uri?>> HasScheme(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative(), u => u?.Scheme, "scheme");
 }

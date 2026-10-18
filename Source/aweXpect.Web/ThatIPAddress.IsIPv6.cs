@@ -18,10 +18,10 @@ public static partial class ThatIPAddress
 	///     <seealso cref="AddressFamily.InterNetworkV6" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsIPv6(this IThat<IPAddress?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsIPv6(this IThat<IPAddress?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsKindConstraint(it, grammars, IsIPv6Address, "an IPv6 address", "IPv6 addresses")),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not an IPv6 address.
@@ -31,10 +31,10 @@ public static partial class ThatIPAddress
 	///     <seealso cref="AddressFamily.InterNetworkV6" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotIPv6(this IThat<IPAddress?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<IPAddress, IThat<IPAddress?>> IsNotIPv6(this IThat<IPAddress?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsKindConstraint(it, grammars, IsIPv6Address, "an IPv6 address", "IPv6 addresses").Invert()),
-			source);
+			subject);
 
 	private static bool IsIPv6Address(IPAddress address)
 		=> address.AddressFamily == AddressFamily.InterNetworkV6;

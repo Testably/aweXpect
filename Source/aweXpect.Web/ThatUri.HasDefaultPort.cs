@@ -17,10 +17,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsDefaultPort" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> HasDefaultPort(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> HasDefaultPort(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasDefaultPortConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject does not have the default port for the used scheme.
@@ -29,10 +29,10 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.IsDefaultPort" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveDefaultPort(this IThat<Uri?> source)
-		=> new(source.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveDefaultPort(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasDefaultPortConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class HasDefaultPortConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),

@@ -15,8 +15,8 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.Port" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Uri?, Uri, IThat<Uri?>> HasPort(this IThat<Uri?> source)
-		=> new(source.FailIfRelative(), u => u?.Port, "port");
+	public static PropertyResult.Int<Uri?, Uri, IThat<Uri?>> HasPort(this IThat<Uri?> subject)
+		=> new(subject.FailIfRelative(), u => u?.Port, "port");
 
 	/// <summary>
 	///     Verifies that the port of the <see cref="Uri" /> subject is equal to the <paramref name="expected" /> value.
@@ -25,6 +25,6 @@ public static partial class ThatUri
 	///     <seealso cref="Uri.Port" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<Uri, IThat<Uri?>> HasPort(this IThat<Uri?> source, int expected)
-		=> source.HasPort().EqualTo(expected);
+	public static AndOrResult<Uri, IThat<Uri?>> HasPort(this IThat<Uri?> subject, int expected)
+		=> subject.HasPort().EqualTo(expected);
 }

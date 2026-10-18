@@ -37,16 +37,16 @@ public static partial class ThatHttpResponseMessage
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
-		HasProblemDetailsContent(this IThat<HttpResponseMessage?> source, string? type = null)
+		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject, string? type = null)
 	{
 		StringEqualityOptions typeOptions = new(nameof(type));
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
-			source.Get().ExpectationBuilder
+			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint((type, options, typeOptions), static (state, it, grammars) =>
 					new HasProblemDetailsConstraint(it, grammars, state.type, state.options, state.typeOptions)),
-			source,
+			subject,
 			typeOptions,
 			options);
 	}
