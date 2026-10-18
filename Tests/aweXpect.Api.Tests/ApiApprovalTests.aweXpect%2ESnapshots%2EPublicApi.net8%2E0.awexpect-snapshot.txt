@@ -12,6 +12,8 @@ namespace aweXpect.Snapshots.PublicApi
     public sealed class PublicApiOptions
     {
         public PublicApiOptions() { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingAttribute(string fullName) { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingAttribute<TAttribute>() where TAttribute : System.Attribute { }
         public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingForwardedTypes() { }
     }
     public static class ThatPublicApi

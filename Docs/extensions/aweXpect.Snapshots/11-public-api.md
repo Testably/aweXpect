@@ -51,6 +51,17 @@ that were compiled against the assembly. Options configure what is written, for 
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.ExcludingForwardedTypes());
 ```
 
+An attribute is written when consumers can see its class, or when compilers or analyzers read it by its name, e.g.
+`[NotNullWhen(true)]` or `[OverloadResolutionPriority(1)]`, so that also a polyfill that the library declares internally
+is written. An attribute that is irrelevant for the public API can be excluded everywhere, by its type or, e.g. when the
+tests cannot reference it, by its full name like `Type.FullName`:
+
+```csharp
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+    .ExcludingAttribute<EditorBrowsableAttribute>()
+    .ExcludingAttribute("MyLibrary.Internal.MarkerAttribute"));
+```
+
 The assembly is read with Roslyn, so the package depends on a recent version of `Microsoft.CodeAnalysis.CSharp` that
 reads all extension members correctly. A test project that needs an older Roslyn, e.g. for testing an analyzer, cannot
 use the package, so verify the public API in a separate test project.

@@ -22,6 +22,155 @@ public sealed class PublicApiDeclarationsTests
 
 	private const string DependencySource = "namespace Dependency; public class Gate { }";
 
+	private const string AttributesSource = """
+	                                        [assembly: Library.Mark]
+	                                        namespace Library
+	                                        {
+	                                            [System.AttributeUsage(System.AttributeTargets.All)]
+	                                            public sealed class MarkAttribute : System.Attribute { }
+	                                            public static class Outer
+	                                            {
+	                                                public sealed class NestedAttribute : System.Attribute { }
+	                                            }
+	                                            public sealed class TagAttribute<T> : System.Attribute { }
+	                                            internal sealed class SecretAttribute : System.Attribute { }
+	                                            public class Api
+	                                            {
+	                                                [Mark, Outer.Nested, Tag<int>, Secret, System.Obsolete("old")]
+	                                                [return: Mark]
+	                                                public object Call<[Mark] T>([Mark] T value) => value;
+	                                                public string Name { [Mark] get; set; } = "";
+	                                                [System.Runtime.CompilerServices.IndexerName("Slot")]
+	                                                public string this[int index] => "";
+	                                                public bool TryGet([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out object value)
+	                                                {
+	                                                    value = "";
+	                                                    return true;
+	                                                }
+	                                            }
+	                                        }
+	                                        namespace System.Diagnostics.CodeAnalysis
+	                                        {
+	                                            internal sealed class NotNullWhenAttribute(bool returnValue) : System.Attribute
+	                                            {
+	                                                public bool ReturnValue { get; } = returnValue;
+	                                            }
+	                                        }
+	                                        """;
+
+	[Fact]
+	public async Task GenerateFrom_ShouldWriteTheAttributesOfTheLibrary()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("[assembly: Library.Mark]").And.Contains("[Library.Mark]")
+			.And.Contains("[return: Library.Mark]").And.Contains("Call<[Library.Mark] T>([Library.Mark] T value)")
+			.And.Contains("{ [Library.Mark] get; set; }").And.Contains("[Library.Outer.Nested]")
+			.And.Contains("[Library.Tag<int>]").And.Contains("[System.Obsolete(\"old\")]")
+			.And.Contains("[System.Runtime.CompilerServices.IndexerName(\"Slot\")]")
+			.Because("the tests that exclude attributes would otherwise pass without excluding anything");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_ShouldNotWriteInternalAttributes()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).DoesNotContain("Secret")
+			.Because("consumers cannot see an internal attribute");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_ShouldWriteInternalAttributesThatCompilersRead()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("[System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out object value")
+			.Because("compilers read a polyfilled attribute by its name, so it changes how consumers compile");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingAnAttribute_ShouldExcludeItEverywhere()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingAttribute("Library.MarkAttribute"));
+
+		await That(result).DoesNotContain("Library.Mark]").And.Contains("public sealed class MarkAttribute")
+			.Because("the attribute is excluded on the assembly, members, return values, accessors and parameters");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingAnAttributeByType_ShouldExcludeIt()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingAttribute<ObsoleteAttribute>());
+
+		await That(result).DoesNotContain("System.Obsolete");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingANestedAttribute_ShouldExcludeIt()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.ExcludingAttribute("Library.Outer+NestedAttribute"));
+
+		await That(result).DoesNotContain("[Library.Outer.Nested]");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingAGenericAttribute_ShouldExcludeItWithAnyTypeArguments()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingAttribute("Library.TagAttribute`1"));
+
+		await That(result).DoesNotContain("[Library.Tag<int>]");
+	}
+
+#if NET
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingAGenericAttributeByType_ShouldExcludeItWithAnyTypeArguments()
+	{
+		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly,
+			o => o.ExcludingAttribute<TagAttribute<string>>());
+
+		await That(result).DoesNotContain("Tag<int>]")
+			.Because("the fixture applies the attribute with an int, but its definition is excluded");
+	}
+#endif
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingIndexerName_ShouldNotWriteIt()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.ExcludingAttribute<System.Runtime.CompilerServices.IndexerNameAttribute>());
+
+		await That(result).DoesNotContain("IndexerName");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenExcludingTypeForwardedTo_ShouldNotWriteForwardedTypes()
+	{
+		FileInfo library = WriteForwardingLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.ExcludingAttribute<System.Runtime.CompilerServices.TypeForwardedToAttribute>());
+
+		await That(result).DoesNotContain("TypeForwardedTo");
+	}
+
 	[Fact]
 	public async Task GenerateFrom_ShouldWriteNumbersIndependentlyOfTheCurrentCulture()
 	{

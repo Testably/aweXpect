@@ -104,6 +104,45 @@ public static class PublicApiDeclarations
 	];
 
 	/// <summary>
+	///     Attributes that compilers or analyzers read by their name, so that they are written even when the library
+	///     declares them internally.
+	/// </summary>
+	private static readonly HashSet<string> CompilerAttributes =
+	[
+		"System.Diagnostics.CodeAnalysis.AllowNullAttribute",
+		"System.Diagnostics.CodeAnalysis.DisallowNullAttribute",
+		"System.Diagnostics.CodeAnalysis.MaybeNullAttribute",
+		"System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute",
+		"System.Diagnostics.CodeAnalysis.NotNullAttribute",
+		"System.Diagnostics.CodeAnalysis.NotNullWhenAttribute",
+		"System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute",
+		"System.Diagnostics.CodeAnalysis.MemberNotNullAttribute",
+		"System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute",
+		"System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute",
+		"System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute",
+		"System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute",
+		"System.Diagnostics.CodeAnalysis.StringSyntaxAttribute",
+		"System.Diagnostics.CodeAnalysis.UnscopedRefAttribute",
+		"System.Diagnostics.CodeAnalysis.ExperimentalAttribute",
+		"System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute",
+		"System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute",
+		"System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute",
+		"System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute",
+		"System.Runtime.CompilerServices.CallerArgumentExpressionAttribute",
+		"System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute",
+		"System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute",
+		"System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute",
+		"System.Runtime.CompilerServices.CollectionBuilderAttribute",
+		"System.Runtime.CompilerServices.AsyncMethodBuilderAttribute",
+		"System.Runtime.Versioning.SupportedOSPlatformAttribute",
+		"System.Runtime.Versioning.UnsupportedOSPlatformAttribute",
+		"System.Runtime.Versioning.ObsoletedOSPlatformAttribute",
+		"System.Runtime.Versioning.SupportedOSPlatformGuardAttribute",
+		"System.Runtime.Versioning.UnsupportedOSPlatformGuardAttribute",
+		"System.Runtime.Versioning.RequiresPreviewFeaturesAttribute",
+	];
+
+	/// <summary>
 	///     The references of the files that were read, which are <see langword="null" /> for files without an assembly,
 	///     e.g. native ones, so that each file is read only once per process.
 	/// </summary>
@@ -184,8 +223,11 @@ public static class PublicApiDeclarations
 		ThrowIfReferencesAreUnresolved(assemblyFile, compilation, assembly);
 
 		StringBuilder sb = new();
-		foreach (string attribute in Attributes(assembly)
-			         .Concat(options.IncludesForwardedTypes ? ForwardedTypes(assembly) : [])
+		foreach (string attribute in Attributes(assembly, options)
+			         .Concat(options.IncludesForwardedTypes &&
+			                 !options.IsExcluded("System.Runtime.CompilerServices.TypeForwardedToAttribute")
+				         ? ForwardedTypes(assembly)
+				         : [])
 			         .OrderBy(attribute => attribute, StringComparer.Ordinal))
 		{
 			sb.Append("[assembly: ").Append(attribute).Append("]\n");
@@ -199,7 +241,7 @@ public static class PublicApiDeclarations
 				         : type.ContainingNamespace.ToDisplayString())
 			         .OrderBy(group => group.Key, StringComparer.Ordinal))
 		{
-			WriteNamespace(sb, types);
+			WriteNamespace(sb, types, options);
 		}
 
 		return sb.ToString();
@@ -208,7 +250,8 @@ public static class PublicApiDeclarations
 	/// <remarks>
 	///     The types in the global namespace, whose key is empty, are written without a namespace.
 	/// </remarks>
-	private static void WriteNamespace(StringBuilder sb, IGrouping<string, INamedTypeSymbol> types)
+	private static void WriteNamespace(StringBuilder sb, IGrouping<string, INamedTypeSymbol> types,
+		PublicApiOptions options)
 	{
 		bool isGlobalNamespace = types.Key.Length == 0;
 		if (!isGlobalNamespace)
@@ -220,7 +263,7 @@ public static class PublicApiDeclarations
 		foreach (INamedTypeSymbol type in types.OrderBy(type => type.Name, StringComparer.Ordinal)
 			         .ThenBy(type => type.Arity))
 		{
-			WriteType(sb, type, isGlobalNamespace ? "" : Indentation);
+			WriteType(sb, type, isGlobalNamespace ? "" : Indentation, options);
 		}
 
 		if (!isGlobalNamespace)
@@ -395,9 +438,9 @@ public static class PublicApiDeclarations
 	private static bool IsVisibleType(INamedTypeSymbol type)
 		=> IsVisible(type) && (type.ContainingType is null || IsVisibleType(type.ContainingType));
 
-	private static void WriteType(StringBuilder sb, INamedTypeSymbol type, string indent)
+	private static void WriteType(StringBuilder sb, INamedTypeSymbol type, string indent, PublicApiOptions options)
 	{
-		WriteAttributes(sb, type, indent);
+		WriteAttributes(sb, type, indent, options);
 		sb.Append(indent);
 		if (type.TypeKind == TypeKind.Delegate)
 		{
@@ -411,14 +454,16 @@ public static class PublicApiDeclarations
 				})
 				.Append(invoke.ReturnType.ToDisplayString(
 					MemberFormat.RemoveGenericsOptions(SymbolDisplayGenericsOptions.IncludeVariance))).Append(' ')
-				.Append(type.ToDisplayString(TypeNameFormat)).Append(TypeParameterList(type.TypeParameters))
-				.Append('(').Append(string.Join(", ", invoke.Parameters.Select(parameter => Parameter(parameter, false))))
+				.Append(type.ToDisplayString(TypeNameFormat)).Append(TypeParameterList(type.TypeParameters, options))
+				.Append('(')
+				.Append(string.Join(", ",
+					invoke.Parameters.Select(parameter => Parameter(parameter, false, options))))
 				.Append(')')
 				.Append(Constraints(type.TypeParameters)).Append(";\n");
 			return;
 		}
 
-		sb.Append(TypeHeader(type)).Append('\n');
+		sb.Append(TypeHeader(type, options)).Append('\n');
 		sb.Append(indent).Append("{\n");
 		string memberIndent = indent + Indentation;
 		if (type.TypeKind == TypeKind.Enum)
@@ -426,23 +471,23 @@ public static class PublicApiDeclarations
 			foreach (IFieldSymbol field in type.GetMembers().OfType<IFieldSymbol>().Where(field => field.HasConstantValue)
 				         .OrderBy(field => Convert.ToDecimal(field.ConstantValue)))
 			{
-				WriteAttributes(sb, field, memberIndent);
+				WriteAttributes(sb, field, memberIndent, options);
 				sb.Append(memberIndent).Append(field.Name).Append(" = ")
 					.Append(Convert.ToString(field.ConstantValue, CultureInfo.InvariantCulture)).Append(",\n");
 			}
 		}
 		else
 		{
-			WriteMembers(sb, type, memberIndent);
+			WriteMembers(sb, type, memberIndent, options);
 			foreach (INamedTypeSymbol extension in type.GetTypeMembers()
 				         .Where(nested => nested.IsExtension && nested.GetMembers().Any(IsVisible))
 				         .OrderBy(nested => nested.ExtensionParameter?.ToDisplayString(MemberFormat), StringComparer.Ordinal))
 			{
-				sb.Append(memberIndent).Append("extension").Append(TypeParameterList(extension.TypeParameters))
-					.Append('(').Append(Parameter(extension.ExtensionParameter!, false)).Append(')')
+				sb.Append(memberIndent).Append("extension").Append(TypeParameterList(extension.TypeParameters, options))
+					.Append('(').Append(Parameter(extension.ExtensionParameter!, false, options)).Append(')')
 					.Append(Constraints(extension.TypeParameters)).Append('\n');
 				sb.Append(memberIndent).Append("{\n");
-				WriteMembers(sb, extension, memberIndent + Indentation);
+				WriteMembers(sb, extension, memberIndent + Indentation, options);
 				sb.Append(memberIndent).Append("}\n");
 			}
 
@@ -450,14 +495,14 @@ public static class PublicApiDeclarations
 				         .OrderBy(nested => nested.Name, StringComparer.Ordinal)
 				         .ThenBy(nested => nested.Arity))
 			{
-				WriteType(sb, nested, memberIndent);
+				WriteType(sb, nested, memberIndent, options);
 			}
 		}
 
 		sb.Append(indent).Append("}\n");
 	}
 
-	private static void WriteMembers(StringBuilder sb, INamedTypeSymbol type, string indent)
+	private static void WriteMembers(StringBuilder sb, INamedTypeSymbol type, string indent, PublicApiOptions options)
 	{
 		HashSet<ISymbol> extensionImplementations = new(type.GetTypeMembers()
 			.Where(nested => nested.IsExtension)
@@ -483,24 +528,24 @@ public static class PublicApiDeclarations
 			         {
 				         MethodKind: MethodKind.Constructor, IsImplicitlyDeclared: true,
 			         })
-			         .Select(member => (Member: member, Declaration: Declaration(member)))
+			         .Select(member => (Member: member, Declaration: Declaration(member, options)))
 			         .OrderBy(member => Rank(member.Member))
 			         .ThenBy(member => member.Member.IsStatic)
 			         .ThenBy(member => member.Member.Name, StringComparer.Ordinal)
 			         .ThenBy(member => member.Declaration, StringComparer.Ordinal))
 		{
-			WriteAttributes(sb, member.Member, indent);
+			WriteAttributes(sb, member.Member, indent, options);
 			sb.Append(indent).Append(member.Declaration).Append('\n');
 		}
 	}
 
-	private static string Declaration(ISymbol member) => InterfaceModifiers(member) + member switch
+	private static string Declaration(ISymbol member, PublicApiOptions options) => InterfaceModifiers(member) + member switch
 	{
-		IMethodSymbol method => MethodHeader(method) + "(" +
+		IMethodSymbol method => MethodHeader(method, options) + "(" +
 		                        string.Join(", ", method.Parameters.Select((parameter, index)
-			                        => Parameter(parameter, index == 0 && method.IsExtensionMethod))) + ")" +
+			                        => Parameter(parameter, index == 0 && method.IsExtensionMethod, options))) + ")" +
 		                        Constraints(method.TypeParameters) + (method.IsAbstract ? ";" : " { }"),
-		IPropertySymbol property => Property(property),
+		IPropertySymbol property => Property(property, options),
 		IEventSymbol => member.ToDisplayString(EventFormat) + ";",
 		IFieldSymbol { IsFixedSizeBuffer: true, } field => AccessibilityKeyword(field) + " fixed " +
 		                                                   ((IPointerTypeSymbol)field.Type).PointedAtType
@@ -543,7 +588,7 @@ public static class PublicApiDeclarations
 	/// <summary>
 	///     The display does not include the attributes of the accessors, which are inserted before their keywords.
 	/// </summary>
-	private static string Property(IPropertySymbol property)
+	private static string Property(IPropertySymbol property, PublicApiOptions options)
 	{
 		string declaration = property.ToDisplayString(MemberFormat);
 		int accessorsStart = declaration.LastIndexOf(" { ", StringComparison.Ordinal);
@@ -553,7 +598,7 @@ public static class PublicApiDeclarations
 			.Select(accessor => accessor.Trim())
 			.Select(accessor => string.Concat(MethodAttributes(accessor.EndsWith("get", StringComparison.Ordinal)
 				                    ? property.GetMethod!
-				                    : property.SetMethod!).Select(attribute => $"[{attribute}] ")) +
+				                    : property.SetMethod!, options).Select(attribute => $"[{attribute}] ")) +
 			                    accessor + ";");
 		return declaration.Remove(accessorsStart) + " { " + string.Join(" ", accessors) + " }";
 	}
@@ -561,7 +606,7 @@ public static class PublicApiDeclarations
 	/// <remarks>
 	///     The display ends with the type parameters of the method, which are replaced to include their attributes.
 	/// </remarks>
-	private static string MethodHeader(IMethodSymbol method)
+	private static string MethodHeader(IMethodSymbol method, PublicApiOptions options)
 	{
 		string header = method.ToDisplayString(MethodHeaderFormat);
 		if (method.TypeParameters.Length == 0)
@@ -570,7 +615,7 @@ public static class PublicApiDeclarations
 		}
 
 		string typeParameters = "<" + string.Join(", ", method.TypeParameters.Select(TypeParameterName)) + ">";
-		return header.Remove(header.Length - typeParameters.Length) + TypeParameterList(method.TypeParameters);
+		return header.Remove(header.Length - typeParameters.Length) + TypeParameterList(method.TypeParameters, options);
 	}
 
 	/// <summary>
@@ -579,11 +624,12 @@ public static class PublicApiDeclarations
 	private static string TypeParameterName(ITypeParameterSymbol typeParameter)
 		=> typeParameter.ToDisplayString(TypeNameFormat);
 
-	private static string TypeParameterList(IReadOnlyCollection<ITypeParameterSymbol> typeParameters)
+	private static string TypeParameterList(IReadOnlyCollection<ITypeParameterSymbol> typeParameters,
+		PublicApiOptions options)
 		=> typeParameters.Count == 0
 			? ""
 			: "<" + string.Join(", ", typeParameters.Select(typeParameter =>
-				string.Concat(Attributes(typeParameter).Select(attribute => $"[{attribute}] ")) +
+				string.Concat(Attributes(typeParameter, options).Select(attribute => $"[{attribute}] ")) +
 				typeParameter.Variance switch
 				{
 					VarianceKind.In => "in ",
@@ -591,10 +637,10 @@ public static class PublicApiDeclarations
 					_ => "",
 				} + TypeParameterName(typeParameter))) + ">";
 
-	private static string Parameter(IParameterSymbol parameter, bool isThis)
+	private static string Parameter(IParameterSymbol parameter, bool isThis, PublicApiOptions options)
 	{
 		string declaration = parameter.ToDisplayString(MemberFormat);
-		return string.Concat(Attributes(parameter).Select(attribute => $"[{attribute}] ")) +
+		return string.Concat(Attributes(parameter, options).Select(attribute => $"[{attribute}] ")) +
 		       (isThis ? "this " : "") +
 		       (parameter.HasExplicitDefaultValue
 			       ? ConstantValue(parameter.Type, parameter.ExplicitDefaultValue, declaration)
@@ -650,7 +696,7 @@ public static class PublicApiDeclarations
 		_ => 4,
 	};
 
-	private static string TypeHeader(INamedTypeSymbol type)
+	private static string TypeHeader(INamedTypeSymbol type, PublicApiOptions options)
 	{
 		StringBuilder sb = new(AccessibilityKeyword(type));
 		if (type.TypeKind == TypeKind.Class)
@@ -670,7 +716,7 @@ public static class PublicApiDeclarations
 		}
 
 		sb.Append(' ').Append(TypeKeyword(type)).Append(' ').Append(type.ToDisplayString(TypeNameFormat))
-			.Append(TypeParameterList(type.TypeParameters));
+			.Append(TypeParameterList(type.TypeParameters, options));
 		List<string> baseTypes = [];
 		if (type.TypeKind == TypeKind.Enum)
 		{
@@ -758,39 +804,69 @@ public static class PublicApiDeclarations
 		_ => "public",
 	};
 
-	private static void WriteAttributes(StringBuilder sb, ISymbol symbol, string indent)
+	private static void WriteAttributes(StringBuilder sb, ISymbol symbol, string indent, PublicApiOptions options)
 	{
 		foreach (string attribute in symbol switch
 		         {
-			         IMethodSymbol method => MethodAttributes(method),
-			         INamedTypeSymbol { DelegateInvokeMethod: { } invoke, } => Attributes(symbol)
-				         .Concat(ReturnAttributes(invoke)),
-			         IPropertySymbol { IsIndexer: true, MetadataName: not "Item", } indexer => Attributes(symbol)
-				         .Append($"System.Runtime.CompilerServices.IndexerName(\"{indexer.MetadataName}\")")
-				         .OrderBy(attribute => attribute, StringComparer.Ordinal),
-			         _ => Attributes(symbol),
+			         IMethodSymbol method => MethodAttributes(method, options),
+			         INamedTypeSymbol { DelegateInvokeMethod: { } invoke, } => Attributes(symbol, options)
+				         .Concat(ReturnAttributes(invoke, options)),
+			         IPropertySymbol { IsIndexer: true, MetadataName: not "Item", } indexer
+				         when !options.IsExcluded("System.Runtime.CompilerServices.IndexerNameAttribute") =>
+				         Attributes(symbol, options)
+					         .Append($"System.Runtime.CompilerServices.IndexerName(\"{indexer.MetadataName}\")")
+					         .OrderBy(attribute => attribute, StringComparer.Ordinal),
+			         _ => Attributes(symbol, options),
 		         })
 		{
 			sb.Append(indent).Append('[').Append(attribute).Append("]\n");
 		}
 	}
 
-	private static IEnumerable<string> MethodAttributes(IMethodSymbol method)
-		=> Attributes(method).Concat(ReturnAttributes(method));
+	private static IEnumerable<string> MethodAttributes(IMethodSymbol method, PublicApiOptions options)
+		=> Attributes(method, options).Concat(ReturnAttributes(method, options));
 
-	private static IEnumerable<string> ReturnAttributes(IMethodSymbol method)
-		=> Attributes(method.GetReturnTypeAttributes()).Select(attribute => $"return: {attribute}");
+	private static IEnumerable<string> ReturnAttributes(IMethodSymbol method, PublicApiOptions options)
+		=> Attributes(method.GetReturnTypeAttributes(), options).Select(attribute => $"return: {attribute}");
 
-	private static IEnumerable<string> Attributes(ISymbol symbol)
-		=> Attributes(symbol.GetAttributes());
+	private static IEnumerable<string> Attributes(ISymbol symbol, PublicApiOptions options)
+		=> Attributes(symbol.GetAttributes(), options);
 
-	private static IEnumerable<string> Attributes(IEnumerable<AttributeData> attributes)
+	private static IEnumerable<string> Attributes(IEnumerable<AttributeData> attributes, PublicApiOptions options)
 		=> attributes
-			.Where(attribute => attribute.AttributeClass is not null &&
-			                    !IgnoredAttributes.Contains(attribute.AttributeClass.ToDisplayString()) &&
+			.Where(attribute => attribute.AttributeClass is { } attributeClass &&
+			                    IsWritten(attributeClass) &&
+			                    !options.IsExcluded(MetadataFullName(attributeClass)) &&
 			                    !IsSnapshotsMetadata(attribute))
 			.Select(AttributeText)
 			.OrderBy(attribute => attribute, StringComparer.Ordinal);
+
+	/// <summary>
+	///     An attribute is written when consumers can see its class, or when compilers or analyzers read it by its
+	///     name, so that a library can declare it internally, e.g. as a polyfill for an older target framework.
+	/// </summary>
+	private static bool IsWritten(INamedTypeSymbol attributeClass)
+	{
+		string name = attributeClass.ToDisplayString();
+		return !IgnoredAttributes.Contains(name) &&
+		       (IsVisibleType(attributeClass) || CompilerAttributes.Contains(name));
+	}
+
+	/// <summary>
+	///     The name of the <paramref name="type" /> like <see cref="Type.FullName" />, e.g. <c>Outer+Inner</c> for a
+	///     nested and <c>Tag`1</c> for a generic type.
+	/// </summary>
+	private static string MetadataFullName(INamedTypeSymbol type)
+	{
+		if (type.ContainingType is { } containingType)
+		{
+			return $"{MetadataFullName(containingType)}+{type.MetadataName}";
+		}
+
+		return type.ContainingNamespace.IsGlobalNamespace
+			? type.MetadataName
+			: $"{type.ContainingNamespace.ToDisplayString()}.{type.MetadataName}";
+	}
 
 	/// <remarks>
 	///     The attribute is written from its arguments, as its display is no documented format.

@@ -205,6 +205,11 @@ namespace aweXpect.Snapshots.PublicApi.Fixture
         public Pointers() { }
         public static void* Address(void* value) { }
     }
+    public static class Prioritized
+    {
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        public static void Pick(object value) { }
+    }
     public readonly struct Rating : System.IEquatable<aweXpect.Snapshots.PublicApi.Fixture.Rating>
     {
         public Rating(int Stars) { }
