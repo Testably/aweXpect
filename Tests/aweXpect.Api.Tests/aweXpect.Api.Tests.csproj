@@ -8,10 +8,8 @@
 		<!-- The Release build of aweXpect references this package, so its public API is read against the same version. -->
 		<PackageReference Include="aweXpect.Core"/>
 		<PackageReference Include="aweXpect.Snapshots.PublicApi"/>
-		<PackageReference Include="Microsoft.NET.Test.Sdk"/>
-		<PackageReference Include="NUnit"/>
-		<PackageReference Include="NUnit.Analyzers"/>
-		<PackageReference Include="NUnit3TestAdapter"/>
+		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport"/>
+		<PackageReference Include="TUnit.Engine"/>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -42,8 +42,8 @@ Correctness is a must. The other goals are strong defaults and win in this order
 
 - Run the tests of every project your change can affect, not just `aweXpect.Tests` (see
   [testing](Docs/agents/testing.md)). Changes to `[GuaranteesNotNull]` markings need `aweXpect.Analyzers.Tests`.
-- The unit tests are TUnit executables of the Microsoft.Testing.Platform: start them with `dotnet run`, not
-  `dotnet test`. `aweXpect.Api.Tests` (NUnit) runs with `dotnet test`.
+- The unit and API tests are TUnit executables of the Microsoft.Testing.Platform: start them with `dotnet run`, not
+  `dotnet test`. Only the MSTest, NUnit and xUnit v2 projects under `Tests/Frameworks` run with `dotnet test`.
 - Slow tests are `[Explicit]` and `[Category(TestCategories.Slow)]` and only run with
   `--treenode-filter "/*/*/*/*[Category=Slow]"`. After any change to `Docs/**`, run them in `aweXpect.Docs.Tests`.
 - Test conventions: test methods in alphabetical order within their class; no comments in tests, put the reasoning
