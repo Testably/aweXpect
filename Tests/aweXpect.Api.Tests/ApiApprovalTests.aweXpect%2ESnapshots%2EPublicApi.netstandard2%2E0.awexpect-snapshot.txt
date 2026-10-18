@@ -1,4 +1,5 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Snapshots.git")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("aweXpect.Snapshots.PublicApi.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010009142c3cea7f5f12e574d041360c02c8ec5fa6706844477f49199f0b5cfbef81bf62ea280f490411ec6723e7fa0f00e6f7e73575cf1ddfb36a19e71bd5357a9f12e3c854b55a622ff5c9125190debabbb5b3180c76f321b480741baea2e404970907e2ed71c03c378c4e995af722be0cca2ada9a8940d1e0b9a090e1933090d3")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName = ".NET Standard 2.0")]
 namespace aweXpect.Snapshots.PublicApi
 {

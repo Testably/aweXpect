@@ -12,7 +12,7 @@ using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;
 
 namespace aweXpect.Snapshots.PublicApi.Tests;
 
-public sealed class PublicApiDeclarationsTests
+public sealed partial class PublicApiDeclarationsTests
 {
 	private const string LibrarySource = """
 	                                     namespace Library;
@@ -116,6 +116,43 @@ public sealed class PublicApiDeclarationsTests
 	                                            public void Two(int a, int b) { }
 	                                        }
 	                                        """;
+
+	[Theory]
+	[InlineData("11.0.0-preview.7.26381.103", "11.0.0-preview.7.26381.103")]
+	[InlineData("11.0.0-preview.7.26381.103,11.0.0-rc.1.26420.101", "11.0.0-rc.1.26420.101")]
+	[InlineData("11.0.0-preview.2.26101.1,11.0.0-preview.10.26401.1", "11.0.0-preview.10.26401.1")]
+	[InlineData("11.0.0-rc.2.26501.1,11.0.0,11.0.0-preview.7.26381.103", "11.0.0")]
+	[InlineData("11.0.10,11.0.9", "11.0.10")]
+	public async Task FindReferencePack_ShouldReturnTheHighestPack(string installed, string expected)
+	{
+		string packs = CreatePacks("11.0", installed.Split(','));
+
+		string? result = PublicApiDeclarations.FindReferencePack(packs, "11.0");
+
+		await That(result).IsEqualTo(Path.Combine(packs, expected, "ref", "net11.0"))
+			.Because("a release ranks above its previews and pre-release labels compare their numbers numerically");
+	}
+
+	[Fact]
+	public async Task FindReferencePack_WhenNoPackOfTheVersionIsInstalled_ShouldReturnNull()
+	{
+		string packs = CreatePacks("10.0", "10.0.7", "10.0.0-rc.2.25502.107");
+
+		string? result = PublicApiDeclarations.FindReferencePack(packs, "11.0");
+
+		await That(result).IsNull();
+	}
+
+	[Fact]
+	public async Task FindReferencePack_WhenThePackHasNoReferenceAssemblies_ShouldSkipIt()
+	{
+		string packs = CreatePacks("11.0", "11.0.0-preview.7.26381.103");
+		Directory.CreateDirectory(Path.Combine(packs, "11.0.0-rc.1.26420.101"));
+
+		string? result = PublicApiDeclarations.FindReferencePack(packs, "11.0");
+
+		await That(result).IsEqualTo(Path.Combine(packs, "11.0.0-preview.7.26381.103", "ref", "net11.0"));
+	}
 
 	[Fact]
 	public async Task GenerateFrom_ShouldWriteTheParametersOnASingleLineByDefault()
@@ -260,8 +297,15 @@ public sealed class PublicApiDeclarationsTests
 	///     lines with the same deeper indentation, onto that line.
 	/// </summary>
 	private static string JoinParameterLines(string publicApi)
-		=> Regex.Replace(publicApi, @"([(\[])\n( +)((?:.*,\n\2)*)",
+		=> ParameterLinesRegex().Replace(publicApi,
 			match => match.Groups[1].Value + match.Groups[3].Value.Replace(",\n" + match.Groups[2].Value, ", "));
+
+#if NET8_0_OR_GREATER
+	[GeneratedRegex(@"([(\[])\n( +)((?:.*,\n\2)*)")]
+	private static partial Regex ParameterLinesRegex();
+#else
+	private static Regex ParameterLinesRegex() => new(@"([(\[])\n( +)((?:.*,\n\2)*)");
+#endif
 
 	[Fact]
 	public async Task GenerateFrom_ShouldWriteTheAttributesOfTheLibrary()
@@ -927,5 +971,17 @@ public sealed class PublicApiDeclarationsTests
 		string result = PublicApiDeclarations.GenerateFrom(new FileInfo(assembly.Location));
 
 		await That(result).IsEqualTo(PublicApiDeclarations.GenerateFrom(assembly));
+	}
+
+	private static string CreatePacks(string version, params string[] names)
+	{
+		string packs = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "aweXpect.Snapshots.PublicApi.Tests",
+			Guid.NewGuid().ToString("N"))).FullName;
+		foreach (string name in names)
+		{
+			Directory.CreateDirectory(Path.Combine(packs, name, "ref", $"net{version}"));
+		}
+
+		return packs;
 	}
 }

@@ -10,6 +10,13 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
+	<!--
+	    Signed, as the .NET Framework only loads strong-named references into the signed tests.
+	-->
+	<PropertyGroup>
+		<SignAssembly>True</SignAssembly>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Remove="xunit"/>
 		<PackageReference Remove="xunit.runner.visualstudio"/>

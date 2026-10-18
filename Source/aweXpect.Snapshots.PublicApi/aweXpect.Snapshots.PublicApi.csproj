@@ -15,4 +15,8 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Snapshots.PublicApi.Tests" Key="$(PublicKey)"/>
+	</ItemGroup>
+
 </Project>

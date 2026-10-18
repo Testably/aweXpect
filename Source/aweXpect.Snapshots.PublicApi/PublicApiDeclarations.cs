@@ -415,21 +415,75 @@ public static class PublicApiDeclarations
 			return null;
 		}
 
-		string version = targetFramework.Substring(prefix.Length);
-		string packs = Path.GetFullPath(Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(),
-			"..", "..", "..", "packs", "Microsoft.NETCore.App.Ref"));
+		return FindReferencePack(Path.GetFullPath(Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(),
+			"..", "..", "..", "packs", "Microsoft.NETCore.App.Ref")), targetFramework.Substring(prefix.Length));
+	}
+
+	/// <summary>
+	///     Returns the reference assemblies of the highest pack of the .NET <paramref name="version" /> in the
+	///     <paramref name="packs" /> directory.
+	/// </summary>
+	/// <remarks>
+	///     A preview pack, e.g. <c>11.0.0-preview.7.26381.103</c>, is used when no release of its version is installed, so
+	///     that an assembly that targets a preview of .NET is resolved.
+	/// </remarks>
+	internal static string? FindReferencePack(string packs, string version)
+	{
 		if (!Directory.Exists(packs))
 		{
 			return null;
 		}
 
 		return Directory.EnumerateDirectories(packs, $"{version}.*")
-			.Select(directory => (Directory: directory,
-				Version: Version.TryParse(Path.GetFileName(directory), out Version? packVersion) ? packVersion : null))
-			.Where(pack => pack.Version is not null)
-			.OrderByDescending(pack => pack.Version)
+			.Select(directory => (Directory: directory, Version: ParsePackVersion(Path.GetFileName(directory))))
+			.Where(pack => pack.Version.Release is not null)
+			.OrderByDescending(pack => pack.Version,
+				Comparer<(Version? Release, string? PreRelease)>.Create(ComparePackVersions))
 			.Select(pack => Path.Combine(pack.Directory, "ref", $"net{version}"))
 			.FirstOrDefault(Directory.Exists);
+	}
+
+	private static (Version? Release, string? PreRelease) ParsePackVersion(string name)
+	{
+		int separator = name.IndexOf('-');
+		string release = separator < 0 ? name : name.Substring(0, separator);
+		return (Version.TryParse(release, out Version? version) ? version : null,
+			separator < 0 ? null : name.Substring(separator + 1));
+	}
+
+	/// <remarks>
+	///     The pre-release labels are compared like in semantic versioning, so that a release ranks above its previews and
+	///     e.g. <c>rc.1</c> above <c>preview.7</c>.
+	/// </remarks>
+	private static int ComparePackVersions((Version? Release, string? PreRelease) x,
+		(Version? Release, string? PreRelease) y)
+	{
+		int result = Comparer<Version?>.Default.Compare(x.Release, y.Release);
+		if (result != 0 || x.PreRelease == y.PreRelease)
+		{
+			return result;
+		}
+
+		if (x.PreRelease is null || y.PreRelease is null)
+		{
+			return x.PreRelease is null ? 1 : -1;
+		}
+
+		string[] xParts = x.PreRelease.Split('.');
+		string[] yParts = y.PreRelease.Split('.');
+		for (int i = 0; i < Math.Min(xParts.Length, yParts.Length); i++)
+		{
+			result = int.TryParse(xParts[i], NumberStyles.None, CultureInfo.InvariantCulture, out int xNumber) &&
+			         int.TryParse(yParts[i], NumberStyles.None, CultureInfo.InvariantCulture, out int yNumber)
+				? xNumber.CompareTo(yNumber)
+				: string.CompareOrdinal(xParts[i], yParts[i]);
+			if (result != 0)
+			{
+				return result;
+			}
+		}
+
+		return xParts.Length.CompareTo(yParts.Length);
 	}
 
 	/// <remarks>
