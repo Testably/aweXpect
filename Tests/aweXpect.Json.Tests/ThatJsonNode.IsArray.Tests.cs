@@ -11,7 +11,7 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnTheSubject()
 			{
 				JsonArray subject = new(1);
@@ -21,7 +21,7 @@ public sealed partial class ThatJsonNode
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenElementsDiffer_ShouldFail()
 			{
 				JsonArray subject = new(1, "a", new JsonArray(3));
@@ -31,7 +31,7 @@ public sealed partial class ThatJsonNode
 						.At(1).Matching("b").And
 						.At(2).AnArray(b => b.WithElements(4)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[1] matches "b" and $[2] is an array and $[2][0] matches 4,
@@ -44,7 +44,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
 			{
 				JsonNode? subject = FromString("[]");
@@ -57,7 +57,7 @@ public sealed partial class ThatJsonNode
 					.WithMessage("The 'expectation' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsAnArray_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("[1, 2]");
@@ -68,10 +68,10 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
 			public async Task WhenNodeIsNoArray_ShouldFail(string json, string kindString)
 			{
 				JsonNode? subject = FromString(json);
@@ -79,7 +79,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsArray();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an array,
@@ -87,7 +87,7 @@ public sealed partial class ThatJsonNode
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonArray? subject = null;
@@ -95,7 +95,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsArray();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array,
@@ -104,7 +104,7 @@ public sealed partial class ThatJsonNode
 					.Because("a null node is the JSON null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIgnoringMember_ShouldListItInTheContext()
 			{
 				JsonNode? subject = FromString("""[{"id": 1, "name": "a"}]""");
@@ -118,7 +118,7 @@ public sealed partial class ThatJsonNode
 							}),
 						o => o.IgnoringMember("id"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] matches new
@@ -134,7 +134,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIgnoringArrayOrder_ShouldPairNestedArraysRegardlessOfOrder()
 			{
 				JsonNode? subject = FromString("""[{"tags": ["b", "a"]}]""");
@@ -153,7 +153,7 @@ public sealed partial class ThatJsonNode
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsAnArray_ShouldFail()
 			{
 				JsonArray subject = new(1, 2);
@@ -161,7 +161,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsArray(a => a.With(2).Elements()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an array or not with 2 elements,
@@ -178,7 +178,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				JsonNode? subject = null;
@@ -193,7 +193,7 @@ public sealed partial class ThatJsonNode
 
 		public sealed class WhoseElementsTests
 		{
-			[Fact]
+			[Test]
 			public async Task All_WhenAllElementsComply_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("""
@@ -210,7 +210,7 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task All_WhenSomeElementsDoNotComply_ShouldFail()
 			{
 				JsonArray subject = new(
@@ -227,7 +227,7 @@ public sealed partial class ThatJsonNode
 					=> await That(subject).IsArray().WhoseElements
 						.All().ComplyWith(t => t.Matches(new { artist = "The Beatles", }));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array whose elements match new { artist = "The Beatles", } for all items,
@@ -249,7 +249,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeWasModifiedBeforeTheEvaluation_ShouldVerifyTheModifiedElements()
 			{
 				JsonArray subject = new(1, 2);
@@ -264,7 +264,7 @@ public sealed partial class ThatJsonNode
 					.Because("the expectation is only evaluated when it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonNode? subject = null;
@@ -272,7 +272,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsArray().WhoseElements.IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array whose elements are empty,

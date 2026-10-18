@@ -4,7 +4,7 @@ namespace aweXpect.Json.Tests;
 
 public class JsonOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task DocumentOptions_ShouldDefaultToAllowTrailingCommas()
 	{
 		JsonOptions sut = new();
@@ -12,7 +12,7 @@ public class JsonOptionsTests
 		await That(sut.DocumentOptions.AllowTrailingCommas).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithJsonOptions_WhenCallbackIsNull_ShouldThrowArgumentNullException()
 	{
 		JsonOptions sut = new();
@@ -25,7 +25,7 @@ public class JsonOptionsTests
 			.WithMessage("The 'jsonDocumentOptions' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithJsonOptions_ShouldSetDocumentOptions()
 	{
 		int maxDepth = new Random().Next(1, 10);
@@ -39,7 +39,7 @@ public class JsonOptionsTests
 		await That(result.DocumentOptions.MaxDepth).IsEqualTo(maxDepth);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithJsonOptions_ShouldSupportProvidingFixedOptions()
 	{
 		int maxDepth = new Random().Next(1, 10);
@@ -54,7 +54,7 @@ public class JsonOptionsTests
 		await That(result.DocumentOptions.MaxDepth).IsEqualTo(maxDepth);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MembersToIgnore_ShouldDefaultToEmpty()
 	{
 		JsonOptions sut = new();
@@ -62,7 +62,7 @@ public class JsonOptionsTests
 		await That(sut.MembersToIgnore).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
 	{
 		JsonOptions sut = new();
@@ -75,7 +75,7 @@ public class JsonOptionsTests
 			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
 	{
 		JsonOptions sut = new();
@@ -88,7 +88,7 @@ public class JsonOptionsTests
 			.WithMessage("The 'memberToIgnore' cannot be empty.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Ignoring_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		JsonOptions sut = new();
@@ -101,7 +101,7 @@ public class JsonOptionsTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringMember_ShouldAccumulateTheMembersWithoutChangingTheOriginalOptions()
 	{
 		JsonOptions sut = new();
@@ -114,7 +114,7 @@ public class JsonOptionsTests
 		await That(sut.MembersToIgnore).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task NumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		JsonOptions sut = new();
@@ -127,7 +127,7 @@ public class JsonOptionsTests
 			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task NumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		JsonOptions sut = new();
@@ -140,7 +140,7 @@ public class JsonOptionsTests
 			.WithMessage("The tolerance must not be NaN.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task NumbersWithin_ShouldNotChangeTheOriginalOptions()
 	{
 		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
@@ -151,11 +151,11 @@ public class JsonOptionsTests
 		async Task Act()
 			=> await That(subject).MatchesExactly(1, _ => sut);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.Because("NumbersWithin returns new options instead of changing the original ones");
 	}
 
-	[Fact]
+	[Test]
 	public async Task NumbersWithin_WhenCalledAgain_ShouldReplaceTheTolerance()
 	{
 		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
@@ -163,7 +163,7 @@ public class JsonOptionsTests
 		async Task Act()
 			=> await That(subject).MatchesExactly(1, o => o.NumbersWithin(1).IgnoringArrayOrder().NumbersWithin(0.1));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             matches 1 exactly,
@@ -175,7 +175,7 @@ public class JsonOptionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Percent_ShouldNotAffectCopiesMadeBefore()
 	{
 		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
@@ -192,11 +192,11 @@ public class JsonOptionsTests
 
 		await That(ActWithCopyBeforePercent).DoesNotThrow()
 			.Because("the copy keeps the absolute tolerance, as Percent() replaces the tolerance instead of changing it");
-		await That(ActWithPercent).Throws<XunitException>()
+		await That(ActWithPercent).Throws<FailException>()
 			.Because("5% of 0.1 is less than the difference of 0.2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Percent_ShouldNotAffectOtherOptionsFromTheSameOrigin()
 	{
 		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
@@ -212,7 +212,7 @@ public class JsonOptionsTests
 			.Because("each call of NumbersWithin creates its own tolerance");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
 	{
 		JsonOptions sut = new();

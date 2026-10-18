@@ -6,7 +6,7 @@ public sealed class JsonOptionsContextTests
 {
 	public sealed class RenderingTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenIgnoringAdditionalProperties_ShouldListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": 1, \"bar\": 2}");
@@ -17,7 +17,7 @@ public sealed class JsonOptionsContextTests
 					foo = 2,
 				}, o => o.IgnoringAdditionalProperties());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -31,7 +31,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIgnoringAdditionalArrayElements_ShouldListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3, 4]");
@@ -39,7 +39,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringAdditionalArrayElements());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,],
@@ -50,7 +50,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIgnoringArrayOrder_ShouldListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -58,7 +58,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).MatchesExactly([2, 1,], o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [2, 1,] exactly,
@@ -69,7 +69,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTreatingNullAsAbsent_ShouldListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": 1, \"bar\": null}");
@@ -80,7 +80,7 @@ public sealed class JsonOptionsContextTests
 					foo = 2,
 				}, o => o.TreatingNullAsAbsent());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -94,7 +94,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenComparingNumbersWithinAnAbsoluteTolerance_ShouldListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"tax\": 0.06}");
@@ -105,7 +105,7 @@ public sealed class JsonOptionsContextTests
 					tax = 0.057m,
 				}, o => o.NumbersWithin(0.001));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -119,7 +119,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenComparingNumbersWithinARelativeTolerance_ShouldListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"price\": 110}");
@@ -130,7 +130,7 @@ public sealed class JsonOptionsContextTests
 					price = 100,
 				}, o => o.NumbersWithin(5).Percent());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -144,7 +144,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAllOptionsAreActive_ShouldListThemInAFixedOrder()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -157,7 +157,7 @@ public sealed class JsonOptionsContextTests
 					.IgnoringAdditionalArrayElements()
 					.IgnoringAdditionalProperties());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [2, 1,],
@@ -173,7 +173,7 @@ public sealed class JsonOptionsContextTests
 				.Because("the options are listed in the same order, independent of the order in which they were set");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithDefaultOptions_ShouldNotAddTheContext()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -181,7 +181,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).MatchesExactly([1, 2,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,] exactly,
@@ -190,7 +190,7 @@ public sealed class JsonOptionsContextTests
 				.Because("only active options are listed, so the context is omitted when no option is active");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOptionIsDisabled_ShouldNotListIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -198,7 +198,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).Matches([1, 2,], o => o.IgnoringAdditionalProperties(false));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,] exactly,
@@ -207,7 +207,7 @@ public sealed class JsonOptionsContextTests
 				.Because("Matches no longer ignores additional properties, so no option is active");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithDocumentOptions_ShouldNotListThem()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -219,7 +219,7 @@ public sealed class JsonOptionsContextTests
 						MaxDepth = 10,
 					}));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,] exactly,
@@ -228,7 +228,7 @@ public sealed class JsonOptionsContextTests
 				.Because("the document options affect the parsing, not the comparison");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIgnoringMembers_ShouldListThemLast()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": 1, \"id\": 2}");
@@ -242,7 +242,7 @@ public sealed class JsonOptionsContextTests
 					.Ignoring(path => path.EndsWith(".etag"))
 					.TreatingNullAsAbsent());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -260,7 +260,7 @@ public sealed class JsonOptionsContextTests
 
 	public sealed class UnmatchedMembersToIgnoreTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenNameMatchedNoMember_ShouldSuggestTheClosestPath()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"createdAt\": \"today\", \"name\": \"a\"}");
@@ -272,7 +272,7 @@ public sealed class JsonOptionsContextTests
 					name = "a",
 				}, o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -288,7 +288,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNameWithSeveralSegmentsMatchedNoMember_ShouldSuggestAsManySegments()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"items\": [{\"etag\": \"a\"}]}");
@@ -305,7 +305,7 @@ public sealed class JsonOptionsContextTests
 					},
 				}, o => o.IgnoringMember("items[0].etga"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -326,7 +326,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNameMatchedNoCloseMember_ShouldOnlyNameIt()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"name\": \"a\"}");
@@ -337,7 +337,7 @@ public sealed class JsonOptionsContextTests
 					name = "b",
 				}, o => o.IgnoringMember("timestamp"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -352,7 +352,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSeveralNamesMatchedNoMember_ShouldNameEachInTheOrderOfTheMembersToIgnore()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"id\": 1, \"name\": \"a\", \"etag\": \"x\"}");
@@ -369,7 +369,7 @@ public sealed class JsonOptionsContextTests
 					.Ignoring(_ => false)
 					.IgnoringMember("idd"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -390,7 +390,7 @@ public sealed class JsonOptionsContextTests
 				.Because("a name that matched a member and a predicate are not named");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoMemberWasCompared_ShouldNotNameTheMembersToIgnore()
 		{
 			JsonElement subject = ThatJsonElement.FromString("1");
@@ -398,7 +398,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).MatchesExactly(2, o => o.IgnoringMember("id"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches 2 exactly,
@@ -410,7 +410,7 @@ public sealed class JsonOptionsContextTests
 				.Because("like in aweXpect, the members to ignore are only tracked when a member is compared");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSucceeding_ShouldNotThrow()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"createdAt\": \"today\"}");
@@ -424,7 +424,7 @@ public sealed class JsonOptionsContextTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Matches_ForNullable_ShouldNameTheUnmatchedName()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("{\"createdAt\": 1}");
@@ -435,7 +435,7 @@ public sealed class JsonOptionsContextTests
 					createdAt = 2,
 				}, o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -451,7 +451,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task MatchesExactly_ForNullable_ShouldNameTheUnmatchedName()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("{\"createdAt\": 1}");
@@ -462,7 +462,7 @@ public sealed class JsonOptionsContextTests
 					createdAt = 2,
 				}, o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches new
@@ -477,7 +477,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsValidJsonMatching_ShouldNameTheUnmatchedName()
 		{
 			string subject = "{\"createdAt\": 1}";
@@ -488,7 +488,7 @@ public sealed class JsonOptionsContextTests
 					createdAt = 2,
 				}, o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is valid JSON which matches new
@@ -504,7 +504,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_ShouldNameTheUnmatchedName()
 		{
 			string subject = "{\"createdAt\": 1}";
@@ -512,7 +512,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsEqualTo("{\"createdAt\": 2}").AsJson(o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is JSON equivalent to {"createdAt": 2},
@@ -530,7 +530,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_ForCollections_ShouldKeepTheSuggestionOfAnEarlierItem()
 		{
 			string[] subject = ["{\"a\": 1, \"createdAt\": 1}", "{\"a\": 2}",];
@@ -538,7 +538,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).All().AreEqualTo("{\"a\": 3}").AsJson(o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is JSON equivalent to {"a": 3} for all items,
@@ -563,7 +563,7 @@ public sealed class JsonOptionsContextTests
 				.Because("the items are compared with the same match type, and a later item without a close member must not hide the suggestion for an earlier one");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_ForCollections_WhenNameMatchedInAFailedItem_ShouldNotNameIt()
 		{
 			string[] subject = ["{\"a\": 1, \"id\": 1}", "{\"a\": 3}",];
@@ -571,7 +571,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).All().AreEqualTo("{\"a\": 3}").AsJson(o => o.IgnoringMember("id"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is JSON equivalent to {"a": 3} for all items,
@@ -594,7 +594,7 @@ public sealed class JsonOptionsContextTests
 				.Because("the name matched a member in the item that failed");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsObject_ShouldNameTheUnmatchedNameOfAComparison()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": {\"createdAt\": 1}}");
@@ -605,7 +605,7 @@ public sealed class JsonOptionsContextTests
 					createdAt = 2,
 				}), o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an object and $.foo matches new
@@ -621,7 +621,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsArray_ForNullable_ShouldNameTheUnmatchedNameOfAComparison()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("[{\"createdAt\": 1}]");
@@ -632,7 +632,7 @@ public sealed class JsonOptionsContextTests
 					createdAt = 2,
 				}), o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an array and $[0] matches new
@@ -648,7 +648,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsObject_WhenNoComparisonFailed_ShouldNotNameTheMembersToIgnore()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": {\"createdAt\": 1}}");
@@ -662,7 +662,7 @@ public sealed class JsonOptionsContextTests
 						.With("bar").Matching(1),
 					o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an object and $.foo matches new
@@ -681,7 +681,7 @@ public sealed class JsonOptionsContextTests
 
 	public sealed class UnmatchedMembersToIgnoreNegatedTests
 	{
-		[Fact]
+		[Test]
 		public async Task Matches_ShouldNotNameTheUnmatchedName()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"createdAt\": 1}");
@@ -692,7 +692,7 @@ public sealed class JsonOptionsContextTests
 					createdAt = 1,
 				}, o => o.IgnoringMember("craetedAt")));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not match new
@@ -713,7 +713,7 @@ public sealed class JsonOptionsContextTests
 				.Because("the comparison succeeded, so no member to ignore explains a difference");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_ShouldNotNameTheUnmatchedName()
 		{
 			string subject = "{\"createdAt\": 1}";
@@ -721,7 +721,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsNotEqualTo("{\"createdAt\": 1}").AsJson(o => o.IgnoringMember("craetedAt"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not JSON equivalent to {"createdAt": 1},
@@ -735,7 +735,7 @@ public sealed class JsonOptionsContextTests
 
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task AsJson_ShouldAddTheContextAfterActualAndExpected()
 		{
 			string subject = "[1, 3]";
@@ -743,7 +743,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsEqualTo("[2, 1]").AsJson(o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is JSON equivalent to [2, 1],
@@ -760,7 +760,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_ForCollections_ShouldAddTheContext()
 		{
 			string[] subject = ["[1, 2]", "[1, 3]",];
@@ -768,7 +768,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).All().AreEqualTo("[2, 1]").AsJson(o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is JSON equivalent to [2, 1] for all items,
@@ -790,7 +790,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_InWhose_ShouldLabelTheContextWithTheMember()
 		{
 			JsonContainer subject = new("[1, 3]");
@@ -799,7 +799,7 @@ public sealed class JsonOptionsContextTests
 				=> await That(subject).Whose(x => x.Json,
 					j => j.IsEqualTo("[2, 1]").AsJson(o => o.IgnoringArrayOrder()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Json is JSON equivalent to [2, 1],
@@ -816,7 +816,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsValidJsonMatching_ShouldAddTheContext()
 		{
 			string subject = "[1, 3]";
@@ -824,7 +824,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsValidJsonMatching([2, 1,], o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is valid JSON which matches [2, 1,],
@@ -836,7 +836,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsValidJsonMatchingExactly_ShouldAddTheContext()
 		{
 			string subject = "[1, 3]";
@@ -844,7 +844,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsValidJsonMatchingExactly([2, 1,], o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is valid JSON which matches [2, 1,] exactly,
@@ -855,7 +855,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsValidJsonWhichMatches_ShouldAddTheContextOnce()
 		{
 			string subject = "[1, 3]";
@@ -863,7 +863,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsValidJson().Which(j => j.Matches([1, 2,]));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is valid JSON which matches [1, 2,],
@@ -874,7 +874,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Matches_ShouldAddTheContext()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -882,7 +882,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).Matches([1, 2,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,],
@@ -894,7 +894,7 @@ public sealed class JsonOptionsContextTests
 				.Because("Matches ignores additional properties itself");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Matches_ForNullable_ShouldAddTheContext()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("[1, 3]");
@@ -902,7 +902,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).Matches([1, 2,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,],
@@ -913,7 +913,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task MatchesExactly_ForNullable_ShouldAddTheContext()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("[1, 3]");
@@ -921,7 +921,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).MatchesExactly([2, 1,], o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [2, 1,] exactly,
@@ -932,7 +932,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsObject_ShouldAddTheContextOnceForNestedObjects()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": {\"bar\": [1, 3]}}");
@@ -942,7 +942,7 @@ public sealed class JsonOptionsContextTests
 						.With("foo").AnObject(foo => foo.With("bar").Matching(new[] { 2, 1, })),
 					o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an object and $.foo is an object and $.foo.bar matches new[] { 2, 1, },
@@ -954,7 +954,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsObject_ForNullable_ShouldAddTheContext()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("{\"foo\": 1}");
@@ -962,7 +962,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsObject(o => o.With("foo").Matching(2), o => o.TreatingNullAsAbsent());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an object and $.foo matches 2,
@@ -974,7 +974,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsArray_ShouldAddTheContext()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -982,7 +982,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsArray(a => a.At(1).Matching(2));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an array and $[1] matches 2,
@@ -993,7 +993,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsArray_ForNullable_ShouldAddTheContext()
 		{
 			JsonElement? subject = ThatJsonElement.FromString("[1, 3]");
@@ -1001,7 +1001,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsArray(a => a.At(1).Matching(2), o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is an array and $[1] matches 2,
@@ -1013,7 +1013,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBothFailingExpectationsHaveTheSameOptions_ShouldAddTheContextOnce()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -1021,7 +1021,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).Matches([1, 2,]).And.Matches([4,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,] and matches [4,],
@@ -1034,7 +1034,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBothFailingExpectationsHaveTheSameTolerance_ShouldAddTheContextOnce()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -1043,7 +1043,7 @@ public sealed class JsonOptionsContextTests
 				=> await That(subject).MatchesExactly([1, 2,], o => o.NumbersWithin(0.5))
 					.And.MatchesExactly([1, 4,], o => o.NumbersWithin(0.5));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,] exactly and matches [1, 4,] exactly,
@@ -1054,7 +1054,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenFailingExpectationsHaveDifferentOptions_ShouldNumberTheContexts()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -1062,7 +1062,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).Matches([1, 2,]).Or.MatchesExactly([2, 1,], o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 2,] or matches [2, 1,] exactly,
@@ -1076,7 +1076,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyAnotherExpectationFails_ShouldNotAddTheContextOfTheMetExpectation()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -1084,7 +1084,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).Matches([1, 3,]).And.MatchesExactly([1, 2,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             matches [1, 3,] and matches [1, 2,] exactly,
@@ -1093,7 +1093,7 @@ public sealed class JsonOptionsContextTests
 				.Because("the options of Matches did not contribute to the failure");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSucceeding_ShouldNotThrow()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -1109,7 +1109,7 @@ public sealed class JsonOptionsContextTests
 
 	public sealed class NegatedTests
 	{
-		[Fact]
+		[Test]
 		public async Task Matches_ShouldAddTheContextAfterActual()
 		{
 			JsonElement subject = ThatJsonElement.FromString("[1, 3]");
@@ -1117,7 +1117,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.Matches([3, 1,], o => o.IgnoringArrayOrder()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not match [3, 1,],
@@ -1135,7 +1135,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsValidJsonMatching_ShouldAddTheContext()
 		{
 			string subject = "[1, 3]";
@@ -1143,7 +1143,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.IsValidJsonMatching([1, 3,]));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not valid JSON which matches [1, 3,],
@@ -1154,7 +1154,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsObject_ShouldAddTheContext()
 		{
 			JsonElement subject = ThatJsonElement.FromString("{\"foo\": 1, \"bar\": null}");
@@ -1163,7 +1163,7 @@ public sealed class JsonOptionsContextTests
 				=> await That(subject).DoesNotComplyWith(it
 					=> it.IsObject(o => o.Without("bar"), o => o.TreatingNullAsAbsent()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not an object or $.bar exists,
@@ -1181,7 +1181,7 @@ public sealed class JsonOptionsContextTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsJson_ShouldAddTheContext()
 		{
 			string subject = "[1, 3]";
@@ -1189,7 +1189,7 @@ public sealed class JsonOptionsContextTests
 			async Task Act()
 				=> await That(subject).IsNotEqualTo("[3, 1]").AsJson(o => o.IgnoringArrayOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not JSON equivalent to [3, 1],

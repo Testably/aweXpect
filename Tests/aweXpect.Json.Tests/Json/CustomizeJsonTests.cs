@@ -3,9 +3,10 @@ using aweXpect.Customization;
 
 namespace aweXpect.Json.Tests;
 
+[NotInParallel(nameof(CustomizeJsonTests))]
 public sealed class CustomizeJsonTests
 {
-	[Fact]
+	[Test]
 	public async Task SetDefaultJsonDocumentOptions_ShouldApplyOptionsWithinScope()
 	{
 		string jsonWithTrailingCommas = "[1, 2,]";
@@ -37,7 +38,7 @@ public sealed class CustomizeJsonTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GlobalValue_ShouldBeVisibleWhenAnotherValueIsSetInTheAsyncFlow()
 	{
 		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions()))
@@ -54,7 +55,7 @@ public sealed class CustomizeJsonTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task OutOfOrderDisposal_ShouldRestoreEachValueIndependently()
 	{
 		JsonSerializerOptions serializerOptions = new();
@@ -79,7 +80,7 @@ public sealed class CustomizeJsonTests
 			.Because("disposing the document options must not restore the already disposed serializer options");
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetDefaultJsonSerializerOptions_WithNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -89,7 +90,7 @@ public sealed class CustomizeJsonTests
 			.WithMessage("The 'value' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldChangeIndividualProperties()
 	{
 		await That(Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get().AllowTrailingCommas)

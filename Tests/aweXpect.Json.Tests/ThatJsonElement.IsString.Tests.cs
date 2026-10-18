@@ -8,9 +8,9 @@ public sealed partial class ThatJsonElement
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("\"\"")]
-			[InlineData("\"foo\"")]
+			[Test]
+			[Arguments("\"\"")]
+			[Arguments("\"foo\"")]
 			public async Task WhenJsonIsAString_ShouldSucceed(string json)
 			{
 				JsonElement subject = FromString(json);
@@ -21,13 +21,13 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("[]", "an array")]
-			[InlineData("2", "a number")]
-			[InlineData("true", "true")]
-			[InlineData("false", "false")]
-			[InlineData("null", "null")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("[]", "an array")]
+			[Arguments("2", "a number")]
+			[Arguments("true", "true")]
+			[Arguments("false", "false")]
+			[Arguments("null", "null")]
 			public async Task WhenJsonIsNoString_ShouldFail(string json, string kindString)
 			{
 				JsonElement subject = FromString(json);
@@ -35,7 +35,7 @@ public sealed partial class ThatJsonElement
 				async Task Act()
 					=> await That(subject).IsString();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is a string,
@@ -43,7 +43,7 @@ public sealed partial class ThatJsonElement
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsArePlural_ShouldUsePluralForm()
 			{
 				JsonElement[] items = [FromString("\"foo\""), FromString("2"),];
@@ -52,7 +52,7 @@ public sealed partial class ThatJsonElement
 					=> await That(new { Items = items, })
 						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsString()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
 					             whose Items are strings for all items,
@@ -65,7 +65,7 @@ public sealed partial class ThatJsonElement
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenJsonIsAString_ShouldFail()
 			{
 				JsonElement subject = FromString("\"foo\"");
@@ -73,7 +73,7 @@ public sealed partial class ThatJsonElement
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsString());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a string,
@@ -81,12 +81,12 @@ public sealed partial class ThatJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}")]
-			[InlineData("[]")]
-			[InlineData("2")]
-			[InlineData("true")]
-			[InlineData("null")]
+			[Test]
+			[Arguments("{}")]
+			[Arguments("[]")]
+			[Arguments("2")]
+			[Arguments("true")]
+			[Arguments("null")]
 			public async Task WhenJsonIsNoString_ShouldSucceed(string json)
 			{
 				JsonElement subject = FromString(json);

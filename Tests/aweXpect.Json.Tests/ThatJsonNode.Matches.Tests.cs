@@ -10,7 +10,7 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnTheSubject()
 			{
 				JsonObject subject = new()
@@ -26,7 +26,7 @@ public sealed partial class ThatJsonNode
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableMatches_ShouldSucceed()
 			{
 				JsonArray subject = new(1, 2);
@@ -37,7 +37,7 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeWasModifiedBeforeTheEvaluation_ShouldVerifyTheModifiedNode()
 			{
 				JsonObject subject = new()
@@ -58,7 +58,7 @@ public sealed partial class ThatJsonNode
 					.Because("the expectation is only evaluated when it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectDiffers_ShouldFail()
 			{
 				JsonNode? subject = FromString("""{"foo": 1, "bar": [1, 2]}""");
@@ -70,7 +70,7 @@ public sealed partial class ThatJsonNode
 						bar = new[] { 1, 3, },
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches new
@@ -87,7 +87,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectHasAdditionalProperties_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("""{"foo": 1, "bar": 2}""");
@@ -101,7 +101,7 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsJsonArray_ShouldFailWithDifference()
 			{
 				JsonArray subject = new(1, 2);
@@ -109,7 +109,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).Matches([1, 3,]);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches [1, 3,],
@@ -120,7 +120,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsJsonValue_ShouldCompareTheValue()
 			{
 				JsonValue subject = JsonValue.Create("foo");
@@ -128,7 +128,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).Matches("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches "bar",
@@ -139,7 +139,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldMatchNull()
 			{
 				JsonNode? subject = null;
@@ -151,7 +151,7 @@ public sealed partial class ThatJsonNode
 					.Because("a null node is the JSON null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldNotMatchAnObject()
 			{
 				JsonObject? subject = null;
@@ -162,7 +162,7 @@ public sealed partial class ThatJsonNode
 						foo = 1,
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches new
@@ -176,7 +176,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIgnoringArrayOrder_ShouldSucceedForDifferentOrder()
 			{
 				JsonNode? subject = FromString("[3, 1, 2]");
@@ -187,7 +187,7 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIgnoringMember_ShouldListItInTheContext()
 			{
 				JsonNode? subject = FromString("""{"id": 1, "name": "a"}""");
@@ -199,7 +199,7 @@ public sealed partial class ThatJsonNode
 						name = "b",
 					}, o => o.IgnoringMember("id").IgnoringMember("etag"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches new
@@ -216,7 +216,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTreatingNullAsAbsent_ShouldSucceedForAbsentProperty()
 			{
 				JsonNode? subject = FromString("""{"foo": 1}""");
@@ -234,7 +234,7 @@ public sealed partial class ThatJsonNode
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeDiffers_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("""{"foo": 1}""");
@@ -248,7 +248,7 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeMatches_ShouldFailWithTheActualJson()
 			{
 				JsonObject subject = new()
@@ -263,7 +263,7 @@ public sealed partial class ThatJsonNode
 						foo = 1,
 					}));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match new
@@ -286,7 +286,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFailForNull()
 			{
 				JsonNode? subject = null;
@@ -294,7 +294,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Matches(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match null,

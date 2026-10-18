@@ -4,7 +4,7 @@ public class StringExtensionsTests
 {
 	public sealed class TrimCommonWhiteSpace
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAnyLaterLineHasNoWhiteSpace_ShouldReturnUnchangedInput()
 		{
 			string input = """
@@ -17,7 +17,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that "1"
 				               is valid JSON which matches {{input}},
@@ -28,7 +28,7 @@ public class StringExtensionsTests
 				               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenContainingBlankLines_ShouldIgnoreThemForTheCommonWhiteSpace()
 		{
 			string input = """
@@ -41,7 +41,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that "1"
 				             is valid JSON which matches foo
@@ -55,7 +55,7 @@ public class StringExtensionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenEmpty_ShouldReturnEmptyString()
 		{
 			string input = string.Empty;
@@ -63,7 +63,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that "1"
 				             is valid JSON which matches ,
@@ -74,7 +74,7 @@ public class StringExtensionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLinesHaveDifferentWhiteSpace_ShouldKeepAllWhiteSpace()
 		{
 			string input = """
@@ -86,7 +86,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that "1"
 				             is valid JSON which matches foo
@@ -99,7 +99,7 @@ public class StringExtensionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLinesHaveSomeCommonWhiteSpace_ShouldTrim()
 		{
 			string input = """
@@ -112,7 +112,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that "1"
 				             is valid JSON which matches foo
@@ -126,7 +126,7 @@ public class StringExtensionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyHasOneLine_ShouldReturnLine()
 		{
 			string input = "foo";
@@ -134,7 +134,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that "1"
 				               is valid JSON which matches {{input}},
@@ -145,7 +145,7 @@ public class StringExtensionsTests
 				               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoLines_ShouldTrimSecondLine()
 		{
 			string input = """
@@ -156,7 +156,7 @@ public class StringExtensionsTests
 			async Task Act()
 				=> await That("1").IsValidJsonMatching(2, null, input);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that "1"
 				             is valid JSON which matches foo

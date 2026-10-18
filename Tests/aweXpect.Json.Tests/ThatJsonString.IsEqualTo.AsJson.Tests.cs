@@ -11,7 +11,7 @@ public sealed partial class ThatJsonString
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ForCollections_ShouldSupportAsJson()
 				{
 					string[] subject = ["{ }", "{\"foo\":1}", "[]",];
@@ -20,7 +20,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage(""""
 						             Expected that subject
 						             is JSON equivalent to {} for all items,
@@ -41,9 +41,9 @@ public sealed partial class ThatJsonString
 						             """");
 				}
 
-				[Theory]
-				[InlineData(nameof(ThatString.Contains))]
-				[InlineData(nameof(ThatString.DoesNotContain))]
+				[Test]
+				[Arguments(nameof(ThatString.Contains))]
+				[Arguments(nameof(ThatString.DoesNotContain))]
 				public async Task ForStringContains_ShouldNotBeAvailable(string methodName)
 				{
 					Type result = typeof(ThatString)
@@ -57,7 +57,7 @@ public sealed partial class ThatJsonString
 						.Because("comparing substrings of a string as JSON is not meaningful, so IsEqualTo(…).AsJson() or IsValidJsonMatching should be used instead");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionContainsIncorrectJson_ShouldFail()
 				{
 					string[] subject = ["{}", "foo",];
@@ -65,7 +65,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {} for all items,
@@ -74,7 +74,7 @@ public sealed partial class ThatJsonString
 						.Because("an item that is no JSON cannot be compared, so the value names the item");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionContainsIncorrectJsonWithContains_ShouldFail()
 				{
 					string[] subject = ["foo",];
@@ -82,7 +82,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).Contains("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             contains an item JSON equivalent to {} at least once,
@@ -90,7 +90,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionIsEmptyAndExpectedIsIncorrectJson_ShouldThrowArgumentException()
 				{
 					string[] subject = [];
@@ -103,7 +103,7 @@ public sealed partial class ThatJsonString
 						.Because("an invalid expected JSON is rejected also when no item is compared with it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionIsEmptyAndExpectedIsIncorrectJsonWithContains_ShouldThrowArgumentException()
 				{
 					string[] subject = [];
@@ -116,7 +116,7 @@ public sealed partial class ThatJsonString
 						.Because("an invalid expected JSON is rejected also when no item is compared with it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionIsEmptyAndExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					string[] subject = [];
@@ -129,7 +129,7 @@ public sealed partial class ThatJsonString
 						.Because("a null expected value is rejected also when no item is compared with it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContainsMoreThan10Differences_ShouldLimitListOfDifferences()
 				{
 					string subject = """
@@ -153,7 +153,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {},
@@ -191,7 +191,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task
 					WhenContainsMoreThanMaximumNumberOfCollectionItemsDifferences_ShouldLimitListOfDifferences()
 				{
@@ -217,7 +217,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {},
@@ -248,12 +248,12 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Theory]
-				[InlineData("foo",
+				[Test]
+				[Arguments("foo",
 					"'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.")]
-				[InlineData("{\"foo\":{\"bar\":False}}",
+				[Arguments("{\"foo\":{\"bar\":False}}",
 					"'F' is an invalid start of a value. LineNumber: 0 | BytePositionInLine: 14.")]
-				[InlineData("{\"foo\":{\"bar\":[1,2}}",
+				[Arguments("{\"foo\":{\"bar\":[1,2}}",
 					"'}' is invalid without a matching open. LineNumber: 0 | BytePositionInLine: 18.")]
 				public async Task WhenExpectedIsIncorrectJson_ShouldThrowArgumentException(string expected,
 					string errorMessage)
@@ -267,7 +267,7 @@ public sealed partial class ThatJsonString
 						.WithMessage($"The expected JSON is invalid: {errorMessage}");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					string subject = "{}";
@@ -280,7 +280,7 @@ public sealed partial class ThatJsonString
 						.Because("a null expected value is no JSON to compare with");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenIgnoringCase_ShouldThrowInvalidOperationException()
 				{
 					string subject = "{}";
@@ -293,7 +293,7 @@ public sealed partial class ThatJsonString
 						.Because("JSON is compared by its structure, so the casing option cannot be honoured");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUsingComparer_ShouldThrowInvalidOperationException()
 				{
 					string subject = "{}";
@@ -306,7 +306,7 @@ public sealed partial class ThatJsonString
 						.Because("JSON is compared by its structure, so a custom comparer cannot be honoured");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCombinedWithAnotherMatchType_ShouldThrowInvalidOperationException()
 				{
 					string subject = "{}";
@@ -318,7 +318,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("AsWildcard cannot be combined with AsJson.");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 				{
 					string subject = "{}";
@@ -330,7 +330,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("AsJson cannot be specified more than once.");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsIncorrectJsonInWhose_ShouldFail()
 				{
 					JsonContainer subject = new("foo");
@@ -338,7 +338,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).Whose(x => x.Json, j => j.IsEqualTo("{}").AsJson());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             whose Json is JSON equivalent to {},
@@ -352,7 +352,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionContainsNullItem_ShouldFail()
 				{
 					string?[] subject = ["{}", null,];
@@ -360,7 +360,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {} for all items,
@@ -380,7 +380,7 @@ public sealed partial class ThatJsonString
 						.Because("a null item is no JSON");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithContains_ShouldUseTheItemWording()
 				{
 					string[] subject = ["{\"a\":2}",];
@@ -388,7 +388,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).Contains("{\"a\":1}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             contains an item JSON equivalent to {"a":1} at least once,
@@ -401,7 +401,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithMessage_ShouldUseTheWithWording()
 				{
 					Action subject = () => throw new InvalidOperationException("{\"a\":2}");
@@ -409,7 +409,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).Throws<InvalidOperationException>().WithMessage("{\"a\":1}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws an InvalidOperationException with message JSON equivalent to {"a":1},
@@ -420,49 +420,49 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Theory]
-				[InlineData("{ \"foo\": 2 }", "{  \"foo\": \"2\"  }", "$.foo was number 2 instead of \"2\"")]
-				[InlineData("{ \"foo\": 1.23 }", "{  \"foo\": \"1.23\"  }",
+				[Test]
+				[Arguments("{ \"foo\": 2 }", "{  \"foo\": \"2\"  }", "$.foo was number 2 instead of \"2\"")]
+				[Arguments("{ \"foo\": 1.23 }", "{  \"foo\": \"1.23\"  }",
 					"$.foo was number 1.23 instead of \"1.23\"")]
-				[InlineData("{ \"foo\": \"2\" }", "{  \"foo\": 2  }", "$.foo was string \"2\" instead of 2")]
-				[InlineData("{ \"foo\": true }", "{  \"foo\": \"\"  }", "$.foo was boolean True instead of \"\"")]
-				[InlineData("{ \"foo\": 1 }", "{  \"foo\": true  }", "$.foo was number 1 instead of True")]
-				[InlineData("{ \"foo\": {\"value\":false} }", "{  \"foo\": false  }",
+				[Arguments("{ \"foo\": \"2\" }", "{  \"foo\": 2  }", "$.foo was string \"2\" instead of 2")]
+				[Arguments("{ \"foo\": true }", "{  \"foo\": \"\"  }", "$.foo was boolean True instead of \"\"")]
+				[Arguments("{ \"foo\": 1 }", "{  \"foo\": true  }", "$.foo was number 1 instead of True")]
+				[Arguments("{ \"foo\": {\"value\":false} }", "{  \"foo\": false  }",
 					"$.foo was object {\"value\":false} instead of False")]
-				[InlineData("{ \"foo\": null }", "{  \"foo\": \"\"  }", "$.foo was <null> instead of \"\"")]
+				[Arguments("{ \"foo\": null }", "{  \"foo\": \"\"  }", "$.foo was <null> instead of \"\"")]
 				public async Task WhenPropertiesOfValuesHaveDifferentType_ShouldFail(string subject, string expected,
 					string message)
 				{
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"*but it differed as {message}*").AsWildcard();
 				}
 
-				[Theory]
-				[InlineData("{ \"foo\": 2 }", "{  \"foo\": 3  }", "$.foo was 2 instead of 3")]
-				[InlineData("{ \"foo\": 1.23 }", "{  \"foo\": 2.23  }", "$.foo was 1.23 instead of 2.23")]
-				[InlineData("{ \"foo\": \"bar\" }", "{  \"foo\": \"baz\"  }", "$.foo was \"bar\" instead of \"baz\"")]
-				[InlineData("{ \"foo\": true }", "{  \"foo\": false  }", "$.foo was True instead of False")]
-				[InlineData("{ \"foo\": false }", "{  \"foo\": true  }", "$.foo was False instead of True")]
-				[InlineData("{ \"foo\": { \"bar\" : 1 } }", "{\"foo\":{\"bar\":2}}", "$.foo.bar was 1 instead of 2")]
-				[InlineData("{ \"foo\": [1, 3, 3] }", "{\"foo\":[1,2,3]}", "$.foo[1] was 3 instead of 2")]
-				[InlineData("{ \"foo\": 9007199254740993 }", "{  \"foo\": 9007199254740992  }",
+				[Test]
+				[Arguments("{ \"foo\": 2 }", "{  \"foo\": 3  }", "$.foo was 2 instead of 3")]
+				[Arguments("{ \"foo\": 1.23 }", "{  \"foo\": 2.23  }", "$.foo was 1.23 instead of 2.23")]
+				[Arguments("{ \"foo\": \"bar\" }", "{  \"foo\": \"baz\"  }", "$.foo was \"bar\" instead of \"baz\"")]
+				[Arguments("{ \"foo\": true }", "{  \"foo\": false  }", "$.foo was True instead of False")]
+				[Arguments("{ \"foo\": false }", "{  \"foo\": true  }", "$.foo was False instead of True")]
+				[Arguments("{ \"foo\": { \"bar\" : 1 } }", "{\"foo\":{\"bar\":2}}", "$.foo.bar was 1 instead of 2")]
+				[Arguments("{ \"foo\": [1, 3, 3] }", "{\"foo\":[1,2,3]}", "$.foo[1] was 3 instead of 2")]
+				[Arguments("{ \"foo\": 9007199254740993 }", "{  \"foo\": 9007199254740992  }",
 					"$.foo was 9007199254740993 instead of 9007199254740992")]
-				[InlineData("{ \"foo\": 1e-30 }", "{  \"foo\": 2e-30  }", "$.foo was 1e-30 instead of 2e-30")]
-				[InlineData("{ \"foo\": 1e400 }", "{  \"foo\": 2e400  }", "$.foo was 1e400 instead of 2e400")]
+				[Arguments("{ \"foo\": 1e-30 }", "{  \"foo\": 2e-30  }", "$.foo was 1e-30 instead of 2e-30")]
+				[Arguments("{ \"foo\": 1e400 }", "{  \"foo\": 2e400  }", "$.foo was 1e400 instead of 2e400")]
 				public async Task WhenPropertiesOfValuesHaveDifferentValue_ShouldFail(string subject, string expected,
 					string message)
 				{
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"*but it differed as {message}*").AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenStringsHaveMultipleDifferences_ShouldListAllDifferencesInFailureMessage()
 				{
 					string subject = """
@@ -479,7 +479,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {
@@ -505,7 +505,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldThrowArgumentNullException()
 				{
 					string? subject = null;
@@ -518,9 +518,9 @@ public sealed partial class ThatJsonString
 						.WithMessage("The expected JSON cannot be null.*").AsWildcard();
 				}
 
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenSubjectContainsAdditionalMembers_ShouldFailWhenCheckingForAdditionalMembers(
 					bool ignoreAdditionalProperties)
 				{
@@ -537,7 +537,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected)
 							.AsJson(o => o.IgnoringAdditionalProperties(ignoreAdditionalProperties));
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreAdditionalProperties)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreAdditionalProperties)
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {
@@ -555,9 +555,9 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenSubjectContainsAdditionalNullProperty_ShouldFailUnlessTreatingNullAsAbsent(
 					bool treatNullAsAbsent)
 				{
@@ -572,7 +572,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected)
 							.AsJson(o => o.TreatingNullAsAbsent(treatNullAsAbsent));
 
-					await That(Act).Throws<XunitException>().OnlyIf(!treatNullAsAbsent)
+					await That(Act).Throws<FailException>().OnlyIf(!treatNullAsAbsent)
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"title": "Let It Be"},
@@ -586,9 +586,9 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenSubjectMissesExpectedNullProperty_ShouldFailUnlessTreatingNullAsAbsent(
 					bool treatNullAsAbsent)
 				{
@@ -603,7 +603,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected)
 							.AsJson(o => o.TreatingNullAsAbsent(treatNullAsAbsent));
 
-					await That(Act).Throws<XunitException>().OnlyIf(!treatNullAsAbsent)
+					await That(Act).Throws<FailException>().OnlyIf(!treatNullAsAbsent)
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"title": "Let It Be", "album": null},
@@ -617,7 +617,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNestedNullPropertiesDiffer_WhenTreatingNullAsAbsent_ShouldSucceed()
 				{
 					string subject = """
@@ -633,7 +633,7 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullArrayElementsDiffer_WhenTreatingNullAsAbsent_ShouldFail()
 				{
 					string subject = """
@@ -646,7 +646,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.TreatingNullAsAbsent());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"foo": [1]},
@@ -664,9 +664,9 @@ public sealed partial class ThatJsonString
 						.Because("null elements of an array are not affected by the option");
 				}
 
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenArrayElementsAreInDifferentOrder_ShouldFailUnlessIgnoringArrayOrder(
 					bool ignoreArrayOrder)
 				{
@@ -681,7 +681,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected)
 							.AsJson(o => o.IgnoringArrayOrder(ignoreArrayOrder));
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreArrayOrder)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreArrayOrder)
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"tags": ["pop", "rock"]},
@@ -697,7 +697,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenArrayElementsDiffer_WhenIgnoringArrayOrder_ShouldReportMissingAndUnexpectedElements()
 				{
 					string subject = """
@@ -710,7 +710,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringArrayOrder());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to ["jazz", "rock", "pop", "soul"],
@@ -731,7 +731,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenObjectsInArrayAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
 				{
 					string subject = """
@@ -747,7 +747,7 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenGeneratedValuesDiffer_WhenIgnoringThem_ShouldSucceed()
 				{
 					string subject = """
@@ -765,7 +765,7 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOtherValueDiffers_WhenIgnoringMember_ShouldFail()
 				{
 					string subject = """
@@ -778,7 +778,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringMember("id"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"id": 2, "title": "Yesterday"},
@@ -795,7 +795,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForCollections_WhenIgnoringMember_ShouldIgnoreItForEachItem()
 				{
 					string[] subject = ["{\"id\": 1, \"a\": 1}", "{\"id\": 2, \"a\": 1}",];
@@ -807,7 +807,7 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectHasFewerArrayItems_ShouldFail()
 				{
 					string subject = """
@@ -820,7 +820,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to [1,2,3,4],
@@ -839,7 +839,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectHasMoreArrayItems_ShouldFail()
 				{
 					string subject = """
@@ -854,7 +854,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"foo":[1,2]},
@@ -872,9 +872,9 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenSubjectHasMoreArrayItems_ShouldFailUnlessIgnoringAdditionalArrayElements(
 					bool ignoreAdditionalArrayElements)
 				{
@@ -889,7 +889,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected)
 							.AsJson(o => o.IgnoringAdditionalArrayElements(ignoreAdditionalArrayElements));
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreAdditionalArrayElements)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreAdditionalArrayElements)
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"foo": [1, 2]},
@@ -903,7 +903,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectHasMoreArrayItems_WhenIgnoringAdditionalProperties_ShouldFail()
 				{
 					string subject = """
@@ -916,7 +916,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {"foo": [1, 2]},
@@ -934,7 +934,7 @@ public sealed partial class ThatJsonString
 						.Because("ignoring additional properties does not affect the elements of arrays");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenArrayElementsAreASubsetInAnyOrder_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldSucceed()
 				{
 					string subject = """
@@ -951,12 +951,12 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData("foo",
+				[Test]
+				[Arguments("foo",
 					"'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.")]
-				[InlineData("{\"foo\":{\"bar\":False}}",
+				[Arguments("{\"foo\":{\"bar\":False}}",
 					"'F' is an invalid start of a value. LineNumber: 0 | BytePositionInLine: 14.")]
-				[InlineData("{\"foo\":{\"bar\":[1,2}}",
+				[Arguments("{\"foo\":{\"bar\":[1,2}}",
 					"'}' is invalid without a matching open. LineNumber: 0 | BytePositionInLine: 18.")]
 				public async Task WhenSubjectIsIncorrectJson_ShouldFail(string subject, string errorMessage)
 				{
@@ -965,7 +965,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($$"""
 						               Expected that subject
 						               is JSON equivalent to {},
@@ -982,7 +982,7 @@ public sealed partial class ThatJsonString
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					string? subject = null;
@@ -991,7 +991,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {},
@@ -1000,21 +1000,21 @@ public sealed partial class ThatJsonString
 				}
 
 
-				[Theory]
-				[InlineData("{ \"foo\": 2 }", "{  \"foo\": 2  }", "integer values are supported")]
-				[InlineData("{ \"foo\": 1.23 }", "{  \"foo\": 1.23  }", "floating values are supported")]
-				[InlineData("{ \"foo\": 9007199254740993 }", "{  \"foo\": 9007199254740993  }",
+				[Test]
+				[Arguments("{ \"foo\": 2 }", "{  \"foo\": 2  }", "integer values are supported")]
+				[Arguments("{ \"foo\": 1.23 }", "{  \"foo\": 1.23  }", "floating values are supported")]
+				[Arguments("{ \"foo\": 9007199254740993 }", "{  \"foo\": 9007199254740993  }",
 					"integers beyond the precision of a double are supported")]
-				[InlineData("{ \"foo\": 1.0 }", "{  \"foo\": 1  }", "the notation of a number is ignored")]
-				[InlineData("{ \"foo\": 1.5e2 }", "{  \"foo\": 150  }", "the exponent notation is supported")]
-				[InlineData("{ \"foo\": 1e400 }", "{  \"foo\": 1e400  }",
+				[Arguments("{ \"foo\": 1.0 }", "{  \"foo\": 1  }", "the notation of a number is ignored")]
+				[Arguments("{ \"foo\": 1.5e2 }", "{  \"foo\": 150  }", "the exponent notation is supported")]
+				[Arguments("{ \"foo\": 1e400 }", "{  \"foo\": 1e400  }",
 					"numbers beyond the range of a double are supported")]
-				[InlineData("{ \"foo\": \"bar\" }", "{  \"foo\": \"bar\"  }", "string values are supported")]
-				[InlineData("{ \"foo\": true }", "{  \"foo\": true  }", "boolean true is supported")]
-				[InlineData("{ \"foo\": false }", "{  \"foo\": false  }", "boolean false is supported")]
-				[InlineData("{ \"foo\": null }", "{  \"foo\": null  }", "null is supported")]
-				[InlineData("{ \"foo\": { \"bar\" : 1 } }", "{\"foo\":{\"bar\":1}}", "nested objects are supported")]
-				[InlineData("{ \"foo\": [ 1, 2, 3 ] }", "{\"foo\":[1,2,3]}", "arrays are supported")]
+				[Arguments("{ \"foo\": \"bar\" }", "{  \"foo\": \"bar\"  }", "string values are supported")]
+				[Arguments("{ \"foo\": true }", "{  \"foo\": true  }", "boolean true is supported")]
+				[Arguments("{ \"foo\": false }", "{  \"foo\": false  }", "boolean false is supported")]
+				[Arguments("{ \"foo\": null }", "{  \"foo\": null  }", "null is supported")]
+				[Arguments("{ \"foo\": { \"bar\" : 1 } }", "{\"foo\":{\"bar\":1}}", "nested objects are supported")]
+				[Arguments("{ \"foo\": [ 1, 2, 3 ] }", "{\"foo\":[1,2,3]}", "arrays are supported")]
 				public async Task WhenValuesAreSameValidJson_ShouldSucceed(string subject, string expected,
 					string because)
 				{
@@ -1029,7 +1029,7 @@ public sealed partial class ThatJsonString
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCollectionContainsIncorrectJson_ShouldFail()
 				{
 					string[] subject = ["{\"foo\":1}", "foo",];
@@ -1037,7 +1037,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).None().AreEqualTo("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is JSON equivalent to {} for no items,
@@ -1046,7 +1046,7 @@ public sealed partial class ThatJsonString
 						.Because("an item that is no JSON is not different from the unexpected JSON either");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionContainsIncorrectJsonWithDoesNotContain_ShouldFail()
 				{
 					string[] subject = ["{\"foo\":1}", "foo",];
@@ -1054,7 +1054,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).DoesNotContain("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not contain an item JSON equivalent to {},
@@ -1063,7 +1063,7 @@ public sealed partial class ThatJsonString
 						.Because("an item that is no JSON is not different from the unexpected JSON either");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCollectionIsEmptyAndExpectedIsIncorrectJson_ShouldThrowArgumentException()
 				{
 					string[] subject = [];
@@ -1076,7 +1076,7 @@ public sealed partial class ThatJsonString
 						.Because("an invalid expected JSON would let the negation pass for every collection");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsIncorrectJson_ShouldThrowArgumentException()
 				{
 					string subject = "{}";
@@ -1089,7 +1089,7 @@ public sealed partial class ThatJsonString
 						.Because("an invalid expected JSON would let the negation pass for every subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsEquivalent_ShouldFail()
 				{
 					string subject = "{}";
@@ -1097,7 +1097,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("{ }").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to { },
@@ -1108,7 +1108,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsIncorrectJson_ShouldFail()
 				{
 					string subject = "foo";
@@ -1116,7 +1116,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to {},
@@ -1131,7 +1131,7 @@ public sealed partial class ThatJsonString
 						.Because("a subject that is no JSON is not different from the unexpected JSON either");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsEquivalentWhenTreatingNullAsAbsent_ShouldFail()
 				{
 					string subject = "{\"foo\":null}";
@@ -1139,7 +1139,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("{}").AsJson(o => o.TreatingNullAsAbsent());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to {},
@@ -1153,7 +1153,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsEquivalentWhenIgnoringArrayOrder_ShouldFail()
 				{
 					string subject = "[1,2]";
@@ -1161,7 +1161,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("[2,1]").AsJson(o => o.IgnoringArrayOrder());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to [2,1],
@@ -1175,7 +1175,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectOnlyDiffersInIgnoredMember_ShouldFail()
 				{
 					string subject = "{\"id\":1,\"a\":2}";
@@ -1183,7 +1183,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("{\"id\":3,\"a\":2}").AsJson(o => o.IgnoringMember("id"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to {"id":3,"a":2},
@@ -1197,7 +1197,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNotEquivalent_ShouldSucceed()
 				{
 					string subject = "{\"foo\":1}";
@@ -1208,7 +1208,7 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					string? subject = null;
@@ -1216,7 +1216,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("{}").AsJson();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to {},
@@ -1228,7 +1228,7 @@ public sealed partial class ThatJsonString
 
 			public sealed class NumbersWithinTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNumbersAreWithinTheTolerance_ShouldSucceed()
 				{
 					string subject = """{"total": 0.30000000000000004, "tax": 0.0575}""";
@@ -1240,7 +1240,7 @@ public sealed partial class ThatJsonString
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
 				{
 					string result = """{"total": 0.3, "tax": 0.06}""";
@@ -1249,7 +1249,7 @@ public sealed partial class ThatJsonString
 						=> await That(result).IsEqualTo("""{"total": 0.3, "tax": 0.057}""")
 							.AsJson(o => o.NumbersWithin(0.001));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that result
 						             is JSON equivalent to {"total": 0.3, "tax": 0.057},
@@ -1266,17 +1266,17 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Theory]
-				[InlineData("1e400", true)]
-				[InlineData("1.0e400", false)]
-				[InlineData("2e400", false)]
+				[Test]
+				[Arguments("1e400", true)]
+				[Arguments("1.0e400", false)]
+				[Arguments("2e400", false)]
 				public async Task WhenNumbersAreOutsideTheRangeOfADouble_ShouldCompareTheirText(string json,
 					bool isMatch)
 				{
 					async Task Act()
 						=> await That(json).IsEqualTo("1e400").AsJson(o => o.NumbersWithin(1e300));
 
-					await That(Act).Throws<XunitException>().OnlyIf(!isMatch)
+					await That(Act).Throws<FailException>().OnlyIf(!isMatch)
 						.WithMessage($"""
 						              Expected that json
 						              is JSON equivalent to 1e400,
@@ -1294,7 +1294,7 @@ public sealed partial class ThatJsonString
 						.Because("the tolerance cannot be applied to numbers outside the range of a double");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenNumbersAreWithinTheTolerance_ShouldFail()
 				{
 					string subject = "[1.05, 2]";
@@ -1302,7 +1302,7 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsNotEqualTo("[1, 2]").AsJson(o => o.NumbersWithin(0.1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not JSON equivalent to [1, 2],
@@ -1316,7 +1316,7 @@ public sealed partial class ThatJsonString
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenNumbersAreOutsideTheTolerance_ShouldSucceed()
 				{
 					string subject = "[1.2, 2]";

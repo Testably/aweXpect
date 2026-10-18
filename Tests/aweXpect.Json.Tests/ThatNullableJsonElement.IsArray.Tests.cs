@@ -9,9 +9,9 @@ public sealed partial class ThatNullableJsonElement
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("[]")]
-			[InlineData("[1, 2]")]
+			[Test]
+			[Arguments("[]")]
+			[Arguments("[1, 2]")]
 			public async Task WhenJsonIsAnArray_ShouldSucceed(string json)
 			{
 				JsonElement? subject = FromString(json);
@@ -22,10 +22,10 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
 			public async Task WhenJsonIsNoArray_ShouldFail(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -33,7 +33,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an array,
@@ -41,7 +41,7 @@ public sealed partial class ThatNullableJsonElement
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonElement? subject = null;
@@ -49,7 +49,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array,
@@ -57,7 +57,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsArePlural_ShouldUsePluralForm()
 			{
 				JsonElement?[] items = [FromString("[]"), FromString("{}"),];
@@ -66,7 +66,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(new { Items = items, })
 						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsArray()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
 					             whose Items are arrays for all items,
@@ -89,7 +89,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task IsArray_ShouldBeChainable()
 			{
 				string json = "[1, 2, 3]";
@@ -99,7 +99,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.IsArray(o => o.At(0).Matching(1)).And.IsArray(o => o.At(2).Matching(3)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an array or $[0] does not match 1 or is not an array or $[2] does not match 3,
@@ -117,9 +117,9 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("[]")]
-			[InlineData("[1, 2]")]
+			[Test]
+			[Arguments("[]")]
+			[Arguments("[1, 2]")]
 			public async Task WhenJsonIsAnArray_ShouldFail(string json)
 			{
 				JsonElement? subject = FromString(json);
@@ -127,7 +127,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsArray());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an array,
@@ -135,10 +135,10 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}")]
-			[InlineData("2")]
-			[InlineData("\"foo\"")]
+			[Test]
+			[Arguments("{}")]
+			[Arguments("2")]
+			[Arguments("\"foo\"")]
 			public async Task WhenJsonIsNoArray_ShouldSucceed(string json)
 			{
 				JsonElement? subject = FromString(json);
@@ -152,7 +152,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WithExpectationTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
 			{
 				JsonElement? subject = FromString("[]");
@@ -165,7 +165,7 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage("The 'expectation' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationThrows_ShouldFail()
 			{
 				JsonElement? subject = FromString("[1]");
@@ -173,7 +173,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray(_ => throw new InvalidOperationException("Yesterday"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array,
@@ -185,7 +185,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMatchingItIsWaits_ShouldNotBlockTheCaller()
 			{
 				JsonElement? subject = FromString("[\"bar\"]");
@@ -202,10 +202,10 @@ public sealed partial class ThatNullableJsonElement
 					.Because("the evaluation must return to the caller while it waits instead of blocking it");
 			}
 
-			[Theory]
-			[InlineData("{\"foo\":{}}", "an object")]
-			[InlineData("{\"foo\":2}", "a number")]
-			[InlineData("{\"foo\":\"foo\"}", "a string")]
+			[Test]
+			[Arguments("{\"foo\":{}}", "an object")]
+			[Arguments("{\"foo\":2}", "a number")]
+			[Arguments("{\"foo\":\"foo\"}", "a string")]
 			public async Task WhenInnerJsonIsNoArray_AndExpectElementAt_ShouldFail(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -213,7 +213,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsObject(o => o.With("foo").AnArray(a => a.At(0).Matching(null)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array and $.foo[0] matches null,
@@ -224,10 +224,10 @@ public sealed partial class ThatNullableJsonElement
 					              """);
 			}
 
-			[Theory]
-			[InlineData("{\"foo\":{}}", "an object")]
-			[InlineData("{\"foo\":2}", "a number")]
-			[InlineData("{\"foo\":\"foo\"}", "a string")]
+			[Test]
+			[Arguments("{\"foo\":{}}", "an object")]
+			[Arguments("{\"foo\":2}", "a number")]
+			[Arguments("{\"foo\":\"foo\"}", "a string")]
 			public async Task WhenInnerJsonIsNoArray_AndExpectElementCount_ShouldFail(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -235,7 +235,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsObject(o => o.With("foo").AnArray(a => a.With(0).Elements()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array with 0 elements,
@@ -246,10 +246,10 @@ public sealed partial class ThatNullableJsonElement
 					              """);
 			}
 
-			[Theory]
-			[InlineData("{\"foo\":{}}", "an object")]
-			[InlineData("{\"foo\":2}", "a number")]
-			[InlineData("{\"foo\":\"foo\"}", "a string")]
+			[Test]
+			[Arguments("{\"foo\":{}}", "an object")]
+			[Arguments("{\"foo\":2}", "a number")]
+			[Arguments("{\"foo\":\"foo\"}", "a string")]
 			public async Task WhenInnerJsonIsNoArray_ShouldFail(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -257,7 +257,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsObject(o => o.With("foo").AnArray());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an object and $.foo is an array,
@@ -268,9 +268,9 @@ public sealed partial class ThatNullableJsonElement
 					              """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenJsonIsNoArray_WithExpectations_ShouldConsiderIgnoreAdditionalProperties(
 				bool ignoreAdditionalProperties)
 			{
@@ -286,7 +286,7 @@ public sealed partial class ThatNullableJsonElement
 						IgnoreAdditionalProperties = ignoreAdditionalProperties,
 					});
 
-				await That(Act).Throws<XunitException>().OnlyIf(!ignoreAdditionalProperties)
+				await That(Act).Throws<FailException>().OnlyIf(!ignoreAdditionalProperties)
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] matches new
@@ -297,10 +297,10 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
 			public async Task WhenJsonIsNoArray_WithExpectations_ShouldFail(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -308,7 +308,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray(o => o.At(0).Matching(true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an array and $[0] matches true,
@@ -319,7 +319,7 @@ public sealed partial class ThatNullableJsonElement
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithExpectations_ShouldFail()
 			{
 				JsonElement? subject = null;
@@ -327,7 +327,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray(o => o.At(0).Matching(true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] matches true,
@@ -341,7 +341,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WhoseElementsTests
 		{
-			[Fact]
+			[Test]
 			public async Task AtLeast_WhenEnoughElementsComply_ShouldSucceed()
 			{
 				JsonElement? subject = FromString("[{\"title\": \"Hey Jude\"}, \"Yesterday\"]");
@@ -352,7 +352,7 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtLeast_WhenTooFewElementsComply_ShouldFail()
 			{
 				JsonElement? subject = FromString("[{\"title\": \"Hey Jude\"}, \"Yesterday\"]");
@@ -360,7 +360,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray().WhoseElements.AtLeast(2).ComplyWith(t => t.IsObject());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array whose elements are objects for at least 2 items,
@@ -379,10 +379,10 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
 			public async Task WhenJsonIsNoArray_ShouldOnlyFailWithIsArray(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -390,7 +390,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray().WhoseElements.HasCount(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an array whose elements have exactly 2 items,
@@ -399,7 +399,7 @@ public sealed partial class ThatNullableJsonElement
 					.Because("the elements are only accessed when the subject is an array");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldOnlyFailWithIsArray()
 			{
 				JsonElement? subject = null;
@@ -407,7 +407,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray().WhoseElements.HasCount(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array whose elements have exactly 2 items,
@@ -416,7 +416,7 @@ public sealed partial class ThatNullableJsonElement
 					.Because("the elements are only accessed when the subject is an array");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExpectation_WhenElementsDoNotComply_ShouldFail()
 			{
 				JsonElement? subject = FromString("[2, 1]");
@@ -425,7 +425,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).IsArray(a => a.With(2).Elements(), o => o.IgnoringArrayOrder())
 						.WhoseElements.Contains(e => e.GetInt32() == 3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array with 2 elements whose elements contain an item matching e => e.GetInt32() == 3 at least once,
@@ -439,7 +439,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExpectation_WhenSubjectIsNull_ShouldOnlyFailWithIsArray()
 			{
 				JsonElement? subject = null;
@@ -448,7 +448,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).IsArray(a => a.With(2).Elements())
 						.WhoseElements.Contains(e => e.GetInt32() == 3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array with 2 elements whose elements contain an item matching e => e.GetInt32() == 3 at least once,
@@ -462,7 +462,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WhoseElementsNegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenElementsMeetTheExpectation_ShouldFail()
 			{
 				JsonElement? subject = FromString("[1, 2]");
@@ -470,7 +470,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsArray().WhoseElements.HasCount(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an array whose elements have exactly 2 items,
@@ -478,7 +478,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonElement? subject = null;
@@ -486,7 +486,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsArray().WhoseElements.HasCount(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an array whose elements have exactly 2 items,
@@ -498,7 +498,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WithNumberOfElementsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNull_ShouldNotAddFailureMessage()
 			{
 				JsonElement? subject = FromString("{}");
@@ -508,7 +508,7 @@ public sealed partial class ThatNullableJsonElement
 						.With("foo").AnArray(a => a
 							.With(1).Elements()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo is an array with 1 element,
@@ -519,7 +519,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNumberDiffers_ShouldFail()
 			{
 				JsonElement? subject = FromString("[1, 2]");
@@ -528,7 +528,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).IsArray(o => o
 						.With(3).Elements());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array with 3 elements,
@@ -539,10 +539,10 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("[]", 0)]
-			[InlineData("[\"foo\"]", 1)]
-			[InlineData("[1, 2, 3]", 3)]
+			[Test]
+			[Arguments("[]", 0)]
+			[Arguments("[\"foo\"]", 1)]
+			[Arguments("[1, 2, 3]", 3)]
 			public async Task WhenNumberMatches_ShouldSucceed(string json, int expected)
 			{
 				JsonElement? subject = FromString(json);
@@ -557,7 +557,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WithArraysTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArrayIsNull_ShouldNotAddFailureMessage()
 			{
 				JsonElement? subject = FromString("{}");
@@ -567,7 +567,7 @@ public sealed partial class ThatNullableJsonElement
 						.With("foo").AnArray(a => a
 							.WithArrays(p => p.With(0).Elements())));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo is an array and $.foo[0] is an array with 0 elements,
@@ -578,7 +578,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationIsNull_ShouldSkipIndex()
 			{
 				JsonElement? subject = FromString("[[1],[2],[3]]");
@@ -587,7 +587,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).IsArray(e => e
 						.WithArrays(o => o.At(0).Matching(1), null, o => o.At(0).Matching(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] is an array and $[0][0] matches 1 and $[2] is an array and $[2][0] matches 2,
@@ -598,7 +598,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsMatchInDifferentOrder_ShouldFail()
 			{
 				JsonElement? subject = FromString("""
@@ -617,7 +617,7 @@ public sealed partial class ThatNullableJsonElement
 							o => o.At(0).Matching(2),
 							o => o.At(0).Matching(3)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] is an array and $[0][0] matches 1 and $[1] is an array and $[1][0] matches 2 and $[2] is an array and $[2][0] matches 3,
@@ -630,7 +630,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsMatchInOrder_ShouldSucceed()
 			{
 				JsonElement? subject = FromString("""
@@ -655,7 +655,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WithElementsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArrayIsNull_ShouldNotAddFailureMessage()
 			{
 				JsonElement? subject = FromString("{}");
@@ -665,7 +665,7 @@ public sealed partial class ThatNullableJsonElement
 						.With("foo").AnArray(a => a
 							.WithElements(2, 3)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo is an array and $.foo[0] matches 2 and $.foo[1] matches 3,
@@ -676,7 +676,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsMatchInDifferentOrder_ShouldFail()
 			{
 				JsonElement? subject = FromString("""
@@ -689,7 +689,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).IsArray(e => e
 						.WithElements(3, true, null, 1.2, false, "bar"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] matches 3 and $[1] matches True and $[2] matches <null> and $[3] matches 1.2 and $[4] matches False and $[5] matches "bar",
@@ -702,7 +702,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsMatchInOrder_ShouldSucceed()
 			{
 				JsonElement? subject = FromString("""
@@ -721,7 +721,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class WithObjectsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArrayIsNull_ShouldNotAddFailureMessage()
 			{
 				JsonElement? subject = FromString("{}");
@@ -731,7 +731,7 @@ public sealed partial class ThatNullableJsonElement
 						.With("foo").AnArray(a => a
 							.WithObjects(p => p.With(0).Properties())));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo is an array and $.foo[0] is an object with 0 properties,
@@ -742,7 +742,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationIsNull_ShouldSkipIndex()
 			{
 				JsonElement? subject = FromString("[{},{},{\"foo\":true}]");
@@ -751,7 +751,7 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).IsArray(e => e
 						.WithObjects(o => o.With(0).Properties(), null, o => o.With(0).Properties()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] is an object with 0 properties and $[2] is an object with 0 properties,
@@ -762,7 +762,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsMatchInDifferentOrder_ShouldFail()
 			{
 				JsonElement? subject = FromString("""
@@ -781,7 +781,7 @@ public sealed partial class ThatNullableJsonElement
 							o => o.With("bar").Matching(2),
 							o => o.With("foo").Matching(3)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] is an object and $[0].foo matches 1 and $[1] is an object and $[1].bar matches 2 and $[2] is an object and $[2].foo matches 3,
@@ -794,7 +794,7 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsMatchInOrder_ShouldSucceed()
 			{
 				JsonElement? subject = FromString("""
@@ -819,7 +819,7 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class NumbersWithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMatchingNumberIsWithinTheTolerance_ShouldSucceed()
 			{
 				JsonElement? subject = FromString("[1, 104]");
@@ -830,7 +830,7 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMatchingNumberIsOutsideTheTolerance_ShouldFail()
 			{
 				JsonElement? subject = FromString("[1, 106]");
@@ -838,7 +838,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsArray(a => a.At(1).Matching(100), o => o.NumbersWithin(5).Percent());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[1] matches 100,

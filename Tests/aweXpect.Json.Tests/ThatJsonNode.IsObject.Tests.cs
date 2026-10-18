@@ -8,7 +8,7 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnTheSubject()
 			{
 				JsonObject subject = new();
@@ -18,7 +18,7 @@ public sealed partial class ThatJsonNode
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
 			{
 				JsonNode? subject = FromString("{}");
@@ -31,7 +31,7 @@ public sealed partial class ThatJsonNode
 					.WithMessage("The 'expectation' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsAnObject_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("""{"foo": 1}""");
@@ -42,10 +42,10 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("[]", "an array")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
+			[Test]
+			[Arguments("[]", "an array")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
 			public async Task WhenNodeIsNoObject_ShouldFail(string json, string kindString)
 			{
 				JsonNode? subject = FromString(json);
@@ -53,7 +53,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsObject();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is an object,
@@ -61,7 +61,7 @@ public sealed partial class ThatJsonNode
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyDiffers_ShouldFail()
 			{
 				JsonObject subject = new()
@@ -78,7 +78,7 @@ public sealed partial class ThatJsonNode
 						.With("foo").Matching(2).And
 						.With("bar").AnObject(b => b.With("baz").Matching("b")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo matches 2 and $.bar is an object and $.bar.baz matches "b",
@@ -91,7 +91,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDeclaredAsNonNullableJsonNode_ShouldSucceed()
 			{
 				JsonNode subject = new JsonObject();
@@ -102,7 +102,7 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonNode? node = FromString("null");
@@ -110,7 +110,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(node).IsObject();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that node
 					             is an object,
@@ -119,7 +119,7 @@ public sealed partial class ThatJsonNode
 					.Because("a null node is the JSON null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithExpectations_ShouldFail()
 			{
 				JsonObject? subject = null;
@@ -127,7 +127,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsObject(o => o.With("foo").Matching(true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo matches true,
@@ -138,7 +138,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIgnoringMember_ShouldListItInTheContext()
 			{
 				JsonNode? subject = FromString("""{"id": 1}""");
@@ -146,7 +146,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsObject(o => o.With("id").Matching(2), o => o.IgnoringMember("id"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.id matches 2,
@@ -159,7 +159,7 @@ public sealed partial class ThatJsonNode
 					.Because("an explicit expectation wins over an ignored member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTreatingNullAsAbsent_ShouldTreatNullPropertyAsAbsent()
 			{
 				JsonNode? subject = FromString("""{"foo": null}""");
@@ -167,7 +167,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsObject(o => o.With("foo").AString(), o => o.TreatingNullAsAbsent());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an object and $.foo is a string,
@@ -182,7 +182,7 @@ public sealed partial class ThatJsonNode
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsAnObject_ShouldFail()
 			{
 				JsonObject subject = new()
@@ -193,7 +193,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.With("foo").Matching(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an object or $.foo does not match 1,
@@ -209,7 +209,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				JsonNode? subject = null;

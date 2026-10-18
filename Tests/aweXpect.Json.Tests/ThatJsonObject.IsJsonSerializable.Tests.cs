@@ -14,7 +14,7 @@ public sealed partial class ThatJsonObject
 	{
 		public sealed class ObjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenItemsArePlural_ShouldUsePluralForm()
 			{
 				object?[] items = [new PocoWithIgnoredProperty { Id = 1, Name = "foo", },];
@@ -23,7 +23,7 @@ public sealed partial class ThatJsonObject
 					=> await That(new { Items = items, })
 						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsJsonSerializable()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
 					             whose Items are serializable as JSON for all items,
@@ -48,7 +48,7 @@ public sealed partial class ThatJsonObject
 					.Because("the items are the plural subject of the expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedInThatAll_ShouldIndentTheDifferences()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -60,7 +60,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await ThatAll(That(subject).IsJsonSerializable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected all of the following to succeed:
 					              [01] Expected that subject is serializable as JSON
@@ -73,7 +73,7 @@ public sealed partial class ThatJsonObject
 					.Because("every line of the differences belongs to the nested result");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnIgnoredProperty_ShouldFail()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -85,7 +85,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as JSON,
@@ -96,7 +96,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnIgnoredProperty_WhenPropertyIsIgnored_ShouldSucceed()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -114,7 +114,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAPrivateConstructor_ShouldFail()
 			{
 				PocoWithPrivateConstructor subject = PocoWithPrivateConstructor.Create(42);
@@ -122,7 +122,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as JSON,
@@ -130,7 +130,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAPrivateConstructorWithJsonConstructorAttribute_ShouldSucceed()
 			{
 				PocoWithPrivateConstructorWithJsonConstructorAttribute subject =
@@ -142,7 +142,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasNoDefaultConstructor_ShouldFail()
 			{
 				PocoWithoutDefaultConstructor subject = new(12);
@@ -150,7 +150,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as JSON,
@@ -158,9 +158,9 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenSubjectHasNoDefaultFieldConstructor_ShouldFailUnlessIncludeFieldsIsSet(
 				bool includeFields)
 			{
@@ -172,7 +172,7 @@ public sealed partial class ThatJsonObject
 						IncludeFields = includeFields,
 					});
 
-				await That(Act).Throws<XunitException>().OnlyIf(!includeFields)
+				await That(Act).Throws<FailException>().OnlyIf(!includeFields)
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as JSON,
@@ -180,7 +180,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -188,7 +188,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as JSON,
@@ -196,7 +196,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsPoco_ShouldSucceed()
 			{
 				SimplePocoWithPrimitiveTypes subject = new()
@@ -222,7 +222,7 @@ public sealed partial class ThatJsonObject
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnIgnoredProperty_ShouldFail()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -234,7 +234,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable<PocoWithIgnoredProperty>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty JSON,
@@ -245,7 +245,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnIgnoredProperty_WhenPropertyIsIgnored_ShouldSucceed()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -263,7 +263,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAPrivateConstructor_ShouldFail()
 			{
 				PocoWithPrivateConstructor subject = PocoWithPrivateConstructor.Create(42);
@@ -271,7 +271,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable<PocoWithPrivateConstructor>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithPrivateConstructor JSON,
@@ -279,7 +279,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAPrivateConstructorWithJsonConstructorAttribute_ShouldSucceed()
 			{
 				PocoWithPrivateConstructorWithJsonConstructorAttribute subject =
@@ -291,7 +291,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasNoDefaultConstructor_ShouldFail()
 			{
 				PocoWithoutDefaultConstructor subject = new(12);
@@ -299,7 +299,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable<PocoWithoutDefaultConstructor>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithoutDefaultConstructor JSON,
@@ -307,9 +307,9 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenSubjectHasNoDefaultFieldConstructor_ShouldFailUnlessIncludeFieldsIsSet(
 				bool includeFields)
 			{
@@ -322,7 +322,7 @@ public sealed partial class ThatJsonObject
 							IncludeFields = includeFields,
 						});
 
-				await That(Act).Throws<XunitException>().OnlyIf(!includeFields)
+				await That(Act).Throws<FailException>().OnlyIf(!includeFields)
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithoutDefaultFieldConstructor JSON,
@@ -330,7 +330,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -338,7 +338,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable<SimplePocoWithPrimitiveTypes>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,
@@ -346,7 +346,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotMatch_ShouldFail()
 			{
 				SimplePocoWithPrimitiveTypes subject = new()
@@ -366,7 +366,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable<PocoWithIgnoredProperty>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty JSON,
@@ -374,7 +374,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatches_ShouldSucceed()
 			{
 				SimplePocoWithPrimitiveTypes subject = new()
@@ -400,7 +400,7 @@ public sealed partial class ThatJsonObject
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnIgnoredProperty_ShouldSucceed()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -415,7 +415,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnIgnoredProperty_WhenPropertyIsIgnored_ShouldFail()
 			{
 				PocoWithIgnoredProperty subject = new()
@@ -430,7 +430,7 @@ public sealed partial class ThatJsonObject
 						MembersToIgnore = [new MemberToIgnore.ByName("Name"),],
 					}));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serializable as JSON,
@@ -438,7 +438,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAPrivateConstructor_ShouldSucceed()
 			{
 				PocoWithPrivateConstructor subject = PocoWithPrivateConstructor.Create(42);
@@ -449,7 +449,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAPrivateConstructorWithJsonConstructorAttribute_ShouldFail()
 			{
 				PocoWithPrivateConstructorWithJsonConstructorAttribute subject =
@@ -458,7 +458,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serializable as JSON,
@@ -466,7 +466,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasNoDefaultConstructor_ShouldSucceed()
 			{
 				PocoWithoutDefaultConstructor subject = new(12);
@@ -477,7 +477,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -485,7 +485,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serializable as JSON,
@@ -493,7 +493,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithType_ShouldFail()
 			{
 				object? subject = null;
@@ -502,7 +502,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.IsJsonSerializable<SimplePocoWithPrimitiveTypes>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,
@@ -510,7 +510,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsPoco_ShouldFail()
 			{
 				SimplePocoWithPrimitiveTypes subject = new()
@@ -530,7 +530,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serializable as JSON,
@@ -538,7 +538,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotMatch_ShouldSucceed()
 			{
 				SimplePocoWithPrimitiveTypes subject = new()
@@ -561,7 +561,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatches_ShouldFail()
 			{
 				SimplePocoWithPrimitiveTypes subject = new()
@@ -582,7 +582,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.IsJsonSerializable<SimplePocoWithPrimitiveTypes>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,

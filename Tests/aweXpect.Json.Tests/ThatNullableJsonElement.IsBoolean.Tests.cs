@@ -8,9 +8,9 @@ public sealed partial class ThatNullableJsonElement
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("true")]
-			[InlineData("false")]
+			[Test]
+			[Arguments("true")]
+			[Arguments("false")]
 			public async Task WhenJsonIsABoolean_ShouldSucceed(string json)
 			{
 				JsonElement? subject = FromString(json);
@@ -21,12 +21,12 @@ public sealed partial class ThatNullableJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("[]", "an array")]
-			[InlineData("1", "a number")]
-			[InlineData("\"true\"", "a string")]
-			[InlineData("null", "null")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("[]", "an array")]
+			[Arguments("1", "a number")]
+			[Arguments("\"true\"", "a string")]
+			[Arguments("null", "null")]
 			public async Task WhenJsonIsNoBoolean_ShouldFail(string json, string kindString)
 			{
 				JsonElement? subject = FromString(json);
@@ -34,7 +34,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsBoolean();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is a boolean,
@@ -42,7 +42,7 @@ public sealed partial class ThatNullableJsonElement
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonElement? subject = null;
@@ -50,7 +50,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).IsBoolean();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a boolean,
@@ -61,9 +61,9 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("true")]
-			[InlineData("false")]
+			[Test]
+			[Arguments("true")]
+			[Arguments("false")]
 			public async Task WhenJsonIsABoolean_ShouldFail(string json)
 			{
 				JsonElement? subject = FromString(json);
@@ -71,7 +71,7 @@ public sealed partial class ThatNullableJsonElement
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsBoolean());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a boolean,
@@ -79,12 +79,12 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}")]
-			[InlineData("[]")]
-			[InlineData("1")]
-			[InlineData("\"true\"")]
-			[InlineData("null")]
+			[Test]
+			[Arguments("{}")]
+			[Arguments("[]")]
+			[Arguments("1")]
+			[Arguments("\"true\"")]
+			[Arguments("null")]
 			public async Task WhenJsonIsNoBoolean_ShouldSucceed(string json)
 			{
 				JsonElement? subject = FromString(json);

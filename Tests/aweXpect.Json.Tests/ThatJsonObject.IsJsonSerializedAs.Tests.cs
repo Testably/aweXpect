@@ -16,7 +16,7 @@ public sealed partial class ThatJsonObject
 	{
 		public sealed class JsonTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsInvalidJson_ShouldThrowArgumentException()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -28,7 +28,7 @@ public sealed partial class ThatJsonObject
 					.WithMessage("The expected JSON is invalid: *").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -41,7 +41,7 @@ public sealed partial class ThatJsonObject
 					.Because("a null string is no JSON, while the JSON null is written as \"null\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializationThrows_ShouldFail()
 			{
 				Node subject = new();
@@ -50,7 +50,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializedAs("{}");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {},
@@ -58,7 +58,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedHasAdditionalProperties_ShouldFail()
 			{
 				Track subject = new("Let It Be", Genre.Rock, "Let It Be");
@@ -66,7 +66,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {"Title": "Let It Be", "Genre": 2},
@@ -78,7 +78,7 @@ public sealed partial class ThatJsonObject
 					.Because("the serialized JSON is compared exactly by default");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedHasAdditionalProperties_WhenIgnoringAdditionalProperties_ShouldSucceed()
 			{
 				Track subject = new("Let It Be", Genre.Rock, "Let It Be");
@@ -90,7 +90,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedMatches_ShouldSucceed()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -108,7 +108,7 @@ public sealed partial class ThatJsonObject
 					.Because("the JSON is compared by its structure, regardless of formatting and property order");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedMatches_WhenCombinedWithFailingExpectation_ShouldNotAddSerializedContext()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -117,7 +117,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2, "Album": null}""")
 						.And.IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {"Title": "Let It Be", "Genre": 2, "Album": null} and is null,
@@ -130,7 +130,7 @@ public sealed partial class ThatJsonObject
 					.Because("the serialized JSON only adds to the failure of the serialization expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDeclaredAsObject_ShouldSerializeTheRuntimeType()
 			{
 				object subject = new Track("Let It Be", Genre.Rock);
@@ -142,7 +142,7 @@ public sealed partial class ThatJsonObject
 					.Because("the serializer writes the runtime type of a value declared as object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldBeSerializedAsJsonNull()
 			{
 				Track? subject = null;
@@ -153,7 +153,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WhenExpectingAnObject_ShouldFail()
 			{
 				Track? subject = null;
@@ -161,7 +161,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializedAs("{}");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {},
@@ -172,7 +172,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsValueType_ShouldSucceed()
 			{
 				int subject = 42;
@@ -183,7 +183,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueDiffers_ShouldFail()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -191,7 +191,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializedAs("""{"Title": "Yesterday", "Genre": 2, "Album": null}""");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {"Title": "Yesterday", "Genre": 2, "Album": null},
@@ -202,7 +202,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCustomizedDefaultSerializerOptions_ShouldUseThem()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -219,7 +219,7 @@ public sealed partial class ThatJsonObject
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSerializerOptions_ShouldUseThem()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -240,7 +240,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSerializerOptions_WhenValueDiffers_ShouldFail()
 			{
 				Track track = new("Let It Be", Genre.Rock);
@@ -250,7 +250,7 @@ public sealed partial class ThatJsonObject
 					=> await That(track).IsJsonSerializedAs("""{"title": "Let It Be", "genre": "rock"}""",
 						serializerOptions);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that track
 					             is serialized as JSON {"title": "Let It Be", "genre": "rock"},
@@ -267,7 +267,7 @@ public sealed partial class ThatJsonObject
 
 		public sealed class ObjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsItIs_ShouldEvaluateIt()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -280,7 +280,7 @@ public sealed partial class ThatJsonObject
 						Album = (string?)null,
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON new
@@ -296,7 +296,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsMatchingItIs_ShouldSucceed()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -312,7 +312,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializationThrows_ShouldFail()
 			{
 				Node subject = new();
@@ -323,7 +323,7 @@ public sealed partial class ThatJsonObject
 					{
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON new
@@ -333,7 +333,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedHasAdditionalProperties_ShouldFail()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -344,7 +344,7 @@ public sealed partial class ThatJsonObject
 						Title = "Let It Be",
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON new
@@ -361,7 +361,7 @@ public sealed partial class ThatJsonObject
 					.Because("the serialized JSON is compared exactly by default");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedMatches_ShouldSucceed()
 			{
 				Track subject = new("Let It Be", Genre.Rock, "Let It Be");
@@ -377,7 +377,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldBeSerializedAsJsonNull()
 			{
 				Track? subject = null;
@@ -388,7 +388,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSerializerOptions_ShouldUseThem()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -412,7 +412,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSerializerOptions_WhenIgnoringAdditionalProperties_ShouldFailForDifferentValue()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -424,7 +424,7 @@ public sealed partial class ThatJsonObject
 						genre = "rock",
 					}, serializerOptions, o => o.IgnoringAdditionalProperties());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON new
@@ -444,7 +444,7 @@ public sealed partial class ThatJsonObject
 
 		public sealed class OptionsTests
 		{
-			[Fact]
+			[Test]
 			public async Task IgnoringAdditionalArrayElements_ShouldIgnoreAdditionalElements()
 			{
 				Album subject = new("Let It Be", ["Two of Us", "Dig a Pony", "Across the Universe",]);
@@ -456,7 +456,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringArrayOrder_ShouldIgnoreTheOrderOfElements()
 			{
 				Album subject = new("Let It Be", ["Two of Us", "Dig a Pony",]);
@@ -468,7 +468,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringArrayOrder_WhenElementDiffers_ShouldListTheOption()
 			{
 				Album subject = new("Let It Be", ["Two of Us", "Dig a Pony",]);
@@ -477,7 +477,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).IsJsonSerializedAs("""{"Title": "Let It Be", "Tracks": ["Dig a Pony", "Get Back"]}""",
 						o => o.IgnoringArrayOrder());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {"Title": "Let It Be", "Tracks": ["Dig a Pony", "Get Back"]},
@@ -491,7 +491,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_ShouldIgnoreTheMember()
 			{
 				Track subject = new("Let It Be", Genre.Rock, "Let It Be");
@@ -503,7 +503,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WhenNameMatchesNoMember_ShouldSuggestTheMember()
 			{
 				Track subject = new("Let It Be", Genre.Rock, "Let It Be");
@@ -512,7 +512,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""",
 						o => o.IgnoringMember("Albun"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {"Title": "Let It Be", "Genre": 2},
@@ -527,7 +527,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TreatingNullAsAbsent_ShouldTreatNullAsAbsent()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -542,7 +542,7 @@ public sealed partial class ThatJsonObject
 
 		public sealed class TypeInfoTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSerializationThrows_ShouldFail()
 			{
 				Node subject = new();
@@ -551,7 +551,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializedAs("{}", GetTypeInfo<Node>(new JsonSerializerOptions()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {},
@@ -559,7 +559,7 @@ public sealed partial class ThatJsonObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedMatches_ShouldSucceed()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -576,7 +576,7 @@ public sealed partial class ThatJsonObject
 					.Because("the type info carries the naming policy of its options");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueDiffers_ShouldFail()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -586,7 +586,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 1}""",
 						typeInfo, o => o.TreatingNullAsAbsent());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is serialized as JSON {"Title": "Let It Be", "Genre": 1},
@@ -600,7 +600,7 @@ public sealed partial class ThatJsonObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldBeSerializedAsJsonNull()
 			{
 				Track? subject = null;
@@ -621,7 +621,7 @@ public sealed partial class ThatJsonObject
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSerializationThrows_ShouldFail()
 			{
 				Node subject = new();
@@ -630,7 +630,7 @@ public sealed partial class ThatJsonObject
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializedAs("{}"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serialized as JSON {},
@@ -639,7 +639,7 @@ public sealed partial class ThatJsonObject
 					.Because("a subject that cannot be serialized is not serialized as anything else either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedDiffers_ShouldSucceed()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -653,7 +653,7 @@ public sealed partial class ThatJsonObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSerializedMatches_ShouldFail()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
@@ -662,7 +662,7 @@ public sealed partial class ThatJsonObject
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializedAs("""{"Title": "Let It Be"}""",
 						o => o.IgnoringAdditionalProperties()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not serialized as JSON {"Title": "Let It Be"},

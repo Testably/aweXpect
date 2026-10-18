@@ -8,7 +8,7 @@ public sealed partial class ThatJsonElement
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenJsonIsNull_ShouldSucceed()
 			{
 				JsonElement subject = FromString("null");
@@ -19,13 +19,13 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("[]", "an array")]
-			[InlineData("0", "a number")]
-			[InlineData("\"null\"", "a string")]
-			[InlineData("true", "true")]
-			[InlineData("false", "false")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("[]", "an array")]
+			[Arguments("0", "a number")]
+			[Arguments("\"null\"", "a string")]
+			[Arguments("true", "true")]
+			[Arguments("false", "false")]
 			public async Task WhenJsonIsNotNull_ShouldFail(string json, string kindString)
 			{
 				JsonElement subject = FromString(json);
@@ -33,7 +33,7 @@ public sealed partial class ThatJsonElement
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is null,
@@ -41,7 +41,7 @@ public sealed partial class ThatJsonElement
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenElementIsUndefined_ShouldFail()
 			{
 				JsonElement subject = default;
@@ -49,7 +49,7 @@ public sealed partial class ThatJsonElement
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null,
@@ -58,7 +58,7 @@ public sealed partial class ThatJsonElement
 					.Because("an undefined element has no value, which differs from the JSON value null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsArePlural_ShouldUsePluralForm()
 			{
 				JsonElement[] items = [FromString("null"), FromString("{}"),];
@@ -67,7 +67,7 @@ public sealed partial class ThatJsonElement
 					=> await That(new { Items = items, })
 						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsNull()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
 					             whose Items are null for all items,
@@ -80,7 +80,7 @@ public sealed partial class ThatJsonElement
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenJsonIsNull_ShouldFail()
 			{
 				JsonElement subject = FromString("null");
@@ -88,7 +88,7 @@ public sealed partial class ThatJsonElement
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNull());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null,
@@ -96,12 +96,12 @@ public sealed partial class ThatJsonElement
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}")]
-			[InlineData("[]")]
-			[InlineData("0")]
-			[InlineData("\"null\"")]
-			[InlineData("false")]
+			[Test]
+			[Arguments("{}")]
+			[Arguments("[]")]
+			[Arguments("0")]
+			[Arguments("\"null\"")]
+			[Arguments("false")]
 			public async Task WhenJsonIsNotNull_ShouldSucceed(string json)
 			{
 				JsonElement subject = FromString(json);

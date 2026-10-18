@@ -8,7 +8,7 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsAString_ShouldSucceed()
 			{
 				JsonValue subject = JsonValue.Create("foo");
@@ -19,12 +19,12 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("[]", "an array")]
-			[InlineData("1", "a number")]
-			[InlineData("false", "false")]
-			[InlineData("null", "null")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("[]", "an array")]
+			[Arguments("1", "a number")]
+			[Arguments("false", "false")]
+			[Arguments("null", "null")]
 			public async Task WhenNodeIsNoString_ShouldFail(string json, string kindString)
 			{
 				JsonNode? subject = FromString(json);
@@ -32,7 +32,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsString();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is a string,
@@ -40,7 +40,7 @@ public sealed partial class ThatJsonNode
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonValue? subject = null;
@@ -48,7 +48,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsString();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a string,
@@ -60,7 +60,7 @@ public sealed partial class ThatJsonNode
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsAString_ShouldFail()
 			{
 				JsonNode? subject = FromString("\"foo\"");
@@ -68,7 +68,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsString());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a string,
@@ -76,7 +76,7 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsNoString_ShouldSucceed()
 			{
 				JsonValue subject = JsonValue.Create(1);

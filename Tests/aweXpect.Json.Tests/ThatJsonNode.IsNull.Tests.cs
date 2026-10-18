@@ -8,7 +8,7 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsJsonNull_ShouldSucceed()
 			{
 				JsonNode? subject = FromString("null");
@@ -20,7 +20,7 @@ public sealed partial class ThatJsonNode
 					.Because("the built-in expectation for references verifies the JSON null of a node");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsNotNull_ShouldFail()
 			{
 				JsonValue subject = JsonValue.Create(42);
@@ -28,7 +28,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null,

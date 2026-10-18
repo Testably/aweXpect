@@ -7,15 +7,15 @@ namespace aweXpect.Json.Tests.Formatting;
 
 public class JsonFormattingTests
 {
-	[Theory]
-	[InlineData("null", "null")]
-	[InlineData("true", "true")]
-	[InlineData("false", "false")]
-	[InlineData("[]", "[]")]
-	[InlineData("12", "12")]
-	[InlineData("14.5", "14.5")]
-	[InlineData("\"foo\"", "\"foo\"")]
-	[InlineData("{ \"bar\": 3 }", "{\"bar\":3}")]
+	[Test]
+	[Arguments("null", "null")]
+	[Arguments("true", "true")]
+	[Arguments("false", "false")]
+	[Arguments("[]", "[]")]
+	[Arguments("12", "12")]
+	[Arguments("14.5", "14.5")]
+	[Arguments("\"foo\"", "\"foo\"")]
+	[Arguments("{ \"bar\": 3 }", "{\"bar\":3}")]
 	public async Task ShouldFormatExpectedly(string inputJson, string expectedOutput)
 	{
 		JsonElement jsonElement = FromString(inputJson);
@@ -29,7 +29,7 @@ public class JsonFormattingTests
 		await That(result2).IsEqualTo(expectedOutput);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotInfluenceCustomizationOptions()
 	{
 		JsonElement jsonElement = FromString("{}");
@@ -46,7 +46,7 @@ public class JsonFormattingTests
 		await That(writeIndentedAfter).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCustomizedOptions_ShouldBeUsableInMultipleExpectations()
 	{
 		JsonElement subject = FromString("{\"foo\": 1}");
@@ -56,7 +56,7 @@ public class JsonFormattingTests
 
 		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions()))
 		{
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not an object or $.foo does not match 1,
@@ -70,7 +70,7 @@ public class JsonFormattingTests
 				             JSON options:
 				              - ignore additional properties
 				             """);
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not an object or $.foo does not match 1,
@@ -88,9 +88,9 @@ public class JsonFormattingTests
 		}
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
 	public async Task WithCustomizedOptions_ShouldNotChangeWriteIndented(bool writeIndented)
 	{
 		JsonElement jsonElement = FromString("{\"bar\":3}");
@@ -119,9 +119,9 @@ public class JsonFormattingTests
 		                                              """);
 	}
 
-	[Theory]
-	[InlineData("[]", "[]")]
-	[InlineData("{\"bar\":3}", """
+	[Test]
+	[Arguments("[]", "[]")]
+	[Arguments("{\"bar\":3}", """
 	                           {
 	                             "bar": 3
 	                           }

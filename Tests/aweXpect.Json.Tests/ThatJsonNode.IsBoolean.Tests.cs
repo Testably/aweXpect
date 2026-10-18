@@ -8,9 +8,9 @@ public sealed partial class ThatJsonNode
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenNodeIsABoolean_ShouldSucceed(bool value)
 			{
 				JsonValue subject = JsonValue.Create(value);
@@ -21,12 +21,12 @@ public sealed partial class ThatJsonNode
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("[]", "an array")]
-			[InlineData("1", "a number")]
-			[InlineData("\"true\"", "a string")]
-			[InlineData("null", "null")]
+			[Test]
+			[Arguments("{}", "an object")]
+			[Arguments("[]", "an array")]
+			[Arguments("1", "a number")]
+			[Arguments("\"true\"", "a string")]
+			[Arguments("null", "null")]
 			public async Task WhenNodeIsNoBoolean_ShouldFail(string json, string kindString)
 			{
 				JsonNode? subject = FromString(json);
@@ -34,7 +34,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).IsBoolean();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is a boolean,
@@ -42,7 +42,7 @@ public sealed partial class ThatJsonNode
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsArePlural_ShouldUsePluralForm()
 			{
 				JsonNode?[] items = [JsonValue.Create(true), JsonValue.Create(false), null,];
@@ -51,7 +51,7 @@ public sealed partial class ThatJsonNode
 					=> await That(new { Items = items, })
 						.Whose(x => x.Items, i => i.All().ComplyWith(item => item.IsBoolean()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that new { Items = items, }
 					             whose Items are booleans for all items,
@@ -64,7 +64,7 @@ public sealed partial class ThatJsonNode
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNodeIsABoolean_ShouldFail()
 			{
 				JsonValue subject = JsonValue.Create(true);
@@ -72,7 +72,7 @@ public sealed partial class ThatJsonNode
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsBoolean());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a boolean,
@@ -80,10 +80,10 @@ public sealed partial class ThatJsonNode
 					             """);
 			}
 
-			[Theory]
-			[InlineData("{}")]
-			[InlineData("1")]
-			[InlineData("null")]
+			[Test]
+			[Arguments("{}")]
+			[Arguments("1")]
+			[Arguments("null")]
 			public async Task WhenNodeIsNoBoolean_ShouldSucceed(string json)
 			{
 				JsonNode? subject = FromString(json);

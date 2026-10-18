@@ -6,7 +6,7 @@ namespace aweXpect.Json.Tests;
 
 public sealed class StringEqualityOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task EqualJson_ShouldReturnEmptyFailure()
 	{
 		string actual = "{}";
@@ -22,7 +22,7 @@ public sealed class StringEqualityOptionsTests
 		await That(failure).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenComparedAgain_ShouldDescribeOnlyTheLastComparison()
 	{
 		string expected = "{}";
@@ -39,7 +39,7 @@ public sealed class StringEqualityOptionsTests
 			.Because("the differences of the previous subject must not be reported for the next one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCallingGetExtendedFailureWithoutAreConsideredEqual_ShouldReturnEmptystring()
 	{
 		string actual = "foo";
@@ -53,7 +53,7 @@ public sealed class StringEqualityOptionsTests
 		await That(failure).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIgnoringCaseAfterAsJson_ShouldThrowAtIgnoringCase()
 	{
 		StringEqualityResult result = new StringEqualityResult().AsJson();
@@ -65,7 +65,7 @@ public sealed class StringEqualityOptionsTests
 			.Because("the conflict is rejected at the call that specifies it, not only when the expectation is evaluated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIgnoringCaseBeforeAsJson_ShouldThrowAtAsJson()
 	{
 		StringEqualityResult result = new StringEqualityResult().IgnoringCase();
@@ -77,7 +77,7 @@ public sealed class StringEqualityOptionsTests
 			.Because("the conflict is rejected at the call that specifies it, not only when the expectation is evaluated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIgnoringCaseIsDisabled_ShouldAllowAsJson()
 	{
 		StringEqualityResult result = new StringEqualityResult().AsJson();
@@ -88,7 +88,7 @@ public sealed class StringEqualityOptionsTests
 			.Because("a casing that is not ignored is what a JSON comparison does anyway");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingComparerAfterAsJson_ShouldThrowAtUsing()
 	{
 		StringEqualityResult result = new StringEqualityResult().AsJson();
@@ -100,7 +100,7 @@ public sealed class StringEqualityOptionsTests
 			.Because("the conflict is rejected at the call that specifies it, not only when the expectation is evaluated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingComparerBeforeAsJson_ShouldThrowAtAsJson()
 	{
 		StringEqualityResult result = new StringEqualityResult().Using(StringComparer.Ordinal);
