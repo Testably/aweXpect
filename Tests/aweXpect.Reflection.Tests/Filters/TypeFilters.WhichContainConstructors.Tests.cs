@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterByMatchingConstructor()
 			{
 				Filtered.Types types = In.Types<ClassWithMarkedConstructor, UntaggedClass>()
@@ -17,7 +17,7 @@ public sealed partial class TypeFilters
 				await That(types).IsEqualTo([typeof(ClassWithMarkedConstructor),]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseTheInnerFilterDescription()
 			{
 				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()

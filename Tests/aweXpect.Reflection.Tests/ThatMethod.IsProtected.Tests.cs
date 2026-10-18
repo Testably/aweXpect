@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("InternalMethod", "internal")]
-			[InlineData("PublicMethod", "public")]
-			[InlineData("PrivateMethod", "private")]
+			[Test]
+			[Arguments("InternalMethod", "internal")]
+			[Arguments("PublicMethod", "public")]
+			[Arguments("PrivateMethod", "private")]
 			public async Task WhenMethodInfoIsNotProtected_ShouldFail(string methodName, string expectedAccessModifier)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -22,7 +21,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is protected,
@@ -30,7 +29,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -48,7 +47,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtected_ShouldSucceed()
 			{
 				MethodInfo? subject = GetMethod("ProtectedMethod");
@@ -64,10 +63,10 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("InternalMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("InternalMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotProtected_ShouldSucceed(string methodName)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -80,7 +79,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtected_ShouldFail()
 			{
 				MethodInfo? subject = GetMethod("ProtectedMethod");
@@ -90,7 +89,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not protected,

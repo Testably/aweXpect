@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorDoesNotHaveAttribute_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
@@ -22,7 +21,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasAttribute_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
@@ -32,7 +31,7 @@ public sealed partial class ThatConstructor
 					await That(subject).DoesNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatConstructor.DoesNotHave.AttributeTests.FooAttribute,

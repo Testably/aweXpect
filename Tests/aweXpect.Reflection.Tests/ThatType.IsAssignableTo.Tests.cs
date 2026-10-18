@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenClosedGenericIsCovariantlyAssignable_ShouldSucceed()
 			{
 				Type subject = typeof(List<string>);
@@ -22,7 +21,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDerivesFromTarget_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClass);
@@ -35,7 +34,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeImplementsTargetInterface_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -48,7 +47,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnOpenGeneric_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -64,7 +63,7 @@ public sealed partial class ThatType
 						"The type to check assignability against must not be an open generic type definition, but it was IEnumerable<>. Use 'Implements' or 'InheritsFrom' for open generic type definitions.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -79,7 +78,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAssignable_ShouldFail()
 			{
 				Type subject = typeof(UnrelatedClass);
@@ -89,7 +88,7 @@ public sealed partial class ThatType
 					await That(subject).IsAssignableTo<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is assignable to ThatType.BaseClass,
@@ -100,7 +99,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -110,7 +109,7 @@ public sealed partial class ThatType
 					await That(subject).IsAssignableTo<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is assignable to ThatType.BaseClass,
@@ -118,7 +117,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsTheSame_ShouldSucceed()
 			{
 				Type subject = typeof(BaseClass);
@@ -134,7 +133,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAssignable_ShouldFail()
 			{
 				Type subject = typeof(DerivedClass);
@@ -144,7 +143,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsAssignableTo<BaseClass>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not assignable to ThatType.BaseClass,
@@ -155,7 +154,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAssignable_ShouldSucceed()
 			{
 				Type subject = typeof(UnrelatedClass);
@@ -174,7 +173,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnOpenGeneric_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(UnrelatedClass);
@@ -190,7 +189,7 @@ public sealed partial class ThatType
 						"The type to check assignability against must not be an open generic type definition, but it was IEnumerable<>. Use 'Implements' or 'InheritsFrom' for open generic type definitions.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAssignable_ShouldFail()
 			{
 				Type subject = typeof(DerivedClass);
@@ -200,7 +199,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotAssignableTo<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not assignable to ThatType.BaseClass,
@@ -211,7 +210,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAssignable_ShouldSucceed()
 			{
 				Type subject = typeof(UnrelatedClass);

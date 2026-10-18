@@ -8,7 +8,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForInternalFieldsWithExplicitMethod()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()

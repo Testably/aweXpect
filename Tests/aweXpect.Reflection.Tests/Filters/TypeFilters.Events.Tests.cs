@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
 			{
 				Filtered.Events events =
@@ -19,7 +19,7 @@ public sealed partial class TypeFilters
 				await That(events).None().Satisfy(e => e.Name == "BasePrivateEvent");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Events events =
@@ -29,7 +29,7 @@ public sealed partial class TypeFilters
 				await That(events).None().Satisfy(e => e.Name == nameof(BaseClassWithMembers.BaseEvent));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Events events =
@@ -39,7 +39,7 @@ public sealed partial class TypeFilters
 				await That(events).None().Satisfy(e => e.Name == nameof(BaseClassWithMembers.BaseEvent));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedMembers()
 			{
 				Filtered.Events events =
@@ -49,7 +49,7 @@ public sealed partial class TypeFilters
 				await That(events).Contains(e => e.Name == nameof(BaseClassWithMembers.BaseEvent));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedPrivateMembers()
 			{
 				Filtered.Events events =

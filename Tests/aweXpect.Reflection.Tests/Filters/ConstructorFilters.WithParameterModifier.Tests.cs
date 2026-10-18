@@ -28,7 +28,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithInModifier_ShouldFilterForInParameterOfType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalModifier_ShouldFilterForOptionalParameterOfType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -54,7 +54,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutModifier_ShouldFilterForOutParameterOfType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -67,7 +67,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsModifier_ShouldFilterForParamsParameterOfType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -79,7 +79,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefModifier_ShouldFilterForRefParameterOfType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

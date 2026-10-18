@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -22,7 +21,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreProtectedInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are protected internal,
@@ -35,7 +34,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtectedInternal_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("ProtectedInternalMethod");
@@ -51,10 +50,10 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldSucceed(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -67,7 +66,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtectedInternal_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("ProtectedInternalMethod");
@@ -77,7 +76,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreProtectedInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are protected internal,

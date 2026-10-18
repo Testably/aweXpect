@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Internal.Tests.Formatting;
 
 public class ConstructorFormatterTests
 {
-	[Fact]
+	[Test]
 	public async Task WithOneParameter_ShouldFormatCorrectly()
 	{
 		ConstructorInfo? constructorInfo = typeof(MyTestClass).GetConstructor([typeof(int),]);
@@ -17,7 +17,7 @@ public class ConstructorFormatterTests
 		await That(result).IsEqualTo("ConstructorFormatterTests.MyTestClass(int parameter1)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutParameters_ShouldFormatCorrectly()
 	{
 		ConstructorInfo? constructorInfo = typeof(MyTestClass).GetConstructor(Type.EmptyTypes);
@@ -28,7 +28,7 @@ public class ConstructorFormatterTests
 		await That(result).IsEqualTo("ConstructorFormatterTests.MyTestClass()");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithParametersWithDefaultValues_ShouldFormatCorrectly()
 	{
 		ConstructorInfo? constructorInfo = typeof(MyTestClass).GetConstructor([typeof(string), typeof(int),]);
@@ -39,7 +39,7 @@ public class ConstructorFormatterTests
 		await That(result).IsEqualTo("ConstructorFormatterTests.MyTestClass(string p1 = \"foo\", int p2 = 42)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTwoParameters_ShouldFormatCorrectly()
 	{
 		ConstructorInfo? constructorInfo = typeof(MyTestClass).GetConstructor([typeof(int), typeof(string),]);

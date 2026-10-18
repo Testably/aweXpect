@@ -13,7 +13,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonStaticEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(TestClassWithStaticMembers)
@@ -38,7 +38,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(TestClassWithStaticMembers)
@@ -55,7 +55,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonStaticEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(TestClassWithStaticMembers)
@@ -70,7 +70,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(TestClassWithStaticMembers)
@@ -98,7 +98,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonStaticEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -124,7 +124,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticEvents_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -149,7 +149,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticEvents_ShouldSucceed()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(TestClassWithStaticMembers)

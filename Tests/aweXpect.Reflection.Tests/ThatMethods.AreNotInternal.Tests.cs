@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreNotInternal_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -28,7 +27,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsInternal_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -42,7 +41,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are not internal,
@@ -58,7 +57,7 @@ public sealed partial class ThatMethods
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsInternal_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("InternalMethod");
@@ -68,7 +67,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not internal,
@@ -81,10 +80,10 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotInternal_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -100,7 +99,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsInternal_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("InternalMethod");
@@ -113,10 +112,10 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotInternal_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -126,7 +125,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreNotInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is internal,

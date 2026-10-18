@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOnlyRecordTypes()
 			{
 				Filtered.Types subject = In.AssemblyContaining<WhichAreRecords>().Types()
@@ -17,7 +17,7 @@ public sealed partial class TypeFilters
 				await That(subject).AreRecords().And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateDescription()
 			{
 				Filtered.Types subject = In.AssemblyContaining<WhichAreRecords>().Types()

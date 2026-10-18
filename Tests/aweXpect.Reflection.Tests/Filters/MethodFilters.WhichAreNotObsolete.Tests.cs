@@ -9,7 +9,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonObsoleteMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<ClassWithObsoleteMembers>()

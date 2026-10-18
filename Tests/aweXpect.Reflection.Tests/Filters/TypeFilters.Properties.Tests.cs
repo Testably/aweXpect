@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
 			{
 				Filtered.Properties properties =
@@ -19,7 +19,7 @@ public sealed partial class TypeFilters
 				await That(properties).None().Satisfy(p => p.Name == "BasePrivateProperty");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Properties properties =
@@ -29,7 +29,7 @@ public sealed partial class TypeFilters
 				await That(properties).None().Satisfy(p => p.Name == nameof(BaseClassWithMembers.BaseProperty));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Properties properties =
@@ -39,7 +39,7 @@ public sealed partial class TypeFilters
 				await That(properties).None().Satisfy(p => p.Name == nameof(BaseClassWithMembers.BaseProperty));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldComposeWithAccessModifierFilter()
 			{
 				Filtered.Properties properties =
@@ -50,7 +50,7 @@ public sealed partial class TypeFilters
 				await That(properties).All().Satisfy(p => p.GetMethod?.IsPublic == true).And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedMembers()
 			{
 				Filtered.Properties properties =
@@ -60,7 +60,7 @@ public sealed partial class TypeFilters
 				await That(properties).Contains(p => p.Name == nameof(BaseClassWithMembers.BaseProperty));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedPrivateMembers()
 			{
 				Filtered.Properties properties =

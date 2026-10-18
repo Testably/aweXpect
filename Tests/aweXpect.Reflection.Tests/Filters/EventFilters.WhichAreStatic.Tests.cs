@@ -9,7 +9,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForStaticEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<TestClassWithStaticMembers>()
@@ -23,7 +23,7 @@ public sealed partial class EventFilters
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonStaticEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<TestClassWithStaticMembers>()

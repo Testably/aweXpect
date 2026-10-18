@@ -9,7 +9,7 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNonNullableGenericType_ShouldFail()
 			{
 				FieldInfo subject = typeof(ClassWithNonNullableMembers)
@@ -28,7 +28,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNonNullableInMostlyNullableClass_ShouldFail()
 			{
 				FieldInfo subject = typeof(ClassWithMostlyNullableMembers)
@@ -47,7 +47,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNonNullableReferenceType_ShouldFail()
 			{
 				FieldInfo subject = typeof(ClassWithNonNullableMembers)
@@ -66,7 +66,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNonNullableValueType_ShouldFail()
 			{
 				FieldInfo subject = typeof(ClassWithNonNullableMembers)
@@ -85,7 +85,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -103,7 +103,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNullableGenericType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(ClassWithNullableMembers)
@@ -117,7 +117,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNullableInMixedClass_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(ClassWithMixedNullableMembers)
@@ -131,7 +131,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNullableReferenceType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(ClassWithNullableMembers)
@@ -145,7 +145,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNullableValueType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(ClassWithNullableMembers)
@@ -159,7 +159,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOblivious_ShouldFail()
 			{
 				FieldInfo subject = typeof(ClassWithObliviousMembers)
@@ -181,7 +181,7 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNotNullable_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(ClassWithNonNullableMembers)
@@ -195,7 +195,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNullable_ShouldFail()
 			{
 				FieldInfo subject = typeof(ClassWithNullableMembers)

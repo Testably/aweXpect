@@ -8,7 +8,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForInternalFields()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -19,7 +19,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("internal fields in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPrivateFields()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -30,7 +30,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("private fields in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForProtectedFields()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("protected fields in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPublicFields()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()

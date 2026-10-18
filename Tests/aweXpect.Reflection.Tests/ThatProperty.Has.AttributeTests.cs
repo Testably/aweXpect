@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyDoesNotHaveAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
@@ -19,7 +18,7 @@ public sealed partial class ThatProperty
 					await That(subject).Has<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatProperty.Has.AttributeTests.TestAttribute,
@@ -27,7 +26,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyHasAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
@@ -40,7 +39,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyHasMatchingAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
@@ -53,7 +52,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyHasNotMatchingAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
@@ -63,7 +62,7 @@ public sealed partial class ThatProperty
 					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatProperty.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
@@ -71,7 +70,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -107,7 +106,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyDoesNotHaveAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
@@ -120,7 +119,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
@@ -134,7 +133,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertyHasAttribute_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
@@ -144,7 +143,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatProperty.Has.NegatedTests.TestAttribute,

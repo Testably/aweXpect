@@ -11,7 +11,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreObsolete_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject =
@@ -27,7 +27,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonObsoleteEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject =
@@ -57,7 +57,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreObsolete_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject =
@@ -83,7 +83,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonObsoleteEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject =
@@ -104,7 +104,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreObsolete_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -131,7 +131,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -148,7 +148,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonObsoleteEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]

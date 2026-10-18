@@ -10,7 +10,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesHaveASetter_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -29,7 +29,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainPropertiesWithoutASetter_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithPropertyAccessors)
@@ -56,7 +56,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesHaveASetter_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -85,7 +85,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainPropertiesWithoutASetter_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithPropertyAccessors)

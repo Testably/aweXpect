@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotSealed_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotSealed());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is sealed,
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonSealedTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonSealedTypes))]
 			public async Task WhenTypeIsNotSealed_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsSealed_ShouldFail()
 			{
 				Type subject = typeof(PublicSealedClass);
@@ -75,8 +75,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(SealedTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(SealedTypesForNegated))]
 			public async Task WhenTypeIsSealed_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> SealedTypesForNegated() => new()
+			public static IEnumerable<Type> SealedTypesForNegated() => new List<Type>
 			{
 				typeof(PublicSealedClass),
 			};
 
-			public static TheoryData<Type> NonSealedTypes()
+			public static IEnumerable<Type> NonSealedTypes()
 				=>
 				[
 					typeof(PublicAbstractClass),

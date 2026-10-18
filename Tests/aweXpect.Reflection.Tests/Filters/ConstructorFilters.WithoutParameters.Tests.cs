@@ -8,7 +8,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithoutParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -20,7 +20,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeConstructorsWithParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

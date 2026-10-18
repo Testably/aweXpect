@@ -11,7 +11,7 @@ public sealed partial class MethodFilters
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMethodMatchesADerivedType_ShouldNotBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -24,7 +24,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument of type ThatMethod.DerivedClass in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodMatchesTheTypeExactly_ShouldBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -37,10 +37,10 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument of type ThatMethod.BaseClass in");
 				}
 
-				[Theory]
-				[InlineData(0, 0)]
-				[InlineData(1, 1)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 0)]
+				[Arguments(1, 1)]
+				[Arguments(2, 0)]
 				public async Task WhenMethodMatchesTheTypeExactlyAtTheGivenIndex_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -54,10 +54,10 @@ public sealed partial class MethodFilters
 						.StartsWith($"generic methods with argument of type ThatMethod.BaseClass at index {index} in");
 				}
 
-				[Theory]
-				[InlineData(0, 1)]
-				[InlineData(1, 0)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 1)]
+				[Arguments(1, 0)]
+				[Arguments(2, 0)]
 				public async Task WhenMethodMatchesTheTypeExactlyAtTheGivenIndexFromEnd_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -72,7 +72,7 @@ public sealed partial class MethodFilters
 							$"generic methods with argument of type ThatMethod.BaseClass at index {index} from end in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoMethodMatchesTheType_ShouldBeEmpty()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -87,7 +87,7 @@ public sealed partial class MethodFilters
 
 			public sealed class GenericNamedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsPrefix()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -100,7 +100,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument of type object and name starting with \"TFo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsRegex()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -114,7 +114,7 @@ public sealed partial class MethodFilters
 							"generic methods with argument of type object and name matching regex \"T[a-zA-Z]*o\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsSuffix()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -127,7 +127,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument of type object and name ending with \"Foo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsWildcard()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -140,9 +140,9 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument of type object and name matching \"T??o\" in");
 				}
 
-				[Theory]
-				[InlineData(true, 1, " ignoring case")]
-				[InlineData(false, 0, "")]
+				[Test]
+				[Arguments(true, 1, " ignoring case")]
+				[Arguments(false, 0, "")]
 				public async Task ShouldSupportIgnoringCase(bool ignoringCase, int expectedCount, string expectedSuffix)
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -156,7 +156,7 @@ public sealed partial class MethodFilters
 							$"generic methods with argument of type object and name equal to \"TfOo\"{expectedSuffix} in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -170,7 +170,7 @@ public sealed partial class MethodFilters
 							"generic methods with argument of type object and name equal to \"TFoO\" using IgnoreCaseForVocalsComparer in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodMatchesADerivedTypeAndName_ShouldNotBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -184,7 +184,7 @@ public sealed partial class MethodFilters
 							"generic methods with argument of type ThatMethod.DerivedClass and name equal to \"T2\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodMatchesTheTypeAndNameExactly_ShouldBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -198,7 +198,7 @@ public sealed partial class MethodFilters
 							"generic methods with argument of type ThatMethod.BaseClass and name equal to \"T2\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodMatchesTheTypeExactlyButNotName_ShouldNotBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -212,7 +212,7 @@ public sealed partial class MethodFilters
 							"generic methods with argument of type ThatMethod.BaseClass and name equal to \"T1\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoMethodMatchesTheType_ShouldBeEmpty()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -225,10 +225,10 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument of type string and name equal to \"Foo\" in");
 				}
 
-				[Theory]
-				[InlineData(0, 0)]
-				[InlineData(1, 1)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 0)]
+				[Arguments(1, 1)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheTypeAndNameExactlyAtTheGivenIndex_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -243,10 +243,10 @@ public sealed partial class MethodFilters
 							$"generic methods with argument of type ThatMethod.BaseClass and name equal to \"T2\" at index {index} in");
 				}
 
-				[Theory]
-				[InlineData(0, 1)]
-				[InlineData(1, 0)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 1)]
+				[Arguments(1, 0)]
+				[Arguments(2, 0)]
 				public async Task
 					WhenTypeMatchesTheTypeAndNameExactlyAtTheGivenIndexFromEnd_ShouldIncludeTheExpectedCount(
 						int index, int expectedCount)
@@ -265,7 +265,7 @@ public sealed partial class MethodFilters
 
 			public sealed class NamedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsPrefix()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -278,7 +278,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument name starting with \"TFo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsRegex()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -291,7 +291,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument name matching regex \"T[a-zA-Z]*o\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsSuffix()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -304,7 +304,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument name ending with \"Foo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsWildcard()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -317,9 +317,9 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument name matching \"T??o\" in");
 				}
 
-				[Theory]
-				[InlineData(true, 1, " ignoring case")]
-				[InlineData(false, 0, "")]
+				[Test]
+				[Arguments(true, 1, " ignoring case")]
+				[Arguments(false, 0, "")]
 				public async Task ShouldSupportIgnoringCase(bool ignoringCase, int expectedCount, string expectedSuffix)
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -332,7 +332,7 @@ public sealed partial class MethodFilters
 						.StartsWith($"generic methods with argument name equal to \"TfOo\"{expectedSuffix} in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -346,7 +346,7 @@ public sealed partial class MethodFilters
 							"generic methods with argument name equal to \"TFoO\" using IgnoreCaseForVocalsComparer in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodDoesNotMatchTheName_ShouldNotBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -359,7 +359,7 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument name equal to \"T3\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodMatchesTheNameExactly_ShouldBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -372,10 +372,10 @@ public sealed partial class MethodFilters
 						.StartsWith("generic methods with argument name equal to \"TFoo\" in");
 				}
 
-				[Theory]
-				[InlineData(0, 0)]
-				[InlineData(1, 1)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 0)]
+				[Arguments(1, 1)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheNameExactlyAtTheGivenIndex_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -389,10 +389,10 @@ public sealed partial class MethodFilters
 						.StartsWith($"generic methods with argument name equal to \"T2\" at index {index} in");
 				}
 
-				[Theory]
-				[InlineData(0, 1)]
-				[InlineData(1, 0)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 1)]
+				[Arguments(1, 0)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheNameExactlyAtTheGivenIndexFromEnd_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{

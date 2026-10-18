@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -26,7 +25,7 @@ public sealed partial class ThatConstructors
 #endif
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -42,7 +41,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -58,7 +57,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -74,7 +73,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -90,7 +89,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -106,7 +105,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -122,7 +121,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -138,7 +137,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -154,7 +153,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -170,7 +169,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -183,10 +182,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -202,7 +201,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_WhenNotAllMatch_ShouldFailWithExactTypeWording()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -215,7 +214,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with ref modifier,
@@ -228,7 +227,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -245,7 +244,7 @@ public sealed partial class ThatConstructors
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -259,7 +258,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_AsyncEnumerable_WhenNotAllMatch_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -271,10 +270,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -288,7 +287,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -302,7 +301,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -316,7 +315,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -330,7 +329,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -344,7 +343,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -358,7 +357,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -372,7 +371,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -386,7 +385,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(

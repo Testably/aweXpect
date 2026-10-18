@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Enumerable_WhenNoTypeHasName_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -27,7 +26,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasName_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -41,7 +40,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasName_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -52,7 +51,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotHaveName(nameof(DoNotHaveNameType));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameType" in assembly containing type ThatTypes.DoNotHaveName.Tests
 					             all have name not equal to "DoNotHaveNameType",
@@ -65,7 +64,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatchesSuffix_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -76,7 +75,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotHaveName("HaveNameType").AsSuffix();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameType" in assembly containing type ThatTypes.DoNotHaveName.Tests
 					             all have name not ending with "HaveNameType",
@@ -92,7 +91,7 @@ public sealed partial class ThatTypes
 			private class DoNotHaveNameType;
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNoTypeHasName_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -108,7 +107,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenTypeHasName_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -121,7 +120,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotHaveName(nameof(DoNotHaveNameType));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have name not equal to "DoNotHaveNameType",
@@ -138,7 +137,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasName_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -149,7 +148,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.DoNotHaveName("SomeOtherClassName"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameTypeNeg" in assembly containing type ThatTypes.DoNotHaveName.Tests
 					             not all have name not equal to "SomeOtherClassName",
@@ -162,7 +161,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasName_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsInternal_ShouldFail()
 			{
 				EventInfo? subject = GetEvent("InternalEvent");
@@ -19,7 +18,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsNotInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not internal,
@@ -27,10 +26,10 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("PrivateEvent")]
+			[Test]
+			[Arguments("ProtectedEvent")]
+			[Arguments("PublicEvent")]
+			[Arguments("PrivateEvent")]
 			public async Task WhenEventInfoIsNotInternal_ShouldSucceed(string eventName)
 			{
 				EventInfo? subject = GetEvent(eventName);
@@ -43,7 +42,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -64,7 +63,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsInternal_ShouldSucceed()
 			{
 				EventInfo? subject = GetEvent("InternalEvent");
@@ -77,10 +76,10 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedEvent", "protected")]
-			[InlineData("PublicEvent", "public")]
-			[InlineData("PrivateEvent", "private")]
+			[Test]
+			[Arguments("ProtectedEvent", "protected")]
+			[Arguments("PublicEvent", "public")]
+			[Arguments("PrivateEvent", "private")]
 			public async Task WhenEventInfoIsNotInternal_ShouldFail(string eventName, string expectedAccessModifier)
 			{
 				EventInfo? subject = GetEvent(eventName);
@@ -90,7 +89,7 @@ public sealed partial class ThatEvent
 					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is internal,

@@ -11,7 +11,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesNotWithinNamespaceIncludingSubNamespaces()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

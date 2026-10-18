@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForTypesWhichOnlyHaveNonNullableMembers()
 			{
 				Filtered.Types types = In.AssemblyContaining<ClassWithNonNullableMembers>()
@@ -20,7 +20,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types which only have non-nullable members in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldOnlyKeepTypesWhichOnlyHaveNonNullableMembers()
 			{
 				Filtered.Types types = In

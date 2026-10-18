@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -10,7 +10,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWithAttribute()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -24,7 +24,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -36,8 +36,8 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForEventsWithAttributeMatchingPredicate(int value,
 				EventInfo?[] expectedEvents)
 			{
@@ -51,7 +51,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -65,7 +65,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>().Events()
@@ -76,7 +76,7 @@ public sealed partial class EventFilters
 					await That(events).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that events with EventFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -86,23 +86,21 @@ public sealed partial class EventFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			public static TheoryData<int, EventInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, EventInfo?[])>> GetFooValues()
+				=> new List<Func<(int, EventInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent2)),
 						]
-					},
-					{
-						3, [typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent3)),]
-					},
+					),
+					() => (3, [typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent3)),]),
 				};
 		}
 
 		public sealed class OrWithAttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWithAttribute()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -119,7 +117,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -136,8 +134,8 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForEventsWithAttributeMatchingPredicate(int value,
 				EventInfo?[] expectedEvents)
 			{
@@ -151,7 +149,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForEventsWithAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -166,21 +164,21 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			public static TheoryData<int, EventInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, EventInfo?[])>> GetFooValues()
+				=> new List<Func<(int, EventInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetEvent(nameof(Dummy.MyBarEvent)),
 							typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent2)),
 						]
-					},
-					{
+					),
+					() => (
 						3, [
 							typeof(Dummy).GetEvent(nameof(Dummy.MyBarEvent)),
 							typeof(Dummy).GetEvent(nameof(Dummy.MyFooEvent3)),
 						]
-					},
+					),
 				};
 		}
 

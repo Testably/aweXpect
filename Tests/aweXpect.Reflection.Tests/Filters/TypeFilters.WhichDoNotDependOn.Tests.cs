@@ -12,7 +12,7 @@ public sealed partial class TypeFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesNotDependingOnNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace).WhichDoNotDependOn(Layer1Namespace);
@@ -24,7 +24,7 @@ public sealed partial class TypeFilters
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesNotDependingOnTargetCollection()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -34,7 +34,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ViaField));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_ShouldKeepAllTypes()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)

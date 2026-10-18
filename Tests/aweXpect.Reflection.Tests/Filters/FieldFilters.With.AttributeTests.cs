@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -10,7 +10,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWithAttribute()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -24,8 +24,8 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForFieldsWithAttributeMatchingPredicate(int value,
 				FieldInfo?[] expectedFields)
 			{
@@ -39,7 +39,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>().Fields()
@@ -50,7 +50,7 @@ public sealed partial class FieldFilters
 					await That(fields).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fields with FieldFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -60,23 +60,21 @@ public sealed partial class FieldFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			public static TheoryData<int, FieldInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, FieldInfo?[])>> GetFooValues()
+				=> new List<Func<(int, FieldInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetField(nameof(Dummy.MyFooField2)),
 						]
-					},
-					{
-						3, [typeof(Dummy).GetField(nameof(Dummy.MyFooField3)),]
-					},
+					),
+					() => (3, [typeof(Dummy).GetField(nameof(Dummy.MyFooField3)),]),
 				};
 		}
 
 		public sealed class OrWithAttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWithAttribute()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -93,8 +91,8 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForFieldsWithAttributeMatchingPredicate(int value,
 				FieldInfo?[] expectedFields)
 			{
@@ -108,21 +106,21 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			public static TheoryData<int, FieldInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, FieldInfo?[])>> GetFooValues()
+				=> new List<Func<(int, FieldInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetField(nameof(Dummy.MyBarField)),
 							typeof(Dummy).GetField(nameof(Dummy.MyFooField2)),
 						]
-					},
-					{
+					),
+					() => (
 						3, [
 							typeof(Dummy).GetField(nameof(Dummy.MyBarField)),
 							typeof(Dummy).GetField(nameof(Dummy.MyFooField3)),
 						]
-					},
+					),
 				};
 		}
 

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatMethod
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HasInParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.InMemoryStream));
@@ -26,7 +25,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.InMemoryStream));
@@ -36,10 +35,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasInParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.InInt));
@@ -52,7 +51,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.InInt));
@@ -65,7 +64,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.InInt));
@@ -75,10 +74,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasInParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OptionalInt));
@@ -91,7 +90,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OptionalInt));
@@ -104,7 +103,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OptionalInt));
@@ -114,10 +113,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasOptionalParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutMemoryStream));
@@ -130,7 +129,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutMemoryStream));
@@ -140,10 +139,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasOutParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutInt));
@@ -156,7 +155,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutInt));
@@ -169,7 +168,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutInt));
@@ -179,10 +178,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasOutParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.ParamsInt));
@@ -195,7 +194,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.ParamsInt));
@@ -208,7 +207,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.ParamsInt));
@@ -218,10 +217,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameterExactly<int[]>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				// Contrast: the non-exact overload matches assignable (derived) parameter types.
@@ -235,7 +234,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefMemoryStream));
@@ -245,7 +244,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type Stream with ref modifier,
@@ -253,7 +252,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_OfExactType_ShouldMatchParameterType()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefMemoryStream));
@@ -266,7 +265,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_WhenByRefParameterUnwrapsToExactType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -279,7 +278,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_WhenParameterIsNotRef_ShouldFailWithExactTypeWording()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.PlainInt));
@@ -289,7 +288,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int with ref modifier,
@@ -297,7 +296,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -310,7 +309,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -320,7 +319,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int with name "other" with ref modifier,

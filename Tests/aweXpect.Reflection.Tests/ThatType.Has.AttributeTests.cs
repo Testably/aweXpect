@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,7 +6,7 @@ public sealed partial class ThatType
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttribute_ShouldSucceed()
 			{
 				Type subject = typeof(FooClass2);
@@ -21,7 +19,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttributeIndirectly_ShouldSucceed()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -34,7 +32,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -44,7 +42,7 @@ public sealed partial class ThatType
 					await That(subject).Has<FooAttribute>(false);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has direct ThatType.Has.AttributeTests.FooAttribute,
@@ -52,7 +50,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -62,7 +60,7 @@ public sealed partial class ThatType
 					await That(subject).Has<FooAttribute>(_ => throw new InvalidOperationException("boom"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatType.Has.AttributeTests.FooAttribute matching _ => throw new InvalidOperationException("boom"),
@@ -72,7 +70,7 @@ public sealed partial class ThatType
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMatchingAttribute_ShouldSucceed()
 			{
 				Type subject = typeof(FooClass2);
@@ -85,7 +83,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMatchingAttributeIndirectly_ShouldSucceed()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -98,7 +96,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMatchingAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -108,7 +106,7 @@ public sealed partial class ThatType
 					await That(subject).Has<FooAttribute>(foo => foo.Value == 2, false);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has direct ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 2,
@@ -116,7 +114,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNotMatchingAttribute_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -126,7 +124,7 @@ public sealed partial class ThatType
 					await That(subject).Has<FooAttribute>(foo => foo.Value == 3);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 3,
@@ -134,7 +132,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNotMatchingAttributeIndirectly_ShouldFail()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -144,7 +142,7 @@ public sealed partial class ThatType
 					await That(subject).Has<FooAttribute>(foo => foo.Value == 3);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 3,
@@ -152,7 +150,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -188,7 +186,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveAttribute_ShouldSucceed()
 			{
 				Type subject = typeof(FooClass2);
@@ -201,7 +199,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttribute_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -211,7 +209,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.Has<FooAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatType.Has.NegatedTests.FooAttribute,
@@ -219,7 +217,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMatchingAttribute_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -229,7 +227,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.Has<FooAttribute>(foo => foo.Value == 2));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatType.Has.NegatedTests.FooAttribute matching foo => foo.Value == 2,
@@ -258,7 +256,7 @@ public sealed partial class ThatType
 		{
 			public sealed class AttributeTests
 			{
-				[Fact]
+				[Test]
 				public async Task OrHas_AfterBecause_ShouldApplyBoth()
 				{
 					Type subject = typeof(BazClass);
@@ -268,7 +266,7 @@ public sealed partial class ThatType
 						await That(subject).Has<FooAttribute>().Because("we need one of them").OrHas<BarAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has ThatType.Has.OrHas.AttributeTests.FooAttribute or ThatType.Has.OrHas.AttributeTests.BarAttribute, because we need one of them,
@@ -277,7 +275,7 @@ public sealed partial class ThatType
 						.Because("Because(…) must return the result, so that the alternative attribute can still follow it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasBothAttributes_ShouldSucceed()
 				{
 					Type subject = typeof(FooBarClass);
@@ -290,7 +288,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasFirstAttribute_ShouldSucceed()
 				{
 					Type subject = typeof(FooClass);
@@ -303,7 +301,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasMatchingAttribute_ShouldSucceed()
 				{
 					Type subject = typeof(FooClass2);
@@ -316,7 +314,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasMatchingSecondAttribute_ShouldSucceed()
 				{
 					Type subject = typeof(BarClass3);
@@ -330,7 +328,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasNeitherAttribute_ShouldFail()
 				{
 					Type subject = typeof(BazClass);
@@ -340,7 +338,7 @@ public sealed partial class ThatType
 						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has ThatType.Has.OrHas.AttributeTests.FooAttribute or ThatType.Has.OrHas.AttributeTests.BarAttribute,
@@ -348,7 +346,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasSecondAttribute_ShouldSucceed()
 				{
 					Type subject = typeof(BarClass);
@@ -361,7 +359,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInheritance_ShouldWorkCorrectly()
 				{
 					Type subject = typeof(FooChildClass);
@@ -374,7 +372,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInheritanceFalse_ShouldWorkCorrectly()
 				{
 					Type subject = typeof(FooChildClass);
@@ -384,7 +382,7 @@ public sealed partial class ThatType
 						await That(subject).Has<FooAttribute>(false).OrHas<BarAttribute>(false);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has direct ThatType.Has.OrHas.AttributeTests.FooAttribute or direct ThatType.Has.OrHas.AttributeTests.BarAttribute,
@@ -392,7 +390,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithPredicate_WhenTypeHasNotMatchingAttribute_ShouldFail()
 				{
 					Type subject = typeof(FooClass2);
@@ -403,7 +401,7 @@ public sealed partial class ThatType
 							.OrHas<BarAttribute>(bar => bar.Name == "test");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has ThatType.Has.OrHas.AttributeTests.FooAttribute matching foo => foo.Value == 5 or ThatType.Has.OrHas.AttributeTests.BarAttribute matching bar => bar.Name == "test",

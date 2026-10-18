@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForInterface()
 			{
 				async Task Act()
@@ -21,7 +21,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeImplementInformationInErrorMessage()
 			{
 				async Task Act()
@@ -43,7 +43,7 @@ public sealed partial class TypeFilters
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
 				async Task Act()
@@ -70,7 +70,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForInterface()
 			{
 				async Task Act()
@@ -82,7 +82,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeDoNotImplementInformationInErrorMessage()
 			{
 				async Task Act()
@@ -104,7 +104,7 @@ public sealed partial class TypeFilters
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
 				async Task Act()

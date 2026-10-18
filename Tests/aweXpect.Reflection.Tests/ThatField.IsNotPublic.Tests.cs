@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,12 +8,12 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("InternalField")]
-			[InlineData("PrivateField")]
-			[InlineData("ProtectedInternalField")]
-			[InlineData("PrivateProtectedField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("InternalField")]
+			[Arguments("PrivateField")]
+			[Arguments("ProtectedInternalField")]
+			[Arguments("PrivateProtectedField")]
 			public async Task WhenFieldInfoIsNotPublic_ShouldSucceed(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -27,7 +26,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsPublic_ShouldFail()
 			{
 				FieldInfo? subject = GetField("PublicField");
@@ -55,7 +54,7 @@ public sealed partial class ThatField
 					await That(subject).IsNotPublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not public,
@@ -66,12 +65,12 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("InternalField")]
-			[InlineData("PrivateField")]
-			[InlineData("ProtectedInternalField")]
-			[InlineData("PrivateProtectedField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("InternalField")]
+			[Arguments("PrivateField")]
+			[Arguments("ProtectedInternalField")]
+			[Arguments("PrivateProtectedField")]
 			public async Task WhenFieldInfoIsNotPublic_ShouldFail(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -81,7 +80,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is public,
@@ -89,7 +88,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsPublic_ShouldSucceed()
 			{
 				FieldInfo? subject = GetField("PublicField");

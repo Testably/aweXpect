@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Internal.Tests.Formatting;
 
 public class FormattableMemberTests
 {
-	[Fact]
+	[Test]
 	public async Task From_WithConstructorInfo_ShouldFormatItWithTheConstructorFormatter()
 	{
 		ConstructorInfo constructorInfo = typeof(ConstructorFormatterTests.MyTestClass).GetConstructors().First();
@@ -19,7 +19,7 @@ public class FormattableMemberTests
 		await That(result).IsEqualTo(new ConstructorFormatter().GetString(constructorInfo));
 	}
 
-	[Fact]
+	[Test]
 	public async Task From_WithEventInfo_ShouldFormatItWithTheEventFormatter()
 	{
 		EventInfo eventInfo = typeof(EventFormatterTests.MyTestClass).GetEvents().First();
@@ -29,7 +29,7 @@ public class FormattableMemberTests
 		await That(result).IsEqualTo(new EventFormatter().GetString(eventInfo));
 	}
 
-	[Fact]
+	[Test]
 	public async Task From_WithFieldInfo_ShouldFormatItWithTheFieldFormatter()
 	{
 		FieldInfo fieldInfo = typeof(FieldFormatterTests.MyTestClass).GetFields().First();
@@ -39,7 +39,7 @@ public class FormattableMemberTests
 		await That(result).IsEqualTo(new FieldFormatter().GetString(fieldInfo));
 	}
 
-	[Fact]
+	[Test]
 	public async Task From_WithMethodInfo_ShouldFormatItWithTheMethodFormatter()
 	{
 		MethodInfo methodInfo = typeof(MethodFormatterTests.MyTestClass).GetMethods().First();
@@ -49,7 +49,7 @@ public class FormattableMemberTests
 		await That(result).IsEqualTo(new MethodFormatter().GetString(methodInfo));
 	}
 
-	[Fact]
+	[Test]
 	public async Task From_WithPropertyInfo_ShouldFormatItWithThePropertyFormatter()
 	{
 		PropertyInfo propertyInfo = typeof(PropertyFormatterTests.MyTestClass).GetProperties().First();
@@ -59,7 +59,7 @@ public class FormattableMemberTests
 		await That(result).IsEqualTo(new PropertyFormatter().GetString(propertyInfo));
 	}
 
-	[Fact]
+	[Test]
 	public async Task From_WithNull_ShouldReturnNull()
 	{
 		object? result = FormattableMember.From(null);
@@ -67,7 +67,7 @@ public class FormattableMemberTests
 		await That(result).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task From_WithType_ShouldReturnTheType()
 	{
 		Type type = typeof(MethodFormatterTests.MyTestClass);
@@ -78,7 +78,7 @@ public class FormattableMemberTests
 			.Because("a type is formatted by aweXpect.Core itself");
 	}
 
-	[Fact]
+	[Test]
 	public async Task FromAll_ShouldFormatEachMember()
 	{
 		MethodInfo[] methods = typeof(MethodFormatterTests.MyTestClass).GetMethods().Take(2).ToArray();
@@ -89,7 +89,7 @@ public class FormattableMemberTests
 			$"[{new MethodFormatter().GetString(methods[0])}, {new MethodFormatter().GetString(methods[1])}]");
 	}
 
-	[Fact]
+	[Test]
 	public async Task FromAll_WithCollection_ShouldKeepTheNumberOfItems()
 	{
 		MethodInfo methodInfo = typeof(MethodFormatterTests.MyTestClass).GetMethods().First();
@@ -101,7 +101,7 @@ public class FormattableMemberTests
 			.Because("a truncated collection names the number of remaining items");
 	}
 
-	[Fact]
+	[Test]
 	public async Task FromAll_WithLazySequence_ShouldNotKnowTheNumberOfItems()
 	{
 		MethodInfo methodInfo = typeof(MethodFormatterTests.MyTestClass).GetMethods().First();

@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForAssignableFrom()
 			{
 				async Task Act()
@@ -21,7 +21,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForAssignableTo()
 			{
 				async Task Act()
@@ -33,7 +33,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForNotAssignableFrom()
 			{
 				async Task Act()
@@ -46,7 +46,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForNotAssignableTo()
 			{
 				async Task Act()
@@ -59,7 +59,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeAssignableInformationInErrorMessage()
 			{
 				async Task Act()
@@ -81,7 +81,7 @@ public sealed partial class TypeFilters
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnOpenGeneric_ShouldThrowArgumentException()
 			{
 				async Task Act()

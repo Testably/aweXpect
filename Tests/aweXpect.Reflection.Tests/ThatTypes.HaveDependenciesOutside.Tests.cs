@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -16,7 +15,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllowingAllNamespaces_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -29,7 +28,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Layer1Namespace, Layer2Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}" or "{Layer2Namespace}",
@@ -42,7 +41,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveDependenciesOutside_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -59,7 +58,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldListNull()
 			{
 				IEnumerable<Type?> subject =
@@ -73,7 +72,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
@@ -86,7 +85,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDependsOnlyOnAllowedNamespaces_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -100,7 +99,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
@@ -114,7 +113,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableTypesHaveDependenciesOutside_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -130,7 +129,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableContainsTypeDependingOnlyOnAllowedNamespaces_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -143,7 +142,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
@@ -160,7 +159,7 @@ public sealed partial class ThatTypes
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveDependenciesOutsideTargetCollection_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -177,7 +176,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldListNull()
 			{
 				IEnumerable<Type?> subject =
@@ -191,7 +190,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -204,7 +203,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceCountsAsOutside()
 			{
 				IEnumerable<Type?> subject =
@@ -221,7 +220,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldFailWhenAllTypesHaveDependenciesOutside()
 			{
 				IEnumerable<Type?> subject =
@@ -236,7 +235,7 @@ public sealed partial class ThatTypes
 						.DoesNotComplyWith(they => they.HaveDependenciesOutside(Types.InNamespace(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              not all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -250,7 +249,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldSucceedWhenSomeTypeDependsOnlyOnTargetCollections()
 			{
 				IEnumerable<Type?> subject =
@@ -268,7 +267,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReferencingOwnSubNamespace_ShouldFailByDefault()
 			{
 				IEnumerable<Type?> subject =
@@ -281,7 +280,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -294,7 +293,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDependsOnlyOnTargetCollections_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -308,7 +307,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -321,7 +320,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -335,7 +334,7 @@ public sealed partial class ThatTypes
 						.OrOn(Types.InNamespace(Layer2Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies or types within namespace "{Layer2Namespace}" in all loaded assemblies,
@@ -349,7 +348,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableTypesHaveDependenciesOutsideTargetCollection_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -365,7 +364,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableContainsTypeDependingOnlyOnTargetCollections_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -378,7 +377,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -395,7 +394,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveDependenciesOutside_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -410,7 +409,7 @@ public sealed partial class ThatTypes
 						.DoesNotComplyWith(they => they.HaveDependenciesOutside(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              not all have dependencies outside namespace "{Layer1Namespace}",
@@ -424,7 +423,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDependsOnlyOnAllowedNamespaces_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =

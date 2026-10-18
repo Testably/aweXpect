@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasNoParamsParameter_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -20,7 +19,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has a params parameter,
@@ -28,7 +27,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasParamsParameter_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithParamsParameter).GetConstructors().Single();
@@ -41,7 +40,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? constructorInfo = null;
@@ -51,7 +50,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has a params parameter,
@@ -62,7 +61,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class TypedOverloadsTests
 		{
-			[Fact]
+			[Test]
 			public async Task GenericExactType_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -72,7 +71,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly<int[]>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int[] with params modifier,
@@ -80,7 +79,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactTypeAndName_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -90,7 +89,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly<int[]>("values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int[] with name "values" with params modifier,
@@ -98,7 +97,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericType_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -108,7 +107,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter<int[]>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int[] with params modifier,
@@ -116,7 +115,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericTypeAndName_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -126,7 +125,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter<int[]>("values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int[] with name "values" with params modifier,
@@ -134,7 +133,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Name_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -144,7 +143,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter("values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter with name "values" with params modifier,
@@ -152,7 +151,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlySomeParametersAreParams_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
@@ -166,7 +165,7 @@ public sealed partial class ThatConstructor
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task Type_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -176,7 +175,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter(typeof(int[]));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int[] with params modifier,
@@ -184,7 +183,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeAndName_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -194,7 +193,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameter(typeof(int[]), "values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int[] with name "values" with params modifier,
@@ -202,7 +201,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactType_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -212,7 +211,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly(typeof(int[]));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int[] with params modifier,
@@ -220,7 +219,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactTypeAndName_WhenParameterIsNotParams_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -230,7 +229,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly(typeof(int[]), "values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int[] with name "values" with params modifier,
@@ -242,7 +241,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasNoParamsParameter_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -255,7 +254,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasParamsParameter_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithParamsParameter).GetConstructors().Single();
@@ -265,7 +264,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).DoesNotComplyWith(it => it.HasParamsParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             does not have a params parameter,

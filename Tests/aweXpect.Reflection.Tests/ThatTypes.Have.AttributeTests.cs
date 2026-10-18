@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveAttribute_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types().With<FooAttribute>();
@@ -23,7 +22,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveAttributeIndirectly_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -37,7 +36,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -48,7 +47,7 @@ public sealed partial class ThatTypes
 					await That(subject).Have<FooAttribute>(false);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have direct ThatTypes.Have.AttributeTests.FooAttribute,
@@ -61,7 +60,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveMatchingAttribute_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -75,7 +74,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveMatchingAttributeIndirectly_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -89,7 +88,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveMatchingAttributeIndirectly_WhenInheritIsFalse_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -100,7 +99,7 @@ public sealed partial class ThatTypes
 					await That(subject).Have<FooAttribute>(foo => foo.Value == 2, false);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have direct ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 2,
@@ -113,7 +112,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveNotMatchingAttribute_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -124,7 +123,7 @@ public sealed partial class ThatTypes
 					await That(subject).Have<FooAttribute>(foo => foo.Value == 3);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
@@ -137,7 +136,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveNotMatchingAttributeIndirectly_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types()
@@ -148,7 +147,7 @@ public sealed partial class ThatTypes
 					await That(subject).Have<FooAttribute>(foo => foo.Value == 3);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
@@ -181,7 +180,7 @@ public sealed partial class ThatTypes
 		{
 			public sealed class AttributeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasBothAttributes_ShouldSucceed()
 				{
 					List<Type> types = [typeof(FooBarClass),];
@@ -194,7 +193,7 @@ public sealed partial class ThatTypes
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasFirstAttribute_ShouldSucceed()
 				{
 					List<Type> types = [typeof(FooClass),];
@@ -207,7 +206,7 @@ public sealed partial class ThatTypes
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasMatchingAttribute_ShouldSucceed()
 				{
 					List<Type> types = [typeof(FooClass2),];
@@ -220,7 +219,7 @@ public sealed partial class ThatTypes
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasMatchingSecondAttribute_ShouldSucceed()
 				{
 					List<Type> types = [typeof(BarClass3),];
@@ -234,7 +233,7 @@ public sealed partial class ThatTypes
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasNeitherAttribute_ShouldFail()
 				{
 					List<Type> types = [typeof(BazClass),];
@@ -244,7 +243,7 @@ public sealed partial class ThatTypes
 						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that types
 						             all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute,
@@ -257,7 +256,7 @@ public sealed partial class ThatTypes
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeHasSecondAttribute_ShouldSucceed()
 				{
 					List<Type> types = [typeof(BarClass),];
@@ -270,7 +269,7 @@ public sealed partial class ThatTypes
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInheritance_ShouldWorkCorrectly()
 				{
 					List<Type> types = [typeof(FooChildClass),];
@@ -283,7 +282,7 @@ public sealed partial class ThatTypes
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInheritanceFalse_ShouldWorkCorrectly()
 				{
 					List<Type> types = [typeof(FooChildClass),];
@@ -293,7 +292,7 @@ public sealed partial class ThatTypes
 						await That(types).Have<FooAttribute>(false).OrHave<BarAttribute>(false);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that types
 						             all have direct ThatTypes.Have.FooAttribute or direct ThatTypes.Have.BarAttribute,
@@ -306,7 +305,7 @@ public sealed partial class ThatTypes
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithPredicate_WhenTypeHasNotMatchingAttribute_ShouldFail()
 				{
 					List<Type> types = [typeof(FooClass2),];
@@ -317,7 +316,7 @@ public sealed partial class ThatTypes
 							.OrHave<BarAttribute>(bar => bar.Name == "test");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that types
 						             all have ThatTypes.Have.FooAttribute matching foo => foo.Value == 5 or ThatTypes.Have.BarAttribute matching bar => bar.Name == "test",
@@ -334,7 +333,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesHaveAttribute_ShouldFail()
 			{
 				List<Type> subjects = [typeof(FooClass2),];
@@ -345,7 +344,7 @@ public sealed partial class ThatTypes
 						=> they.Have<FooAttribute>().OrHave<BarAttribute>(x => x.Name == "foo"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute matching x => x.Name == "foo",
@@ -358,7 +357,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesDoNotHaveAttribute_ShouldSucceed()
 			{
 				List<Type> subjects = [typeof(BazClass),];
@@ -371,7 +370,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				List<Type> subjects = [typeof(FooClass2),];

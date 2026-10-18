@@ -11,7 +11,7 @@ public sealed partial class ThatConstructors
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllConstructorsAreObsolete_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject =
@@ -27,7 +27,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorsContainNonObsoleteConstructors_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject =
@@ -60,7 +60,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllConstructorsAreObsolete_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject =
@@ -86,7 +86,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorsContainNonObsoleteConstructors_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject =
@@ -110,7 +110,7 @@ public sealed partial class ThatConstructors
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllConstructorsAreObsolete_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -137,7 +137,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllConstructorsAreObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -154,7 +154,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorsContainNonObsoleteConstructors_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = new[]

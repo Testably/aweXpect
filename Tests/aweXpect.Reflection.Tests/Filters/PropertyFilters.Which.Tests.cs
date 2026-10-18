@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWhichSatisfyThePredicate()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -22,7 +21,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>().Properties()
@@ -33,7 +32,7 @@ public sealed partial class PropertyFilters
 					await That(properties).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that properties matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,

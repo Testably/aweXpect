@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreNotPrivate_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -28,7 +27,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsPrivate_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -42,7 +41,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotPrivate();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are not private,
@@ -58,10 +57,10 @@ public sealed partial class ThatMethods
 
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("InternalMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("InternalMethod")]
 			public async Task WhenMethodInfoIsNotPrivate_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -74,7 +73,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsPrivate_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("PrivateMethod");
@@ -84,7 +83,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotPrivate();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not private,
@@ -100,10 +99,10 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("InternalMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("InternalMethod")]
 			public async Task WhenMethodInfoIsNotPrivate_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -113,7 +112,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreNotPrivate());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is private,
@@ -124,7 +123,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsPrivate_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("PrivateMethod");

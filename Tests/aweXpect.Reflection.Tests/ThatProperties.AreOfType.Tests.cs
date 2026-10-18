@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -13,7 +12,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomePropertiesAreNotOfType()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -27,7 +26,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreOfType<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of type int,
@@ -40,7 +39,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllPropertiesAreOfType()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -57,7 +56,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -76,7 +75,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreOfType_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -90,7 +89,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreOfType<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             not all are of type int,
@@ -103,7 +102,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomePropertiesAreNotOfType_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -124,7 +123,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomePropertiesAreNotOfType()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -137,7 +136,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreOfType<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of type int,
@@ -150,7 +149,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllPropertiesAreOfType()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -166,7 +165,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -205,7 +204,7 @@ public sealed partial class ThatProperties
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllPropertiesAreOfType()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -225,7 +224,7 @@ public sealed partial class ThatProperties
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreOneOfTheTypes_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -242,7 +241,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomePropertiesAreNoneOfTheTypes_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -256,7 +255,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreOfType<bool>().OrOfType<long>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of type bool or of type long,

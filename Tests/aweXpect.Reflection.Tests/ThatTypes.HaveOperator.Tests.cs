@@ -14,7 +14,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheOperator_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -30,7 +30,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheOperator_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -59,7 +59,7 @@ public sealed partial class ThatTypes
 
 		public sealed class WithOperandTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheOperatorWithOperand_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -75,7 +75,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheOperatorWithTypeOperand_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -91,7 +91,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheOperatorWithOperand_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -120,7 +120,7 @@ public sealed partial class ThatTypes
 
 		public sealed class DoNotHaveOperatorTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheOperator_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -136,7 +136,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheOperator_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -165,7 +165,7 @@ public sealed partial class ThatTypes
 
 		public sealed class DoNotHaveOperatorWithOperandTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheOperatorWithOperand_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -181,7 +181,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheOperatorWithOperand_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -207,7 +207,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheOperatorWithTypeOperand_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -236,7 +236,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheOperator_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -262,7 +262,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheOperator_DoNotHave_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -292,7 +292,7 @@ public sealed partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheOperator_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -308,7 +308,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheOperatorWithOperand_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -324,7 +324,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheOperator_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -340,7 +340,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheOperatorWithOperand_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -356,7 +356,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheOperator_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -382,7 +382,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheOperator_DoNotHave_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]

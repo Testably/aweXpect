@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNested_ShouldSucceed()
 			{
 				Type subject = typeof(Container.PublicNestedClass);
@@ -22,7 +21,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotNested_ShouldFail()
 			{
 				Type subject = typeof(Container);
@@ -40,7 +39,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -61,7 +60,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNested_ShouldFail()
 			{
 				Type subject = typeof(Container.PublicNestedClass);
@@ -71,7 +70,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNested());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not nested,
@@ -79,7 +78,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotNested_ShouldSucceed()
 			{
 				Type subject = typeof(Container);

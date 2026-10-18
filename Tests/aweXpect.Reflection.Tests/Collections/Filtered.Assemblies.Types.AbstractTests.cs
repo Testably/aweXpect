@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class AbstractTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForAbstractTypes()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Abstract.Types();
@@ -18,7 +18,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t.IsAbstract);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -29,7 +29,7 @@ public sealed partial class Filtered
 						   (type.IsNested ? type.IsNestedPublic : type.IsPublic));
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()
@@ -51,8 +51,8 @@ public sealed partial class Filtered
 						             """).AsWildcard();
 				}
 
-				[Theory]
-				[MemberData(nameof(GetAccessModifiers), MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(GetAccessModifiers))]
 				public async Task WithAccessModifier_ShouldIncludeAbstractInformationInErrorMessage(
 					AccessModifiers accessModifier, string expectedString)
 				{

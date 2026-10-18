@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithParameterOfExactType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -21,7 +21,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeMethodsWithParameterOfDerivedType()
 			{
 				Filtered.Methods exactMethods = In.Type<TestClass>()
@@ -38,7 +38,7 @@ public sealed partial class MethodFilters
 				]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_ShouldFilterForMethodsWithParameterOfExactType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -51,7 +51,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_ShouldNotIncludeMethodsWithParameterOfDerivedType()
 			{
 				Filtered.Methods exactMethods = In.Type<TestClass>()
@@ -68,7 +68,7 @@ public sealed partial class MethodFilters
 				]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithName_ShouldFilterForMethodsWithParameterOfExactTypeAndName()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -82,7 +82,7 @@ public sealed partial class MethodFilters
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task UsingType_WithName_ShouldIncludeNameInDescription()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithIntParameters>()
@@ -93,7 +93,7 @@ public sealed partial class MethodFilters
 			}
 #pragma warning restore CA2263
 
-			[Fact]
+			[Test]
 			public async Task WithName_ShouldFilterForMethodsWithParameterOfExactTypeAndName()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -106,7 +106,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithName_ShouldIncludeNameInDescription()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithIntParameters>()

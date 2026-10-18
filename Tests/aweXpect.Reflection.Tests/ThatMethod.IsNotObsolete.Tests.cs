@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotObsolete_ShouldSucceed()
 			{
 				MethodInfo subject =
@@ -24,7 +23,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -42,7 +41,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsObsolete_ShouldFail()
 			{
 				MethodInfo subject =
@@ -64,7 +63,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotObsolete_ShouldFail()
 			{
 				MethodInfo subject =
@@ -75,7 +74,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsNotObsolete());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					              Expected that subject
 					              is obsolete,
@@ -83,7 +82,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsObsolete_ShouldSucceed()
 			{
 				MethodInfo subject =

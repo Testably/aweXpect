@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class SealedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForSealedTypes()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Sealed.Types();
@@ -19,7 +19,7 @@ public sealed partial class Filtered
 						type is { IsAbstract: false, IsSealed: true, IsInterface: false, });
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeSealedInformationInErrorMessage()
 				{
 					async Task Act()
@@ -41,9 +41,8 @@ public sealed partial class Filtered
 						             """).AsWildcard();
 				}
 
-				[Theory]
-				[MemberData(nameof(Filters.AssemblyFilters.GetAccessModifiers),
-					MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(Filters.AssemblyFilters.GetAccessModifiers))]
 				public async Task WithAccessModifier_ShouldIncludeSealedInformationInErrorMessage(
 					AccessModifiers accessModifier, string expectedString)
 				{

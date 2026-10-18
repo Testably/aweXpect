@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomeMethodsDoNotReturnVoid()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -25,7 +24,7 @@ public sealed partial class ThatMethods
 					await That(subject).ReturnVoid();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all return void,
@@ -38,7 +37,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllMethodsReturnVoid()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -57,7 +56,7 @@ public sealed partial class ThatMethods
 
 		public sealed class OrReturnTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsReturnOneOfTheTypes_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -74,7 +73,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeMethodsReturnNoneOfTheTypes_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -88,7 +87,7 @@ public sealed partial class ThatMethods
 					await That(subject).ReturnVoid().OrReturn<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all return void or int,
@@ -104,7 +103,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsReturnVoid_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -115,7 +114,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.ReturnVoid());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name == nameof(TestClass.VoidMethod) in type ThatMethods.TestClass
 					             not all return void,
@@ -129,7 +128,7 @@ public sealed partial class ThatMethods
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeMethodsDoNotReturnVoid_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()

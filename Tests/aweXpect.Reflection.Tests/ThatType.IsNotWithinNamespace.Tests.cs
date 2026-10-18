@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotWithinNamespace_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(ClassInSiblingNamespaceScope);
@@ -21,7 +20,7 @@ public sealed partial class ThatType
 						=> it.IsNotWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
@@ -29,7 +28,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotWithinNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ClassInSiblingNamespaceScope);
@@ -43,7 +42,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -61,7 +60,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsWithinNamespace_ShouldFail()
 			{
 				Type subject = typeof(ClassInNestedNamespaceScope);
@@ -72,7 +71,7 @@ public sealed partial class ThatType
 						.IsNotWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
@@ -80,7 +79,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsWithinNamespace_ShouldSucceedWithNegatedAssertion()
 			{
 				Type subject = typeof(ClassInNestedNamespaceScope);

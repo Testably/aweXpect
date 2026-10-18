@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("InternalProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("InternalProperty")]
 			public async Task WhenPropertyInfoIsNotPrivateProtected_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -25,7 +24,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPrivateProtected_ShouldFail()
 			{
 				Filtered.Properties subject = GetProperties("PrivateProtectedProperty");
@@ -35,7 +34,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotPrivateProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not private protected,
@@ -51,10 +50,10 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("InternalProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("InternalProperty")]
 			public async Task WhenPropertyInfoIsNotPrivateProtected_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -64,7 +63,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreNotPrivateProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is private protected,
@@ -75,7 +74,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPrivateProtected_ShouldSucceed()
 			{
 				Filtered.Properties subject = GetProperties("PrivateProtectedProperty");

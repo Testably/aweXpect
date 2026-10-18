@@ -14,7 +14,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyVirtualMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -29,7 +29,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonVirtualMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -56,7 +56,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyVirtualMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -81,7 +81,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonVirtualMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -99,7 +99,7 @@ public sealed partial class ThatMethods
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyVirtualMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(AbstractClassWithMembers)
@@ -115,7 +115,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonVirtualMethods_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(AbstractClassWithMembers)

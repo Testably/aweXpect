@@ -9,7 +9,7 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsConstant_ShouldSucceed()
 			{
 				FieldInfo subject =
@@ -23,7 +23,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNotConstant_ShouldFail()
 			{
 				FieldInfo subject =
@@ -42,7 +42,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -63,7 +63,7 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsConstant_ShouldFail()
 			{
 				FieldInfo subject =
@@ -82,7 +82,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNotConstant_ShouldSucceed()
 			{
 				FieldInfo subject =

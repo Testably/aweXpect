@@ -10,7 +10,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenOperatorIsOnlyInherited_WithInherit_ShouldSucceed()
 			{
 				Type subject = typeof(OperatorDerivedClass);
@@ -23,7 +23,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOperatorIsOnlyInherited_WithoutInherit_ShouldFail()
 			{
 				Type subject = typeof(OperatorDerivedClass);
@@ -41,7 +41,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheOperator_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -59,7 +59,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperator_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -72,7 +72,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -93,7 +93,7 @@ public sealed partial class ThatType
 
 		public sealed class WithOperandTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheOperatorWithOperand_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -111,7 +111,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperatorWithGenericOperand_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -124,7 +124,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperatorWithOpenGenericOperand_ShouldSucceed()
 			{
 				Type subject = typeof(GenericBox<int>);
@@ -137,7 +137,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperatorWithTypeOperand_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -153,7 +153,7 @@ public sealed partial class ThatType
 
 		public sealed class DoesNotHaveOperatorTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheOperator_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -166,7 +166,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperator_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -187,7 +187,7 @@ public sealed partial class ThatType
 
 		public sealed class DoesNotHaveOperatorWithOperandTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheOperatorWithOperand_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -200,7 +200,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperatorWithGenericOperand_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -218,7 +218,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperatorWithTypeOperand_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -239,7 +239,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheOperator_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -252,7 +252,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheOperator_ShouldFail()
 			{
 				Type subject = typeof(Money);

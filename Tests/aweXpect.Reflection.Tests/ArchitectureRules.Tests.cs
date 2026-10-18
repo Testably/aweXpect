@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Tests;
 /// </summary>
 public sealed class ArchitectureRulesTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldSupportExemptionsViaExcept()
 	{
 		Filtered.Types layer2 = Types.InNamespace(Layer2Namespace);
@@ -28,7 +28,7 @@ public sealed class ArchitectureRulesTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldVerifyMultipleRulesWithThatAll()
 	{
 		// A "layer" is just a reusable Filtered.Types selection.
@@ -49,7 +49,7 @@ public sealed class ArchitectureRulesTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenARuleIsViolated_ShouldReportAggregatedFailure()
 	{
 		Filtered.Types layer1 = Types.InNamespace(Layer1Namespace);

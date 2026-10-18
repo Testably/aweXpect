@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("InternalEvent")]
+			[Test]
+			[Arguments("ProtectedEvent")]
+			[Arguments("PublicEvent")]
+			[Arguments("InternalEvent")]
 			public async Task WhenEventInfoIsNotPrivate_ShouldSucceed(string eventName)
 			{
 				EventInfo? subject = GetEvent(eventName);
@@ -25,7 +24,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -43,7 +42,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsPrivate_ShouldFail()
 			{
 				EventInfo? subject = GetEvent("PrivateEvent");
@@ -53,7 +52,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsNotPrivate();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not private,
@@ -64,10 +63,10 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedEvent", "protected")]
-			[InlineData("PublicEvent", "public")]
-			[InlineData("InternalEvent", "internal")]
+			[Test]
+			[Arguments("ProtectedEvent", "protected")]
+			[Arguments("PublicEvent", "public")]
+			[Arguments("InternalEvent", "internal")]
 			public async Task WhenEventInfoIsNotPrivate_ShouldFail(string eventName, string expectedAccessModifier)
 			{
 				EventInfo? subject = GetEvent(eventName);
@@ -77,7 +76,7 @@ public sealed partial class ThatEvent
 					await That(subject).DoesNotComplyWith(it => it.IsNotPrivate());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is private,
@@ -85,7 +84,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsPrivate_ShouldSucceed()
 			{
 				EventInfo? subject = GetEvent("PrivateEvent");

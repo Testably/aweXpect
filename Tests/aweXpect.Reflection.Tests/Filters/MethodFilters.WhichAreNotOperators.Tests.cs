@@ -11,7 +11,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonOperators()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<MethodFilters>()
@@ -25,7 +25,7 @@ public sealed partial class MethodFilters
 
 		public sealed class WithOperatorTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldExcludeTheSpecificOperatorButKeepOthers()
 			{
 				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
@@ -41,7 +41,7 @@ public sealed partial class MethodFilters
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldKeepOtherOperatorsWithoutCustomization()
 			{
 				Filtered.Methods methods = In.Type<ClassWithOperators>()

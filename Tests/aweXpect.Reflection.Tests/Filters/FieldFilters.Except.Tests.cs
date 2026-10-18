@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutFieldsThatSatisfyThePredicate()
 			{
 				Filtered.Fields fields = In.Type<ClassWithFields>()
@@ -20,7 +19,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("fields except field => field.Name == \"ExcludedField\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>().Fields()
@@ -31,7 +30,7 @@ public sealed partial class FieldFilters
 					await That(fields).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fields except _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,

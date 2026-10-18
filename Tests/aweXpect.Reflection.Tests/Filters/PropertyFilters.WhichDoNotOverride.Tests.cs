@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonOverridingProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<ConcretePropertyClass>()

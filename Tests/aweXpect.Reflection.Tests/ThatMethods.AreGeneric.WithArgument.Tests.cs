@@ -11,10 +11,10 @@ public sealed partial class ThatMethods
 		{
 			public sealed class GenericTests
 			{
-				[Theory]
-				[InlineData(0, false)]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task AtIndex_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -39,10 +39,10 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData(0, true)]
-				[InlineData(1, false)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
 				public async Task AtIndex_FromEnd_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -68,7 +68,7 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithRestrictedMatchingArgument_ShouldSucceed()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -81,7 +81,7 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithRestrictedNotMatchingArgument_ShouldFail()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -104,7 +104,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithUnrestrictedArgument_ShouldFail()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithUnrestrictedArgumentMethod");
@@ -130,10 +130,10 @@ public sealed partial class ThatMethods
 
 			public sealed class GenericNamedTests
 			{
-				[Theory]
-				[InlineData(0, false)]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task AtIndex_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -158,10 +158,10 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData(0, true)]
-				[InlineData(1, false)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
 				public async Task AtIndex_FromEnd_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -187,7 +187,7 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithRestrictedMatchingArgumentAndName_ShouldSucceed()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -200,7 +200,7 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithRestrictedMatchingArgumentAndNotMatchingName_ShouldFail()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -223,7 +223,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithRestrictedNotMatchingArgumentAndMatchingName_ShouldFail()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -246,7 +246,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithUnrestrictedArgument_ShouldFail()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithUnrestrictedArgumentMethod");
@@ -269,9 +269,9 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Theory]
-				[InlineData("TBa", true)]
-				[InlineData("Tba", false)]
+				[Test]
+				[Arguments("TBa", true)]
+				[Arguments("Tba", false)]
 				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -295,9 +295,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T[a-zA-Z]*r", true)]
-				[InlineData("T[a-zA-Z]*o", false)]
+				[Test]
+				[Arguments("T[a-zA-Z]*r", true)]
+				[Arguments("T[a-zA-Z]*o", false)]
 				public async Task ShouldSupportAsRegex(string regex, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -321,9 +321,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData("Bar", true)]
-				[InlineData("bar", false)]
+				[Test]
+				[Arguments("Bar", true)]
+				[Arguments("bar", false)]
 				public async Task ShouldSupportAsSuffix(string suffix, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -347,9 +347,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T??r", true)]
-				[InlineData("T??o", false)]
+				[Test]
+				[Arguments("T??r", true)]
+				[Arguments("T??o", false)]
 				public async Task ShouldSupportAsWildcard(string wildcard, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -373,9 +373,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData(true, true)]
-				[InlineData(false, false)]
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(false, false)]
 				public async Task ShouldSupportIgnoringCase(bool ignoreCase, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -400,7 +400,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -417,10 +417,10 @@ public sealed partial class ThatMethods
 
 			public sealed class NamedTests
 			{
-				[Theory]
-				[InlineData(0, false)]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task AtIndex_ForMethodWithMatchingArgumentName_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -445,10 +445,10 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData(0, true)]
-				[InlineData(1, false)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
 				public async Task AtIndex_FromEnd_ForMethodWithMatchingArgumentName_ShouldSucceedWhenIndexMatches(
 					int index,
 					bool expectSuccess)
@@ -474,7 +474,7 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithMatchingArgumentName_ShouldSucceed()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -487,7 +487,7 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForMethodWithNotMatchingArgumentName_ShouldFail()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -510,9 +510,9 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Theory]
-				[InlineData("TBa", true)]
-				[InlineData("Tba", false)]
+				[Test]
+				[Arguments("TBa", true)]
+				[Arguments("Tba", false)]
 				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -536,9 +536,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T[a-zA-Z]*r", true)]
-				[InlineData("T[a-zA-Z]*s", false)]
+				[Test]
+				[Arguments("T[a-zA-Z]*r", true)]
+				[Arguments("T[a-zA-Z]*s", false)]
 				public async Task ShouldSupportAsRegex(string regex, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -562,9 +562,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData("Bar", true)]
-				[InlineData("bar", false)]
+				[Test]
+				[Arguments("Bar", true)]
+				[Arguments("bar", false)]
 				public async Task ShouldSupportAsSuffix(string suffix, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -588,9 +588,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T??r", true)]
-				[InlineData("T??s", false)]
+				[Test]
+				[Arguments("T??r", true)]
+				[Arguments("T??s", false)]
 				public async Task ShouldSupportAsWildcard(string wildcard, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -614,9 +614,9 @@ public sealed partial class ThatMethods
 						               """);
 				}
 
-				[Theory]
-				[InlineData(true, true)]
-				[InlineData(false, false)]
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(false, false)]
 				public async Task ShouldSupportIgnoringCase(bool ignoreCase, bool expectSuccess)
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
@@ -640,7 +640,7 @@ public sealed partial class ThatMethods
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");

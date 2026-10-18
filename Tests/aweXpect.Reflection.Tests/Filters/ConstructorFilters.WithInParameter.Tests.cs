@@ -19,7 +19,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithInParameter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -31,7 +31,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeConstructorsWithoutInParameter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -40,7 +40,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(PlainConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldFilterForConstructorsWithInParameterOfSpecificType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -49,7 +49,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(InParameterConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldNotIncludeConstructorsWithInParameterOfOtherType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -58,7 +58,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(InParameterConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WithName_ShouldFilterForConstructorsWithInParameterOfSpecificTypeAndName()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -70,7 +70,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class DescriptionTests
 		{
-			[Fact]
+			[Test]
 			public async Task ByName_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -79,7 +79,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfType_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -88,7 +88,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfTypeWithName_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -97,7 +97,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfType_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -106,7 +106,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfTypeWithName_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -115,7 +115,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeInParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -125,7 +125,7 @@ public sealed partial class ConstructorFilters
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task OfType_UsingType_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -134,7 +134,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfTypeWithName_UsingType_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -143,7 +143,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfType_UsingType_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -152,7 +152,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with in modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfTypeWithName_UsingType_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

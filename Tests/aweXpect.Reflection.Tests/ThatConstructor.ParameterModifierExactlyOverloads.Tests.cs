@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -14,7 +13,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HasInParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<InMemoryStreamCtor>();
@@ -27,7 +26,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<InMemoryStreamCtor>();
@@ -37,10 +36,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<InIntCtor>();
@@ -53,7 +52,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<InIntCtor>();
@@ -66,7 +65,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<InIntCtor>();
@@ -76,10 +75,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyWithType_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<InMemoryStreamCtor>();
@@ -89,10 +88,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyWithType_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<InIntCtor>();
@@ -105,7 +104,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyWithTypeAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<InIntCtor>();
@@ -118,7 +117,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterExactlyWithTypeAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<InIntCtor>();
@@ -128,10 +127,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasInParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasInParameterWithType_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<InMemoryStreamCtor>();
@@ -144,7 +143,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
@@ -157,7 +156,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
@@ -170,7 +169,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
@@ -180,10 +179,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyWithType_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
@@ -196,7 +195,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyWithTypeAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
@@ -209,7 +208,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterExactlyWithTypeAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
@@ -219,10 +218,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutMemoryStreamCtor>();
@@ -235,7 +234,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutMemoryStreamCtor>();
@@ -245,10 +244,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutIntCtor>();
@@ -261,7 +260,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutIntCtor>();
@@ -274,7 +273,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutIntCtor>();
@@ -284,10 +283,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyWithType_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutMemoryStreamCtor>();
@@ -297,10 +296,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyWithType_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutIntCtor>();
@@ -313,7 +312,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyWithTypeAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutIntCtor>();
@@ -326,7 +325,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterExactlyWithTypeAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutIntCtor>();
@@ -336,10 +335,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOutParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterWithType_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<OutMemoryStreamCtor>();
@@ -352,7 +351,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactly_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -365,7 +364,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -378,7 +377,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -388,10 +387,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly<int[]>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyWithType_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -404,7 +403,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyWithTypeAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -417,7 +416,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterExactlyWithTypeAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -427,10 +426,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParamsParameterExactly(typeof(int[]), "other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefMemoryStreamCtor>();
@@ -443,7 +442,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefMemoryStreamCtor>();
@@ -453,7 +452,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type Stream with ref modifier,
@@ -461,7 +460,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_OfExactType_ShouldMatchParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefMemoryStreamCtor>();
@@ -474,7 +473,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactly_WhenByRefParameterUnwrapsToExactType_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
@@ -487,7 +486,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
@@ -500,7 +499,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
@@ -510,10 +509,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameterExactly<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyWithType_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefMemoryStreamCtor>();
@@ -523,7 +522,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type Stream with ref modifier,
@@ -531,7 +530,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyWithType_OfExactType_ShouldMatchParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefMemoryStreamCtor>();
@@ -544,7 +543,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyWithType_WhenByRefParameterUnwrapsToExactType_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
@@ -557,7 +556,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyWithTypeAndName_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
@@ -570,7 +569,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterExactlyWithTypeAndName_WhenWrongName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
@@ -580,10 +579,10 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasRefParameterExactly(typeof(int), "other");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterWithType_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				ConstructorInfo constructorInfo = Constructor<RefMemoryStreamCtor>();

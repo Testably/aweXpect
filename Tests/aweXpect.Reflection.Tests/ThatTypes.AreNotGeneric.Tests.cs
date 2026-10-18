@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsGenericType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -24,7 +23,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotGeneric();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not generic,
@@ -37,7 +36,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoGenericTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonGenericTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
@@ -70,7 +69,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyGenericTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
@@ -97,7 +96,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonGenericTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
@@ -108,7 +107,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => !type.IsGenericType in assembly containing type ThatTypes.AreNotGeneric
 					             also contain a generic type,
@@ -121,7 +120,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyGenericTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()

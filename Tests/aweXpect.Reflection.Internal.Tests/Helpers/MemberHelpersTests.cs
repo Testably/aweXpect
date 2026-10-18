@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class MemberInfoHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_WhenNull_ShouldReturnFalse()
 	{
 		MemberInfo? fieldInfo = null;

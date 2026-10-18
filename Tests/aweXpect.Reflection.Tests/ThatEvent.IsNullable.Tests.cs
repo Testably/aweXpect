@@ -9,7 +9,7 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNonNullable_ShouldFail()
 			{
 				EventInfo subject = typeof(ClassWithNonNullableEvents)
@@ -28,7 +28,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNonNullableGenericType_ShouldFail()
 			{
 				EventInfo subject = typeof(ClassWithNonNullableEvents)
@@ -47,7 +47,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNonNullableInMixedClass_ShouldFail()
 			{
 				EventInfo subject = typeof(ClassWithMixedNullableEvents)
@@ -66,7 +66,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNonNullableWithCustomAccessors_ShouldFail()
 			{
 				EventInfo subject = typeof(ClassWithCustomNonNullableEvent)
@@ -85,7 +85,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -103,7 +103,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNullable_ShouldSucceed()
 			{
 				EventInfo subject = typeof(ClassWithNullableEvents)
@@ -117,7 +117,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNullableGenericType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(ClassWithNullableEvents)
@@ -131,7 +131,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNullableInMixedClass_ShouldSucceed()
 			{
 				EventInfo subject = typeof(ClassWithMixedNullableEvents)
@@ -145,7 +145,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNullableWithCustomAccessors_ShouldSucceed()
 			{
 				EventInfo subject = typeof(ClassWithCustomNullableEvent)
@@ -159,7 +159,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOblivious_ShouldFail()
 			{
 				EventInfo subject = typeof(ClassWithObliviousEvents)
@@ -181,7 +181,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotNullable_ShouldSucceed()
 			{
 				EventInfo subject = typeof(ClassWithNonNullableEvents)
@@ -195,7 +195,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNullable_ShouldFail()
 			{
 				EventInfo subject = typeof(ClassWithNullableEvents)

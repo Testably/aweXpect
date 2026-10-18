@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsEnumType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -24,7 +23,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotEnums();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not enums,
@@ -37,7 +36,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoEnumTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainOnlyClassTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotEnums>().Classes();
@@ -69,7 +68,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyEnums_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotEnums>().Types()
@@ -96,7 +95,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainOnlyClassTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotEnums>().Classes();
@@ -106,7 +105,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotEnums());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that classes in assembly containing type ThatTypes.AreNotEnums
 					             also contain an enum,
@@ -119,7 +118,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyEnums_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotEnums>().Types()

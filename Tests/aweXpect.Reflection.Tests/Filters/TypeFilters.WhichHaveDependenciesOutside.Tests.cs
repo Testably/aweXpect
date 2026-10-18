@@ -13,7 +13,7 @@ public sealed partial class TypeFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
 			{
 				Filtered.Types.NamespaceDependencyOutsideFilterResult original =
@@ -23,7 +23,7 @@ public sealed partial class TypeFilters
 				await That(original).DoesNotContain(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithDependenciesOutsideAllowedNamespaces()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -36,7 +36,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ReferencesOwnNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeFilterInDescription()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -46,7 +46,7 @@ public sealed partial class TypeFilters
 					.Contains($"which have dependencies outside namespace \"{Layer1Namespace}\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_ShouldSelectTypesReferencingOwnSubNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -56,7 +56,7 @@ public sealed partial class TypeFilters
 				await That(types).Contains(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_SubNamespaceDependencyCountsAsOutside()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -66,7 +66,7 @@ public sealed partial class TypeFilters
 				await That(types).Contains(typeof(ViaSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotExcludingOwnSubNamespaces_OwnSubNamespaceStaysInside()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -75,7 +75,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotExcludingSubNamespaces_SubNamespaceDependencyStaysInside()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -84,7 +84,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ViaSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFilterOutTypesDependingOnEither()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -98,7 +98,7 @@ public sealed partial class TypeFilters
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
 			{
 				Filtered.Types.TypeSetDependencyOutsideFilterResult original =
@@ -109,7 +109,7 @@ public sealed partial class TypeFilters
 				await That(original).DoesNotContain(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithDependenciesOutsideTargetCollection()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -122,7 +122,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ReferencesOwnNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeFilterInDescription()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -133,7 +133,7 @@ public sealed partial class TypeFilters
 						$"which have dependencies outside (types within namespace \"{Layer1Namespace}\" in all loaded assemblies)");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_ShouldSelectTypesReferencingOwnSubNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -143,7 +143,7 @@ public sealed partial class TypeFilters
 				await That(types).Contains(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFilterOutTypesDependingOnEither()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)

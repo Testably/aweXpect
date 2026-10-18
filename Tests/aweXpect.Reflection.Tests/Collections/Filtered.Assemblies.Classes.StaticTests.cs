@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class StaticTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForClasses()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Static.Classes();
@@ -18,7 +18,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t.IsClass && t.IsStatic()).And.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

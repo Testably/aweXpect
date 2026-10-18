@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldFail()
 			{
 				// A null item's dependencies cannot be verified, so it fails the negative assertion just
@@ -29,7 +28,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotDependOn(Layer2Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on namespace "{Layer2Namespace}",
@@ -42,7 +41,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeDependsOnNamespace_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -59,7 +58,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDependsOnNamespace_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -73,7 +72,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotDependOn(Layer2Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on namespace "{Layer2Namespace}",
@@ -89,7 +88,7 @@ public sealed partial class ThatTypes
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeDependsOnTargetCollection_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -106,7 +105,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDependsOnTargetCollection_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -120,7 +119,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies,
@@ -133,7 +132,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_ShouldSucceedTrivially()
 			{
 				IEnumerable<Type?> subject =
@@ -151,7 +150,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFailIfAnyMatches()
 			{
 				IEnumerable<Type?> subject =
@@ -165,7 +164,7 @@ public sealed partial class ThatTypes
 						.OrOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 		}
 	}

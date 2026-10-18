@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("InternalMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("InternalMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotProtected_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -22,7 +21,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are protected,
@@ -35,7 +34,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtected_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("ProtectedMethod");
@@ -51,10 +50,10 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("InternalMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("InternalMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotProtected_ShouldSucceed(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -67,7 +66,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtected_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("ProtectedMethod");
@@ -77,7 +76,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.AreProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are protected,

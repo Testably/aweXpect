@@ -9,7 +9,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForObsoleteEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<ClassWithObsoleteMembers>()

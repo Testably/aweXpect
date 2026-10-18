@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -18,7 +17,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesTargetTheFramework_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -31,7 +30,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesDoNotTargetTheFramework_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -41,7 +40,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).Target("net99.0");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all target equal to "net99.0",
@@ -49,7 +48,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMatchingIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -65,7 +64,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesTargetTheFramework_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -75,7 +74,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoesNotComplyWith(they => they.Target(CurrentTarget));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              not all target equal to "{CurrentTarget}",
@@ -83,7 +82,7 @@ public sealed partial class ThatAssemblies
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesDoNotTargetTheFramework_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();

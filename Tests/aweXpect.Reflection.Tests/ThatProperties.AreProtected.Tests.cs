@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("InternalProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("InternalProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotProtected_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -22,7 +21,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are protected,
@@ -35,7 +34,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsProtected_ShouldSucceed()
 			{
 				Filtered.Properties subject = GetProperties("ProtectedProperty");
@@ -51,10 +50,10 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("InternalProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("InternalProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotProtected_ShouldSucceed(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -67,7 +66,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsProtected_ShouldFail()
 			{
 				Filtered.Properties subject = GetProperties("ProtectedProperty");
@@ -77,7 +76,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are protected,

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -22,7 +21,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExpectedCount_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -38,7 +37,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectingOneParameter_ShouldMentionOneParameterInExpectation()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -51,7 +50,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterCount(1);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have one parameter,
@@ -59,7 +58,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExpectedCount_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -72,7 +71,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterCount(2);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have 2 parameters,
@@ -80,7 +79,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExpectedCount_ShouldListNotMatchingConstructors()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -93,7 +92,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterCount(2);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have 2 parameters,
@@ -107,7 +106,7 @@ public sealed partial class ThatConstructors
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveExpectedCount_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -122,7 +121,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNotAllHaveExpectedCount_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -134,7 +133,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterCount(2);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have 2 parameters,
@@ -146,7 +145,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExpectedCount_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -159,7 +158,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameterCount(2));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have 2 parameters,
@@ -167,7 +166,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExpectedCount_ShouldListMatchingConstructors()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -180,7 +179,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameterCount(2));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have 2 parameters,
@@ -193,7 +192,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExpectedCount_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Never_WhenTypeContainsNoMatchingEvent_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithoutMarkedEvent);
@@ -22,7 +21,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedEventMatches_WithDeclaredOnly_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedEvent);
@@ -40,7 +39,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedEventMatches_WithIncludingInherited_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedEvent);
@@ -54,7 +53,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingEvent_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedEvent);
@@ -67,7 +66,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsNoMatchingEvent_ShouldFail()
 			{
 				Type subject = typeof(ClassWithoutMarkedEvent);
@@ -88,7 +87,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingEvent_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedEvent);
@@ -99,7 +98,7 @@ public sealed partial class ThatType
 						=> it.ContainsEvents(events => events.With<MarkerAttribute>()));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain events with ThatType.ContainsEvents.MarkerAttribute at least once,

@@ -4,7 +4,6 @@ using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
-using Xunit.Sdk;
 
 // The unwrap test intentionally exercises the non-generic DependsOn(Type) overload with an open generic
 // construction, so the "prefer generic overload" hint does not apply here.
@@ -14,7 +13,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed class DependencyResolverCustomizationTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenComposingOnGet_ShouldAugmentTheBuiltInResolver()
 	{
 		Type subject = typeof(OnlyLayer1);
@@ -30,7 +29,7 @@ public sealed class DependencyResolverCustomizationTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenResolverIsReplaced_ShouldUseItAndRevertAfterTheScope()
 	{
 		// OnlyLayer1's signature references Layer1, but never Layer2.
@@ -49,7 +48,7 @@ public sealed class DependencyResolverCustomizationTests
 		await That(subject).DoesNotDependOn(Layer2Namespace);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenResolverThrows_ShouldFail()
 	{
 		Type subject = typeof(OnlyLayer1);
@@ -63,7 +62,7 @@ public sealed class DependencyResolverCustomizationTests
 			}
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             depends on namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1",
@@ -73,7 +72,7 @@ public sealed class DependencyResolverCustomizationTests
 			.Because("an exception of the dependency resolver must fail the expectation instead of aborting the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenResolverThrowsWhileEnumerated_ShouldFailAlsoWhenNegated()
 	{
 		Type subject = typeof(OnlyLayer1);
@@ -92,7 +91,7 @@ public sealed class DependencyResolverCustomizationTests
 			}
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             does not depend on namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2",
@@ -102,7 +101,7 @@ public sealed class DependencyResolverCustomizationTests
 			.Because("a lazily enumerated resolver result is code of the caller as well, and answers no negation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenResolverReturnsWrappedTypes_ShouldUnwrapThemLikeTheBuiltIn()
 	{
 		Type subject = typeof(OnlyLayer2);
@@ -117,7 +116,7 @@ public sealed class DependencyResolverCustomizationTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenResolvingTheSameTypeTwiceWithinAScope_ShouldInvokeTheResolverOnlyOnce()
 	{
 		Type subject = typeof(OnlyLayer1);
@@ -137,7 +136,7 @@ public sealed class DependencyResolverCustomizationTests
 		await That(invocationCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSettingANewResolver_ShouldNotReadTheCacheOfThePreviousScope()
 	{
 		Type subject = typeof(OnlyLayer1);
@@ -164,7 +163,7 @@ public sealed class DependencyResolverCustomizationTests
 		await That(secondInvocationCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSettingNull_ShouldRevertToTheBuiltInDefaultWithinTheScope()
 	{
 		Type subject = typeof(OnlyLayer1);

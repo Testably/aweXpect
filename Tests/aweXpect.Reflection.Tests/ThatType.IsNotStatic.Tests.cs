@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -8,8 +9,8 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[MemberData(nameof(NonStaticTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonStaticTypes))]
 			public async Task WhenTypeIsNotStatic_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -20,7 +21,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -38,7 +39,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsStatic_ShouldFail()
 			{
 				Type subject = typeof(PublicStaticClass);
@@ -56,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> NonStaticTypes()
+			public static IEnumerable<Type> NonStaticTypes()
 				=>
 				[
 					typeof(PublicAbstractClass),
@@ -68,8 +69,8 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[MemberData(nameof(NonStaticTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonStaticTypes))]
 			public async Task WhenTypeIsNotStatic_ShouldFail(Type subject)
 			{
 				async Task Act()
@@ -85,7 +86,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsStatic_ShouldSucceed()
 			{
 				Type subject = typeof(PublicStaticClass);
@@ -98,7 +99,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonStaticTypes()
+			public static IEnumerable<Type> NonStaticTypes()
 				=>
 				[
 					typeof(PublicAbstractClass),

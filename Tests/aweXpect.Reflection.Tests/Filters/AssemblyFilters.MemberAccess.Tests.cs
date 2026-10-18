@@ -8,7 +8,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldApplyImplicitAccessModifierBeforeSealedTypes()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Public.Sealed.Types();
@@ -20,7 +20,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("sealed public types in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldCombinePublicAndStaticBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Public.Static.Methods();
@@ -30,7 +30,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("public static methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotLeakTypeFiltersAcrossSelectorCalls()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>();
@@ -44,7 +44,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("interfaces in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotRetroactivelyMutatePredicateOfReturnedTypes()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>();
@@ -57,7 +57,7 @@ public sealed partial class AssemblyFilters
 					{ IsClass: true, IsSealed: true, IsInterface: false, });
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldResetModifierStateAfterSelector()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>();
@@ -73,7 +73,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldStillSupportPublicBeforeInterfaces()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Public.Interfaces();
@@ -83,7 +83,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("public interfaces in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldStillSupportPublicBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Public.Methods();
@@ -93,7 +93,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("public methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAbstractBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Abstract.Methods();
@@ -103,7 +103,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("abstract methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAbstractBeforeProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>().Abstract.Properties();
@@ -115,7 +115,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("abstract properties in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportSealedBeforeEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>().Sealed.Events();
@@ -125,7 +125,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("sealed events in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportSealedBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Sealed.Methods();
@@ -136,7 +136,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("sealed methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportStaticBeforeConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>().Static.Constructors();
@@ -146,7 +146,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("static constructors in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportStaticBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Static.Methods();

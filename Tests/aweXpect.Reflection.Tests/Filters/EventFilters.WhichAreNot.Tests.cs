@@ -8,7 +8,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForInternalEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -19,7 +19,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("non-internal events in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPrivateEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -30,7 +30,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("non-private events in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForProtectedEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("non-protected events in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPublicEvents()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()

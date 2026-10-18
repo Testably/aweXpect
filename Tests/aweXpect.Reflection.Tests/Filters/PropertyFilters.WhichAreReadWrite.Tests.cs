@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForReadWriteProperties()
 			{
 				Filtered.Properties properties = In.Type<TestClassWithReadWriteProperties>()
@@ -18,7 +18,7 @@ public sealed partial class PropertyFilters
 				await That(properties).AreReadWrite().And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateTheDescription()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<TestClassWithReadWriteProperties>()

@@ -9,7 +9,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotStatic_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -29,7 +29,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsStatic_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -64,7 +64,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotStatic_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -79,7 +79,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsStatic_ShouldFail()
 			{
 				PropertyInfo subject =

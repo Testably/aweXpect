@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,7 +6,7 @@ public sealed partial class ThatType
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveAttribute_ShouldSucceed()
 			{
 				Type subject = typeof(BarClass);
@@ -21,7 +19,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttribute_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -31,7 +29,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatType.DoesNotHave.AttributeTests.FooAttribute,
@@ -39,7 +37,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttributeIndirectly_ShouldFail()
 			{
 				Type subject = typeof(FooChildClass2);
@@ -49,7 +47,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatType.DoesNotHave.AttributeTests.FooAttribute,
@@ -57,7 +55,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasAttributeIndirectly_WhenInheritIsFalse_ShouldSucceed()
 			{
 				Type subject = typeof(FooChildClass2);

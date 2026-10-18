@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Exactly_WhenCountMatches_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedProperties);
@@ -23,7 +22,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedPropertyMatches_WithDeclaredOnly_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
@@ -41,7 +40,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedPropertyMatches_WithIncludingInherited_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
@@ -55,7 +54,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingProperty_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedProperty);
@@ -68,7 +67,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsNoMatchingProperty_ShouldFail()
 			{
 				Type subject = typeof(ClassWithoutMarkedProperty);
@@ -89,7 +88,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingProperty_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedProperty);
@@ -100,7 +99,7 @@ public sealed partial class ThatType
 						=> it.ContainsProperties(properties => properties.With<MarkerAttribute>()));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain properties with ThatType.ContainsProperties.MarkerAttribute at least once,

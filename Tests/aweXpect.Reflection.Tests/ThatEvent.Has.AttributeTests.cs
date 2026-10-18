@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatEvent
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventDoesNotHaveAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("NoAttributeEvent")!;
@@ -19,7 +18,7 @@ public sealed partial class ThatEvent
 					await That(subject).Has<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatEvent.Has.AttributeTests.TestAttribute,
@@ -27,7 +26,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventHasAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
@@ -40,7 +39,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventHasMatchingAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEventWithValue")!;
@@ -53,7 +52,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventHasNotMatchingAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEventWithValue")!;
@@ -63,7 +62,7 @@ public sealed partial class ThatEvent
 					await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatEvent.Has.AttributeTests.TestAttribute matching attr => attr.Value == 99,
@@ -71,7 +70,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -111,7 +110,7 @@ public sealed partial class ThatEvent
 		{
 			public sealed class AttributeTests
 			{
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenEventHasBothAttributes_ShouldSucceed()
 				{
 					EventInfo subject = typeof(FooBarClass).GetEvent("FooBarEvent")!;
@@ -124,7 +123,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenEventHasFirstAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(FooClass).GetEvent("FooEvent")!;
@@ -137,7 +136,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenEventHasMatchingAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(FooClass2).GetEvent("FooEvent2")!;
@@ -150,7 +149,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenEventHasMatchingSecondAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(BarClass3).GetEvent("BarEvent3")!;
@@ -164,7 +163,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenEventHasNeitherAttribute_ShouldFail()
 				{
 					EventInfo subject = typeof(BazClass).GetEvent("BazEvent")!;
@@ -174,7 +173,7 @@ public sealed partial class ThatEvent
 						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has ThatEvent.Has.OrHas.AttributeTests.FooAttribute or ThatEvent.Has.OrHas.AttributeTests.BarAttribute,
@@ -182,7 +181,7 @@ public sealed partial class ThatEvent
 						             """);
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenEventHasSecondAttribute_ShouldSucceed()
 				{
 					EventInfo subject = typeof(BarClass).GetEvent("BarEvent")!;
@@ -195,7 +194,7 @@ public sealed partial class ThatEvent
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WithPredicate_WhenEventHasNotMatchingAttribute_ShouldFail()
 				{
 					EventInfo subject = typeof(FooClass2).GetEvent("FooEvent2")!;
@@ -206,7 +205,7 @@ public sealed partial class ThatEvent
 							.OrHas<BarAttribute>(bar => bar.Name == "test");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has ThatEvent.Has.OrHas.AttributeTests.FooAttribute matching foo => foo.Value == 5 or ThatEvent.Has.OrHas.AttributeTests.BarAttribute matching bar => bar.Name == "test",
@@ -267,7 +266,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventDoesNotHaveAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("NoAttributeEvent")!;
@@ -280,7 +279,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
@@ -294,7 +293,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenEventHasAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
@@ -304,7 +303,7 @@ public sealed partial class ThatEvent
 					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatEvent.Has.NegatedTests.TestAttribute,

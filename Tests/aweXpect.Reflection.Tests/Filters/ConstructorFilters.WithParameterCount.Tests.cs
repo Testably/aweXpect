@@ -27,7 +27,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithMultipleParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -39,7 +39,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithSpecifiedParameterCount()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -51,7 +51,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithZeroParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -63,7 +63,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeConstructorsWithDifferentParameterCount()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

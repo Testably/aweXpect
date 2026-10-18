@@ -13,7 +13,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterOfType_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -23,7 +23,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<PlainIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterOfType_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -32,7 +32,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<ParamsIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterByName_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfType_ShouldFilterAndDescribe()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -55,7 +55,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfType_ShouldNotMatchWrongType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -64,7 +64,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfTypeAndName_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

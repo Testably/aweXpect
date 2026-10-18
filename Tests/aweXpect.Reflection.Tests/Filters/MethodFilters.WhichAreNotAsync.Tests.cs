@@ -10,7 +10,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonAsyncMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<ClassWithAsyncMembers>()

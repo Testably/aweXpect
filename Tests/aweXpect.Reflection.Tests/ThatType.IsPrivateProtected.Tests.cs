@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,10 +6,10 @@ public sealed partial class ThatType
 	{
 		public class Tests
 		{
-			[Theory]
-			[InlineData(typeof(ProtectedType), "protected")]
-			[InlineData(typeof(PublicType), "public")]
-			[InlineData(typeof(InternalType), "internal")]
+			[Test]
+			[Arguments(typeof(ProtectedType), "protected")]
+			[Arguments(typeof(PublicType), "public")]
+			[Arguments(typeof(InternalType), "internal")]
 			public async Task WhenTypeIsNotPrivateProtected_ShouldFail(Type? subject, string expectedAccessModifier)
 			{
 				async Task Act()
@@ -19,7 +17,7 @@ public sealed partial class ThatType
 					await That(subject).IsPrivateProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is private protected,
@@ -27,11 +25,11 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PrivateType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(InternalType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PrivateType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(InternalType))]
 			public async Task WhenTypeIsNotPrivateProtected_ShouldSucceedWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
@@ -42,7 +40,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -60,7 +58,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPrivateProtected_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PrivateProtectedType);
@@ -70,11 +68,11 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is not private protected*but it was*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPrivateProtected_ShouldSucceed()
 			{
 				Type subject = typeof(PrivateProtectedType);

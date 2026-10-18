@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -22,7 +21,7 @@ public sealed partial class ThatMethods
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExpectedCount_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -38,7 +37,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectingOneParameter_ShouldIncludeSingularDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -51,7 +50,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterCount(1);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have one parameter,
@@ -59,7 +58,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExpectedCount_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -72,7 +71,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterCount(2);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
@@ -81,7 +80,7 @@ public sealed partial class ThatMethods
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveExpectedCount_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -96,7 +95,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNotAllHaveExpectedCount_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -108,7 +107,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterCount(2);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
@@ -120,7 +119,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExpectedCount_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -133,7 +132,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameterCount(2));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have 2 parameters,
@@ -141,7 +140,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExpectedCount_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]

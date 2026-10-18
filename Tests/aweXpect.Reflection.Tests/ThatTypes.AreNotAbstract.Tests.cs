@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsAbstractType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -24,7 +23,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotAbstract();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
@@ -37,7 +36,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoAbstractTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonAbstractTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotAbstract>().Sealed.Types();
@@ -69,7 +68,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAbstractTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotAbstract>().Types()
@@ -96,7 +95,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonAbstractTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotAbstract>().Sealed.Types();
@@ -106,7 +105,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotAbstract());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that sealed types in assembly containing type ThatTypes.AreNotAbstract
 					             also contain an abstract type,
@@ -119,7 +118,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAbstractTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotAbstract>().Types()

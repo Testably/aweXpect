@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesWhichSatisfyThePredicate()
 			{
 				Filtered.Assemblies typeAssemblies = In.AllLoadedAssemblies()
@@ -21,7 +20,7 @@ public sealed partial class AssemblyFilters
 						"in all loaded assemblies matching it => it.FullName!.Contains(\"aweXpect.Reflection.Tests\")");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
@@ -32,7 +31,7 @@ public sealed partial class AssemblyFilters
 					await That(assemblies).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type AssemblyFilters matching _ => throw new InvalidOperationException("boom")
 					             is empty,

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenMethodIsNull()
 			{
 				IEnumerable<MethodInfo?> subject =
@@ -27,7 +26,7 @@ public sealed partial class ThatMethods
 					await That(subject).Return<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all return string,
@@ -40,7 +39,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -54,7 +53,7 @@ public sealed partial class ThatMethods
 					await That(subject).Return<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all return string,
@@ -67,7 +66,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllMethodsReturnSpecifiedType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -83,7 +82,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -102,7 +101,7 @@ public sealed partial class ThatMethods
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -113,7 +112,7 @@ public sealed partial class ThatMethods
 					await That(methods).Return<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return string,
@@ -126,7 +125,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllMethodsReturnSpecifiedType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -140,7 +139,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -157,7 +156,7 @@ public sealed partial class ThatMethods
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -168,7 +167,7 @@ public sealed partial class ThatMethods
 					await That(methods).Return(typeof(string));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return string,
@@ -181,7 +180,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllMethodsReturnSpecifiedType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -195,7 +194,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -212,7 +211,7 @@ public sealed partial class ThatMethods
 
 		public sealed class OrReturnTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrReturn_ShouldSupportChaining()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -221,7 +220,7 @@ public sealed partial class ThatMethods
 				await That(methods).Return<int>().OrReturn<string>().OrReturn(typeof(bool)).OrReturn<DummyBase>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturn_WhenAllMethodsReturnOneOfTheTypes_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -230,7 +229,7 @@ public sealed partial class ThatMethods
 				await That(methods).Return<string>().OrReturn(typeof(int));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturn_WhenSomeMethodsDoNotReturnAnyOfTheTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -241,7 +240,7 @@ public sealed partial class ThatMethods
 					await That(methods).Return<bool>().OrReturn<Task>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return bool or Task,
@@ -257,7 +256,7 @@ public sealed partial class ThatMethods
 
 		public sealed class OrReturnExactlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrReturn_ShouldSupportChaining()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -267,7 +266,7 @@ public sealed partial class ThatMethods
 					.OrReturn<DummyBase>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturn_WhenAllMethodsReturnOneOfTheTypes_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -276,7 +275,7 @@ public sealed partial class ThatMethods
 				await That(methods).Return<string>().OrReturnExactly(typeof(int));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturn_WhenSomeMethodsDoNotReturnAnyOfTheTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -287,7 +286,7 @@ public sealed partial class ThatMethods
 					await That(methods).Return<bool>().OrReturnExactly<Task>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return bool or exactly Task,
@@ -305,7 +304,7 @@ public sealed partial class ThatMethods
 		{
 			public sealed class EnumerableTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMethodIsNull_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo?> subject =
@@ -325,7 +324,7 @@ public sealed partial class ThatMethods
 
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMethodsReturnSpecifiedType_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -336,7 +335,7 @@ public sealed partial class ThatMethods
 						await That(methods).DoesNotComplyWith(they => they.Return<string>());
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
@@ -350,7 +349,7 @@ public sealed partial class ThatMethods
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodsReturnInheritedTypes_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -361,7 +360,7 @@ public sealed partial class ThatMethods
 						await That(methods).DoesNotComplyWith(they => they.Return<DummyBase>());
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 						             not all return ThatMethods.DummyBase,
@@ -375,7 +374,7 @@ public sealed partial class ThatMethods
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeMethodsDoNotReturnSpecifiedType_ShouldSucceed()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -392,7 +391,7 @@ public sealed partial class ThatMethods
 
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMethodsReturnSpecifiedType_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -403,7 +402,7 @@ public sealed partial class ThatMethods
 						await That(methods).DoesNotComplyWith(they => they.Return(typeof(string)));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
@@ -417,7 +416,7 @@ public sealed partial class ThatMethods
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodsReturnInheritedTypes_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -428,7 +427,7 @@ public sealed partial class ThatMethods
 						await That(methods).DoesNotComplyWith(they => they.Return(typeof(DummyBase)));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 						             not all return ThatMethods.DummyBase,
@@ -442,7 +441,7 @@ public sealed partial class ThatMethods
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeMethodsDoNotReturnSpecifiedType_ShouldSucceed()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -459,7 +458,7 @@ public sealed partial class ThatMethods
 
 			public sealed class OrReturnTests
 			{
-				[Fact]
+				[Test]
 				public async Task WithMultipleOrReturn_ShouldSupportChaining()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -474,7 +473,7 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithOrReturn_WhenAllMethodsReturnOneOfTheTypes_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -485,7 +484,7 @@ public sealed partial class ThatMethods
 						await That(methods).DoesNotComplyWith(they => they.Return<string>().OrReturn(typeof(int)));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that methods matching m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt) in type ThatMethods.TestClass
 						             not all return string or int,
@@ -500,7 +499,7 @@ public sealed partial class ThatMethods
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithOrReturn_WhenSomeMethodsDoNotReturnAnyOfTheTypes_ShouldSucceed()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()

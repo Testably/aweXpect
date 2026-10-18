@@ -9,7 +9,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesWithDependency()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -21,7 +21,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have a dependency on assembly equal to \"aweXpect.Core\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -33,7 +33,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have a dependency on assembly starting with \"aweXpect.C\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -45,7 +45,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have a dependency on assembly matching \"aweXpect.*\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -57,7 +57,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have a dependency on assembly equal to \"awexpect.core\" ignoring case");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasNoSuchDependency_ShouldBeFilteredOut()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()

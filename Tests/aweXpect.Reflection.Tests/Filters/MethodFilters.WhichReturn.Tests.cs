@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnBaseType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -23,7 +23,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnTask()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -37,7 +37,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -55,7 +55,7 @@ public sealed partial class MethodFilters
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnBaseType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -70,7 +70,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -88,7 +88,7 @@ public sealed partial class MethodFilters
 
 		public sealed class OrReturnGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnAnyOfMultipleTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -106,7 +106,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnAnyOfTheGivenTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -125,7 +125,7 @@ public sealed partial class MethodFilters
 
 		public sealed class OrReturnTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnAnyOfMultipleTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -143,7 +143,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnAnyOfTheGivenTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -162,7 +162,7 @@ public sealed partial class MethodFilters
 
 		public sealed class InheritanceTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeMethodsThatReturnDerivedTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -174,7 +174,7 @@ public sealed partial class MethodFilters
 				]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeMethodsThatReturnBaseTypesWhenFilteringForDerived()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()

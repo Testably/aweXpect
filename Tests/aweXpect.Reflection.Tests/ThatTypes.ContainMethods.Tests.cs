@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -13,7 +12,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesContainMatchingMethod_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -29,7 +28,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNullType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -42,7 +41,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
@@ -55,7 +54,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingMethod_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -68,7 +67,7 @@ public sealed partial class ThatTypes
 					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
@@ -84,7 +83,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Exactly_WhenAllCountsMatch_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Type<ClassWithTwoMarkedMethods>();
@@ -97,7 +96,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Never_WhenNoTypeContainsMatchingMethod_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Type<ClassWithoutMarkedMethod>();
@@ -110,7 +109,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesContainMatchingMethod_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithTwoMarkedMethods>();
@@ -124,7 +123,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedMethod_WithIncludingInherited_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -142,7 +141,7 @@ public sealed partial class ThatTypes
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingMethod_ShouldFail()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithoutMarkedMethod>();
@@ -165,7 +164,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlyContainsInheritedMethod_WithDeclaredOnly_ShouldFail()
 			{
 				Filtered.Types subject =
@@ -189,7 +188,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesOnlyContainInheritedMethod_WithIncludingInherited_ShouldSucceed()
 			{
 				Filtered.Types subject =
@@ -207,7 +206,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesContainMatchingMethod_ShouldFail()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithTwoMarkedMethods>();
@@ -218,7 +217,7 @@ public sealed partial class ThatTypes
 						=> they.ContainMethods(methods => methods.With<MarkerAttribute>()));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.ClassWithMarkedMethod and ThatTypes.ContainMethods.ClassWithTwoMarkedMethods
 					             do not all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
@@ -232,7 +231,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingMethod_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithoutMarkedMethod>();

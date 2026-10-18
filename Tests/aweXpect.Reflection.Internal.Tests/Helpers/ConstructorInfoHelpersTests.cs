@@ -11,7 +11,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 // ReSharper disable UnusedMember.Local
 public sealed class ConstructorInfoHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Internal_ShouldMatchForExpectedConstructor()
 	{
 		ConstructorInfo constructorInfo = typeof(AccessModifierTestClass).GetDeclaredConstructors()
@@ -23,7 +23,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(constructorInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Private_ShouldMatchForExpectedConstructor()
 	{
 		ConstructorInfo constructorInfo = typeof(AccessModifierTestClass).GetDeclaredConstructors()
@@ -35,7 +35,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(constructorInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Protected_ShouldMatchForExpectedConstructor()
 	{
 		ConstructorInfo constructorInfo = typeof(AccessModifierTestClass).GetDeclaredConstructors()
@@ -47,7 +47,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(constructorInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Public_ShouldMatchForExpectedConstructor()
 	{
 		ConstructorInfo constructorInfo = typeof(AccessModifierTestClass).GetDeclaredConstructors()
@@ -59,7 +59,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(constructorInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
@@ -70,7 +70,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
@@ -81,7 +81,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
 	{
 		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
@@ -94,7 +94,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
 		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
@@ -105,7 +105,7 @@ public sealed class ConstructorInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()

@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ForOneAsArgumentCount_ShouldFilterMethodsByGenericArgumentCount()
 				{
 					Reflection.TypeFilters.GenericTypes subject = In.AssemblyContaining<WhichAreGeneric>().Types()
@@ -19,7 +19,7 @@ public sealed partial class TypeFilters
 					await That(subject.GetDescription()).Contains("generic types with 1 generic argument in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForValueLargerThanOneAsArgumentCount_ShouldFilterMethodsByGenericArgumentCount()
 				{
 					Reflection.TypeFilters.GenericTypes subject = In.AssemblyContaining<WhichAreGeneric>().Types()

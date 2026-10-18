@@ -11,10 +11,10 @@ public sealed partial class ThatType
 		{
 			public sealed class GenericTests
 			{
-				[Theory]
-				[InlineData(0, false)]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task AtIndex_ForTypeWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -34,10 +34,10 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData(0, true)]
-				[InlineData(1, false)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
 				public async Task AtIndex_FromEnd_ForTypeWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -57,7 +57,7 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithRestrictedMatchingArgument_ShouldSucceed()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -70,7 +70,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithRestrictedNotMatchingArgument_ShouldFail()
 				{
 					Type subject = typeof(PublicGenericClass<int>);
@@ -88,7 +88,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithUnrestrictedArgument_ShouldFail()
 				{
 					Type subject = typeof(PublicGenericClass<string>);
@@ -109,10 +109,10 @@ public sealed partial class ThatType
 
 			public sealed class GenericNamedTests
 			{
-				[Theory]
-				[InlineData(0, false)]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task AtIndex_ForTypeWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -132,10 +132,10 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData(0, true)]
-				[InlineData(1, false)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
 				public async Task AtIndex_FromEnd_ForTypeWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -155,7 +155,7 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithRestrictedArgument_ShouldFail()
 				{
 					Type subject = typeof(PublicGenericClass<int>);
@@ -173,7 +173,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithRestrictedMatchingArgumentAndName_ShouldSucceed()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<string, BaseClass>);
@@ -186,7 +186,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithRestrictedMatchingArgumentAndNotMatchingName_ShouldFail()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -204,7 +204,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithRestrictedNotMatchingArgumentAndMatchingName_ShouldFail()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -222,9 +222,9 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Theory]
-				[InlineData("T", false)]
-				[InlineData("TBar", true)]
+				[Test]
+				[Arguments("T", false)]
+				[Arguments("TBar", true)]
 				public async Task ForTypeWithUnrestrictedArgument_ShouldSucceedWhenTypeAndNameMatches(
 					string name, bool expectSuccess)
 				{
@@ -244,9 +244,9 @@ public sealed partial class ThatType
 						              """);
 				}
 
-				[Theory]
-				[InlineData("TBa", true)]
-				[InlineData("Tba", false)]
+				[Test]
+				[Arguments("TBa", true)]
+				[Arguments("Tba", false)]
 				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -265,9 +265,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T[a-zA-Z]*r", true)]
-				[InlineData("T[a-zA-Z]*o", false)]
+				[Test]
+				[Arguments("T[a-zA-Z]*r", true)]
+				[Arguments("T[a-zA-Z]*o", false)]
 				public async Task ShouldSupportAsRegex(string regex, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -286,9 +286,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("Bar", true)]
-				[InlineData("bar", false)]
+				[Test]
+				[Arguments("Bar", true)]
+				[Arguments("bar", false)]
 				public async Task ShouldSupportAsSuffix(string suffix, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -307,9 +307,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T??r", true)]
-				[InlineData("T??o", false)]
+				[Test]
+				[Arguments("T??r", true)]
+				[Arguments("T??o", false)]
 				public async Task ShouldSupportAsWildcard(string wildcard, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -328,9 +328,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData(true, true)]
-				[InlineData(false, false)]
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(false, false)]
 				public async Task ShouldSupportIgnoringCase(bool ignoreCase, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -349,7 +349,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -366,10 +366,10 @@ public sealed partial class ThatType
 
 			public sealed class NamedTests
 			{
-				[Theory]
-				[InlineData(0, false)]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task AtIndex_ForTypeWithMatchingArgumentName_ShouldSucceedWhenIndexMatches(int index,
 					bool expectSuccess)
 				{
@@ -389,10 +389,10 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData(0, true)]
-				[InlineData(1, false)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
 				public async Task AtIndex_FromEnd_ForTypeWithMatchingArgumentName_ShouldSucceedWhenIndexMatches(
 					int index,
 					bool expectSuccess)
@@ -413,7 +413,7 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithMatchingArgumentName_ShouldSucceed()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -426,7 +426,7 @@ public sealed partial class ThatType
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForTypeWithNotMatchingArgumentName_ShouldFail()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -444,9 +444,9 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Theory]
-				[InlineData("T", true)]
-				[InlineData("TBar", false)]
+				[Test]
+				[Arguments("T", true)]
+				[Arguments("TBar", false)]
 				public async Task ForTypeWithUnrestrictedArgument_ShouldSucceedWhenNameMatches(
 					string name, bool expectSuccess)
 				{
@@ -466,9 +466,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("tba", true)]
-				[InlineData("tbx", false)]
+				[Test]
+				[Arguments("tba", true)]
+				[Arguments("tbx", false)]
 				public async Task ShouldSupportIgnoringCaseBecauseAndAsPrefix(string prefix, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -489,9 +489,9 @@ public sealed partial class ThatType
 						.Because("Because(…) must return the result, so that the string options can still follow it");
 				}
 
-				[Theory]
-				[InlineData("TBa", true)]
-				[InlineData("Tba", false)]
+				[Test]
+				[Arguments("TBa", true)]
+				[Arguments("Tba", false)]
 				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -510,9 +510,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T[a-zA-Z]*r", true)]
-				[InlineData("T[a-zA-Z]*s", false)]
+				[Test]
+				[Arguments("T[a-zA-Z]*r", true)]
+				[Arguments("T[a-zA-Z]*s", false)]
 				public async Task ShouldSupportAsRegex(string regex, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -531,9 +531,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("Bar", true)]
-				[InlineData("bar", false)]
+				[Test]
+				[Arguments("Bar", true)]
+				[Arguments("bar", false)]
 				public async Task ShouldSupportAsSuffix(string suffix, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -552,9 +552,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData("T??r", true)]
-				[InlineData("T??s", false)]
+				[Test]
+				[Arguments("T??r", true)]
+				[Arguments("T??s", false)]
 				public async Task ShouldSupportAsWildcard(string wildcard, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -573,9 +573,9 @@ public sealed partial class ThatType
 						               """);
 				}
 
-				[Theory]
-				[InlineData(true, true)]
-				[InlineData(false, false)]
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(false, false)]
 				public async Task ShouldSupportIgnoringCase(bool ignoreCase, bool expectSuccess)
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
@@ -594,7 +594,7 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);

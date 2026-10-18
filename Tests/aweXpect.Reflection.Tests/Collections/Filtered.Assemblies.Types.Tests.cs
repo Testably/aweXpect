@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForClasses()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Types();
@@ -21,8 +21,8 @@ public sealed partial class Filtered
 						.AtLeast(1).Satisfy(t => t.IsEnum);
 				}
 
-				[Theory]
-				[MemberData(nameof(CheckAccessModifiers), MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(CheckAccessModifiers))]
 				public async Task ShouldConsiderAccessModifier(AccessModifiers accessModifier, Func<Type, bool> check)
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -31,7 +31,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(check);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldConsiderPrivateAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -41,7 +41,7 @@ public sealed partial class Filtered
 						=> type.IsNested ? type.IsNestedPrivate : type.IsNotPublic);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

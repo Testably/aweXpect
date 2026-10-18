@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatFields
 		public sealed class AttributeTests
 		{
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAFieldHasAttribute_ShouldFail()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -25,7 +24,7 @@ public sealed partial class ThatFields
 					await That(subject).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatFields.DoNotHave.AttributeTests.FooAttribute,
@@ -39,7 +38,7 @@ public sealed partial class ThatFields
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task Negated_WhenNoFieldHasAttribute_ShouldFail()
 			{
 				IEnumerable<FieldInfo?> subject = new[]
@@ -52,7 +51,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             not all have no ThatFields.DoNotHave.AttributeTests.FooAttribute,
@@ -65,7 +64,7 @@ public sealed partial class ThatFields
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAFieldHasAttribute_ShouldFail()
 			{
 				IEnumerable<FieldInfo?> subject = new[]
@@ -78,7 +77,7 @@ public sealed partial class ThatFields
 					await That(subject).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatFields.DoNotHave.AttributeTests.FooAttribute,
@@ -91,7 +90,7 @@ public sealed partial class ThatFields
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoFieldHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo?> subject = new[]

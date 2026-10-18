@@ -3,7 +3,6 @@ using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -16,7 +15,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTypeInOtherNamespace_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -31,12 +30,12 @@ public sealed partial class ThatTypes
 						.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*are all within namespace*but it contained not matching types*ClassInSiblingNamespaceScope*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesAreWithinNamespace_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -54,7 +53,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesAreWithinNamespace_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -69,7 +68,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeInOtherNamespace_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -82,7 +81,7 @@ public sealed partial class ThatTypes
 						.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with namespace starting with "aweXpect.Reflection.Tests.Test…" in assembly containing type ThatTypes.AreWithinNamespace.Tests
 					             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
@@ -96,7 +95,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableTypesAreWithinNamespace_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -113,7 +112,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableContainsTypeInOtherNamespace_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -127,7 +126,7 @@ public sealed partial class ThatTypes
 						.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*are all within namespace*but it contained not matching types*ClassInSiblingNamespaceScope*")
 					.AsWildcard();
 			}
@@ -136,7 +135,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypesAreWithinNamespace_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -148,7 +147,7 @@ public sealed partial class ThatTypes
 						=> they.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*are not all within namespace*NamespaceScope*").AsWildcard();
 			}
 		}

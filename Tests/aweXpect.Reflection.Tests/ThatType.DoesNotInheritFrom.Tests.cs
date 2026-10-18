@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,7 +6,7 @@ public sealed partial class ThatType
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -23,7 +21,7 @@ public sealed partial class ThatType
 						"The type to check inheritance from must be a class, but it was the interface ThatType.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotInherit_ShouldSucceed()
 			{
 				Type subject = typeof(UnrelatedClass);
@@ -36,7 +34,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInherits_ShouldFail()
 			{
 				Type subject = typeof(DerivedClass);
@@ -46,7 +44,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
@@ -57,7 +55,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsDirectly_WithForceDirect_ShouldFail()
 			{
 				Type subject = typeof(DerivedClass);
@@ -67,7 +65,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom<BaseClass>(true);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit directly from ThatType.BaseClass,
@@ -78,7 +76,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsIndirectly_ShouldFail()
 			{
 				Type subject = typeof(GrandChildClass);
@@ -88,7 +86,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
@@ -99,7 +97,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsIndirectly_WithForceDirect_ShouldSucceed()
 			{
 				Type subject = typeof(GrandChildClass);
@@ -115,7 +113,7 @@ public sealed partial class ThatType
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -131,7 +129,7 @@ public sealed partial class ThatType
 						"The type to check inheritance from must be a class, but it was the interface ThatType.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotInherit_ShouldSucceed()
 			{
 				Type subject = typeof(UnrelatedClass);
@@ -145,7 +143,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInherits_ShouldFail()
 			{
 				Type subject = typeof(DerivedClass);
@@ -156,7 +154,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom(baseType);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
@@ -167,7 +165,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsIndirectly_ShouldFail()
 			{
 				Type subject = typeof(GrandChildClass);
@@ -178,7 +176,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom(baseType);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
@@ -192,7 +190,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -207,7 +205,7 @@ public sealed partial class ThatType
 						"The type to check inheritance from must be a class, but it was the interface ThatType.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotInherit_ShouldFail()
 			{
 				Type subject = typeof(UnrelatedClass);
@@ -217,7 +215,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.DoesNotInheritFrom<BaseClass>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             inherits from ThatType.BaseClass,
@@ -228,7 +226,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInherits_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClass);
@@ -241,7 +239,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsIndirectly_ShouldSucceed()
 			{
 				Type subject = typeof(GrandChildClass);

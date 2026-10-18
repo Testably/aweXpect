@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("InternalMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("InternalMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotPublic_ShouldFail(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -22,7 +21,7 @@ public sealed partial class ThatMethods
 					await That(subject).ArePublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are public,
@@ -35,7 +34,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsPublic_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("PublicMethod");
@@ -51,10 +50,10 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("InternalMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("InternalMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotPublic_ShouldSucceed(string methodName)
 			{
 				Filtered.Methods subject = GetMethods(methodName);
@@ -67,7 +66,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsPublic_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("PublicMethod");
@@ -77,7 +76,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.ArePublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are public,

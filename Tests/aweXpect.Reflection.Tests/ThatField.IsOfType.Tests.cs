@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatField
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -27,7 +26,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOfDifferentType_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -37,7 +36,7 @@ public sealed partial class ThatField
 					await That(subject).IsOfType<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string,
@@ -45,7 +44,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOfExpectedType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -58,7 +57,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldTypeInheritsFromExpectedType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.DummyField))!;
@@ -74,7 +73,7 @@ public sealed partial class ThatField
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOneOfTheTypes_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -90,7 +89,7 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOfDifferentType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -103,7 +102,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOfExpectedType_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -113,7 +112,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.IsOfType<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type int,
@@ -143,7 +142,7 @@ public sealed partial class ThatField
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOfDifferentType_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -153,7 +152,7 @@ public sealed partial class ThatField
 					await That(subject).IsOfType(typeof(string));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string,
@@ -161,7 +160,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsOfExpectedType_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -177,7 +176,7 @@ public sealed partial class ThatField
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldIsNoneOfTheTypes_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
@@ -187,7 +186,7 @@ public sealed partial class ThatField
 					await That(subject).IsOfType<string>().OrOfType<bool>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string or of type bool,
@@ -195,7 +194,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrOfType_ShouldSupportChaining()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;

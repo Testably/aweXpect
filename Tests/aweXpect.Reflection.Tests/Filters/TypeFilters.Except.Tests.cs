@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutTheGenericType()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -20,7 +19,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types except TypeFilters.Except.Tests.TypeToExclude in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutTypesThatSatisfyThePredicate()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -32,7 +31,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types except type => type.Name == \"TypeToExclude\" in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Types()
@@ -43,7 +42,7 @@ public sealed partial class TypeFilters
 					await That(types).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types except _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -53,7 +52,7 @@ public sealed partial class TypeFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWhenNegated()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Types()
@@ -64,7 +63,7 @@ public sealed partial class TypeFilters
 					await That(types).DoesNotComplyWith(they => they.IsEmpty());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types except _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is not empty,

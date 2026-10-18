@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,7 +6,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Exactly_WhenCountMatches_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedConstructors);
@@ -22,7 +20,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingConstructor_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedConstructor);
@@ -35,7 +33,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsNoMatchingConstructor_ShouldFail()
 			{
 				Type subject = typeof(ClassWithoutMarkedConstructor);
@@ -56,7 +54,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingConstructor_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedConstructor);
@@ -67,7 +65,7 @@ public sealed partial class ThatType
 						=> it.ContainsConstructors(constructors => constructors.With<MarkerAttribute>()));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain constructors with ThatType.ContainsConstructors.MarkerAttribute at least once,

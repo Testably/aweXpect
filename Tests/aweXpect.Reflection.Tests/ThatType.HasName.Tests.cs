@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedValueIsOnlySubstring_ShouldFail()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -19,7 +18,7 @@ public sealed partial class ThatType
 					await That(subject).HasName("Abstract");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Abstract",
@@ -31,7 +30,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasExpectedPrefix_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -44,7 +43,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMatchingName_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -57,7 +56,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -75,7 +74,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatchesIgnoringCase_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -91,7 +90,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveName_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -104,7 +103,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasName_ShouldFail()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -114,7 +113,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.HasName("PublicAbstractClass"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicAbstractClass",

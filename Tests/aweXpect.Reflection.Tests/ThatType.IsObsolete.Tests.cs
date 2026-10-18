@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotObsolete_ShouldFail()
 			{
 				Type subject = typeof(ClassWithObsoleteMembers);
@@ -27,7 +26,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsObsolete_ShouldSucceed()
 			{
 #pragma warning disable CS0612, CS0618
@@ -63,7 +62,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotObsolete_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithObsoleteMembers);
@@ -76,7 +75,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsObsolete_ShouldFail()
 			{
 #pragma warning disable CS0612, CS0618
@@ -88,7 +87,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not obsolete,

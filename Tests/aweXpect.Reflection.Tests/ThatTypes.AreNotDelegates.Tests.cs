@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDelegateType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -24,7 +23,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotDelegates();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not delegates,
@@ -37,7 +36,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoDelegateTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNoDelegateTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotDelegates>().Types()
@@ -70,7 +69,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyDelegates_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotDelegates>().Types()
@@ -97,7 +96,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNoDelegateTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotDelegates>().Types()
@@ -108,7 +107,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotDelegates());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types which are not delegates in assembly containing type ThatTypes.AreNotDelegates
 					             also contain a delegate,
@@ -121,7 +120,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyDelegates_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotDelegates>().Types()

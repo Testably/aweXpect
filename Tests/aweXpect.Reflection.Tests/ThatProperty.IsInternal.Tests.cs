@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsInternal_ShouldSucceed()
 			{
 				PropertyInfo? subject = GetProperty("InternalProperty");
@@ -22,10 +21,10 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedProperty", "protected")]
-			[InlineData("PublicProperty", "public")]
-			[InlineData("PrivateProperty", "private")]
+			[Test]
+			[Arguments("ProtectedProperty", "protected")]
+			[Arguments("PublicProperty", "public")]
+			[Arguments("PrivateProperty", "private")]
 			public async Task WhenPropertyInfoIsNotInternal_ShouldFail(string propertyName,
 				string expectedAccessModifier)
 			{
@@ -36,7 +35,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is internal,
@@ -44,7 +43,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -65,7 +64,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsInternal_ShouldFail()
 			{
 				PropertyInfo? subject = GetProperty("InternalProperty");
@@ -75,15 +74,15 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("Expected that subject*")
 					.AsWildcard();
 			}
 
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotInternal_ShouldSucceed(string propertyName)
 			{
 				PropertyInfo? subject = GetProperty(propertyName);

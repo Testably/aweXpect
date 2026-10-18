@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenVersionDoesNotMatch_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -21,7 +20,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).HasVersion(version => version.Major < 0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              has version matching version => version.Major < 0,
@@ -29,7 +28,7 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenVersionMatches_ShouldSucceed()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -42,7 +41,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -57,7 +56,7 @@ public sealed partial class ThatAssembly
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -68,7 +67,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).HasVersion(_ => throw exception);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that assembly
 					             has version matching _ => throw exception,
@@ -82,7 +81,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -93,7 +92,7 @@ public sealed partial class ThatAssembly
 						=> it.HasVersion(_ => throw new InvalidOperationException("boom")));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that assembly
 					             does not have version matching _ => throw new InvalidOperationException("boom"),
@@ -103,7 +102,7 @@ public sealed partial class ThatAssembly
 					.Because("a predicate that throws answers neither the expectation nor its negation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenVersionDoesNotMatch_ShouldSucceed()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -116,7 +115,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenVersionMatches_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -127,7 +126,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).DoesNotComplyWith(it => it.HasVersion(version => version.Major >= 0));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              does not have version matching version => version.Major >= 0,
@@ -138,7 +137,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class WithoutVersionTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithComponent_WhenVersionIsNull_ShouldFail()
 			{
 				Assembly assembly = new VersionlessAssembly();
@@ -148,7 +147,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).HasVersion().WithMajor.GreaterThanOrEqualTo(0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that assembly
 					             has major version greater than or equal to 0,
@@ -156,7 +155,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutComponent_WhenVersionIsNull_ShouldFail()
 			{
 				Assembly assembly = new VersionlessAssembly();
@@ -166,7 +165,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).HasVersion();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that assembly
 					             has a version,
@@ -174,7 +173,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenVersionIsNull_ShouldFail()
 			{
 				Assembly assembly = new VersionlessAssembly();
@@ -184,7 +183,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).HasVersion(version => version.Major >= 0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that assembly
 					             has version matching version => version.Major >= 0,
@@ -202,7 +201,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class ComponentTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAllComponents()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -221,7 +220,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllComparisonsAreSatisfied_ShouldSucceed()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -241,13 +240,13 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("GreaterThan", 0, "greater than")]
-			[InlineData("GreaterThanOrEqualTo", 1, "greater than or equal to")]
-			[InlineData("LessThan", 0, "less than")]
-			[InlineData("LessThanOrEqualTo", -1, "less than or equal to")]
-			[InlineData("EqualTo", 1, "equal to")]
-			[InlineData("NotEqualTo", 0, "not equal to")]
+			[Test]
+			[Arguments("GreaterThan", 0, "greater than")]
+			[Arguments("GreaterThanOrEqualTo", 1, "greater than or equal to")]
+			[Arguments("LessThan", 0, "less than")]
+			[Arguments("LessThanOrEqualTo", -1, "less than or equal to")]
+			[Arguments("EqualTo", 1, "equal to")]
+			[Arguments("NotEqualTo", 0, "not equal to")]
 			public async Task WhenComparisonFails_MessageShouldDescribeComparison(
 				string comparison, int offset, string wording)
 			{
@@ -268,7 +267,7 @@ public sealed partial class ThatAssembly
 					});
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              has major version {wording} {expected},
@@ -276,13 +275,13 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Theory]
-			[InlineData("GreaterThan", 0)]
-			[InlineData("GreaterThanOrEqualTo", 1)]
-			[InlineData("LessThan", 0)]
-			[InlineData("LessThanOrEqualTo", -1)]
-			[InlineData("EqualTo", 1)]
-			[InlineData("NotEqualTo", 0)]
+			[Test]
+			[Arguments("GreaterThan", 0)]
+			[Arguments("GreaterThanOrEqualTo", 1)]
+			[Arguments("LessThan", 0)]
+			[Arguments("LessThanOrEqualTo", -1)]
+			[Arguments("EqualTo", 1)]
+			[Arguments("NotEqualTo", 0)]
 			public async Task WhenComparisonIsNotSatisfied_ShouldFail(string comparison, int offset)
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -301,16 +300,16 @@ public sealed partial class ThatAssembly
 					});
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Theory]
-			[InlineData("GreaterThan", -1)]
-			[InlineData("GreaterThanOrEqualTo", 0)]
-			[InlineData("LessThan", 1)]
-			[InlineData("LessThanOrEqualTo", 0)]
-			[InlineData("EqualTo", 0)]
-			[InlineData("NotEqualTo", 1)]
+			[Test]
+			[Arguments("GreaterThan", -1)]
+			[Arguments("GreaterThanOrEqualTo", 0)]
+			[Arguments("LessThan", 1)]
+			[Arguments("LessThanOrEqualTo", 0)]
+			[Arguments("EqualTo", 0)]
+			[Arguments("NotEqualTo", 1)]
 			public async Task WhenComparisonIsSatisfied_ShouldSucceed(string comparison, int offset)
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -332,11 +331,11 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("major")]
-			[InlineData("minor")]
-			[InlineData("build")]
-			[InlineData("revision")]
+			[Test]
+			[Arguments("major")]
+			[Arguments("minor")]
+			[Arguments("build")]
+			[Arguments("revision")]
 			public async Task WhenComponentDoesNotMatch_MessageShouldNameComponent(string name)
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -360,7 +359,7 @@ public sealed partial class ThatAssembly
 					});
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              has {name} version greater than {actual},
@@ -368,7 +367,7 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComponentDoesNotMatch_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -379,7 +378,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).HasVersion().WithMajor.LessThan(0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              has major version less than 0,
@@ -387,7 +386,7 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComponentMatches_ShouldSucceed()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -400,7 +399,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleComponentsAreCombined_ShouldReportFailingComponent()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -413,7 +412,7 @@ public sealed partial class ThatAssembly
 						.WithMinor.GreaterThan(version.Minor);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              has major version equal to {version.Major} and minor version greater than {version.Minor},
@@ -421,7 +420,7 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutComponent_ShouldVerifyThatVersionExists()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -437,7 +436,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedComponentTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComponentDoesNotMatch_ShouldSucceed()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -450,7 +449,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComponentMatches_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -461,7 +460,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).DoesNotComplyWith(it => it.HasVersion().WithMajor.GreaterThanOrEqualTo(0));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              does not have major version greater than or equal to 0,
@@ -469,7 +468,7 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenVersionExists_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -480,7 +479,7 @@ public sealed partial class ThatAssembly
 					await That(assembly).DoesNotComplyWith(it => it.HasVersion());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that assembly
 					              does not have a version,

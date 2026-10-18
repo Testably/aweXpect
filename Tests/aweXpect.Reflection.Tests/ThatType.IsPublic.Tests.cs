@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,10 +6,10 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(typeof(ProtectedType), "protected")]
-			[InlineData(typeof(InternalType), "internal")]
-			[InlineData(typeof(PrivateType), "private")]
+			[Test]
+			[Arguments(typeof(ProtectedType), "protected")]
+			[Arguments(typeof(InternalType), "internal")]
+			[Arguments(typeof(PrivateType), "private")]
 			public async Task WhenTypeIsNotPublic_ShouldFail(Type? subject, string expectedAccessModifier)
 			{
 				async Task Act()
@@ -19,7 +17,7 @@ public sealed partial class ThatType
 					await That(subject).IsPublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is public,
@@ -27,7 +25,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -45,7 +43,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPublic_ShouldSucceed()
 			{
 				Type subject = typeof(PublicType);
@@ -61,10 +59,10 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(InternalType))]
-			[InlineData(typeof(PrivateType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(InternalType))]
+			[Arguments(typeof(PrivateType))]
 			public async Task WhenTypeIsNotPublic_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -75,7 +73,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPublic_ShouldFail()
 			{
 				Type subject = typeof(PublicType);
@@ -85,7 +83,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsPublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is not public*but it was*").AsWildcard();
 			}
 		}

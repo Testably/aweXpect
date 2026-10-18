@@ -17,7 +17,7 @@ public sealed class ExtensionGroupingTypeFilteringTests
 {
 	private const string ExtensionMarkerAttributeName = "ExtensionMarkerAttribute";
 
-	[Fact]
+	[Test]
 	public async Task Types_ShouldExcludeExtensionGroupingTypesByDefault()
 	{
 		IReadOnlyList<Type> types = await GetTypes();
@@ -27,7 +27,7 @@ public sealed class ExtensionGroupingTypeFilteringTests
 		await That(types).Contains(t => t == typeof(StaticClassWithNewExtensionMethods));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WhenIncludingCompilerGenerated_ShouldContainExtensionGroupingTypes()
 	{
 		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
@@ -40,7 +40,7 @@ public sealed class ExtensionGroupingTypeFilteringTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_ShouldExcludeExtensionGroupingSkeletonsByDefault()
 	{
 		IReadOnlyList<MethodInfo> methods = await GetMethods();

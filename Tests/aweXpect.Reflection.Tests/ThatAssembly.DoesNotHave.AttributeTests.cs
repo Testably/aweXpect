@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -22,7 +21,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyHasAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -32,7 +31,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotHave<AssemblyTitleAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no AssemblyTitleAttribute,

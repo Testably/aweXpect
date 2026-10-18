@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasNoParameters_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([])!;
@@ -22,7 +21,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasParameters_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
@@ -32,7 +31,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasNoParameters();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has no parameters,
@@ -40,7 +39,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? constructorInfo = null;
@@ -50,7 +49,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasNoParameters();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has no parameters,
@@ -61,7 +60,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasNoParameters_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([])!;
@@ -71,7 +70,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).DoesNotComplyWith(it => it.HasNoParameters());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             does not have no parameters,
@@ -79,7 +78,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasParameters_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;

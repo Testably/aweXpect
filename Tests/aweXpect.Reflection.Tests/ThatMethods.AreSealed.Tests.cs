@@ -11,7 +11,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlySealedMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(ClassWithSealedMembers)
@@ -26,7 +26,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonSealedMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -53,7 +53,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlySealedMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(ClassWithSealedMembers)
@@ -78,7 +78,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonSealedMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)

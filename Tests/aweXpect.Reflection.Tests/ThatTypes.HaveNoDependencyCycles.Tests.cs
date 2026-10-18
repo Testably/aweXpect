@@ -7,7 +7,6 @@ using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.External;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Family;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Family.Inner;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.GlobalRing;
-using Xunit.Sdk;
 using ResolverA = aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Resolver.A;
 using ResolverB = aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Resolver.B;
 using GroupedBilling = aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Grouped.Billing;
@@ -34,7 +33,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldIgnoreNull()
 			{
 				IEnumerable<Type?> subject =
@@ -52,7 +51,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependencyTargetIsOutOfSet_ShouldNotCreateAnEdge()
 			{
 				// Order references Two.Billing, but Billing is not part of the analyzed set, so no edge is created.
@@ -69,7 +68,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalNamespaceIsInACycle_ShouldRenderGlobalNamespace()
 			{
 				IEnumerable<Type?> subject =
@@ -83,7 +82,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -94,7 +93,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleCyclesExist_ShouldListAllOfThem()
 			{
 				IEnumerable<Type?> subject =
@@ -111,7 +110,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -123,7 +122,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyDependingOnFrameworkTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -139,7 +138,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetIsAcyclic_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -156,7 +155,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenThreeNamespacesFormCycle_ShouldDetectTheLongerCycle()
 			{
 				IEnumerable<Type?> subject =
@@ -171,7 +170,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -182,7 +181,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTwoNamespacesFormCycle_ShouldFailAndListBothNamespaces()
 			{
 				IEnumerable<Type?> subject =
@@ -196,7 +195,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -207,7 +206,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInThatAll_ShouldListTheCyclesOfEachFailure()
 			{
 				IEnumerable<Type?> acyclic = [typeof(HighType), typeof(LowType),];
@@ -220,7 +219,7 @@ public sealed partial class ThatTypes
 						That(twoCycle).HaveNoDependencyCycles());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected all of the following to succeed:
 					               [01] Expected that acyclic have no dependency cycles
@@ -233,7 +232,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsingNamespaceSource_ShouldDetectCycle()
 			{
 				async Task Act()
@@ -241,14 +240,14 @@ public sealed partial class ThatTypes
 					await That(Types.InNamespace($"{Prefix}.Two")).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*had a dependency cycle*").AsWildcard();
 			}
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSetHasCycle_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -265,7 +264,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetIsAcyclic_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -279,7 +278,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyCycles());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             have dependency cycles,
@@ -290,7 +289,7 @@ public sealed partial class ThatTypes
 
 		public sealed class ResolverTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAResolverSuppliesTheReverseEdge_ShouldDetectTheCycle()
 			{
 				IEnumerable<Type?> subject =
@@ -313,12 +312,12 @@ public sealed partial class ThatTypes
 						await That(subject).HaveNoDependencyCycles();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("*had a dependency cycle*").AsWildcard();
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSignatureResolver_ABodyOnlyEdge_ShouldNotFormACycle()
 			{
 				IEnumerable<Type?> subject =
@@ -339,7 +338,7 @@ public sealed partial class ThatTypes
 
 		public sealed class SliceTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenGroupingCollapsesNamespacesIntoSlices_ShouldReportSliceNames()
 			{
 				IEnumerable<Type?> subject =
@@ -354,7 +353,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles($"{Prefix}.Grouped");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles when grouped into slices under "{Prefix}.Grouped",
@@ -365,7 +364,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotGrouped_ShouldDetectTheSubNamespaceCycle()
 			{
 				IEnumerable<Type?> subject =
@@ -379,7 +378,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -390,7 +389,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubNamespacesShareSlice_ShouldCollapseAndSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -412,7 +411,7 @@ public sealed partial class ThatTypes
 
 		public sealed class SubNamespaceTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCycleReentersFamilyThroughSubNamespace_ShouldDetectItByDefault()
 			{
 				// Parent -> Other -> Parent.Child: because Parent and Parent.Child are one node by default, this is a
@@ -429,7 +428,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -440,7 +439,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_ShouldDetectTheFamilyCycle()
 			{
 				IEnumerable<Type?> subject =
@@ -454,7 +453,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNoDependencyCycles().ExcludingSubNamespaces();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
@@ -465,7 +464,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_TheReentryLandsOnAnotherNode_ShouldSucceed()
 			{
 				// With every namespace its own node, the back-reference lands on Parent.Child (not Parent), so the
@@ -485,7 +484,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParentAndChildReferenceEachOther_ShouldSucceedByDefault()
 			{
 				// By default a namespace and its sub-namespaces are one family, so the references do not form a cycle.

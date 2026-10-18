@@ -8,7 +8,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWithoutAttribute()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -22,7 +22,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("properties without PropertyFilters.Without.AttributeTests.BarAttribute").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithoutAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()

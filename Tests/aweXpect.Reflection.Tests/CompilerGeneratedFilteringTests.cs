@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed class CompilerGeneratedFilteringTests
 {
-	[Fact]
+	[Test]
 	public async Task Types_ShouldExcludeCompilerGeneratedTypesByDefault()
 	{
 		IReadOnlyList<Type> types = await GetTypes();
@@ -17,7 +17,7 @@ public sealed class CompilerGeneratedFilteringTests
 		await That(types).Contains(t => t == typeof(Sample));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WhenIncludingCompilerGenerated_ShouldContainStateMachinesAndClosures()
 	{
 		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
@@ -30,7 +30,7 @@ public sealed class CompilerGeneratedFilteringTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_ShouldExcludeLocalFunctionsByDefault()
 	{
 		IReadOnlyList<MethodInfo> methods = await GetMethods<Sample>();
@@ -39,7 +39,7 @@ public sealed class CompilerGeneratedFilteringTests
 		await That(methods).Contains(m => m.Name == nameof(Sample.UsesLocalFunction));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_WhenIncludingMethods_ShouldContainLocalFunctions()
 	{
 		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
@@ -51,7 +51,7 @@ public sealed class CompilerGeneratedFilteringTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_ShouldExcludeRecordMembersByDefault()
 	{
 		IReadOnlyList<MethodInfo> methods = await GetMethods<SampleRecord>();
@@ -60,7 +60,7 @@ public sealed class CompilerGeneratedFilteringTests
 		await That(methods).None().Satisfy(m => m.Name == "PrintMembers");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_WhenIncludingOperators_ShouldContainOperatorMethods()
 	{
 		// Operators are special-name, not compiler-generated => controlled by IncludedSpecialNameMembers.
@@ -76,7 +76,7 @@ public sealed class CompilerGeneratedFilteringTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Constructors_WhenIncludingConstructors_ShouldContainRecordCopyConstructor()
 	{
 		IReadOnlyList<ConstructorInfo> withoutCopy = await GetConstructors<SampleRecord>();

@@ -13,7 +13,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainSealedEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithSealedMembers)
@@ -37,7 +37,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonSealedEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -54,7 +54,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainSealedEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithSealedMembers)
@@ -68,7 +68,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonSealedEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -96,7 +96,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainSealedEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(ClassWithSealedMembers)
@@ -121,7 +121,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonSealedEvents_ShouldSucceed()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)

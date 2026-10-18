@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForExtensionProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<PropertyFilters>()
@@ -24,7 +24,7 @@ public sealed partial class PropertyFilters
 #if NET10_0_OR_GREATER
 		public sealed class NewSyntaxTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeInstanceAndStaticExtensionProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<PropertyFilters>()

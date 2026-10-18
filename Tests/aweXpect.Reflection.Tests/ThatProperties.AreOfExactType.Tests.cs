@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -13,7 +12,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenPropertiesInheritFromType()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -26,7 +25,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type *DummyBase,
@@ -39,7 +38,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllPropertiesAreOfExactType()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -58,7 +57,7 @@ public sealed partial class ThatProperties
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreOneOfTheExactTypes_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -75,7 +74,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyStrictlyInheritsFromOrOfExactType_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -88,7 +87,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreOfExactType<int>().OrOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type int or of exact type *DummyBase,
@@ -105,7 +104,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenPropertiesInheritFromType()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -118,7 +117,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type *DummyBase,
@@ -131,7 +130,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllPropertiesAreOfExactType()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]

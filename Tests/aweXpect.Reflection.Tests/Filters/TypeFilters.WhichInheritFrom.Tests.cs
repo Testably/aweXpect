@@ -6,7 +6,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForBaseType()
 			{
 				async Task Act()
@@ -18,7 +18,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeInheritInformationInErrorMessage()
 			{
 				async Task Act()
@@ -40,7 +40,7 @@ public sealed partial class TypeFilters
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				async Task Act()
@@ -67,7 +67,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldApplyFilterForBaseType()
 			{
 				async Task Act()
@@ -79,7 +79,7 @@ public sealed partial class TypeFilters
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeDoNotInheritInformationInErrorMessage()
 			{
 				async Task Act()
@@ -101,7 +101,7 @@ public sealed partial class TypeFilters
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				async Task Act()

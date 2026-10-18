@@ -9,7 +9,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesWithName()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -20,7 +20,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies with name equal to \"aweXpect.Reflection.Tests\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -31,7 +31,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies with name starting with \"aweXpect.Reflection\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -42,7 +42,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies with name matching regex \"aweXpect\\\\.[a-zA-Z\\\\.]*\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -53,7 +53,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies with name ending with \".Tests\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -64,7 +64,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies with name matching \"awe*pect*\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -76,7 +76,7 @@ public sealed partial class AssemblyFilters
 						"in all loaded assemblies with name equal to \"awexpect.reflection.tests\" ignoring case");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -89,7 +89,7 @@ public sealed partial class AssemblyFilters
 						"in all loaded assemblies with name equal to \"\\t aweXpect.Reflection.Tests\" ignoring leading whitespace");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()
@@ -102,7 +102,7 @@ public sealed partial class AssemblyFilters
 						"in all loaded assemblies with name equal to \"aweXpect.Reflection.Tests\\t \" ignoring trailing whitespace");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportUsingCustomComparer()
 			{
 				Filtered.Assemblies Assemblies = In.AllLoadedAssemblies()

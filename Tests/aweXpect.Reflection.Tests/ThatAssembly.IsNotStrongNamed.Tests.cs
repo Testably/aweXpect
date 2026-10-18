@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNotStrongNamed_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -23,7 +22,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
@@ -41,7 +40,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsStrongNamed_ShouldFail()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -62,7 +61,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNotStrongNamed_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -72,7 +71,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotComplyWith(it => it.IsNotStrongNamed());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is strong named,
@@ -80,7 +79,7 @@ public sealed partial class ThatAssembly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsStrongNamed_ShouldSucceed()
 			{
 				Assembly subject = typeof(In).Assembly;

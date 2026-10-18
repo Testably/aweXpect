@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,12 +8,12 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("InternalMethod")]
-			[InlineData("PrivateMethod")]
-			[InlineData("ProtectedInternalMethod")]
-			[InlineData("PrivateProtectedMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("InternalMethod")]
+			[Arguments("PrivateMethod")]
+			[Arguments("ProtectedInternalMethod")]
+			[Arguments("PrivateProtectedMethod")]
 			public async Task WhenMethodInfoIsNotPublic_ShouldSucceed(string methodName)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -27,7 +26,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsPublic_ShouldFail()
 			{
 				MethodInfo? subject = GetMethod("PublicMethod");
@@ -55,7 +54,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotPublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not public,
@@ -66,12 +65,12 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod", "protected")]
-			[InlineData("InternalMethod", "internal")]
-			[InlineData("PrivateMethod", "private")]
-			[InlineData("ProtectedInternalMethod", "protected internal")]
-			[InlineData("PrivateProtectedMethod", "private protected")]
+			[Test]
+			[Arguments("ProtectedMethod", "protected")]
+			[Arguments("InternalMethod", "internal")]
+			[Arguments("PrivateMethod", "private")]
+			[Arguments("ProtectedInternalMethod", "protected internal")]
+			[Arguments("PrivateProtectedMethod", "private protected")]
 			public async Task WhenMethodInfoIsNotPublic_ShouldFail(string methodName, string expectedAccessModifier)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -81,7 +80,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is public,
@@ -89,7 +88,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsPublic_ShouldSucceed()
 			{
 				MethodInfo? subject = GetMethod("PublicMethod");

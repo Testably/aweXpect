@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class FieldInfoHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Internal_ShouldMatchForExpectedField()
 	{
 		FieldInfo fieldInfo = typeof(AccessModifierTestClass).GetDeclaredFields()
@@ -21,7 +21,7 @@ public sealed class FieldInfoHelpersTests
 		await That(fieldInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Private_ShouldMatchForExpectedField()
 	{
 		FieldInfo fieldInfo = typeof(AccessModifierTestClass).GetDeclaredFields()
@@ -33,7 +33,7 @@ public sealed class FieldInfoHelpersTests
 		await That(fieldInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Protected_ShouldMatchForExpectedField()
 	{
 		FieldInfo fieldInfo = typeof(AccessModifierTestClass).GetDeclaredFields()
@@ -45,7 +45,7 @@ public sealed class FieldInfoHelpersTests
 		await That(fieldInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Public_ShouldMatchForExpectedField()
 	{
 		FieldInfo fieldInfo = typeof(AccessModifierTestClass).GetDeclaredFields()
@@ -57,7 +57,7 @@ public sealed class FieldInfoHelpersTests
 		await That(fieldInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_WhenNull_ShouldReturnFalse()
 	{
 		FieldInfo? fieldInfo = null;
@@ -68,7 +68,7 @@ public sealed class FieldInfoHelpersTests
 		await That(fieldInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
@@ -78,7 +78,7 @@ public sealed class FieldInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
@@ -88,7 +88,7 @@ public sealed class FieldInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
 	{
 		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
@@ -100,7 +100,7 @@ public sealed class FieldInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
 		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field2WithoutAttribute))!;
@@ -110,7 +110,7 @@ public sealed class FieldInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;

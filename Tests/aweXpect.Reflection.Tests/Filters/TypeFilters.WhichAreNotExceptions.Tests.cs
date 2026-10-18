@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOnlyNonExceptionTypes()
 			{
 				Filtered.Types subject = In.AssemblyContaining<WhichAreNotExceptions>().Types()
@@ -17,7 +17,7 @@ public sealed partial class TypeFilters
 				await That(subject).AreNotExceptions().And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateDescription()
 			{
 				Filtered.Types subject = In.AssemblyContaining<WhichAreNotExceptions>().Types()

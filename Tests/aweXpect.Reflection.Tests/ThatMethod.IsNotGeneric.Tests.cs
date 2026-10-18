@@ -8,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsGeneric_ShouldFail()
 			{
 				MethodInfo? subject = GetMethod("GenericMethod");
@@ -26,7 +26,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotGeneric_ShouldSucceed()
 			{
 				MethodInfo? subject = GetMethod("NonGenericMethod");
@@ -39,7 +39,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsGeneric_ShouldSucceed()
 			{
 				MethodInfo? subject = GetMethod("GenericMethod");
@@ -73,7 +73,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotGeneric_ShouldFail()
 			{
 				MethodInfo? subject = GetMethod("NonGenericMethod");

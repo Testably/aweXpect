@@ -11,7 +11,7 @@ public sealed partial class Filtered
 		{
 			public sealed class AbstractTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForRecords()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Abstract.Records();
@@ -19,7 +19,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t.IsRecordClass()).And.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -30,7 +30,7 @@ public sealed partial class Filtered
 						   (type.IsNested ? type.IsNestedPublic : type.IsPublic)).And.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

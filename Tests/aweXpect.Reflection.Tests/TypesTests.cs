@@ -4,14 +4,13 @@ using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
 // ReSharper disable PossibleMultipleEnumeration
 public sealed class TypesTests
 {
-	[Fact]
+	[Test]
 	public async Task InAllLoadedAssemblies_ShouldContainTypesFromMultipleAssemblies()
 	{
 		Filtered.Types sut = Types.InAllLoadedAssemblies();
@@ -21,7 +20,7 @@ public sealed class TypesTests
 		await That(sut.GetDescription()).IsEqualTo("types in all loaded assemblies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InAssemblies_WithEnumerable_ShouldContainTypesFromProvidedAssemblies()
 	{
 		IEnumerable<Assembly?> assemblies = [typeof(TypesTests).Assembly,];
@@ -32,7 +31,7 @@ public sealed class TypesTests
 		await That(sut).DoesNotContain(typeof(In));
 	}
 
-	[Fact]
+	[Test]
 	public async Task InAssemblies_WithMultipleAssemblies_ShouldContainTypesFromProvidedAssemblies()
 	{
 		Filtered.Types sut = Types.InAssemblies(typeof(In).Assembly, typeof(TypesTests).Assembly);
@@ -43,7 +42,7 @@ public sealed class TypesTests
 			.IsEqualTo("types in the assemblies [aweXpect.Reflection*, aweXpect.Reflection.Tests*]").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task InAssemblyContaining_WithGeneric_ShouldContainTypesFromAssemblyOfProvidedType()
 	{
 		Filtered.Types sut = Types.InAssemblyContaining<TypesTests>();
@@ -53,7 +52,7 @@ public sealed class TypesTests
 		await That(sut.GetDescription()).IsEqualTo("types in assembly containing type TypesTests");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InAssemblyContaining_WithType_ShouldContainTypesFromAssemblyOfProvidedType()
 	{
 		Filtered.Types sut = Types.InAssemblyContaining(typeof(In));
@@ -63,7 +62,7 @@ public sealed class TypesTests
 		await That(sut.GetDescription()).IsEqualTo("types in assembly containing type In");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_AfterClarification_OriginalShouldStillUseAllLoadedAssemblies()
 	{
 		Filtered.Types.InNamespaceResult sut = Types.InNamespace(NamespaceScope);
@@ -74,7 +73,7 @@ public sealed class TypesTests
 			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in all loaded assemblies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_InAllLoadedAssemblies_ShouldMatchDefaultSource()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope).InAllLoadedAssemblies();
@@ -84,7 +83,7 @@ public sealed class TypesTests
 			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in all loaded assemblies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_InAssemblies_ShouldLimitSourceToProvidedAssemblies()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope).InAssemblies(typeof(TypesTests).Assembly);
@@ -95,7 +94,7 @@ public sealed class TypesTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_InAssemblyContaining_WithGeneric_ShouldLimitSourceToAssemblyOfProvidedType()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope).InAssemblyContaining<ClassInNamespaceScope>();
@@ -106,7 +105,7 @@ public sealed class TypesTests
 				$"types within namespace \"{NamespaceScope}\" in assembly containing type ClassInNamespaceScope");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_InAssemblyContaining_WithType_WhenAssemblyDoesNotContainNamespace_ShouldBeEmpty()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope).InAssemblyContaining(typeof(In));
@@ -116,7 +115,7 @@ public sealed class TypesTests
 			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in assembly containing type In");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_ShouldContainTypesWithinNamespaceIncludingSubNamespaces()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope);
@@ -128,7 +127,7 @@ public sealed class TypesTests
 			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in all loaded assemblies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_ShouldSelectTypesThatCanBeAsserted()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope);
@@ -141,7 +140,7 @@ public sealed class TypesTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_WhenAssertionFails_ShouldReportFullMessage()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope);
@@ -152,7 +151,7 @@ public sealed class TypesTests
 				.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling");
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
 			             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling",
@@ -165,7 +164,7 @@ public sealed class TypesTests
 			             """).AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_WhenNegatingMatchingAssertion_ShouldReportFullMessage()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope);
@@ -176,7 +175,7 @@ public sealed class TypesTests
 				=> they.AreWithinNamespace(NamespaceScope));
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
 			             are not all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
@@ -189,7 +188,7 @@ public sealed class TypesTests
 			             """).AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task InNamespace_WhenNoTypesAreInNamespace_ShouldBeEmpty()
 	{
 		Filtered.Types sut = Types.InNamespace("Non.Existent.Namespace");

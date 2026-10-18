@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutTypesWithName()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -21,7 +21,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

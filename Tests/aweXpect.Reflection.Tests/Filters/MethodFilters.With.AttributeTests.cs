@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -10,7 +10,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithAttribute()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -25,7 +25,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -37,8 +37,8 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForMethodsWithAttributeMatchingPredicate(int value,
 				MethodInfo?[] expectedMethods)
 			{
@@ -52,7 +52,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -66,7 +66,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Methods()
@@ -77,7 +77,7 @@ public sealed partial class MethodFilters
 					await That(methods).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods with MethodFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -87,24 +87,22 @@ public sealed partial class MethodFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			public static TheoryData<int, MethodInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, MethodInfo?[])>> GetFooValues()
+				=> new List<Func<(int, MethodInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)),
 							typeof(DummyChild).GetMethod(nameof(DummyChild.MyFooMethod2)),
 						]
-					},
-					{
-						3, [typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3)),]
-					},
+					),
+					() => (3, [typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3)),]),
 				};
 		}
 
 		public sealed class OrWithAttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithAttribute()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -123,7 +121,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -141,8 +139,8 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForMethodsWithAttributeMatchingPredicate(int value,
 				MethodInfo?[] expectedMethods)
 			{
@@ -156,7 +154,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -171,22 +169,22 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			public static TheoryData<int, MethodInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, MethodInfo?[])>> GetFooValues()
+				=> new List<Func<(int, MethodInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
 							typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)),
 							typeof(DummyChild).GetMethod(nameof(DummyChild.MyFooMethod2)),
 						]
-					},
-					{
+					),
+					() => (
 						3, [
 							typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
 							typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3)),
 						]
-					},
+					),
 				};
 		}
 

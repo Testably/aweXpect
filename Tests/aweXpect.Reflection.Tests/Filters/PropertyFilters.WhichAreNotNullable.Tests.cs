@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonNullableProperties()
 			{
 				Filtered.Properties properties = In.Type<ClassWithMixedNullableMembers>()
@@ -20,7 +20,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("non-nullable properties in type").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldOnlyKeepNonNullableProperties()
 			{
 				Filtered.Properties properties = In.Type<ClassWithMixedNullableMembers>()

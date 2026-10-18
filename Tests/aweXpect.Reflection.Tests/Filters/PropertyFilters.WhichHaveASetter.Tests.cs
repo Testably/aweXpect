@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPropertiesWithASetter()
 			{
 				Filtered.Properties properties = In.Type<TestClassWithPropertyAccessors>()
@@ -18,7 +18,7 @@ public sealed partial class PropertyFilters
 				await That(properties).HaveASetter().And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateTheDescription()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<TestClassWithPropertyAccessors>()

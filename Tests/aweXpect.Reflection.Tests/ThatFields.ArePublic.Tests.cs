@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("InternalField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("InternalField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotPublic_ShouldFail(string fieldName)
 			{
 				Filtered.Fields subject = GetFields(fieldName);
@@ -22,7 +21,7 @@ public sealed partial class ThatFields
 					await That(subject).ArePublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are public,
@@ -35,7 +34,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsPublic_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetFields("PublicField");
@@ -51,10 +50,10 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("InternalField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("InternalField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotPublic_ShouldSucceed(string fieldName)
 			{
 				Filtered.Fields subject = GetFields(fieldName);
@@ -67,7 +66,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsPublic_ShouldFail()
 			{
 				Filtered.Fields subject = GetFields("PublicField");
@@ -77,7 +76,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.ArePublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are public,

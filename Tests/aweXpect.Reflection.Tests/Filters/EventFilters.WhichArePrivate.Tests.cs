@@ -8,7 +8,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPrivateEventsWithExplicitMethod()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()

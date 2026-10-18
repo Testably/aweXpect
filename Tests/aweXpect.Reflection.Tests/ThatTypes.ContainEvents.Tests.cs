@@ -12,7 +12,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesContainMatchingEvent_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedEvent, ClassWithTwoMarkedEvents>();
@@ -26,7 +26,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedEvent_WithIncludingInherited_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -44,7 +44,7 @@ public sealed partial class ThatTypes
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingEvent_ShouldFail()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedEvent, ClassWithoutMarkedEvent>();
@@ -67,7 +67,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlyContainsInheritedEvent_WithDeclaredOnly_ShouldFail()
 			{
 				Filtered.Types subject =
@@ -91,7 +91,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesOnlyContainInheritedEvent_WithIncludingInherited_ShouldSucceed()
 			{
 				Filtered.Types subject =
@@ -109,7 +109,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingEvent_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedEvent, ClassWithoutMarkedEvent>();

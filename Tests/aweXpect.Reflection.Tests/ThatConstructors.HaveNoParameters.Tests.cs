@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatConstructors
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveNoParameters_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -26,7 +25,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveNoParameters_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -39,7 +38,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveNoParameters();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have no parameters,
@@ -50,7 +49,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveNoParameters_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -63,7 +62,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveNoParameters());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have no parameters,
@@ -71,7 +70,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveNoParameters_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

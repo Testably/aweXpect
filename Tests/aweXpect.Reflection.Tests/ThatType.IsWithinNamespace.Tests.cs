@@ -1,7 +1,6 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested;
 using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNamespaceDiffersOnlyByCase_ShouldFail()
 			{
 				Type subject = typeof(ClassInNestedNamespaceScope);
@@ -22,7 +21,7 @@ public sealed partial class ThatType
 						.IsWithinNamespace("AWEXPECT.REFLECTION.TESTS.TESTHELPERS.TYPES.NAMESPACESCOPE");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is within namespace "AWEXPECT.REFLECTION.TESTS.TESTHELPERS.TYPES.NAMESPACESCOPE",
@@ -30,7 +29,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasExactNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ClassInNamespaceScope);
@@ -44,7 +43,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsInSubNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ClassInNestedNamespaceScope);
@@ -58,7 +57,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -76,7 +75,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlySharesPrefix_ShouldFail()
 			{
 				Type subject = typeof(ClassInSiblingNamespaceScope);
@@ -87,7 +86,7 @@ public sealed partial class ThatType
 						.IsWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
@@ -98,7 +97,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotWithinNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ClassInSiblingNamespaceScope);
@@ -112,7 +111,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsWithinNamespace_ShouldFail()
 			{
 				Type subject = typeof(ClassInNestedNamespaceScope);
@@ -123,7 +122,7 @@ public sealed partial class ThatType
 						=> it.IsWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is not within namespace*NamespaceScope*").AsWildcard();
 			}
 		}

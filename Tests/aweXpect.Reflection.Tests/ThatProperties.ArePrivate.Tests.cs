@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("InternalProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("InternalProperty")]
 			public async Task WhenPropertyInfoIsNotPrivate_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -22,7 +21,7 @@ public sealed partial class ThatProperties
 					await That(subject).ArePrivate();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are private,
@@ -35,7 +34,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPrivate_ShouldSucceed()
 			{
 				Filtered.Properties subject = GetProperties("PrivateProperty");
@@ -51,10 +50,10 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("InternalProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("InternalProperty")]
 			public async Task WhenPropertyInfoIsNotPrivate_ShouldSucceed(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -67,7 +66,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPrivate_ShouldFail()
 			{
 				Filtered.Properties subject = GetProperties("PrivateProperty");
@@ -77,7 +76,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.ArePrivate());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are private,

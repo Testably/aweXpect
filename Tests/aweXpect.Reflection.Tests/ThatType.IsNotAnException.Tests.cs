@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnException_ShouldFail()
 			{
 				Type subject = typeof(PublicException);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonExceptionTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonExceptionTypes))]
 			public async Task WhenTypeIsNotAnException_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> NonExceptionTypes() => new()
+			public static IEnumerable<Type> NonExceptionTypes() => new List<Type>
 			{
 				typeof(PublicClass),
 				typeof(PublicStruct),
@@ -68,7 +68,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnException_ShouldSucceed()
 			{
 				Type subject = typeof(PublicException);
@@ -81,8 +81,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonExceptionTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonExceptionTypes))]
 			public async Task WhenTypeIsNotAnException_ShouldFail(Type subject)
 			{
 				async Task Act()
@@ -90,11 +90,11 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotAnException());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is an exception*but it was*").AsWildcard();
 			}
 
-			public static TheoryData<Type> NonExceptionTypes() => new()
+			public static IEnumerable<Type> NonExceptionTypes() => new List<Type>
 			{
 				typeof(PublicClass),
 				typeof(PublicStruct),

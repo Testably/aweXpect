@@ -8,7 +8,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWithoutAttribute()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()

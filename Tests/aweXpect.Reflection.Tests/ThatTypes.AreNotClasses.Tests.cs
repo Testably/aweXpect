@@ -2,7 +2,6 @@
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsClassType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -25,7 +24,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotClasses();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not classes,
@@ -38,7 +37,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoClassTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -57,7 +56,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainOnlyInterfaceTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotClasses>().Interfaces();
@@ -70,7 +69,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyClasses_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotClasses>().Types()
@@ -97,7 +96,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainOnlyInterfaceTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotClasses>().Interfaces();
@@ -107,7 +106,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotClasses());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that interfaces in assembly containing type ThatTypes.AreNotClasses
 					             also contain a class,
@@ -120,7 +119,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyClasses_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotClasses>().Types()

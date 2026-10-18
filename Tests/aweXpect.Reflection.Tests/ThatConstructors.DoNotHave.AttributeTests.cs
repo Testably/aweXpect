@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatConstructors
 		public sealed class AttributeTests
 		{
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAConstructorHasAttribute_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = new[]
@@ -25,7 +24,7 @@ public sealed partial class ThatConstructors
 					await That(subject).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
@@ -39,7 +38,7 @@ public sealed partial class ThatConstructors
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task Negated_WhenNoConstructorHasAttribute_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo?> subject = new[]
@@ -52,7 +51,7 @@ public sealed partial class ThatConstructors
 					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             not all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
@@ -65,7 +64,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAConstructorHasAttribute_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo?> subject = new[]
@@ -78,7 +77,7 @@ public sealed partial class ThatConstructors
 					await That(subject).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
@@ -91,7 +90,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoConstructorHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo?> subject = new[]

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAllAssembliesHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -26,7 +25,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAllAssembliesHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -43,7 +42,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenNegated_ShouldListMatchingAssemblies()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).DoesNotComplyWith(they => they.Have<AssemblyTitleAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             not all have AssemblyTitleAttribute,
@@ -69,7 +68,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenNotAllAssembliesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -82,7 +81,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).Have<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have ThatAssemblies.Have.AttributeTests.TestAttribute,
@@ -95,7 +94,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenNotAllAssembliesHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -108,7 +107,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).Have<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
@@ -125,7 +124,7 @@ public sealed partial class ThatAssemblies
 			private class TestAttribute : Attribute;
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task AsyncEnumerable_WhenAllAssembliesHaveAttribute_ShouldSucceed()
 			{
 				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
@@ -139,7 +138,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task AsyncEnumerable_WhenNotAllAssembliesHaveAttribute_ShouldFail()
 			{
 				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
@@ -150,7 +149,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).Have<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have ThatAssemblies.Have.AttributeTests.TestAttribute,
@@ -163,7 +162,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task AsyncEnumerable_WithPredicate_WhenNotAllAssembliesMatch_ShouldFail()
 			{
 				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
@@ -174,7 +173,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).Have<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
@@ -187,7 +186,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task AsyncEnumerable_WithPredicate_WhenAllAssembliesMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
@@ -218,7 +217,7 @@ public sealed partial class ThatAssemblies
 		{
 			public sealed class AttributeTests
 			{
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAssembliesHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -234,7 +233,7 @@ public sealed partial class ThatAssemblies
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAssembliesHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -250,7 +249,7 @@ public sealed partial class ThatAssemblies
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAssembliesHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -267,7 +266,7 @@ public sealed partial class ThatAssemblies
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAssembliesHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -284,7 +283,7 @@ public sealed partial class ThatAssemblies
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAssembliesHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -297,7 +296,7 @@ public sealed partial class ThatAssemblies
 						await That(subjects).Have<TestAttribute>().OrHave<BarAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subjects
 						             all have ThatAssemblies.Have.OrHave.AttributeTests.TestAttribute or ThatAssemblies.Have.OrHave.AttributeTests.BarAttribute,
@@ -310,7 +309,7 @@ public sealed partial class ThatAssemblies
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAssembliesHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -326,7 +325,7 @@ public sealed partial class ThatAssemblies
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WithPredicate_WhenAssembliesHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -340,7 +339,7 @@ public sealed partial class ThatAssemblies
 							.OrHave<TestAttribute>(attr => attr.Value == "NonExistent");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subjects
 						             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistent" or ThatAssemblies.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "NonExistent",
@@ -366,7 +365,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssembliesDoNotHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -382,7 +381,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssembliesDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -399,7 +398,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssembliesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -412,7 +411,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).DoesNotComplyWith(they => they.Have<AssemblyTitleAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             not all have AssemblyTitleAttribute,

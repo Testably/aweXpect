@@ -2,11 +2,12 @@ using aweXpect.Customization;
 
 namespace aweXpect.Reflection.Tests;
 
+[NotInParallel]
 public sealed class ReflectionCustomizationExtensionsTests
 {
 	private const string UnusedAttributeName = "aweXpect.Reflection.Tests.UnusedAttribute";
 
-	[Fact]
+	[Test]
 	public async Task ExcludedAttributeTypes_Get_ShouldReturnACopy()
 	{
 		using (Customize.aweXpect.Reflection().ExcludedAttributeTypes().Set([UnusedAttributeName,]))
@@ -20,7 +21,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task ExcludedAttributeTypes_SetNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -33,7 +34,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDisposedOutOfOrder_ShouldKeepTheValueOfTheRemainingLifetime()
 	{
 		CustomizationLifetime first = Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
@@ -54,7 +55,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 			.Because("disposing both lifetimes restores the default");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetOnGlobal_ShouldApplyToAllAsyncFlows()
 	{
 		CustomizationLifetime lifetime = await Task.Run(() => Customize.aweXpect.Global.Reflection()
@@ -74,7 +75,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 			.Because("disposing the global lifetime restores the default");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetOnGlobal_ShouldApplyToTheEvaluationInAllAsyncFlows()
 	{
 		CustomizationLifetime lifetime = await Task.Run(() => Customize.aweXpect.Global.Reflection()
@@ -93,7 +94,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 			.Because("disposing the global lifetime makes the attribute count as a dependency again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetOnScopedAndGlobal_ShouldPreferTheScopedValue()
 	{
 		using CustomizationLifetime global = Customize.aweXpect.Global.Reflection().ExcludedAttributeTypes()
@@ -109,7 +110,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 			.Because("disposing the scoped lifetime falls back to the global value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetOnScopedCustomization_ShouldNotApplyToTheCallingAsyncFlow()
 	{
 		await Task.Run(() => Customize.aweXpect.Reflection()
@@ -120,7 +121,7 @@ public sealed class ReflectionCustomizationExtensionsTests
 			.Because("a value set on the scoped customization stays in the async flow that set it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetOnScopedCustomization_ShouldApplyUntilDisposed()
 	{
 		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()

@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonObsoleteProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<ClassWithObsoleteMembers>()

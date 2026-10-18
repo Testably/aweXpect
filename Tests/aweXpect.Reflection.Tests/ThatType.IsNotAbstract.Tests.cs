@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAbstract_ShouldFail()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(AbstractTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(AbstractTypesForNegated))]
 			public async Task WhenTypeIsAbstract_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAbstract_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicClass);
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is abstract,
@@ -57,8 +57,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonAbstractTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonAbstractTypes))]
 			public async Task WhenTypeIsNotAbstract_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> AbstractTypesForNegated() => new()
+			public static IEnumerable<Type> AbstractTypesForNegated() => new List<Type>
 			{
 				typeof(PublicAbstractClass),
 			};
 
-			public static TheoryData<Type> NonAbstractTypes()
+			public static IEnumerable<Type> NonAbstractTypes()
 				=>
 				[
 					typeof(PublicStaticClass),

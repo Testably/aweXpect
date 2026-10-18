@@ -13,7 +13,7 @@ public sealed partial class ThatConstructors
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorsContainStaticConstructors_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject = typeof(TestClassWithStaticMembers)
@@ -38,7 +38,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonStaticConstructors_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject = typeof(TestClassWithStaticMembers)
@@ -55,7 +55,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorsContainStaticConstructors_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> subject = typeof(TestClassWithStaticMembers)
@@ -70,7 +70,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonStaticConstructors_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> subject = typeof(TestClassWithStaticMembers)
@@ -98,7 +98,7 @@ public sealed partial class ThatConstructors
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorsContainStaticConstructors_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -124,7 +124,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonStaticConstructors_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = typeof(TestClassWithStaticMembers)

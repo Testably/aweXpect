@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatEvent
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventHandlerInheritsFromExpectedType_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -21,7 +20,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfExactType<MulticastDelegate>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of exact type MulticastDelegate,
@@ -29,7 +28,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -47,7 +46,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfExactType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -63,7 +62,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventHandlerInheritsFromExpectedType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -76,7 +75,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfExactType_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -86,7 +85,7 @@ public sealed partial class ThatEvent
 					await That(subject).DoesNotComplyWith(it => it.IsOfExactType<EventHandler>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of exact type EventHandler,
@@ -105,7 +104,7 @@ public sealed partial class ThatEvent
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventHandlerInheritsFromExpectedType_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -115,7 +114,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfExactType(typeof(MulticastDelegate));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of exact type MulticastDelegate,
@@ -123,7 +122,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfExactType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -139,7 +138,7 @@ public sealed partial class ThatEvent
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrOfExactType_ShouldSupportChaining()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;

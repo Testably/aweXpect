@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Internal.Tests.TestHelpers;
 
@@ -6,8 +7,8 @@ namespace aweXpect.Reflection.Internal.Tests.Formatting;
 
 public class PropertyFormatterTests
 {
-	[Theory]
-	[MemberData(nameof(GetTestCases))]
+	[Test]
+	[MethodDataSource(nameof(GetTestCases))]
 	public async Task ShouldFormatCorrectly(PropertyInfo? propertyInfo, string expectedResult)
 	{
 		PropertyFormatter formatter = new();
@@ -17,7 +18,7 @@ public class PropertyFormatterTests
 		await That(result).IsEqualTo(expectedResult);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOnlyGetter_ShouldFormatCorrectly()
 	{
 		PropertyInfo? propertyInfo = typeof(MyTestClass).GetProperty(nameof(MyTestClass.PropertyWithOnlyGetter),
@@ -30,7 +31,7 @@ public class PropertyFormatterTests
 			.IsEqualTo("internal string PropertyFormatterTests.MyTestClass.PropertyWithOnlyGetter { get; }");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOnlySetter_ShouldFormatCorrectly()
 	{
 		PropertyInfo? propertyInfo = typeof(MyTestClass).GetProperty(nameof(MyTestClass.PropertyWithOnlySetter),
@@ -42,7 +43,7 @@ public class PropertyFormatterTests
 		await That(result).IsEqualTo("public int PropertyFormatterTests.MyTestClass.PropertyWithOnlySetter { set; }");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithPrivateGetter_ShouldFormatCorrectly()
 	{
 		PropertyInfo? propertyInfo = typeof(MyTestClass).GetProperty(nameof(MyTestClass.PropertyWithPrivateGetter),
@@ -55,7 +56,7 @@ public class PropertyFormatterTests
 			.IsEqualTo("public int PropertyFormatterTests.MyTestClass.PropertyWithPrivateGetter { private get; set; }");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithPrivateSetter_ShouldFormatCorrectly()
 	{
 		PropertyInfo? propertyInfo = typeof(MyTestClass).GetProperty(nameof(MyTestClass.PropertyWithPrivateSetter),
@@ -68,7 +69,7 @@ public class PropertyFormatterTests
 			.IsEqualTo("public int PropertyFormatterTests.MyTestClass.PropertyWithPrivateSetter { get; private set; }");
 	}
 
-	public static TheoryData<PropertyInfo?, string> GetTestCases()
+	public static IEnumerable<(PropertyInfo?, string)> GetTestCases()
 	{
 		static PropertyInfo? GetProperty(string name)
 		{
@@ -76,26 +77,14 @@ public class PropertyFormatterTests
 				BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 		}
 
-		return new TheoryData<PropertyInfo?, string>
+		return new List<(PropertyInfo?, string)>
 		{
-			{
-				GetProperty("MyProperty"), "public int PropertyFormatterTests.MyTestClass.MyProperty { get; private set; }"
-			},
-			{
-				GetProperty("InternalProperty"), "internal int PropertyFormatterTests.MyTestClass.InternalProperty { get; private set; }"
-			},
-			{
-				GetProperty("ProtectedProperty"), "protected int PropertyFormatterTests.MyTestClass.ProtectedProperty { get; private protected set; }"
-			},
-			{
-				GetProperty("ProtectedInternalProperty"), "protected internal int PropertyFormatterTests.MyTestClass.ProtectedInternalProperty { get; internal set; }"
-			},
-			{
-				GetProperty("PrivateProtectedProperty"), "private protected int PropertyFormatterTests.MyTestClass.PrivateProtectedProperty { get; private set; }"
-			},
-			{
-				GetProperty("PrivateProperty"), "private int PropertyFormatterTests.MyTestClass.PrivateProperty { get; set; }"
-			},
+			(GetProperty("MyProperty"), "public int PropertyFormatterTests.MyTestClass.MyProperty { get; private set; }"),
+			(GetProperty("InternalProperty"), "internal int PropertyFormatterTests.MyTestClass.InternalProperty { get; private set; }"),
+			(GetProperty("ProtectedProperty"), "protected int PropertyFormatterTests.MyTestClass.ProtectedProperty { get; private protected set; }"),
+			(GetProperty("ProtectedInternalProperty"), "protected internal int PropertyFormatterTests.MyTestClass.ProtectedInternalProperty { get; internal set; }"),
+			(GetProperty("PrivateProtectedProperty"), "private protected int PropertyFormatterTests.MyTestClass.PrivateProtectedProperty { get; private set; }"),
+			(GetProperty("PrivateProperty"), "private int PropertyFormatterTests.MyTestClass.PrivateProperty { get; set; }"),
 		};
 	}
 

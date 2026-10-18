@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Name_WhenMethodHasNoRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -19,7 +18,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter with name "value" with ref modifier,
@@ -27,7 +26,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenMethodHasNoRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -37,7 +36,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int with ref modifier,
@@ -45,7 +44,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenMethodHasRefParameterOfType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
@@ -58,7 +57,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenMethodHasRefParameterOfTypeWithName_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
@@ -71,7 +70,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenMethodHasNoRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -81,7 +80,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int with ref modifier,
@@ -89,7 +88,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenMethodHasRefParameterOfExactType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
@@ -102,7 +101,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenMethodHasRefParameterOfExactTypeWithName_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
@@ -115,7 +114,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactlyWithName_WhenMethodHasNoRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -125,7 +124,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int with name "value" with ref modifier,
@@ -133,7 +132,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeWithName_WhenMethodHasNoRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -143,7 +142,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int with name "value" with ref modifier,
@@ -151,7 +150,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasNoRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -161,7 +160,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has a ref parameter,
@@ -169,7 +168,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasRefParameter_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
@@ -182,7 +181,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? methodInfo = null;
@@ -192,7 +191,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has a ref parameter,
@@ -200,7 +199,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeButNotAllParametersAreRefParameters_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMixedParameters))!;
@@ -216,7 +215,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasNoRefParameter_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -229,7 +228,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasRefParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
@@ -239,7 +238,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).DoesNotComplyWith(it => it.HasRefParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             does not have a ref parameter,

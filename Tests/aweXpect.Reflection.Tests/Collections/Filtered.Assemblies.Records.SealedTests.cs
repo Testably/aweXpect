@@ -8,7 +8,7 @@ public sealed partial class Filtered
 		{
 			public sealed class SealedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForRecords()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Sealed.Records();
@@ -17,7 +17,7 @@ public sealed partial class Filtered
 						{ IsClass: true, IsAbstract: false, IsSealed: true, IsInterface: false, }).And.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

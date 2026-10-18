@@ -11,7 +11,7 @@ public sealed partial class TypeFilters
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
 				{
 					Filtered.Types subject = In
@@ -24,7 +24,7 @@ public sealed partial class TypeFilters
 					await That(subject.GetDescription()).Contains("with argument of type string in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesADerivedType_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -38,7 +38,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type ThatMethod.DerivedClass in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesTheTypeExactly_ShouldBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -52,10 +52,10 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type ThatMethod.BaseClass in");
 				}
 
-				[Theory]
-				[InlineData(0, 0)]
-				[InlineData(1, 1)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 0)]
+				[Arguments(1, 1)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheTypeExactlyAtTheGivenIndex_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -70,10 +70,10 @@ public sealed partial class TypeFilters
 						.Contains($"with argument of type ThatMethod.BaseClass at index {index} in");
 				}
 
-				[Theory]
-				[InlineData(0, 1)]
-				[InlineData(1, 0)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 1)]
+				[Arguments(1, 0)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheTypeExactlyAtTheGivenIndexFromEnd_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -91,7 +91,7 @@ public sealed partial class TypeFilters
 
 			public sealed class GenericNamedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsPrefix()
 				{
 					Filtered.Types subject = In
@@ -105,7 +105,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type object and name starting with \"TFo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsRegex()
 				{
 					Filtered.Types subject = In
@@ -119,7 +119,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type object and name matching regex \"T[a-zA-Z]*o\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsSuffix()
 				{
 					Filtered.Types subject = In
@@ -133,7 +133,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type object and name ending with \"Foo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsWildcard()
 				{
 					Filtered.Types subject = In
@@ -147,9 +147,9 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type object and name matching \"T??o\" in");
 				}
 
-				[Theory]
-				[InlineData(true, 1, " ignoring case")]
-				[InlineData(false, 0, "")]
+				[Test]
+				[Arguments(true, 1, " ignoring case")]
+				[Arguments(false, 0, "")]
 				public async Task ShouldSupportIgnoringCase(bool ignoringCase, int expectedCount, string expectedSuffix)
 				{
 					Filtered.Types subject = In
@@ -163,7 +163,7 @@ public sealed partial class TypeFilters
 						.Contains($"with argument of type object and name equal to \"TfOo\"{expectedSuffix} in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Filtered.Types subject = In
@@ -178,7 +178,7 @@ public sealed partial class TypeFilters
 							"with argument of type object and name equal to \"TFoO\" using IgnoreCaseForVocalsComparer in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
 				{
 					Filtered.Types subject = In
@@ -192,7 +192,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type string and name equal to \"Foo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesADerivedTypeAndName_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -206,7 +206,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type ThatMethod.DerivedClass and name equal to \"T2\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesTheTypeAndNameExactly_ShouldBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -220,10 +220,10 @@ public sealed partial class TypeFilters
 						.Contains("with argument of type ThatMethod.BaseClass and name equal to \"T2\" in");
 				}
 
-				[Theory]
-				[InlineData(0, 0)]
-				[InlineData(1, 1)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 0)]
+				[Arguments(1, 1)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheTypeAndNameExactlyAtTheGivenIndex_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -239,10 +239,10 @@ public sealed partial class TypeFilters
 							$"with argument of type ThatMethod.BaseClass and name equal to \"T2\" at index {index} in");
 				}
 
-				[Theory]
-				[InlineData(0, 1)]
-				[InlineData(1, 0)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 1)]
+				[Arguments(1, 0)]
+				[Arguments(2, 0)]
 				public async Task
 					WhenTypeMatchesTheTypeAndNameExactlyAtTheGivenIndexFromEnd_ShouldIncludeTheExpectedCount(
 						int index, int expectedCount)
@@ -259,7 +259,7 @@ public sealed partial class TypeFilters
 							$"with argument of type ThatMethod.BaseClass and name equal to \"T2\" at index {index} from end in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesTheTypeExactlyButNotName_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -276,7 +276,7 @@ public sealed partial class TypeFilters
 
 			public sealed class NamedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsPrefix()
 				{
 					Filtered.Types subject = In
@@ -290,7 +290,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument name starting with \"TFo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsRegex()
 				{
 					Filtered.Types subject = In
@@ -304,7 +304,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument name matching regex \"T[a-zA-Z]*o\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsSuffix()
 				{
 					Filtered.Types subject = In
@@ -318,7 +318,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument name ending with \"Foo\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportAsWildcard()
 				{
 					Filtered.Types subject = In
@@ -332,9 +332,9 @@ public sealed partial class TypeFilters
 						.Contains("with argument name matching \"T??o\" in");
 				}
 
-				[Theory]
-				[InlineData(true, 1, " ignoring case")]
-				[InlineData(false, 0, "")]
+				[Test]
+				[Arguments(true, 1, " ignoring case")]
+				[Arguments(false, 0, "")]
 				public async Task ShouldSupportIgnoringCase(bool ignoringCase, int expectedCount, string expectedSuffix)
 				{
 					Filtered.Types subject = In
@@ -348,7 +348,7 @@ public sealed partial class TypeFilters
 						.Contains($"with argument name equal to \"TfOo\"{expectedSuffix} in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Filtered.Types subject = In
@@ -362,7 +362,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument name equal to \"TFoO\" using IgnoreCaseForVocalsComparer in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatchTheName_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -376,7 +376,7 @@ public sealed partial class TypeFilters
 						.Contains("with argument name equal to \"T3\" in");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesTheNameExactly_ShouldBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -390,10 +390,10 @@ public sealed partial class TypeFilters
 						.Contains("with argument name equal to \"TFoo\" in");
 				}
 
-				[Theory]
-				[InlineData(0, 0)]
-				[InlineData(1, 1)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 0)]
+				[Arguments(1, 1)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheNameExactlyAtTheGivenIndex_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{
@@ -409,10 +409,10 @@ public sealed partial class TypeFilters
 							$"with argument name equal to \"T2\" at index {index} in");
 				}
 
-				[Theory]
-				[InlineData(0, 1)]
-				[InlineData(1, 0)]
-				[InlineData(2, 0)]
+				[Test]
+				[Arguments(0, 1)]
+				[Arguments(1, 0)]
+				[Arguments(2, 0)]
 				public async Task WhenTypeMatchesTheNameExactlyAtTheGivenIndexFromEnd_ShouldIncludeTheExpectedCount(
 					int index, int expectedCount)
 				{

@@ -26,7 +26,7 @@ public sealed partial class MethodFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ByName_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -38,7 +38,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Generic_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -49,7 +49,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Generic_WithName_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -61,7 +61,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactly_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -72,7 +72,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactly_WithName_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -84,7 +84,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithParamsCollectionParameter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -93,7 +93,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(ParamsCollectionParameterMethod());
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithParamsParameter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -105,7 +105,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeMethodWhenOnlySomeButNotAllParametersAreParamsParameters()
 			{
 				Filtered.Methods methods = In.Type<ClassWithParamsParameterMethod>()
@@ -115,7 +115,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(PlainMethod());
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeMethodsWithoutParamsParameter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -125,7 +125,7 @@ public sealed partial class MethodFilters
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task UsingType_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -136,7 +136,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithName_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -150,7 +150,7 @@ public sealed partial class MethodFilters
 #pragma warning restore CA2263
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task UsingTypeExactly_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -161,7 +161,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingTypeExactly_WithName_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()

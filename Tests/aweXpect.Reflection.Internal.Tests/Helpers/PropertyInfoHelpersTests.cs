@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class PropertyInfoHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Internal_ShouldMatchForExpectedProperty()
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
@@ -21,9 +21,9 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(AccessModifierTestClass.PublicPropertyWithPrivateGetter))]
-	[InlineData(nameof(AccessModifierTestClass.PublicPropertyWithPrivateSetter))]
+	[Test]
+	[Arguments(nameof(AccessModifierTestClass.PublicPropertyWithPrivateGetter))]
+	[Arguments(nameof(AccessModifierTestClass.PublicPropertyWithPrivateSetter))]
 	public async Task HasAccessModifier_MixedAccessConditionsForGetterAndSetter_ShouldMatchBoth(string propertyName)
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
@@ -36,7 +36,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Private_ShouldMatchForExpectedProperty()
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
@@ -48,7 +48,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Protected_ShouldMatchForExpectedProperty()
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
@@ -60,7 +60,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Public_ShouldMatchForExpectedProperty()
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
@@ -72,7 +72,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_WhenNull_ShouldReturnFalse()
 	{
 		PropertyInfo? propertyInfo = null;
@@ -83,7 +83,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo =
@@ -94,7 +94,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo =
@@ -105,7 +105,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
 	{
 		PropertyInfo propertyInfo =
@@ -118,7 +118,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo =
@@ -129,7 +129,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
 		PropertyInfo propertyInfo =
@@ -140,7 +140,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		PropertyInfo propertyInfo =
@@ -153,7 +153,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsExtensionProperty_WhenNull_ShouldReturnFalse()
 	{
 		PropertyInfo? propertyInfo = null;
@@ -161,7 +161,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.IsExtensionProperty()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsExtensionProperty_WhenRegularProperty_ShouldReturnFalse()
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass)
@@ -170,7 +170,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(propertyInfo.IsExtensionProperty()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsReallyStatic_WhenInstanceProperty_ShouldReturnFalse()
 	{
 		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
@@ -181,7 +181,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsReallyStatic_WhenOnlyGetterIsStatic_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
@@ -192,7 +192,7 @@ public sealed class PropertyInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsReallyStatic_WhenOnlySetterIsStatic_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)

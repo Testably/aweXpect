@@ -8,7 +8,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForProtectedConstructorsWithExplicitMethod()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

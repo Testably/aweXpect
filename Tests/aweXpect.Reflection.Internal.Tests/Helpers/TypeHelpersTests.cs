@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 // ReSharper disable UnusedMember.Local
 public sealed class TypeHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task GetDeclaredFields_ShouldFilterOutBackingFields()
 	{
 		Type type = typeof(TestClassWithPropertyAndField);
@@ -25,10 +25,10 @@ public sealed class TypeHelpersTests
 		await That(result).HasCount(1);
 	}
 
-	[Theory]
-	[InlineData(typeof(TypeLoadException))]
-	[InlineData(typeof(FileNotFoundException))]
-	[InlineData(typeof(FileLoadException))]
+	[Test]
+	[Arguments(typeof(TypeLoadException))]
+	[Arguments(typeof(FileNotFoundException))]
+	[Arguments(typeof(FileLoadException))]
 	public async Task GetDeclaredMembers_WhenReflectionThrowsLoadException_ShouldReturnEmpty(Type exceptionType)
 	{
 		Exception exception = (Exception)Activator.CreateInstance(exceptionType)!;
@@ -41,7 +41,7 @@ public sealed class TypeHelpersTests
 		await That(type.GetDeclaredProperties()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetDeclaredMembers_WhenReflectionThrowsUnrelatedException_ShouldNotCatch()
 	{
 		Type type = new ThrowingType(typeof(TestClassWithAttribute), new InvalidOperationException());
@@ -55,7 +55,7 @@ public sealed class TypeHelpersTests
 		await That(Act).Throws<InvalidOperationException>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetDeclaredMethods_WithOnlyAccessorsIncluded_ShouldContainAccessorButNotOperator()
 	{
 		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
@@ -68,7 +68,7 @@ public sealed class TypeHelpersTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetDeclaredMethods_WithOnlyOperatorsIncluded_ShouldContainOperatorButNotAccessor()
 	{
 		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
@@ -81,7 +81,7 @@ public sealed class TypeHelpersTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		Type type = typeof(TestClassWithAttribute);
@@ -91,7 +91,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		Type type = typeof(TestClassWithAttribute);
@@ -101,7 +101,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
 	{
 		Type type = typeof(TestClassWithAttribute);
@@ -113,7 +113,7 @@ public sealed class TypeHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		Type type = typeof(TestClassWithInheritedAttribute);
@@ -123,7 +123,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
 		Type type = typeof(TestClassWithoutAttribute);
@@ -133,7 +133,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		Type type = typeof(TestClassWithAttribute);
@@ -145,7 +145,7 @@ public sealed class TypeHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Implements_ClosedGenericInterface_WithDifferentTypeArgument_ShouldReturnFalse()
 	{
 		Type sut = typeof(ImplementsClosedGeneric);
@@ -153,7 +153,7 @@ public sealed class TypeHelpersTests
 		await That(sut.Implements(typeof(IGenericInterface<string>))).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Implements_ClosedGenericInterface_WithMatchingTypeArgument_ShouldReturnTrue()
 	{
 		Type sut = typeof(ImplementsClosedGeneric);
@@ -161,7 +161,7 @@ public sealed class TypeHelpersTests
 		await That(sut.Implements(typeof(IGenericInterface<int>))).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Implements_DirectInterface_ForceDirect_ShouldReturnTrue()
 	{
 		Type sut = typeof(BaseImplementingFoo);
@@ -169,7 +169,7 @@ public sealed class TypeHelpersTests
 		await That(sut.Implements(typeof(IFooInterface), true)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Implements_InheritedInterface_ForceDirect_ShouldReturnFalse()
 	{
 		Type sut = typeof(DerivedImplementingFoo);
@@ -178,9 +178,9 @@ public sealed class TypeHelpersTests
 		await That(sut.Implements(typeof(IFooInterface), true)).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
 	public async Task Implements_Object_ShouldReturnFalse(bool forceDirect)
 	{
 		Type sut = typeof(object);
@@ -190,7 +190,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Implements_OpenGenericInterface_ShouldReturnTrue()
 	{
 		Type sut = typeof(ImplementsClosedGeneric);
@@ -198,7 +198,7 @@ public sealed class TypeHelpersTests
 		await That(sut.Implements(typeof(IGenericInterface<>))).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task InheritsFrom_SameType_ShouldReturnFalse()
 	{
 		Type sut = typeof(TestClassWithAttribute);
@@ -208,7 +208,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsCompilerGenerated_ForMethodInCompilerGeneratedType_ShouldReturnTrue()
 	{
 		MethodInfo method =
@@ -219,7 +219,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsCompilerGenerated_ForMethodMarkedCompilerGenerated_ShouldReturnTrue()
 	{
 		MethodInfo method =
@@ -230,7 +230,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsCompilerGenerated_ForNormalMethod_ShouldReturnFalse()
 	{
 		MethodInfo method =
@@ -241,7 +241,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsCompilerGenerated_ForNormalType_ShouldReturnFalse()
 	{
 		bool result = typeof(TestClassWithoutAttribute).IsCompilerGenerated();
@@ -249,7 +249,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_DifferentClosedGenericType_With2Parameters_ShouldReturnFalse()
 	{
 		Type sut = typeof(Dictionary<int, string>);
@@ -259,7 +259,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_DifferentClosedGenericTypeWith1Parameter_ShouldReturnFalse()
 	{
 		Type sut = typeof(List<string>);
@@ -269,7 +269,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_DifferentNumberOfClosedGenericParameters_ShouldReturnFalse()
 	{
 		Type sut = typeof(Tuple<int, string>);
@@ -279,7 +279,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_DifferentNumberOfOpenGenericParameters_ShouldReturnFalse()
 	{
 		Type sut = typeof(Tuple<,>);
@@ -289,7 +289,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_SameClosedGenericTypeWith1Parameter_ShouldReturnTrue()
 	{
 		Type sut = typeof(List<string>);
@@ -299,7 +299,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_SameClosedGenericTypeWith2Parameters_ShouldReturnTrue()
 	{
 		Type sut = typeof(Dictionary<int, string>);
@@ -309,7 +309,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_SameGenericType_OtherOpen_ShouldReturnTrue()
 	{
 		Type sut = typeof(Task<>);
@@ -319,7 +319,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsEqualTo_SameGenericType_TypeOpen_ShouldReturnTrue()
 	{
 		Type sut = typeof(Dictionary<int, string>);
@@ -329,7 +329,7 @@ public sealed class TypeHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsOrInheritsFrom_SameType_ShouldReturnTrue()
 	{
 		Type sut = typeof(TestClassWithAttribute);

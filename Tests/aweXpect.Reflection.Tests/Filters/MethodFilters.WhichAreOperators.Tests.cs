@@ -11,7 +11,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForOperators()
 			{
 				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
@@ -26,7 +26,7 @@ public sealed partial class MethodFilters
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForOperatorsWithoutCustomization()
 			{
 				Filtered.Methods methods = In.Type<ClassWithOperators>()
@@ -37,7 +37,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("operator methods in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotModifyTheSourceCollection()
 			{
 				Filtered.Methods source = In.Type<ClassWithOperators>().Methods();
@@ -51,7 +51,7 @@ public sealed partial class MethodFilters
 
 		public sealed class WithOperatorTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForSpecificOperatorWithoutCustomization()
 			{
 				Filtered.Methods methods = In.Type<ClassWithOperators>()
@@ -62,7 +62,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("Addition operator methods in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotMatchADifferentOperator()
 			{
 				Filtered.Methods methods = In.Type<ClassWithOperators>()

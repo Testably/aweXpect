@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForStaticProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()

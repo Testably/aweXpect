@@ -12,7 +12,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForExtensionMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<MethodFilters>()
@@ -27,7 +27,7 @@ public sealed partial class MethodFilters
 #if NET10_0_OR_GREATER
 		public sealed class NewSyntaxTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeStaticExtensionMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<MethodFilters>()

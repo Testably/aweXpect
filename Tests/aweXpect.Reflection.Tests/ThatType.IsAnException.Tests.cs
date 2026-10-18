@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnException_ShouldSucceed()
 			{
 				Type subject = typeof(PublicException);
@@ -22,8 +22,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonExceptionType))]
+			[Test]
+			[MethodDataSource(nameof(NonExceptionType))]
 			public async Task WhenTypeIsNotAnException_ShouldFail(Type? subject, string name)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,29 +57,19 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type?, string> NonExceptionType() => new()
+			public static IEnumerable<(Type?, string)> NonExceptionType() => new List<(Type?, string)>
 			{
-				{
-					null, "<null>"
-				},
-				{
-					typeof(PublicClass), "class PublicClass"
-				},
-				{
-					typeof(PublicStruct), "struct PublicStruct"
-				},
-				{
-					typeof(IPublicInterface), "interface IPublicInterface"
-				},
-				{
-					typeof(PublicEnum), "enum PublicEnum"
-				},
+				(null, "<null>"),
+				(typeof(PublicClass), "class PublicClass"),
+				(typeof(PublicStruct), "struct PublicStruct"),
+				(typeof(IPublicInterface), "interface IPublicInterface"),
+				(typeof(PublicEnum), "enum PublicEnum"),
 			};
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnException_ShouldFail()
 			{
 				Type subject = typeof(PublicException);
@@ -89,7 +79,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsAnException());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an exception,
@@ -97,8 +87,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonExceptionTypeForNegated))]
+			[Test]
+			[MethodDataSource(nameof(NonExceptionTypeForNegated))]
 			public async Task WhenTypeIsNotAnException_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -109,7 +99,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonExceptionTypeForNegated() => new()
+			public static IEnumerable<Type> NonExceptionTypeForNegated() => new List<Type>
 			{
 				typeof(PublicClass),
 				typeof(PublicStruct),

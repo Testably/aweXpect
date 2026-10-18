@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithoutAttribute()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -22,7 +22,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods without MethodFilters.Without.AttributeTests.BarAttribute").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithoutAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()

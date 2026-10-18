@@ -11,7 +11,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreObsolete_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -27,7 +27,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonObsoleteMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -57,7 +57,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreObsolete_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -83,7 +83,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonObsoleteMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -104,7 +104,7 @@ public sealed partial class ThatMethods
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreObsolete_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -131,7 +131,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -148,7 +148,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonObsoleteMethods_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = new[]

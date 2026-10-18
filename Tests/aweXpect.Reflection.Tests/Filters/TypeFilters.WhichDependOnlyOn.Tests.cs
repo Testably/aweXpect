@@ -12,7 +12,7 @@ public sealed partial class TypeFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesDependingOnlyOnAllowedNamespaces()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace).WhichDependOnlyOn(Layer1Namespace);
@@ -25,7 +25,7 @@ public sealed partial class TypeFilters
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
 			{
 				Filtered.Types.TypeSetDependencyOnlyOnFilterResult original = Types.InNamespace(ConsumersNamespace)
@@ -35,7 +35,7 @@ public sealed partial class TypeFilters
 				await That(original).Contains(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesDependingOnlyOnTargetCollection()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -47,7 +47,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(Layer1AndLayer2));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_ShouldFilterOutTypesReferencingOwnSubNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -58,7 +58,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ReferencesOwnSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldAllowEither()
 			{
 				const string layer2Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";

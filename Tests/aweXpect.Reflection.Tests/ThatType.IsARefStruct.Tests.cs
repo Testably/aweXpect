@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsARefStruct_ShouldSucceed()
 			{
 				Type subject = typeof(PublicRefStruct);
@@ -22,8 +22,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonRefStructType))]
+			[Test]
+			[MethodDataSource(nameof(NonRefStructType))]
 			public async Task WhenTypeIsNotARefStruct_ShouldFail(Type? subject, string name)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,35 +57,21 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type?, string> NonRefStructType() => new()
+			public static IEnumerable<(Type?, string)> NonRefStructType() => new List<(Type?, string)>
 			{
-				{
-					null, "<null>"
-				},
-				{
-					typeof(PublicStruct), "struct PublicStruct"
-				},
-				{
-					typeof(PublicReadOnlyStruct), "struct PublicReadOnlyStruct"
-				},
-				{
-					typeof(PublicClass), "class PublicClass"
-				},
-				{
-					typeof(IPublicInterface), "interface IPublicInterface"
-				},
-				{
-					typeof(PublicEnum), "enum PublicEnum"
-				},
-				{
-					typeof(PublicRecordStruct), "record struct PublicRecordStruct"
-				},
+				(null, "<null>"),
+				(typeof(PublicStruct), "struct PublicStruct"),
+				(typeof(PublicReadOnlyStruct), "struct PublicReadOnlyStruct"),
+				(typeof(PublicClass), "class PublicClass"),
+				(typeof(IPublicInterface), "interface IPublicInterface"),
+				(typeof(PublicEnum), "enum PublicEnum"),
+				(typeof(PublicRecordStruct), "record struct PublicRecordStruct"),
 			};
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsARefStruct_ShouldFail()
 			{
 				Type subject = typeof(PublicRefStruct);
@@ -95,7 +81,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsARefStruct());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a ref struct,
@@ -103,8 +89,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonRefStructTypeForNegated))]
+			[Test]
+			[MethodDataSource(nameof(NonRefStructTypeForNegated))]
 			public async Task WhenTypeIsNotARefStruct_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -115,7 +101,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonRefStructTypeForNegated() => new()
+			public static IEnumerable<Type> NonRefStructTypeForNegated() => new List<Type>
 			{
 				typeof(PublicStruct),
 				typeof(PublicReadOnlyStruct),

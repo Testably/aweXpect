@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
 			{
 				Filtered.Fields fields =
@@ -19,7 +19,7 @@ public sealed partial class TypeFilters
 				await That(fields).None().Satisfy(f => f.Name == "_basePrivateField");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Fields fields =
@@ -29,7 +29,7 @@ public sealed partial class TypeFilters
 				await That(fields).None().Satisfy(f => f.Name == nameof(BaseClassWithMembers.BaseField));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Fields fields =
@@ -39,7 +39,7 @@ public sealed partial class TypeFilters
 				await That(fields).None().Satisfy(f => f.Name == nameof(BaseClassWithMembers.BaseField));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedMembers()
 			{
 				Filtered.Fields fields =
@@ -49,7 +49,7 @@ public sealed partial class TypeFilters
 				await That(fields).Contains(f => f.Name == nameof(BaseClassWithMembers.BaseField));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedPrivateMembers()
 			{
 				Filtered.Fields fields =

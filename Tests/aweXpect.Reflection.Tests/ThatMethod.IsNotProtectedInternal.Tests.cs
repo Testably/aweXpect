@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,12 +8,12 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
-			[InlineData("InternalMethod")]
-			[InlineData("PrivateProtectedMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
+			[Arguments("InternalMethod")]
+			[Arguments("PrivateProtectedMethod")]
 			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldSucceed(string methodName)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -27,7 +26,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtectedInternal_ShouldFail()
 			{
 				MethodInfo? subject = GetMethod("ProtectedInternalMethod");
@@ -55,7 +54,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsNotProtectedInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not protected internal,
@@ -66,12 +65,12 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedMethod", "protected")]
-			[InlineData("PublicMethod", "public")]
-			[InlineData("PrivateMethod", "private")]
-			[InlineData("InternalMethod", "internal")]
-			[InlineData("PrivateProtectedMethod", "private protected")]
+			[Test]
+			[Arguments("ProtectedMethod", "protected")]
+			[Arguments("PublicMethod", "public")]
+			[Arguments("PrivateMethod", "private")]
+			[Arguments("InternalMethod", "internal")]
+			[Arguments("PrivateProtectedMethod", "private protected")]
 			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldFail(string methodName,
 				string expectedAccessModifier)
 			{
@@ -82,7 +81,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is protected internal,
@@ -90,7 +89,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsProtectedInternal_ShouldSucceed()
 			{
 				MethodInfo? subject = GetMethod("ProtectedInternalMethod");

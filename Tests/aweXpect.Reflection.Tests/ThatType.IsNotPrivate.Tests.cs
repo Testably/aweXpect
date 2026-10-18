@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,10 +6,10 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(InternalType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(InternalType))]
 			public async Task WhenTypeIsNotPrivate_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
@@ -19,14 +17,14 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotPrivate());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is private*but it was*").AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(InternalType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(InternalType))]
 			public async Task WhenTypeIsNotPrivate_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
@@ -37,7 +35,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -55,7 +53,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPrivate_ShouldFail()
 			{
 				Type? subject = typeof(PrivateType);
@@ -65,7 +63,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotPrivate();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not private,
@@ -73,7 +71,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPrivate_ShouldSucceedWithNegatedAssertion()
 			{
 				Type? subject = typeof(PrivateType);

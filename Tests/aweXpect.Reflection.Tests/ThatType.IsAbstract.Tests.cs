@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAbstract_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -22,8 +22,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonAbstractTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonAbstractTypes))]
 			public async Task WhenTypeIsNotAbstract_ShouldFail(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> NonAbstractTypes()
+			public static IEnumerable<Type> NonAbstractTypes()
 				=>
 				[
 					typeof(PublicStaticClass),
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAbstract_ShouldFail()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -79,7 +79,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsAbstract());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not abstract,
@@ -87,8 +87,8 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonAbstractTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(NonAbstractTypesForNegated))]
 			public async Task WhenTypeIsNotAbstract_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -99,7 +99,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonAbstractTypesForNegated() => new()
+			public static IEnumerable<Type> NonAbstractTypesForNegated() => new List<Type>
 			{
 				typeof(PublicStaticClass),
 				typeof(PublicSealedClass),
@@ -107,7 +107,7 @@ public sealed partial class ThatType
 				typeof(IPublicInterface),
 			};
 
-			public static TheoryData<Type> NonAbstractTypes()
+			public static IEnumerable<Type> NonAbstractTypes()
 				=>
 				[
 					typeof(PublicStaticClass),

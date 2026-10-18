@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForGenericTypes()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Generic.Classes();
@@ -18,7 +18,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t is { IsClass: true, IsGenericType: true, }).And.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeNestedInformationInErrorMessage()
 				{
 					async Task Act()
@@ -40,9 +40,8 @@ public sealed partial class Filtered
 						             """).AsWildcard();
 				}
 
-				[Theory]
-				[MemberData(nameof(Filters.AssemblyFilters.GetAccessModifiers),
-					MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(Filters.AssemblyFilters.GetAccessModifiers))]
 				public async Task WithAccessModifier_ShouldIncludeNestedInformationInErrorMessage(
 					AccessModifiers accessModifier, string expectedString)
 				{

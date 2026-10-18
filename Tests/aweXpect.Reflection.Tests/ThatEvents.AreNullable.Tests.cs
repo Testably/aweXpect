@@ -13,7 +13,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreNullable_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithNullableEvents)
@@ -27,7 +27,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonNullableEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithMixedNullableEvents)
@@ -54,7 +54,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreNullable_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithNullableEvents)
@@ -78,7 +78,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonNullableEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithMixedNullableEvents)
@@ -96,7 +96,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreNullable_ShouldSucceed()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(ClassWithNullableEvents)
@@ -111,7 +111,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonNullableEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(ClassWithMixedNullableEvents)

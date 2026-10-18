@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Never_WhenTypeContainsNoMatchingField_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithoutMarkedField);
@@ -22,7 +21,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedFieldMatches_WithDeclaredOnly_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedField);
@@ -40,7 +39,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedFieldMatches_WithIncludingInherited_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedField);
@@ -54,7 +53,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingField_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedField);
@@ -67,7 +66,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsNoMatchingField_ShouldFail()
 			{
 				Type subject = typeof(ClassWithoutMarkedField);
@@ -88,7 +87,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingField_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedField);
@@ -99,7 +98,7 @@ public sealed partial class ThatType
 						=> it.ContainsFields(fields => fields.With<MarkerAttribute>()));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain fields with ThatType.ContainsFields.MarkerAttribute at least once,

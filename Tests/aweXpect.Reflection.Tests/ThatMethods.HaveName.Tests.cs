@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsHaveName_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -27,7 +26,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleMethodsDoNotMatchSelector_ShouldListAllSeparatedByComma()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -41,7 +40,7 @@ public sealed partial class ThatMethods
 					await That(subject).HaveName(method => method.Name + "X");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have name matching method => method.Name + "X",
@@ -55,7 +54,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorMatchesEachName_Negated_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -68,7 +67,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             not all have name matching method => method.Name,
@@ -81,7 +80,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorMatchesEachName_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -98,7 +97,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -116,7 +115,7 @@ public sealed partial class ThatMethods
 					.WithMessage("The 'expectedNameSelector' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorThrows_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -129,7 +128,7 @@ public sealed partial class ThatMethods
 					await That(subject).HaveName(_ => throw new InvalidOperationException("boom"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have name matching _ => throw new InvalidOperationException("boom"),
@@ -139,7 +138,7 @@ public sealed partial class ThatMethods
 					.Because("an exception of the name selector must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorThrows_Negated_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -153,7 +152,7 @@ public sealed partial class ThatMethods
 						=> they.HaveName(_ => throw new InvalidOperationException("boom")));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             not all have name matching _ => throw new InvalidOperationException("boom"),
@@ -166,7 +165,7 @@ public sealed partial class ThatMethods
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfosContainMethodInfoWithDifferentName_ShouldFail()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
@@ -176,7 +175,7 @@ public sealed partial class ThatMethods
 					await That(subject).HaveName("PublicMethod");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithMethods
 					             all have name equal to "PublicMethod",
@@ -189,7 +188,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfosHaveName_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -202,7 +201,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfosMatchIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -215,7 +214,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfosMatchSuffix_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
@@ -228,7 +227,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorMatchesAsPrefix_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -241,7 +240,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -254,7 +253,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorReturnsDifferentName_ShouldFail()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -264,7 +263,7 @@ public sealed partial class ThatMethods
 					await That(subject).HaveName(method => method.Name + "X");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             all have name matching method => method.Name + "X",
@@ -277,7 +276,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorReturnsEachMethodsOwnName_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
@@ -293,7 +292,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodsDoNotHaveName_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
@@ -306,7 +305,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsHaveName_ShouldFail()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -316,7 +315,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.HaveName("MyMethod"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name equal to "MyMethod",
@@ -324,7 +323,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorMatchesEveryName_ShouldFail()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
@@ -334,7 +333,7 @@ public sealed partial class ThatMethods
 					await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name matching method => method.Name,
@@ -342,7 +341,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();

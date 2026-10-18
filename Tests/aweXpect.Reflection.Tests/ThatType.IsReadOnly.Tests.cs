@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,8 +9,8 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[MemberData(nameof(NonReadOnlyTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonReadOnlyTypes))]
 			public async Task WhenTypeIsNotReadOnly_ShouldFail(Type subject)
 			{
 				async Task Act()
@@ -26,7 +26,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -44,7 +44,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsReadOnly_ShouldSucceed()
 			{
 				Type subject = typeof(PublicReadOnlyStruct);
@@ -57,7 +57,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonReadOnlyTypes() => new()
+			public static IEnumerable<Type> NonReadOnlyTypes() => new List<Type>
 			{
 				typeof(PublicStruct),
 				typeof(PublicRefStruct),
@@ -69,8 +69,8 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[MemberData(nameof(NonReadOnlyTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonReadOnlyTypes))]
 			public async Task WhenTypeIsNotReadOnly_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -81,7 +81,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsReadOnly_ShouldFail()
 			{
 				Type subject = typeof(PublicReadOnlyStruct);
@@ -91,7 +91,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsReadOnly());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not read-only,
@@ -99,7 +99,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			public static TheoryData<Type> NonReadOnlyTypes() => new()
+			public static IEnumerable<Type> NonReadOnlyTypes() => new List<Type>
 			{
 				typeof(PublicStruct),
 				typeof(PublicRefStruct),

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -27,7 +26,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfExactType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!;
@@ -40,7 +39,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyTypeInheritsFromExpectedType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!;
@@ -50,7 +49,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of exact type *DummyBase,
@@ -61,7 +60,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfExactType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!;
@@ -71,7 +70,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsOfExactType<DummyBase>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of exact type *DummyBase,
@@ -79,7 +78,7 @@ public sealed partial class ThatProperty
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyTypeInheritsFromExpectedType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!;
@@ -112,7 +111,7 @@ public sealed partial class ThatProperty
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfExactType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!;
@@ -125,7 +124,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyTypeInheritsFromExpectedType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!;
@@ -135,7 +134,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfExactType(typeof(DummyBase));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of exact type *DummyBase,
@@ -146,7 +145,7 @@ public sealed partial class ThatProperty
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrOfExactType_ShouldSupportChaining()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!;

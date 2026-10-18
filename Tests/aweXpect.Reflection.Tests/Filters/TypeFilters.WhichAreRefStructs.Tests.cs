@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOnlyRefStructTypes()
 			{
 				Filtered.Types subject = In.AssemblyContaining<WhichAreRefStructs>().Types()
@@ -17,7 +17,7 @@ public sealed partial class TypeFilters
 				await That(subject).AreRefStructs().And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateDescription()
 			{
 				Filtered.Types subject = In.AssemblyContaining<WhichAreRefStructs>().Types()

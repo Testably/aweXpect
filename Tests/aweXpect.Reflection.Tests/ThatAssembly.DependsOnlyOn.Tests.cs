@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllowedMatchesAsWildcard_ShouldSucceed()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -24,7 +23,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllowedMatchesIgnoringCase_ShouldSucceed()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -37,7 +36,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDependsOnDisallowedAssembly_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -47,7 +46,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DependsOnlyOn("aweXpect.Core");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on assemblies equal to "aweXpect.Core",
@@ -60,7 +59,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDependsOnlyOnAllowed_ShouldSucceed()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -73,7 +72,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
@@ -91,7 +90,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCustomizedPrefixEndsWithDot_ShouldExcludeMatchingAssemblies()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -110,7 +109,7 @@ public sealed partial class ThatAssembly
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleAllowedAssembliesAreGiven_ShouldDescribeAssemblies()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -120,7 +119,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DependsOnlyOn("First", "Second");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on assemblies equal to "First" or equal to "Second",
@@ -133,7 +132,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoAllowedAssembliesAreGiven_ShouldDescribeNoAssemblies()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -143,7 +142,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DependsOnlyOn();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on no assemblies,
@@ -156,7 +155,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedForItems_ShouldLabelTheDisallowedDependenciesWithTheItem()
 			{
 				Assembly[] subject = [typeof(In).Assembly, typeof(PublicAbstractClass).Assembly,];
@@ -166,7 +165,7 @@ public sealed partial class ThatAssembly
 					await That(subject).All().ComplyWith(assembly => assembly.DependsOnlyOn("aweXpect.Core"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on assemblies equal to "aweXpect.Core" for all items,
@@ -190,7 +189,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInThatAll_ShouldListTheDisallowedDependenciesOfEachFailure()
 			{
 				Assembly reflectionAssembly = typeof(In).Assembly;
@@ -202,7 +201,7 @@ public sealed partial class ThatAssembly
 						That(reflectionAssembly).DependsOnlyOn("aweXpect.Core"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected all of the following to succeed:
 					              [01] Expected that reflectionAssembly has dependencies only on no assemblies
@@ -217,7 +216,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInWhose_ShouldLabelTheDisallowedDependenciesWithTheMember()
 			{
 				AssemblyHolder subject = new(typeof(In).Assembly);
@@ -227,7 +226,7 @@ public sealed partial class ThatAssembly
 					await That(subject).Whose(holder => holder.Assembly, assembly => assembly.DependsOnlyOn());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Assembly has dependencies only on no assemblies,
@@ -248,7 +247,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDependsOnDisallowedAssembly_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -261,7 +260,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDependsOnlyOnAllowed_ShouldFail()
 			{
 				Assembly subject = typeof(In).Assembly;
@@ -271,7 +270,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotComplyWith(it => it.DependsOnlyOn("aweXpect.Core"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have dependencies only on assemblies equal to "aweXpect.Core",

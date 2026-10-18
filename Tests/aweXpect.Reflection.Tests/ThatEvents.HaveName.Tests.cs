@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventInfosContainEventInfoWithDifferentName_ShouldFail()
 			{
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithEvents>().Events();
@@ -19,7 +18,7 @@ public sealed partial class ThatEvents
 					await That(subject).HaveName("PublicEvent");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that events in types matching t => t == typeof(T) in assembly containing type ThatEvent.ClassWithEvents
 					             all have name equal to "PublicEvent",
@@ -32,7 +31,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfosHaveName_ShouldSucceed()
 			{
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithSingleEvent>().Events();
@@ -45,7 +44,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfosMatchIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithSingleEvent>().Events();
@@ -58,7 +57,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfosMatchSuffix_ShouldSucceed()
 			{
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithEvents>().Events();
@@ -74,7 +73,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsDoNotHaveName_ShouldSucceed()
 			{
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithEvents>().Events();
@@ -87,7 +86,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventsHaveName_ShouldFail()
 			{
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithSingleEvent>().Events();
@@ -97,7 +96,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.HaveName("MyEvent"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that events in types matching t => t == typeof(T) in assembly containing type ThatEvent.ClassWithSingleEvent
 					             not all have name equal to "MyEvent",

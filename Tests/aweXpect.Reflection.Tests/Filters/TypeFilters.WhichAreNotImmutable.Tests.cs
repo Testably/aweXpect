@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForMutableTypes()
 			{
 				Filtered.Types types = In.AssemblyContaining<ClassWithMutableField>()

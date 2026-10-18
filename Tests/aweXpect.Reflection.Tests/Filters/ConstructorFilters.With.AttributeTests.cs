@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -10,7 +10,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithAttribute()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -24,8 +24,8 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForConstructorsWithAttributeMatchingPredicate(int value,
 				ConstructorInfo?[] expectedConstructors)
 			{
@@ -39,7 +39,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>().Constructors()
@@ -50,7 +50,7 @@ public sealed partial class ConstructorFilters
 					await That(constructors).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors with ConstructorFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -60,23 +60,21 @@ public sealed partial class ConstructorFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			public static TheoryData<int, ConstructorInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, ConstructorInfo?[])>> GetFooValues()
+				=> new List<Func<(int, ConstructorInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetConstructor([typeof(int),]),
 						]
-					},
-					{
-						3, [typeof(Dummy).GetConstructor([typeof(string),]),]
-					},
+					),
+					() => (3, [typeof(Dummy).GetConstructor([typeof(string),]),]),
 				};
 		}
 
 		public sealed class OrWithAttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithAttribute()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -93,8 +91,8 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForConstructorsWithAttributeMatchingPredicate(int value,
 				ConstructorInfo?[] expectedConstructors)
 			{
@@ -108,21 +106,21 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			public static TheoryData<int, ConstructorInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, ConstructorInfo?[])>> GetFooValues()
+				=> new List<Func<(int, ConstructorInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetConstructor([]),
 							typeof(Dummy).GetConstructor([typeof(int),]),
 						]
-					},
-					{
+					),
+					() => (
 						3, [
 							typeof(Dummy).GetConstructor([]),
 							typeof(Dummy).GetConstructor([typeof(string),]),
 						]
-					},
+					),
 				};
 		}
 

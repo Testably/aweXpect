@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOnlyNonGenericMethods()
 			{
 				Filtered.Methods subject = In.AssemblyContaining<ThatMethods>().Types()
@@ -19,7 +19,7 @@ public sealed partial class MethodFilters
 				await That(subject).All().Satisfy(m => !m.IsGenericMethod).And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateDescription()
 			{
 				Filtered.Methods subject = In.AssemblyContaining<ThatMethods>().Types()

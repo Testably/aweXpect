@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonStaticTypes()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

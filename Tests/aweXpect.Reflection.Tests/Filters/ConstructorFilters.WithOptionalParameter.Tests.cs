@@ -19,7 +19,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithOptionalParameter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -31,7 +31,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeConstructorsWithoutOptionalParameter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -40,7 +40,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(PlainConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldFilterForConstructorsWithOptionalParameterOfSpecificType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -49,7 +49,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(OptionalParameterConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldNotIncludeConstructorsWithOptionalParameterOfOtherType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -58,7 +58,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(OptionalParameterConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WithName_ShouldFilterForConstructorsWithOptionalParameterOfSpecificTypeAndName()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -70,7 +70,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class DescriptionTests
 		{
-			[Fact]
+			[Test]
 			public async Task ByName_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -79,7 +79,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfType_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -88,7 +88,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfTypeWithName_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -97,7 +97,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfType_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -106,7 +106,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfTypeWithName_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -115,7 +115,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeOptionalParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -125,7 +125,7 @@ public sealed partial class ConstructorFilters
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task OfType_UsingType_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -134,7 +134,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfTypeWithName_UsingType_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -143,7 +143,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfType_UsingType_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -152,7 +152,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with optional modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfTypeWithName_UsingType_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

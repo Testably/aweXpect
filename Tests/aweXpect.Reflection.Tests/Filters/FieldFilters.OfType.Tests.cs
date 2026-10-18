@@ -8,7 +8,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWhichImplementType()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -26,7 +26,7 @@ public sealed partial class FieldFilters
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWhichImplementType()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -44,7 +44,7 @@ public sealed partial class FieldFilters
 
 		public sealed class OrOfTypeGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -61,7 +61,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -81,7 +81,7 @@ public sealed partial class FieldFilters
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -98,7 +98,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForFieldsWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()

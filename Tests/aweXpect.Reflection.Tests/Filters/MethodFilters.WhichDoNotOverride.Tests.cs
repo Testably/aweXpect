@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonOverridingMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<ConcreteMethodClass>()

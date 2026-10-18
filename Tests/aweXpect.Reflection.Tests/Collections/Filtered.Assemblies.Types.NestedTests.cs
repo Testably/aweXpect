@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class NestedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForNestedTypes()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Types();
@@ -18,7 +18,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t.IsNested);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -28,7 +28,7 @@ public sealed partial class Filtered
 						=> type is { IsNested: true, IsNestedPublic: true, });
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeNestedInformationInErrorMessage()
 				{
 					async Task Act()
@@ -50,9 +50,8 @@ public sealed partial class Filtered
 						             """).AsWildcard();
 				}
 
-				[Theory]
-				[MemberData(nameof(Filters.AssemblyFilters.GetAccessModifiers),
-					MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(Filters.AssemblyFilters.GetAccessModifiers))]
 				public async Task WithAccessModifier_ShouldIncludeNestedInformationInErrorMessage(
 					AccessModifiers accessModifier, string expectedString)
 				{

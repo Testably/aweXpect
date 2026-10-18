@@ -6,7 +6,7 @@ public sealed class AccessModifiersExtensionsTests
 {
 	public sealed class GetStringTests
 	{
-		[Fact]
+		[Test]
 		public async Task Any_ShouldNotPrependAnyAccessModifierToDescription()
 		{
 			Reflection.Collections.Filtered.Types types =
@@ -15,7 +15,7 @@ public sealed class AccessModifiersExtensionsTests
 			await That(types.GetDescription()).IsEqualTo("types in all loaded assemblies").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task CombinationIncludingPrivate_ShouldListPrivate()
 		{
 			Reflection.Collections.Filtered.Types types =
@@ -25,7 +25,7 @@ public sealed class AccessModifiersExtensionsTests
 				.AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task CombinationIncludingPrivateProtected_ShouldListPrivateProtected()
 		{
 			Reflection.Collections.Filtered.Types types =
@@ -35,7 +35,7 @@ public sealed class AccessModifiersExtensionsTests
 				.IsEqualTo("internal or private protected types in all loaded assemblies").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task CombinationIncludingProtectedInternal_ShouldListProtectedInternal()
 		{
 			Reflection.Collections.Filtered.Types types =

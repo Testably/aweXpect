@@ -9,7 +9,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task GetDescription_ShouldReturnCorrectDescription()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -19,7 +19,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_GetDescription_ShouldReturnCorrectDescription()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -29,7 +29,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterAtIndex_ShouldFilterForConstructorsWithParameterAtSpecificIndex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -43,7 +43,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int at index 0 in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterAtIndexFromEnd_ShouldFilterForConstructorsWithParameterAtSpecificIndex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -57,7 +57,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int at index 0 from end in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterName_ShouldSupportAsPrefix()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -71,7 +71,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string and name starting with \"nam\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterName_ShouldSupportAsSuffix()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -85,7 +85,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string and name ending with \"ame\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterName_ShouldSupportCustomComparer()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -101,7 +101,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterName_ShouldSupportIgnoringCase()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -116,7 +116,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterName_ShouldSupportRegex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -131,7 +131,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterName_ShouldSupportWildcard()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -145,7 +145,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string and name matching \"n??e\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterWithDefaultValue_ShouldFilterForConstructorsWithParameterWithDefaultValue()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -159,7 +159,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int and with a default value in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterWithoutDefaultValue_ShouldFilterForConstructorsWithParameterWithoutDefaultValue()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -172,7 +172,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int and without a default value in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithParameterWithSpecificDefaultValue_ShouldFilterForConstructorsWithParameterWithSpecificDefaultValue()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -185,7 +185,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int and with default value 42 in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterAtIndex_ShouldFilterForConstructorsWithParameterAtSpecificIndex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -199,7 +199,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int at index 0 in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterAtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				void Act()
@@ -213,7 +213,7 @@ public sealed partial class ConstructorFilters
 					.WithMessage("The index must be greater than or equal to 0.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterAtIndexFromEnd_ShouldFilterForConstructorsWithParameterAtSpecificIndex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -227,7 +227,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int at index 0 from end in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterByName_ShouldFilterForConstructorsWithParameterOfSpecificName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -242,7 +242,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter with name equal to \"id\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterName_ShouldSupportAsPrefix()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -256,7 +256,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter with name starting with \"nam\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterName_ShouldSupportAsSuffix()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -270,7 +270,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter with name ending with \"ame\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterName_ShouldSupportCustomComparer()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -286,7 +286,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterName_ShouldSupportIgnoringCase()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -300,7 +300,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter with name equal to \"NAME\" ignoring case in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterName_ShouldSupportRegex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -314,7 +314,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter with name matching regex \"n[a-z]*e\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterName_ShouldSupportWildcard()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -328,7 +328,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter with name matching \"n??e\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterOfType_ShouldFilterForConstructorsWithParameterOfSpecificType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -343,7 +343,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterOfType_ShouldIncludeConstructorsWithParameterOfDerivedType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithInheritedConstructorParameters>()
@@ -357,7 +357,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterOfType_WithType_ShouldFilterForConstructorsWithParameterOfSpecificType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -372,7 +372,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterOfType_WithType_ShouldIncludeConstructorsWithParameterOfDerivedType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithInheritedConstructorParameters>()
@@ -386,7 +386,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterOfTypeAndName_ShouldFilterForConstructorsWithParameterOfSpecificTypeAndName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -400,7 +400,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string and name equal to \"name\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterOfTypeAndName_WithType_ShouldFilterForConstructorsWithParameterOfSpecificTypeAndName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -414,7 +414,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type string and name equal to \"name\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameterWithDefaultValue_ShouldFilterForConstructorsWithParameterWithDefaultValue()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -428,7 +428,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int and with a default value in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				WithParameterWithSpecificDefaultValue_ShouldFilterForConstructorsWithParameterWithSpecificDefaultValue()
 			{

@@ -10,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreObsolete_ShouldSucceed()
 			{
 #pragma warning disable CS0612, CS0618
@@ -28,7 +28,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainNonObsoleteTypes_ShouldFail()
 			{
 #pragma warning disable CS0612, CS0618
@@ -60,7 +60,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreObsolete_ShouldFail()
 			{
 #pragma warning disable CS0612, CS0618
@@ -88,7 +88,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainNonObsoleteTypes_ShouldSucceed()
 			{
 #pragma warning disable CS0612, CS0618
@@ -111,7 +111,7 @@ public sealed partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreObsolete_Negated_ShouldFail()
 			{
 #pragma warning disable CS0612, CS0618
@@ -140,7 +140,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreObsolete_ShouldSucceed()
 			{
 #pragma warning disable CS0612, CS0618
@@ -159,7 +159,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainNonObsoleteTypes_ShouldFail()
 			{
 #pragma warning disable CS0612, CS0618

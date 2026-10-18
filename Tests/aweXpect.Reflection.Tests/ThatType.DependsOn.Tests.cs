@@ -5,7 +5,6 @@ using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
-using Xunit.Sdk;
 
 // These tests intentionally exercise the non-generic DependsOn(Type) overload (open/closed generic
 // constructions and array targets), so the "prefer generic overload" hint does not apply here.
@@ -22,7 +21,7 @@ public sealed partial class ThatType
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnyOfMultipleNamespacesMatches_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -35,7 +34,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArrayTargetIsUsed_ShouldMatchElementType()
 			{
 				// Dependencies are collected with array wrappers stripped, so an array target is
@@ -51,7 +50,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDebuggerStepThroughIsAuthoredOnAsyncMethod_ShouldCountAsDependency()
 			{
 				// In Debug builds the authored [DebuggerStepThrough] appears next to the compiler-emitted
@@ -67,7 +66,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateSignatureReferencesNamespace_ShouldSucceed()
 			{
 				// The authored Invoke signature (return type Layer1.TargetA, parameter Layer2.TargetB)
@@ -83,7 +82,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumConstraintIsAuthored_ShouldCountAsDependency()
 			{
 				// Unlike the ValueType constraint `struct` compiles into, `where T : Enum` is authored.
@@ -97,7 +96,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExactGenericConstructionIsReferenced_ShouldSucceed()
 			{
 				Type subject = typeof(ViaGenericArgument);
@@ -110,7 +109,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_ShouldNotMatchSubNamespace()
 			{
 				Type subject = typeof(ViaSubNamespace);
@@ -120,10 +119,10 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace).ExcludingSubNamespaces();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespacesAfterBecause_ShouldNotMatchSubNamespace()
 			{
 				Type subject = typeof(ViaSubNamespace);
@@ -133,12 +132,12 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace).Because("we need it").ExcludingSubNamespaces();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*, because we need it,*").AsWildcard()
 					.Because("Because(…) must return the result, so that its options can still follow it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGenericTypeDefinitionIsTargeted_ShouldMatchAnyConstruction()
 			{
 				Type subject = typeof(ViaGenericArgument);
@@ -151,12 +150,12 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(".Layer2")]
-			[InlineData("Layer1..Layer2")]
-			[InlineData("Layer2 ")]
-			[InlineData(" Layer2")]
-			[InlineData("Layer2\tSub")]
+			[Test]
+			[Arguments(".Layer2")]
+			[Arguments("Layer1..Layer2")]
+			[Arguments("Layer2 ")]
+			[Arguments(" Layer2")]
+			[Arguments("Layer2\tSub")]
 			public async Task WhenNamespaceCouldNeverMatch_ShouldThrowArgumentException(string @namespace)
 			{
 				// Leading dots, empty segments and whitespace cannot occur in a real namespace, so such an
@@ -173,7 +172,7 @@ public sealed partial class ThatType
 						"The namespaces must not contain empty segments or whitespace (such a namespace could never match).");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamespaceEndsWithDot_ShouldThrowArgumentException()
 			{
 				// A trailing-dot namespace could never match and would make negative assertions pass
@@ -189,7 +188,7 @@ public sealed partial class ThatType
 					.WithMessage("The namespaces must not end with a dot (sub-namespaces are matched automatically).");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamespaceIsNull_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -204,7 +203,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' collection cannot contain <null>.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamespacesEnumerableIsNull_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -219,7 +218,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamingFrameworkNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(FrameworkConsumer);
@@ -232,7 +231,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -247,7 +246,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObsoleteIsAuthoredOnRequiredMembersConstructor_ShouldCountAsDependency()
 			{
 				// Only the compiler-emitted [Obsolete(marker, error: true)] paired with required members is
@@ -262,7 +261,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyANestedTypeReferencesNamespace_ShouldFail()
 			{
 				// Nested types are separate types with their own dependency surface; the declaring type's
@@ -275,10 +274,10 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyOtherConstructionOfGenericIsReferenced_ShouldFail()
 			{
 				// ViaGenericArgument references List<TargetA>; List<TargetB> is a different construction.
@@ -289,7 +288,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(typeof(List<TargetB>));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             depends on type List<TargetB>,
@@ -297,7 +296,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubNamespaceMatchesViaSubtree_ShouldSucceed()
 			{
 				Type subject = typeof(ViaSubNamespace);
@@ -310,7 +309,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetingGlobalNamespaceWithEmptyString_ShouldSucceed()
 			{
 				// An empty string targets exactly the global namespace.
@@ -324,7 +323,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotDependOnNamespace_ShouldFail()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -334,7 +333,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Layer2Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends on namespace "{Layer2Namespace}",
@@ -347,7 +346,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotReferenceSpecificType_ShouldFail()
 			{
 				Type subject = typeof(ViaField);
@@ -357,7 +356,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOn<TargetB>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             depends on type TargetB,
@@ -365,7 +364,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -383,7 +382,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeReferencesEnumOnlyViaAttributeArgument_ShouldSucceed()
 			{
 				// Layer2's TargetSeverity is referenced ONLY through the attribute's enum argument; the
@@ -398,18 +397,18 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(typeof(ViaBaseType))]
-			[InlineData(typeof(ViaInterface))]
-			[InlineData(typeof(ViaField))]
-			[InlineData(typeof(ViaProperty))]
-			[InlineData(typeof(ViaIndexer))]
-			[InlineData(typeof(ViaEvent))]
-			[InlineData(typeof(ViaMethodParameter))]
-			[InlineData(typeof(ViaMethodReturn))]
-			[InlineData(typeof(ViaGenericArgument))]
-			[InlineData(typeof(ViaAttribute))]
-			[InlineData(typeof(ViaGenericConstraint<>))]
+			[Test]
+			[Arguments(typeof(ViaBaseType))]
+			[Arguments(typeof(ViaInterface))]
+			[Arguments(typeof(ViaField))]
+			[Arguments(typeof(ViaProperty))]
+			[Arguments(typeof(ViaIndexer))]
+			[Arguments(typeof(ViaEvent))]
+			[Arguments(typeof(ViaMethodParameter))]
+			[Arguments(typeof(ViaMethodReturn))]
+			[Arguments(typeof(ViaGenericArgument))]
+			[Arguments(typeof(ViaAttribute))]
+			[Arguments(typeof(ViaGenericConstraint<>))]
 			public async Task WhenTypeReferencesNamespaceInSignature_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -420,7 +419,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeReferencesNamespaceOnlyViaParameterAttribute_ShouldSucceed()
 			{
 				// Layer1's TargetAttribute is referenced ONLY through the attribute on a method parameter.
@@ -434,7 +433,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeReferencesNamespaceOnlyViaReturnValueAttribute_ShouldSucceed()
 			{
 				// Layer1's TargetAttribute is referenced ONLY through the [return: ...] attribute.
@@ -448,7 +447,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeReferencesSpecificType_ShouldSucceed()
 			{
 				Type subject = typeof(ViaField);
@@ -461,7 +460,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeReferencesTypeOnlyViaAttributeArgument_ShouldSucceed()
 			{
 				Type subject = typeof(ViaAttributeArgument);
@@ -474,7 +473,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithNamespaceEndingWithDot_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -488,7 +487,7 @@ public sealed partial class ThatType
 					.WithMessage("The namespaces must not end with a dot (sub-namespaces are matched automatically).");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithNamespaceThatCouldNeverMatch_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -503,7 +502,7 @@ public sealed partial class ThatType
 						"The namespaces must not contain empty segments or whitespace (such a namespace could never match).");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithNullNamespace_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -518,7 +517,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' collection cannot contain <null>.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithNullNamespacesEnumerable_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -533,7 +532,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -546,7 +545,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOnType_ShouldSucceed()
 			{
 				Type subject = typeof(ViaField);
@@ -562,7 +561,7 @@ public sealed partial class ThatType
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAdditionalTargetIsNull_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -578,7 +577,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'additional' collection cannot contain <null>.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAdditionalTargetsArrayIsNull_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -593,7 +592,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'additional' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAnyTargetCollectionMatches_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -606,7 +605,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGenericTypeDefinitionIsInTargetCollection_ShouldMatchConstruction()
 			{
 				// ViaLayer1GenericConstruction references the constructed TargetGeneric<TargetB>; the scanned
@@ -621,7 +620,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldListMatchingDependencies()
 			{
 				Type subject = typeof(ViaField);
@@ -631,7 +630,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.DependsOn(Types.InNamespace(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -644,7 +643,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionContainsArrayType_ShouldMatchElementTypeDependency()
 			{
 				// Dependencies are stored element-stripped, so an array target matches like its element
@@ -659,7 +658,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionContainsFrameworkTypes_ShouldMatchThem()
 			{
 				// A filtered collection is an explicit target, so framework types in it are checked normally.
@@ -673,7 +672,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_ShouldFail()
 			{
 				Type subject = typeof(ViaField);
@@ -683,10 +682,10 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetIsNull_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -701,7 +700,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'target' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDependsOnTypeInTargetCollection_ShouldSucceed()
 			{
 				Type subject = typeof(ViaField);
@@ -714,7 +713,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotDependOnAnyTypeInTargetCollection_ShouldFail()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -724,7 +723,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOn(Types.InNamespace(Layer2Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends on types within namespace "{Layer2Namespace}" in all loaded assemblies,
@@ -732,7 +731,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -750,7 +749,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -763,7 +762,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithoutTargets_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -781,7 +780,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDependsOnNamespace_ShouldFail()
 			{
 				Type subject = typeof(ViaField);
@@ -791,7 +790,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.DependsOn(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on namespace "{Layer1Namespace}",

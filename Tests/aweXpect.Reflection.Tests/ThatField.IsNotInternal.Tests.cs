@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsInternal_ShouldFail()
 			{
 				FieldInfo? subject = GetField("InternalField");
@@ -19,7 +18,7 @@ public sealed partial class ThatField
 					await That(subject).IsNotInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not internal,
@@ -27,10 +26,10 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotInternal_ShouldSucceed(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -43,7 +42,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -64,7 +63,7 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsInternal_ShouldSucceed()
 			{
 				FieldInfo? subject = GetField("InternalField");
@@ -77,10 +76,10 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotInternal_ShouldFail(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -90,7 +89,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is internal,

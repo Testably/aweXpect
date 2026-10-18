@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasNoOptionalParameter_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -20,7 +19,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has an optional parameter,
@@ -28,7 +27,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasOptionalParameter_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithOptionalParameter).GetConstructors().Single();
@@ -41,7 +40,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? constructorInfo = null;
@@ -51,7 +50,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has an optional parameter,
@@ -62,7 +61,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class TypedOverloadsTests
 		{
-			[Fact]
+			[Test]
 			public async Task GenericExactType_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -72,7 +71,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int with optional modifier,
@@ -80,7 +79,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactTypeAndName_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -90,7 +89,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int with name "value" with optional modifier,
@@ -98,7 +97,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericType_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -108,7 +107,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int with optional modifier,
@@ -116,7 +115,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericTypeAndName_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -126,7 +125,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int with name "value" with optional modifier,
@@ -134,7 +133,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Name_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -144,7 +143,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter with name "value" with optional modifier,
@@ -152,7 +151,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlySomeParametersAreOptional_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
@@ -166,7 +165,7 @@ public sealed partial class ThatConstructor
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task Type_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -176,7 +175,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int with optional modifier,
@@ -184,7 +183,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeAndName_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -194,7 +193,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of type int with name "value" with optional modifier,
@@ -202,7 +201,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactType_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -212,7 +211,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int with optional modifier,
@@ -220,7 +219,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactTypeAndName_WhenParameterIsNotOptional_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -230,7 +229,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasOptionalParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type int with name "value" with optional modifier,
@@ -242,7 +241,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasNoOptionalParameter_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -255,7 +254,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasOptionalParameter_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithOptionalParameter).GetConstructors().Single();
@@ -265,7 +264,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).DoesNotComplyWith(it => it.HasOptionalParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             does not have an optional parameter,

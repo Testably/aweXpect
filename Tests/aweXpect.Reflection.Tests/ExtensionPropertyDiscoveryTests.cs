@@ -14,7 +14,7 @@ namespace aweXpect.Reflection.Tests;
 /// </summary>
 public sealed class ExtensionPropertyDiscoveryTests
 {
-	[Fact]
+	[Test]
 	public async Task Properties_ShouldSurfaceExtensionProperties()
 	{
 		IReadOnlyList<PropertyInfo> properties = await GetProperties();
@@ -30,7 +30,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 		                                     p.Name == "Capacity");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_ShouldExcludeExtensionPropertyAccessorsByDefault()
 	{
 		IReadOnlyList<MethodInfo> methods = await GetMethods();
@@ -42,7 +42,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 		                                  m.Name == nameof(StaticClassWithNewExtensionProperties.IsLongText));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_WhenIncludingAccessors_ShouldContainExtensionPropertyAccessors()
 	{
 		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Set(SpecialNameMembers.Accessors))
@@ -54,7 +54,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_ShouldExcludeSettableExtensionPropertyAccessorsByDefault()
 	{
 		IReadOnlyList<MethodInfo> methods = await GetMethods();
@@ -64,7 +64,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 			(m.Name == "get_MutableDefault" || m.Name == "set_MutableDefault"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_WhenIncludingAccessors_ShouldContainSettableExtensionPropertyAccessors()
 	{
 		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Set(SpecialNameMembers.Accessors))
@@ -78,7 +78,7 @@ public sealed class ExtensionPropertyDiscoveryTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Properties_ShouldSurfaceSettableExtensionProperty()
 	{
 		IReadOnlyList<PropertyInfo> properties = await GetProperties();

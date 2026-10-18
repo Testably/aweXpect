@@ -13,7 +13,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonOverridingEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -37,7 +37,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyOverridingEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithSealedMembers)
@@ -54,7 +54,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonOverridingEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -68,7 +68,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyOverridingEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(ClassWithSealedMembers)
@@ -96,7 +96,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonOverridingEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
@@ -121,7 +121,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyOverridingEvents_ShouldSucceed()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(ClassWithSealedMembers)

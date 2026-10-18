@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenMethodsReturnInheritedType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -26,7 +25,7 @@ public sealed partial class ThatMethods
 					await That(subject).ReturnExactly<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all return exactly *DummyBase,
@@ -39,7 +38,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllMethodsReturnExactType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -58,7 +57,7 @@ public sealed partial class ThatMethods
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsReturnSpecifiedType_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -72,7 +71,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsReturnInheritedTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -83,10 +82,10 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeMethodsDoNotReturnSpecifiedType_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -97,13 +96,13 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly<string>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 		}
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsReturnSpecifiedType_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -117,7 +116,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsReturnInheritedTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -128,10 +127,10 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly(typeof(DummyBase));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeMethodsDoNotReturnSpecifiedType_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -142,13 +141,13 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly(typeof(string));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 		}
 
 		public sealed class OrReturnExactlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsReturnOneOfTheSpecifiedTypes_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -163,7 +162,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsReturnInheritedTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -174,7 +173,7 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly<DummyBase>().OrReturnExactly<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 					             all return exactly ThatMethods.DummyBase or exactly string,
@@ -188,7 +187,7 @@ public sealed partial class ThatMethods
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeMethodsDoNotReturnAnyOfTheSpecifiedTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -199,10 +198,10 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly<string>().OrReturnExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrReturnExactly_ShouldSupportChaining()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -222,7 +221,7 @@ public sealed partial class ThatMethods
 
 		public sealed class OrReturnTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsReturnOneOfTheSpecifiedTypes_ShouldSucceed()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -237,7 +236,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsReturnInheritedTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -248,7 +247,7 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly<DummyBase>().OrReturn<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 					             all return exactly ThatMethods.DummyBase or string,
@@ -262,7 +261,7 @@ public sealed partial class ThatMethods
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeMethodsDoNotReturnAnyOfTheSpecifiedTypes_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -273,10 +272,10 @@ public sealed partial class ThatMethods
 					await That(methods).ReturnExactly<string>().OrReturn<int>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrReturnExactly_ShouldSupportChaining()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -298,7 +297,7 @@ public sealed partial class ThatMethods
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMethodsReturnSpecifiedType_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -309,7 +308,7 @@ public sealed partial class ThatMethods
 						await That(methods).DoesNotComplyWith(they => they.ReturnExactly<string>());
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return exactly string,
@@ -323,7 +322,7 @@ public sealed partial class ThatMethods
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodsReturnInheritedTypes_ShouldSucceed()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -337,7 +336,7 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeMethodsDoNotReturnSpecifiedType_ShouldSucceed()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -354,7 +353,7 @@ public sealed partial class ThatMethods
 
 			public sealed class OrReturnExactlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMethodsReturnOneOfTheSpecifiedTypes_ShouldFail()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -367,10 +366,10 @@ public sealed partial class ThatMethods
 							=> they.ReturnExactly<string>().OrReturnExactly<int>());
 					}
 
-					await That(Act).Throws<XunitException>();
+					await That(Act).Throws<FailException>();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeMethodsDoNotReturnAnyOfTheSpecifiedTypes_ShouldSucceed()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()
@@ -385,7 +384,7 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithMultipleOrReturnExactly_ShouldSupportChaining()
 				{
 					Filtered.Methods methods = In.Type<TestClass>()

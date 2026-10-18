@@ -6,7 +6,7 @@ public sealed class MemberFilterStateTests
 {
 	public sealed class AbstractTests
 	{
-		[Fact]
+		[Test]
 		public async Task Events_ShouldIncludeAbstractAndExcludeNonAbstract()
 		{
 			Reflection.Collections.Filtered.Events events =
@@ -17,7 +17,7 @@ public sealed class MemberFilterStateTests
 			await That(events).All().Satisfy(e => e.AddMethod?.IsAbstract == true).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Methods_ShouldIncludeAbstractAndExcludeNonAbstract()
 		{
 			Reflection.Collections.Filtered.Methods methods =
@@ -29,7 +29,7 @@ public sealed class MemberFilterStateTests
 			await That(methods).All().Satisfy(m => m.IsAbstract).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Properties_ShouldIncludeAbstractAndExcludeNonAbstract()
 		{
 			Reflection.Collections.Filtered.Properties properties =
@@ -44,7 +44,7 @@ public sealed class MemberFilterStateTests
 
 	public sealed class SealedTests
 	{
-		[Fact]
+		[Test]
 		public async Task Events_ShouldIncludeSealedAndExcludeNonSealed()
 		{
 			Reflection.Collections.Filtered.Events events =
@@ -55,7 +55,7 @@ public sealed class MemberFilterStateTests
 			await That(events).All().Satisfy(e => e.AddMethod?.IsFinal == true).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Methods_ShouldIncludeSealedAndExcludeNonSealed()
 		{
 			Reflection.Collections.Filtered.Methods methods =
@@ -66,7 +66,7 @@ public sealed class MemberFilterStateTests
 			await That(methods).All().Satisfy(m => m is { IsVirtual: true, IsFinal: true, }).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Properties_ShouldIncludeSealedAndExcludeNonSealed()
 		{
 			Reflection.Collections.Filtered.Properties properties =
@@ -81,7 +81,7 @@ public sealed class MemberFilterStateTests
 
 	public sealed class StaticTests
 	{
-		[Fact]
+		[Test]
 		public async Task Constructors_ShouldIncludeStaticAndExcludeNonStatic()
 		{
 			Reflection.Collections.Filtered.Constructors constructors =
@@ -90,7 +90,7 @@ public sealed class MemberFilterStateTests
 			await That(constructors).All().Satisfy(c => c.IsStatic).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Fields_ShouldIncludeStaticAndExcludeNonStatic()
 		{
 			Reflection.Collections.Filtered.Fields fields =
@@ -101,7 +101,7 @@ public sealed class MemberFilterStateTests
 			await That(fields).All().Satisfy(f => f.IsStatic).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Methods_ShouldIncludeStaticAndExcludeNonStatic()
 		{
 			Reflection.Collections.Filtered.Methods methods =
@@ -112,7 +112,7 @@ public sealed class MemberFilterStateTests
 			await That(methods).All().Satisfy(m => m.IsStatic).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Properties_ShouldIncludeStaticAndExcludeNonStatic()
 		{
 			Reflection.Collections.Filtered.Properties properties =
@@ -127,7 +127,7 @@ public sealed class MemberFilterStateTests
 
 	public sealed class AccessTests
 	{
-		[Fact]
+		[Test]
 		public async Task Constructors_ShouldIncludePublicAndExcludeNonPublic()
 		{
 			Reflection.Collections.Filtered.Constructors constructors =
@@ -136,7 +136,7 @@ public sealed class MemberFilterStateTests
 			await That(constructors).All().Satisfy(c => c.IsPublic).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Events_ShouldIncludePublicAndExcludeNonPublic()
 		{
 			Reflection.Collections.Filtered.Events events =
@@ -146,7 +146,7 @@ public sealed class MemberFilterStateTests
 			await That(events).All().Satisfy(e => e.AddMethod?.IsPublic == true).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Fields_ShouldIncludePublicAndExcludeNonPublic()
 		{
 			Reflection.Collections.Filtered.Fields fields =
@@ -156,7 +156,7 @@ public sealed class MemberFilterStateTests
 			await That(fields).All().Satisfy(f => f.IsPublic).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Fields_WithoutModifier_ShouldReturnNullFilterAndIncludeAll()
 		{
 			Reflection.Collections.Filtered.Fields fields =
@@ -166,7 +166,7 @@ public sealed class MemberFilterStateTests
 			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.NonStaticField));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Methods_ShouldIncludePublicAndExcludeNonPublic()
 		{
 			Reflection.Collections.Filtered.Methods methods =
@@ -176,7 +176,7 @@ public sealed class MemberFilterStateTests
 			await That(methods).All().Satisfy(m => m.IsPublic).And.IsNotEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Methods_WithoutModifier_ShouldReturnNullFilterAndIncludeAll()
 		{
 			Reflection.Collections.Filtered.Methods methods =
@@ -186,7 +186,7 @@ public sealed class MemberFilterStateTests
 			await That(methods).Contains(m => m.Name == nameof(TestClassWithStaticMembers.NonStaticMethod));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Properties_ShouldIncludePublicAndExcludeNonPublic()
 		{
 			Reflection.Collections.Filtered.Properties properties =

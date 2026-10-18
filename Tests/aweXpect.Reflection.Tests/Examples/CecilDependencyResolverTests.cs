@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests.Examples;
 
 public sealed class CecilDependencyResolverTests
 {
-	[Fact]
+	[Test]
 	public async Task BodyOnlyReference_IsOnlyDetectedWithTheCecilResolver()
 	{
 		// Layer1's TargetA is referenced only inside a method body of ViaMethodBodyOnly, with no

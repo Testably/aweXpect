@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldChainAbstractBeforeMethods()
 			{
 				Filtered.Methods methods = In.Type<AbstractMemberClass>().Abstract.Methods();
@@ -18,7 +18,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("abstract methods in type").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainAbstractBeforeProperties()
 			{
 				Filtered.Properties properties = In.Type<AbstractMemberClass>().Abstract.Properties();
@@ -30,7 +30,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("abstract properties in type").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainPrivateProtectedBeforeFields()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("private protected fields in classes in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainProtectedInternalBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -52,7 +52,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("protected internal methods in classes in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainPublicBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -63,7 +63,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("public methods in classes in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainSealedBeforeMethods()
 			{
 				Filtered.Methods methods = In.Type<SealedMemberClass>().Sealed.Methods();
@@ -74,7 +74,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("sealed methods in type").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainStaticBeforeConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -85,7 +85,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("static constructors in classes in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldChainStaticBeforeMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -96,7 +96,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("static methods in classes in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldCombinePublicAndStatic()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -107,7 +107,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("public static methods in classes in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldResetModifierStateAfterSelector()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Classes();

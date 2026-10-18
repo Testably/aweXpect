@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? constructorInfo = null;
@@ -23,7 +22,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type Stream,
@@ -31,7 +30,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParameterIsExactType_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -44,7 +43,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParameterIsExactTypeWithName_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -57,7 +56,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParameterIsSubtype_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -67,7 +66,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly<IDisposable>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type IDisposable,
@@ -75,7 +74,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParameterIsSubtypeWithMatchingName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -85,7 +84,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly<IDisposable>("stream");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type IDisposable with name "stream",
@@ -93,7 +92,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParameterNameDoesNotMatch_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -103,7 +102,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly<Stream>("other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type Stream with name "other",
@@ -111,7 +110,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? constructorInfo = null;
@@ -121,7 +120,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type Stream,
@@ -129,7 +128,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterIsExactType_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -142,7 +141,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterIsExactTypeWithName_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -155,7 +154,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterIsSubtype_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -165,7 +164,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly(typeof(IDisposable));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type IDisposable,
@@ -173,7 +172,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterIsSubtypeWithMatchingName_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -183,7 +182,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly(typeof(IDisposable), "stream");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type IDisposable with name "stream",
@@ -191,7 +190,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterNameDoesNotMatch_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -201,7 +200,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).HasParameterExactly(typeof(Stream), "other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type Stream with name "other",
@@ -212,7 +211,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenParameterIsExactType_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -222,7 +221,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterExactly<Stream>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             does not have parameter of exact type Stream,
@@ -230,7 +229,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParameterIsSubtype_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -243,7 +242,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterIsExactType_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -253,7 +252,7 @@ public sealed partial class ThatConstructor
 					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterExactly(typeof(Stream)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructorInfo
 					             does not have parameter of exact type Stream,
@@ -261,7 +260,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenParameterIsSubtype_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;

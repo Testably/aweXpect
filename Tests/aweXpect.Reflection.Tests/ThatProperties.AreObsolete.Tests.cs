@@ -12,7 +12,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreObsolete_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -28,7 +28,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonObsoleteProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -58,7 +58,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreObsolete_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -84,7 +84,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonObsoleteProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -105,7 +105,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreObsolete_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -132,7 +132,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -149,7 +149,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonObsoleteProperties_ShouldFail()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]

@@ -15,7 +15,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyExtensionMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(StaticClassWithExtensionMethods)
@@ -30,7 +30,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonExtensionMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(StaticClassWithExtensionMethods)
@@ -57,7 +57,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyExtensionMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(StaticClassWithExtensionMethods)
@@ -82,7 +82,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonExtensionMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(StaticClassWithExtensionMethods)
@@ -100,7 +100,7 @@ public sealed partial class ThatMethods
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyExtensionMethods_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
@@ -126,7 +126,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyExtensionMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
@@ -142,7 +142,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonExtensionMethods_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
@@ -172,7 +172,7 @@ public sealed partial class ThatMethods
 #if NET10_0_OR_GREATER
 		public sealed class NewSyntaxTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAreNewSyntaxExtensionMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -193,7 +193,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContainingARegularStaticMethod_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =

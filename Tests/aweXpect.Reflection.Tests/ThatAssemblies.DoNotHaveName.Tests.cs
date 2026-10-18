@@ -3,7 +3,6 @@ using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Enumerable_WhenNoAssemblyHasName_ShouldSucceed()
 			{
 				IEnumerable<Assembly?> subject = new[]
@@ -29,7 +28,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasMatchingSuffix_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -39,7 +38,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotHaveName(".Tests").AsSuffix();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not ending with ".Tests",
@@ -52,7 +51,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasName_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -62,7 +61,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotHaveName("aweXpect.Reflection.Tests");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not equal to "aweXpect.Reflection.Tests",
@@ -75,7 +74,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyMatchesIgnoringCase_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -85,7 +84,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotHaveName("AWExPECT.rEFLECTION.tESTS").IgnoringCase();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not equal to "AWExPECT.rEFLECTION.tESTS" ignoring case,
@@ -98,7 +97,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoAssemblyHasName_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -112,7 +111,7 @@ public sealed partial class ThatAssemblies
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNoAssemblyHasName_ShouldSucceed()
 			{
 				IAsyncEnumerable<Assembly?> subject = new[]
@@ -128,7 +127,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAssemblyHasName_ShouldFail()
 			{
 				IAsyncEnumerable<Assembly?> subject = new[]
@@ -141,7 +140,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotHaveName("aweXpect.Reflection.Tests");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have name not equal to "aweXpect.Reflection.Tests",
@@ -158,7 +157,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasName_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -171,7 +170,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoAssemblyHasName_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -181,7 +180,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoesNotComplyWith(they => they.DoNotHaveName("NonExistentAssembly"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have name not equal to "NonExistentAssembly",

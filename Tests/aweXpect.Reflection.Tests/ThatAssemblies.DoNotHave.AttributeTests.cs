@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatAssemblies
 		public sealed class AttributeTests
 		{
 #if NET8_0_OR_GREATER
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task AsyncEnumerable_WhenAnAssemblyHasAttribute_ShouldFail()
 			{
 				IAsyncEnumerable<Assembly?> subjects = new[]
@@ -25,7 +24,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).DoNotHave<AssemblyTitleAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have no AssemblyTitleAttribute,
@@ -39,7 +38,7 @@ public sealed partial class ThatAssemblies
 			}
 #endif
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task Negated_WhenNoAssemblyHasAttribute_ShouldFail()
 			{
 				IEnumerable<Assembly?> subjects = new[]
@@ -52,7 +51,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).DoesNotComplyWith(they => they.DoNotHave<TestAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             not all have no ThatAssemblies.DoNotHave.AttributeTests.TestAttribute,
@@ -65,7 +64,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAnAssemblyHasAttribute_ShouldFail()
 			{
 				IEnumerable<Assembly?> subjects = new[]
@@ -78,7 +77,7 @@ public sealed partial class ThatAssemblies
 					await That(subjects).DoNotHave<AssemblyTitleAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have no AssemblyTitleAttribute,
@@ -91,7 +90,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenNoAssemblyHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<Assembly?> subjects = new[]

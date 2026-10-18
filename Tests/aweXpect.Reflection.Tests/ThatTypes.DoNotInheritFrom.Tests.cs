@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesInherit_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(DerivedClass2));
@@ -20,7 +19,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
 					             all do not inherit from ThatTypes.BaseClass,
@@ -34,7 +33,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesInheritIndirectly_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(GrandChildClass));
@@ -44,7 +43,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.GrandChildClass]
 					             all do not inherit from ThatTypes.BaseClass,
@@ -57,7 +56,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneTypeInherits_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(UnrelatedClass));
@@ -67,7 +66,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.UnrelatedClass]
 					             all do not inherit from ThatTypes.BaseClass,
@@ -80,7 +79,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
@@ -95,7 +94,7 @@ public sealed partial class ThatTypes
 						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypesInherit_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(GenericTests));
@@ -111,7 +110,7 @@ public sealed partial class ThatTypes
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesInherit_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -125,7 +124,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom(baseType);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit from ThatTypes.BaseClass,
@@ -139,7 +138,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesInheritIndirectly_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -153,7 +152,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom(baseType);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit from ThatTypes.BaseClass,
@@ -166,7 +165,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneTypeInherits_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -180,7 +179,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom(baseType);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit from ThatTypes.BaseClass,
@@ -193,7 +192,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -212,7 +211,7 @@ public sealed partial class ThatTypes
 						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypesInherit_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(GenericTests));
@@ -226,7 +225,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesInheritDirectly_WithForceDirect_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -240,7 +239,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom(baseType, true);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit directly from ThatTypes.BaseClass,
@@ -256,7 +255,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesDoNotInherit_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(NegatedTests), typeof(UnrelatedClass));
@@ -266,7 +265,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.DoNotInheritFrom<BaseClass>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DoNotInheritFrom.NegatedTests, ThatTypes.UnrelatedClass]
 					             at least one inherits from ThatTypes.BaseClass,
@@ -280,7 +279,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesInherit_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(DerivedClass2));
@@ -293,7 +292,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesInheritIndirectly_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(GrandChildClass));
@@ -306,7 +305,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));

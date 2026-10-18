@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnInterface_ShouldFail()
 			{
 				Type subject = typeof(IPublicInterface);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(InterfaceTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(InterfaceTypesForNegated))]
 			public async Task WhenTypeIsAnInterface_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAnInterface_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicClass);
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotAnInterface());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an interface,
@@ -57,8 +57,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonInterfaceTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonInterfaceTypes))]
 			public async Task WhenTypeIsNotAnInterface_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> InterfaceTypesForNegated() => new()
+			public static IEnumerable<Type> InterfaceTypesForNegated() => new List<Type>
 			{
 				typeof(IPublicInterface),
 			};
 
-			public static TheoryData<Type> NonInterfaceTypes()
+			public static IEnumerable<Type> NonInterfaceTypes()
 				=>
 				[
 					typeof(PublicClass),

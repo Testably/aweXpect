@@ -9,7 +9,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotStatic_ShouldFail()
 			{
 				MethodInfo subject =
@@ -28,7 +28,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -46,7 +46,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsStatic_ShouldSucceed()
 			{
 				MethodInfo subject =
@@ -63,7 +63,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotStatic_ShouldSucceed()
 			{
 				MethodInfo subject =
@@ -77,7 +77,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsStatic_ShouldFail()
 			{
 				MethodInfo subject =

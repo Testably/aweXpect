@@ -11,7 +11,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldExcludeNamespacesThatOnlyShareThePrefix()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -21,7 +21,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ClassInSiblingNamespaceScope));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithinNamespaceIncludingSubNamespaces()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

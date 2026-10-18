@@ -8,7 +8,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForInternalProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -19,7 +19,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("internal properties in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPrivateProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -30,7 +30,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("private properties in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForProtectedProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("protected properties in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPublicProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()

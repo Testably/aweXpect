@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsARefStruct_ShouldFail()
 			{
 				Type subject = typeof(PublicRefStruct);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(RefStructTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(RefStructTypesForNegated))]
 			public async Task WhenTypeIsARefStruct_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotARefStruct_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicClass);
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotARefStruct());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a ref struct,
@@ -57,8 +57,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonRefStructTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonRefStructTypes))]
 			public async Task WhenTypeIsNotARefStruct_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> RefStructTypesForNegated() => new()
+			public static IEnumerable<Type> RefStructTypesForNegated() => new List<Type>
 			{
 				typeof(PublicRefStruct),
 			};
 
-			public static TheoryData<Type> NonRefStructTypes() => new()
+			public static IEnumerable<Type> NonRefStructTypes() => new List<Type>
 			{
 				typeof(PublicStruct),
 				typeof(PublicReadOnlyStruct),

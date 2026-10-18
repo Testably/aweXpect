@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -14,7 +13,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ByType_WhenMethodIsNull_ShouldFail()
 			{
 				IEnumerable<MethodInfo?> methods = new[]
@@ -27,7 +26,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
@@ -40,7 +39,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -70,7 +69,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "value",
@@ -83,7 +82,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenNameContainsAQuote_ShouldEscapeIt()
 			{
 				IEnumerable<MethodInfo> methods = [typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!,];
@@ -93,7 +92,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter("na\"me");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "na\"me",
@@ -107,7 +106,7 @@ public sealed partial class ThatMethods
 					.Because("the name is formatted like every other string value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -123,7 +122,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenAllHaveSubtypeParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -139,7 +138,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -152,7 +151,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
@@ -165,7 +164,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -181,7 +180,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -195,7 +194,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
@@ -208,7 +207,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenTypeMatchesButNameDoesNot_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -222,7 +221,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter<int>("name");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
@@ -236,7 +235,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameter_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -252,7 +251,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameter_WhenAllHaveSubtypeParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -268,7 +267,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameter_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -281,7 +280,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
@@ -294,7 +293,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameterAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -310,7 +309,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameterAndName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -324,7 +323,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
@@ -337,7 +336,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameterAndName_WhenTypeMatchesButNameDoesNot_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -351,7 +350,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int), "name");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
@@ -381,7 +380,7 @@ public sealed partial class ThatMethods
 #pragma warning restore CA1822
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -396,7 +395,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -408,7 +407,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
@@ -421,7 +420,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -436,7 +435,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -448,7 +447,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
@@ -461,7 +460,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeParameter_WhenTypeMatchesButNameDoesNot_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -473,7 +472,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int), "name");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
@@ -487,7 +486,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenMethodIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> methods = ToAsyncEnumerableNullable(
@@ -498,7 +497,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
@@ -515,7 +514,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task AtIndex_WhenAllHaveParameterAtIndex_ShouldFailWithIndexDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -529,7 +528,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>().AtIndex(0));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int at index 0,
@@ -543,7 +542,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -556,7 +555,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameter("value"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter with name "value",
@@ -570,7 +569,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -587,7 +586,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -600,7 +599,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int,
@@ -614,7 +613,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -630,7 +629,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -643,7 +642,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>("value"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with name "value",
@@ -657,7 +656,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -674,7 +673,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameter_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -687,7 +686,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameter(typeof(int)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int,
@@ -701,7 +700,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameter_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -717,7 +716,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameterAndName_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -730,7 +729,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameter(typeof(int), "value"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with name "value",
@@ -744,7 +743,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeParameterAndName_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -761,7 +760,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithModifier_WhenAllHaveRefParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -774,7 +773,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveRefParameter<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with ref modifier,
@@ -808,7 +807,7 @@ public sealed partial class ThatMethods
 
 		public sealed class ChainingTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenAllHaveParameterWithPrefix_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -825,7 +824,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenAllHaveParameterMatchingRegex_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -842,7 +841,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenAllHaveParameterWithSuffix_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -859,7 +858,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenAllHaveParameterWithWildcard_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -876,7 +875,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtIndex_WhenAllHaveParameterAtSpecificIndex_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -893,7 +892,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtIndex_WhenNotAllHaveParameterAtSpecificIndex_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -907,7 +906,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter<int>().AtIndex(0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 0,
@@ -920,7 +919,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtIndexFromEnd_WhenAllHaveParameterAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -939,7 +938,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenAllHaveParameterIgnoringCase_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -956,7 +955,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsPrefix_WhenAllHaveParameterWithPrefix_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -973,7 +972,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsRegex_WhenAllHaveParameterMatchingRegex_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -990,7 +989,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsSuffix_WhenAllHaveParameterWithSuffix_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1007,7 +1006,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsWildcard_WhenAllHaveParameterWithWildcard_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1024,7 +1023,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AtIndex_WhenAllHaveParameterAtSpecificIndex_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1041,7 +1040,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AtIndex_WhenNotAllHaveParameterAtSpecificIndex_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1055,7 +1054,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameter(typeof(int)).AtIndex(0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 0,
@@ -1068,7 +1067,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AtIndexFromEnd_WhenAllHaveParameterAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1087,7 +1086,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_IgnoringCase_WhenAllHaveParameterIgnoringCase_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1104,7 +1103,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WithDefaultValue_WhenAllHaveParameterWithDefault_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1121,7 +1120,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WithoutDefaultValue_WhenAllHaveParameterWithoutDefault_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1138,7 +1137,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDefaultValue_WhenAllHaveParameterWithDefault_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -1155,7 +1154,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutDefaultValue_WhenAllHaveParameterWithoutDefault_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]

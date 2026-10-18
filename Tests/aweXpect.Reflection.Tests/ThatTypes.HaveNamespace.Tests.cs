@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTypeWithDifferentNamespace_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -24,7 +23,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNamespace("aweXpect.Reflection.Tests.TestHelpers.Types");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have namespace equal to "aweXpect.Reflection.Tests.Test…",
@@ -37,7 +36,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesHaveNamespace_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithDifferentNamespace_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -67,7 +66,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveNamespace("aweXpect.Reflection");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.HaveNamespace.Tests
 					             all have namespace equal to "aweXpect.Reflection",
@@ -80,7 +79,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveNamespace_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -95,7 +94,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesMatchIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -111,7 +110,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesMatchPrefix_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -128,7 +127,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithDifferentNamespace_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -142,7 +141,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveNamespace_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -155,7 +154,7 @@ public sealed partial class ThatTypes
 							"aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.HaveNamespace.Tests
 					             not all have namespace equal to "aweXpect.Reflection.Tests.Test…",

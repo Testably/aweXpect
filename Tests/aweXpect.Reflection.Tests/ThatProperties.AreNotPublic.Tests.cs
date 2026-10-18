@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("InternalProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("InternalProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotPublic_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -25,7 +24,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPublic_ShouldFail()
 			{
 				Filtered.Properties subject = GetProperties("PublicProperty");
@@ -35,7 +34,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreNotPublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not public,
@@ -51,10 +50,10 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("InternalProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("InternalProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotPublic_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -64,7 +63,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreNotPublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is public,
@@ -75,7 +74,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPublic_ShouldSucceed()
 			{
 				Filtered.Properties subject = GetProperties("PublicProperty");

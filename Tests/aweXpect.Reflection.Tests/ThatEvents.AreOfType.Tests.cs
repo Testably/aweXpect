@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -15,7 +14,7 @@ public sealed partial class ThatEvents
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomeEventsAreNotOfType()
 			{
 				IEnumerable<EventInfo> subject =
@@ -29,7 +28,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreOfType<EventHandler>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of type EventHandler,
@@ -42,7 +41,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllEventsAreOfType()
 			{
 				IEnumerable<EventInfo> subject =
@@ -59,7 +58,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				IEnumerable<EventInfo> subject =
@@ -78,7 +77,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreOfType_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject =
@@ -92,7 +91,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreOfType<EventHandler>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             not all are of type EventHandler,
@@ -105,7 +104,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeEventsAreNotOfType_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject =
@@ -126,7 +125,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenSomeEventsAreNotOfType()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -139,7 +138,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreOfType<EventHandler>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of type EventHandler,
@@ -152,7 +151,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllEventsAreOfType()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -168,7 +167,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWithInheritance()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -198,7 +197,7 @@ public sealed partial class ThatEvents
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllEventsAreOfType()
 			{
 				IEnumerable<EventInfo> subject =
@@ -218,7 +217,7 @@ public sealed partial class ThatEvents
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreOneOfTheTypes_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject =
@@ -235,7 +234,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeEventsAreNoneOfTheTypes_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject =
@@ -249,7 +248,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreOfType<Action>().OrOfType<EventHandler>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of type Action or of type EventHandler,

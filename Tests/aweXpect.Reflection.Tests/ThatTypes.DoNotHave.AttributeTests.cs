@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenATypeHasAttribute_ShouldFail()
 			{
 				List<Type?> subjects = [typeof(FooClass2),];
@@ -20,7 +19,7 @@ public sealed partial class ThatTypes
 					await That(subjects).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
@@ -33,7 +32,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenATypeHasAttributeIndirectly_ShouldFail()
 			{
 				List<Type?> subjects = [typeof(FooChildClass2),];
@@ -43,7 +42,7 @@ public sealed partial class ThatTypes
 					await That(subjects).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenATypeHasAttributeIndirectly_WhenInheritIsFalse_ShouldSucceed()
 			{
 				List<Type?> subjects = [typeof(FooChildClass2),];
@@ -69,7 +68,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasAttribute_ShouldSucceed()
 			{
 				List<Type?> subjects = [typeof(BarClass), null,];
@@ -102,7 +101,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNoTypeHasAttribute_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -118,7 +117,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenATypeHasAttribute_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -131,7 +130,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
@@ -148,7 +147,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenATypeHasAttribute_ShouldSucceed()
 			{
 				List<Type?> subjects = [typeof(FooClass2),];
@@ -161,7 +160,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasAttribute_ShouldFail()
 			{
 				List<Type?> subjects = [typeof(BarClass),];
@@ -171,7 +170,7 @@ public sealed partial class ThatTypes
 					await That(subjects).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             not all have no ThatTypes.DoNotHave.NegatedTests.FooAttribute,

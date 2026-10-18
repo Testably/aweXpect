@@ -8,7 +8,7 @@ public sealed partial class Filtered
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Assembly_FromTypes_ShouldHaveExpectedDescription()
 			{
 				Assembly assembly = typeof(Tests).Assembly;
@@ -21,7 +21,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("assemblies containing types in my assembly");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineAbstractAndGeneric()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Abstract.Generic.Classes();
@@ -30,7 +30,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("abstract generic classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineAbstractAndNested()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Abstract.Nested.Classes();
@@ -39,7 +39,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("abstract nested classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineGenericAndAbstract()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Generic.Abstract.Classes();
@@ -48,7 +48,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("generic abstract classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineGenericAndSealed()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Generic.Sealed.Classes();
@@ -57,7 +57,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("generic sealed classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineGenericAndStatic()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Generic.Static.Classes();
@@ -66,7 +66,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("generic static classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineGenericNestedAndAbstract()
 			{
 				Reflection.Collections.Filtered.Types
@@ -76,7 +76,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("generic nested abstract classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineGenericStaticAndNested()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Generic.Static.Nested.Classes();
@@ -85,7 +85,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("generic static nested classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineNestedAndAbstract()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Abstract.Classes();
@@ -94,7 +94,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("nested abstract classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineNestedAndSealed()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Sealed.Classes();
@@ -103,7 +103,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("nested sealed classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineNestedAndStatic()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Static.Classes();
@@ -112,7 +112,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("nested static classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineNestedGenericAndSealed()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Generic.Sealed.Classes();
@@ -121,7 +121,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("nested generic sealed classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineSealedAndGeneric()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Sealed.Generic.Classes();
@@ -130,7 +130,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("sealed generic classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineSealedAndNested()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Sealed.Nested.Classes();
@@ -139,7 +139,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("sealed nested classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineStaticAndGeneric()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Static.Generic.Classes();
@@ -148,7 +148,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("static generic classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanCombineStaticAndNested()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Static.Nested.Classes();
@@ -157,7 +157,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("static nested classes in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForInternalConstructors()
 			{
 				Reflection.Collections.Filtered.Constructors constructors =
@@ -168,7 +168,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("internal constructors in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForInternalEvents()
 			{
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Internal.Events();
@@ -178,7 +178,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("internal events in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForInternalFields()
 			{
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Internal.Fields();
@@ -189,7 +189,7 @@ public sealed partial class Filtered
 			}
 
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForInternalMethods()
 			{
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Internal.Methods();
@@ -199,7 +199,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("internal methods in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForInternalProperties()
 			{
 				Reflection.Collections.Filtered.Properties properties = In.AllLoadedAssemblies().Internal.Properties();
@@ -209,7 +209,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("internal properties in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForInternalTypes()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Internal.Types();
@@ -219,7 +219,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("internal types in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateConstructors()
 			{
 				Reflection.Collections.Filtered.Constructors constructors =
@@ -230,7 +230,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private constructors in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateEvents()
 			{
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Private.Events();
@@ -240,7 +240,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private events in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateFields()
 			{
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Private.Fields();
@@ -250,7 +250,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private fields in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateMethods()
 			{
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Private.Methods();
@@ -260,7 +260,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private methods in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProperties()
 			{
 				Reflection.Collections.Filtered.Properties properties = In.AllLoadedAssemblies().Private.Properties();
@@ -270,7 +270,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private properties in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProtectedConstructors()
 			{
 				Reflection.Collections.Filtered.Constructors constructors =
@@ -281,7 +281,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private protected constructors in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProtectedEvents()
 			{
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Private.Protected.Events();
@@ -291,7 +291,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private protected events in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProtectedFields()
 			{
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Private.Protected.Fields();
@@ -301,7 +301,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private protected fields in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProtectedMethods()
 			{
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Private.Protected.Methods();
@@ -311,7 +311,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private protected methods in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProtectedProperties()
 			{
 				Reflection.Collections.Filtered.Properties properties =
@@ -322,7 +322,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private protected properties in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateProtectedTypes()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Private.Protected.Types();
@@ -332,7 +332,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private protected types in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPrivateTypes()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Private.Types();
@@ -342,7 +342,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("private types in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedConstructors()
 			{
 				Reflection.Collections.Filtered.Constructors constructors =
@@ -353,7 +353,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected constructors in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedEvents()
 			{
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Protected.Events();
@@ -363,7 +363,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected events in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedFields()
 			{
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Protected.Fields();
@@ -373,7 +373,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected fields in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedInternalConstructors()
 			{
 				Reflection.Collections.Filtered.Constructors constructors =
@@ -384,7 +384,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected internal constructors in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedInternalEvents()
 			{
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Protected.Internal.Events();
@@ -394,7 +394,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected internal events in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedInternalFields()
 			{
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Protected.Internal.Fields();
@@ -404,7 +404,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected internal fields in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedInternalMethods()
 			{
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Protected.Internal.Methods();
@@ -414,7 +414,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected internal methods in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedInternalProperties()
 			{
 				Reflection.Collections.Filtered.Properties properties =
@@ -425,7 +425,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected internal properties in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedInternalTypes()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Protected.Internal.Types();
@@ -435,7 +435,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected internal types in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedMethods()
 			{
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Protected.Methods();
@@ -445,7 +445,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected methods in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedProperties()
 			{
 				Reflection.Collections.Filtered.Properties properties = In.AllLoadedAssemblies().Protected.Properties();
@@ -455,7 +455,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected properties in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForProtectedTypes()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Protected.Types();
@@ -465,7 +465,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("protected types in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPublicConstructors()
 			{
 				Reflection.Collections.Filtered.Constructors constructors =
@@ -476,7 +476,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("public constructors in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPublicEvents()
 			{
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Public.Events();
@@ -486,7 +486,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("public events in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPublicFields()
 			{
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Public.Fields();
@@ -496,7 +496,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("public fields in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPublicMethods()
 			{
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Public.Methods();
@@ -506,7 +506,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("public methods in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPublicProperties()
 			{
 				Reflection.Collections.Filtered.Properties properties = In.AllLoadedAssemblies().Public.Properties();
@@ -516,7 +516,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("public properties in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanFilterForPublicTypes()
 			{
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Public.Types();
@@ -526,7 +526,7 @@ public sealed partial class Filtered
 				await That(description).IsEqualTo("public types in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NullAssembly_ShouldBeIgnored()
 			{
 				Assembly? assembly = null;

@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesHaveADependency_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -20,7 +19,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotDependOn("aweXpect.Core");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have no dependency on assembly equal to "aweXpect.Core",
@@ -33,7 +32,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesHaveNoDependency_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -46,7 +45,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoDependencyMatchesAsPrefix_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -56,7 +55,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotDependOn("System").AsPrefix();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have no dependency on assembly starting with "System",
@@ -69,7 +68,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoDependencyMatchesIgnoringCase_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -79,7 +78,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoNotDependOn("AWExPECT.cORE").IgnoringCase();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have no dependency on assembly equal to "AWExPECT.cORE" ignoring case,
@@ -95,7 +94,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesHaveADependency_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -108,7 +107,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesHaveNoDependency_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -118,7 +117,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoesNotComplyWith(they => they.DoNotDependOn("NonExistentAssembly"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have no dependency on assembly equal to "NonExistentAssembly",

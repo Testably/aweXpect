@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForInternalMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -19,7 +19,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("non-internal methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPrivateMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -30,7 +30,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("non-private methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForProtectedMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("non-protected methods in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPublicMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()

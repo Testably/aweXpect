@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDoesNotHaveADependency_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -20,7 +19,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DependsOn("NonExistentAssembly");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a dependency on assembly equal to "NonExistentAssembly",
@@ -33,7 +32,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasADependency_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -46,7 +45,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
@@ -64,7 +63,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependencyMatchesAsPrefix_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -77,7 +76,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependencyMatchesIgnoringCase_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -90,7 +89,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInWhose_ShouldLabelTheDependenciesWithTheMember()
 			{
 				AssemblyHolder subject = new(typeof(PublicAbstractClass).Assembly);
@@ -101,7 +100,7 @@ public sealed partial class ThatAssembly
 						assembly => assembly.DependsOn("NonExistentAssembly"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Assembly has a dependency on assembly equal to "NonExistentAssembly",
@@ -122,7 +121,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDoesNotHaveADependency_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -135,7 +134,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasADependency_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -145,7 +144,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotComplyWith(it => it.DependsOn("aweXpect.Core"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no dependency on assembly equal to "aweXpect.Core",

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodDoesNotReturnVoid_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -19,7 +18,7 @@ public sealed partial class ThatMethod
 					await That(subject).ReturnsVoid();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             returns void,
@@ -27,7 +26,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsVoid_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.VoidMethod))!;
@@ -61,7 +60,7 @@ public sealed partial class ThatMethod
 
 		public sealed class OrReturnsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsNoneOfTheTypes_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -71,7 +70,7 @@ public sealed partial class ThatMethod
 					await That(subject).ReturnsVoid().OrReturns<bool>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             returns void or bool,
@@ -79,7 +78,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -92,7 +91,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsVoid_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.VoidMethod))!;
@@ -108,7 +107,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodDoesNotReturnVoid_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -121,7 +120,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -140,7 +139,7 @@ public sealed partial class ThatMethod
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsVoid_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.VoidMethod))!;
@@ -150,7 +149,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.ReturnsVoid());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not return void,

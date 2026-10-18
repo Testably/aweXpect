@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasDifferentName_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -23,7 +22,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasMatchingName_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -33,7 +32,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotHaveName("aweXpect.Reflection.Tests");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "aweXpect.Reflection.Tests",
@@ -41,7 +40,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasMatchingSuffix_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -51,7 +50,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotHaveName(".Tests").AsSuffix();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not ending with ".Tests",
@@ -59,7 +58,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
@@ -77,7 +76,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyMatchesIgnoringCase_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -87,7 +86,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotHaveName("AWExPECT.rEFLECTION.tESTS").IgnoringCase();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "AWExPECT.rEFLECTION.tESTS" ignoring case,
@@ -95,7 +94,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedValueIsOnlySubstring_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -111,7 +110,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasDifferentName_ShouldFail()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -121,7 +120,7 @@ public sealed partial class ThatAssembly
 					await That(subject).DoesNotComplyWith(it => it.DoesNotHaveName("NonExistentAssembly"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "NonExistentAssembly",
@@ -133,7 +132,7 @@ public sealed partial class ThatAssembly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasName_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;

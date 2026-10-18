@@ -12,7 +12,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesOnlyHaveNullableMembers_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -30,7 +30,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
 			{
 				IEnumerable<Type?> subject =
@@ -57,7 +57,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleTypesDoNotComply_ShouldListAllWithComma()
 			{
 				IEnumerable<Type?> subject =
@@ -85,7 +85,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -115,7 +115,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesOnlyHaveNullableMembers_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -141,7 +141,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -162,7 +162,7 @@ public sealed partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesOnlyHaveNullableMembers_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -179,7 +179,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]

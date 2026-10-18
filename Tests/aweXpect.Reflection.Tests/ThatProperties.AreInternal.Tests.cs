@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsInternal_ShouldSucceed()
 			{
 				Filtered.Properties subject = GetProperties("InternalProperty");
@@ -22,10 +21,10 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotInternal_ShouldFail(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);
@@ -35,7 +34,7 @@ public sealed partial class ThatProperties
 					await That(subject).AreInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are internal,
@@ -51,7 +50,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsInternal_ShouldFail()
 			{
 				Filtered.Properties subject = GetProperties("InternalProperty");
@@ -61,7 +60,7 @@ public sealed partial class ThatProperties
 					await That(subject).DoesNotComplyWith(they => they.AreInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are internal,
@@ -74,10 +73,10 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
 			public async Task WhenPropertyInfoIsNotInternal_ShouldSucceed(string propertyName)
 			{
 				Filtered.Properties subject = GetProperties(propertyName);

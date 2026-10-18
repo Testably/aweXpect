@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMultipleMutableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMutableFieldAndSettableProperty);
@@ -33,7 +33,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMutableField_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMutableField);
@@ -56,7 +56,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasPropertyWithPrivateSetter_ShouldFail()
 			{
 				Type subject = typeof(ClassWithPrivateSettableProperty);
@@ -79,7 +79,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasSettableIndexer_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSettableIndexer);
@@ -102,7 +102,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasSettableProperty_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSettableProperty);
@@ -125,7 +125,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsMutableField_ShouldFail()
 			{
 				Type subject = typeof(ClassInheritingMutableField);
@@ -148,7 +148,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeInheritsProtectedMutableField_ShouldFail()
 			{
 				Type subject = typeof(ClassInheritingProtectedMutableField);
@@ -171,8 +171,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(ImmutableTypes))]
+			[Test]
+			[MethodDataSource(nameof(ImmutableTypes))]
 			public async Task WhenTypeIsImmutable_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -183,7 +183,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -201,7 +201,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPositionalRecordStruct_ShouldFail()
 			{
 				Type subject = typeof(MutableRecordStruct);
@@ -224,7 +224,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedForItems_ShouldLabelTheMutableMembersWithTheItem()
 			{
 				Type[] subject =
@@ -263,7 +263,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInThatAll_ShouldListTheMutableMembersOfEachFailure()
 			{
 				async Task Act()
@@ -296,7 +296,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInWhose_ShouldLabelTheMutableMembersWithTheMember()
 			{
 				TypeHolder subject = new(typeof(ClassWithMutableField));
@@ -319,7 +319,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> ImmutableTypes() => new()
+			public static IEnumerable<Type> ImmutableTypes() => new List<Type>
 			{
 				typeof(ImmutableClass),
 				typeof(ImmutableClassWithInitProperty),
@@ -343,7 +343,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsImmutable_ShouldFail()
 			{
 				Type subject = typeof(ImmutableClass);
@@ -353,7 +353,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsImmutable());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not immutable,
@@ -361,7 +361,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsMutable_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMutableField);

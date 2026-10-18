@@ -8,7 +8,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWithType()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -25,7 +25,7 @@ public sealed partial class PropertyFilters
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWithType()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -42,7 +42,7 @@ public sealed partial class PropertyFilters
 
 		public sealed class OrOfTypeGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task FirstCheckIsOfType_ShouldNotAllowDerivedTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -58,7 +58,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -77,7 +77,7 @@ public sealed partial class PropertyFilters
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -94,7 +94,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()

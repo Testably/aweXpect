@@ -9,7 +9,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldDescribeTheFilterForASingleAllowedAssembly()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -20,7 +20,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have dependencies only on assemblies equal to \"aweXpect.Core\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldDescribeTheFilterForMultipleAllowedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -31,7 +31,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have dependencies only on assemblies equal to \"aweXpect.Core\" or equal to \"aweXpect\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldDescribeTheFilterForNoAllowedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -42,7 +42,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have dependencies only on no assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesDependingOnlyOnAllowed()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
@@ -51,7 +51,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
@@ -60,7 +60,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
@@ -69,7 +69,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyDependsOnDisallowedAssembly_ShouldBeFilteredOut()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()

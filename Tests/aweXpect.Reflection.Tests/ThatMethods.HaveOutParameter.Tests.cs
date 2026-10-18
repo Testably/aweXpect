@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -24,7 +23,7 @@ public sealed partial class ThatMethods
 #endif
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -40,7 +39,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -53,7 +52,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have an out parameter,
@@ -61,7 +60,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -77,7 +76,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -90,10 +89,10 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeAndName_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -109,7 +108,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeAndName_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -122,10 +121,10 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactly_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -141,7 +140,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactly_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -154,10 +153,10 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactlyAndName_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -174,7 +173,7 @@ public sealed partial class ThatMethods
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -188,7 +187,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -200,14 +199,14 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 #endif
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -220,7 +219,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveOutParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have an out parameter,
@@ -228,7 +227,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -247,7 +246,7 @@ public sealed partial class ThatMethods
 
 		public sealed class ModifierMessageTests
 		{
-			[Fact]
+			[Test]
 			public async Task Name_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -260,7 +259,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "value" with out modifier,
@@ -273,7 +272,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SystemType_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -286,7 +285,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with out modifier,
@@ -299,7 +298,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SystemTypeAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -312,7 +311,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value" with out modifier,
@@ -325,7 +324,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SystemTypeExactly_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -338,7 +337,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with out modifier,
@@ -351,7 +350,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SystemTypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -364,7 +363,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with out modifier,
@@ -377,7 +376,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -390,7 +389,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with out modifier,
@@ -403,7 +402,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -416,7 +415,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value" with out modifier,
@@ -429,7 +428,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -442,7 +441,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with out modifier,
@@ -455,7 +454,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -468,7 +467,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameterExactly<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with out modifier,
@@ -481,7 +480,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOutParameter_NegatedShouldListMatchingMethod()
 			{
 				// Kills the Formatter.Format(Matching) statement mutant in the negated result.
@@ -495,7 +494,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveOutParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have an out parameter,
@@ -503,7 +502,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOutParameter_ShouldListOffendingMethod()
 			{
 				// Kills the Formatter.Format(NotMatching) statement mutant: the offending
@@ -518,7 +517,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have an out parameter,
@@ -526,7 +525,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeButNotAllParametersAreOut_ShouldStillSucceed()
 			{
 				// Kills the Any()->All() mutant: this method has an out parameter and a normal one,
@@ -545,7 +544,7 @@ public sealed partial class ThatMethods
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				// Kills the async equality (== true -> != true) and boolean (true -> false) mutants.
@@ -561,7 +560,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -573,7 +572,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveOutParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have an out parameter,
@@ -581,7 +580,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenSomeButNotAllParametersAreOut_ShouldStillSucceed()
 			{
 				// Kills the async Any()->All() mutant.

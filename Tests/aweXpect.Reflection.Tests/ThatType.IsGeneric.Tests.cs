@@ -3,7 +3,6 @@ using aweXpect.Options;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArgumentFilterThrows_ShouldFail()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
@@ -27,7 +26,7 @@ public sealed partial class ThatType
 					await result;
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is generic with argument matching predicate,
@@ -37,7 +36,7 @@ public sealed partial class ThatType
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArgumentsPredicateThrows_ShouldFail()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
@@ -50,7 +49,7 @@ public sealed partial class ThatType
 					await result;
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is generic with arguments matching predicate,
@@ -60,7 +59,7 @@ public sealed partial class ThatType
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsGeneric_ShouldSucceed()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
@@ -73,7 +72,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotGeneric_ShouldFail()
 			{
 				Type subject = typeof(PublicClass);
@@ -91,7 +90,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -112,7 +111,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArgumentsPredicateThrows_ShouldFail()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
@@ -124,7 +123,7 @@ public sealed partial class ThatType
 							_ => throw new InvalidOperationException("boom"), () => "with arguments matching predicate"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
@@ -134,7 +133,7 @@ public sealed partial class ThatType
 					.Because("a predicate that throws answers neither the expectation nor its negation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsGeneric_ShouldFail()
 			{
 				Type subject = typeof(PublicGenericClass<int>);
@@ -144,7 +143,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsGeneric());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
@@ -152,7 +151,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotGeneric_ShouldSucceed()
 			{
 				Type subject = typeof(PublicClass);

@@ -8,7 +8,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesContainMatchingConstructor_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedConstructor, ClassWithTwoMarkedConstructors>();
@@ -21,7 +21,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingConstructor_ShouldFail()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedConstructor, ClassWithoutMarkedConstructor>();
@@ -47,7 +47,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingConstructor_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedConstructor, ClassWithoutMarkedConstructor>();

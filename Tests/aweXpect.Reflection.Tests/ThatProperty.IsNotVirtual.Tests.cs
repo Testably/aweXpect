@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotVirtual_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -24,7 +23,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -42,7 +41,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsVirtual_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -64,7 +63,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotVirtual_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -75,7 +74,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsNotVirtual());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is virtual,
@@ -83,7 +82,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsVirtual_ShouldSucceed()
 			{
 				PropertyInfo subject =

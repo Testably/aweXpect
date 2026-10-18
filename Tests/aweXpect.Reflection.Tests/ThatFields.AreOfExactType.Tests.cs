@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -13,7 +12,7 @@ public sealed partial class ThatFields
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenFieldsInheritFromType()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -26,7 +25,7 @@ public sealed partial class ThatFields
 					await That(subject).AreOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type *DummyBase,
@@ -39,7 +38,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllFieldsAreOfExactType()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -58,7 +57,7 @@ public sealed partial class ThatFields
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllFieldsAreOneOfTheExactTypes_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -75,7 +74,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldStrictlyInheritsFromOrOfExactType_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -88,7 +87,7 @@ public sealed partial class ThatFields
 					await That(subject).AreOfExactType<int>().OrOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type int or of exact type *DummyBase,
@@ -105,7 +104,7 @@ public sealed partial class ThatFields
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenFieldsInheritFromType()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -118,7 +117,7 @@ public sealed partial class ThatFields
 					await That(subject).AreOfExactType<DummyBase>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type *DummyBase,
@@ -131,7 +130,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllFieldsAreOfExactType()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]

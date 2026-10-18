@@ -10,7 +10,7 @@ public sealed partial class EventFilters
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWhichInheritType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
@@ -25,7 +25,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWithExactHandlerType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
@@ -51,7 +51,7 @@ public sealed partial class EventFilters
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWhichInheritType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
@@ -69,7 +69,7 @@ public sealed partial class EventFilters
 
 		public sealed class OrOfTypeGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task FirstCheckIsOfExactType_ShouldAllowInheritedTypes()
 			{
 				Filtered.Events events = In.Type<TestClass>()
@@ -85,7 +85,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWhichMatchAnyOfTheGivenTypes()
 			{
 				Filtered.Events events = In.Type<TestClass>()
@@ -104,7 +104,7 @@ public sealed partial class EventFilters
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWhichMatchAnyOfTheGivenTypes()
 			{
 				Filtered.Events events = In.Type<TestClass>()

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -22,7 +21,7 @@ public sealed partial class ThatConstructors
 #endif
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ByName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -35,7 +34,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with out modifier,
@@ -48,7 +47,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByType_WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -64,7 +63,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByType_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -77,7 +76,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
@@ -90,7 +89,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeAndName_WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -106,7 +105,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -119,7 +118,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
@@ -132,7 +131,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactly_WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -148,7 +147,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactly_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -161,7 +160,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
@@ -174,7 +173,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactlyAndName_WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -190,7 +189,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -203,7 +202,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
@@ -216,7 +215,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Generic_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -229,7 +228,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
@@ -242,7 +241,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -255,7 +254,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
@@ -268,7 +267,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactly_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -281,7 +280,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
@@ -294,7 +293,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactlyAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -307,7 +306,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
@@ -320,7 +319,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -336,7 +335,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorHasSomeButNotAllOutParameters_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -352,7 +351,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -365,7 +364,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have an out parameter,
@@ -378,7 +377,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeAndName_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -394,7 +393,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeAndName_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -407,10 +406,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactly_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -426,7 +425,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactly_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -439,10 +438,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactlyAndName_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -459,7 +458,7 @@ public sealed partial class ThatConstructors
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenAllHaveOutParameterOfType_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -473,7 +472,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenNotAllHaveOutParameterOfType_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -485,11 +484,11 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 #endif
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveOutParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -504,7 +503,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -516,7 +515,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have an out parameter,
@@ -529,7 +528,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenConstructorHasSomeButNotAllOutParameters_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -545,7 +544,7 @@ public sealed partial class ThatConstructors
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -557,7 +556,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
@@ -570,7 +569,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_Generic_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -582,7 +581,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
@@ -595,7 +594,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -607,7 +606,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
@@ -620,7 +619,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_GenericAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -632,7 +631,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
@@ -645,7 +644,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -657,7 +656,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with out modifier,
@@ -670,7 +669,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_GenericExactly_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -682,7 +681,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
@@ -695,7 +694,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeExactly_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -707,7 +706,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
@@ -720,7 +719,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_GenericExactlyAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -732,7 +731,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
@@ -745,7 +744,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -757,7 +756,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOutParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
@@ -774,7 +773,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOutParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -787,7 +786,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveOutParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have an out parameter,
@@ -800,7 +799,7 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOutParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

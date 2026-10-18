@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,7 +6,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsInternal_ShouldSucceed()
 			{
 				Type subject = typeof(InternalType);
@@ -21,10 +19,10 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType), "protected")]
-			[InlineData(typeof(PublicType), "public")]
-			[InlineData(typeof(PrivateType), "private")]
+			[Test]
+			[Arguments(typeof(ProtectedType), "protected")]
+			[Arguments(typeof(PublicType), "public")]
+			[Arguments(typeof(PrivateType), "private")]
 			public async Task WhenTypeIsNotInternal_ShouldFail(Type? subject, string expectedAccessModifier)
 			{
 				async Task Act()
@@ -32,7 +30,7 @@ public sealed partial class ThatType
 					await That(subject).IsInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is internal,
@@ -40,7 +38,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -61,7 +59,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsInternal_ShouldFail()
 			{
 				Type subject = typeof(InternalType);
@@ -71,14 +69,14 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is not internal*but it was*").AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(PrivateType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(PrivateType))]
 			public async Task WhenTypeIsNotInternal_ShouldSucceed(Type subject)
 			{
 				async Task Act()

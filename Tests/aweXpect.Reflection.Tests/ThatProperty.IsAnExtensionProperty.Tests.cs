@@ -2,7 +2,6 @@
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 #if NET10_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 #endif
 
 namespace aweXpect.Reflection.Tests;
@@ -13,7 +12,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotAnExtensionProperty_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -32,7 +31,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -53,7 +52,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotAnExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -71,7 +70,7 @@ public sealed partial class ThatProperty
 #if NET10_0_OR_GREATER
 		public sealed class NewSyntaxTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsAGenericStaticExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -85,7 +84,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsAnInstanceExtensionProperty_Negated_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -96,7 +95,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsAnExtensionProperty());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					              Expected that subject
 					              is not an extension property,
@@ -104,7 +103,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsAnInstanceExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -118,7 +117,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsARegularStaticPropertyInExtensionClass_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -138,7 +137,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsASettableStaticExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =
@@ -153,7 +152,7 @@ public sealed partial class ThatProperty
 				await That(subject.CanWrite).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsAStaticExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =

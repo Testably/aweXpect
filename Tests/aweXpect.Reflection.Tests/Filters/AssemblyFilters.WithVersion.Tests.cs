@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -11,7 +10,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesWithMatchingVersion()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -22,7 +21,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies with version matching version => version.Major >= 0");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotMatchWhenPredicateIsNeverTrue()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -31,7 +30,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
@@ -42,7 +41,7 @@ public sealed partial class AssemblyFilters
 					await That(assemblies).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type AssemblyFilters with version matching _ => throw new InvalidOperationException("boom")
 					             is empty,
@@ -52,7 +51,7 @@ public sealed partial class AssemblyFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWhenNegated()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
@@ -63,7 +62,7 @@ public sealed partial class AssemblyFilters
 					await That(assemblies).DoesNotComplyWith(they => they.IsEmpty());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type AssemblyFilters with version matching _ => throw new InvalidOperationException("boom")
 					             is not empty,
@@ -76,7 +75,7 @@ public sealed partial class AssemblyFilters
 
 		public sealed class ComponentTests
 		{
-			[Fact]
+			[Test]
 			public async Task EqualTo_ShouldMatchOnlyTheExactValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -89,7 +88,7 @@ public sealed partial class AssemblyFilters
 				await That(excluded).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThan_ShouldNotMatchTheBoundaryValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -102,7 +101,7 @@ public sealed partial class AssemblyFilters
 				await That(included).HasSingle().Which.IsEqualTo(assembly);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThanOrEqualTo_ShouldMatchTheBoundaryValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -117,7 +116,7 @@ public sealed partial class AssemblyFilters
 				await That(excluded).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThanOrEqualTo_ShouldMatchTheBoundaryValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -132,7 +131,7 @@ public sealed partial class AssemblyFilters
 				await That(excluded).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MultipleComponents_ShouldCombineWithAnd()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -144,7 +143,7 @@ public sealed partial class AssemblyFilters
 						"in all loaded assemblies with major version greater than or equal to 0 with minor version less than 100000");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_ShouldMatchEverythingExceptTheExactValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -157,13 +156,13 @@ public sealed partial class AssemblyFilters
 				await That(included).HasSingle().Which.IsEqualTo(assembly);
 			}
 
-			[Theory]
-			[InlineData("GreaterThan", 5, "greater than 5")]
-			[InlineData("GreaterThanOrEqualTo", 5, "greater than or equal to 5")]
-			[InlineData("LessThan", 5, "less than 5")]
-			[InlineData("LessThanOrEqualTo", 5, "less than or equal to 5")]
-			[InlineData("EqualTo", 5, "equal to 5")]
-			[InlineData("NotEqualTo", 5, "not equal to 5")]
+			[Test]
+			[Arguments("GreaterThan", 5, "greater than 5")]
+			[Arguments("GreaterThanOrEqualTo", 5, "greater than or equal to 5")]
+			[Arguments("LessThan", 5, "less than 5")]
+			[Arguments("LessThanOrEqualTo", 5, "less than or equal to 5")]
+			[Arguments("EqualTo", 5, "equal to 5")]
+			[Arguments("NotEqualTo", 5, "not equal to 5")]
 			public async Task ShouldDescribeComparison(string comparison, int expected, string expectedText)
 			{
 				Reflection.AssemblyFilters.VersionComponent major = In.AllLoadedAssemblies().WithVersion().WithMajor;
@@ -181,11 +180,11 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo($"in all loaded assemblies with major version {expectedText}");
 			}
 
-			[Theory]
-			[InlineData("major")]
-			[InlineData("minor")]
-			[InlineData("build")]
-			[InlineData("revision")]
+			[Test]
+			[Arguments("major")]
+			[Arguments("minor")]
+			[Arguments("build")]
+			[Arguments("revision")]
 			public async Task ShouldDescribeComponent(string name)
 			{
 				Reflection.AssemblyFilters.AssembliesWithVersion version = In.AllLoadedAssemblies().WithVersion();
@@ -202,7 +201,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo($"in all loaded assemblies with {name} version greater than or equal to 0");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparisonIsNeverTrue_ShouldNotMatch()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -211,7 +210,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMajor_GreaterThanLargeValue_ShouldNotMatch()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -220,7 +219,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMajor_ShouldFilterAndDescribe()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodDoesNotHaveAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod))!;
@@ -22,7 +21,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod))!;
@@ -32,7 +31,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotHave<FooAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatMethod.DoesNotHave.AttributeTests.FooAttribute,

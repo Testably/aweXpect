@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesDependOnNamespace_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -30,7 +29,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
@@ -45,7 +44,7 @@ public sealed partial class ThatTypes
 					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotDependOnNamespace_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -59,7 +58,7 @@ public sealed partial class ThatTypes
 					await That(subject).DependOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all depend on namespace "{Layer1Namespace}",
@@ -72,7 +71,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -92,7 +91,7 @@ public sealed partial class ThatTypes
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesDependOnTargetCollection_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -110,7 +109,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotDependOnTargetCollection_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -124,7 +123,7 @@ public sealed partial class ThatTypes
 					await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              all depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -137,7 +136,7 @@ public sealed partial class ThatTypes
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =

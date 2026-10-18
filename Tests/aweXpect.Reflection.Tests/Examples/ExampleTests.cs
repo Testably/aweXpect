@@ -3,7 +3,8 @@
 public sealed class ExampleTests
 {
 #if NET8_0_OR_GREATER
-	[Fact(Skip = "Does not apply in this project")]
+	[Test]
+	[Skip("Does not apply in this project")]
 	public async Task AllAsyncMethodsHaveAsyncSuffix()
 		=> await That(In.AssemblyContaining(typeof(In))
 				.Methods().WhichAreAsync())
@@ -11,17 +12,18 @@ public sealed class ExampleTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact(Skip = "Does not apply in this project")]
+	[Test]
+	[Skip("Does not apply in this project")]
 	public async Task AllMethodsWithAsyncSuffixReturnTaskOrValueTask()
 		=> await That(In.AssemblyContaining(typeof(In))
 				.Methods().WithName("Async").AsSuffix())
 			.Return<Task>().OrReturn<ValueTask>();
 #endif
 
-	[Fact]
+	[Test]
 	public async Task AllTestClassesHaveNameThatEndsWithTests()
 		=> await That(In.AssemblyContaining<ExampleTests>()
-				.Methods().With<FactAttribute>().OrWith<TheoryAttribute>()
+				.Methods().With<TestAttribute>()
 				.DeclaringTypes())
 			.HaveName("Tests").AsSuffix();
 }

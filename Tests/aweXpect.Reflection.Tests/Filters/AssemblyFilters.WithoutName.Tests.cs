@@ -8,7 +8,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutAssembliesWithName()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -20,7 +20,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies without name equal to \"aweXpect.Reflection.Tests\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -32,7 +32,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies without name ending with \".Tests\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()

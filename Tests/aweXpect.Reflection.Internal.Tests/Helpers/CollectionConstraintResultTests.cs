@@ -13,7 +13,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class CollectionConstraintResultTests
 {
-	[Fact]
+	[Test]
 	public async Task AppendResult_WhenOutcomeIsDecided_ShouldNotAppendCancelledMessage()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
@@ -25,7 +25,7 @@ public sealed class CollectionConstraintResultTests
 		await That(stringBuilder.ToString()).IsEqualTo("normal-result");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendResult_WhenOutcomeIsUndecided_ShouldAppendCancelledMessage()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
@@ -37,9 +37,9 @@ public sealed class CollectionConstraintResultTests
 			.IsEqualTo("it could not be verified, because the evaluation was already canceled");
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
 	public async Task AppendResult_WhenSubjectIsNull_ShouldFailBothWays(bool isNegated)
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
@@ -57,7 +57,7 @@ public sealed class CollectionConstraintResultTests
 		await That(stringBuilder.ToString()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Matching_BeforeSettingValue_ShouldBeEmpty()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
@@ -66,7 +66,7 @@ public sealed class CollectionConstraintResultTests
 		await That(sut.NotMatchingElements).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetStoredValue_ForTheElementType_ShouldReturnFalse()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
@@ -77,7 +77,7 @@ public sealed class CollectionConstraintResultTests
 		await That(result).IsFalse().Because("the stored value is the collection, not an element of it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetStoredValue_ForTheSubjectType_ShouldReturnTrue()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);

@@ -8,7 +8,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithoutAttribute()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

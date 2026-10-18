@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithAttribute()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -20,7 +20,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types with TypeFilters.With.BarAttribute").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -31,8 +31,8 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types with direct TypeFilters.With.BarAttribute").AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForTypesWithAttributeMatchingPredicate(int value,
 				Type[] expectedTypes)
 			{
@@ -46,7 +46,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -59,7 +59,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Types()
@@ -70,7 +70,7 @@ public sealed partial class TypeFilters
 					await That(types).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with TypeFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -80,21 +80,17 @@ public sealed partial class TypeFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			public static TheoryData<int, Type[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, Type[])>> GetFooValues()
+				=> new List<Func<(int, Type[])>>
 				{
-					{
-						2, [typeof(FooClass2), typeof(FooChildClass2),]
-					},
-					{
-						3, [typeof(FooClass3),]
-					},
+					() => (2, [typeof(FooClass2), typeof(FooChildClass2),]),
+					() => (3, [typeof(FooClass3),]),
 				};
 		}
 
 		public sealed class OrWithAttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithAttribute()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -110,7 +106,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -125,8 +121,8 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForTypesWithAttributeMatchingPredicate(int value,
 				Type[] expectedTypes)
 			{
@@ -140,7 +136,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -153,15 +149,11 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			public static TheoryData<int, Type[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, Type[])>> GetFooValues()
+				=> new List<Func<(int, Type[])>>
 				{
-					{
-						2, [typeof(FooClass2), typeof(FooChildClass2),]
-					},
-					{
-						3, [typeof(FooClass3),]
-					},
+					() => (2, [typeof(FooClass2), typeof(FooChildClass2),]),
+					() => (3, [typeof(FooClass3),]),
 				};
 		}
 

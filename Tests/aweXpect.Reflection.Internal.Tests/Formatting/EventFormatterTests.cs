@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Internal.Tests.Formatting;
 
 public class EventFormatterTests
 {
-	[Fact]
+	[Test]
 	public async Task WithCustomEventHandler_ShouldFormatCorrectly()
 	{
 		EventInfo? eventInfo = typeof(MyTestClass).GetEvent(nameof(MyTestClass.MyEvent));
@@ -18,7 +18,7 @@ public class EventFormatterTests
 			.IsEqualTo("event EventFormatterTests.MyTestClass.MyEventHandler EventFormatterTests.MyTestClass.MyEvent");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithEventHandler_ShouldFormatCorrectly()
 	{
 		EventInfo? eventInfo = typeof(MyTestClass).GetEvent(nameof(MyTestClass.PublicEvent));

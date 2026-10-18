@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -15,7 +14,7 @@ public sealed partial class ThatEvents
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenEventsInheritFromType()
 			{
 				IEnumerable<EventInfo> subject =
@@ -28,7 +27,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreOfExactType<MulticastDelegate>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type MulticastDelegate,
@@ -41,7 +40,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllEventsAreOfExactType()
 			{
 				IEnumerable<EventInfo> subject =
@@ -61,7 +60,7 @@ public sealed partial class ThatEvents
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllEventsAreOneOfTheExactTypes_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject =
@@ -78,7 +77,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventStrictlyInheritsFromOrOfExactType_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject =
@@ -91,7 +90,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreOfExactType<Action>().OrOfExactType<MulticastDelegate>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type Action or of exact type MulticastDelegate,
@@ -108,7 +107,7 @@ public sealed partial class ThatEvents
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFailWhenEventsInheritFromType()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -121,7 +120,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreOfExactType<MulticastDelegate>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type MulticastDelegate,
@@ -134,7 +133,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSucceedWhenAllEventsAreOfExactType()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]

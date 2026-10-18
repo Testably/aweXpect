@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonAttributeTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAttributes>().Types();
@@ -34,7 +33,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAttributes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAttributes>().Types()
@@ -51,7 +50,7 @@ public sealed partial class ThatTypes
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNonAttributeType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -64,7 +63,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreAttributes();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all attributes,
@@ -77,7 +76,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsOnlyAttributeTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -96,7 +95,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonAttributeTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAttributes>().Types();
@@ -109,7 +108,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAttributes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAttributes>().Types()
@@ -120,7 +119,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreAttributes());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types which are attributes in assembly containing type ThatTypes.AreAttributes
 					             are not all attributes,

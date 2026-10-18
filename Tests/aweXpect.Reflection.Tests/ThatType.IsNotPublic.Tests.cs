@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,10 +6,10 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PrivateType))]
-			[InlineData(typeof(InternalType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PrivateType))]
+			[Arguments(typeof(InternalType))]
 			public async Task WhenTypeIsNotPublic_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
@@ -19,14 +17,14 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is public*but it was*").AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(InternalType))]
-			[InlineData(typeof(PrivateType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(InternalType))]
+			[Arguments(typeof(PrivateType))]
 			public async Task WhenTypeIsNotPublic_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
@@ -37,7 +35,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -55,7 +53,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPublic_ShouldFail()
 			{
 				Type? subject = typeof(PublicType);
@@ -65,7 +63,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotPublic();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not public,
@@ -73,7 +71,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsPublic_ShouldSucceedWithNegatedAssertion()
 			{
 				Type? subject = typeof(PublicType);

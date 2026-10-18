@@ -13,7 +13,7 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainNonReadOnlyFields_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -40,7 +40,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyReadOnlyFields_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -61,7 +61,7 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainNonReadOnlyFields_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -78,7 +78,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyReadOnlyFields_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject =
@@ -110,7 +110,7 @@ public sealed partial class ThatFields
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainNonReadOnlyFields_ShouldFail()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -136,7 +136,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyReadOnlyFields_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -163,7 +163,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyReadOnlyFields_ShouldSucceed()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]

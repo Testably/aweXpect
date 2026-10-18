@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAStruct_ShouldFail()
 			{
 				Type subject = typeof(PublicStruct);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(StructTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(StructTypesForNegated))]
 			public async Task WhenTypeIsAStruct_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAStruct_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicClass);
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotAStruct());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a struct,
@@ -57,8 +57,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonStructTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonStructTypes))]
 			public async Task WhenTypeIsNotAStruct_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> StructTypesForNegated() => new()
+			public static IEnumerable<Type> StructTypesForNegated() => new List<Type>
 			{
 				typeof(PublicStruct),
 			};
 
-			public static TheoryData<Type> NonStructTypes()
+			public static IEnumerable<Type> NonStructTypes()
 				=>
 				[
 					typeof(IPublicInterface),

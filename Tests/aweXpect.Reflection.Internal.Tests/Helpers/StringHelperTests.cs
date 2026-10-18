@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public class StringHelperTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenAnyLaterLineHasNoWhiteSpace_ShouldReturnUnchangedInput()
 	{
 		string input = """
@@ -19,7 +19,7 @@ public class StringHelperTests
 		await That(result).IsEqualTo(input);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEmpty_ShouldReturnEmptyString()
 	{
 		string input = string.Empty;
@@ -29,7 +29,7 @@ public class StringHelperTests
 		await That(result).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLaterLineEndsWithButDoesNotStartWithCommonWhiteSpace_ShouldTrimCommonPrefix()
 	{
 		// line[1] = "  bar" => common white-space is the two leading spaces.
@@ -43,7 +43,7 @@ public class StringHelperTests
 		await That(result).IsEqualTo("foo\n  bar\nx  ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLaterLineIsBlank_ShouldIgnoreItForCommonWhiteSpace()
 	{
 		string input = "foo\n    bar\n\n    baz";
@@ -54,7 +54,7 @@ public class StringHelperTests
 			.Because("blank lines are often trimmed by editors and must not prevent trimming the other lines");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLinesHaveDifferentWhiteSpace_ShouldKeepAllWhiteSpace()
 	{
 		string input = """
@@ -72,7 +72,7 @@ public class StringHelperTests
 		                             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLinesHaveSomeCommonWhiteSpace_ShouldTrim()
 	{
 		string input = """
@@ -92,7 +92,7 @@ public class StringHelperTests
 		                             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOnlyHasOneLine_ShouldReturnLine()
 	{
 		string input = "foo";
@@ -102,7 +102,7 @@ public class StringHelperTests
 		await That(result).IsEqualTo(input);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTwoLines_ShouldTrimSecondLineAndKeepOnOneLine()
 	{
 		string input = """

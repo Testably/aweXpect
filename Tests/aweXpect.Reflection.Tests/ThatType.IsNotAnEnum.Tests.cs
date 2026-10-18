@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnEnum_ShouldFail()
 			{
 				Type subject = typeof(PublicEnum);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(EnumTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(EnumTypesForNegated))]
 			public async Task WhenTypeIsAnEnum_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAnEnum_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicClass);
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotAnEnum());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is an enum,
@@ -57,8 +57,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonEnumTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonEnumTypes))]
 			public async Task WhenTypeIsNotAnEnum_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> EnumTypesForNegated() => new()
+			public static IEnumerable<Type> EnumTypesForNegated() => new List<Type>
 			{
 				typeof(PublicEnum),
 			};
 
-			public static TheoryData<Type> NonEnumTypes()
+			public static IEnumerable<Type> NonEnumTypes()
 				=>
 				[
 					typeof(IPublicInterface),

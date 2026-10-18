@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotProtectedInternal_ShouldFail(string fieldName)
 			{
 				Filtered.Fields subject = GetFields(fieldName);
@@ -25,7 +24,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsProtectedInternal_ShouldFail()
 			{
 				Filtered.Fields subject = GetFields("ProtectedInternalField");
@@ -35,7 +34,7 @@ public sealed partial class ThatFields
 					await That(subject).AreNotProtectedInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not protected internal,
@@ -51,10 +50,10 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotProtectedInternal_ShouldFail(string fieldName)
 			{
 				Filtered.Fields subject = GetFields(fieldName);
@@ -64,7 +63,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.AreNotProtectedInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is protected internal,
@@ -75,7 +74,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsProtectedInternal_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetFields("ProtectedInternalField");

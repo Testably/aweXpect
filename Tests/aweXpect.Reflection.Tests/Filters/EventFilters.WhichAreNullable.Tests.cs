@@ -9,7 +9,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNullableEvents()
 			{
 				Filtered.Events events = In.Type<ClassWithMixedNullableEvents>()
@@ -20,7 +20,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("nullable events in type").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldOnlyKeepNullableEvents()
 			{
 				Filtered.Events events = In.Type<ClassWithMixedNullableEvents>()

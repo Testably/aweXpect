@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedValueIsOnlySubstring_ShouldFail()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -19,7 +18,7 @@ public sealed partial class ThatType
 					await That(subject).HasNamespace("Reflection.Tests.TestHelpers");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has namespace equal to "Reflection.Tests.TestHelpers",
@@ -31,7 +30,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasExpectedPrefix_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -44,7 +43,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMatchingNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -57,7 +56,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -78,7 +77,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -91,7 +90,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNamespace_ShouldFail()
 			{
 				Type subject = typeof(PublicAbstractClass);
@@ -102,7 +101,7 @@ public sealed partial class ThatType
 						=> it.HasNamespace("aweXpect.Reflection.Tests.TestHelpers.Types"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has namespace not equal to "aweXpect.Reflection.Tests.Test…",

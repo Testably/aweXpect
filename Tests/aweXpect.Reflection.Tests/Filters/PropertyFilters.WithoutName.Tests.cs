@@ -8,7 +8,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutPropertiesWithName()
 			{
 				Filtered.Properties properties = In.Type<ConcretePropertyClass>()
@@ -19,7 +19,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("properties without name equal to \"ConcreteProperty\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Properties properties = In.Type<ConcretePropertyClass>()

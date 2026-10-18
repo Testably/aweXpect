@@ -11,7 +11,7 @@ public sealed partial class Filtered
 		{
 			public sealed class StaticTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForStaticTypes()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Static.Types();
@@ -19,7 +19,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t.IsStatic());
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeStaticInformationInErrorMessage()
 				{
 					async Task Act()
@@ -41,9 +41,8 @@ public sealed partial class Filtered
 						             """).AsWildcard();
 				}
 
-				[Theory]
-				[MemberData(nameof(Filters.AssemblyFilters.GetAccessModifiers),
-					MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(Filters.AssemblyFilters.GetAccessModifiers))]
 				public async Task WithAccessModifier_ShouldIncludeStaticInformationInErrorMessage(
 					AccessModifiers accessModifier, string expectedString)
 				{

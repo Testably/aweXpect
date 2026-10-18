@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty", "protected")]
-			[InlineData("PublicProperty", "public")]
-			[InlineData("InternalProperty", "internal")]
+			[Test]
+			[Arguments("ProtectedProperty", "protected")]
+			[Arguments("PublicProperty", "public")]
+			[Arguments("InternalProperty", "internal")]
 			public async Task WhenPropertyInfoIsNotPrivateProtected_ShouldFail(string propertyName,
 				string expectedAccessModifier)
 			{
@@ -23,7 +22,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsPrivateProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is private protected,
@@ -31,7 +30,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -49,7 +48,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPrivateProtected_ShouldSucceed()
 			{
 				PropertyInfo? subject = GetProperty("PrivateProtectedProperty");
@@ -65,10 +64,10 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("InternalProperty")]
+			[Test]
+			[Arguments("ProtectedProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("InternalProperty")]
 			public async Task WhenPropertyInfoIsNotPrivateProtected_ShouldSucceed(string propertyName)
 			{
 				PropertyInfo? subject = GetProperty(propertyName);
@@ -81,7 +80,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsPrivateProtected_ShouldFail()
 			{
 				PropertyInfo? subject = GetProperty("PrivateProtectedProperty");
@@ -91,7 +90,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("Expected that subject*")
 					.AsWildcard();
 			}

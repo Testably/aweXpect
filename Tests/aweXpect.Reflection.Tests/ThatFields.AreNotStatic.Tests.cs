@@ -13,7 +13,7 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainStaticFields_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = typeof(TestClassWithStaticMembers)
@@ -38,7 +38,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonStaticFields_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject = typeof(TestClassWithStaticMembers)
@@ -55,7 +55,7 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainStaticFields_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject = typeof(TestClassWithStaticMembers)
@@ -70,7 +70,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonStaticFields_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = typeof(TestClassWithStaticMembers)
@@ -98,7 +98,7 @@ public sealed partial class ThatFields
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainStaticFields_ShouldFail()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -124,7 +124,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonStaticFields_ShouldSucceed()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = typeof(TestClassWithStaticMembers)

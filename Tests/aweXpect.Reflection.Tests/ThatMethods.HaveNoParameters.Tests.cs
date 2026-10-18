@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveNoParameters_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -26,7 +25,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveNoParameters_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -39,7 +38,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveNoParameters();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have no parameters,
@@ -50,7 +49,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveNoParameters_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -63,7 +62,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveNoParameters());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have no parameters,
@@ -71,7 +70,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveNoParameters_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Generic_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -19,7 +18,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter<int[]>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int[] with params modifier,
@@ -27,7 +26,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactly_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -37,7 +36,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameterExactly<int[]>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int[] with params modifier,
@@ -45,7 +44,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactlyWithName_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -55,7 +54,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameterExactly<int[]>("values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int[] with name "values" with params modifier,
@@ -63,7 +62,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericWithName_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -73,7 +72,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter<int[]>("values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int[] with name "values" with params modifier,
@@ -81,7 +80,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Name_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -91,7 +90,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter("values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter with name "values" with params modifier,
@@ -99,7 +98,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -109,7 +108,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter(typeof(int[]));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int[] with params modifier,
@@ -117,7 +116,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenMethodHasParamsParameterOfType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
@@ -130,7 +129,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WhenMethodHasParamsParameterOfTypeWithName_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
@@ -143,7 +142,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -153,7 +152,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameterExactly(typeof(int[]));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int[] with params modifier,
@@ -161,7 +160,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenMethodHasParamsParameterOfExactType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
@@ -174,7 +173,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactly_WhenMethodHasParamsParameterOfExactTypeWithName_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
@@ -187,7 +186,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeExactlyWithName_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -197,7 +196,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameterExactly(typeof(int[]), "values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of exact type int[] with name "values" with params modifier,
@@ -205,7 +204,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypeWithName_WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -215,7 +214,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter(typeof(int[]), "values");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int[] with name "values" with params modifier,
@@ -223,7 +222,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasNoParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -233,7 +232,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has a params parameter,
@@ -241,7 +240,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasParamsParameter_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
@@ -254,7 +253,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? methodInfo = null;
@@ -264,7 +263,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasParamsParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has a params parameter,
@@ -272,7 +271,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeButNotAllParametersAreParamsParameters_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMixedParameters))!;
@@ -288,7 +287,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasNoParamsParameter_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
@@ -301,7 +300,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodHasParamsParameter_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
@@ -311,7 +310,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).DoesNotComplyWith(it => it.HasParamsParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             does not have a params parameter,

@@ -11,7 +11,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 // ReSharper disable UnusedMember.Local
 public sealed class MethodInfoHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Internal_ShouldMatchForExpectedMethod()
 	{
 		MethodInfo methodInfo = typeof(AccessModifierTestClass).GetDeclaredMethods()
@@ -23,7 +23,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Private_ShouldMatchForExpectedMethod()
 	{
 		MethodInfo methodInfo = typeof(AccessModifierTestClass).GetDeclaredMethods()
@@ -35,7 +35,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Protected_ShouldMatchForExpectedMethod()
 	{
 		MethodInfo methodInfo = typeof(AccessModifierTestClass).GetDeclaredMethods()
@@ -47,7 +47,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_Public_ShouldMatchForExpectedMethod()
 	{
 		MethodInfo methodInfo = typeof(AccessModifierTestClass).GetDeclaredMethods()
@@ -59,7 +59,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAccessModifier_WhenNull_ShouldReturnFalse()
 	{
 		MethodInfo? methodInfo = null;
@@ -70,7 +70,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
@@ -80,7 +80,7 @@ public sealed class MethodInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
@@ -90,7 +90,7 @@ public sealed class MethodInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
@@ -102,7 +102,7 @@ public sealed class MethodInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		MethodInfo methodInfo =
@@ -113,7 +113,7 @@ public sealed class MethodInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
@@ -123,7 +123,7 @@ public sealed class MethodInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
@@ -135,7 +135,7 @@ public sealed class MethodInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsExtensionPropertyAccessor_WhenInstanceMethod_ShouldReturnFalse()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
@@ -143,7 +143,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsExtensionPropertyAccessor_WhenMethodHasNoDeclaringType_ShouldReturnFalse()
 	{
 		MethodInfo methodInfo = new DynamicMethod("Dynamic", typeof(void), Type.EmptyTypes);
@@ -151,7 +151,7 @@ public sealed class MethodInfoHelpersTests
 		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsExtensionPropertyAccessor_WhenStaticMethodInNonExtensionClass_ShouldReturnFalse()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.StaticMethod))!;

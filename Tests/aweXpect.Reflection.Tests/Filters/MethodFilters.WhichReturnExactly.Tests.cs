@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactBaseType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -23,7 +23,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactDerivedType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -37,7 +37,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -55,7 +55,7 @@ public sealed partial class MethodFilters
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactBaseType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -70,7 +70,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -88,7 +88,7 @@ public sealed partial class MethodFilters
 
 		public sealed class OrReturnExactlyGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactlyAnyOfMultipleTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -106,7 +106,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactlyAnyOfTheGivenTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -122,7 +122,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldKeepMethodsMatchingTheFirstTypeWhenAddingAnAlternative()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -138,7 +138,7 @@ public sealed partial class MethodFilters
 
 		public sealed class OrReturnExactlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactlyAnyOfMultipleTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>().Methods()
@@ -158,7 +158,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnExactlyAnyOfTheGivenTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -177,7 +177,7 @@ public sealed partial class MethodFilters
 
 		public sealed class MixingWithWhichReturnTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowMixingWhichReturnExactlyWithOrReturn()
 			{
 				Filtered.Methods methods = In.Type<TestClass>().Methods()
@@ -195,7 +195,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowMixingWhichReturnWithOrReturnExactly()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -217,7 +217,7 @@ public sealed partial class MethodFilters
 
 		public sealed class InheritanceContrastTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhichReturnExactly_ShouldNotIncludeInheritedTypes()
 			{
 				Filtered.Methods exactMethods = In.Type<TestClass>()

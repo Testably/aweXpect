@@ -9,7 +9,7 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotStatic_ShouldSucceed()
 			{
 				EventInfo subject =
@@ -23,7 +23,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -41,7 +41,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsStatic_ShouldFail()
 			{
 				EventInfo subject =
@@ -63,7 +63,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotStatic_ShouldFail()
 			{
 				EventInfo subject =
@@ -82,7 +82,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsStatic_ShouldSucceed()
 			{
 				EventInfo subject =

@@ -8,7 +8,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutEventsWithName()
 			{
 				Filtered.Events events = In.Type<ConcreteEventClass>()
@@ -19,7 +19,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("events without name equal to \"ConcreteEvent\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Events events = In.Type<ConcreteEventClass>()

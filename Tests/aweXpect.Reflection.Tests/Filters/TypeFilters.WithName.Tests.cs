@@ -9,7 +9,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithName()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -20,7 +20,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types with name equal to \"SomeClassToVerifyTheNameOfIt\" in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -32,7 +32,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -44,7 +44,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -55,7 +55,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types with name ending with \"ClassToVerifyTheNameOfIt\" in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -66,7 +66,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types with name matching \"*ToVerifyTheNameOf*\" in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -79,7 +79,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -93,7 +93,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -107,7 +107,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportUsingCustomComparer()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

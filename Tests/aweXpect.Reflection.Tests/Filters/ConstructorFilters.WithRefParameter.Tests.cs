@@ -19,7 +19,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithRefParameter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -31,7 +31,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeConstructorsWithoutRefParameter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -40,7 +40,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(PlainConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldFilterForConstructorsWithRefParameterOfSpecificType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -49,7 +49,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(RefParameterConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldNotIncludeConstructorsWithRefParameterOfOtherType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -58,7 +58,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(RefParameterConstructor());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WithName_ShouldFilterForConstructorsWithRefParameterOfSpecificTypeAndName()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -70,7 +70,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class DescriptionTests
 		{
-			[Fact]
+			[Test]
 			public async Task ByName_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -79,7 +79,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfType_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -88,7 +88,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfTypeWithName_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -97,7 +97,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfType_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -106,7 +106,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfTypeWithName_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -115,7 +115,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeRefParameters()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -125,7 +125,7 @@ public sealed partial class ConstructorFilters
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task OfType_UsingType_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -134,7 +134,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OfTypeWithName_UsingType_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -143,7 +143,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfType_UsingType_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -152,7 +152,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription()).Contains("with ref modifier");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExactlyOfTypeWithName_UsingType_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

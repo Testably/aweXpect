@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,10 +6,10 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(typeof(InternalType), "internal")]
-			[InlineData(typeof(PublicType), "public")]
-			[InlineData(typeof(PrivateType), "private")]
+			[Test]
+			[Arguments(typeof(InternalType), "internal")]
+			[Arguments(typeof(PublicType), "public")]
+			[Arguments(typeof(PrivateType), "private")]
 			public async Task WhenTypeIsNotProtected_ShouldFail(Type? subject, string expectedAccessModifier)
 			{
 				async Task Act()
@@ -19,7 +17,7 @@ public sealed partial class ThatType
 					await That(subject).IsProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is protected,
@@ -27,10 +25,10 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[InlineData(typeof(PrivateType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(InternalType))]
+			[Test]
+			[Arguments(typeof(PrivateType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(InternalType))]
 			public async Task WhenTypeIsNotProtected_ShouldSucceedWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
@@ -41,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -59,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsProtected_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(ProtectedType);
@@ -69,11 +67,11 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is not protected*but it was*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsProtected_ShouldSucceed()
 			{
 				Type subject = typeof(ProtectedType);

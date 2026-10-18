@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -8,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotReadOnly_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicStruct);
@@ -26,8 +27,8 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonReadOnlyTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonReadOnlyTypes))]
 			public async Task WhenTypeIsNotReadOnly_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -38,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -56,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsReadOnly_ShouldFail()
 			{
 				Type subject = typeof(PublicReadOnlyStruct);
@@ -74,7 +75,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsReadOnly_ShouldSucceedWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicReadOnlyStruct);
@@ -87,7 +88,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonReadOnlyTypes() => new()
+			public static IEnumerable<Type> NonReadOnlyTypes() => new List<Type>
 			{
 				typeof(PublicStruct),
 				typeof(PublicRefStruct),

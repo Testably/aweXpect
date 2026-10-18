@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForTypesWithADefaultConstructor()
 			{
 				Filtered.Types types = In.AssemblyContaining<ConcreteTestClass>()

@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterByMatchingProperty()
 			{
 				Filtered.Types types = In.Types<ClassWithMarkedProperty, UntaggedClass>()
@@ -17,7 +17,7 @@ public sealed partial class TypeFilters
 				await That(types).IsEqualTo([typeof(ClassWithMarkedProperty),]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportQuantifiers()
 			{
 				Filtered.Types types = In.Types<ClassWithMarkedProperty, UntaggedClass>()
@@ -26,7 +26,7 @@ public sealed partial class TypeFilters
 				await That(types).IsEqualTo([typeof(UntaggedClass),]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseTheInnerFilterDescription()
 			{
 				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
@@ -38,7 +38,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingProperty()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()
@@ -47,7 +47,7 @@ public sealed partial class TypeFilters
 				await That(types).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingProperty()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()

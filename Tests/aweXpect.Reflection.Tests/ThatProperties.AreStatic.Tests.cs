@@ -10,7 +10,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithStaticMembers)
@@ -24,7 +24,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonStaticProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithStaticMembers)
@@ -52,7 +52,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithStaticMembers)
@@ -76,7 +76,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonStaticProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithStaticMembers)

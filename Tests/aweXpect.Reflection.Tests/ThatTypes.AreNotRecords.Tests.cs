@@ -2,7 +2,6 @@
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoRecordTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -28,7 +27,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsRecordType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -41,7 +40,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotRecords();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not records,
@@ -57,7 +56,7 @@ public sealed partial class ThatTypes
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainOnlyInterfaceTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Interfaces();
@@ -70,7 +69,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyRecords_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Types()
@@ -97,7 +96,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainOnlyInterfaceTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Interfaces();
@@ -107,7 +106,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotRecords());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that interfaces in assembly containing type ThatTypes.AreNotRecords
 					             also contain a record,
@@ -120,7 +119,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyRecords_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Types()

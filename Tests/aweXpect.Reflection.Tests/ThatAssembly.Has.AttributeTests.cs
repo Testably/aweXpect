@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -19,7 +18,7 @@ public sealed partial class ThatAssembly
 					await That(subject).Has<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatAssembly.Has.AttributeTests.TestAttribute,
@@ -27,7 +26,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyHasAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -40,7 +39,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyHasMatchingAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -53,7 +52,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyHasNotMatchingAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -63,7 +62,7 @@ public sealed partial class ThatAssembly
 					await That(subject).Has<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
@@ -71,7 +70,7 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;
@@ -95,7 +94,7 @@ public sealed partial class ThatAssembly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -108,7 +107,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -122,7 +121,7 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAssemblyHasAttribute_ShouldFail()
 			{
 				Assembly subject = Assembly.GetExecutingAssembly();
@@ -133,7 +132,7 @@ public sealed partial class ThatAssembly
 						.DoesNotComplyWith(it => it.Has<AssemblyTitleAttribute>().OrHas<TestAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no AssemblyTitleAttribute or ThatAssembly.Has.NegatedTests.TestAttribute,

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatMethods
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterOfType_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -29,7 +28,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterOfType_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -45,7 +44,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterOfType_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -61,7 +60,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterOfType_WhenNotAllMatch_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -74,7 +73,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with ref modifier,
@@ -87,7 +86,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterOfTypeAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]

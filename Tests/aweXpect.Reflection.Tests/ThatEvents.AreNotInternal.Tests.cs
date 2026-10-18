@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsInternal_ShouldFail()
 			{
 				Filtered.Events subject = GetEvents("InternalEvent");
@@ -19,7 +18,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not internal,
@@ -32,10 +31,10 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("PrivateEvent")]
+			[Test]
+			[Arguments("ProtectedEvent")]
+			[Arguments("PublicEvent")]
+			[Arguments("PrivateEvent")]
 			public async Task WhenEventInfoIsNotInternal_ShouldFail(string eventName)
 			{
 				Filtered.Events subject = GetEvents(eventName);
@@ -51,7 +50,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsInternal_ShouldSucceed()
 			{
 				Filtered.Events subject = GetEvents("InternalEvent");
@@ -64,10 +63,10 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("PrivateEvent")]
+			[Test]
+			[Arguments("ProtectedEvent")]
+			[Arguments("PublicEvent")]
+			[Arguments("PrivateEvent")]
 			public async Task WhenEventInfoIsNotInternal_ShouldFail(string eventName)
 			{
 				Filtered.Events subject = GetEvents(eventName);
@@ -77,7 +76,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreNotInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is internal,

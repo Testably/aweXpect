@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,8 +9,8 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[MemberData(nameof(InstantiableTypes))]
+			[Test]
+			[MethodDataSource(nameof(InstantiableTypes))]
 			public async Task WhenTypeIsInstantiable_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -21,8 +21,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonInstantiableTypesWithReason))]
+			[Test]
+			[MethodDataSource(nameof(NonInstantiableTypesWithReason))]
 			public async Task WhenTypeIsNotInstantiable_ShouldFail(Type subject, string reason)
 			{
 				async Task Act()
@@ -38,7 +38,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -56,8 +56,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> InstantiableTypes()
-				=> new()
+			public static IEnumerable<Type> InstantiableTypes()
+				=> new List<Type>
 				{
 					typeof(PublicClass),
 					typeof(PublicSealedClass),
@@ -67,8 +67,8 @@ public sealed partial class ThatType
 					typeof(ClassWithoutDefaultConstructor),
 				};
 
-			public static TheoryData<Type> NonInstantiableTypes()
-				=> new()
+			public static IEnumerable<Type> NonInstantiableTypes()
+				=> new List<Type>
 				{
 					typeof(PublicAbstractClass),
 					typeof(PublicStaticClass),
@@ -76,28 +76,20 @@ public sealed partial class ThatType
 					typeof(PublicGenericClass<>),
 				};
 
-			public static TheoryData<Type, string> NonInstantiableTypesWithReason()
-				=> new()
+			public static IEnumerable<(Type, string)> NonInstantiableTypesWithReason()
+				=> new List<(Type, string)>
 				{
-					{
-						typeof(PublicAbstractClass), "abstract"
-					},
-					{
-						typeof(PublicStaticClass), "static"
-					},
-					{
-						typeof(IPublicInterface), "an interface"
-					},
-					{
-						typeof(PublicGenericClass<>), "a generic type definition"
-					},
+					(typeof(PublicAbstractClass), "abstract"),
+					(typeof(PublicStaticClass), "static"),
+					(typeof(IPublicInterface), "an interface"),
+					(typeof(PublicGenericClass<>), "a generic type definition"),
 				};
 		}
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[MemberData(nameof(InstantiableTypes))]
+			[Test]
+			[MethodDataSource(nameof(InstantiableTypes))]
 			public async Task WhenTypeIsInstantiable_ShouldFail(Type subject)
 			{
 				async Task Act()
@@ -105,7 +97,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsInstantiable());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not instantiable,
@@ -113,8 +105,8 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonInstantiableTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonInstantiableTypes))]
 			public async Task WhenTypeIsNotInstantiable_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -125,8 +117,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> InstantiableTypes()
-				=> new()
+			public static IEnumerable<Type> InstantiableTypes()
+				=> new List<Type>
 				{
 					typeof(PublicClass),
 					typeof(PublicSealedClass),
@@ -136,8 +128,8 @@ public sealed partial class ThatType
 					typeof(ClassWithoutDefaultConstructor),
 				};
 
-			public static TheoryData<Type> NonInstantiableTypes()
-				=> new()
+			public static IEnumerable<Type> NonInstantiableTypes()
+				=> new List<Type>
 				{
 					typeof(PublicAbstractClass),
 					typeof(PublicStaticClass),

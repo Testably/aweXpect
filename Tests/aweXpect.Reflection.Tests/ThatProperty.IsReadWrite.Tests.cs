@@ -9,7 +9,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -27,7 +27,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsReadOnly_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
@@ -46,7 +46,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsReadWrite_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
@@ -63,7 +63,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsReadOnly_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
@@ -77,7 +77,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsReadWrite_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)

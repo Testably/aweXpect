@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class NullabilityHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task GetNotNullableMembers_ShouldReturnNonNullableFieldsPropertiesAndEvents()
 	{
 		MemberInfo[] notNullableMembers = typeof(NullabilityTestClass).GetNotNullableMembers();
@@ -25,7 +25,7 @@ public sealed class NullabilityHelpersTests
 		]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetNullableMembers_ShouldReturnNullableFieldsPropertiesAndEvents()
 	{
 		MemberInfo[] nullableMembers = typeof(NullabilityTestClass).GetNullableMembers();
@@ -43,13 +43,13 @@ public sealed class NullabilityHelpersTests
 		]).InAnyOrder();
 	}
 
-	[Theory]
-	[InlineData(nameof(NullabilityTestClass.NullableValueField), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableValueField), false)]
-	[InlineData(nameof(NullabilityTestClass.NullableReferenceField), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableReferenceField), false)]
-	[InlineData(nameof(NullabilityTestClass.NullableGenericField), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableGenericField), false)]
+	[Test]
+	[Arguments(nameof(NullabilityTestClass.NullableValueField), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableValueField), false)]
+	[Arguments(nameof(NullabilityTestClass.NullableReferenceField), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableReferenceField), false)]
+	[Arguments(nameof(NullabilityTestClass.NullableGenericField), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableGenericField), false)]
 	public async Task IsNullable_ShouldEvaluateFieldNullability(string fieldName, bool expectNullable)
 	{
 		FieldInfo fieldInfo = typeof(NullabilityTestClass).GetField(fieldName)!;
@@ -57,11 +57,11 @@ public sealed class NullabilityHelpersTests
 		await That(fieldInfo.IsNullable()).IsEqualTo(expectNullable);
 	}
 
-	[Theory]
-	[InlineData(nameof(NullabilityTestClass.NullableEvent), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableEvent), false)]
-	[InlineData(nameof(NullabilityTestClass.NullableGenericEvent), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableGenericEvent), false)]
+	[Test]
+	[Arguments(nameof(NullabilityTestClass.NullableEvent), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableEvent), false)]
+	[Arguments(nameof(NullabilityTestClass.NullableGenericEvent), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableGenericEvent), false)]
 	public async Task IsNullable_ShouldEvaluateEventNullability(string eventName, bool expectNullable)
 	{
 		EventInfo eventInfo = typeof(NullabilityTestClass).GetEvent(eventName)!;
@@ -69,14 +69,14 @@ public sealed class NullabilityHelpersTests
 		await That(eventInfo.IsNullable()).IsEqualTo(expectNullable);
 	}
 
-	[Theory]
-	[InlineData(nameof(NullabilityTestClass.NullableValueProperty), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableValueProperty), false)]
-	[InlineData(nameof(NullabilityTestClass.NullableReferenceProperty), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableReferenceProperty), false)]
-	[InlineData(nameof(NullabilityTestClass.NullableGenericProperty), true)]
-	[InlineData(nameof(NullabilityTestClass.NonNullableGenericProperty), false)]
-	[InlineData(nameof(NullabilityTestClass.NullableWriteOnlyProperty), true)]
+	[Test]
+	[Arguments(nameof(NullabilityTestClass.NullableValueProperty), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableValueProperty), false)]
+	[Arguments(nameof(NullabilityTestClass.NullableReferenceProperty), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableReferenceProperty), false)]
+	[Arguments(nameof(NullabilityTestClass.NullableGenericProperty), true)]
+	[Arguments(nameof(NullabilityTestClass.NonNullableGenericProperty), false)]
+	[Arguments(nameof(NullabilityTestClass.NullableWriteOnlyProperty), true)]
 	public async Task IsNullable_ShouldEvaluatePropertyNullability(string propertyName, bool expectNullable)
 	{
 		PropertyInfo propertyInfo = typeof(NullabilityTestClass).GetProperty(propertyName)!;
@@ -84,10 +84,10 @@ public sealed class NullabilityHelpersTests
 		await That(propertyInfo.IsNullable()).IsEqualTo(expectNullable);
 	}
 
-	[Theory]
-	[InlineData(nameof(MostlyNullableTestClass.NonNullableField), false)]
-	[InlineData(nameof(MostlyNullableTestClass.NonNullableProperty), false)]
-	[InlineData(nameof(MostlyNullableTestClass.FirstNullableField), true)]
+	[Test]
+	[Arguments(nameof(MostlyNullableTestClass.NonNullableField), false)]
+	[Arguments(nameof(MostlyNullableTestClass.NonNullableProperty), false)]
+	[Arguments(nameof(MostlyNullableTestClass.FirstNullableField), true)]
 	public async Task IsNullable_WhenMemberDiffersFromContextOfDeclaringType_ShouldEvaluateNullability(
 		string memberName, bool expectNullable)
 	{
@@ -100,7 +100,7 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsEqualTo(expectNullable);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullable_WhenEventIsOblivious_ShouldReturnFalse()
 	{
 		EventInfo eventInfo = typeof(ObliviousTestClass).GetEvent(nameof(ObliviousTestClass.ObliviousEvent))!;
@@ -108,9 +108,9 @@ public sealed class NullabilityHelpersTests
 		await That(eventInfo.IsNullable()).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(ObliviousTestClass.ObliviousField))]
-	[InlineData(nameof(ObliviousTestClass.ObliviousProperty))]
+	[Test]
+	[Arguments(nameof(ObliviousTestClass.ObliviousField))]
+	[Arguments(nameof(ObliviousTestClass.ObliviousProperty))]
 	public async Task IsNullable_WhenMemberIsOblivious_ShouldReturnFalse(string memberName)
 	{
 		MemberInfo memberInfo = typeof(ObliviousTestClass).GetMember(memberName).Single();
@@ -122,9 +122,9 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(ObliviousTestClass.NestedObliviousTestClass.NestedObliviousField))]
-	[InlineData(nameof(ObliviousTestClass.NestedObliviousTestClass.NestedObliviousProperty))]
+	[Test]
+	[Arguments(nameof(ObliviousTestClass.NestedObliviousTestClass.NestedObliviousField))]
+	[Arguments(nameof(ObliviousTestClass.NestedObliviousTestClass.NestedObliviousProperty))]
 	public async Task IsNullable_WhenMemberIsObliviousInNestedClass_ShouldReturnFalse(string memberName)
 	{
 		MemberInfo memberInfo = typeof(ObliviousTestClass.NestedObliviousTestClass).GetMember(memberName).Single();
@@ -136,10 +136,10 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(AllNullableTestClass.FirstNullableField))]
-	[InlineData(nameof(AllNullableTestClass.SecondNullableField))]
-	[InlineData(nameof(AllNullableTestClass.FirstNullableProperty))]
+	[Test]
+	[Arguments(nameof(AllNullableTestClass.FirstNullableField))]
+	[Arguments(nameof(AllNullableTestClass.SecondNullableField))]
+	[Arguments(nameof(AllNullableTestClass.FirstNullableProperty))]
 	public async Task IsNullable_WhenNullabilityIsStoredInContextOfDeclaringType_ShouldReturnTrue(string memberName)
 	{
 		MemberInfo memberInfo = typeof(AllNullableTestClass).GetMember(memberName).Single();
@@ -151,11 +151,11 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Theory]
-	[InlineData(nameof(NullabilityEdgeCaseTestClass.NullableArrayField), true)]
-	[InlineData(nameof(NullabilityEdgeCaseTestClass.ArrayOfNullableField), false)]
-	[InlineData(nameof(NullabilityEdgeCaseTestClass.NullableArrayProperty), true)]
-	[InlineData(nameof(NullabilityEdgeCaseTestClass.ArrayOfNullableProperty), false)]
+	[Test]
+	[Arguments(nameof(NullabilityEdgeCaseTestClass.NullableArrayField), true)]
+	[Arguments(nameof(NullabilityEdgeCaseTestClass.ArrayOfNullableField), false)]
+	[Arguments(nameof(NullabilityEdgeCaseTestClass.NullableArrayProperty), true)]
+	[Arguments(nameof(NullabilityEdgeCaseTestClass.ArrayOfNullableProperty), false)]
 	public async Task IsNullable_WithArrayMembers_ShouldOnlyConsiderTheTopLevelAnnotation(
 		string memberName, bool expectNullable)
 	{
@@ -168,9 +168,9 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsEqualTo(expectNullable);
 	}
 
-	[Theory]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedField))]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedProperty))]
+	[Test]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedField))]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedProperty))]
 	public async Task IsNullable_WithGenericParameterMembers_WhenAccessedViaConstructedType_ShouldReturnFalse(
 		string memberName)
 	{
@@ -185,11 +185,11 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedField), false)]
-	[InlineData(nameof(GenericTestClass<object>.AnnotatedField), true)]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedProperty), false)]
-	[InlineData(nameof(GenericTestClass<object>.AnnotatedProperty), true)]
+	[Test]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedField), false)]
+	[Arguments(nameof(GenericTestClass<object>.AnnotatedField), true)]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedProperty), false)]
+	[Arguments(nameof(GenericTestClass<object>.AnnotatedProperty), true)]
 	public async Task IsNullable_WithGenericParameterMembers_WhenDerivedTypeUsesNonNullableArgument_ShouldEvaluateAnnotation(
 		string memberName, bool expectNullable)
 	{
@@ -203,11 +203,11 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsEqualTo(expectNullable);
 	}
 
-	[Theory]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedField))]
-	[InlineData(nameof(GenericTestClass<object>.AnnotatedField))]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedProperty))]
-	[InlineData(nameof(GenericTestClass<object>.AnnotatedProperty))]
+	[Test]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedField))]
+	[Arguments(nameof(GenericTestClass<object>.AnnotatedField))]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedProperty))]
+	[Arguments(nameof(GenericTestClass<object>.AnnotatedProperty))]
 	public async Task IsNullable_WithGenericParameterMembers_WhenDerivedTypeUsesNullableArgument_ShouldReturnTrue(
 		string memberName)
 	{
@@ -220,11 +220,11 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Theory]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedField), false)]
-	[InlineData(nameof(GenericTestClass<object>.AnnotatedField), true)]
-	[InlineData(nameof(GenericTestClass<object>.UnannotatedProperty), false)]
-	[InlineData(nameof(GenericTestClass<object>.AnnotatedProperty), true)]
+	[Test]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedField), false)]
+	[Arguments(nameof(GenericTestClass<object>.AnnotatedField), true)]
+	[Arguments(nameof(GenericTestClass<object>.UnannotatedProperty), false)]
+	[Arguments(nameof(GenericTestClass<object>.AnnotatedProperty), true)]
 	public async Task IsNullable_WithGenericTypeParameterMembers_ShouldOnlyConsiderTheAnnotation(
 		string memberName, bool expectNullable)
 	{
@@ -237,7 +237,7 @@ public sealed class NullabilityHelpersTests
 		await That(result).IsEqualTo(expectNullable);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullable_WithNullableIndexer_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo = typeof(NullabilityEdgeCaseTestClass).GetProperty("Item")!;
@@ -245,7 +245,7 @@ public sealed class NullabilityHelpersTests
 		await That(propertyInfo.IsNullable()).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullable_WithNonNullableEventInConstructedGenericType_ShouldReturnFalse()
 	{
 		// Events cannot be declared as a bare generic type parameter, so resolving the member type
@@ -256,7 +256,7 @@ public sealed class NullabilityHelpersTests
 		await That(eventInfo.IsNullable()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullable_WithNullEventInfo_ShouldReturnFalse()
 	{
 		EventInfo? eventInfo = null;
@@ -264,7 +264,7 @@ public sealed class NullabilityHelpersTests
 		await That(eventInfo.IsNullable()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullable_WithNullFieldInfo_ShouldReturnFalse()
 	{
 		FieldInfo? fieldInfo = null;
@@ -272,7 +272,7 @@ public sealed class NullabilityHelpersTests
 		await That(fieldInfo.IsNullable()).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsNullable_WithNullPropertyInfo_ShouldReturnFalse()
 	{
 		PropertyInfo? propertyInfo = null;
@@ -280,9 +280,9 @@ public sealed class NullabilityHelpersTests
 		await That(propertyInfo.IsNullable()).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(NullabilityEdgeCaseTestClass.AllowNullProperty))]
-	[InlineData(nameof(NullabilityEdgeCaseTestClass.MaybeNullProperty))]
+	[Test]
+	[Arguments(nameof(NullabilityEdgeCaseTestClass.AllowNullProperty))]
+	[Arguments(nameof(NullabilityEdgeCaseTestClass.MaybeNullProperty))]
 	public async Task IsNullable_WithPostConditionAttributes_ShouldIgnoreThemAndReturnFalse(string propertyName)
 	{
 		PropertyInfo propertyInfo = typeof(NullabilityEdgeCaseTestClass).GetProperty(propertyName)!;

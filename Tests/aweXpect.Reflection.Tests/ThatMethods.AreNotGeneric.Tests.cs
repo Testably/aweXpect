@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllMethodsAreNotGeneric_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -27,7 +26,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsGeneric_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -40,7 +39,7 @@ public sealed partial class ThatMethods
 					await That(subject).AreNotGeneric();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are all not generic,
@@ -56,7 +55,7 @@ public sealed partial class ThatMethods
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyGenericMethods_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("GenericMethod");
@@ -79,7 +78,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonGenericMethods_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("NonGenericMethod");
@@ -95,7 +94,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyGenericMethods_ShouldSucceed()
 			{
 				Filtered.Methods subject = GetMethods("GenericMethod");
@@ -108,7 +107,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonGenericMethods_ShouldFail()
 			{
 				Filtered.Methods subject = GetMethods("NonGenericMethod");

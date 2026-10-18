@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesImplementInterface_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
@@ -20,7 +19,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotImplement<ITestInterface>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.ClassWithInterface2]
 					             all do not implement ThatTypes.ITestInterface,
@@ -34,7 +33,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesDoNotImplementInterface_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -50,7 +49,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeImplementsInterface_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(BaseClass));
@@ -63,7 +62,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedFromClassWithInterface1));
@@ -79,7 +78,7 @@ public sealed partial class ThatTypes
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -98,7 +97,7 @@ public sealed partial class ThatTypes
 						"The type to check implementation of must be an interface, but it was ThatTypes.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeImplementsInterface_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -118,7 +117,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeImplements_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
@@ -128,7 +127,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.DoNotImplement<ITestInterface>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
 					             at least one implements ThatTypes.ITestInterface,

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedValueIsOnlySubstring_ShouldFail()
 			{
 				FieldInfo? subject =
@@ -20,7 +19,7 @@ public sealed partial class ThatField
 					await That(subject).HasName("Field");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Field",
@@ -32,7 +31,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoHasExpectedPrefix_ShouldSucceed()
 			{
 				FieldInfo? subject =
@@ -46,7 +45,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoHasMatchingName_ShouldSucceed()
 			{
 				FieldInfo? subject =
@@ -60,7 +59,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -78,7 +77,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoMatchesIgnoringCase_ShouldSucceed()
 			{
 				FieldInfo? subject =
@@ -95,7 +94,7 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoDoesNotHaveName_ShouldSucceed()
 			{
 				FieldInfo? subject =
@@ -109,7 +108,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoHasName_ShouldFail()
 			{
 				FieldInfo? subject =
@@ -120,7 +119,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.HasName("PublicField"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicField",

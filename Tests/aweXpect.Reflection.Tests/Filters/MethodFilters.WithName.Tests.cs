@@ -9,7 +9,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithName()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -21,7 +21,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -33,7 +33,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -45,7 +45,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -56,7 +56,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods with name ending with \"MethodToVerifyTheNameOfIt\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -67,7 +67,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods with name matching \"*MethodToVerifyTheNameOf*\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -81,7 +81,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -96,7 +96,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()
@@ -111,7 +111,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportUsingCustomComparer()
 			{
 				Filtered.Methods methods = In.Type<SomeClassToVerifyTheMethodNameOfIt>()

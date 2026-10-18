@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonClassTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreClasses>().Types();
@@ -33,7 +32,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyClasses_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreClasses>().Types()
@@ -50,7 +49,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonClassTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreClasses>().Types();
@@ -63,7 +62,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyClasses_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreClasses>().Types()
@@ -74,7 +73,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreClasses());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsClass && !type.IsRecordClass() in assembly containing type ThatTypes.AreClasses
 					             are not all classes,

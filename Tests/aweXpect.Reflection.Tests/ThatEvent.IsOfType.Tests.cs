@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatEvent
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventHandlerInheritsFromExpectedType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -24,7 +23,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -42,7 +41,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfDifferentType_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -52,7 +51,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfType<CustomHandler>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatEvent.IsOfType.CustomHandler,
@@ -60,7 +59,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfExpectedType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -76,7 +75,7 @@ public sealed partial class ThatEvent
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNoneOfTheTypes_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -86,7 +85,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfType<CustomHandler>().OrOfExactType<Action>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatEvent.IsOfType.CustomHandler or of exact type Action,
@@ -94,7 +93,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOneOfTheTypes_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -110,7 +109,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfDifferentType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -123,7 +122,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfExpectedType_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -133,7 +132,7 @@ public sealed partial class ThatEvent
 					await That(subject).DoesNotComplyWith(it => it.IsOfType<EventHandler>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type EventHandler,
@@ -152,7 +151,7 @@ public sealed partial class ThatEvent
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfDifferentType_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -162,7 +161,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfType(typeof(CustomHandler));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatEvent.IsOfType.CustomHandler,
@@ -170,7 +169,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsOfExpectedType_ShouldSucceed()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -186,7 +185,7 @@ public sealed partial class ThatEvent
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNoneOfTheTypes_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
@@ -196,7 +195,7 @@ public sealed partial class ThatEvent
 					await That(subject).IsOfType<CustomHandler>().OrOfType<Action>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatEvent.IsOfType.CustomHandler or of type Action,
@@ -204,7 +203,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrOfType_ShouldSupportChaining()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;

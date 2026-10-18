@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsInternal_ShouldSucceed()
 			{
 				MethodInfo? subject = GetMethod("InternalMethod");
@@ -22,10 +21,10 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ProtectedMethod", "protected")]
-			[InlineData("PublicMethod", "public")]
-			[InlineData("PrivateMethod", "private")]
+			[Test]
+			[Arguments("ProtectedMethod", "protected")]
+			[Arguments("PublicMethod", "public")]
+			[Arguments("PrivateMethod", "private")]
 			public async Task WhenMethodInfoIsNotInternal_ShouldFail(string methodName, string expectedAccessModifier)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -35,7 +34,7 @@ public sealed partial class ThatMethod
 					await That(subject).IsInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is internal,
@@ -43,7 +42,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -64,7 +63,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsInternal_ShouldFail()
 			{
 				MethodInfo? subject = GetMethod("InternalMethod");
@@ -74,7 +73,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not internal,
@@ -82,10 +81,10 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
+			[Test]
+			[Arguments("ProtectedMethod")]
+			[Arguments("PublicMethod")]
+			[Arguments("PrivateMethod")]
 			public async Task WhenMethodInfoIsNotInternal_ShouldSucceed(string methodName)
 			{
 				MethodInfo? subject = GetMethod(methodName);

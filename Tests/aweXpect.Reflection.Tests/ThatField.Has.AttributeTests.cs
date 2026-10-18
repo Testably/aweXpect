@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatField
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldDoesNotHaveAttribute_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("NoAttributeField")!;
@@ -19,7 +18,7 @@ public sealed partial class ThatField
 					await That(subject).Has<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatField.Has.AttributeTests.TestAttribute,
@@ -27,7 +26,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldHasAttribute_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("TestField")!;
@@ -40,7 +39,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldHasMatchingAttribute_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
@@ -53,7 +52,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldHasNotMatchingAttribute_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
@@ -63,7 +62,7 @@ public sealed partial class ThatField
 					await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatField.Has.AttributeTests.TestAttribute matching attr => attr.Value == 99,
@@ -71,7 +70,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -109,7 +108,7 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldDoesNotHaveAttribute_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("NoAttributeField")!;
@@ -122,7 +121,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
@@ -135,7 +134,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenFieldHasAttribute_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField("TestField")!;
@@ -145,7 +144,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatField.Has.NegatedTests.TestAttribute,

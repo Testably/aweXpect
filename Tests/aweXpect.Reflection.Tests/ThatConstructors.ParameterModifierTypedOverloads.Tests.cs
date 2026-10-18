@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -14,7 +13,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterOfType_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -30,7 +29,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterOfType_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -46,7 +45,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterOfType_WhenNotAllMatch_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -59,10 +58,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveRefParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterOfTypeAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

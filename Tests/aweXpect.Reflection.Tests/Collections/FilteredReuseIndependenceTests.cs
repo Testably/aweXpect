@@ -15,7 +15,7 @@ namespace aweXpect.Reflection.Tests;
 /// </summary>
 public sealed class FilteredReuseIndependenceTests
 {
-	[Fact]
+	[Test]
 	public async Task Assemblies_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		Assembly assembly1 = typeof(In).Assembly;
@@ -30,7 +30,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).IsEqualTo([assembly1, assembly2,]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Constructors_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		Filtered.Constructors @base = In.Type<SampleWithMembers>().Constructors();
@@ -45,7 +45,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Events_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		EventInfo eventA = typeof(SampleWithMembers).GetEvent(nameof(SampleWithMembers.EventA))!;
@@ -60,7 +60,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Fields_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		FieldInfo fieldA = typeof(SampleWithMembers).GetField(nameof(SampleWithMembers.FieldA))!;
@@ -75,7 +75,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		MethodInfo methodA = typeof(SampleWithMembers).GetMethod(nameof(SampleWithMembers.DoA))!;
@@ -91,7 +91,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).IsEqualTo([methodA, methodB,]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task MethodsWhichAreGenericWithArgument_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		MethodFilters.GenericMethods @base = In.Type<SampleGenericArgumentMethods>().Methods()
@@ -109,7 +109,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).HasCount(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MethodsWhichAreGenericWithArgumentCount_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		MethodFilters.GenericMethods @base = In.Type<SampleGenericMethods>().Methods()
@@ -126,7 +126,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).HasCount(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Properties_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		PropertyInfo propertyA = typeof(SampleWithMembers).GetProperty(nameof(SampleWithMembers.PropA))!;
@@ -141,7 +141,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).HasCount().GreaterThanOrEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		Filtered.Types @base = In.Types<SampleType1, SampleType2>();
@@ -154,7 +154,7 @@ public sealed class FilteredReuseIndependenceTests
 		await That(@base).IsEqualTo([typeof(SampleType1), typeof(SampleType2),]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypesWhichAreGenericWithArgumentCount_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		TypeFilters.GenericTypes @base = In.Types<SampleGenericType1<int>, SampleGenericType2<int, int>>()
@@ -170,7 +170,7 @@ public sealed class FilteredReuseIndependenceTests
 		]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypesWhichDependOn_WidenedWithOrOn_ShouldNotAffectBranchedView()
 	{
 		const string layer1 = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1";

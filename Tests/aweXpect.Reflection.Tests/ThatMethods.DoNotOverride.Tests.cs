@@ -13,7 +13,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonOverridingMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -27,7 +27,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainOverridingMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(ClassWithSealedMembers)
@@ -54,7 +54,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonOverridingMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(AbstractClassWithMembers)
@@ -78,7 +78,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainOverridingMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(ClassWithSealedMembers)
@@ -96,7 +96,7 @@ public sealed partial class ThatMethods
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonOverridingMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(AbstractClassWithMembers)
@@ -111,7 +111,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainOverridingMethods_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithSealedMembers)

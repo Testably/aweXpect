@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForRequiredProperties()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<SomeClassToVerifyThePropertyNameOfIt>()

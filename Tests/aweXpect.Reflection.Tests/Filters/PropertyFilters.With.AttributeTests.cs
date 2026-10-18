@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -10,7 +10,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWithAttribute()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -25,7 +25,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -38,8 +38,8 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForPropertiesWithAttributeMatchingPredicate(int value,
 				PropertyInfo?[] expectedProperties)
 			{
@@ -53,7 +53,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -67,7 +67,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>().Properties()
@@ -78,7 +78,7 @@ public sealed partial class PropertyFilters
 					await That(properties).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that properties with PropertyFilters.With.FooAttribute matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,
@@ -88,24 +88,22 @@ public sealed partial class PropertyFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			public static TheoryData<int, PropertyInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, PropertyInfo?[])>> GetFooValues()
+				=> new List<Func<(int, PropertyInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty2)),
 							typeof(DummyChild).GetProperty(nameof(DummyChild.MyFooProperty2)),
 						]
-					},
-					{
-						3, [typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty3)),]
-					},
+					),
+					() => (3, [typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty3)),]),
 				};
 		}
 
 		public sealed class OrWithAttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForPropertiesWithAttribute()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -124,7 +122,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -142,8 +140,8 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Theory]
-			[MemberData(nameof(GetFooValues))]
+			[Test]
+			[MethodDataSource(nameof(GetFooValues))]
 			public async Task WithPredicate_ShouldFilterForPropertiesWithAttributeMatchingPredicate(int value,
 				PropertyInfo?[] expectedProperties)
 			{
@@ -157,7 +155,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForPropertiesWithAttributeDirectlySet()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
@@ -172,22 +170,22 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			public static TheoryData<int, PropertyInfo?[]> GetFooValues()
-				=> new()
+			public static IEnumerable<Func<(int, PropertyInfo?[])>> GetFooValues()
+				=> new List<Func<(int, PropertyInfo?[])>>
 				{
-					{
+					() => (
 						2, [
 							typeof(Dummy).GetProperty(nameof(Dummy.MyBarProperty)),
 							typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty2)),
 							typeof(DummyChild).GetProperty(nameof(DummyChild.MyFooProperty2)),
 						]
-					},
-					{
+					),
+					() => (
 						3, [
 							typeof(Dummy).GetProperty(nameof(Dummy.MyBarProperty)),
 							typeof(Dummy).GetProperty(nameof(Dummy.MyFooProperty3)),
 						]
-					},
+					),
 				};
 		}
 

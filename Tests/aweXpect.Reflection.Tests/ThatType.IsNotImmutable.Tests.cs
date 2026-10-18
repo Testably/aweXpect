@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsImmutable_ShouldFail()
 			{
 				Type subject = typeof(ImmutableClass);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(MutableTypes))]
+			[Test]
+			[MethodDataSource(nameof(MutableTypes))]
 			public async Task WhenTypeIsMutable_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,7 +57,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> MutableTypes() => new()
+			public static IEnumerable<Type> MutableTypes() => new List<Type>
 			{
 				typeof(ClassWithMutableField),
 				typeof(ClassWithSettableProperty),
@@ -77,7 +77,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsImmutable_ShouldSucceed()
 			{
 				Type subject = typeof(ImmutableClass);
@@ -90,7 +90,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsMutable_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMutableField);
@@ -100,7 +100,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotImmutable());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,

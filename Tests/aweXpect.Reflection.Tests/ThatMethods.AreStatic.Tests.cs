@@ -13,7 +13,7 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(TestClassWithStaticMembers)
@@ -27,7 +27,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonStaticMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(TestClassWithStaticMembers)
@@ -55,7 +55,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticMethods_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = typeof(TestClassWithStaticMembers)
@@ -79,7 +79,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonStaticMethods_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> subject = typeof(TestClassWithStaticMembers)
@@ -98,7 +98,7 @@ public sealed partial class ThatMethods
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticMethods_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -123,7 +123,7 @@ public sealed partial class ThatMethods
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -138,7 +138,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodsContainNonStaticMethods_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)

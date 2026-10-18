@@ -13,7 +13,7 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllFieldsAreNullable_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject = typeof(ClassWithNullableMembers)
@@ -27,7 +27,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainNonNullableFields_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = typeof(ClassWithMixedNullableMembers)
@@ -54,7 +54,7 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllFieldsAreNullable_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = typeof(ClassWithNullableMembers)
@@ -78,7 +78,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainNonNullableFields_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo> subject = typeof(ClassWithMixedNullableMembers)
@@ -96,7 +96,7 @@ public sealed partial class ThatFields
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllFieldsAreNullable_ShouldSucceed()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = typeof(ClassWithNullableMembers)
@@ -111,7 +111,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldsContainNonNullableFields_ShouldFail()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = typeof(ClassWithMixedNullableMembers)

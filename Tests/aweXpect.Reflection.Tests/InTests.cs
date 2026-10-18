@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 // ReSharper disable PossibleMultipleEnumeration
 public sealed class InTests
 {
-	[Fact]
+	[Test]
 	public async Task AllLoadedAssemblies_ShouldContainMultipleAssemblies()
 	{
 		Filtered.Assemblies sut = In.AllLoadedAssemblies();
@@ -18,7 +18,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo("in all loaded assemblies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AllLoadedAssemblies_WithPredicate_ShouldApplyPredicate()
 	{
 		Filtered.Assemblies sut = In.AllLoadedAssemblies()
@@ -29,7 +29,7 @@ public sealed class InTests
 			.IsEqualTo("in all loaded assemblies matching assembly => assembly.FullName!.StartsWith(\"aweXpect.\")");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Assemblies_WithArray_ShouldContainProvidedAssemblies()
 	{
 		Assembly[] assemblies = [typeof(In).Assembly, typeof(InTests).Assembly,];
@@ -41,7 +41,7 @@ public sealed class InTests
 			.IsEqualTo("in the assemblies [aweXpect.Reflection*, aweXpect.Reflection.Tests*]").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Assemblies_WithEnumerable_ShouldContainProvidedAssemblies()
 	{
 		IEnumerable<Assembly> assemblies = [typeof(In).Assembly, typeof(InTests).Assembly,];
@@ -53,7 +53,7 @@ public sealed class InTests
 			.IsEqualTo("in the assemblies [aweXpect.Reflection*, aweXpect.Reflection.Tests*]").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AssemblyContaining_WithGeneric_ShouldContainAssemblyOfProvidedType()
 	{
 		Filtered.Assemblies sut = In.AssemblyContaining<InTests>();
@@ -63,7 +63,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo("in assembly containing type InTests");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AssemblyContaining_WithType_ShouldContainAssemblyOfProvidedType()
 	{
 		Filtered.Assemblies sut = In.AssemblyContaining(typeof(In));
@@ -73,7 +73,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo("in assembly containing type In");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Constructors_WithEnumerable_ShouldContainProvidedConstructors()
 	{
 		IEnumerable<ConstructorInfo> constructors = typeof(ClassWithMembers).GetConstructors();
@@ -84,7 +84,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo("in the constructors ").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Events_WithEnumerable_ShouldContainProvidedEvents()
 	{
 		IEnumerable<EventInfo> events = typeof(BaseClassWithMembers).GetEvents();
@@ -95,7 +95,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo("in the events ").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Fields_ShouldExcludeCompilerGeneratedBackingFields()
 	{
 		Filtered.Fields fields = In.Type<ClassWithMembers>().Fields();
@@ -103,7 +103,7 @@ public sealed class InTests
 		await That(fields).All().Satisfy(field => !field.Name.EndsWith("__BackingField")).And.IsNotEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Fields_WithSingleField_ShouldContainProvidedField()
 	{
 		FieldInfo field = typeof(ClassWithMembers).GetField(nameof(ClassWithMembers.Field))!;
@@ -113,7 +113,7 @@ public sealed class InTests
 		await That(sut).HasSingle().Which.IsEqualTo(field);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_ShouldExcludeCompilerGeneratedAccessors()
 	{
 		Filtered.Methods methods = In.Type<ClassWithMembers>().Methods();
@@ -121,7 +121,7 @@ public sealed class InTests
 		await That(methods).All().Satisfy(method => !method.IsSpecialName).And.IsNotEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Methods_WithSingleMethod_ShouldContainProvidedMethod()
 	{
 		MethodInfo method = typeof(ClassWithMembers).GetMethod(nameof(ClassWithMembers.Method))!;
@@ -131,7 +131,7 @@ public sealed class InTests
 		await That(sut).HasSingle().Which.IsEqualTo(method);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Properties_ShouldComposeWithFilter()
 	{
 		IEnumerable<PropertyInfo> properties = typeof(ClassWithMembers).GetProperties();
@@ -141,7 +141,7 @@ public sealed class InTests
 		await That(sut).All().Satisfy(property => property.CanWrite).And.IsNotEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Properties_WithEnumerable_ShouldContainProvidedProperties()
 	{
 		IEnumerable<PropertyInfo> properties = typeof(ClassWithMembers).GetProperties();
@@ -152,7 +152,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo("in the properties ").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Type_WithGenericParameter_ShouldIncludeSpecifiedType()
 	{
 		Filtered.Types sut = In.Type<InTests>();
@@ -162,7 +162,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Type_WithTypeParameter_ShouldIncludeSpecifiedType()
 	{
 		Filtered.Types sut = In.Type(typeof(InTests));
@@ -172,7 +172,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WhenGetTypesThrowsReflectionTypeLoadException_ShouldUseTypesThatLoaded()
 	{
 		Type?[] loadableTypes = [typeof(PublicClass), null, typeof(InternalClass),];
@@ -183,7 +183,7 @@ public sealed class InTests
 		await That(sut).IsEqualTo([typeof(PublicClass), typeof(InternalClass),]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WithEnumerable_ShouldIncludeSpecifiedTypes()
 	{
 		IEnumerable<Type> types = [typeof(InTests), typeof(InternalClass),];
@@ -193,7 +193,7 @@ public sealed class InTests
 		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WithThreeGenericParameters_ShouldIncludeSpecifiedTypes()
 	{
 		Filtered.Types sut = In.Types<InTests, InternalClass, PublicClass>();
@@ -203,7 +203,7 @@ public sealed class InTests
 			.IsEqualTo($"in types {nameof(InTests)}, {nameof(InternalClass)} and {nameof(PublicClass)}");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WithTwoGenericParameters_ShouldIncludeSpecifiedTypes()
 	{
 		Filtered.Types sut = In.Types<InTests, InternalClass>();
@@ -212,7 +212,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo($"in types {nameof(InTests)} and {nameof(InternalClass)}");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Types_WithTypeParameters_ShouldIncludeSpecifiedTypes()
 	{
 		Filtered.Types sut = In.Types(typeof(InTests), typeof(InternalClass), typeof(PublicClass),

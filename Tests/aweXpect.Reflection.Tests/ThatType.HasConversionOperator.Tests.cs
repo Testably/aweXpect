@@ -10,7 +10,7 @@ public sealed partial class ThatType
 	{
 		public sealed class ImplicitTests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotHave_WhenAbsent_Generic_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -23,7 +23,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotHave_WhenAbsent_WithTypes_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -36,7 +36,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotHave_WhenPresent_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -54,7 +54,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheConversion_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -72,7 +72,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheConversion_Generic_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -85,7 +85,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheConversion_WithTypes_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -98,7 +98,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -119,7 +119,7 @@ public sealed partial class ThatType
 
 		public sealed class ExplicitTests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotHave_WhenAbsent_Generic_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -132,7 +132,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotHave_WhenAbsent_WithTypes_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -145,7 +145,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotHave_WhenPresent_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -163,7 +163,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotHaveTheConversion_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -181,7 +181,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheConversion_Generic_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -194,7 +194,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheConversion_WithTypes_ShouldSucceed()
 			{
 				Type subject = typeof(Money);
@@ -210,7 +210,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheExplicitConversion_ShouldFail()
 			{
 				Type subject = typeof(Money);
@@ -229,7 +229,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasTheImplicitConversion_ShouldFail()
 			{
 				Type subject = typeof(Money);

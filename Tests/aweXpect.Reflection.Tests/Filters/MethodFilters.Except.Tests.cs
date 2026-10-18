@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutMethodsThatSatisfyThePredicate()
 			{
 				Filtered.Methods methods = In.Type<ConcreteMethodClass>()
@@ -20,7 +19,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods except method => method.Name == \"ConcreteMethod\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>().Methods()
@@ -31,7 +30,7 @@ public sealed partial class MethodFilters
 					await That(methods).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods except _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,

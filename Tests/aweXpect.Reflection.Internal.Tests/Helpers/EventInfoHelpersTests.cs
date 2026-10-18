@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class EventInfoHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
@@ -17,7 +17,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
@@ -27,7 +27,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
 	{
 		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
@@ -39,7 +39,7 @@ public sealed class EventInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		EventInfo eventInfo =
@@ -50,7 +50,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
 		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event2WithoutAttribute))!;
@@ -60,7 +60,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
@@ -72,7 +72,7 @@ public sealed class EventInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsOverride_WhenAddMethodIsNull_ShouldReturnFalse()
 	{
 		EventInfo eventInfo = new EventInfoWithoutAddMethod();
@@ -82,7 +82,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsOverride_WhenEventInfoIsNull_ShouldReturnFalse()
 	{
 		EventInfo? eventInfo = null;
@@ -92,10 +92,10 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(DerivedEventClass.AbstractEvent), true)]
-	[InlineData(nameof(DerivedEventClass.VirtualEvent), true)]
-	[InlineData(nameof(DerivedEventClass.DerivedPlainEvent), false)]
+	[Test]
+	[Arguments(nameof(DerivedEventClass.AbstractEvent), true)]
+	[Arguments(nameof(DerivedEventClass.VirtualEvent), true)]
+	[Arguments(nameof(DerivedEventClass.DerivedPlainEvent), false)]
 	public async Task IsOverride_WhenEventIsDeclaredOnDerivedClass_ShouldReturnExpectedResult(
 		string eventName, bool expectedResult)
 	{
@@ -106,9 +106,9 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsEqualTo(expectedResult);
 	}
 
-	[Theory]
-	[InlineData(nameof(BaseEventClass.AbstractEvent))]
-	[InlineData(nameof(BaseEventClass.VirtualEvent))]
+	[Test]
+	[Arguments(nameof(BaseEventClass.AbstractEvent))]
+	[Arguments(nameof(BaseEventClass.VirtualEvent))]
 	public async Task IsOverride_WhenEventIsDeclaredOnBaseClass_ShouldReturnFalse(string eventName)
 	{
 		EventInfo eventInfo = typeof(BaseEventClass).GetEvent(eventName)!;
@@ -118,7 +118,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsReallyVirtual_WhenAddMethodIsNull_ShouldReturnFalse()
 	{
 		EventInfo eventInfo = new EventInfoWithoutAddMethod();
@@ -128,7 +128,7 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsReallyVirtual_WhenEventInfoIsNull_ShouldReturnFalse()
 	{
 		EventInfo? eventInfo = null;
@@ -138,11 +138,11 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(nameof(BaseEventClass.AbstractEvent), true)]
-	[InlineData(nameof(BaseEventClass.VirtualEvent), true)]
-	[InlineData(nameof(BaseEventClass.PlainEvent), false)]
-	[InlineData(nameof(BaseEventClass.StaticEvent), false)]
+	[Test]
+	[Arguments(nameof(BaseEventClass.AbstractEvent), true)]
+	[Arguments(nameof(BaseEventClass.VirtualEvent), true)]
+	[Arguments(nameof(BaseEventClass.PlainEvent), false)]
+	[Arguments(nameof(BaseEventClass.StaticEvent), false)]
 	public async Task IsReallyVirtual_WhenEventIsDeclaredOnBaseClass_ShouldReturnExpectedResult(
 		string eventName, bool expectedResult)
 	{
@@ -153,9 +153,9 @@ public sealed class EventInfoHelpersTests
 		await That(result).IsEqualTo(expectedResult);
 	}
 
-	[Theory]
-	[InlineData(nameof(DerivedEventClass.AbstractEvent))]
-	[InlineData(nameof(DerivedEventClass.VirtualEvent))]
+	[Test]
+	[Arguments(nameof(DerivedEventClass.AbstractEvent))]
+	[Arguments(nameof(DerivedEventClass.VirtualEvent))]
 	public async Task IsReallyVirtual_WhenEventIsDeclaredOnDerivedClass_ShouldReturnTrue(string eventName)
 	{
 		EventInfo eventInfo = typeof(DerivedEventClass).GetEvent(eventName)!;

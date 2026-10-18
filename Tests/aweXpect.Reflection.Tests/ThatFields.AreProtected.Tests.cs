@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("InternalField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("InternalField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotProtected_ShouldFail(string fieldName)
 			{
 				Filtered.Fields subject = GetFields(fieldName);
@@ -22,7 +21,7 @@ public sealed partial class ThatFields
 					await That(subject).AreProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are protected,
@@ -35,7 +34,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsProtected_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetFields("ProtectedField");
@@ -51,10 +50,10 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("InternalField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
+			[Test]
+			[Arguments("InternalField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
 			public async Task WhenFieldInfoIsNotProtected_ShouldSucceed(string fieldName)
 			{
 				Filtered.Fields subject = GetFields(fieldName);
@@ -67,7 +66,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsProtected_ShouldFail()
 			{
 				Filtered.Fields subject = GetFields("ProtectedField");
@@ -77,7 +76,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.AreProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             not all are protected,

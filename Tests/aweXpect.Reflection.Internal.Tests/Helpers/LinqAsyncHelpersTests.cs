@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public sealed class LinqAsyncHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task SplitWhereAnyAsync_ShouldSeparateBasedOnGeneratedItems()
 	{
 		int[] source = [1, 2, 3,];
@@ -23,7 +23,7 @@ public sealed class LinqAsyncHelpersTests
 		await That(notMatching).IsEqualTo([1,]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task SplitWhereAnyAsync_WhenGeneratorReturnsNull_ShouldNotMatch()
 	{
 		int[] source = [1, 2,];
@@ -38,7 +38,7 @@ public sealed class LinqAsyncHelpersTests
 		await That(notMatching).IsEqualTo([1,]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task SplitWhereAnyAsync_WhenGeneratorYieldsNoMatch_ShouldNotMatch()
 	{
 		int[] source = [1, 2,];
@@ -53,7 +53,7 @@ public sealed class LinqAsyncHelpersTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task Where_ShouldYieldOnlyMatchingItems()
 	{
 		int[] source = [1, 2, 3, 4,];
@@ -67,7 +67,7 @@ public sealed class LinqAsyncHelpersTests
 		await That(result).IsEqualTo([2, 4,]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhereNotNull_FromEnumerable_ShouldYieldOnlyNonNullItems()
 	{
 		int?[] source = [1, null, 2, null, 3,];
@@ -81,7 +81,7 @@ public sealed class LinqAsyncHelpersTests
 		await That(result).IsEqualTo([1, 2, 3,]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Distinct_ShouldYieldEachItemOnlyOnce()
 	{
 		int[] source = [1, 1, 2, 3, 3, 3,];

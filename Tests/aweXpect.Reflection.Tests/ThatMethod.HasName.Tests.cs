@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedValueIsOnlySubstring_ShouldFail()
 			{
 				MethodInfo? subject =
@@ -20,7 +19,7 @@ public sealed partial class ThatMethod
 					await That(subject).HasName("Method");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Method",
@@ -32,7 +31,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoHasExpectedPrefix_ShouldSucceed()
 			{
 				MethodInfo? subject =
@@ -46,7 +45,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoHasMatchingName_ShouldSucceed()
 			{
 				MethodInfo? subject =
@@ -60,7 +59,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -78,7 +77,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoMatchesIgnoringCase_ShouldSucceed()
 			{
 				MethodInfo? subject =
@@ -95,7 +94,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoDoesNotHaveName_ShouldSucceed()
 			{
 				MethodInfo? subject =
@@ -109,7 +108,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoHasName_ShouldFail()
 			{
 				MethodInfo? subject =
@@ -120,7 +119,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.HasName("PublicMethod"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicMethod",

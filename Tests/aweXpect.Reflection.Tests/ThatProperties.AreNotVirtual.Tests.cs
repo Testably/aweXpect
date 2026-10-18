@@ -13,7 +13,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonVirtualProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(BaseClassWithMembers)
@@ -27,7 +27,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainVirtualProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(AbstractClassWithMembers)
@@ -54,7 +54,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonVirtualProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(BaseClassWithMembers)
@@ -78,7 +78,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainVirtualProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(AbstractClassWithMembers)
@@ -96,7 +96,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyNonVirtualProperties_ShouldSucceed()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = typeof(BaseClassWithMembers)
@@ -111,7 +111,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainVirtualProperties_ShouldFail()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = typeof(AbstractClassWithMembers)

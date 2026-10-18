@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesImplementInterface_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
@@ -23,7 +22,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesImplementInterface_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -39,7 +38,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotImplement_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(UnrelatedClass));
@@ -49,7 +48,7 @@ public sealed partial class ThatTypes
 					await That(subject).Implement<ITestInterface>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.UnrelatedClass]
 					             all implement ThatTypes.ITestInterface,
@@ -62,7 +61,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeImplementsIndirectly_WithForceDirect_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedFromClassWithInterface1));
@@ -72,7 +71,7 @@ public sealed partial class ThatTypes
 					await That(subject).Implement<ITestInterface>(true);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedFromClassWithInterface1]
 					             all directly implement ThatTypes.ITestInterface,
@@ -88,7 +87,7 @@ public sealed partial class ThatTypes
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesImplementInterface_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -105,7 +104,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -127,7 +126,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesImplement_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
@@ -137,7 +136,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.Implement<ITestInterface>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.ClassWithInterface2]
 					             not all implement ThatTypes.ITestInterface,

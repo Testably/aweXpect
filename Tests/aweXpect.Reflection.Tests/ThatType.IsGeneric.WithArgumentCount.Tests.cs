@@ -10,9 +10,9 @@ public sealed partial class ThatType
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task ForTypeWithOneGenericParameter_ShouldSucceedWhenArgumentCountMatches(
 					int argumentCount, bool expectSuccess)
 				{
@@ -32,9 +32,9 @@ public sealed partial class ThatType
 						             """);
 				}
 
-				[Theory]
-				[InlineData(1, false)]
-				[InlineData(2, true)]
+				[Test]
+				[Arguments(1, false)]
+				[Arguments(2, true)]
 				public async Task ForTypeWithTwoGenericParameters_ShouldSucceedWhenArgumentCountMatches(
 					int argumentCount, bool expectSuccess)
 				{
@@ -55,7 +55,7 @@ public sealed partial class ThatType
 				}
 
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsNotGeneric_ShouldFail()
 				{
 					Type subject = typeof(PublicClass);

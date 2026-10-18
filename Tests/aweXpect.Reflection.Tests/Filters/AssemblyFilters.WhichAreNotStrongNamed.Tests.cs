@@ -10,7 +10,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldDescribeTheFilter()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -20,7 +20,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies which are not strong named");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForNotStrongNamedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -29,7 +29,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).All().Satisfy(assembly => !assembly.IsStrongNamed()).And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotMatchStrongNamedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining(typeof(In))

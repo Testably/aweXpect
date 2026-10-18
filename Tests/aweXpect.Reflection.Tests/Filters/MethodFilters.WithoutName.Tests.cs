@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutMethodsWithName()
 			{
 				Filtered.Methods methods = In.Type<ConcreteMethodClass>()
@@ -19,7 +19,7 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods without name equal to \"ConcreteMethod\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Methods methods = In.Type<ConcreteMethodClass>()

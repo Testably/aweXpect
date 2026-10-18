@@ -11,7 +11,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlySealedProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(ClassWithSealedMembers)
@@ -26,7 +26,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonSealedProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(AbstractClassWithMembers)
@@ -53,7 +53,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlySealedProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(ClassWithSealedMembers)
@@ -78,7 +78,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonSealedProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(AbstractClassWithMembers)

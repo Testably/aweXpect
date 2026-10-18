@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class NestedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForStructs()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Structs();
@@ -20,7 +20,7 @@ public sealed partial class Filtered
 						.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -33,7 +33,7 @@ public sealed partial class Filtered
 						}).And.IsNotEmpty();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

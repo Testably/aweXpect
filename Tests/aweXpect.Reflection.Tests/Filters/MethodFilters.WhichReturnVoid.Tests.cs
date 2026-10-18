@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowChainingAlternativeReturnType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -23,7 +23,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWhichReturnVoid()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()

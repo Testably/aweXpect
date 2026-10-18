@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -25,7 +24,7 @@ public sealed partial class ThatMethods
 #endif
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExactType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -41,7 +40,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExactTypeWithName_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -57,7 +56,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExactType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -70,7 +69,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
@@ -83,7 +82,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -96,7 +95,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly<Stream>("other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
@@ -110,7 +109,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithName_WhenSubtypeParameterMatchesName_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -123,7 +122,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly<Stream>("stream");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
@@ -136,7 +135,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenAllHaveExactType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -152,7 +151,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenAllHaveExactTypeWithName_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -168,7 +167,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenExactTypeButNameDoesNotMatch_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -181,7 +180,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly(typeof(Stream), "other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
@@ -195,7 +194,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenNotAllHaveExactType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -208,7 +207,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
@@ -221,7 +220,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenSubtypeParameterMatchesName_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -234,7 +233,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
@@ -248,7 +247,7 @@ public sealed partial class ThatMethods
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveExactType_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -263,7 +262,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveExactTypeWithName_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -278,7 +277,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNotAllHaveExactType_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -290,7 +289,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
@@ -303,7 +302,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithName_WhenSubtypeParameterMatchesName_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -315,7 +314,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly<Stream>("stream");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
@@ -328,7 +327,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -340,7 +339,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly<Stream>("other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
@@ -354,7 +353,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenAllHaveExactType_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -369,7 +368,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenAllHaveExactTypeWithName_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -384,7 +383,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenNotAllHaveExactType_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -396,7 +395,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly(typeof(Stream));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
@@ -409,7 +408,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithTypeAndName_WhenSubtypeParameterMatchesName_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -421,7 +420,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
@@ -434,7 +433,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithTypeAndName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -446,7 +445,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParameterExactly(typeof(Stream), "other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
@@ -464,7 +463,7 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveExactType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -477,7 +476,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameterExactly<Stream>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of exact type Stream,
@@ -491,7 +490,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveExactType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -507,7 +506,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenAllHaveExactType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -520,7 +519,7 @@ public sealed partial class ThatMethods
 					await That(methods).DoesNotComplyWith(they => they.HaveParameterExactly(typeof(Stream)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of exact type Stream,
@@ -534,7 +533,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WhenNotAllHaveExactType_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]

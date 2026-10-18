@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,12 +8,12 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("InternalProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
-			[InlineData("ProtectedInternalProperty")]
-			[InlineData("PrivateProtectedProperty")]
+			[Test]
+			[Arguments("InternalProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
+			[Arguments("ProtectedInternalProperty")]
+			[Arguments("PrivateProtectedProperty")]
 			public async Task WhenPropertyInfoIsNotProtected_ShouldSucceed(string propertyName)
 			{
 				PropertyInfo? subject = GetProperty(propertyName);
@@ -27,7 +26,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsProtected_ShouldFail()
 			{
 				PropertyInfo? subject = GetProperty("ProtectedProperty");
@@ -55,7 +54,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsNotProtected();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not protected,
@@ -66,12 +65,12 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("InternalProperty")]
-			[InlineData("PublicProperty")]
-			[InlineData("PrivateProperty")]
-			[InlineData("ProtectedInternalProperty")]
-			[InlineData("PrivateProtectedProperty")]
+			[Test]
+			[Arguments("InternalProperty")]
+			[Arguments("PublicProperty")]
+			[Arguments("PrivateProperty")]
+			[Arguments("ProtectedInternalProperty")]
+			[Arguments("PrivateProtectedProperty")]
 			public async Task WhenPropertyInfoIsNotProtected_ShouldFail(string propertyName)
 			{
 				PropertyInfo? subject = GetProperty(propertyName);
@@ -81,12 +80,12 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("Expected that subject*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsProtected_ShouldSucceed()
 			{
 				PropertyInfo? subject = GetProperty("ProtectedProperty");

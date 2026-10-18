@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithDifferentName_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -20,7 +19,7 @@ public sealed partial class ThatTypes
 					await That(subject).HaveName("SomeOtherClassName");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name starting with "Some" in assembly containing type ThatTypes.HaveName.Tests
 					             all have name equal to "SomeOtherClassName",
@@ -33,7 +32,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveName_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -47,7 +46,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesMatchIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -61,7 +60,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesMatchPrefix_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -80,7 +79,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypesContainTypeWithDifferentName_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -94,7 +93,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesHaveName_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -105,7 +104,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.HaveName("SomeClassToTestHaveNameForTypes"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types with name equal to "SomeClassToTestHaveNameForType…" in assembly containing type ThatTypes.HaveName.Tests
 					             not all have name equal to "SomeClassToTestHaveNameForType…",

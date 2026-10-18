@@ -14,7 +14,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheExplicitConversion_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -30,7 +30,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheImplicitConversion_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -46,7 +46,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheExplicitConversion_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -72,7 +72,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheImplicitConversion_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -98,7 +98,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeOverloads_ShouldBehaveLikeGeneric()
 			{
 				IEnumerable<Type?> money = new[]
@@ -119,7 +119,7 @@ public sealed partial class ThatTypes
 
 		public sealed class DoNotHaveTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheExplicitConversion_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -135,7 +135,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheImplicitConversion_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -151,7 +151,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheExplicitConversion_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -177,7 +177,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheImplicitConversion_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -206,7 +206,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheConversion_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -233,7 +233,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheConversion_DoNotHave_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -264,7 +264,7 @@ public sealed partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheExplicitConversion_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -280,7 +280,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesHaveTheImplicitConversion_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -296,7 +296,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasTheImplicitConversion_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -312,7 +312,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeDoesNotHaveTheImplicitConversion_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -338,7 +338,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeHasTheExplicitConversion_DoNotHave_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -364,7 +364,7 @@ public sealed partial class ThatTypes
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeOverloads_ShouldBehaveLikeGeneric()
 			{
 				IAsyncEnumerable<Type?> money = new[]

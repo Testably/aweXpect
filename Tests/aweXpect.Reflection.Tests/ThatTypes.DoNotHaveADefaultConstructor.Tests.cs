@@ -12,7 +12,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTypeWithADefaultConstructor_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -38,7 +38,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasADefaultConstructor_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -57,7 +57,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTypeWithADefaultConstructor_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -73,7 +73,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasADefaultConstructor_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -103,7 +103,7 @@ public sealed partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTypeWithADefaultConstructor_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -129,7 +129,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasADefaultConstructor_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -155,7 +155,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeHasADefaultConstructor_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]

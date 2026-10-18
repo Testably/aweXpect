@@ -9,7 +9,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyHasAGetter_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClassWithPropertyAccessors)
@@ -23,7 +23,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyHasNoGetter_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClassWithPropertyAccessors)
@@ -42,7 +42,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -63,7 +63,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyHasAGetter_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClassWithPropertyAccessors)
@@ -82,7 +82,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyHasNoGetter_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClassWithPropertyAccessors)

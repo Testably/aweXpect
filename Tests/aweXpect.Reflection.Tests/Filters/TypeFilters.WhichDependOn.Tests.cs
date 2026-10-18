@@ -12,7 +12,7 @@ public sealed partial class TypeFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesDependingOnNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace).WhichDependOn(Layer1Namespace);
@@ -22,7 +22,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(FrameworkConsumer));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_ShouldNotMatchSubNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -32,7 +32,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ViaSubNamespace));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -45,7 +45,7 @@ public sealed partial class TypeFilters
 					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -57,7 +57,7 @@ public sealed partial class TypeFilters
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task OrOn_ShouldNotAffectOriginalFilter()
 			{
 				Filtered.Types.TypeSetDependencyFilterResult original = Types.InNamespace(ConsumersNamespace)
@@ -67,7 +67,7 @@ public sealed partial class TypeFilters
 				await That(original).DoesNotContain(typeof(ViaField));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldDelimitTargetDescriptionFromSourceSuffix()
 			{
 				// The parentheses keep the target's trailing source scope apart from the subject collection's
@@ -81,7 +81,7 @@ public sealed partial class TypeFilters
 					"in all loaded assemblies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesDependingOnTargetCollection()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -92,7 +92,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(FrameworkConsumer));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)

@@ -9,7 +9,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesWithoutAttribute()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -20,7 +20,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo("in all loaded assemblies without AssemblyTitleAttribute").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsNeverApplied_ShouldKeepAllAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -33,7 +33,7 @@ public sealed partial class AssemblyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldDescribeAsDirect()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()

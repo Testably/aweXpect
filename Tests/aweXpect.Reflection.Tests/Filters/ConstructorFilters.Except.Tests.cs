@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutConstructorsThatSatisfyThePredicate()
 			{
 				Filtered.Constructors constructors = In.Type<ClassWithConstructors>()
@@ -21,7 +20,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>().Constructors()
@@ -32,7 +31,7 @@ public sealed partial class ConstructorFilters
 					await That(constructors).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors except _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,

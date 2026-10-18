@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonAbstractTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types();
@@ -32,7 +31,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAbstractTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types()
@@ -49,7 +48,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonAbstractTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types();
@@ -62,7 +61,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAbstractTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types()
@@ -73,7 +72,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: true, IsSealed: false, IsInterface: false, } in assembly containing type ThatTypes.AreAbstract
 					             are not all abstract,

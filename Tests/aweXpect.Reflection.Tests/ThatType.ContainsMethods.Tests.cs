@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
+using TUnit.Core.Exceptions;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +10,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Exactly_AfterBecause_ShouldApplyBoth()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -21,7 +21,7 @@ public sealed partial class ThatType
 						.Because("we want two of them").Exactly(2);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly twice, because we want two of them,
@@ -30,7 +30,7 @@ public sealed partial class ThatType
 					.Because("Because(…) must return the result, so that the quantifier can still follow it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Exactly_WhenCountDiffers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -48,7 +48,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Exactly_WhenCountMatches_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -61,7 +61,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Never_WhenTypeContainsNoMatchingMethod_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithoutMarkedMethod);
@@ -74,7 +74,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCanceled_ShouldNotBeVerified()
 			{
 				using CancellationTokenSource cts = new();
@@ -87,7 +87,7 @@ public sealed partial class ThatType
 						.WithCancellation(cts.Token);
 				}
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
@@ -96,7 +96,7 @@ public sealed partial class ThatType
 					.Because("the cancellation must reach the counting of the members");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilterIsNull_ShouldThrowArgumentNullException()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -111,7 +111,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'filter' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilterThrows_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -123,7 +123,7 @@ public sealed partial class ThatType
 						=> ++calls > 1 ? throw new InvalidOperationException("boom") : methods.With<MarkerAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least once,
@@ -133,7 +133,7 @@ public sealed partial class ThatType
 					.Because("the filter is first called to describe the members and throws only while the expectation is evaluated");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedMethodMatches_WithDeclaredOnly_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedMethod);
@@ -151,7 +151,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritedMethodMatches_WithIncludingInherited_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedMarkedMethod);
@@ -165,7 +165,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingMethod_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -178,7 +178,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsNoMatchingMethod_ShouldFail()
 			{
 				Type subject = typeof(ClassWithoutMarkedMethod);
@@ -196,7 +196,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -217,7 +217,7 @@ public sealed partial class ThatType
 
 		public sealed class QuantifierTests
 		{
-			[Fact]
+			[Test]
 			public async Task AtLeast_Fluent_WhenCountIsInsufficient_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -236,7 +236,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtLeast_Once_WhenCountIsSufficient_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -250,7 +250,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtLeast_Times_WhenCountIsInsufficient_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -269,7 +269,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtLeast_Times_WhenCountIsSufficient_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -283,7 +283,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtLeast_Twice_WhenCountIsSufficient_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -297,7 +297,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtMost_Times_WhenCountExceedsLimit_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -316,7 +316,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtMost_Times_WhenCountIsWithinLimit_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -330,7 +330,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtMost_Twice_WhenCountIsWithinLimit_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -344,7 +344,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtMost_WhenCountExceedsLimit_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -363,7 +363,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_And_WhenCountIsBelowRange_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -382,7 +382,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_And_WhenCountIsWithinRange_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -396,7 +396,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_Fluent_WhenCountReachesLimit_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -415,7 +415,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_Times_WhenCountIsBelowLimit_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -429,7 +429,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_Times_WhenCountReachesLimit_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -448,7 +448,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_Twice_WhenCountIsBelowLimit_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -462,7 +462,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MoreThan_Fluent_WhenCountReachesLimit_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -481,7 +481,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MoreThan_Once_WhenCountIsAboveLimit_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -495,7 +495,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MoreThan_Times_WhenCountIsAboveLimit_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -509,7 +509,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MoreThan_Times_WhenCountReachesLimit_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -528,7 +528,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Once_WhenCountIsOne_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -542,7 +542,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Once_WhenCountIsTwo_ShouldFail()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -561,7 +561,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Twice_WhenCountIsOne_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -580,7 +580,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Twice_WhenCountIsTwo_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithTwoMarkedMethods);
@@ -597,7 +597,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsMatchingMethod_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMarkedMethod);
@@ -608,7 +608,7 @@ public sealed partial class ThatType
 						=> it.ContainsMethods(methods => methods.With<MarkerAttribute>()));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain methods with ThatType.ContainsMethods.MarkerAttribute at least once,
@@ -616,7 +616,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeContainsNoMatchingMethod_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithoutMarkedMethod);

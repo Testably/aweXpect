@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,8 +9,8 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[MemberData(nameof(TypesWithoutDefaultConstructor))]
+			[Test]
+			[MethodDataSource(nameof(TypesWithoutDefaultConstructor))]
 			public async Task WhenTypeDoesNotHaveADefaultConstructor_ShouldFailWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -18,7 +18,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.DoesNotHaveADefaultConstructor());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has a default constructor,
@@ -26,8 +26,8 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[MemberData(nameof(TypesWithoutDefaultConstructor))]
+			[Test]
+			[MethodDataSource(nameof(TypesWithoutDefaultConstructor))]
 			public async Task WhenTypeDoesNotHaveADefaultConstructor_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -38,8 +38,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(TypesWithDefaultConstructor))]
+			[Test]
+			[MethodDataSource(nameof(TypesWithDefaultConstructor))]
 			public async Task WhenTypeHasADefaultConstructor_ShouldFail(Type subject)
 			{
 				async Task Act()
@@ -55,8 +55,8 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Theory]
-			[MemberData(nameof(TypesWithDefaultConstructor))]
+			[Test]
+			[MethodDataSource(nameof(TypesWithDefaultConstructor))]
 			public async Task WhenTypeHasADefaultConstructor_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -67,7 +67,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -85,16 +85,16 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> TypesWithDefaultConstructor()
-				=> new()
+			public static IEnumerable<Type> TypesWithDefaultConstructor()
+				=> new List<Type>
 				{
 					typeof(PublicClass),
 					typeof(PublicSealedClass),
 					typeof(PublicStruct),
 				};
 
-			public static TheoryData<Type> TypesWithoutDefaultConstructor()
-				=> new()
+			public static IEnumerable<Type> TypesWithoutDefaultConstructor()
+				=> new List<Type>
 				{
 					typeof(ClassWithoutDefaultConstructor),
 					typeof(PublicStaticClass),

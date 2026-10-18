@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnInterface_ShouldSucceed()
 			{
 				Type subject = typeof(IPublicInterface);
@@ -22,8 +22,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonInterfaceType))]
+			[Test]
+			[MethodDataSource(nameof(NonInterfaceType))]
 			public async Task WhenTypeIsNotAnInterface_ShouldFail(Type? subject, string name)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,32 +57,20 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type?, string> NonInterfaceType() => new()
+			public static IEnumerable<(Type?, string)> NonInterfaceType() => new List<(Type?, string)>
 			{
-				{
-					null, "<null>"
-				},
-				{
-					typeof(PublicStruct), "struct PublicStruct"
-				},
-				{
-					typeof(PublicClass), "class PublicClass"
-				},
-				{
-					typeof(PublicEnum), "enum PublicEnum"
-				},
-				{
-					typeof(PublicRecord), "record PublicRecord"
-				},
-				{
-					typeof(PublicRecordStruct), "record struct PublicRecordStruct"
-				},
+				(null, "<null>"),
+				(typeof(PublicStruct), "struct PublicStruct"),
+				(typeof(PublicClass), "class PublicClass"),
+				(typeof(PublicEnum), "enum PublicEnum"),
+				(typeof(PublicRecord), "record PublicRecord"),
+				(typeof(PublicRecordStruct), "record struct PublicRecordStruct"),
 			};
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnInterface_ShouldFail()
 			{
 				Type subject = typeof(IPublicInterface);
@@ -92,7 +80,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsAnInterface());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not an interface,
@@ -100,8 +88,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonInterfaceTypeForNegated))]
+			[Test]
+			[MethodDataSource(nameof(NonInterfaceTypeForNegated))]
 			public async Task WhenTypeIsNotAnInterface_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -112,7 +100,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonInterfaceTypeForNegated() => new()
+			public static IEnumerable<Type> NonInterfaceTypeForNegated() => new List<Type>
 			{
 				typeof(PublicStruct),
 				typeof(PublicClass),
@@ -121,26 +109,14 @@ public sealed partial class ThatType
 				typeof(PublicRecordStruct),
 			};
 
-			public static TheoryData<Type?, string> NonInterfaceType() => new()
+			public static IEnumerable<(Type?, string)> NonInterfaceType() => new List<(Type?, string)>
 			{
-				{
-					null, "<null>"
-				},
-				{
-					typeof(PublicStruct), "struct PublicStruct"
-				},
-				{
-					typeof(PublicClass), "class PublicClass"
-				},
-				{
-					typeof(PublicEnum), "enum PublicEnum"
-				},
-				{
-					typeof(PublicRecord), "record PublicRecord"
-				},
-				{
-					typeof(PublicRecordStruct), "record struct PublicRecordStruct"
-				},
+				(null, "<null>"),
+				(typeof(PublicStruct), "struct PublicStruct"),
+				(typeof(PublicClass), "class PublicClass"),
+				(typeof(PublicEnum), "enum PublicEnum"),
+				(typeof(PublicRecord), "record PublicRecord"),
+				(typeof(PublicRecordStruct), "record struct PublicRecordStruct"),
 			};
 		}
 	}

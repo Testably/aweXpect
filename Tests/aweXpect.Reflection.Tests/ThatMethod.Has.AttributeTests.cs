@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodDoesNotHaveAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("NoAttributeMethod")!;
@@ -19,7 +18,7 @@ public sealed partial class ThatMethod
 					await That(subject).Has<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatMethod.Has.AttributeTests.TestAttribute,
@@ -27,7 +26,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodHasAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
@@ -40,7 +39,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodHasMatchingAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
@@ -53,7 +52,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodHasNotMatchingAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
@@ -63,7 +62,7 @@ public sealed partial class ThatMethod
 					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has ThatMethod.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
@@ -71,7 +70,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -108,7 +107,7 @@ public sealed partial class ThatMethod
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodDoesNotHaveAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("NoAttributeMethod")!;
@@ -121,7 +120,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodDoesNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
@@ -135,7 +134,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenMethodHasAttribute_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
@@ -145,7 +144,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatMethod.Has.NegatedTests.TestAttribute,

@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -18,7 +17,7 @@ public sealed partial class ThatType
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllDependenciesAreAllowed_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -31,7 +30,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllowingMultipleNamespaces_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -44,7 +43,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnDisallowedNamespace_ShouldFail()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -54,7 +53,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOnlyOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}",
@@ -67,7 +66,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnGlobalNamespace_ShouldReportGlobalNamespace()
 			{
 				Type subject = typeof(ReferencesGlobal);
@@ -77,7 +76,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOnlyOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}",
@@ -90,7 +89,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnlyOnFramework_ShouldSucceed()
 			{
 				Type subject = typeof(FrameworkConsumer);
@@ -103,7 +102,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnlyOnOwnNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ReferencesOwnNamespace);
@@ -116,7 +115,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceBecomesViolation()
 			{
 				Type subject = typeof(ReferencesOwnSubNamespace);
@@ -127,7 +126,7 @@ public sealed partial class ThatType
 						.ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}",
@@ -140,7 +139,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_OwnSubNamespaceStaysAllowed()
 			{
 				// ReferencesOwnSubNamespace (in ...Consumers) only references ...Consumers.OwnSub. By default the
@@ -155,7 +154,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalNamespaceIsAllowedWithEmptyString_ShouldSucceed()
 			{
 				// An empty string targets exactly the global namespace.
@@ -169,7 +168,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -184,7 +183,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyExcludingOwnSubNamespaces_AllowedSubNamespacesStayIncluded()
 			{
 				// The two toggles are independent: the own sub-namespace is no longer implicitly allowed, but
@@ -199,7 +198,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsInGlobalNamespaceAndDependsOnlyOnFramework_ShouldSucceed()
 			{
 				Type subject = typeof(GlobalNamespaceTarget);
@@ -212,7 +211,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedForItems_ShouldLabelTheDisallowedDependenciesWithTheItem()
 			{
 				Type[] subject = [typeof(OnlyLayer1), typeof(Layer1AndLayer2), typeof(ReferencesGlobal),];
@@ -222,7 +221,7 @@ public sealed partial class ThatType
 					await That(subject).All().ComplyWith(type => type.DependsOnlyOn(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}" for all items,
@@ -248,7 +247,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInThatAll_ShouldListTheDisallowedDependenciesOfEachFailure()
 			{
 				async Task Act()
@@ -259,7 +258,7 @@ public sealed partial class ThatType
 						That(typeof(ReferencesGlobal)).DependsOnlyOn(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected all of the following to succeed:
 					               [01] Expected that typeof(Layer1AndLayer2) depends only on namespace "{Layer1Namespace}"
@@ -281,7 +280,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInWhose_ShouldLabelTheDisallowedDependenciesWithTheMember()
 			{
 				TypeHolder subject = new(typeof(Layer1AndLayer2));
@@ -291,7 +290,7 @@ public sealed partial class ThatType
 					await That(subject).Whose(holder => holder.Type, type => type.DependsOnlyOn(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              whose Type depends only on namespace "{Layer1Namespace}",
@@ -304,7 +303,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -325,7 +324,7 @@ public sealed partial class ThatType
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllDependenciesAreInTargetCollection_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -338,7 +337,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnTypeOutsideTargetCollections_ShouldFail()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -348,7 +347,7 @@ public sealed partial class ThatType
 					await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -361,7 +360,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDistinctViolatorsShareTheSimpleName_ShouldQualifyThemByNamespace()
 			{
 				// Both AmbiguousTarget dependencies are disallowed; they must stay apart in the message
@@ -373,11 +372,11 @@ public sealed partial class ThatType
 					await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*AmbiguousA.AmbiguousTarget*AmbiguousB.AmbiguousTarget*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceBecomesViolation()
 			{
 				Type subject = typeof(ReferencesOwnSubNamespace);
@@ -388,7 +387,7 @@ public sealed partial class ThatType
 						.ExcludingOwnSubNamespaces();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -401,7 +400,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_TargetCollectionCoveringTheSubNamespaceStillAllowsIt()
 			{
 				// The own sub-namespace is no longer implicitly allowed, but the target collection contains the
@@ -417,7 +416,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldSucceedForDisallowedDependency()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -431,7 +430,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReferencingOwnSubNamespace_ShouldSucceedByDefault()
 			{
 				Type subject = typeof(ReferencesOwnSubNamespace);
@@ -444,7 +443,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_DisallowedDependencyShouldFail()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -454,10 +453,10 @@ public sealed partial class ThatType
 					await That(subject).DependsOnlyOn(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_ShouldStillAllowFrameworkDependencies()
 			{
 				Type subject = typeof(FrameworkConsumer);
@@ -470,7 +469,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_ShouldStillAllowOwnNamespace()
 			{
 				Type subject = typeof(ReferencesOwnNamespace);
@@ -483,7 +482,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -500,7 +499,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnDisallowedNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -513,7 +512,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnlyOnAllowedNamespaces_ShouldFail()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -523,7 +522,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.DependsOnlyOn(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend only on namespace "{Layer1Namespace}",

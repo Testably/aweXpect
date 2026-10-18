@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -14,7 +13,7 @@ public sealed partial class ThatConstructors
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -30,7 +29,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -43,7 +42,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value",
@@ -56,7 +55,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -72,7 +71,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenAllHaveSubtypeParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -88,7 +87,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenConstructorIsNull_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo?> constructors = new ConstructorInfo?[]
@@ -101,7 +100,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
@@ -114,7 +113,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenMatchingParameterIsNotAtFirstIndex_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -130,7 +129,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -143,7 +142,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
@@ -156,7 +155,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -172,7 +171,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -185,7 +184,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
@@ -198,7 +197,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenTypeMatchesButNameDiffers_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -211,7 +210,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter<int>("count");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
@@ -224,7 +223,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstance_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -240,7 +239,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstance_WhenAllHaveSubtypeParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -256,7 +255,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstance_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -269,7 +268,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
@@ -282,7 +281,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstanceAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -298,7 +297,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstanceAndName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -311,7 +310,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
@@ -324,7 +323,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstanceAndName_WhenTypeMatchesButNameDiffers_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -337,7 +336,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int), "count");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
@@ -365,7 +364,7 @@ public sealed partial class ThatConstructors
 			// ReSharper restore UnusedMember.Local
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenConstructorIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo?> constructors = ToAsyncEnumerableNullable([null,]);
@@ -375,7 +374,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
@@ -388,7 +387,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenTypeMatchesButNameDiffers_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -399,7 +398,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int), "count");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
@@ -412,7 +411,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndNameGeneric_WhenTypeMatchesButNameDiffers_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -423,7 +422,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter<int>("count");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
@@ -436,7 +435,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenMatchingParameterIsNotAtFirstIndex_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -450,7 +449,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -465,7 +464,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByType_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -477,7 +476,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
@@ -490,7 +489,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -505,7 +504,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenNotAllHaveParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -517,7 +516,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
@@ -534,7 +533,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task AtIndex_WhenAllHaveParameterAtIndex_ShouldFailWithIndexInExpectation()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -547,7 +546,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameter<int>().AtIndex(0));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int at index 0,
@@ -560,7 +559,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -573,7 +572,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameter("value"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter with name "value",
@@ -587,7 +586,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByName_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -603,7 +602,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -616,7 +615,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameter<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int,
@@ -630,7 +629,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByType_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -646,7 +645,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -659,7 +658,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameter<int>("value"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
@@ -673,7 +672,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeAndName_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -689,7 +688,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstance_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -702,7 +701,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameter(typeof(int)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int,
@@ -716,7 +715,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstance_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -732,7 +731,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstanceAndName_WhenAllHaveParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -745,7 +744,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveParameter(typeof(int), "value"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
@@ -759,7 +758,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParameterByTypeInstanceAndName_WhenNotAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -775,7 +774,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Modifier_WhenAllHaveModifierParameter_ShouldFailWithModifierInExpectation()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -788,7 +787,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveInParameter<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with in modifier,
@@ -822,7 +821,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class ChainingTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenAllHaveParameterWithPrefix_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -839,7 +838,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenAllHaveParameterMatchingRegex_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -856,7 +855,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenAllHaveParameterWithSuffix_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -873,7 +872,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenAllHaveParameterWithWildcard_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -890,7 +889,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtIndex_WhenAllHaveParameterAtSpecificIndex_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -907,7 +906,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtIndex_WhenNotAllHaveParameterAtSpecificIndex_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -921,7 +920,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter<int>().AtIndex(0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 0,
@@ -934,7 +933,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtIndexFromEnd_WhenAllHaveParameterAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -953,7 +952,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenAllHaveParameterIgnoringCase_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -970,7 +969,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsPrefix_WhenAllHaveParameterWithPrefix_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -987,7 +986,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsRegex_WhenAllHaveParameterMatchingRegex_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1004,7 +1003,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsSuffix_WhenAllHaveParameterWithSuffix_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1021,7 +1020,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AsWildcard_WhenAllHaveParameterWithWildcard_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1038,7 +1037,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AtIndex_WhenAllHaveParameterAtSpecificIndex_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1055,7 +1054,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AtIndex_WhenNotAllHaveParameterAtSpecificIndex_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1069,7 +1068,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameter(typeof(int)).AtIndex(0);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 0,
@@ -1082,7 +1081,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_AtIndexFromEnd_WhenAllHaveParameterAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1101,7 +1100,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_IgnoringCase_WhenAllHaveParameterIgnoringCase_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1118,7 +1117,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WithDefaultValue_WhenAllHaveParameterWithDefault_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1136,7 +1135,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Type_WithoutDefaultValue_WhenAllHaveParameterWithoutDefault_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1153,7 +1152,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDefaultValue_WhenAllHaveParameterWithDefault_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -1171,7 +1170,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutDefaultValue_WhenAllHaveParameterWithoutDefault_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

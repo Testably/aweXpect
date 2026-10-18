@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -25,7 +24,7 @@ public sealed partial class ThatMethods
 #endif
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -41,7 +40,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -57,7 +56,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -73,7 +72,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -89,7 +88,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -105,7 +104,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -121,7 +120,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -137,7 +136,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -153,7 +152,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -169,7 +168,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -182,10 +181,10 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameterExactly<Stream>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -201,7 +200,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_WhenNotAllMatch_ShouldFailWithExactTypeWording()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -214,7 +213,7 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
@@ -227,7 +226,7 @@ public sealed partial class ThatMethods
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactlyAndName_WhenAllMatch_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -244,7 +243,7 @@ public sealed partial class ThatMethods
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -259,7 +258,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_AsyncEnumerable_WhenNotAllMatch_ShouldFail()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -271,10 +270,10 @@ public sealed partial class ThatMethods
 					await That(methods).HaveRefParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveRefParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -288,7 +287,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -302,7 +301,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOutParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -316,7 +315,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -330,7 +329,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveInParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -344,7 +343,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -358,7 +357,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveOptionalParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -372,7 +371,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactly_AsyncEnumerable_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
@@ -386,7 +385,7 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HaveParamsParameterExactly_AsyncEnumerableWithName_WhenAllMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(

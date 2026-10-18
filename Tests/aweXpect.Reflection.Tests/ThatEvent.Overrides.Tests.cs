@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventDoesNotOverride_ShouldFail()
 			{
 				EventInfo subject =
@@ -29,7 +28,7 @@ public sealed partial class ThatEvent
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -47,7 +46,7 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventOverrides_ShouldSucceed()
 			{
 				EventInfo subject =
@@ -64,7 +63,7 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventDoesNotOverride_ShouldSucceed()
 			{
 				EventInfo subject =
@@ -78,7 +77,7 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventOverrides_ShouldFail()
 			{
 				EventInfo subject =
@@ -89,7 +88,7 @@ public sealed partial class ThatEvent
 					await That(subject).DoesNotComplyWith(it => it.Overrides());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not override a base event,

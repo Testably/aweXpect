@@ -8,7 +8,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForEventsWithoutAttribute()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
@@ -22,7 +22,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("events without EventFilters.Without.AttributeTests.BarAttribute").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForEventsWithoutAttributeDirectlySet()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()

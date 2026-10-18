@@ -8,7 +8,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForConstructorsWithParameterOfExactType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClass>()
@@ -21,7 +21,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeConstructorsWithParameterOfDerivedType()
 			{
 				Filtered.Constructors exactConstructors = In.Type<TestClass>()
@@ -38,7 +38,7 @@ public sealed partial class ConstructorFilters
 				]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithName_ShouldFilterForConstructorsWithParameterOfExactTypeAndName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClass>()
@@ -51,7 +51,7 @@ public sealed partial class ConstructorFilters
 					.Contains("and name equal to \"parameter\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldFilterForConstructorsWithParameterOfExactType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClass>()
@@ -64,7 +64,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_ShouldNotIncludeConstructorsWithParameterOfDerivedType()
 			{
 				Filtered.Constructors exactConstructors = In.Type<TestClass>()
@@ -81,7 +81,7 @@ public sealed partial class ConstructorFilters
 				]).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithType_WithName_ShouldFilterForConstructorsWithParameterOfExactTypeAndName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClass>()

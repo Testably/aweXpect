@@ -12,7 +12,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesContainMatchingField_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedField, ClassWithTwoMarkedFields>();
@@ -26,7 +26,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedField_WithIncludingInherited_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -44,7 +44,7 @@ public sealed partial class ThatTypes
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingField_ShouldFail()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedField, ClassWithoutMarkedField>();
@@ -67,7 +67,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlyContainsInheritedField_WithDeclaredOnly_ShouldFail()
 			{
 				Filtered.Types subject =
@@ -91,7 +91,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypesOnlyContainInheritedField_WithIncludingInherited_ShouldSucceed()
 			{
 				Filtered.Types subject =
@@ -109,7 +109,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeContainsNoMatchingField_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedField, ClassWithoutMarkedField>();

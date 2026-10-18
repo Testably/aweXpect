@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedValueIsOnlySubstring_ShouldFail()
 			{
 				PropertyInfo? subject =
@@ -20,7 +19,7 @@ public sealed partial class ThatProperty
 					await That(subject).HasName("Property");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name equal to "Property",
@@ -32,7 +31,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoHasExpectedPrefix_ShouldSucceed()
 			{
 				PropertyInfo? subject =
@@ -46,7 +45,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoHasMatchingName_ShouldSucceed()
 			{
 				PropertyInfo? subject =
@@ -60,7 +59,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -78,7 +77,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoMatchesIgnoringCase_ShouldSucceed()
 			{
 				PropertyInfo? subject =
@@ -95,7 +94,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoDoesNotHaveName_ShouldSucceed()
 			{
 				PropertyInfo? subject =
@@ -109,7 +108,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyInfoHasName_ShouldFail()
 			{
 				PropertyInfo? subject =
@@ -120,7 +119,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.HasName("PublicProperty"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has name not equal to "PublicProperty",

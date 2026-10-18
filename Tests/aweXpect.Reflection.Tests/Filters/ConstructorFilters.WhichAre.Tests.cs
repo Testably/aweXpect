@@ -8,7 +8,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForInternalConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -19,7 +19,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("internal constructors in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPrivateConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -30,7 +30,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("private constructors in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForProtectedConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("protected constructors in assembly").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForPublicConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()

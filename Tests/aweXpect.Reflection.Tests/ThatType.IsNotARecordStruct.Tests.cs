@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsARecordStruct_ShouldFail()
 			{
 				Type subject = typeof(PublicRecordStruct);
@@ -27,8 +27,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(RecordStructTypesForNegated))]
+			[Test]
+			[MethodDataSource(nameof(RecordStructTypesForNegated))]
 			public async Task WhenTypeIsARecordStruct_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotARecordStruct_ShouldFailWithNegatedAssertion()
 			{
 				Type subject = typeof(PublicClass);
@@ -49,7 +49,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotARecordStruct());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is a record struct,
@@ -57,8 +57,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonRecordStructTypes))]
+			[Test]
+			[MethodDataSource(nameof(NonRecordStructTypes))]
 			public async Task WhenTypeIsNotARecordStruct_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -69,7 +69,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -87,12 +87,12 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type> RecordStructTypesForNegated() => new()
+			public static IEnumerable<Type> RecordStructTypesForNegated() => new List<Type>
 			{
 				typeof(PublicRecordStruct),
 			};
 
-			public static TheoryData<Type> NonRecordStructTypes()
+			public static IEnumerable<Type> NonRecordStructTypes()
 				=>
 				[
 					typeof(IPublicInterface),

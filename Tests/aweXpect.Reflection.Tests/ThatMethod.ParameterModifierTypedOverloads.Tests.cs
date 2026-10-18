@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatMethod
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HasOptionalParameterOfType_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OptionalInt));
@@ -25,7 +24,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasOutParameterOfType_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutInt));
@@ -38,7 +37,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasParamsParameterOfType_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.ParamsInt));
@@ -51,7 +50,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterByName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -64,7 +63,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterOfType_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -77,7 +76,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterOfType_WhenParameterIsNotRef_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.PlainInt));
@@ -87,7 +86,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int with ref modifier,
@@ -95,7 +94,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterOfType_WhenParameterIsOut_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.OutInt));
@@ -105,10 +104,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterOfType_WhenWrongType_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -118,10 +117,10 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter<string>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterOfTypeAndName_WhenMatching_ShouldSucceed()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -134,7 +133,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRefParameterOfTypeAndName_WhenWrongName_ShouldFail()
 			{
 				MethodInfo methodInfo = Method(nameof(ModifierMethods.RefInt));
@@ -144,7 +143,7 @@ public sealed partial class ThatMethod
 					await That(methodInfo).HasRefParameter<int>("other");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methodInfo
 					             has parameter of type int with name "other" with ref modifier,

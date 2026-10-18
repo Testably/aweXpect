@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class WithOperatorTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsADifferentOperator_ShouldSucceed()
 			{
 				MethodInfo subject =
@@ -24,7 +23,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNotAnOperator_ShouldSucceed()
 			{
 				MethodInfo subject =
@@ -39,7 +38,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -57,7 +56,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsTheExpectedOperator_ShouldFail()
 			{
 				MethodInfo subject =
@@ -79,7 +78,7 @@ public sealed partial class ThatMethod
 
 		public sealed class WithOperatorNegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsADifferentOperator_ShouldFail()
 			{
 				MethodInfo subject =
@@ -90,7 +89,7 @@ public sealed partial class ThatMethod
 					await That(subject).DoesNotComplyWith(it => it.IsNotAnOperator(Operator.Addition));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					              Expected that subject
 					              is the operator Addition,
@@ -98,7 +97,7 @@ public sealed partial class ThatMethod
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodIsTheExpectedOperator_ShouldSucceed()
 			{
 				MethodInfo subject =

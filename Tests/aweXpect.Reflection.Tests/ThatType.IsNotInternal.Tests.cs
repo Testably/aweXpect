@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace aweXpect.Reflection.Tests;
+﻿namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -8,7 +6,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsInternal_ShouldFail()
 			{
 				Type? subject = typeof(InternalType);
@@ -18,7 +16,7 @@ public sealed partial class ThatType
 					await That(subject).IsNotInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not internal,
@@ -26,7 +24,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsInternal_ShouldSucceedWithNegatedAssertion()
 			{
 				Type? subject = typeof(InternalType);
@@ -39,10 +37,10 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(PrivateType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(PrivateType))]
 			public async Task WhenTypeIsNotInternal_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
@@ -50,14 +48,14 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*is internal*but it was*").AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(typeof(ProtectedType))]
-			[InlineData(typeof(PublicType))]
-			[InlineData(typeof(PrivateType))]
+			[Test]
+			[Arguments(typeof(ProtectedType))]
+			[Arguments(typeof(PublicType))]
+			[Arguments(typeof(PrivateType))]
 			public async Task WhenTypeIsNotInternal_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
@@ -68,7 +66,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;

@@ -13,7 +13,7 @@ public class FormatterRegistrationTests
 		RuntimeHelpers.RunModuleConstructor(typeof(FormattableMember).Module.ModuleHandle);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ModuleInitializer_ShouldNotChangeHowConstructorInfoIsFormatted()
 	{
 		ConstructorInfo constructorInfo = typeof(ConstructorFormatterTests.MyTestClass).GetConstructors().First();
@@ -24,7 +24,7 @@ public class FormatterRegistrationTests
 			.Because("the package must not register a formatter for the ConstructorInfo it does not own");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ModuleInitializer_ShouldNotChangeHowEventInfoIsFormatted()
 	{
 		EventInfo eventInfo = typeof(EventFormatterTests.MyTestClass).GetEvents().First();
@@ -35,7 +35,7 @@ public class FormatterRegistrationTests
 			.Because("the package must not register a formatter for the EventInfo it does not own");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ModuleInitializer_ShouldNotChangeHowFieldInfoIsFormatted()
 	{
 		FieldInfo fieldInfo = typeof(FieldFormatterTests.MyTestClass).GetFields().First();
@@ -46,7 +46,7 @@ public class FormatterRegistrationTests
 			.Because("the package must not register a formatter for the FieldInfo it does not own");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ModuleInitializer_ShouldNotChangeHowMethodInfoIsFormatted()
 	{
 		MethodInfo methodInfo = typeof(MethodFormatterTests.MyTestClass).GetMethods().First();
@@ -57,7 +57,7 @@ public class FormatterRegistrationTests
 			.Because("the package must not register a formatter for the MethodInfo it does not own");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ModuleInitializer_ShouldNotChangeHowPropertyInfoIsFormatted()
 	{
 		PropertyInfo propertyInfo = typeof(PropertyFormatterTests.MyTestClass).GetProperties().First();

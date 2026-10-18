@@ -8,7 +8,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonStaticTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStatic>().Types();
@@ -31,7 +31,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStatic>().Types()
@@ -48,7 +48,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonStaticTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStatic>().Types();
@@ -61,7 +61,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStaticTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStatic>().Types()

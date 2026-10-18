@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -27,7 +26,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfDifferentType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -37,7 +36,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfType<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string,
@@ -45,7 +44,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfExpectedType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -58,7 +57,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyTypeInheritsFromExpectedType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!;
@@ -74,7 +73,7 @@ public sealed partial class ThatProperty
 
 		public sealed class OrOfExactTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNoneOfTheTypes_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -84,7 +83,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfType<string>().OrOfExactType<bool>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string or of exact type bool,
@@ -92,7 +91,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOneOfTheTypes_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -108,7 +107,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfDifferentType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -121,7 +120,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfExpectedType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -131,7 +130,7 @@ public sealed partial class ThatProperty
 					await That(subject).DoesNotComplyWith(it => it.IsOfType<int>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type int,
@@ -159,7 +158,7 @@ public sealed partial class ThatProperty
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfDifferentType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -169,7 +168,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfType(typeof(string));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string,
@@ -177,7 +176,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOfExpectedType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -193,7 +192,7 @@ public sealed partial class ThatProperty
 
 		public sealed class OrOfTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNoneOfTheTypes_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;
@@ -203,7 +202,7 @@ public sealed partial class ThatProperty
 					await That(subject).IsOfType<string>().OrOfType<bool>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type string or of type bool,
@@ -211,7 +210,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrOfType_ShouldSupportChaining()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!;

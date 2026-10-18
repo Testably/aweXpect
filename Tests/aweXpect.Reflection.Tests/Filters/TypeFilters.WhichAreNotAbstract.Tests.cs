@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonAbstractTypes()
 			{
 				Filtered.Types types = In.AssemblyContaining<ConcreteTestClass>()

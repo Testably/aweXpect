@@ -9,7 +9,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithName()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -21,7 +21,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -33,7 +33,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -45,7 +45,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -56,7 +56,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("fields with name ending with \"FieldToVerifyTheNameOfIt\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -67,7 +67,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("fields with name matching \"*FieldToVerifyTheNameOf*\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -81,7 +81,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -96,7 +96,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()
@@ -111,7 +111,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportUsingCustomComparer()
 			{
 				Filtered.Fields fields = In.Type<SomeClassToVerifyTheFieldNameOfIt>()

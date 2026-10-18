@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeHasNonNullableEvent_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithNullableEvent);
@@ -22,7 +22,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBaseTypeHasNonNullableMembers_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithNullableMembers);
@@ -35,7 +35,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasMixedMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithMixedNullableMembers);
@@ -58,7 +58,7 @@ public sealed partial class ThatType
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNoMembers_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithoutMembers);
@@ -71,7 +71,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNonNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNonNullableProperty);
@@ -94,7 +94,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNonNullableEvent);
@@ -117,7 +117,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -135,7 +135,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlyHasNullableEvent_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithSingleNullableEvent);
@@ -148,7 +148,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlyHasNullableMembers_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithNullableMembers);
@@ -161,7 +161,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedForItems_ShouldListTheNonNullableMembersOfTheFailingItem()
 			{
 				Type[] subject =
@@ -201,7 +201,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_WhenBaseTypeHasNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithNullableEvent);
@@ -224,7 +224,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_WhenBaseTypeHasNonNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithNullableMembers);
@@ -247,7 +247,7 @@ public sealed partial class ThatType
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_WhenBaseTypeHasNullableEvent_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClassWithInheritedNullableEvent);
@@ -260,7 +260,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithIncludingInherited_WhenBaseTypeHasPrivateNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithPrivateNonNullableBaseEvent);
@@ -286,7 +286,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNoMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithoutMembers);
@@ -304,7 +304,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeHasNonNullableMembers_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithMixedNullableMembers);
@@ -317,7 +317,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeOnlyHasNullableMembers_ShouldFail()
 			{
 				Type subject = typeof(ClassWithSingleNullableProperty);

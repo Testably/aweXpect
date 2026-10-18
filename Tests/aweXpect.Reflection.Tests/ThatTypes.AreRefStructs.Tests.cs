@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -13,7 +12,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreRefStructs_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -29,7 +28,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypesAreNotRefStructs_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -56,7 +55,7 @@ public sealed partial class ThatTypes
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableAllTypesAreRefStructs_ShouldSucceed()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -72,7 +71,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncEnumerableSomeTypesAreNotRefStructs_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -102,7 +101,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreRefStructs_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -115,7 +114,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreRefStructs());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             are not all ref structs,
@@ -128,7 +127,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypesAreNotRefStructs_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]

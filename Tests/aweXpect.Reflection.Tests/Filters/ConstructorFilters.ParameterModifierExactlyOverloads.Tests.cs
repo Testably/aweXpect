@@ -14,7 +14,7 @@ public sealed partial class ConstructorFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithInParameterExactly_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -24,7 +24,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInParameterExactly_UsingType_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -34,7 +34,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInParameterExactlyAndName_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -46,7 +46,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<InIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInParameterExactlyAndName_UsingType_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -58,7 +58,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<InIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterExactly_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -68,7 +68,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<PlainIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterExactly_UsingType_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -78,7 +78,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<PlainIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterExactlyAndName_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -90,7 +90,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<OptionalIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterExactlyAndName_UsingType_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -102,7 +102,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<OptionalIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterExactly_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -112,7 +112,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterExactly_UsingType_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -122,7 +122,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterExactlyAndName_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -134,7 +134,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<OutIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterExactlyAndName_UsingType_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -146,7 +146,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<OutIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterExactly_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -155,7 +155,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<ParamsIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterExactly_UsingType_ShouldFilter()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -164,7 +164,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<ParamsIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterExactlyAndName_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -176,7 +176,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<ParamsIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterExactlyAndName_UsingType_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -188,7 +188,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<ParamsIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameter_OfBaseType_ShouldMatchDerivedParameterType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -197,7 +197,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<RefMemoryStreamCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactly_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -206,7 +206,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefMemoryStreamCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactly_OfExactType_ShouldMatchParameterType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -215,7 +215,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<RefMemoryStreamCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactly_ShouldFilterAndDescribe()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -229,7 +229,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactly_UsingType_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -238,7 +238,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).DoesNotContain(Constructor<RefMemoryStreamCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactly_UsingType_OfExactType_ShouldMatchParameterType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -247,7 +247,7 @@ public sealed partial class ConstructorFilters
 				await That(constructors).Contains(Constructor<RefMemoryStreamCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactly_UsingType_ShouldFilterAndDescribe()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -261,7 +261,7 @@ public sealed partial class ConstructorFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactlyAndName_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()
@@ -273,7 +273,7 @@ public sealed partial class ConstructorFilters
 				await That(wrongName).DoesNotContain(Constructor<RefIntCtor>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterExactlyAndName_UsingType_ShouldFilterByName()
 			{
 				Filtered.Constructors matching = In.AssemblyContaining<AssemblyFilters>()

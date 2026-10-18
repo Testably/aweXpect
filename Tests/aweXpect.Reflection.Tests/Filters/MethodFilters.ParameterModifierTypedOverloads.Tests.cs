@@ -12,7 +12,7 @@ public sealed partial class MethodFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WithInParameterOfType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -22,7 +22,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInParameterOfType_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -32,7 +32,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInParameterOfTypeAndName_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -41,7 +41,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.InInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterOfType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -51,7 +51,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterOfType_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -61,7 +61,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOptionalParameterOfTypeAndName_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -70,7 +70,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.OptionalInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterOfType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -80,7 +80,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterOfType_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -90,7 +90,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOutParameterOfTypeAndName_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -99,7 +99,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.OutInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterOfType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -108,7 +108,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterOfType_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -117,7 +117,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParamsParameterOfTypeAndName_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -126,7 +126,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterByName_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -135,7 +135,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfBaseType_ShouldAlsoMatchDerivedParameterType()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -145,7 +145,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.RefDerived)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfBaseType_UsingType_ShouldAlsoMatchDerivedParameterType()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -155,7 +155,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.RefDerived)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfDerivedType_ShouldNotMatchBaseParameterType()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -165,7 +165,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefBase)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfDerivedType_UsingType_ShouldNotMatchBaseParameterType()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -175,7 +175,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefBase)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfType_ShouldFilterAndDescribe()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -189,7 +189,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfType_ShouldNotMatchWrongType()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -198,7 +198,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfType_UsingType_ShouldFilterAndDescribe()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -212,7 +212,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfTypeAndName_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -221,7 +221,7 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.RefInt)));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRefParameterOfTypeAndName_UsingType_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()

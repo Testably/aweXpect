@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,10 +8,10 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("PrivateEvent")]
+			[Test]
+			[Arguments("ProtectedEvent")]
+			[Arguments("PublicEvent")]
+			[Arguments("PrivateEvent")]
 			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName)
 			{
 				Filtered.Events subject = GetEvents(eventName);
@@ -25,7 +24,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsProtectedInternal_ShouldFail()
 			{
 				Filtered.Events subject = GetEvents("ProtectedInternalEvent");
@@ -35,7 +34,7 @@ public sealed partial class ThatEvents
 					await That(subject).AreNotProtectedInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             all are not protected internal,
@@ -51,10 +50,10 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("PrivateEvent")]
+			[Test]
+			[Arguments("ProtectedEvent")]
+			[Arguments("PublicEvent")]
+			[Arguments("PrivateEvent")]
 			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName)
 			{
 				Filtered.Events subject = GetEvents(eventName);
@@ -64,7 +63,7 @@ public sealed partial class ThatEvents
 					await That(subject).DoesNotComplyWith(they => they.AreNotProtectedInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
 					             at least one is protected internal,
@@ -75,7 +74,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
 			{
 				Filtered.Events subject = GetEvents("ProtectedInternalEvent");

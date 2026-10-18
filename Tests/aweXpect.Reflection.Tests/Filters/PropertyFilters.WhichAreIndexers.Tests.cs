@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForIndexers()
 			{
 				Filtered.Properties properties = In.Type<TestClassWithIndexers>()
@@ -18,7 +18,7 @@ public sealed partial class PropertyFilters
 				await That(properties).AreIndexers().And.IsNotEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUpdateTheDescription()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<TestClassWithIndexers>()

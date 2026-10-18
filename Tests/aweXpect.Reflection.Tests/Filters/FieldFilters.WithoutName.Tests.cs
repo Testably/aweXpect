@@ -8,7 +8,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutFieldsWithName()
 			{
 				Filtered.Fields fields = In.Type<ClassWithTwoFields>()
@@ -19,7 +19,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("fields without name equal to \"ExcludedField\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Fields fields = In.Type<ClassWithTwoFields>()

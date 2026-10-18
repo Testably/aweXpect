@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +8,7 @@ public sealed partial class ThatFields
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfosContainFieldInfoWithDifferentName_ShouldFail()
 			{
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
@@ -19,7 +18,7 @@ public sealed partial class ThatFields
 					await That(subject).HaveName("PublicField");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fields in types matching t => t == typeof(T) in assembly containing type ThatField.ClassWithFields
 					             all have name equal to "PublicField",
@@ -32,7 +31,7 @@ public sealed partial class ThatFields
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfosHaveName_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
@@ -45,7 +44,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfosMatchIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
@@ -58,7 +57,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfosMatchSuffix_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
@@ -74,7 +73,7 @@ public sealed partial class ThatFields
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFieldsDoNotHaveName_ShouldSucceed()
 			{
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
@@ -87,7 +86,7 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldsHaveName_ShouldFail()
 			{
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
@@ -97,7 +96,7 @@ public sealed partial class ThatFields
 					await That(subject).DoesNotComplyWith(they => they.HaveName("MyField"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fields in types matching t => t == typeof(T) in assembly containing type ThatField.ClassWithSingleField
 					             not all have name equal to "MyField",

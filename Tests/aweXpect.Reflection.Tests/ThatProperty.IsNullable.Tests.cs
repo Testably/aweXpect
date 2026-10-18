@@ -9,7 +9,7 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNonNullableGenericType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(ClassWithNonNullableMembers)
@@ -28,7 +28,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNonNullableInMostlyNullableClass_ShouldFail()
 			{
 				PropertyInfo subject = typeof(ClassWithMostlyNullableMembers)
@@ -47,7 +47,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNonNullableReferenceType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(ClassWithNonNullableMembers)
@@ -66,7 +66,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNonNullableValueType_ShouldFail()
 			{
 				PropertyInfo subject = typeof(ClassWithNonNullableMembers)
@@ -85,7 +85,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -103,7 +103,7 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNullableGenericType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(ClassWithNullableMembers)
@@ -117,7 +117,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNullableInMixedClass_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(ClassWithMixedNullableMembers)
@@ -131,7 +131,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNullableReferenceType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(ClassWithNullableMembers)
@@ -145,7 +145,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNullableValueType_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(ClassWithNullableMembers)
@@ -159,7 +159,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsOblivious_ShouldFail()
 			{
 				PropertyInfo subject = typeof(ClassWithObliviousMembers)
@@ -178,7 +178,7 @@ public sealed partial class ThatProperty
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsWriteOnlyNullable_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(ClassWithNullableMembers)
@@ -195,7 +195,7 @@ public sealed partial class ThatProperty
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNotNullable_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(ClassWithNonNullableMembers)
@@ -209,7 +209,7 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyIsNullable_ShouldFail()
 			{
 				PropertyInfo subject = typeof(ClassWithNullableMembers)

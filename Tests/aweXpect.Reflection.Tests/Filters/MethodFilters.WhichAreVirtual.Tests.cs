@@ -8,7 +8,7 @@ public sealed partial class MethodFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForVirtualMethods()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<SealedMethodClass>()

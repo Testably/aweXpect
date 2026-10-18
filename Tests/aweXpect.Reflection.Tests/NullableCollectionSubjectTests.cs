@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
 public sealed class NullableCollectionSubjectTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenChainedAfterCoreCollectionExpectation_ShouldVerifyTheSubject()
 	{
 		IEnumerable<Type?> subject = [typeof(string), typeof(object),];
@@ -16,7 +15,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).All().Satisfy(type => type is not null).And.AreSealed();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies type => type is not null for all items and are all sealed,
@@ -29,7 +28,7 @@ public sealed class NullableCollectionSubjectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnIsChainedAfterAnotherMethodsExpectation_ShouldVerifyTheSubject()
 	{
 		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.IsNullOrEmpty))!,];
@@ -39,7 +38,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).AreStatic().And.Return<int>();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are all static and all return int,
@@ -52,7 +51,7 @@ public sealed class NullableCollectionSubjectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnIsUsedOnNullableMethodItems_ShouldVerifyTheSubject()
 	{
 		IEnumerable<MethodInfo?> subject = [typeof(string).GetMethod(nameof(string.IsNullOrEmpty)),];
@@ -62,7 +61,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).Return<bool>().And.ReturnExactly<bool>().And.ReturnVoid();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             all return bool and all return exactly bool and all return void,
@@ -75,7 +74,7 @@ public sealed class NullableCollectionSubjectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenUsedInAllComplyWith_ShouldVerifyEachItem()
 	{
 		IEnumerable<Type?>?[] subject = [[typeof(string),], [typeof(object),],];
@@ -85,7 +84,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).All().ComplyWith(types => types.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are all sealed for all items,
@@ -115,7 +114,7 @@ public sealed class NullableCollectionSubjectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenUsedInWhoseForArrayMember_ShouldVerifyTheMember()
 	{
 		Holder subject = new([typeof(object),]);
@@ -125,7 +124,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).Whose(h => h.Array, types => types.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose Array are all sealed,
@@ -139,7 +138,7 @@ public sealed class NullableCollectionSubjectTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenUsedInWhoseForAsyncEnumerableMember_ShouldVerifyTheMember()
 	{
 		Holder subject = new([typeof(object),]);
@@ -149,7 +148,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).Whose(h => h.AsyncEnumerable, types => types.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose AsyncEnumerable are all sealed,
@@ -163,7 +162,7 @@ public sealed class NullableCollectionSubjectTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenUsedInWhoseForEnumerableMember_ShouldVerifyTheMember()
 	{
 		Holder subject = new([typeof(object),]);
@@ -173,7 +172,7 @@ public sealed class NullableCollectionSubjectTests
 			await That(subject).Whose(h => h.Enumerable, types => types.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose Enumerable are all sealed,

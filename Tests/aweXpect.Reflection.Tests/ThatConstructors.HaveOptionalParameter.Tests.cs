@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -22,7 +21,7 @@ public sealed partial class ThatConstructors
 #endif
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ByGenericType_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -35,7 +34,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
@@ -48,7 +47,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByGenericTypeAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -61,7 +60,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
@@ -74,7 +73,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByGenericTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -87,7 +86,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
@@ -100,7 +99,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByGenericTypeExactlyAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -113,7 +112,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
@@ -126,7 +125,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -139,7 +138,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with optional modifier,
@@ -152,7 +151,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByType_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -168,7 +167,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByType_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -181,7 +180,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
@@ -194,7 +193,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeAndName_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -210,7 +209,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -223,7 +222,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
@@ -236,7 +235,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactly_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -252,7 +251,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -265,7 +264,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
@@ -278,7 +277,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactlyAndName_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -294,7 +293,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByTypeExactlyAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -307,7 +306,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
@@ -320,7 +319,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -336,7 +335,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -349,7 +348,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have an optional parameter,
@@ -362,7 +361,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeButNotAllParametersAreOptional_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -378,7 +377,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeAndName_WhenAllHaveOptionalParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -394,7 +393,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeAndName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -407,10 +406,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactly_WhenAllHaveOptionalParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -426,7 +425,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactly_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -439,10 +438,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTypeExactlyAndName_WhenAllHaveOptionalParameterOfType_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -459,7 +458,7 @@ public sealed partial class ThatConstructors
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenAllHaveOptionalParameterOfType_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -473,7 +472,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WithType_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -485,10 +484,10 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -503,7 +502,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenSomeButNotAllParametersAreOptional_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -517,7 +516,7 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -529,7 +528,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have an optional parameter,
@@ -542,7 +541,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByGenericType_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -553,7 +552,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
@@ -566,7 +565,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByGenericTypeAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -577,7 +576,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
@@ -590,7 +589,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -601,7 +600,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with optional modifier,
@@ -614,7 +613,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -625,7 +624,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameter(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
@@ -638,7 +637,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByGenericTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -649,7 +648,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly<int>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
@@ -662,7 +661,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -673,7 +672,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly(typeof(int));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
@@ -686,7 +685,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByGenericTypeExactlyAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -697,7 +696,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly<int>("value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
@@ -710,7 +709,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsyncEnumerable_ByTypeExactlyAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -721,7 +720,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveOptionalParameterExactly(typeof(int), "value");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
@@ -738,7 +737,7 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -751,7 +750,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).DoesNotComplyWith(they => they.HaveOptionalParameter());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that constructors
 					             not all have an optional parameter,
@@ -765,7 +764,7 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

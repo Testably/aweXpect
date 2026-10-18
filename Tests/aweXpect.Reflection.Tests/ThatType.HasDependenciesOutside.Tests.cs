@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,7 +12,7 @@ public sealed partial class ThatType
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllDependenciesAreAllowed_ShouldFail()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -23,7 +22,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -31,7 +30,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllowingMultipleNamespaces_ShouldFail()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -41,7 +40,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace, Layer2Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}" or "{Layer2Namespace}",
@@ -49,7 +48,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnGlobalNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ReferencesGlobal);
@@ -62,7 +61,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnlyOnFramework_ShouldFail()
 			{
 				// Framework dependencies never count as outside.
@@ -73,7 +72,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -81,7 +80,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnlyOnOwnNamespace_ShouldFail()
 			{
 				// The type's own namespace never counts as outside.
@@ -92,7 +91,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -100,7 +99,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnNamespaceOutsideAllowedSet_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -113,7 +112,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnSubNamespaceOfAllowedNamespace_ShouldFail()
 			{
 				// ViaSubNamespace references only Layer1.Sub, which is covered by Layer1 by default.
@@ -124,7 +123,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -132,7 +131,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceCountsAsOutside()
 			{
 				Type subject = typeof(ReferencesOwnSubNamespace);
@@ -145,7 +144,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_OwnSubNamespaceStaysAllowed()
 			{
 				// ReferencesOwnSubNamespace (in ...Consumers) only references ...Consumers.OwnSub. By default the
@@ -157,7 +156,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace).ExcludingSubNamespaces();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -165,7 +164,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingSubNamespaces_SubNamespaceDependencyCountsAsOutside()
 			{
 				Type subject = typeof(ViaSubNamespace);
@@ -178,7 +177,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalNamespaceIsAllowedWithEmptyString_ShouldFail()
 			{
 				// An empty string allows exactly the global namespace.
@@ -189,7 +188,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace, "");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}" or "",
@@ -197,7 +196,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer2);
@@ -212,7 +211,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsInGlobalNamespaceAndDependsOnlyOnFramework_ShouldFail()
 			{
 				Type subject = typeof(GlobalNamespaceTarget);
@@ -222,7 +221,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -230,7 +229,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -240,7 +239,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}",
@@ -248,7 +247,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFail()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -258,7 +257,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Layer1Namespace).OrOn(Layer2Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside namespace "{Layer1Namespace}" or "{Layer2Namespace}",
@@ -269,7 +268,7 @@ public sealed partial class ThatType
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllDependenciesAreInTargetCollection_ShouldFail()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -279,7 +278,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -287,7 +286,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnTypeOutsideTargetCollections_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -300,7 +299,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceCountsAsOutside()
 			{
 				Type subject = typeof(ReferencesOwnSubNamespace);
@@ -314,7 +313,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldFailForTypeWithDependencyOutside()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -325,7 +324,7 @@ public sealed partial class ThatType
 						.DoesNotComplyWith(it => it.HasDependenciesOutside(Types.InNamespace(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -338,7 +337,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldSucceedForTypeDependingOnlyOnAllowedTypes()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -352,7 +351,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndDistinctViolatorsShareTheSimpleName_ShouldQualifyThemByNamespace()
 			{
 				// Both AmbiguousTarget dependencies are outside the allowed set; they must stay apart in the
@@ -365,11 +364,11 @@ public sealed partial class ThatType
 						.DoesNotComplyWith(it => it.HasDependenciesOutside(Types.InNamespace(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*AmbiguousA.AmbiguousTarget*AmbiguousB.AmbiguousTarget*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReferencingOwnSubNamespace_ShouldFailByDefault()
 			{
 				Type subject = typeof(ReferencesOwnSubNamespace);
@@ -379,7 +378,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -387,7 +386,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_DisallowedDependencyShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -400,7 +399,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_FrameworkDependenciesStayInside()
 			{
 				Type subject = typeof(FrameworkConsumer);
@@ -410,10 +409,10 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_OwnNamespaceStaysInside()
 			{
 				Type subject = typeof(ReferencesOwnNamespace);
@@ -423,10 +422,10 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace("Non.Existent.Namespace"));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -436,7 +435,7 @@ public sealed partial class ThatType
 					await That(subject).HasDependenciesOutside(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -444,7 +443,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFail()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -455,7 +454,7 @@ public sealed partial class ThatType
 						.OrOn(Types.InNamespace(Layer2Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies or types within namespace "{Layer2Namespace}" in all loaded assemblies,
@@ -466,7 +465,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllDependenciesAreAllowed_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -479,7 +478,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDependingOnNamespaceOutsideAllowedSet_ShouldFail()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -489,7 +488,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have dependencies outside namespace "{Layer1Namespace}",
@@ -502,7 +501,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedForItems_ShouldLabelTheDisallowedDependenciesWithTheItem()
 			{
 				Type[] subject = [typeof(OnlyLayer1), typeof(Layer1AndLayer2), typeof(ReferencesGlobal),];
@@ -513,7 +512,7 @@ public sealed partial class ThatType
 						.ComplyWith(type => type.DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have dependencies outside namespace "{Layer1Namespace}" for all items,
@@ -539,7 +538,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInThatAll_ShouldListTheDisallowedDependenciesOfEachFailure()
 			{
 				async Task Act()
@@ -550,7 +549,7 @@ public sealed partial class ThatType
 						That(typeof(ReferencesGlobal)).DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected all of the following to succeed:
 					               [01] Expected that typeof(Layer1AndLayer2) does not have dependencies outside namespace "{Layer1Namespace}"
@@ -572,7 +571,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedInWhose_ShouldLabelTheDisallowedDependenciesWithTheMember()
 			{
 				TypeHolder subject = new(typeof(Layer1AndLayer2));
@@ -583,7 +582,7 @@ public sealed partial class ThatType
 						type => type.DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              whose Type does not have dependencies outside namespace "{Layer1Namespace}",

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
@@ -13,7 +12,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAllPropertiesHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -29,7 +28,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -45,7 +44,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -58,7 +57,7 @@ public sealed partial class ThatProperties
 					await That(subject).Have<TestAttribute>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatProperties.Have.AttributeTests.TestAttribute,
@@ -71,7 +70,7 @@ public sealed partial class ThatProperties
 					             """);
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenNotAllPropertiesHaveMatchingAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -84,7 +83,7 @@ public sealed partial class ThatProperties
 					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatProperties.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
@@ -101,7 +100,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 			public sealed class AsyncEnumerableTests
 			{
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAllPropertiesHaveAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -117,7 +116,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -133,7 +132,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -146,7 +145,7 @@ public sealed partial class ThatProperties
 						await That(subject).Have<TestAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.AttributeTests.TestAttribute,
@@ -159,7 +158,7 @@ public sealed partial class ThatProperties
 						             """);
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenNotAllPropertiesHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -172,7 +171,7 @@ public sealed partial class ThatProperties
 						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
@@ -210,7 +209,7 @@ public sealed partial class ThatProperties
 		{
 			public sealed class AttributeTests
 			{
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenPropertiesHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -226,7 +225,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenPropertiesHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -242,7 +241,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenPropertiesHaveMatchingFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -259,7 +258,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenPropertiesHaveMatchingSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -276,7 +275,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenPropertiesHaveNeitherAttribute_ShouldFail()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -289,7 +288,7 @@ public sealed partial class ThatProperties
 						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
@@ -302,7 +301,7 @@ public sealed partial class ThatProperties
 						             """);
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WhenPropertiesHaveSecondAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -318,7 +317,7 @@ public sealed partial class ThatProperties
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[TUnit.Core.Test]
 				public async Task WithPredicate_WhenPropertiesHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -332,7 +331,7 @@ public sealed partial class ThatProperties
 							.OrHave<BarAttribute>(attr => attr.Name == "wrong");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatProperties.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
@@ -376,7 +375,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertiesDoNotHaveAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subjects = new[]
@@ -392,7 +391,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertiesDoNotHaveMatchingAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subjects = new[]
@@ -409,7 +408,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[TUnit.Core.Test]
 			public async Task WhenPropertiesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subjects = new[]
@@ -423,7 +422,7 @@ public sealed partial class ThatProperties
 						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatProperties.Have.NegatedTests.TestAttribute or ThatProperties.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",

@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWhichSatisfyThePredicate()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -22,7 +21,7 @@ public sealed partial class TypeFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -33,7 +32,7 @@ public sealed partial class TypeFilters
 					await That(types).AreNotAbstract();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             are all not abstract,
@@ -43,7 +42,7 @@ public sealed partial class TypeFilters
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWhenNegated()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -54,7 +53,7 @@ public sealed partial class TypeFilters
 					await That(types).DoesNotComplyWith(they => they.AreNotAbstract());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             also contain an abstract type,

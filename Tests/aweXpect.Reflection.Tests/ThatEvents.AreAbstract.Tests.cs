@@ -11,7 +11,7 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonAbstractEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -35,7 +35,7 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAbstractEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -53,7 +53,7 @@ public sealed partial class ThatEvents
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventsContainNonAbstractEvents_ShouldSucceed()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)
@@ -67,7 +67,7 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyAbstractEvents_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = typeof(AbstractClassWithMembers)

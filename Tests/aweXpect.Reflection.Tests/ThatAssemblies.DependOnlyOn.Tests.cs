@@ -2,7 +2,6 @@
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -12,7 +11,7 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesDependOnlyOnAllowed_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
@@ -25,7 +24,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllowedAssembliesAreGiven_ShouldDescribeAssemblies()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -35,7 +34,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DependOnlyOn("First", "Second");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "First" or equal to "Second",
@@ -43,7 +42,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllowedMatchesAsWildcard_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
@@ -56,7 +55,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAnAssemblyDependsOnDisallowedAssembly_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -66,7 +65,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DependOnlyOn("aweXpect.Core");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
@@ -74,12 +73,12 @@ public sealed partial class ThatAssemblies
 
 					             Not matching items:
 					             [
-					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "aweXpect"]
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["TUnit.Core", "aweXpect.Reflection", "Mono.Cecil", "TUnit.Engine", "aweXpect"]
 					             ]
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				IEnumerable<Assembly?> subject = new Assembly?[]
@@ -92,7 +91,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DependOnlyOn("aweXpect.Core");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
@@ -105,7 +104,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleAssembliesHaveDisallowedDependencies_ShouldSeparateWithComma()
 			{
 				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly, typeof(ThatAssemblies).Assembly);
@@ -115,7 +114,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DependOnlyOn("NonExistentAssembly");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in the assemblies *
 					             all have dependencies only on assemblies equal to "NonExistentAssembly",
@@ -129,7 +128,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoAllowedAssembliesAreGiven_ShouldDescribeNoAssemblies()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -139,7 +138,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DependOnlyOn();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on no assemblies,
@@ -150,7 +149,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesDependOnlyOnAllowed_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
@@ -160,7 +159,7 @@ public sealed partial class ThatAssemblies
 					await That(subject).DoesNotComplyWith(they => they.DependOnlyOn("aweXpect.Core"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in the assemblies *
 					             not all have dependencies only on assemblies equal to "aweXpect.Core",
@@ -173,7 +172,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAnAssemblyDependsOnDisallowedAssembly_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();

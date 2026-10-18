@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class NestedTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForClasses()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Interfaces();
@@ -18,7 +18,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t is { IsInterface: true, IsNested: true, });
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldConsiderAccessModifier()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -28,7 +28,7 @@ public sealed partial class Filtered
 						=> type is { IsInterface: true, IsNested: true, IsNestedPublic: true, });
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

@@ -10,7 +10,7 @@ public sealed partial class Filtered
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldApplyFilterForInterfaces()
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Interfaces();
@@ -18,8 +18,8 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(t => t.IsInterface);
 				}
 
-				[Theory]
-				[MemberData(nameof(CheckAccessModifiers), MemberType = typeof(Assemblies))]
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(CheckAccessModifiers))]
 				public async Task ShouldConsiderAccessModifier(AccessModifiers accessModifier, Func<Type, bool> check)
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
@@ -28,7 +28,7 @@ public sealed partial class Filtered
 					await That(types).All().Satisfy(type => type.IsInterface && check(type));
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()

@@ -9,7 +9,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNullableFields()
 			{
 				Filtered.Fields fields = In.Type<ClassWithMixedNullableMembers>()
@@ -20,7 +20,7 @@ public sealed partial class FieldFilters
 					.IsEqualTo("nullable fields in type").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldOnlyKeepNullableFields()
 			{
 				Filtered.Fields fields = In.Type<ClassWithMixedNullableMembers>()

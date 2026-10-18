@@ -21,7 +21,7 @@ public sealed partial class MethodFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ByName_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -33,7 +33,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Generic_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -44,7 +44,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Generic_WithName_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -56,7 +56,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactly_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -67,7 +67,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task GenericExactly_WithName_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -79,7 +79,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForMethodsWithOutParameter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -91,7 +91,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeMethodWhenOnlySomeButNotAllParametersAreOutParameters()
 			{
 				Filtered.Methods methods = In.Type<ClassWithOutParameterMethod>()
@@ -101,7 +101,7 @@ public sealed partial class MethodFilters
 				await That(methods).DoesNotContain(PlainMethod());
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotIncludeMethodsWithoutOutParameter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -111,7 +111,7 @@ public sealed partial class MethodFilters
 			}
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task UsingType_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -122,7 +122,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingType_WithName_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -136,7 +136,7 @@ public sealed partial class MethodFilters
 #pragma warning restore CA2263
 
 #pragma warning disable CA2263
-			[Fact]
+			[Test]
 			public async Task UsingTypeExactly_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -147,7 +147,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingTypeExactly_WithName_ShouldIncludeOutModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()

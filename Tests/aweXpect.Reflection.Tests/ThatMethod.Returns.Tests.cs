@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -11,7 +10,7 @@ public sealed partial class ThatMethod
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodDoesNotReturnExpectedType_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -21,7 +20,7 @@ public sealed partial class ThatMethod
 					await That(subject).Returns<string>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             returns string,
@@ -29,7 +28,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -47,7 +46,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsExpectedType_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -60,7 +59,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReturnTypeInheritsFromExpectedType_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
@@ -76,7 +75,7 @@ public sealed partial class ThatMethod
 
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMethodDoesNotReturnExpectedType_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -86,7 +85,7 @@ public sealed partial class ThatMethod
 					await That(subject).Returns(typeof(string));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             returns string,
@@ -94,7 +93,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodInfoIsNull_ShouldFail()
 			{
 				MethodInfo? subject = null;
@@ -112,7 +111,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMethodReturnsExpectedType_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -125,7 +124,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReturnTypeInheritsFromExpectedType_ShouldSucceed()
 			{
 				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
@@ -141,7 +140,7 @@ public sealed partial class ThatMethod
 
 		public sealed class OrReturnsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrReturns_ShouldSupportChaining()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -154,7 +153,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -164,7 +163,7 @@ public sealed partial class ThatMethod
 					await That(subject).Returns<string>().OrReturns<bool>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             returns string or bool,
@@ -172,7 +171,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -188,7 +187,7 @@ public sealed partial class ThatMethod
 
 		public sealed class OrReturnsExactlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithMultipleOrReturns_ShouldSupportChaining()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -201,7 +200,7 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldFail()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -211,7 +210,7 @@ public sealed partial class ThatMethod
 					await That(subject).Returns<string>().OrReturnsExactly<bool>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             returns string or exactly bool,
@@ -219,7 +218,7 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -237,7 +236,7 @@ public sealed partial class ThatMethod
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMethodDoesNotReturnExpectedType_ShouldSucceed()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -250,7 +249,7 @@ public sealed partial class ThatMethod
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodInfoIsNull_ShouldFail()
 				{
 					MethodInfo? subject = null;
@@ -269,7 +268,7 @@ public sealed partial class ThatMethod
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodReturnsExpectedType_ShouldFail()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -279,7 +278,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns<int>());
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not return int,
@@ -288,7 +287,7 @@ public sealed partial class ThatMethod
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenReturnTypeInheritsFromExpectedType_ShouldFail()
 				{
 					MethodInfo subject =
@@ -299,7 +298,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns<BaseClass>());
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not return ThatMethod.BaseClass,
@@ -311,7 +310,7 @@ public sealed partial class ThatMethod
 
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMethodDoesNotReturnExpectedType_ShouldSucceed()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -324,7 +323,7 @@ public sealed partial class ThatMethod
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodInfoIsNull_ShouldFail()
 				{
 					MethodInfo? subject = null;
@@ -343,7 +342,7 @@ public sealed partial class ThatMethod
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodReturnsExpectedType_ShouldFail()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -353,7 +352,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(int)));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not return int,
@@ -362,7 +361,7 @@ public sealed partial class ThatMethod
 						.AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenReturnTypeInheritsFromExpectedType_ShouldFail()
 				{
 					MethodInfo subject =
@@ -373,7 +372,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(BaseClass)));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not return ThatMethod.BaseClass,
@@ -385,7 +384,7 @@ public sealed partial class ThatMethod
 
 			public sealed class OrReturnsTests
 			{
-				[Fact]
+				[Test]
 				public async Task WithMultipleOrReturns_ShouldSupportChaining()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -399,7 +398,7 @@ public sealed partial class ThatMethod
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldSucceed()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -412,7 +411,7 @@ public sealed partial class ThatMethod
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldFail()
 				{
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -422,7 +421,7 @@ public sealed partial class ThatMethod
 						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(string)).OrReturns<int>());
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not return string or int,

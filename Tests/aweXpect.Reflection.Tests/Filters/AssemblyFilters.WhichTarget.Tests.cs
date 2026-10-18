@@ -16,7 +16,7 @@ public sealed partial class AssemblyFilters
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldDescribeTheFilter()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -26,7 +26,7 @@ public sealed partial class AssemblyFilters
 					.IsEqualTo($"in all loaded assemblies targeting equal to \"{CurrentTarget}\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesTargetingTheFramework()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -35,7 +35,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).Contains(typeof(AssemblyFilters).Assembly);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotMatchWhenNoAssemblyTargetsTheFramework()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -44,7 +44,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()

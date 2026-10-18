@@ -10,7 +10,7 @@ public sealed partial class ThatConstructor
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNotStatic_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClassWithStaticMembers).GetConstructors().First(c => !c.IsStatic);
@@ -23,7 +23,7 @@ public sealed partial class ThatConstructor
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNull_ShouldFail()
 			{
 				ConstructorInfo? subject = null;
@@ -41,7 +41,7 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsStatic_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClassWithStaticMembers)
@@ -63,7 +63,7 @@ public sealed partial class ThatConstructor
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsNotStatic_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClassWithStaticMembers).GetConstructors().First(c => !c.IsStatic);
@@ -81,7 +81,7 @@ public sealed partial class ThatConstructor
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenConstructorIsStatic_ShouldSucceed()
 			{
 				ConstructorInfo subject = typeof(TestClassWithStaticMembers)

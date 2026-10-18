@@ -10,9 +10,9 @@ public sealed partial class ThatMethod
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData(1, true)]
-				[InlineData(2, false)]
+				[Test]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
 				public async Task ForMethodWithOneGenericParameter_ShouldSucceedWhenArgumentCountMatches(
 					int argumentCount, bool expectSuccess)
 				{
@@ -32,9 +32,9 @@ public sealed partial class ThatMethod
 						             """);
 				}
 
-				[Theory]
-				[InlineData(1, false)]
-				[InlineData(2, true)]
+				[Test]
+				[Arguments(1, false)]
+				[Arguments(2, true)]
 				public async Task ForMethodWithTwoGenericParameters_ShouldSucceedWhenArgumentCountMatches(
 					int argumentCount, bool expectSuccess)
 				{
@@ -55,7 +55,7 @@ public sealed partial class ThatMethod
 				}
 
 
-				[Fact]
+				[Test]
 				public async Task WhenMethodIsNotGeneric_ShouldFail()
 				{
 					MethodInfo? subject = GetMethod("NonGenericMethod");

@@ -4,7 +4,6 @@ using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
-using Xunit.Sdk;
 
 // These tests intentionally exercise the non-generic DoesNotDependOn(Type) overload (closed generic
 // constructions and array targets), so the "prefer generic overload" hint does not apply here.
@@ -21,7 +20,7 @@ public sealed partial class ThatType
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArrayTargetIsUsed_ShouldMatchElementType()
 			{
 				// The array wrapper is unwrapped on both sides: WithArrayField references TargetA[],
@@ -33,7 +32,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotDependOn(typeof(TargetA[]));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not depend on type TargetA[],
@@ -46,7 +45,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeTypeIsExcludedViaCustomization_ShouldNotCountAsDependency()
 			{
 				// The built-in compiler-emitted attribute set can be extended via customization, e.g. for a
@@ -72,7 +71,7 @@ public sealed partial class ThatType
 				await That(ActOutsideScope).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCompilerEmitsAttributesForAsyncMethod_ShouldNotCountAsDependency()
 			{
 				// An async method makes the compiler emit [AsyncStateMachine(typeof(<M>d__0))] and
@@ -89,7 +88,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCompilerEmitsAttributesForIteratorMethod_ShouldNotCountAsDependency()
 			{
 				// An iterator method makes the compiler emit [IteratorStateMachine(typeof(<M>d__0))];
@@ -104,7 +103,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCompilerEmitsAttributesForRequiredMember_ShouldNotCountAsDependency()
 			{
 				// `required` makes the compiler emit [RequiredMember] on the type and property and
@@ -119,7 +118,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCompilerEmitsParamArrayForParamsParameter_ShouldNotCountAsDependency()
 			{
 				// The `params` keyword compiles into [ParamArray] on the parameter, which the author can
@@ -135,7 +134,7 @@ public sealed partial class ThatType
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenCompilerEmitsPreserveBaseOverridesForCovariantReturn_ShouldNotCountAsDependency()
 			{
 				// A covariant-return override makes the compiler emit [PreserveBaseOverrides]; the
@@ -151,7 +150,7 @@ public sealed partial class ThatType
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenCompilerEmitsStateMachineForAsyncMethod_ShouldNotCountAsDependency()
 			{
 				// The nested <MethodAsync>d__0 state machine lives in the type's own namespace; the
@@ -167,7 +166,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateInfrastructureIsRuntimeSupplied_ShouldNotCountAsDependency()
 			{
 				// The MulticastDelegate base, the (object, IntPtr) constructor and BeginInvoke/EndInvoke
@@ -182,7 +181,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInterfaceIsImplementedOnlyByBaseType_ShouldNotCountAsDependency()
 			{
 				// GetInterfaces() returns the transitive closure: DerivedWithoutOwnReferences inherits
@@ -197,7 +196,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamingFrameworkNamespaceThatIsReferenced_ShouldFail()
 			{
 				Type subject = typeof(FrameworkConsumer);
@@ -207,7 +206,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotDependOn("System.Collections.Generic");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not depend on namespace "System.Collections.Generic",
@@ -220,7 +219,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -235,7 +234,7 @@ public sealed partial class ThatType
 					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyOtherConstructionOfGenericIsReferenced_ShouldSucceed()
 			{
 				// ViaGenericArgument references List<TargetA>; List<TargetB> is a different construction
@@ -250,7 +249,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlySystemReferenceIsImplicitBaseAndNullableAttributes_ShouldSucceed()
 			{
 				// OnlyLayer1's only authored dependency is Layer1.TargetA; the implicit object base type and the
@@ -265,11 +264,11 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(typeof(WithOutParameter))]
-			[InlineData(typeof(WithInParameter))]
-			[InlineData(typeof(WithRefReadonlyParameter))]
-			[InlineData(typeof(WithOptionalParameter))]
+			[Test]
+			[Arguments(typeof(WithOutParameter))]
+			[Arguments(typeof(WithInParameter))]
+			[Arguments(typeof(WithRefReadonlyParameter))]
+			[Arguments(typeof(WithOptionalParameter))]
 			public async Task WhenParameterModifiersSurfaceAsPseudoAttributes_ShouldNotCountAsDependency(Type subject)
 			{
 				// `out`, `in`, `ref readonly` and optional parameters compile into metadata flags which
@@ -284,7 +283,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRecordSynthesizesEquatableInterface_ShouldNotCountAsDependency()
 			{
 				// The compiler synthesizes IEquatable<T> for records; the author never wrote that reference.
@@ -298,9 +297,9 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(typeof(WithStructConstraint<>))]
-			[InlineData(typeof(WithUnmanagedConstraint<>))]
+			[Test]
+			[Arguments(typeof(WithStructConstraint<>))]
+			[Arguments(typeof(WithUnmanagedConstraint<>))]
 			public async Task WhenStructConstraintCompilesIntoValueType_ShouldNotCountAsDependency(Type subject)
 			{
 				// `where T : struct` / `where T : unmanaged` compile into a System.ValueType constraint in
@@ -313,7 +312,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDependsOnNamespace_ShouldFail()
 			{
 				Type subject = typeof(ViaField);
@@ -323,7 +322,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotDependOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on namespace "{Layer1Namespace}",
@@ -336,7 +335,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotDependOnNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -349,7 +348,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotReferenceSpecificType_ShouldSucceed()
 			{
 				Type subject = typeof(ViaField);
@@ -362,7 +361,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeReferencesSpecificType_ShouldFail()
 			{
 				Type subject = typeof(ViaField);
@@ -372,7 +371,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotDependOn<TargetA>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not depend on type TargetA,
@@ -385,7 +384,7 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFailIfAnyMatches()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -395,7 +394,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotDependOn(Layer2Namespace).OrOn(Layer1Namespace);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on namespace "{Layer2Namespace}" or "{Layer1Namespace}",
@@ -412,7 +411,7 @@ public sealed partial class ThatType
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTargetCollectionIsEmpty_ShouldSucceedTrivially()
 			{
 				Type subject = typeof(ViaField);
@@ -425,7 +424,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDependsOnTypeInTargetCollection_ShouldFail()
 			{
 				Type subject = typeof(ViaField);
@@ -435,7 +434,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotDependOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -448,7 +447,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotDependOnAnyTypeInTargetCollection_ShouldSucceed()
 			{
 				Type subject = typeof(OnlyLayer1);
@@ -461,7 +460,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWidenedWithOrOn_ShouldFailIfAnyMatches()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -472,7 +471,7 @@ public sealed partial class ThatType
 						.OrOn(Types.InNamespace(Layer1Namespace));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies or types within namespace "{Layer1Namespace}" in all loaded assemblies,
@@ -489,7 +488,7 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeDependsOnNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ViaField);

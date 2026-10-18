@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreAssignable_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(DerivedClass2));
@@ -23,7 +22,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesAreAssignable_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -39,7 +38,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeIsNotAssignable_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(UnrelatedClass));
@@ -49,7 +48,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreAssignableTo<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.UnrelatedClass]
 					             are all assignable to ThatTypes.BaseClass,
@@ -62,7 +61,7 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAnOpenGeneric_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -84,7 +83,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreAssignable_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(DerivedClass2));
@@ -94,7 +93,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreAssignableTo<BaseClass>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
 					             are not all assignable to ThatTypes.BaseClass,
@@ -114,7 +113,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesAreNotAssignable_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -130,7 +129,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeIsAssignable_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
@@ -143,7 +142,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeIsAssignable_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1));
@@ -153,7 +152,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotAssignableTo<BaseClass>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1]
 					             are all not assignable to ThatTypes.BaseClass,
@@ -169,7 +168,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeIsAssignable_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
@@ -179,7 +178,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotAssignableTo<BaseClass>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
 					             also contain a type assignable to ThatTypes.BaseClass,
@@ -198,7 +197,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreAssignableFromTarget_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(BaseClass), typeof(DerivedClass1));
@@ -211,7 +210,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesAreAssignableFromTarget_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -227,7 +226,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeIsNotAssignableFromTarget_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(BaseClass), typeof(UnrelatedClass));
@@ -237,7 +236,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreAssignableFrom<DerivedClass1>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass, ThatTypes.UnrelatedClass]
 					             are all assignable from ThatTypes.DerivedClass1,
@@ -253,7 +252,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllTypesAreAssignableFromTarget_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(BaseClass), typeof(DerivedClass1));
@@ -263,7 +262,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreAssignableFrom<GrandChildClass>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass, ThatTypes.DerivedClass1]
 					             are not all assignable from ThatTypes.GrandChildClass,
@@ -283,7 +282,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableTypesAreNotAssignableFromTarget_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -299,7 +298,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeIsAssignableFromTarget_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
@@ -312,7 +311,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSomeTypeIsAssignableFromTarget_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(BaseClass));
@@ -322,7 +321,7 @@ public sealed partial class ThatTypes
 					await That(subject).AreNotAssignableFrom<DerivedClass1>();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass]
 					             are all not assignable from ThatTypes.DerivedClass1,
@@ -338,7 +337,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoTypeIsAssignableFromTarget_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
@@ -348,7 +347,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreNotAssignableFrom<DerivedClass1>());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
 					             also contain a type assignable from ThatTypes.DerivedClass1,

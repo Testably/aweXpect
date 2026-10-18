@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -9,7 +8,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterOutEventsThatSatisfyThePredicate()
 			{
 				Filtered.Events events = In.Type<ConcreteEventClass>()
@@ -20,7 +19,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("events except e => e.Name == \"ConcreteEvent\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>().Events()
@@ -31,7 +30,7 @@ public sealed partial class EventFilters
 					await That(events).IsEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that events except _ => throw new InvalidOperationException("boom") in assembly containing type AssemblyFilters
 					             is empty,

@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Internal.Tests.Formatting;
 
 public class MethodFormatterTests
 {
-	[Fact]
+	[Test]
 	public async Task GenericMethodWithParameterAndReturnValue_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo =
@@ -20,7 +20,7 @@ public class MethodFormatterTests
 				"T1 MethodFormatterTests.MyTestClass.MyGenericMethodWithParameterAndReturnValue<T1, T2>(MethodFormatterTests.MyTestClass p1, T2 p2)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenericMethodWithReturnValue_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyGenericMethodWithReturnValue));
@@ -33,7 +33,7 @@ public class MethodFormatterTests
 				"T MethodFormatterTests.MyTestClass.MyGenericMethodWithReturnValue<T>()");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOneParameter_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithOneParameter));
@@ -44,7 +44,7 @@ public class MethodFormatterTests
 		await That(result).IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithOneParameter(int parameter1)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutParameters_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyParameterlessMethod));
@@ -55,7 +55,7 @@ public class MethodFormatterTests
 		await That(result).IsEqualTo("void MethodFormatterTests.MyTestClass.MyParameterlessMethod()");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutParameters_WithReturnValue_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo =
@@ -67,7 +67,7 @@ public class MethodFormatterTests
 		await That(result).IsEqualTo("int MethodFormatterTests.MyTestClass.MyParameterlessMethodWithReturnValue()");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithParameters_WithReturnValue_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo =
@@ -81,7 +81,7 @@ public class MethodFormatterTests
 				"string MethodFormatterTests.MyTestClass.MyMethodWithParametersAndReturnValue(string p1, int p2 = 42)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithParametersWithDefaultValues_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithDefaultValues));
@@ -94,7 +94,7 @@ public class MethodFormatterTests
 				"void MethodFormatterTests.MyTestClass.MyMethodWithDefaultValues(string p1 = \"foo\", int p2 = 42)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTwoParameters_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithTwoParameters));

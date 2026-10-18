@@ -13,7 +13,7 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesAreNotStrongNamed_ShouldSucceed()
 			{
 				IEnumerable<Assembly?> subject = new[]
@@ -29,7 +29,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainStrongNamedAssemblies_ShouldFail()
 			{
 				IEnumerable<Assembly?> subject = new[]
@@ -58,7 +58,7 @@ public sealed partial class ThatAssemblies
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesAreNotStrongNamed_ShouldFail()
 			{
 				IEnumerable<Assembly?> subject = new[]
@@ -84,7 +84,7 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainStrongNamedAssemblies_ShouldSucceed()
 			{
 				IEnumerable<Assembly?> subject = new[]
@@ -104,7 +104,7 @@ public sealed partial class ThatAssemblies
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAssembliesAreNotStrongNamed_ShouldSucceed()
 			{
 				IAsyncEnumerable<Assembly?> subject = new[]
@@ -120,7 +120,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainStrongNamedAssemblies_ShouldFail()
 			{
 				IAsyncEnumerable<Assembly?> subject = new[]

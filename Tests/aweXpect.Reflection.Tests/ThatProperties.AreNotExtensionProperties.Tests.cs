@@ -11,7 +11,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreNonExtensionProperties_Negated_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(ClassWithRequiredMembers)
@@ -35,7 +35,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreNonExtensionProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(ClassWithRequiredMembers)
@@ -53,7 +53,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllPropertiesAreNonExtensionProperties_ShouldSucceed()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = typeof(ClassWithRequiredMembers)
@@ -73,7 +73,7 @@ public sealed partial class ThatProperties
 #if NET10_0_OR_GREATER
 		public sealed class NewSyntaxTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllAreExtensionProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject =
@@ -100,7 +100,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContainingARegularProperty_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject =

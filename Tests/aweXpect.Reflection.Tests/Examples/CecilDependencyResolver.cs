@@ -115,7 +115,7 @@ public static class CecilDependencyResolver
 			reference = specification.ElementType;
 		}
 
-		if (reference is GenericParameter)
+		if (reference is Mono.Cecil.GenericParameter)
 		{
 			yield break;
 		}

@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using Xunit.Sdk;
+using TUnit.Core.Exceptions;
 
 namespace aweXpect.Reflection.Tests;
 
 public sealed class CollectionConstraintTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenCanceled_ShouldNotBeVerified()
 	{
 		using CancellationTokenSource cts = new();
@@ -19,7 +19,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).HaveNamespace("Foo").WithCancellation(cts.Token);
 		}
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             all have namespace equal to "Foo",
@@ -27,7 +27,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombinedWithAnd_ShouldEnumerateTheSubjectOnlyOnce()
 	{
 		int enumerations = 0;
@@ -46,7 +46,7 @@ public sealed class CollectionConstraintTests
 			.Because("all expectations on the subject share one materialized copy of it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombinedWithAnd_ShouldNotRepeatTheSubject()
 	{
 		IEnumerable<Type?> subject = [typeof(string), typeof(int),];
@@ -56,7 +56,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).AreAbstract().And.AreInterfaces();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are all abstract and are all interfaces,
@@ -70,7 +70,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombinedWithOr_ShouldNotRepeatTheSubject()
 	{
 		IEnumerable<Type?> subject = [typeof(string), typeof(int),];
@@ -80,7 +80,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).AreAbstract().Or.AreInterfaces();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are all abstract or are all interfaces,
@@ -94,7 +94,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegatedAndCombinedWithAnd_ShouldNotRepeatTheSubject()
 	{
 		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.Clone))!,];
@@ -104,7 +104,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).DoesNotComplyWith(they => they.ArePublic().And.AreNotPrivate());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             not all are public or at least one is private,
@@ -117,7 +117,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegatedAndCombinedWithOr_ShouldStartWithTheSubject()
 	{
 		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.Clone))!,];
@@ -127,7 +127,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).DoesNotComplyWith(they => they.ArePublic().Or.AreNotPrivate());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             not all are public and at least one is private,
@@ -140,7 +140,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsNull_ShouldFail()
 	{
 		IEnumerable<Type?>? subject = null;
@@ -150,7 +150,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).AreSealed();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are all sealed,
@@ -158,7 +158,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsNull_ShouldUseThePluralVerb()
 	{
 		Holder subject = new(null!);
@@ -168,7 +168,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).Whose(h => h.Types, t => t.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose Types are all sealed,
@@ -176,7 +176,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsNull_ShouldFailForDependencyCycles()
 	{
 		IEnumerable<Type?>? subject = null;
@@ -186,7 +186,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).HaveNoDependencyCycles();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             have no dependency cycles,
@@ -194,7 +194,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsNull_ShouldFailWhenNegated()
 	{
 		IEnumerable<Type?>? subject = null;
@@ -204,7 +204,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).DoesNotComplyWith(they => they.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are not all sealed,
@@ -213,7 +213,7 @@ public sealed class CollectionConstraintTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenAsyncSubjectIsCanceled_ShouldNotBeVerified()
 	{
 		using CancellationTokenSource cts = new();
@@ -225,7 +225,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).AreSealed().WithCancellation(cts.Token);
 		}
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             are all sealed,
@@ -233,7 +233,7 @@ public sealed class CollectionConstraintTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncSubjectIsCombinedWithAnd_ShouldEnumerateTheSubjectOnlyOnce()
 	{
 		int enumerations = 0;
@@ -253,7 +253,7 @@ public sealed class CollectionConstraintTests
 			.Because("all expectations on the subject share one materialized copy of it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncSubjectIsNull_ShouldFailWhenNegated()
 	{
 		IAsyncEnumerable<Type?>? subject = null;
@@ -263,7 +263,7 @@ public sealed class CollectionConstraintTests
 			await That(subject).DoesNotComplyWith(they => they.AreSealed());
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             are not all sealed,

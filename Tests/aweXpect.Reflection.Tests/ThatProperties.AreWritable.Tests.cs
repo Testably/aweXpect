@@ -11,7 +11,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyWritableProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithReadWriteProperties)
@@ -25,7 +25,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNotWritableProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithReadWriteProperties)
@@ -52,7 +52,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyWritableProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithReadWriteProperties)
@@ -76,7 +76,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNotWritableProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithReadWriteProperties)

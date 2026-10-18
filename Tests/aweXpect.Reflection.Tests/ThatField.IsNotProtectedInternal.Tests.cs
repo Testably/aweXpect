@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,12 +8,12 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("ProtectedField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
-			[InlineData("InternalField")]
-			[InlineData("PrivateProtectedField")]
+			[Test]
+			[Arguments("ProtectedField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
+			[Arguments("InternalField")]
+			[Arguments("PrivateProtectedField")]
 			public async Task WhenFieldInfoIsNotProtectedInternal_ShouldSucceed(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -27,7 +26,7 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsNull_ShouldFail()
 			{
 				FieldInfo? subject = null;
@@ -45,7 +44,7 @@ public sealed partial class ThatField
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsProtectedInternal_ShouldFail()
 			{
 				FieldInfo? subject = GetField("ProtectedInternalField");
@@ -55,7 +54,7 @@ public sealed partial class ThatField
 					await That(subject).IsNotProtectedInternal();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not protected internal,
@@ -66,12 +65,12 @@ public sealed partial class ThatField
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("InternalField")]
-			[InlineData("ProtectedField")]
-			[InlineData("PublicField")]
-			[InlineData("PrivateField")]
-			[InlineData("PrivateProtectedField")]
+			[Test]
+			[Arguments("InternalField")]
+			[Arguments("ProtectedField")]
+			[Arguments("PublicField")]
+			[Arguments("PrivateField")]
+			[Arguments("PrivateProtectedField")]
 			public async Task WhenFieldInfoIsNotProtectedInternal_ShouldFail(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -81,7 +80,7 @@ public sealed partial class ThatField
 					await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is protected internal,
@@ -89,7 +88,7 @@ public sealed partial class ThatField
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFieldInfoIsProtectedInternal_ShouldSucceed()
 			{
 				FieldInfo? subject = GetField("ProtectedInternalField");

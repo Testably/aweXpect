@@ -6,7 +6,7 @@ public sealed partial class Filtered
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task Types_FromConstructors_ShouldHaveExpectedDescription()
 			{
 				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>()
@@ -20,7 +20,7 @@ public sealed partial class Filtered
 						"declaring types of constructors in types in assembly containing type Filtered.Types.Tests");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Types_FromEvents_ShouldHaveExpectedDescription()
 			{
 				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>()
@@ -33,7 +33,7 @@ public sealed partial class Filtered
 					.IsEqualTo("declaring types of events in types in assembly containing type Filtered.Types.Tests");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Types_FromFields_ShouldHaveExpectedDescription()
 			{
 				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>()
@@ -46,7 +46,7 @@ public sealed partial class Filtered
 					.IsEqualTo("declaring types of fields in types in assembly containing type Filtered.Types.Tests");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Types_FromMethods_ShouldHaveExpectedDescription()
 			{
 				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>()
@@ -59,7 +59,7 @@ public sealed partial class Filtered
 					.IsEqualTo("declaring types of methods in types in assembly containing type Filtered.Types.Tests");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Types_FromProperties_ShouldHaveExpectedDescription()
 			{
 				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>()
@@ -73,7 +73,7 @@ public sealed partial class Filtered
 						"declaring types of properties in types in assembly containing type Filtered.Types.Tests");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Types_InAssembly_ShouldHaveExpectedDescription()
 			{
 				Reflection.Collections.Filtered.Types types = In.AssemblyContaining<Tests>().Types();

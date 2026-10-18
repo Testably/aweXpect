@@ -9,7 +9,7 @@ public sealed partial class ConstructorFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonObsoleteConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<ClassWithObsoleteMembers>()

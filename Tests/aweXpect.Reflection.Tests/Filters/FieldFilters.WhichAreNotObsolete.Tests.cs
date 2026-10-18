@@ -9,7 +9,7 @@ public sealed partial class FieldFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldAllowFilteringForNonObsoleteFields()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<ClassWithObsoleteMembers>()

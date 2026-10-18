@@ -9,7 +9,7 @@ public sealed partial class EventFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithName()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -21,7 +21,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -33,7 +33,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -45,7 +45,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -56,7 +56,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("events with name ending with \"EventToVerifyTheNameOfIt\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -67,7 +67,7 @@ public sealed partial class EventFilters
 					.IsEqualTo("events with name matching \"*EventToVerifyTheNameOf*\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -81,7 +81,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -96,7 +96,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()
@@ -111,7 +111,7 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportUsingCustomComparer()
 			{
 				Filtered.Events events = In.Type<SomeClassToVerifyTheEventNameOfIt>()

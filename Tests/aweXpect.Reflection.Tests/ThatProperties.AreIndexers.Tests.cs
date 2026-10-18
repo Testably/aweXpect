@@ -13,7 +13,7 @@ public sealed partial class ThatProperties
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesAreAllIndexers_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithOnlyIndexers)
@@ -27,7 +27,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonIndexerProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithIndexers)
@@ -54,7 +54,7 @@ public sealed partial class ThatProperties
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesAreAllIndexers_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithOnlyIndexers)
@@ -78,7 +78,7 @@ public sealed partial class ThatProperties
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonIndexerProperties_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithIndexers)
@@ -96,7 +96,7 @@ public sealed partial class ThatProperties
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesAreAllIndexers_ShouldSucceed()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = typeof(TestClassWithOnlyIndexers)
@@ -111,7 +111,7 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertiesContainNonIndexerProperties_ShouldFail()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = typeof(TestClassWithIndexers)

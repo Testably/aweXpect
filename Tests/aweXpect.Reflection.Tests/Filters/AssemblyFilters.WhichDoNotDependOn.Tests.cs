@@ -9,7 +9,7 @@ public sealed partial class AssemblyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForAssembliesWithoutDependency()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -21,7 +21,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have no dependency on assembly equal to \"NonExistentAssembly\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -30,7 +30,7 @@ public sealed partial class AssemblyFilters
 				await That(assemblies).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -42,7 +42,7 @@ public sealed partial class AssemblyFilters
 						"in assembly containing type PublicAbstractClass which have no dependency on assembly equal to \"NONEXISTENT\" ignoring case");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAssemblyHasTheDependency_ShouldBeFilteredOut()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()

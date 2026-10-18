@@ -1,5 +1,5 @@
-﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +9,7 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAStruct_ShouldSucceed()
 			{
 				Type subject = typeof(PublicStruct);
@@ -22,8 +22,8 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[MemberData(nameof(NonStructType))]
+			[Test]
+			[MethodDataSource(nameof(NonStructType))]
 			public async Task WhenTypeIsNotAStruct_ShouldFail(Type? subject, string name)
 			{
 				async Task Act()
@@ -39,7 +39,7 @@ public sealed partial class ThatType
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
 				Type? subject = null;
@@ -57,32 +57,20 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type?, string> NonStructType() => new()
+			public static IEnumerable<(Type?, string)> NonStructType() => new List<(Type?, string)>
 			{
-				{
-					null, "<null>"
-				},
-				{
-					typeof(PublicClass), "class PublicClass"
-				},
-				{
-					typeof(IPublicInterface), "interface IPublicInterface"
-				},
-				{
-					typeof(PublicEnum), "enum PublicEnum"
-				},
-				{
-					typeof(PublicRecord), "record PublicRecord"
-				},
-				{
-					typeof(PublicRecordStruct), "record struct PublicRecordStruct"
-				},
+				(null, "<null>"),
+				(typeof(PublicClass), "class PublicClass"),
+				(typeof(IPublicInterface), "interface IPublicInterface"),
+				(typeof(PublicEnum), "enum PublicEnum"),
+				(typeof(PublicRecord), "record PublicRecord"),
+				(typeof(PublicRecordStruct), "record struct PublicRecordStruct"),
 			};
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsAStruct_ShouldFail()
 			{
 				Type subject = typeof(PublicStruct);
@@ -92,7 +80,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.IsAStruct());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not a struct,
@@ -100,8 +88,8 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			[Theory]
-			[MemberData(nameof(NonStructTypeForNegated))]
+			[Test]
+			[MethodDataSource(nameof(NonStructTypeForNegated))]
 			public async Task WhenTypeIsNotAStruct_ShouldSucceed(Type subject)
 			{
 				async Task Act()
@@ -112,7 +100,7 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<Type> NonStructTypeForNegated() => new()
+			public static IEnumerable<Type> NonStructTypeForNegated() => new List<Type>
 			{
 				typeof(PublicClass),
 				typeof(IPublicInterface),
@@ -120,23 +108,13 @@ public sealed partial class ThatType
 				typeof(PublicRecord),
 			};
 
-			public static TheoryData<Type?, string> NonStructType() => new()
+			public static IEnumerable<(Type?, string)> NonStructType() => new List<(Type?, string)>
 			{
-				{
-					null, "<null>"
-				},
-				{
-					typeof(PublicClass), "class PublicClass"
-				},
-				{
-					typeof(IPublicInterface), "interface IPublicInterface"
-				},
-				{
-					typeof(PublicEnum), "enum PublicEnum"
-				},
-				{
-					typeof(PublicRecord), "record PublicRecord"
-				},
+				(null, "<null>"),
+				(typeof(PublicClass), "class PublicClass"),
+				(typeof(IPublicInterface), "interface IPublicInterface"),
+				(typeof(PublicEnum), "enum PublicEnum"),
+				(typeof(PublicRecord), "record PublicRecord"),
 			};
 		}
 	}

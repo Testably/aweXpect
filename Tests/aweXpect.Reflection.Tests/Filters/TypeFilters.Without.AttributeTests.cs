@@ -8,7 +8,7 @@ public sealed partial class TypeFilters
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithoutAttribute()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -21,7 +21,7 @@ public sealed partial class TypeFilters
 					.IsEqualTo("types without TypeFilters.Without.AttributeTests.BarAttribute").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithoutAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

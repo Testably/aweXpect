@@ -9,7 +9,7 @@ public sealed partial class PropertyFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldFilterForTypesWithName()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -22,7 +22,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -34,7 +34,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -46,7 +46,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsSuffix()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -57,7 +57,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("properties with name ending with \"PropertyToVerifyTheNameOfIt\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -68,7 +68,7 @@ public sealed partial class PropertyFilters
 					.IsEqualTo("properties with name matching \"*PropertyToVerifyTheNameOf*\" in").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -82,7 +82,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -97,7 +97,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
@@ -112,7 +112,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportUsingCustomComparer()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()

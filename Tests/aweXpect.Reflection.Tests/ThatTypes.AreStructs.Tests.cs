@@ -1,6 +1,5 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -10,7 +9,7 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonStructTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStructs>().Types();
@@ -33,7 +32,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStructs_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStructs>().Types()
@@ -50,7 +49,7 @@ public sealed partial class ThatTypes
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAssembliesContainNonStructTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStructs>().Types();
@@ -63,7 +62,7 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilteringOnlyStructs_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStructs>().Types()
@@ -74,7 +73,7 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.AreStructs());
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum in assembly containing type ThatTypes.AreStructs
 					             are not all structs,
