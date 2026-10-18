@@ -17,8 +17,8 @@ public static partial class ThatXDocument
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XDocument?, IThat<XDocument?>> MatchesExactly(
-		this IThat<XDocument?> source,
+		this IThat<XDocument?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> MatchesXmlConstraint<XDocument>.Add(source, expected, true, document => document.Root, options);
+		=> MatchesXmlConstraint<XDocument>.Add(subject, expected, true, document => document.Root, options);
 }

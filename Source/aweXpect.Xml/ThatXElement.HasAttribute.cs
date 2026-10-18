@@ -22,13 +22,13 @@ public static partial class ThatXElement
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> HasAttribute(
-		this IThat<XElement?> source,
+		this IThat<XElement?> subject,
 		XName name)
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<XElement?, IThat<XElement?>>(source.Get().ExpectationBuilder.AddConstraint(name,
+		return new AndOrResult<XElement?, IThat<XElement?>>(subject.Get().ExpectationBuilder.AddConstraint(name,
 				static (name, it, grammars) => CreateHasAttributeConstraint(it, grammars, name)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -42,13 +42,13 @@ public static partial class ThatXElement
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> HasAttribute(
-		this IThat<XElement?> source,
+		this IThat<XElement?> subject,
 		XName name,
 		Action<IThat<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder.AddConstraint(name,
 			static (name, it, grammars) => CreateHasAttributeConstraint(it, grammars, name));
 		expectationBuilder
@@ -56,7 +56,7 @@ public static partial class ThatXElement
 					$"value of attribute {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" whose value "))
 			.AddExpectations(e => expectations(new ThatSubject<string?>(e)));
-		return new AndOrResult<XElement?, IThat<XElement?>>(expectationBuilder, source);
+		return new AndOrResult<XElement?, IThat<XElement?>>(expectationBuilder, subject);
 	}
 
 	/// <summary>
@@ -67,13 +67,13 @@ public static partial class ThatXElement
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> DoesNotHaveAttribute(
-		this IThat<XElement?> source,
+		this IThat<XElement?> subject,
 		XName name)
 	{
 		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<XElement?, IThat<XElement?>>(source.Get().ExpectationBuilder.AddConstraint(name,
+		return new AndOrResult<XElement?, IThat<XElement?>>(subject.Get().ExpectationBuilder.AddConstraint(name,
 				static (name, it, grammars) => CreateHasAttributeConstraint(it, grammars, name).Invert()),
-			source);
+			subject);
 	}
 
 	private static HasNodeConstraint<XAttribute> CreateHasAttributeConstraint(string it,

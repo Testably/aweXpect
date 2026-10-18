@@ -16,8 +16,8 @@ public static partial class ThatXmlString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidXmlMatching(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> source.IsValidXml().Which(root => root.Matches(expected, options));
+		=> subject.IsValidXml().Which(root => root.Matches(expected, options));
 }

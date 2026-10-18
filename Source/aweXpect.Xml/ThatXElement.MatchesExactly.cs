@@ -17,8 +17,8 @@ public static partial class ThatXElement
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> MatchesExactly(
-		this IThat<XElement?> source,
+		this IThat<XElement?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> MatchesXmlConstraint<XElement>.Add(source, expected, true, element => element, options);
+		=> MatchesXmlConstraint<XElement>.Add(subject, expected, true, element => element, options);
 }

@@ -26,10 +26,10 @@ public static partial class ThatXmlString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static XmlWhichResult IsValidXml(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsValidXmlConstraint(it, grammars)),
-			source);
+			subject);
 
 	private sealed class IsValidXmlConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
