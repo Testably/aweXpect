@@ -1,7 +1,6 @@
-[assembly: System.Reflection.AssemblyMetadata("IsTrimmable", "True")]
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Web.git")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(@"aweXpect.Web.Internal.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100bd818c7b1f408c9cae5e376d754fadbead7aa6046aaf3f4911a9c032c2ca4ccd46d6d2d5c9158a15a8639f34d6bfafc236c19e9158dd8fce375c43069256487d9be2dc05ab53fb90e3e9d8241c0ff0f70133bd74e88683ff1317b1b09ae6fd6ddc6fba1454e9d5487a97af791dd5fc73383f194b3be6e441e878a8691a1518e1")]
-[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("aweXpect.Web.Internal.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100bd818c7b1f408c9cae5e376d754fadbead7aa6046aaf3f4911a9c032c2ca4ccd46d6d2d5c9158a15a8639f34d6bfafc236c19e9158dd8fce375c43069256487d9be2dc05ab53fb90e3e9d8241c0ff0f70133bd74e88683ff1317b1b09ae6fd6ddc6fba1454e9d5487a97af791dd5fc73383f194b3be6e441e878a8691a1518e1")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName = ".NET Standard 2.0")]
 namespace aweXpect
 {
     public static class ThatHttpRequestMessage
@@ -34,14 +33,13 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string? type = null) { }
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage>> expectations) { }
-        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
+        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
     }
     public static class ThatIPAddress
     {
-        public static TSelf IgnoringIPv4MappedToIPv6<TSelf>(this aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> result)
-            where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> { }
+        public static TSelf IgnoringIPv4MappedToIPv6<TSelf>(this aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> result) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, System.Net.IPAddress?> { }
         public static aweXpect.Results.ObjectEqualityResult<System.Net.IPAddress?, aweXpect.Core.IThat<System.Net.IPAddress?>, System.Net.IPAddress?> IsEqualTo(this aweXpect.Core.IThat<System.Net.IPAddress?> subject, System.Net.IPAddress? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.IPAddress, aweXpect.Core.IThat<System.Net.IPAddress?>> IsIPv4(this aweXpect.Core.IThat<System.Net.IPAddress?> source) { }
@@ -76,9 +74,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPath(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.PropertyResult.Int<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.Int<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasPort(this aweXpect.Core.IThat<System.Uri?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.HasQueryParameterValueResult HasQueryParameter(this aweXpect.Core.IThat<System.Uri?> source, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -109,32 +107,42 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsUnc(this aweXpect.Core.IThat<System.Uri?> source) { }
     }
 }
+namespace aweXpect.Web
+{
+    public static class WebAwexpectCustomizationExtensions
+    {
+        public static aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public class WebCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
+        }
+    }
+}
 namespace aweXpect.Web.ContentProcessors
 {
     public class BinaryContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
     {
         public BinaryContentProcessor() { }
-        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
     }
     public interface IContentProcessor
     {
-        System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default);
+        System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
     public class JsonContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
     {
         public JsonContentProcessor() { }
-        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
     }
     public class StringContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
     {
         public StringContentProcessor() { }
-        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
     }
 }
 namespace aweXpect.Web.Results
 {
-    public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
-        where TType :  class
+    public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat> where TType : class
     {
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
@@ -193,16 +201,8 @@ namespace aweXpect.Web.Results
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }
     }
-    public class StringCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.StringCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions { }
-}
-namespace aweXpect.Web
-{
-    public static class WebAwexpectCustomizationExtensions
+    public class StringCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.StringCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
     {
-        public static aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
-        public class WebCustomization
-        {
-            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
-        }
     }
 }
+
