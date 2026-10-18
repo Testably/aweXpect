@@ -258,6 +258,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -303,7 +309,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -352,7 +359,8 @@ window.BENCHMARK_DATA = {
           13598.723541259766,
           13293.002032688686,
           13028.998110257662,
-          12862.62845502581
+          12862.62845502581,
+          13078.860998300406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -401,6 +409,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -463,7 +472,8 @@ window.BENCHMARK_DATA = {
           364686.4015625,
           371310.4979073661,
           384593.88033854164,
-          365759.53229166666
+          365759.53229166666,
+          378726.658203125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -510,6 +520,7 @@ window.BENCHMARK_DATA = {
           590292,
           590289,
           590226,
+          590292,
           590292,
           590292,
           590292,
@@ -574,7 +585,8 @@ window.BENCHMARK_DATA = {
           19253.25876726423,
           19835.15870259603,
           18673.556202479773,
-          19867.741934640067
+          19867.741934640067,
+          19476.343237740653
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -586,6 +598,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -858,6 +871,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -896,7 +915,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -938,7 +958,8 @@ window.BENCHMARK_DATA = {
           264.1281935373942,
           291.1105140686035,
           279.0935493151347,
-          355.5725875582014
+          355.5725875582014,
+          322.74195261001586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -950,6 +971,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1035,7 +1057,8 @@ window.BENCHMARK_DATA = {
           474.7976480892726,
           511.89917073931014,
           505.37972558339436,
-          497.0958563940866
+          497.0958563940866,
+          529.9933479944865
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1047,6 +1070,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1132,7 +1156,8 @@ window.BENCHMARK_DATA = {
           393.373293363131,
           386.25254176457724,
           391.07301743825275,
-          385.5124645551046
+          385.5124645551046,
+          406.87674010594685
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1144,6 +1169,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -1194,12 +1220,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "75406bf0523ab761f42b1ce387c81eede7daf1e6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
-        "message": "chore: ship the v3.0.0 API (#1779)"
-      },
       {
         "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
         "author": "Valentin Breu\u00DF",
@@ -1493,10 +1513,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
-      "75406bf0",
       "fa595d47",
       "5cf6a80d",
       "29e1127b",
@@ -1545,14 +1570,14 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          119.91555163065593,
           78.89571855862935,
           134.65263926188152,
           143.54727857907613,
@@ -1601,7 +1626,8 @@ window.BENCHMARK_DATA = {
           141.64324133736747,
           148.05791873931884,
           149.93918204307556,
-          140.2068783726011
+          140.2068783726011,
+          161.60591311454772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1626,7 +1652,6 @@ window.BENCHMARK_DATA = {
           544,
           544,
           544,
-          544,
           512,
           512,
           512,
@@ -1652,6 +1677,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -1677,7 +1703,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          191.88036661148072,
           126.45058309237162,
           216.3354002067021,
           244.9393288067409,
@@ -1726,7 +1751,8 @@ window.BENCHMARK_DATA = {
           240.3306016581399,
           257.29163605826244,
           264.8336030755724,
-          243.76245431900026
+          243.76245431900026,
+          286.6294759114583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1802,7 +1828,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          196.27047096888225,
           122.47751767294747,
           212.70499805041723,
           233.72915994326274,
@@ -1851,7 +1876,8 @@ window.BENCHMARK_DATA = {
           232.143625497818,
           249.62575272151403,
           260.77045140947615,
-          235.39764664854323
+          235.39764664854323,
+          258.0334241549174
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2184,6 +2210,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -2229,7 +2261,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -2278,7 +2311,8 @@ window.BENCHMARK_DATA = {
           271.1075716018677,
           266.4064359664917,
           279.3268327372415,
-          272.4847080890949
+          272.4847080890949,
+          278.28946362222945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2297,6 +2331,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -2389,7 +2424,8 @@ window.BENCHMARK_DATA = {
           502.1813769658407,
           500.3217079456036,
           547.2152682622274,
-          508.1154750415257
+          508.1154750415257,
+          574.1820855458577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2401,6 +2437,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -2500,7 +2537,8 @@ window.BENCHMARK_DATA = {
           327.125620396932,
           333.9159442901611,
           335.30863270392786,
-          321.5823990821838
+          321.5823990821838,
+          361.7181162516276
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2512,6 +2550,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -2569,12 +2608,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "75406bf0523ab761f42b1ce387c81eede7daf1e6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
-        "message": "chore: ship the v3.0.0 API (#1779)"
-      },
       {
         "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
         "author": "Valentin Breu\u00DF",
@@ -2868,10 +2901,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
-      "75406bf0",
       "fa595d47",
       "5cf6a80d",
       "29e1127b",
@@ -2920,14 +2958,14 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          503.2129665374756,
           345.8838263193766,
           595.3918642316546,
           658.5875039418538,
@@ -2976,7 +3014,8 @@ window.BENCHMARK_DATA = {
           649.1604520161947,
           662.2252889046302,
           660.4853057861328,
-          622.7298948923747
+          622.7298948923747,
+          652.8914207730975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3001,7 +3040,6 @@ window.BENCHMARK_DATA = {
           896,
           896,
           896,
-          896,
           864,
           864,
           864,
@@ -3030,6 +3068,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -3052,7 +3091,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1033.9537096659342,
           731.7685546875,
           1130.4489125569662,
           1426.0169359353872,
@@ -3101,7 +3139,8 @@ window.BENCHMARK_DATA = {
           1303.84288520813,
           1353.119752747672,
           1376.7663205010551,
-          1347.4229647318523
+          1347.4229647318523,
+          1445.2597924550375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3177,7 +3216,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          517.6308202062335,
           343.8891352585384,
           580.1355312892368,
           629.9172812143962,
@@ -3226,7 +3264,8 @@ window.BENCHMARK_DATA = {
           622.0333005360195,
           628.4520183290754,
           670.4638763427735,
-          639.2498232977731
+          639.2498232977731,
+          712.5726316315787
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3303,12 +3342,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "75406bf0523ab761f42b1ce387c81eede7daf1e6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
-        "message": "chore: ship the v3.0.0 API (#1779)"
-      },
-      {
         "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
@@ -3601,10 +3634,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
-      "75406bf0",
       "fa595d47",
       "5cf6a80d",
       "29e1127b",
@@ -3653,14 +3691,14 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          788.6019387563069,
           562.4833726565043,
           920.6372468130929,
           1007.0624073028564,
@@ -3709,7 +3747,8 @@ window.BENCHMARK_DATA = {
           619.0734684626261,
           636.2824704306466,
           657.7209793499538,
-          631.057880946568
+          631.057880946568,
+          677.5070477167766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3734,7 +3773,6 @@ window.BENCHMARK_DATA = {
           1304,
           1304,
           1304,
-          1304,
           912,
           912,
           912,
@@ -3763,6 +3801,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -3785,7 +3824,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15811.865844726562,
           10708.345770263672,
           23787.845112391882,
           26538.971545410157,
@@ -3834,7 +3872,8 @@ window.BENCHMARK_DATA = {
           27846.110729980468,
           26881.503814697266,
           28057.280844116212,
-          27349.810815429686
+          27349.810815429686,
+          28016.518092854818
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3850,7 +3889,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -3888,6 +3926,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -3910,7 +3949,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          596.6405504090445,
           401.6827799592699,
           709.1366493361337,
           781.367879931132,
@@ -3959,7 +3997,8 @@ window.BENCHMARK_DATA = {
           768.9006327220371,
           783.0848929087321,
           806.8213864008586,
-          779.9427339113676
+          779.9427339113676,
+          842.2364781061808
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4036,12 +4075,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "75406bf0523ab761f42b1ce387c81eede7daf1e6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
-        "message": "chore: ship the v3.0.0 API (#1779)"
-      },
-      {
         "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 10 12:27:33 2026 \u002B0200",
@@ -4334,10 +4367,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
-      "75406bf0",
       "fa595d47",
       "5cf6a80d",
       "29e1127b",
@@ -4386,14 +4424,14 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          521.4267307428213,
           369.14770089662994,
           712.0842841466268,
           759.7327707926432,
@@ -4442,7 +4480,8 @@ window.BENCHMARK_DATA = {
           713.779235294887,
           717.6700445810953,
           741.8510872295925,
-          718.6065295083182
+          718.6065295083182,
+          743.359841855367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4467,7 +4506,6 @@ window.BENCHMARK_DATA = {
           1840,
           1840,
           1840,
-          1840,
           1848,
           1848,
           1848,
@@ -4498,6 +4536,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -4518,7 +4557,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          50964.05476888021,
           27934.408272879464,
           75639.69289456881,
           86196.58836669922,
@@ -4567,7 +4605,8 @@ window.BENCHMARK_DATA = {
           82598.69792683919,
           83440.01062011719,
           83792.33763020833,
-          83819.09399414062
+          83819.09399414062,
+          84165.29250895182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4580,7 +4619,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5256,
-          5256,
           5252,
           5252,
           5252,
@@ -4621,6 +4659,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -4643,12 +4682,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "75406bf0523ab761f42b1ce387c81eede7daf1e6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 10 12:26:40 2026 \u002B0200",
-        "message": "chore: ship the v3.0.0 API (#1779)"
-      },
       {
         "sha": "fa595d4790a49f64d5cf9e958b216ba40f17c5ad",
         "author": "Valentin Breu\u00DF",
@@ -4942,10 +4975,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
-      "75406bf0",
       "fa595d47",
       "5cf6a80d",
       "29e1127b",
@@ -4994,14 +5032,14 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          193.56110445658365,
           127.1776643594106,
           216.63132432790903,
           202.07457439104715,
@@ -5050,7 +5088,8 @@ window.BENCHMARK_DATA = {
           174.70611706801824,
           171.95323034695215,
           198.55873828274864,
-          170.23206879411424
+          170.23206879411424,
+          190.90183219909667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5064,7 +5103,6 @@ window.BENCHMARK_DATA = {
         "data": [
           688,
           688,
-          688,
           584,
           584,
           584,
@@ -5076,6 +5114,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -5126,7 +5165,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15129.55615234375,
           9928.43082784017,
           30163.22892543248,
           32356.10744628906,
@@ -5175,7 +5213,8 @@ window.BENCHMARK_DATA = {
           31428.427734375,
           31346.55486188616,
           32983.70612880162,
-          31628.678564453126
+          31628.678564453126,
+          31701.20968424479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5188,7 +5227,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5615,
-          5615,
           5614,
           5614,
           5614,
@@ -5228,6 +5266,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -5251,7 +5290,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          183.17132539749144,
           119.09006812022282,
           219.57049543062845,
           245.98374554316203,
@@ -5300,7 +5338,8 @@ window.BENCHMARK_DATA = {
           234.0013231890542,
           257.14557699056775,
           257.1986229760306,
-          238.066664321082
+          238.066664321082,
+          262.90732596715293
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5633,6 +5672,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -5678,7 +5723,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -5727,7 +5773,8 @@ window.BENCHMARK_DATA = {
           361.50086283683777,
           363.08627436711237,
           422.8749184926351,
-          368.0601483491751
+          368.0601483491751,
+          377.8559081395467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5775,6 +5822,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -5838,7 +5886,8 @@ window.BENCHMARK_DATA = {
           377.5147665977478,
           388.9661487170628,
           391.9173193613688,
-          368.90851317133223
+          368.90851317133223,
+          405.7214304924011
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5850,6 +5899,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -5949,7 +5999,8 @@ window.BENCHMARK_DATA = {
           399.0806342874254,
           416.40186166763306,
           423.628520933787,
-          399.5876019341605
+          399.5876019341605,
+          416.40824693044027
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5961,6 +6012,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -6275,6 +6327,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -6320,7 +6378,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -6369,7 +6428,8 @@ window.BENCHMARK_DATA = {
           831.8279237747192,
           787.7022106170655,
           831.9412786620004,
-          782.0208505221775
+          782.0208505221775,
+          807.9117559432983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6396,6 +6456,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -6480,7 +6541,8 @@ window.BENCHMARK_DATA = {
           1843.5725727081299,
           1917.0557583400182,
           2005.0719724019368,
-          1893.819598642985
+          1893.819598642985,
+          1981.1486592610677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6492,6 +6554,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -6591,7 +6654,8 @@ window.BENCHMARK_DATA = {
           875.5670867647443,
           932.1957081476847,
           957.545662244161,
-          887.590407885038
+          887.590407885038,
+          936.0568481445313
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6603,6 +6667,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -6917,6 +6982,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -6962,7 +7033,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -7011,7 +7083,8 @@ window.BENCHMARK_DATA = {
           12349.681902204242,
           12239.604544321695,
           12242.142596905049,
-          12191.947011675153
+          12191.947011675153,
+          12271.033635066105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7060,6 +7133,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -7122,7 +7196,8 @@ window.BENCHMARK_DATA = {
           41290.5967569987,
           41551.96260892428,
           41068.647775503305,
-          39515.10843767439
+          39515.10843767439,
+          41797.747265625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7176,7 +7251,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18394
+          18394,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7233,7 +7309,8 @@ window.BENCHMARK_DATA = {
           11626.344766235352,
           11410.476727999174,
           11501.51890345982,
-          11307.039880605844
+          11307.039880605844,
+          11489.254425048828
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7245,6 +7322,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -7559,6 +7637,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:02:43 2026 \u002B0200",
         "message": "docs: add an agent guide (#1872)"
+      },
+      {
+        "sha": "ec987cbf77afed3b88fdf613f38c06c4e1ac8026",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
+        "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
       }
     ],
     "labels": [
@@ -7604,7 +7688,8 @@ window.BENCHMARK_DATA = {
       "be9f3188",
       "352482a0",
       "08682ffa",
-      "8dcfa555"
+      "8dcfa555",
+      "ec987cbf"
     ],
     "datasets": [
       {
@@ -7653,7 +7738,8 @@ window.BENCHMARK_DATA = {
           11949.894220205453,
           11580.283666992187,
           11809.492108154296,
-          11690.446694510323
+          11690.446694510323,
+          11621.889549255371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7702,6 +7788,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -7764,7 +7851,8 @@ window.BENCHMARK_DATA = {
           58984.840584891186,
           59072.35305786133,
           61230.2866398738,
-          59364.334444173175
+          59364.334444173175,
+          60618.20586286272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7818,7 +7906,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7875,7 +7964,8 @@ window.BENCHMARK_DATA = {
           22705.601449148995,
           22516.468935452976,
           22593.27073786809,
-          22153.303575788224
+          22153.303575788224,
+          22513.073026216945
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7887,6 +7977,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
