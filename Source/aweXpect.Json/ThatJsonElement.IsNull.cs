@@ -10,9 +10,9 @@ public static partial class ThatJsonElement
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> is <see cref="JsonValueKind.Null" />.
 	/// </summary>
-	public static AndOrResult<JsonElement, IThat<JsonElement>> IsNull(this IThat<JsonElement> source)
+	public static AndOrResult<JsonElement, IThat<JsonElement>> IsNull(this IThat<JsonElement> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Null)),
-			source);
+			subject);
 }

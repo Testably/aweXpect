@@ -16,13 +16,13 @@ public static partial class ThatJsonNode
 	/// </summary>
 	[GuaranteesNotNull]
 	public static IsArrayResult<TNode?> IsArray<TNode>(
-		this IThat<TNode?> source)
+		this IThat<TNode?> subject)
 		where TNode : JsonNode
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.Array))),
-			source,
+			subject,
 			ToJsonElement);
 
 	/// <summary>
@@ -31,7 +31,7 @@ public static partial class ThatJsonNode
 	/// </summary>
 	[GuaranteesNotNull]
 	public static IsArrayResult<TNode?> IsArray<TNode>(
-		this IThat<TNode?> source,
+		this IThat<TNode?> subject,
 		Func<IJsonArrayResult, IJsonArrayResult> expectation,
 		Func<JsonOptions, JsonOptions>? options = null)
 		where TNode : JsonNode
@@ -47,10 +47,10 @@ public static partial class ThatJsonNode
 		}
 
 		return new IsArrayResult<TNode?>(
-			source.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
 				static (s, it, grammar) => new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsArrayConstraint(it, grammar, s.Expectation, s.Options))),
-			source,
+			subject,
 			ToJsonElement);
 	}
 }

@@ -20,7 +20,7 @@ public static partial class ThatJsonString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static JsonWhichResult IsValidJson(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		Func<JsonDocumentOptions, JsonDocumentOptions>? options = null)
 	{
 		JsonDocumentOptions defaultOptions = Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get();
@@ -29,9 +29,9 @@ public static partial class ThatJsonString
 			defaultOptions = options(defaultOptions);
 		}
 
-		return new JsonWhichResult(source.Get().ExpectationBuilder.AddConstraint(defaultOptions,
+		return new JsonWhichResult(subject.Get().ExpectationBuilder.AddConstraint(defaultOptions,
 				static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o)),
-			source, defaultOptions);
+			subject, defaultOptions);
 	}
 
 	private sealed class IsValidJsonConstraint(string it, ExpectationGrammars grammars, JsonDocumentOptions options)

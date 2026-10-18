@@ -16,13 +16,13 @@ public static partial class ThatJsonNode
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNode?, IThat<TNode?>> IsObject<TNode>(
-		this IThat<TNode?> source)
+		this IThat<TNode?> subject)
 		where TNode : JsonNode
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.Object))),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Object" />
@@ -30,7 +30,7 @@ public static partial class ThatJsonNode
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNode?, IThat<TNode?>> IsObject<TNode>(
-		this IThat<TNode?> source,
+		this IThat<TNode?> subject,
 		Func<IJsonObjectResult, IJsonObjectResult> expectation,
 		Func<JsonOptions, JsonOptions>? options = null)
 		where TNode : JsonNode
@@ -46,9 +46,9 @@ public static partial class ThatJsonNode
 		}
 
 		return new AndOrResult<TNode?, IThat<TNode?>>(
-			source.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
 				static (s, it, grammar) => new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsObjectConstraint(it, grammar, s.Expectation, s.Options))),
-			source);
+			subject);
 	}
 }

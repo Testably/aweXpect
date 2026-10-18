@@ -14,7 +14,7 @@ public static partial class ThatJsonElement
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> value.
 	/// </summary>
-	public static AndOrResult<JsonElement, IThat<JsonElement>> Matches(this IThat<JsonElement> source,
+	public static AndOrResult<JsonElement, IThat<JsonElement>> Matches(this IThat<JsonElement> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -29,17 +29,17 @@ public static partial class ThatJsonElement
 		}
 
 		return new AndOrResult<JsonElement, IThat<JsonElement>>(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
 				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
-			source);
+			subject);
 	}
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> array.
 	/// </summary>
 	public static AndOrResult<JsonElement, IThat<JsonElement>> Matches<T>(
-		this IThat<JsonElement> source,
+		this IThat<JsonElement> subject,
 		IEnumerable<T> expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -54,9 +54,9 @@ public static partial class ThatJsonElement
 		}
 
 		return new AndOrResult<JsonElement, IThat<JsonElement>>(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
 				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
-			source);
+			subject);
 	}
 }

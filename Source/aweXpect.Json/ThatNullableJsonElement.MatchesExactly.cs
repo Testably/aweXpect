@@ -16,7 +16,7 @@ public static partial class ThatNullableJsonElement
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> MatchesExactly(
-		this IThat<JsonElement?> source,
+		this IThat<JsonElement?> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -28,10 +28,10 @@ public static partial class ThatNullableJsonElement
 		}
 
 		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
 				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -39,7 +39,7 @@ public static partial class ThatNullableJsonElement
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> MatchesExactly<T>(
-		this IThat<JsonElement?> source,
+		this IThat<JsonElement?> subject,
 		IEnumerable<T> expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -51,9 +51,9 @@ public static partial class ThatNullableJsonElement
 		}
 
 		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
 				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
-			source);
+			subject);
 	}
 }

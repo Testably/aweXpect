@@ -15,12 +15,12 @@ public static partial class ThatJsonNode
 	///     Verifies that the subject <see cref="JsonNode" /> matches the <paramref name="expected" /> value.
 	/// </summary>
 	public static AndOrResult<TNode?, IThat<TNode?>> Matches<TNode>(
-		this IThat<TNode?> source,
+		this IThat<TNode?> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNode : JsonNode
-		=> AddMatchesConstraint(source, expected, doNotPopulateThisValue, new JsonOptions
+		=> AddMatchesConstraint(subject, expected, doNotPopulateThisValue, new JsonOptions
 		{
 			IgnoreAdditionalProperties = true,
 		}, options);
@@ -29,12 +29,12 @@ public static partial class ThatJsonNode
 	///     Verifies that the subject <see cref="JsonNode" /> matches the <paramref name="expected" /> array.
 	/// </summary>
 	public static AndOrResult<TNode?, IThat<TNode?>> Matches<TNode, T>(
-		this IThat<TNode?> source,
+		this IThat<TNode?> subject,
 		IEnumerable<T> expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNode : JsonNode
-		=> AddMatchesConstraint(source, expected, doNotPopulateThisValue, new JsonOptions
+		=> AddMatchesConstraint(subject, expected, doNotPopulateThisValue, new JsonOptions
 		{
 			IgnoreAdditionalProperties = true,
 		}, options);

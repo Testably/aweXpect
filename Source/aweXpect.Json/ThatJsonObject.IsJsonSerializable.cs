@@ -24,56 +24,56 @@ public static partial class ThatJsonObject
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
+			subject.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
 				=> new IsJsonSerializableConstraint<object>(it, grammar, new JsonSerializerOptions(),
 					FromCallback(callback))),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		JsonSerializerOptions serializerOptions,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(SerializerOptions: serializerOptions, EquivalencyOptions: equivalencyOptions),
 				static (s, it, grammar) => new IsJsonSerializableConstraint<object>(it, grammar, s.SerializerOptions,
 					FromCallback(s.EquivalencyOptions))),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON of type <typeparamref name="T" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable<T>(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
+			subject.Get().ExpectationBuilder.AddConstraint(equivalencyOptions, static (callback, it, grammar)
 				=> new IsJsonSerializableConstraint<T>(it, grammar, new JsonSerializerOptions(),
 					FromCallback(callback))),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject can be serialized as JSON of type <typeparamref name="T" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsJsonSerializable<T>(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		JsonSerializerOptions serializerOptions,
 		Func<EquivalencyOptions, EquivalencyOptions>? equivalencyOptions = null)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(SerializerOptions: serializerOptions, EquivalencyOptions: equivalencyOptions),
 				static (s, it, grammar) => new IsJsonSerializableConstraint<T>(it, grammar, s.SerializerOptions,
 					FromCallback(s.EquivalencyOptions))),
-			source);
+			subject);
 
 	/// <summary>
 	///     Creates a new <see cref="EquivalencyOptions" /> instance from the provided <paramref name="callback" />.

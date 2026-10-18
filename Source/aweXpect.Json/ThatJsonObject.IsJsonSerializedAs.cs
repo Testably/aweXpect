@@ -26,10 +26,10 @@ public static partial class ThatJsonObject
 	///     compared exactly, unless the <paramref name="options" /> relax the comparison.
 	/// </remarks>
 	public static AndOrResult<T, IThat<T>> IsJsonSerializedAs<T>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		string expected,
 		Func<JsonOptions, JsonOptions>? options = null)
-		=> IsJsonSerializedAsJson(source, expected, options, null, null);
+		=> IsJsonSerializedAsJson(subject, expected, options, null, null);
 
 	/// <summary>
 	///     Verifies that the subject is serialized with the <paramref name="serializerOptions" /> as the
@@ -39,11 +39,11 @@ public static partial class ThatJsonObject
 	///     The result is compared exactly, unless the <paramref name="options" /> relax the comparison.
 	/// </remarks>
 	public static AndOrResult<T, IThat<T>> IsJsonSerializedAs<T>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		string expected,
 		JsonSerializerOptions serializerOptions,
 		Func<JsonOptions, JsonOptions>? options = null)
-		=> IsJsonSerializedAsJson(source, expected, options, serializerOptions, null);
+		=> IsJsonSerializedAsJson(subject, expected, options, serializerOptions, null);
 
 	/// <summary>
 	///     Verifies that the subject is serialized with the <paramref name="typeInfo" /> as the
@@ -54,11 +54,11 @@ public static partial class ThatJsonObject
 	///     The result is compared exactly, unless the <paramref name="options" /> relax the comparison.
 	/// </remarks>
 	public static AndOrResult<T?, IThat<T?>> IsJsonSerializedAs<T>(
-		this IThat<T?> source,
+		this IThat<T?> subject,
 		string expected,
 		JsonTypeInfo<T> typeInfo,
 		Func<JsonOptions, JsonOptions>? options = null)
-		=> IsJsonSerializedAsJson(source, expected, options, null, typeInfo);
+		=> IsJsonSerializedAsJson(subject, expected, options, null, typeInfo);
 
 	/// <summary>
 	///     Verifies that the subject is serialized as JSON that matches the <paramref name="expected" /> value.
@@ -68,11 +68,11 @@ public static partial class ThatJsonObject
 	///     compared exactly, unless the <paramref name="options" /> relax the comparison.
 	/// </remarks>
 	public static AndOrResult<T, IThat<T>> IsJsonSerializedAs<T>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-		=> IsJsonSerializedAsObject(source, expected, doNotPopulateThisValue, options, null);
+		=> IsJsonSerializedAsObject(subject, expected, doNotPopulateThisValue, options, null);
 
 	/// <summary>
 	///     Verifies that the subject is serialized with the <paramref name="serializerOptions" /> as JSON that matches the
@@ -82,12 +82,12 @@ public static partial class ThatJsonObject
 	///     The result is compared exactly, unless the <paramref name="options" /> relax the comparison.
 	/// </remarks>
 	public static AndOrResult<T, IThat<T>> IsJsonSerializedAs<T>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		object? expected,
 		JsonSerializerOptions serializerOptions,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-		=> IsJsonSerializedAsObject(source, expected, doNotPopulateThisValue, options, serializerOptions);
+		=> IsJsonSerializedAsObject(subject, expected, doNotPopulateThisValue, options, serializerOptions);
 
 	/// <remarks>
 	///     The expected JSON is shown as it is, like in <c>IsEqualTo(expected).AsJson()</c>, because it tells more than

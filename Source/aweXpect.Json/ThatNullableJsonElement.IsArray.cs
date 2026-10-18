@@ -20,11 +20,11 @@ public static partial class ThatNullableJsonElement
 	/// </summary>
 	[GuaranteesNotNull]
 	public static IsArrayResult<JsonElement?> IsArray(
-		this IThat<JsonElement?> source)
+		this IThat<JsonElement?> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Array)),
-			source,
+			subject,
 			static element => element.GetValueOrDefault());
 
 	/// <summary>
@@ -33,7 +33,7 @@ public static partial class ThatNullableJsonElement
 	/// </summary>
 	[GuaranteesNotNull]
 	public static IsArrayResult<JsonElement?> IsArray(
-		this IThat<JsonElement?> source,
+		this IThat<JsonElement?> subject,
 		Func<IJsonArrayResult, IJsonArrayResult> expectation,
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
@@ -48,9 +48,9 @@ public static partial class ThatNullableJsonElement
 		}
 
 		return new IsArrayResult<JsonElement?>(
-			source.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
 				static (s, it, grammar) => new IsArrayConstraint(it, grammar, s.Expectation, s.Options)),
-			source,
+			subject,
 			static element => element.GetValueOrDefault());
 	}
 

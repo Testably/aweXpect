@@ -18,7 +18,7 @@ public static partial class ThatJsonString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidJsonMatchingExactly(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -30,10 +30,10 @@ public static partial class ThatJsonString
 		}
 
 		return new AndOrResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: defaultOptions),
 				static (s, it, grammar) => new MatchesJsonConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -41,7 +41,7 @@ public static partial class ThatJsonString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsValidJsonMatchingExactly<T>(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		IEnumerable<T> expected,
 		Func<JsonOptions, JsonOptions>? options = null,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -53,9 +53,9 @@ public static partial class ThatJsonString
 		}
 
 		return new AndOrResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint(
+			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: defaultOptions),
 				static (s, it, grammar) => new MatchesJsonConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
-			source);
+			subject);
 	}
 }

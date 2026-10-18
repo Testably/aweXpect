@@ -13,11 +13,11 @@ public static partial class ThatJsonNode
 	///     <see cref="JsonValueKind.False" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNode?, IThat<TNode?>> IsBoolean<TNode>(this IThat<TNode?> source)
+	public static AndOrResult<TNode?, IThat<TNode?>> IsBoolean<TNode>(this IThat<TNode?> subject)
 		where TNode : JsonNode
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsValueKindConstraint(it, grammar, JsonValueKind.True))),
-			source);
+			subject);
 }
