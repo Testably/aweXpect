@@ -264,6 +264,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -310,7 +316,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -360,7 +367,8 @@ window.BENCHMARK_DATA = {
           13293.002032688686,
           13028.998110257662,
           12862.62845502581,
-          13078.860998300406
+          13078.860998300406,
+          12861.778137207031
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -409,6 +417,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -473,7 +482,8 @@ window.BENCHMARK_DATA = {
           371310.4979073661,
           384593.88033854164,
           365759.53229166666,
-          378726.658203125
+          378726.658203125,
+          329978.3670572917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -528,7 +538,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590292
+          590292,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -586,7 +597,8 @@ window.BENCHMARK_DATA = {
           19835.15870259603,
           18673.556202479773,
           19867.741934640067,
-          19476.343237740653
+          19476.343237740653,
+          18478.25719996861
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -598,6 +610,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -877,6 +890,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -916,7 +935,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -959,7 +979,8 @@ window.BENCHMARK_DATA = {
           291.1105140686035,
           279.0935493151347,
           355.5725875582014,
-          322.74195261001586
+          322.74195261001586,
+          253.14315764109293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -971,6 +992,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1058,7 +1080,8 @@ window.BENCHMARK_DATA = {
           511.89917073931014,
           505.37972558339436,
           497.0958563940866,
-          529.9933479944865
+          529.9933479944865,
+          520.0674573262532
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1070,6 +1093,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1157,7 +1181,8 @@ window.BENCHMARK_DATA = {
           386.25254176457724,
           391.07301743825275,
           385.5124645551046,
-          406.87674010594685
+          406.87674010594685,
+          371.82278598149617
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1169,6 +1194,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6061,6 +6087,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -6870,7 +6902,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -7683,7 +7716,8 @@ window.BENCHMARK_DATA = {
           148.05791873931884,
           149.93918204307556,
           140.2068783726011,
-          161.60591311454772
+          161.60591311454772,
+          149.73340124743325
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8490,6 +8524,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9322,7 +9357,8 @@ window.BENCHMARK_DATA = {
           257.29163605826244,
           264.8336030755724,
           243.76245431900026,
-          286.6294759114583
+          286.6294759114583,
+          262.5529004096985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9515,6 +9551,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10242,7 +10279,8 @@ window.BENCHMARK_DATA = {
           249.62575272151403,
           260.77045140947615,
           235.39764664854323,
-          258.0334241549174
+          258.0334241549174,
+          230.18352982203166
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10254,6 +10292,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10619,6 +10658,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -10665,7 +10710,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -10715,7 +10761,8 @@ window.BENCHMARK_DATA = {
           266.4064359664917,
           279.3268327372415,
           272.4847080890949,
-          278.28946362222945
+          278.28946362222945,
+          303.1832671483358
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10734,6 +10781,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10828,7 +10876,8 @@ window.BENCHMARK_DATA = {
           500.3217079456036,
           547.2152682622274,
           508.1154750415257,
-          574.1820855458577
+          574.1820855458577,
+          525.5760190327962
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10840,6 +10889,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -10941,7 +10991,8 @@ window.BENCHMARK_DATA = {
           333.9159442901611,
           335.30863270392786,
           321.5823990821838,
-          361.7181162516276
+          361.7181162516276,
+          359.99435469309486
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10953,6 +11004,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15852,6 +15904,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -16661,7 +16719,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -17474,7 +17533,8 @@ window.BENCHMARK_DATA = {
           662.2252889046302,
           660.4853057861328,
           622.7298948923747,
-          652.8914207730975
+          652.8914207730975,
+          626.546342236655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18284,6 +18344,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -19113,7 +19174,8 @@ window.BENCHMARK_DATA = {
           1353.119752747672,
           1376.7663205010551,
           1347.4229647318523,
-          1445.2597924550375
+          1445.2597924550375,
+          1418.1254468282063
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19931,6 +19993,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -20033,7 +20096,8 @@ window.BENCHMARK_DATA = {
           628.4520183290754,
           670.4638763427735,
           639.2498232977731,
-          712.5726316315787
+          712.5726316315787,
+          679.8735510508219
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20045,6 +20109,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -24988,6 +25053,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -25797,7 +25868,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -26610,7 +26682,8 @@ window.BENCHMARK_DATA = {
           636.2824704306466,
           657.7209793499538,
           631.057880946568,
-          677.5070477167766
+          677.5070477167766,
+          658.2570969263712
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27420,6 +27493,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -28249,7 +28323,8 @@ window.BENCHMARK_DATA = {
           26881.503814697266,
           28057.280844116212,
           27349.810815429686,
-          28016.518092854818
+          28016.518092854818,
+          20293.939650472006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29067,6 +29142,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -29169,7 +29245,8 @@ window.BENCHMARK_DATA = {
           783.0848929087321,
           806.8213864008586,
           779.9427339113676,
-          842.2364781061808
+          842.2364781061808,
+          767.278297551473
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29181,6 +29258,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -29894,6 +29972,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -29998,7 +30082,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -30106,7 +30191,8 @@ window.BENCHMARK_DATA = {
           717.6700445810953,
           741.8510872295925,
           718.6065295083182,
-          743.359841855367
+          743.359841855367,
+          725.0481380462646
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30213,6 +30299,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -30335,7 +30422,8 @@ window.BENCHMARK_DATA = {
           83440.01062011719,
           83792.33763020833,
           83819.09399414062,
-          84165.29250895182
+          84165.29250895182,
+          61117.0924635667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30440,6 +30528,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -31074,6 +31163,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -31178,7 +31273,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -31286,7 +31382,8 @@ window.BENCHMARK_DATA = {
           171.95323034695215,
           198.55873828274864,
           170.23206879411424,
-          190.90183219909667
+          190.90183219909667,
+          178.03237325804574
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31363,6 +31460,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -31515,7 +31613,8 @@ window.BENCHMARK_DATA = {
           31346.55486188616,
           32983.70612880162,
           31628.678564453126,
-          31701.20968424479
+          31701.20968424479,
+          18640.319185384116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31628,6 +31727,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -31730,7 +31830,8 @@ window.BENCHMARK_DATA = {
           257.14557699056775,
           257.1986229760306,
           238.066664321082,
-          262.90732596715293
+          262.90732596715293,
+          238.34343902269998
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31742,6 +31843,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -32107,6 +32209,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -32153,7 +32261,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -32203,7 +32312,8 @@ window.BENCHMARK_DATA = {
           363.08627436711237,
           422.8749184926351,
           368.0601483491751,
-          377.8559081395467
+          377.8559081395467,
+          360.42811381022136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32251,6 +32361,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -32316,7 +32427,8 @@ window.BENCHMARK_DATA = {
           388.9661487170628,
           391.9173193613688,
           368.90851317133223,
-          405.7214304924011
+          405.7214304924011,
+          400.7733397850624
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32328,6 +32440,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -32429,7 +32542,8 @@ window.BENCHMARK_DATA = {
           416.40186166763306,
           423.628520933787,
           399.5876019341605,
-          416.40824693044027
+          416.40824693044027,
+          424.18410142262775
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32441,6 +32555,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -32762,6 +32877,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -32808,7 +32929,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -32858,7 +32980,8 @@ window.BENCHMARK_DATA = {
           787.7022106170655,
           831.9412786620004,
           782.0208505221775,
-          807.9117559432983
+          807.9117559432983,
+          757.0331445421491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32885,6 +33008,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -32971,7 +33095,8 @@ window.BENCHMARK_DATA = {
           1917.0557583400182,
           2005.0719724019368,
           1893.819598642985,
-          1981.1486592610677
+          1981.1486592610677,
+          1921.1135757446289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32983,6 +33108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -33084,7 +33210,8 @@ window.BENCHMARK_DATA = {
           932.1957081476847,
           957.545662244161,
           887.590407885038,
-          936.0568481445313
+          936.0568481445313,
+          901.9669747034709
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33096,6 +33223,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -33417,6 +33545,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -33463,7 +33597,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -33513,7 +33648,8 @@ window.BENCHMARK_DATA = {
           12239.604544321695,
           12242.142596905049,
           12191.947011675153,
-          12271.033635066105
+          12271.033635066105,
+          11017.570049830845
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33562,6 +33698,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -33626,7 +33763,8 @@ window.BENCHMARK_DATA = {
           41551.96260892428,
           41068.647775503305,
           39515.10843767439,
-          41797.747265625
+          41797.747265625,
+          35007.38495309012
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33681,6 +33819,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -33739,7 +33878,8 @@ window.BENCHMARK_DATA = {
           11410.476727999174,
           11501.51890345982,
           11307.039880605844,
-          11489.254425048828
+          11489.254425048828,
+          10723.297556559244
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33751,6 +33891,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -34072,6 +34213,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 13:36:26 2026 \u002B0200",
         "message": "chore: target the \u0060.slnx\u0060 solution in the repository settings (#1869)"
+      },
+      {
+        "sha": "2caca0f84c7c8efc646d3c2e7634d32f1b0ddd6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 13:36:44 2026 \u002B0200",
+        "message": "chore: align the IDE settings, sponsoring and release notes (#1870)"
       }
     ],
     "labels": [
@@ -34118,7 +34265,8 @@ window.BENCHMARK_DATA = {
       "352482a0",
       "08682ffa",
       "8dcfa555",
-      "ec987cbf"
+      "ec987cbf",
+      "2caca0f8"
     ],
     "datasets": [
       {
@@ -34168,7 +34316,8 @@ window.BENCHMARK_DATA = {
           11580.283666992187,
           11809.492108154296,
           11690.446694510323,
-          11621.889549255371
+          11621.889549255371,
+          10320.938752310616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34217,6 +34366,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -34281,7 +34431,8 @@ window.BENCHMARK_DATA = {
           59072.35305786133,
           61230.2866398738,
           59364.334444173175,
-          60618.20586286272
+          60618.20586286272,
+          49863.25254603795
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34336,7 +34487,8 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23553,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34394,7 +34546,8 @@ window.BENCHMARK_DATA = {
           22516.468935452976,
           22593.27073786809,
           22153.303575788224,
-          22513.073026216945
+          22513.073026216945,
+          20800.228546142578
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34406,6 +34559,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
