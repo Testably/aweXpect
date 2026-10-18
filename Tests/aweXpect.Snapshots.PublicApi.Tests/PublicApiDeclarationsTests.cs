@@ -72,6 +72,15 @@ public sealed class PublicApiDeclarationsTests
 	                                        }
 	                                        """;
 
+	private const string RecordsSource = """
+	                                     namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
+	                                     namespace Library
+	                                     {
+	                                         public record Artist(string Name) { public override string ToString() => Name; }
+	                                         public record struct Point(int X, int Y) { public override string ToString() => ""; }
+	                                     }
+	                                     """;
+
 	[Fact]
 	public async Task GenerateFrom_ShouldWriteTheAttributesOfTheLibrary()
 	{
@@ -409,6 +418,71 @@ public sealed class PublicApiDeclarationsTests
 		string result = PublicApiDeclarations.GenerateFrom(assembly, o => o.Ignoring.ForwardedTypes());
 
 		await That(result).DoesNotContain("TypeForwardedTo");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_ShouldWriteTheCompilerGeneratedMembersOfRecords()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", RecordsSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("protected Artist(Library.Artist original) { }")
+			.And.Contains("public void Deconstruct(out string Name) { }")
+			.And.Contains("public readonly void Deconstruct(out int X, out int Y) { }")
+			.And.Contains("public static bool operator ==(Library.Point left, Library.Point right) { }")
+			.Because("the test that ignores compiler-generated members would otherwise pass without ignoring anything");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringCompilerGeneratedMembers_ShouldOnlyWriteTheDeclaredMembersOfRecords()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", RecordsSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.CompilerGeneratedMembers());
+
+		await That(result).IsEqualTo("""
+		                             namespace Library
+		                             {
+		                                 public record Artist : System.IEquatable<Library.Artist>
+		                                 {
+		                                     public Artist(string Name) { }
+		                                     public string Name { get; init; }
+		                                     public override string ToString() { }
+		                                 }
+		                                 public struct Point : System.IEquatable<Library.Point>
+		                                 {
+		                                     public Point(int X, int Y) { }
+		                                     public int X { readonly get; set; }
+		                                     public int Y { readonly get; set; }
+		                                     public override string ToString() { }
+		                                 }
+		                             }
+
+		                             """).IgnoringNewlineStyle()
+			.Because("the compiler marks only the accessors of positional properties as compiler-generated, and the primary constructor and a hand-written override are declared");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringCompilerGeneratedMembers_ShouldKeepAutoPropertiesAndEvents()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
+			namespace Library
+			{
+			    public class Album
+			    {
+			        public string Title { get; set; } = "";
+			        public event System.EventHandler Changed { add { } remove { } }
+			        public event System.EventHandler Played;
+			    }
+			}
+			"""));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.CompilerGeneratedMembers());
+
+		await That(result).IsEqualTo(PublicApiDeclarations.GenerateFrom(library))
+			.And.Contains("public string Title { get; set; }").And.Contains("public event System.EventHandler Played;")
+			.Because("the compiler marks only the accessors and backing fields of auto-properties and field-like events");
 	}
 
 	[Fact]

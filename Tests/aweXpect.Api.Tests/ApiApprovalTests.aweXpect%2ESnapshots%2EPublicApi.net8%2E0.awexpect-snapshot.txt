@@ -13,6 +13,7 @@ namespace aweXpect.Snapshots.PublicApi
     {
         public aweXpect.Snapshots.PublicApi.PublicApiOptions Attribute(string fullName) { }
         public aweXpect.Snapshots.PublicApi.PublicApiOptions Attribute<TAttribute>() where TAttribute : System.Attribute { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions CompilerGeneratedMembers() { }
         public aweXpect.Snapshots.PublicApi.PublicApiOptions ForwardedTypes() { }
         public aweXpect.Snapshots.PublicApi.PublicApiOptions Namespace(string @namespace) { }
         public aweXpect.Snapshots.PublicApi.PublicApiOptions Type(string fullName) { }

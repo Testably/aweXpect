@@ -27,6 +27,7 @@ namespace aweXpect.Snapshots.PublicApi;
 /// </remarks>
 public static class PublicApiDeclarations
 {
+	private const string CompilerGeneratedAttribute = "System.Runtime.CompilerServices.CompilerGeneratedAttribute";
 	private const string Indentation = "    ";
 	private const string IndexerNameAttribute = "System.Runtime.CompilerServices.IndexerNameAttribute";
 	private const string TypeForwardedToAttribute = "System.Runtime.CompilerServices.TypeForwardedToAttribute";
@@ -80,7 +81,7 @@ public static class PublicApiDeclarations
 		"System.Diagnostics.DebuggerStepThroughAttribute",
 		"System.Reflection.DefaultMemberAttribute",
 		"System.Runtime.CompilerServices.AsyncStateMachineAttribute",
-		"System.Runtime.CompilerServices.CompilerGeneratedAttribute",
+		CompilerGeneratedAttribute,
 		"System.Runtime.CompilerServices.IteratorStateMachineAttribute",
 		"System.Runtime.CompilerServices.NullableAttribute",
 		"System.Runtime.CompilerServices.NullableContextAttribute",
@@ -619,6 +620,7 @@ public static class PublicApiDeclarations
 			         {
 				         MethodKind: MethodKind.Constructor, IsImplicitlyDeclared: true,
 			         })
+			         .Where(member => options.IncludesCompilerGeneratedMembers || !IsCompilerGenerated(member))
 			         .Select(member => (Member: member, Declaration: Declaration(member, options)))
 			         .OrderBy(member => Rank(member.Member))
 			         .ThenBy(member => member.Member.IsStatic)
@@ -629,6 +631,9 @@ public static class PublicApiDeclarations
 			sb.Append(indent).Append(member.Declaration).Append('\n');
 		}
 	}
+
+	private static bool IsCompilerGenerated(ISymbol member)
+		=> member.GetAttributes().Any(attribute => attribute.AttributeClass?.ToDisplayString() == CompilerGeneratedAttribute);
 
 	private static string Declaration(ISymbol member, PublicApiOptions options) => InterfaceModifiers(member) + member switch
 	{

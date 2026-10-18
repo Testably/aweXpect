@@ -39,6 +39,22 @@ public sealed class PublicApiIgnoring
 	}
 
 	/// <summary>
+	///     Ignores the members that are marked as <see cref="System.Runtime.CompilerServices.CompilerGeneratedAttribute" />,
+	///     typically the ones that the compiler synthesizes for a record, e.g. <c>Equals</c>, <c>GetHashCode</c>,
+	///     <c>Deconstruct</c>, the copy constructor and the equality operators.
+	/// </summary>
+	/// <remarks>
+	///     The members that the source declares stay, e.g. the primary constructor and the positional properties of a
+	///     record, a hand-written override of a synthesized member, auto-properties and field-like events, as the compiler
+	///     marks only their accessors and backing fields.
+	/// </remarks>
+	public PublicApiOptions CompilerGeneratedMembers()
+	{
+		_options.IncludesCompilerGeneratedMembers = false;
+		return _options;
+	}
+
+	/// <summary>
 	///     Ignores the types that the assembly forwards to another assembly, which are written by default as
 	///     <c>[assembly: TypeForwardedTo(typeof(…))]</c>.
 	/// </summary>

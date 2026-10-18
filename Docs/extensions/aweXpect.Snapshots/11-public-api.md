@@ -64,6 +64,14 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
     .Ignoring.Attribute("MyLibrary.Internal.MarkerAttribute"));
 ```
 
+A record is written with the members that the compiler synthesizes for it, e.g. `Equals`, `GetHashCode`, `ToString`,
+`Deconstruct`, the copy constructor and the equality operators. The members that are marked as `[CompilerGenerated]` can
+be ignored, which keeps the primary constructor, the positional properties and the hand-written members of the record:
+
+```csharp
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.CompilerGeneratedMembers());
+```
+
 The public API can be restricted to namespaces, including their sub-namespaces, or to types, including their nested
 types, and namespaces and types can be ignored. A namespace matches whole segments, so `MyLibrary.Generated` neither
 includes nor ignores `MyLibrary.GeneratedTools`, and ignoring wins over a restriction:

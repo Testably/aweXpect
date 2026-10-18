@@ -25,6 +25,7 @@ public sealed class PublicApiOptions
 	internal HashSet<string> AttributesToIgnore { get; } = new(StringComparer.Ordinal);
 	internal HashSet<string> NamespacesToIgnore { get; } = new(StringComparer.Ordinal);
 	internal HashSet<string> TypesToIgnore { get; } = new(StringComparer.Ordinal);
+	internal bool IncludesCompilerGeneratedMembers { get; set; } = true;
 	internal bool IncludesForwardedTypes { get; set; } = true;
 	internal HashSet<string> NamespacesToRestrictTo { get; } = new(StringComparer.Ordinal);
 	internal HashSet<string> TypesToRestrictTo { get; } = new(StringComparer.Ordinal);
