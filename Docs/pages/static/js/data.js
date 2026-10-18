@@ -276,6 +276,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -324,7 +330,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -376,7 +383,8 @@ window.BENCHMARK_DATA = {
           12862.62845502581,
           13078.860998300406,
           12861.778137207031,
-          11794.890930175781
+          11794.890930175781,
+          12818.675210135323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -425,6 +433,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -493,7 +502,8 @@ window.BENCHMARK_DATA = {
           365759.53229166666,
           378726.658203125,
           329978.3670572917,
-          328350.16848958336
+          328350.16848958336,
+          364254.76297433034
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -550,7 +560,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590290,
-          590264
+          590264,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,7 +621,8 @@ window.BENCHMARK_DATA = {
           19867.741934640067,
           19476.343237740653,
           18478.25719996861,
-          21286.254239763533
+          21286.254239763533,
+          19390.247021484374
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -622,6 +634,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -915,6 +928,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -956,7 +975,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -1001,7 +1021,8 @@ window.BENCHMARK_DATA = {
           355.5725875582014,
           322.74195261001586,
           253.14315764109293,
-          306.7526693979899
+          306.7526693979899,
+          261.3753019650777
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1013,6 +1034,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1104,7 +1126,8 @@ window.BENCHMARK_DATA = {
           497.0958563940866,
           529.9933479944865,
           520.0674573262532,
-          542.1926608403523
+          542.1926608403523,
+          509.1243022038386
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1116,6 +1139,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1207,7 +1231,8 @@ window.BENCHMARK_DATA = {
           385.5124645551046,
           406.87674010594685,
           371.82278598149617,
-          407.7694233258565
+          407.7694233258565,
+          390.13769273757936
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1219,6 +1244,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6125,6 +6151,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -6936,7 +6968,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -7751,7 +7784,8 @@ window.BENCHMARK_DATA = {
           140.2068783726011,
           161.60591311454772,
           149.73340124743325,
-          160.04863365491232
+          160.04863365491232,
+          149.2138098716736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8558,6 +8592,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9394,7 +9429,8 @@ window.BENCHMARK_DATA = {
           243.76245431900026,
           286.6294759114583,
           262.5529004096985,
-          287.89420897165934
+          287.89420897165934,
+          250.26464541753134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9587,6 +9623,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10318,7 +10355,8 @@ window.BENCHMARK_DATA = {
           235.39764664854323,
           258.0334241549174,
           230.18352982203166,
-          234.37090652783712
+          234.37090652783712,
+          245.3975014368693
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10330,6 +10368,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10709,6 +10748,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -10757,7 +10802,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -10809,7 +10855,8 @@ window.BENCHMARK_DATA = {
           272.4847080890949,
           278.28946362222945,
           303.1832671483358,
-          279.57944924490795
+          279.57944924490795,
+          269.99796741349354
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10828,6 +10875,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -10926,7 +10974,8 @@ window.BENCHMARK_DATA = {
           508.1154750415257,
           574.1820855458577,
           525.5760190327962,
-          606.3762814839681
+          606.3762814839681,
+          513.0510356267293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10938,6 +10987,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -11043,7 +11093,8 @@ window.BENCHMARK_DATA = {
           321.5823990821838,
           361.7181162516276,
           359.99435469309486,
-          341.5048158963521
+          341.5048158963521,
+          338.7734914847783
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11055,6 +11106,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -15968,6 +16020,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -16779,7 +16837,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -17594,7 +17653,8 @@ window.BENCHMARK_DATA = {
           622.7298948923747,
           652.8914207730975,
           626.546342236655,
-          652.9441392262777
+          652.9441392262777,
+          658.3477563858032
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18404,6 +18464,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -19237,7 +19298,8 @@ window.BENCHMARK_DATA = {
           1347.4229647318523,
           1445.2597924550375,
           1418.1254468282063,
-          1459.1769915262857
+          1459.1769915262857,
+          1456.5350372314454
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20057,6 +20119,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -20161,7 +20224,8 @@ window.BENCHMARK_DATA = {
           639.2498232977731,
           712.5726316315787,
           679.8735510508219,
-          729.9966931709877
+          729.9966931709877,
+          663.8180686405727
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20173,6 +20237,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -25130,6 +25195,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -25941,7 +26012,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -26756,7 +26828,8 @@ window.BENCHMARK_DATA = {
           631.057880946568,
           677.5070477167766,
           658.2570969263712,
-          657.9023790359497
+          657.9023790359497,
+          674.3025136311849
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27566,6 +27639,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -28399,7 +28473,8 @@ window.BENCHMARK_DATA = {
           27349.810815429686,
           28016.518092854818,
           20293.939650472006,
-          24970.86871119908
+          24970.86871119908,
+          27839.95926513672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29219,7 +29294,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33468
+          33468,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29323,7 +29399,8 @@ window.BENCHMARK_DATA = {
           779.9427339113676,
           842.2364781061808,
           767.278297551473,
-          806.9539963404337
+          806.9539963404337,
+          814.7511683146159
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29335,6 +29412,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -30062,6 +30140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -30168,7 +30252,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -30278,7 +30363,8 @@ window.BENCHMARK_DATA = {
           718.6065295083182,
           743.359841855367,
           725.0481380462646,
-          756.0724611282349
+          756.0724611282349,
+          722.9062935284206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30385,6 +30471,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -30511,7 +30598,8 @@ window.BENCHMARK_DATA = {
           83819.09399414062,
           84165.29250895182,
           61117.0924635667,
-          63089.287339430586
+          63089.287339430586,
+          83301.78872070313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30626,7 +30714,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5254
+          5254,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31264,6 +31353,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -31370,7 +31465,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -31480,7 +31576,8 @@ window.BENCHMARK_DATA = {
           170.23206879411424,
           190.90183219909667,
           178.03237325804574,
-          196.44773149490356
+          196.44773149490356,
+          180.5028217315674
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31557,6 +31654,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -31713,7 +31811,8 @@ window.BENCHMARK_DATA = {
           31628.678564453126,
           31701.20968424479,
           18640.319185384116,
-          24657.9951171875
+          24657.9951171875,
+          32122.775530133928
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31828,7 +31927,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31932,7 +32032,8 @@ window.BENCHMARK_DATA = {
           238.066664321082,
           262.90732596715293,
           238.34343902269998,
-          244.74296995798747
+          244.74296995798747,
+          245.36394078390938
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31944,6 +32045,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -32323,6 +32425,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -32371,7 +32479,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -32423,7 +32532,8 @@ window.BENCHMARK_DATA = {
           368.0601483491751,
           377.8559081395467,
           360.42811381022136,
-          372.1178477605184
+          372.1178477605184,
+          353.8201157251994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32471,6 +32581,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -32540,7 +32651,8 @@ window.BENCHMARK_DATA = {
           368.90851317133223,
           405.7214304924011,
           400.7733397850624,
-          414.6842158317566
+          414.6842158317566,
+          379.98477615628923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32552,6 +32664,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -32657,7 +32770,8 @@ window.BENCHMARK_DATA = {
           399.5876019341605,
           416.40824693044027,
           424.18410142262775,
-          411.49845382145475
+          411.49845382145475,
+          432.3907095835759
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32669,6 +32783,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -33004,6 +33119,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -33052,7 +33173,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -33104,7 +33226,8 @@ window.BENCHMARK_DATA = {
           782.0208505221775,
           807.9117559432983,
           757.0331445421491,
-          813.2197011947632
+          813.2197011947632,
+          780.3192954381307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33131,6 +33254,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -33221,7 +33345,8 @@ window.BENCHMARK_DATA = {
           1893.819598642985,
           1981.1486592610677,
           1921.1135757446289,
-          2086.1502838134766
+          2086.1502838134766,
+          1943.3497042338054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33233,6 +33358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -33338,7 +33464,8 @@ window.BENCHMARK_DATA = {
           887.590407885038,
           936.0568481445313,
           901.9669747034709,
-          915.8488569259644
+          915.8488569259644,
+          928.3552958624704
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33350,6 +33477,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -33685,6 +33813,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -33733,7 +33867,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -33785,7 +33920,8 @@ window.BENCHMARK_DATA = {
           12191.947011675153,
           12271.033635066105,
           11017.570049830845,
-          11491.192349947416
+          11491.192349947416,
+          12381.836118425641
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33834,6 +33970,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -33902,7 +34039,8 @@ window.BENCHMARK_DATA = {
           39515.10843767439,
           41797.747265625,
           35007.38495309012,
-          36423.257055664064
+          36423.257055664064,
+          41024.64057922363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33957,6 +34095,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609
@@ -34019,7 +34158,8 @@ window.BENCHMARK_DATA = {
           11307.039880605844,
           11489.254425048828,
           10723.297556559244,
-          10678.307658604213
+          10678.307658604213,
+          11431.701652526855
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34031,6 +34171,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -34366,6 +34507,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 17:37:47 2026 \u002B0200",
         "message": "fix: register custom exceptions despite the target site (#1873)"
+      },
+      {
+        "sha": "45b0f694566d55704b7a31a610359ac7823ca618",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 18 19:18:27 2026 \u002B0200",
+        "message": "test: name the data-driven enum value tests after TUnit arguments (#1874)"
       }
     ],
     "labels": [
@@ -34414,7 +34561,8 @@ window.BENCHMARK_DATA = {
       "8dcfa555",
       "ec987cbf",
       "2caca0f8",
-      "0d03437a"
+      "0d03437a",
+      "45b0f694"
     ],
     "datasets": [
       {
@@ -34466,7 +34614,8 @@ window.BENCHMARK_DATA = {
           11690.446694510323,
           11621.889549255371,
           10320.938752310616,
-          11234.641191755023
+          11234.641191755023,
+          11657.028650137094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34515,6 +34664,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -34583,7 +34733,8 @@ window.BENCHMARK_DATA = {
           59364.334444173175,
           60618.20586286272,
           49863.25254603795,
-          52282.7963823591
+          52282.7963823591,
+          59897.96903404823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34639,6 +34790,7 @@ window.BENCHMARK_DATA = {
           23554,
           23553,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -34700,7 +34852,8 @@ window.BENCHMARK_DATA = {
           22153.303575788224,
           22513.073026216945,
           20800.228546142578,
-          20957.08510945638
+          20957.08510945638,
+          22257.361407940203
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34712,6 +34865,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
