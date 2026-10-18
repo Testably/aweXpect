@@ -88,8 +88,9 @@ partial class Build
 		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(() =>
 		{
+			// The framework projects run on VSTest, which the runner for the Microsoft.Testing.Platform cannot execute.
 			ExecuteMutationTest(Solution.aweXpect_Core,
-				[..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,], CoreMutationSlices);
+				[Solution.Tests.aweXpect_Core_Tests,], CoreMutationSlices);
 		});
 
 	Target MutationTestsMain => _ => _
@@ -498,11 +499,13 @@ partial class Build
 		string arguments =
 			$"-f \"{configFile}\" -O \"{strykerOutputDirectory}\" -r \"Markdown\" -r \"cleartext\" -r \"json\" --test-runner mtp";
 
+		// Started in the solution directory, Stryker mutates in solution mode, which ignores `test-projects` and runs every
+		// test project of the solution. In the directory of the mutated project it only runs the configured ones.
 		string executable = EnvironmentInfo.IsWin ? "dotnet-stryker.exe" : "dotnet-stryker";
 		IProcess process = ProcessTasks.StartProcess(
 				Path.Combine(toolPath, executable),
 				arguments,
-				Solution.Directory)
+				project.Directory)
 			.AssertWaitForExit();
 		if (process.ExitCode != 0)
 		{
