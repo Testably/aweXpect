@@ -29,7 +29,7 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sealed classes in all loaded assemblies
-						             all are internal,
+						             are all internal,
 						             but it contained not matching items
 
 						             Not matching items:

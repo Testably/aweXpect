@@ -44,7 +44,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are not protected,
+					             are all not protected,
 					             but it contained protected items
 
 					             Not matching items:
@@ -86,7 +86,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             all are not protected,
+					             are all not protected,
 					             but it contained protected items
 
 					             Not matching items:
@@ -115,7 +115,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             at least one is protected,
+					             also contain a protected item,
 					             but it contained no protected items
 
 					             Collection:

@@ -31,7 +31,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are of type EventHandler,
+					             are all of type EventHandler,
 					             but it contained not matching events
 
 					             Not matching items:
@@ -94,7 +94,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all are of type EventHandler,
+					             are not all of type EventHandler,
 					             but it only contained matching events
 
 					             Collection:
@@ -141,7 +141,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are of type EventHandler,
+					             are all of type EventHandler,
 					             but it contained not matching events
 
 					             Not matching items:
@@ -251,7 +251,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are of type Action or of type EventHandler,
+					             are all of type Action or of type EventHandler,
 					             but it contained not matching events
 
 					             Not matching items:

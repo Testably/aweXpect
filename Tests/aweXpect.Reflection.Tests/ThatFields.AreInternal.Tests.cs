@@ -37,7 +37,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             all are internal,
+					             are all internal,
 					             but it contained not matching items
 
 					             Not matching items:
@@ -63,7 +63,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             not all are internal,
+					             are not all internal,
 					             but it only contained internal items
 
 					             Collection:

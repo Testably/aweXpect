@@ -88,13 +88,13 @@ public static partial class ThatMembers
 			=> SetValue(actual, context, member => member.HasAccessModifier(AccessModifiers.Public));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all are public");
+			=> stringBuilder.Append("are all public");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all are public");
+			=> stringBuilder.Append("are not all public");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained public items");
@@ -121,13 +121,13 @@ public static partial class ThatMembers
 			=> SetValue(actual, context, member => !member.HasAccessModifier(AccessModifiers.Public));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all are not public");
+			=> stringBuilder.Append("are all not public");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained public items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("at least one is public");
+			=> stringBuilder.Append("also contain a public item");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained no public items");

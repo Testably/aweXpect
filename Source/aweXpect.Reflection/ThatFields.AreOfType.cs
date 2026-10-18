@@ -125,7 +125,7 @@ public static partial class ThatFields
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("all are ");
+			stringBuilder.Append("are all ");
 			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
 		}
 
@@ -134,7 +134,7 @@ public static partial class ThatFields
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("not all are ");
+			stringBuilder.Append("are not all ");
 			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
 		}
 

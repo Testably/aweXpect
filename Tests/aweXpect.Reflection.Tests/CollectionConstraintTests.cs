@@ -107,7 +107,7 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             not all are public or at least one is private,
+			             are not all public or also contain a private item,
 			             but it only contained public items and contained no private items
 
 			             Collection:
@@ -130,7 +130,7 @@ public sealed class CollectionConstraintTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             not all are public and at least one is private,
+			             are not all public and also contain a private item,
 			             but it only contained public items
 
 			             Collection:

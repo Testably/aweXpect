@@ -90,13 +90,13 @@ public static partial class ThatMembers
 			=> SetValue(actual, context, member => member.HasAccessModifier(AccessModifiers.ProtectedInternal));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all are protected internal");
+			=> stringBuilder.Append("are all protected internal");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained not matching items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all are protected internal");
+			=> stringBuilder.Append("are not all protected internal");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained protected internal items");
@@ -123,13 +123,13 @@ public static partial class ThatMembers
 			=> SetValue(actual, context, member => !member.HasAccessModifier(AccessModifiers.ProtectedInternal));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all are not protected internal");
+			=> stringBuilder.Append("are all not protected internal");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained protected internal items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("at least one is protected internal");
+			=> stringBuilder.Append("also contain a protected internal item");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" contained no protected internal items");

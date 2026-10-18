@@ -28,7 +28,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are of exact type *DummyBase,
+					             are all of exact type *DummyBase,
 					             but it contained not matching fields
 
 					             Not matching items:
@@ -90,7 +90,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are of exact type int or of exact type *DummyBase,
+					             are all of exact type int or of exact type *DummyBase,
 					             but it contained not matching fields
 
 					             Not matching items:
@@ -120,7 +120,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are of exact type *DummyBase,
+					             are all of exact type *DummyBase,
 					             but it contained not matching fields
 
 					             Not matching items:

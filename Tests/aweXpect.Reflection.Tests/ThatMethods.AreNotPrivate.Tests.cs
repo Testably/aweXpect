@@ -44,7 +44,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all are not private,
+					             are all not private,
 					             but it contained private items
 
 					             Not matching items:
@@ -86,7 +86,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             all are not private,
+					             are all not private,
 					             but it contained private items
 
 					             Not matching items:
@@ -115,7 +115,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             at least one is private,
+					             also contain a private item,
 					             but it contained no private items
 
 					             Collection:

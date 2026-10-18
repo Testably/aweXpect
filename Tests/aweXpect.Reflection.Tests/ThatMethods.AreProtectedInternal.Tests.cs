@@ -24,7 +24,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             all are protected internal,
+					             are all protected internal,
 					             but it contained not matching items
 
 					             Not matching items:
@@ -79,7 +79,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that *
-					             not all are protected internal,
+					             are not all protected internal,
 					             but it only contained protected internal items
 
 					             Collection:
