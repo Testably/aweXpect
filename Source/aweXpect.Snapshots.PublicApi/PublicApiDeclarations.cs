@@ -28,6 +28,8 @@ namespace aweXpect.Snapshots.PublicApi;
 public static class PublicApiDeclarations
 {
 	private const string Indentation = "    ";
+	private const string IndexerNameAttribute = "System.Runtime.CompilerServices.IndexerNameAttribute";
+	private const string TypeForwardedToAttribute = "System.Runtime.CompilerServices.TypeForwardedToAttribute";
 
 	private static readonly SymbolDisplayFormat MemberFormat = new(
 		typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
@@ -229,8 +231,8 @@ public static class PublicApiDeclarations
 		StringBuilder sb = new();
 		foreach (string attribute in Attributes(assembly, options)
 			         .Concat(options.IncludesForwardedTypes &&
-			                 !options.IsExcluded("System.Runtime.CompilerServices.TypeForwardedToAttribute")
-				         ? ForwardedTypes(assembly)
+			                 !options.AttributesToIgnore.Contains(TypeForwardedToAttribute)
+				         ? ForwardedTypes(assembly, options)
 				         : [])
 			         .OrderBy(attribute => attribute, StringComparer.Ordinal))
 		{
@@ -239,7 +241,7 @@ public static class PublicApiDeclarations
 
 		foreach (IGrouping<string, INamedTypeSymbol> types in GetNamespaces(assembly.GlobalNamespace)
 			         .SelectMany(ns => ns.GetTypeMembers())
-			         .Where(IsVisible)
+			         .Where(type => IsVisible(type) && IsSelected(type, options))
 			         .GroupBy(type => type.ContainingNamespace.IsGlobalNamespace
 				         ? ""
 				         : type.ContainingNamespace.ToDisplayString())
@@ -472,9 +474,9 @@ public static class PublicApiDeclarations
 	///     A forwarded type is stored in the metadata of the assembly instead of as an attribute, but removing it breaks
 	///     the consumers that were compiled against the assembly. A nested type is forwarded with its containing type.
 	/// </remarks>
-	private static IEnumerable<string> ForwardedTypes(IAssemblySymbol assembly)
+	private static IEnumerable<string> ForwardedTypes(IAssemblySymbol assembly, PublicApiOptions options)
 		=> assembly.GetForwardedTypes()
-			.Where(type => type.ContainingType is null)
+			.Where(type => type.ContainingType is null && IsSelected(type, options))
 			.Select(type => "System.Runtime.CompilerServices.TypeForwardedTo(typeof(" +
 			                (type.IsGenericType ? type.ConstructUnboundGenericType() : type)
 			                .ToDisplayString(MemberFormat) + "))");
@@ -493,6 +495,36 @@ public static class PublicApiDeclarations
 	/// </summary>
 	private static bool IsVisibleType(INamedTypeSymbol type)
 		=> IsVisible(type) && (type.ContainingType is null || IsVisibleType(type.ContainingType));
+
+	/// <summary>
+	///     A type is written unless it is ignored, by its name or its namespace, and a top-level type only when the public
+	///     API is not restricted or the type is within a restriction; a nested type follows its containing type.
+	/// </summary>
+	private static bool IsSelected(INamedTypeSymbol type, PublicApiOptions options)
+	{
+		string @namespace = type.ContainingNamespace.IsGlobalNamespace
+			? ""
+			: type.ContainingNamespace.ToDisplayString();
+		string fullName = MetadataFullName(type);
+		if (options.TypesToIgnore.Contains(fullName) ||
+		    options.NamespacesToIgnore.Any(ignored => IsWithinNamespace(@namespace, ignored)))
+		{
+			return false;
+		}
+
+		return type.ContainingType is not null ||
+		       (options.NamespacesToRestrictTo.Count == 0 && options.TypesToRestrictTo.Count == 0) ||
+		       options.TypesToRestrictTo.Contains(fullName) ||
+		       options.NamespacesToRestrictTo.Any(restriction => IsWithinNamespace(@namespace, restriction));
+	}
+
+	/// <summary>
+	///     The <paramref name="namespace" /> is the <paramref name="expected" /> one or one of its sub-namespaces, which
+	///     matches whole segments, e.g. <c>Foo.Bar</c> does not include <c>Foo.BarBaz</c>.
+	/// </summary>
+	private static bool IsWithinNamespace(string @namespace, string expected)
+		=> @namespace == expected ||
+		   @namespace.StartsWith(expected + ".", StringComparison.Ordinal);
 
 	private static void WriteType(StringBuilder sb, INamedTypeSymbol type, string indent, PublicApiOptions options)
 	{
@@ -547,7 +579,8 @@ public static class PublicApiDeclarations
 				sb.Append(memberIndent).Append("}\n");
 			}
 
-			foreach (INamedTypeSymbol nested in type.GetTypeMembers().Where(IsVisible)
+			foreach (INamedTypeSymbol nested in type.GetTypeMembers()
+				         .Where(nested => IsVisible(nested) && IsSelected(nested, options))
 				         .OrderBy(nested => nested.Name, StringComparer.Ordinal)
 				         .ThenBy(nested => nested.Arity))
 			{
@@ -868,7 +901,7 @@ public static class PublicApiDeclarations
 			         INamedTypeSymbol { DelegateInvokeMethod: { } invoke, } => Attributes(symbol, options)
 				         .Concat(ReturnAttributes(invoke, options)),
 			         IPropertySymbol { IsIndexer: true, MetadataName: not "Item", } indexer
-				         when !options.IsExcluded("System.Runtime.CompilerServices.IndexerNameAttribute") =>
+				         when !options.AttributesToIgnore.Contains(IndexerNameAttribute) =>
 				         Attributes(symbol, options)
 					         .Append($"System.Runtime.CompilerServices.IndexerName(\"{indexer.MetadataName}\")")
 					         .OrderBy(attribute => attribute, StringComparer.Ordinal),
@@ -892,7 +925,7 @@ public static class PublicApiDeclarations
 		=> attributes
 			.Where(attribute => attribute.AttributeClass is { } attributeClass &&
 			                    IsWritten(attributeClass) &&
-			                    !options.IsExcluded(MetadataFullName(attributeClass)) &&
+			                    !options.AttributesToIgnore.Contains(MetadataFullName(attributeClass)) &&
 			                    !IsSnapshotsMetadata(attribute))
 			.Select(AttributeText)
 			.OrderBy(attribute => attribute, StringComparer.Ordinal);

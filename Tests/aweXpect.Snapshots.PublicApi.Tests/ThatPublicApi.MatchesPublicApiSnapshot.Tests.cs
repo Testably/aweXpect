@@ -15,9 +15,9 @@ public sealed partial class ThatPublicApi
 				=> await That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
 
 			[Fact]
-			public async Task WhenExcludingForwardedTypes_ShouldNotIncludeThem()
+			public async Task WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
 				=> await That(Assembly.LoadFile(WriteForwardingLibrary().FullName))
-					.MatchesPublicApiSnapshot(o => o.ExcludingForwardedTypes());
+					.MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()

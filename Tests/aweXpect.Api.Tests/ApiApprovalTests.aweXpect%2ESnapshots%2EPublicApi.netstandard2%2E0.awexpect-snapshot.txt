@@ -9,12 +9,26 @@ namespace aweXpect.Snapshots.PublicApi
         public static string GenerateFrom(System.Reflection.Assembly assembly) { }
         public static string GenerateFrom(System.Reflection.Assembly assembly, System.Func<aweXpect.Snapshots.PublicApi.PublicApiOptions, aweXpect.Snapshots.PublicApi.PublicApiOptions> options) { }
     }
+    public sealed class PublicApiIgnoring
+    {
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Attribute(string fullName) { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Attribute<TAttribute>() where TAttribute : System.Attribute { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions ForwardedTypes() { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Namespace(string @namespace) { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Type(string fullName) { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Type<TType>() { }
+    }
     public sealed class PublicApiOptions
     {
         public PublicApiOptions() { }
-        public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingAttribute(string fullName) { }
-        public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingAttribute<TAttribute>() where TAttribute : System.Attribute { }
-        public aweXpect.Snapshots.PublicApi.PublicApiOptions ExcludingForwardedTypes() { }
+        public aweXpect.Snapshots.PublicApi.PublicApiIgnoring Ignoring { get; }
+        public aweXpect.Snapshots.PublicApi.PublicApiWithin Within { get; }
+    }
+    public sealed class PublicApiWithin
+    {
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Namespace(string @namespace) { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Type(string fullName) { }
+        public aweXpect.Snapshots.PublicApi.PublicApiOptions Type<TType>() { }
     }
     public static class ThatPublicApi
     {

@@ -22,6 +22,20 @@ public sealed class PublicApiDeclarationsTests
 
 	private const string DependencySource = "namespace Dependency; public class Gate { }";
 
+	private const string TypesSource = """
+	                                   namespace Library
+	                                   {
+	                                       public class Api { }
+	                                       public class Legacy { }
+	                                       public class Box<T> { }
+	                                       public class Outer { public class Inner { } }
+	                                   }
+	                                   namespace Library.Generated { public class Generated { } }
+	                                   namespace Library.Generated.Models { public class Model { } }
+	                                   namespace Library.GeneratedTools { public class Tool { } }
+	                                   namespace Other { public class Thing { } }
+	                                   """;
+
 	private const string AttributesSource = """
 	                                        [assembly: Library.Mark]
 	                                        namespace Library
@@ -96,53 +110,53 @@ public sealed class PublicApiDeclarationsTests
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingAnAttribute_ShouldExcludeItEverywhere()
+	public async Task GenerateFrom_WhenIgnoringAnAttribute_ShouldExcludeItEverywhere()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
 
-		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingAttribute("Library.MarkAttribute"));
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Attribute("Library.MarkAttribute"));
 
 		await That(result).DoesNotContain("Library.Mark]").And.Contains("public sealed class MarkAttribute")
 			.Because("the attribute is excluded on the assembly, members, return values, accessors and parameters");
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingAnAttributeByType_ShouldExcludeIt()
+	public async Task GenerateFrom_WhenIgnoringAnAttributeByType_ShouldExcludeIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
 
-		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingAttribute<ObsoleteAttribute>());
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Attribute<ObsoleteAttribute>());
 
 		await That(result).DoesNotContain("System.Obsolete");
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingANestedAttribute_ShouldExcludeIt()
+	public async Task GenerateFrom_WhenIgnoringANestedAttribute_ShouldExcludeIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
 
 		string result = PublicApiDeclarations.GenerateFrom(library,
-			o => o.ExcludingAttribute("Library.Outer+NestedAttribute"));
+			o => o.Ignoring.Attribute("Library.Outer+NestedAttribute"));
 
 		await That(result).DoesNotContain("[Library.Outer.Nested]");
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingAGenericAttribute_ShouldExcludeItWithAnyTypeArguments()
+	public async Task GenerateFrom_WhenIgnoringAGenericAttribute_ShouldExcludeItWithAnyTypeArguments()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
 
-		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingAttribute("Library.TagAttribute`1"));
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Attribute("Library.TagAttribute`1"));
 
 		await That(result).DoesNotContain("[Library.Tag<int>]");
 	}
 
 #if NET
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingAGenericAttributeByType_ShouldExcludeItWithAnyTypeArguments()
+	public async Task GenerateFrom_WhenIgnoringAGenericAttributeByType_ShouldExcludeItWithAnyTypeArguments()
 	{
 		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly,
-			o => o.ExcludingAttribute<TagAttribute<string>>());
+			o => o.Ignoring.Attribute<TagAttribute<string>>());
 
 		await That(result).DoesNotContain("Tag<int>]")
 			.Because("the fixture applies the attribute with an int, but its definition is excluded");
@@ -150,25 +164,159 @@ public sealed class PublicApiDeclarationsTests
 #endif
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingIndexerName_ShouldNotWriteIt()
+	public async Task GenerateFrom_WhenIgnoringIndexerName_ShouldNotWriteIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
 
 		string result = PublicApiDeclarations.GenerateFrom(library,
-			o => o.ExcludingAttribute<System.Runtime.CompilerServices.IndexerNameAttribute>());
+			o => o.Ignoring.Attribute<System.Runtime.CompilerServices.IndexerNameAttribute>());
 
 		await That(result).DoesNotContain("IndexerName");
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingTypeForwardedTo_ShouldNotWriteForwardedTypes()
+	public async Task GenerateFrom_WhenIgnoringTypeForwardedTo_ShouldNotWriteForwardedTypes()
 	{
 		FileInfo library = WriteForwardingLibrary();
 
 		string result = PublicApiDeclarations.GenerateFrom(library,
-			o => o.ExcludingAttribute<System.Runtime.CompilerServices.TypeForwardedToAttribute>());
+			o => o.Ignoring.Attribute<System.Runtime.CompilerServices.TypeForwardedToAttribute>());
 
 		await That(result).DoesNotContain("TypeForwardedTo");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_ShouldWriteAllTypesOfTheLibrary()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library);
+
+		await That(result).Contains("namespace Library\n").And.Contains("namespace Library.Generated\n")
+			.And.Contains("namespace Library.GeneratedTools\n").And.Contains("namespace Other\n")
+			.And.Contains("class Legacy").And.Contains("class Box<T>").And.Contains("class Inner")
+			.Because("the tests that filter types would otherwise pass without filtering anything");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringANamespace_ShouldIgnoreItAndItsSubNamespacesOnly()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Namespace("Library.Generated"));
+
+		await That(result).DoesNotContain("namespace Library.Generated\n")
+			.And.DoesNotContain("namespace Library.Generated.Models\n")
+			.And.Contains("namespace Library.GeneratedTools\n")
+			.Because("the namespace matches whole segments");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringATypeByName_ShouldIgnoreIt()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Type("Library.Legacy"));
+
+		await That(result).DoesNotContain("class Legacy").And.Contains("class Api");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringANestedType_ShouldKeepItsContainingType()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Type("Library.Outer+Inner"));
+
+		await That(result).DoesNotContain("class Inner").And.Contains("class Outer");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringAGenericType_ShouldIgnoreItWithAnyTypeArguments()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Type("Library.Box`1"));
+
+		await That(result).DoesNotContain("class Box<T>");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringATypeByType_ShouldIgnoreItWithItsNestedTypes()
+	{
+		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o.Ignoring.Type<Album>());
+
+		await That(result).DoesNotContain("class Album").And.DoesNotContain("class Track")
+			.And.Contains("record Artist");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithinANamespace_ShouldOnlyWriteItAndItsSubNamespaces()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Within.Namespace("Library.Generated"));
+
+		await That(result).Contains("namespace Library.Generated\n")
+			.And.Contains("namespace Library.Generated.Models\n")
+			.And.DoesNotContain("namespace Library.GeneratedTools\n")
+			.And.DoesNotContain("namespace Library\n").And.DoesNotContain("namespace Other\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithinSeveralRestrictions_ShouldWriteTheTypesWithinAnyOfThem()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.Within.Namespace("Other").Within.Type("Library.Outer"));
+
+		await That(result).Contains("namespace Other\n").And.Contains("class Outer").And.Contains("class Inner")
+			.And.DoesNotContain("class Api").And.DoesNotContain("namespace Library.Generated\n");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WithinAType_ShouldOnlyWriteItWithItsNestedTypes()
+	{
+		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o.Within.Type<Album>());
+
+		await That(result).Contains("class Album").And.Contains("class Track").And.Contains("class Edition")
+			.And.DoesNotContain("record Artist").And.DoesNotContain("public class GlobalType");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenIgnoringWithinARestriction_ShouldIgnoreIt()
+	{
+		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
+
+		string result = PublicApiDeclarations.GenerateFrom(library,
+			o => o.Within.Namespace("Library").Ignoring.Namespace("Library.Generated").Ignoring.Type("Library.Legacy"));
+
+		await That(result).Contains("class Api").And.DoesNotContain("class Legacy")
+			.And.DoesNotContain("namespace Library.Generated\n").And.DoesNotContain("namespace Other\n")
+			.Because("ignoring wins over a restriction");
+	}
+
+	[Fact]
+	public async Task GenerateFrom_WhenFilteringNamespaces_ShouldAlsoFilterForwardedTypes()
+	{
+		FileInfo library = WriteForwardingLibrary();
+
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.Namespace("Dependency"));
+
+		await That(result).DoesNotContain("TypeForwardedTo");
+	}
+
+	[Fact]
+	public async Task Within_WhenTypeIsNested_ShouldThrowArgumentException()
+	{
+		void Act()
+			=> new PublicApiOptions().Within.Type<Album.Track>();
+
+		await That(Act).Throws<ArgumentException>()
+			.WithMessage(
+				"The type 'aweXpect.Snapshots.PublicApi.Fixture.Album+Track' is nested, so it is written with its containing type: restrict the public API to the containing type instead.*")
+			.AsWildcard();
 	}
 
 	[Fact]
@@ -211,21 +359,21 @@ public sealed class PublicApiDeclarationsTests
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingForwardedTypes_ShouldNotIncludeThem()
+	public async Task GenerateFrom_WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
 	{
 		FileInfo library = WriteForwardingLibrary();
 
-		string result = PublicApiDeclarations.GenerateFrom(library, o => o.ExcludingForwardedTypes());
+		string result = PublicApiDeclarations.GenerateFrom(library, o => o.Ignoring.ForwardedTypes());
 
 		await That(result).DoesNotContain("TypeForwardedTo");
 	}
 
 	[Fact]
-	public async Task GenerateFrom_WhenExcludingForwardedTypesOfAnAssembly_ShouldNotIncludeThem()
+	public async Task GenerateFrom_WhenIgnoringForwardedTypesOfAnAssembly_ShouldNotIncludeThem()
 	{
 		Assembly assembly = Assembly.LoadFile(WriteForwardingLibrary().FullName);
 
-		string result = PublicApiDeclarations.GenerateFrom(assembly, o => o.ExcludingForwardedTypes());
+		string result = PublicApiDeclarations.GenerateFrom(assembly, o => o.Ignoring.ForwardedTypes());
 
 		await That(result).DoesNotContain("TypeForwardedTo");
 	}

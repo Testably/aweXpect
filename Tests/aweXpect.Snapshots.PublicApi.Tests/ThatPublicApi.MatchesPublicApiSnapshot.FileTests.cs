@@ -29,8 +29,8 @@ public sealed partial class ThatPublicApi
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot();
 
 			[Fact]
-			public async Task WhenExcludingForwardedTypes_ShouldNotIncludeThem()
-				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(o => o.ExcludingForwardedTypes());
+			public async Task WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
+				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()

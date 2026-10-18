@@ -6,46 +6,33 @@ namespace aweXpect.Snapshots.PublicApi;
 /// <summary>
 ///     Options for generating the public API, see <see cref="PublicApiDeclarations" />.
 /// </summary>
+/// <remarks>
+///     The options are selected like the rules of a snapshot, e.g.
+///     <c>o => o.Within.Namespace("MyLibrary").Ignoring.Type&lt;Legacy&gt;()</c>.
+/// </remarks>
 public sealed class PublicApiOptions
 {
-	private readonly HashSet<string> _excludedAttributes = new(StringComparer.Ordinal);
-
-	internal bool IncludesForwardedTypes { get; private set; } = true;
+	/// <summary>
+	///     Selects what is left out of the public API.
+	/// </summary>
+	public PublicApiIgnoring Ignoring => new(this);
 
 	/// <summary>
-	///     Excludes the attribute <typeparamref name="TAttribute" /> everywhere in the public API, for a generic
-	///     attribute with any type arguments.
+	///     Selects what the public API is restricted to.
 	/// </summary>
-	public PublicApiOptions ExcludingAttribute<TAttribute>() where TAttribute : Attribute
-		=> ExcludingAttribute((typeof(TAttribute).IsGenericType
-			? typeof(TAttribute).GetGenericTypeDefinition()
-			: typeof(TAttribute)).FullName!);
+	public PublicApiWithin Within => new(this);
+
+	internal HashSet<string> AttributesToIgnore { get; } = new(StringComparer.Ordinal);
+	internal HashSet<string> NamespacesToIgnore { get; } = new(StringComparer.Ordinal);
+	internal HashSet<string> TypesToIgnore { get; } = new(StringComparer.Ordinal);
+	internal bool IncludesForwardedTypes { get; set; } = true;
+	internal HashSet<string> NamespacesToRestrictTo { get; } = new(StringComparer.Ordinal);
+	internal HashSet<string> TypesToRestrictTo { get; } = new(StringComparer.Ordinal);
 
 	/// <summary>
-	///     Excludes the attribute with the <paramref name="fullName" /> everywhere in the public API, e.g. one that the
-	///     tests cannot reference.
+	///     The name of the <paramref name="type" /> like <see cref="Type.FullName" />, for a generic type the one of its
+	///     definition, so that it applies with any type arguments.
 	/// </summary>
-	/// <remarks>
-	///     The <paramref name="fullName" /> is the one of <see cref="Type.FullName" />, e.g.
-	///     <c>System.ObsoleteAttribute</c>, <c>MyNamespace.Outer+InnerAttribute</c> for a nested and
-	///     <c>MyNamespace.TagAttribute`1</c> for a generic attribute.
-	/// </remarks>
-	public PublicApiOptions ExcludingAttribute(string fullName)
-	{
-		_excludedAttributes.Add(fullName);
-		return this;
-	}
-
-	/// <summary>
-	///     Excludes the types that the assembly forwards to another assembly, which are included by default as
-	///     <c>[assembly: TypeForwardedTo(typeof(…))]</c>.
-	/// </summary>
-	public PublicApiOptions ExcludingForwardedTypes()
-	{
-		IncludesForwardedTypes = false;
-		return this;
-	}
-
-	internal bool IsExcluded(string attributeFullName)
-		=> _excludedAttributes.Contains(attributeFullName);
+	internal static string FullNameOf(Type type)
+		=> (type.IsGenericType ? type.GetGenericTypeDefinition() : type).FullName!;
 }

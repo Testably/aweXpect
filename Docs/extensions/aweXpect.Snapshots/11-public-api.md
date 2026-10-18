@@ -50,19 +50,34 @@ that were compiled against the assembly. Options configure what is written, for 
 `PublicApiDeclarations.GenerateFrom(…)`:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.ExcludingForwardedTypes());
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 ```
 
 An attribute is written when consumers can see its class, or when compilers or analyzers read it by its name, e.g.
 `[NotNullWhen(true)]` or `[OverloadResolutionPriority(1)]`, so that also a polyfill that the library declares internally
-is written. An attribute that is irrelevant for the public API can be excluded everywhere, by its type or, e.g. when the
+is written. An attribute that is irrelevant for the public API can be ignored everywhere, by its type or, e.g. when the
 tests cannot reference it, by its full name like `Type.FullName`:
 
 ```csharp
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
-    .ExcludingAttribute<EditorBrowsableAttribute>()
-    .ExcludingAttribute("MyLibrary.Internal.MarkerAttribute"));
+    .Ignoring.Attribute<EditorBrowsableAttribute>()
+    .Ignoring.Attribute("MyLibrary.Internal.MarkerAttribute"));
 ```
+
+The public API can be restricted to namespaces, including their sub-namespaces, or to types, including their nested
+types, and namespaces and types can be ignored. A namespace matches whole segments, so `MyLibrary.Generated` neither
+includes nor ignores `MyLibrary.GeneratedTools`, and ignoring wins over a restriction:
+
+```csharp
+await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+    .Within.Namespace("MyLibrary")
+    .Ignoring.Namespace("MyLibrary.Generated")
+    .Ignoring.Type<LegacyAdapter>());
+```
+
+A type is selected by its type or by its full name like `Type.FullName`, for a generic type with any type arguments.
+A nested type is written with its containing type, so `Within.Type` throws an `ArgumentException` for one; the filters
+also apply to the forwarded types.
 
 The assembly is read with Roslyn, so the package depends on a recent version of `Microsoft.CodeAnalysis.CSharp` that
 reads all extension members correctly. A test project that needs an older Roslyn, e.g. for testing an analyzer, cannot

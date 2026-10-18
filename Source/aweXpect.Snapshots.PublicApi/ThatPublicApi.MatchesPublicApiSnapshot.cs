@@ -43,7 +43,7 @@ public static class ThatPublicApi
 	///     Otherwise, it behaves like the overload without options.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
-	/// <param name="options">The options for generating the public API, e.g. <c>o => o.ExcludingForwardedTypes()</c>.</param>
+	/// <param name="options">The options for generating the public API, e.g. <c>o => o.Ignoring.ForwardedTypes()</c>.</param>
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
@@ -83,7 +83,7 @@ public static class ThatPublicApi
 	///     Otherwise, it behaves like the overload without options.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
-	/// <param name="options">The options for generating the public API, e.g. <c>o => o.ExcludingForwardedTypes()</c>.</param>
+	/// <param name="options">The options for generating the public API, e.g. <c>o => o.Ignoring.ForwardedTypes()</c>.</param>
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
