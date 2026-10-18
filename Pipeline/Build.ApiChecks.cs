@@ -16,7 +16,6 @@ partial class Build
 		{
 			Project project = Solution.Tests.aweXpect_Api_Tests;
 
-			// Under `CoreOnly` only the Debug build of aweXpect references the changed aweXpect.Core.
 			DotNetTest(s => s
 				.SetConfiguration(Configuration == Configuration.Debug || BuildScope == BuildScope.CoreOnly
 					? "Debug"
@@ -24,7 +23,8 @@ partial class Build
 				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
 				.EnableNoBuild()
 				.SetResultsDirectory(TestResultsDirectory)
-				.SetProjectFile(project)
-				.AddLoggers($"trx;LogFileName={project.Name}.trx"));
+				.CombineWith(cc => cc
+					.SetProjectFile(project)
+					.AddLoggers($"trx;LogFileName={project.Name}.trx")), completeOnFailure: true);
 		});
 }
