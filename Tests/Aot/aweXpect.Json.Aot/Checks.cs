@@ -109,6 +109,22 @@ internal static partial class Checks
 		new("an object serialized without type info fails loudly",
 			() => ShouldFailLoudly(async () => await That(new Dto { Name = "a", })
 				.IsJsonSerializedAs("{\"Name\": \"a\"}"))),
+		new("an element matching an expected object with source-generated options passes",
+			() => ShouldPass(async () => await That(Parse("{\"Name\": \"a\"}"))
+				.Matches(new Dto { Name = "a", }, o => o.WithSerializerOptions(DtoContext.Default.Options)))),
+		new("an It.Is expectation in an object member with source-generated options fails and names it",
+			() => ShouldFail(async () => await That(Parse("{\"Title\": \"a\", \"Rating\": 1}"))
+					.Matches(new Track { Title = "a", Rating = It.Is<int>().That.IsGreaterThan(1), },
+						o => o.WithSerializerOptions(DtoContext.Default.Options)),
+				"$.Rating was 1")),
+		new("a property compared with a value of source-generated options passes",
+			() => ShouldPass(async () => await That(Parse("{\"a\": {\"Name\": \"a\"}}"))
+				.IsObject(o => o.With("a").Matching(new Dto { Name = "a", }),
+					o => o.WithSerializerOptions(DtoContext.Default.Options)))),
+		new("an expected value missing from the source-generated context names the fix",
+			() => ShouldThrowNotSupported(async () => await That(Parse("{}"))
+					.Matches(new Track { Rating = new Dto[0], }, o => o.WithSerializerOptions(DtoContext.Default.Options)),
+				"Add [JsonSerializable(typeof(Checks.Dto[]))]")),
 	];
 
 	private static JsonElement Parse(string json)
@@ -180,11 +196,40 @@ internal static partial class Checks
 		return "did not throw";
 	}
 
+	/// <summary>
+	///     Expects the <see cref="NotSupportedException" /> whose message contains the <paramref name="part" />.
+	/// </summary>
+	private static async Task<string?> ShouldThrowNotSupported(Func<Task> act, string part)
+	{
+		try
+		{
+			await act();
+		}
+		catch (NotSupportedException exception) when (exception.Message.Contains(part, StringComparison.Ordinal))
+		{
+			return null;
+		}
+		catch (Exception exception)
+		{
+			return $"threw {exception.GetType().FullName} without \"{part}\": {exception.Message}";
+		}
+
+		return "did not throw";
+	}
+
 	private sealed class Dto
 	{
 		public string? Name { get; set; }
 	}
 
+	private sealed class Track
+	{
+		public string? Title { get; set; }
+		public object? Rating { get; set; }
+	}
+
 	[JsonSerializable(typeof(Dto))]
+	[JsonSerializable(typeof(Track))]
+	[JsonSerializable(typeof(int))]
 	private sealed partial class DtoContext : JsonSerializerContext;
 }

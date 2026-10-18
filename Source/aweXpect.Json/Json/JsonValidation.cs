@@ -146,7 +146,8 @@ internal class JsonValidation : IJsonObjectResult,
 		AddPendingCheck(async cancellationToken =>
 		{
 			ExpectationJsonConverter converter = new(_context, cancellationToken);
-			using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions);
+			using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions,
+				_options.ExpectedSerializerOptions);
 			JsonElementValidator.JsonComparisonResult comparisonResult = await JsonElementValidator.Compare(
 				path,
 				element,

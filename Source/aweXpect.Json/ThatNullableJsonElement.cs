@@ -38,7 +38,8 @@ public static partial class ThatNullableJsonElement
 			}
 
 			ExpectationJsonConverter converter = new(context, cancellationToken);
-			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
+			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions,
+				options.ExpectedSerializerOptions);
 			if (actual.Value.ValueKind == JsonValueKind.Undefined)
 			{
 				Outcome = Outcome.FailureBothWays;

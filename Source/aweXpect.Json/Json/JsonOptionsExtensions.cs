@@ -29,6 +29,26 @@ public static class JsonOptionsExtensions
 	}
 
 	/// <summary>
+	///     Serializes the expected value with the <paramref name="serializerOptions" />, e.g. with a
+	///     <see cref="JsonSerializerOptions.PropertyNamingPolicy" /> or the options of a source-generated
+	///     <c>JsonSerializerContext</c>, instead of the customizable default.
+	/// </summary>
+	/// <remarks>
+	///     With a <see cref="JsonSerializerOptions.TypeInfoResolver" />, the expected value is serialized without reflection,
+	///     so the type of the expected value must be known to the resolver.
+	/// </remarks>
+	public static JsonOptions WithSerializerOptions(
+		this JsonOptions @this,
+		JsonSerializerOptions serializerOptions)
+	{
+		ThrowHelper.ThrowIfNull(serializerOptions, nameof(serializerOptions));
+		return @this with
+		{
+			SerializerOptions = serializerOptions,
+		};
+	}
+
+	/// <summary>
 	///     Ignores additional properties of objects in the subject
 	///     when <paramref name="ignoreAdditionalProperties" /> is <see langword="true" />
 	/// </summary>

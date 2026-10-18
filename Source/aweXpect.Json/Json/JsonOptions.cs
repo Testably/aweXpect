@@ -25,6 +25,18 @@ public record JsonOptions
 	}
 
 	/// <summary>
+	///     The <see cref="JsonSerializerOptions" /> to serialize the expected value with, or <see langword="null" /> to use
+	///     the customizable default.
+	/// </summary>
+	public JsonSerializerOptions? SerializerOptions { get; init; }
+
+	/// <summary>
+	///     The <see cref="SerializerOptions" />, else the customized default, or <see langword="null" /> when neither is set.
+	/// </summary>
+	internal JsonSerializerOptions? ExpectedSerializerOptions
+		=> SerializerOptions ?? Customize.aweXpect.Json().GetCustomizedSerializerOptions();
+
+	/// <summary>
 	///     Flag indicating, if the additional properties of objects in the subject should be ignored.
 	/// </summary>
 	public bool IgnoreAdditionalProperties { get; init; }

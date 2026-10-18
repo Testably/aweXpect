@@ -389,6 +389,68 @@ public sealed partial class ThatJsonObject
 			}
 
 			[Test]
+			public async Task WithCustomizedDefaultSerializerOptions_ShouldNotSerializeTheExpectedValue()
+			{
+				Track subject = new("Let It Be", Genre.Rock);
+
+				async Task Act()
+					=> await That(subject).IsJsonSerializedAs(new
+					{
+						Title = "Let It Be",
+						Genre = 2,
+						Album = (string?)null,
+					});
+
+				using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions
+				       {
+					       PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+				       }))
+				{
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is serialized as JSON new
+						             {
+						             	Title = "Let It Be",
+						             	Genre = 2,
+						             	Album = (string?)null,
+						             },
+						             but it differed as
+						               $.Title was missing and
+						               $.Genre was missing and
+						               $.Album was missing and
+						               $.title had unexpected "Let It Be" and
+						               $.genre had unexpected 2 and
+						               $.album had unexpected <null>
+
+						             Serialized:
+						             {"title":"Let It Be","genre":2,"album":null}
+						             """)
+						.Because("a customized naming policy must not hide that the subject is serialized differently");
+				}
+			}
+
+			[Test]
+			public async Task WithExpectedSerializerOptions_ShouldSerializeTheExpectedValue()
+			{
+				Track subject = new("Let It Be", Genre.Rock);
+				JsonSerializerOptions serializerOptions = new()
+				{
+					PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+				};
+
+				async Task Act()
+					=> await That(subject).IsJsonSerializedAs(new
+					{
+						Title = "Let It Be",
+						Genre = 2,
+						Album = (string?)null,
+					}, serializerOptions, o => o.WithSerializerOptions(serializerOptions));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WithSerializerOptions_ShouldUseThem()
 			{
 				Track subject = new("Let It Be", Genre.Rock);

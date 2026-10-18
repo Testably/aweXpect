@@ -32,7 +32,8 @@ public static partial class ThatJsonElement
 			Actual = actual;
 			_comparisonResult = null;
 			ExpectationJsonConverter converter = new(context, cancellationToken);
-			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
+			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions,
+				options.ExpectedSerializerOptions);
 			if (actual.ValueKind == JsonValueKind.Undefined)
 			{
 				Outcome = Outcome.FailureBothWays;

@@ -39,7 +39,8 @@ public static partial class ThatJsonString
 			}
 
 			ExpectationJsonConverter converter = new(context, cancellationToken);
-			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions);
+			using JsonDocument expectedDocument = converter.ParseExpected(expected, options.DocumentOptions,
+				options.ExpectedSerializerOptions);
 			JsonDocument actualDocument;
 			try
 			{

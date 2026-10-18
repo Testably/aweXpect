@@ -3,10 +3,10 @@
 Describes the customization values of aweXpect.Json. They work like the
 [customization of aweXpect](https://docs.testably.org/aweXpect/how-it-works/configuration).
 
-| Value                          | Default                      | Used to                                                              |
-|--------------------------------|------------------------------|----------------------------------------------------------------------|
-| `DefaultJsonDocumentOptions`   | `AllowTrailingCommas = true` | parse JSON strings                                                   |
-| `DefaultJsonSerializerOptions` | `AllowTrailingCommas = true` | format JSON values and serialize the subject of `IsJsonSerializedAs` |
+| Value                          | Default                      | Used to                                                                                                                                 |
+|--------------------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `DefaultJsonDocumentOptions`   | `AllowTrailingCommas = true` | parse JSON strings                                                                                                                      |
+| `DefaultJsonSerializerOptions` | `AllowTrailingCommas = true` | format JSON values, serialize the subject of `IsJsonSerializedAs` and, once set, [expected values](./02-matching.md#serializer-options) |
 
 You can change the default
 [`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and the

@@ -109,6 +109,18 @@ an object that is compared like in [`Matches`](./02-matching.md), including `It.
 [customization](./05-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
 serialized, e.g. because of a reference cycle, fails the expectation with the message of the exception.
 
+The `JsonSerializerOptions` parameter only serializes the subject. An expected object is serialized with the default
+options, neither with this parameter nor with the customized default options, so that a naming policy cannot hide
+how the subject is actually serialized. To serialize the expected object with other options, pass them with
+[`o => o.WithSerializerOptions(…)`](./02-matching.md#serializer-options):
+
+```csharp
+JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+await Expect.That(track).IsJsonSerializedAs(new { Title = "Let It Be", Genre = 2, Album = (string?)null },
+    camelCase, o => o.WithSerializerOptions(camelCase));
+```
+
 The serialized JSON is compared exactly, like in `MatchesExactly`, so additional properties fail the expectation. All
 [`JsonOptions`](./02-matching.md) are available to relax the comparison, e.g. `IgnoringAdditionalProperties()`,
 `IgnoringArrayOrder()`, `TreatingNullAsAbsent()` or `IgnoringMember(name)`:
@@ -135,5 +147,11 @@ Expected values in any expectation, e.g. in `Matches` or `With("a").Matching(...
 well, so an anonymous object always needs it. Only values that consist of `null`, strings, characters, booleans,
 numbers, `JsonElement`, `JsonDocument`, `JsonNode` (unless a `JsonValue` wraps another type), `It.Is…` expectations
 and collections of them are written without reflection and work in such an application, e.g.
-`With("count").Matching(2)` or `WithElements(1, 2)`.
+`With("count").Matching(2)` or `WithElements(1, 2)`. A named type works when it is registered in a source-generated
+context, whose options are passed with [`WithSerializerOptions(…)`](./02-matching.md#serializer-options):
+
+```csharp
+await Expect.That(element).Matches(new Track("Let It Be", Genre.Rock),
+    o => o.WithSerializerOptions(TrackContext.Default.Options));
+```
 :::

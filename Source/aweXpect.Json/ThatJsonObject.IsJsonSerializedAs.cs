@@ -66,6 +66,9 @@ public static partial class ThatJsonObject
 	/// <remarks>
 	///     The subject is serialized with the customizable default <see cref="JsonSerializerOptions" />, and the result is
 	///     compared exactly, unless the <paramref name="options" /> relax the comparison.
+	///     <para />
+	///     The <paramref name="expected" /> value is serialized with the default options, not the customized ones, unless
+	///     <c>o => o.WithSerializerOptions(…)</c> in the <paramref name="options" /> specifies others.
 	/// </remarks>
 	public static AndOrResult<T, IThat<T>> IsJsonSerializedAs<T>(
 		this IThat<T> subject,
@@ -80,6 +83,10 @@ public static partial class ThatJsonObject
 	/// </summary>
 	/// <remarks>
 	///     The result is compared exactly, unless the <paramref name="options" /> relax the comparison.
+	///     <para />
+	///     The <paramref name="serializerOptions" /> only serialize the subject. The <paramref name="expected" /> value is
+	///     serialized with the default options, unless <c>o => o.WithSerializerOptions(…)</c> in the
+	///     <paramref name="options" /> specifies others.
 	/// </remarks>
 	public static AndOrResult<T, IThat<T>> IsJsonSerializedAs<T>(
 		this IThat<T> subject,
@@ -115,7 +122,7 @@ public static partial class ThatJsonObject
 	{
 		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
 		return AddIsJsonSerializedAs(source,
-			converter => converter.ParseExpected(expected, jsonOptions.DocumentOptions),
+			converter => converter.ParseExpected(expected, jsonOptions.DocumentOptions, jsonOptions.SerializerOptions),
 			expectedExpression.TrimCommonWhiteSpace(), jsonOptions, serializerOptions, null);
 	}
 

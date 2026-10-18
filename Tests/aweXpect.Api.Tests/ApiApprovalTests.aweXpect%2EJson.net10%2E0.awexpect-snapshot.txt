@@ -180,6 +180,7 @@ namespace aweXpect.Json
         public bool IgnoreAdditionalProperties { get; init; }
         public bool IgnoreArrayOrder { get; init; }
         public aweXpect.Equivalency.MemberToIgnore[] MembersToIgnore { get; init; }
+        public System.Text.Json.JsonSerializerOptions? SerializerOptions { get; init; }
         public bool TreatNullAsAbsent { get; init; }
         public override bool Equals(object? obj) { }
         public virtual bool Equals(aweXpect.Json.JsonOptions? other) { }
@@ -199,6 +200,7 @@ namespace aweXpect.Json
         public static aweXpect.Json.JsonOptions IgnoringMember(this aweXpect.Json.JsonOptions @this, string memberToIgnore) { }
         public static aweXpect.Json.JsonOptions TreatingNullAsAbsent(this aweXpect.Json.JsonOptions @this, bool treatNullAsAbsent = true) { }
         public static aweXpect.Json.JsonOptions WithJsonOptions(this aweXpect.Json.JsonOptions @this, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> jsonDocumentOptions) { }
+        public static aweXpect.Json.JsonOptions WithSerializerOptions(this aweXpect.Json.JsonOptions @this, System.Text.Json.JsonSerializerOptions serializerOptions) { }
     }
 }
 namespace aweXpect.Results

@@ -81,6 +81,7 @@ something on takes an optional `bool`:
 | [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
 | [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance) | numbers match within an absolute or relative tolerance |
 | [`WithJsonOptions(…)`](./05-customization.md)                      | the `JsonDocumentOptions` used to parse JSON strings   |
+| [`WithSerializerOptions(…)`](#serializer-options)                  | the `JsonSerializerOptions` for the expected value     |
 
 ### Treating `null` as absent
 
@@ -228,9 +229,35 @@ JSON options:
  - compare numbers within ± 5%
 ```
 
+### Serializer options
+
+The expected value is serialized to JSON before the comparison. By default, the property names of an anonymous object
+are kept as they are, so a subject with camelCase names needs `new { title = "Let It Be" }`. With
+`WithSerializerOptions(…)`, the expected value is serialized with the given
+[`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) instead,
+e.g. with a naming policy:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+await Expect.That(track).MatchesExactly(new { Title = "Let It Be", Artist = "The Beatles" },
+    o => o.WithSerializerOptions(camelCase));
+```
+
+The comparison itself stays strict: only the JSON of the expected value changes. Without the option, the expected value
+is serialized with the `DefaultJsonSerializerOptions` of the [customization](./05-customization.md) when they are
+customized, except in [`IsJsonSerializedAs`](./04-serialization.md#serialized-as-json). `It.Is…` expectations keep
+working with any options.
+
+Options with a `TypeInfoResolver`, e.g. those of a source-generated `JsonSerializerContext`, serialize the expected value
+without reflection, also with trimming or [Native AOT](./04-serialization.md#serialized-as-json). Each type of the
+expected value, also the runtime type of a value in an `object` property, must then be registered in the context;
+otherwise a `NotSupportedException` names the missing `[JsonSerializable(typeof(…))]` attribute.
+
 ### Options in failure messages
 
 The failure message lists the active options in a "JSON options" context, like in the examples above, and omits it
-when no option is active. As `Matches`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject) and
+when no option is active. The options of `WithJsonOptions(…)` and `WithSerializerOptions(…)` are not listed. As `Matches`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject) and
 [`IsArray`](./03-objects-and-arrays.md#isarray) ignore additional properties by default, their failures list
 `ignore additional properties`.

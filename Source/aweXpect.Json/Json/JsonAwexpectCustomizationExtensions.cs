@@ -24,6 +24,14 @@ public static class JsonAwexpectCustomizationExtensions
 	/// </remarks>
 	public class JsonCustomization
 	{
+		/// <remarks>
+		///     A single instance, so that <see cref="GetCustomizedSerializerOptions" /> can tell it from a set value.
+		/// </remarks>
+		private static readonly JsonSerializerOptions DefaultSerializerOptions = new()
+		{
+			AllowTrailingCommas = true,
+		};
+
 		internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
@@ -32,10 +40,7 @@ public static class JsonAwexpectCustomizationExtensions
 					AllowTrailingCommas = true,
 				});
 			DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(awexpectCustomization,
-				"aweXpect.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions
-				{
-					AllowTrailingCommas = true,
-				},
+				"aweXpect.Json.DefaultJsonSerializerOptions", DefaultSerializerOptions,
 				value =>
 				{
 					if (value is null)
@@ -55,5 +60,14 @@ public static class JsonAwexpectCustomizationExtensions
 		///     The default <see cref="JsonSerializerOptions" />.
 		/// </summary>
 		public ICustomizationValueSetter<JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
+
+		/// <summary>
+		///     The <see cref="DefaultJsonSerializerOptions" />, or <see langword="null" /> while no value is set.
+		/// </summary>
+		internal JsonSerializerOptions? GetCustomizedSerializerOptions()
+		{
+			JsonSerializerOptions options = DefaultJsonSerializerOptions.Get();
+			return ReferenceEquals(options, DefaultSerializerOptions) ? null : options;
+		}
 	}
 }

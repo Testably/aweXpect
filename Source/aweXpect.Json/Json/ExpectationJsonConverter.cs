@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
@@ -35,13 +36,25 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	///     expectations.
 	/// </summary>
 	/// <remarks>
-	///     The expected value is usually an anonymous object, which only reflection can serialize.
+	///     The expected value is usually an anonymous object, which only reflection can serialize, unless the
+	///     <paramref name="serializerOptions" /> have a <see cref="JsonSerializerOptions.TypeInfoResolver" />.
+	///     Without <paramref name="serializerOptions" />, it is serialized with the default options.
 	/// </remarks>
-	public JsonDocument ParseExpected(object? expected, JsonDocumentOptions documentOptions)
+	public JsonDocument ParseExpected(object? expected, JsonDocumentOptions documentOptions,
+		JsonSerializerOptions? serializerOptions)
 	{
-		if (TryParseWithoutSerializer(expected, documentOptions, out JsonDocument? document))
+		if (serializerOptions is null &&
+		    TryParseWithoutSerializer(expected, documentOptions, out JsonDocument? document))
 		{
 			return document;
+		}
+
+		if (serializerOptions?.TypeInfoResolver is not null)
+		{
+			JsonSerializerOptions resolverOptions = new(serializerOptions);
+			resolverOptions.Converters.Add(this);
+			resolverOptions.Converters.Add(new ObjectConverter(this));
+			return ParseWithResolver(expected, documentOptions, resolverOptions);
 		}
 
 		if (!ReflectionFallback.IsSupported)
@@ -50,10 +63,56 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 		}
 
 #pragma warning disable CA1869
-		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
+		JsonSerializerOptions options = new(serializerOptions ?? JsonSerializerOptions.Default);
 #pragma warning restore CA1869
-		serializerOptions.Converters.Add(this);
-		return JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), documentOptions);
+		options.Converters.Add(this);
+		return JsonDocument.Parse(JsonSerializer.Serialize(expected, options), documentOptions);
+	}
+
+	private JsonDocument ParseWithResolver(object? expected, JsonDocumentOptions documentOptions,
+		JsonSerializerOptions options)
+	{
+		using MemoryStream stream = new();
+		using (Utf8JsonWriter writer = new(stream))
+		{
+			WriteWithResolver(writer, expected, options);
+		}
+
+		return JsonDocument.Parse(new ReadOnlyMemory<byte>(stream.GetBuffer(), 0, (int)stream.Length),
+			documentOptions);
+	}
+
+	/// <remarks>
+	///     Resolves the type info of the runtime type like the serializer does for an <see langword="object" />, but writes
+	///     <c>It.Is…</c> expectations itself, because a source-generated resolver knows none of their types.
+	/// </remarks>
+	private void WriteWithResolver(Utf8JsonWriter writer, object? value, JsonSerializerOptions options)
+	{
+		switch (value)
+		{
+			case null:
+				writer.WriteNullValue();
+				return;
+			case Expectation expectation:
+				WriteExpectation(writer, expectation);
+				return;
+		}
+
+		Type type = value.GetType();
+		if (type == typeof(object))
+		{
+			writer.WriteStartObject();
+			writer.WriteEndObject();
+			return;
+		}
+
+		if (!options.TryGetTypeInfo(type, out JsonTypeInfo? typeInfo))
+		{
+			throw Tracing.WriteException(new NotSupportedException(
+				$"The expected value cannot be serialized as JSON, because the TypeInfoResolver of the serializer options provides no metadata for {Formatter.Format(type)}. Add [JsonSerializable(typeof({Formatter.Format(type)}))] to the JsonSerializerContext."));
+		}
+
+		JsonSerializer.Serialize(writer, value, typeInfo);
 	}
 
 	/// <summary>
@@ -243,5 +302,21 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 
 		equivalencyExpectationBuilder = null;
 		return false;
+	}
+
+	/// <summary>
+	///     Writes the values of <see langword="object" /> members like the serializer, but finds the <c>It.Is…</c>
+	///     expectations among them, which a source-generated resolver cannot resolve.
+	/// </summary>
+	private sealed class ObjectConverter(ExpectationJsonConverter converter) : JsonConverter<object>
+	{
+		public override bool CanConvert(Type typeToConvert)
+			=> typeToConvert == typeof(object);
+
+		public override object Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+			=> JsonElement.ParseValue(ref reader);
+
+		public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
+			=> converter.WriteWithResolver(writer, value, options);
 	}
 }
