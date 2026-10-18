@@ -515,6 +515,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				body.AppendLine("#endif");
 			}
 
+			if (registrations[i].ReadsTargetSite)
+			{
+				body.AppendLine(
+					"\t[global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage(\"Trimming\", \"IL2026\", Justification = \"TargetSite returns null when its metadata is trimmed.\")]");
+			}
+
 			body.Append("\tprivate static void Register").Append(i).AppendLine("()");
 			body.AppendLine("\t{");
 			body.Append(registrations[i].Source);
@@ -572,8 +578,16 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	///     <c>Nameable</c> is set only for a registration that exists to keep a type's interfaces, and holds the
 	///     type as a <c>typeof</c> operand. Rooting the interfaces of a type that has none is an error, so a
 	///     registration of members or events leaves it <see langword="null" />.
+	///     <para />
+	///     <c>ReadsTargetSite</c> is set for a registration that reads <see cref="Exception.TargetSite" /> where it
+	///     requires unreferenced code.
 	/// </remarks>
-	private readonly record struct TypeRegistration(string Key, string Source, string Suppressions, string? Nameable);
+	private readonly record struct TypeRegistration(
+		string Key,
+		string Source,
+		string Suppressions,
+		string? Nameable,
+		bool ReadsTargetSite = false);
 
 	private readonly record struct AssemblyRegistrations(
 		EquatableArray<TypeRegistration> Registrations,
@@ -842,7 +856,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			if ((members.Count == 0 && explicitProperties.Count == 0) || type.IsAbstract || type.IsStatic ||
 			    !IsReferenceable(type) ||
 			    HasUnknownBase(type) ||
-			    members.Any(member => IsUnreferenceable(member) || !CanBeMemberType(member.Type) ||
+			    members.Any(member => (IsUnreferenceable(member) && !IsTargetSite(member)) ||
+			                          !CanBeMemberType(member.Type) ||
 			                          !SyntaxFacts.IsValidIdentifier(member.Name) ||
 			                          !IsReferenceable(member.Type) ||
 			                          !IsReferenceable(member.Symbol.ContainingType)) ||
@@ -857,7 +872,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			{
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
 					string.Join(",", diagnosticIds),
-					null));
+					null, members.Any(member => IsTargetSite(member) && IsUnreferenceable(member))));
 			}
 		}
 
@@ -1756,6 +1771,16 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			=> IsUnreferenceable(member.Symbol) ||
 			   (member.Symbol is IPropertySymbol property && Getter(property) is { } getter &&
 			    IsUnreferenceable(getter));
+
+		/// <remarks>
+		///     <see cref="Exception.TargetSite" /> requires unreferenced code, which would leave every exception
+		///     unregistered, but it only returns <see langword="null" /> where the metadata of the method was trimmed, as
+		///     it always does under Native AOT. Reading it is therefore safe, and the comparison stays the same as by
+		///     reflection.
+		/// </remarks>
+		private static bool IsTargetSite(Member member)
+			=> member.Symbol is IPropertySymbol { Name: nameof(Exception.TargetSite), } property &&
+			   property.ContainingType.ToDisplayString() == "System.Exception";
 
 		/// <remarks>
 		///     An obsolete member reports under its own diagnostic id when one is declared, so the plain

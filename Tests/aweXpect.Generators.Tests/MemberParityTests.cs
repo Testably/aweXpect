@@ -44,6 +44,7 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.WithKeywords), "aweXpect.Generators.Tests.Corpus.WithKeywords"),
 		(typeof(Corpus.WithObsolete), "aweXpect.Generators.Tests.Corpus.WithObsolete"),
 		(typeof(Corpus.WithVisibilities), "aweXpect.Generators.Tests.Corpus.WithVisibilities"),
+		(typeof(Corpus.CustomException), "aweXpect.Generators.Tests.Corpus.CustomException"),
 	];
 
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> Result = new(()
