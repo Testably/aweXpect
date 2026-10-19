@@ -1,13 +1,8 @@
 using System;
 using System.Xml.Linq;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.Extending;
-using aweXpect.Formatting;
-using aweXpect.Helpers;
 using aweXpect.Results;
 using aweXpect.Xml;
-using static aweXpect.Formatting.Format;
 
 namespace aweXpect;
 
@@ -24,12 +19,7 @@ public static partial class ThatXElement
 	public static AndOrResult<XElement?, IThat<XElement?>> HasElement(
 		this IThat<XElement?> subject,
 		XName name)
-	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<XElement?, IThat<XElement?>>(subject.Get().ExpectationBuilder.AddConstraint(name,
-				static (name, it, grammars) => CreateHasElementConstraint(it, grammars, name)),
-			subject);
-	}
+		=> HasNodeConstraint.HasElement(subject, name, false, static element => element);
 
 	/// <summary>
 	///     Verifies that the subject has a child element with the <paramref name="name" /> which satisfies the
@@ -45,19 +35,7 @@ public static partial class ThatXElement
 		this IThat<XElement?> subject,
 		XName name,
 		Action<IThat<XElement?>> expectations)
-	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
-		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		expectationBuilder.AddConstraint(name,
-			static (name, it, grammars) => CreateHasElementConstraint(it, grammars, name));
-		expectationBuilder
-			.ForMember(MemberAccessor<FoundNode<XElement>, XElement?>.FromFunc(found => found.Node,
-					$"element {Formatter.Format(name.ToString())}"),
-				(_, stringBuilder) => stringBuilder.Append(" which "))
-			.AddExpectations(e => expectations(new ThatSubject<XElement?>(e)));
-		return new AndOrResult<XElement?, IThat<XElement?>>(expectationBuilder, subject);
-	}
+		=> HasNodeConstraint.HasElement(subject, name, expectations, static element => element);
 
 	/// <summary>
 	///     Verifies that the subject does not have a child element with the <paramref name="name" />.
@@ -69,14 +47,5 @@ public static partial class ThatXElement
 	public static AndOrResult<XElement?, IThat<XElement?>> DoesNotHaveElement(
 		this IThat<XElement?> subject,
 		XName name)
-	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<XElement?, IThat<XElement?>>(subject.Get().ExpectationBuilder.AddConstraint(name,
-				static (name, it, grammars) => CreateHasElementConstraint(it, grammars, name).Invert()),
-			subject);
-	}
-
-	private static HasNodeConstraint<XElement> CreateHasElementConstraint(string it,
-		ExpectationGrammars grammars, XName name)
-		=> new(it, grammars, $"element {Formatter.Format(name.ToString())}", element => element.Element(name));
+		=> HasNodeConstraint.HasElement(subject, name, true, static element => element);
 }

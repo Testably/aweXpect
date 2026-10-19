@@ -50,6 +50,29 @@ To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 await Expect.That(order).HasElement("customer", customer => customer.Matches("""<customer><address /></customer>"""));
 ```
 
+## Documents
+
+All these expectations are also available for an
+[`XDocument`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument) and apply to its root element:
+
+```csharp
+XDocument document = XDocument.Parse("""<order id="42"><customer /></order>""");
+
+await Expect.That(document).HasAttribute("id");
+await Expect.That(document).HasElement("customer", customer => customer.Matches("<customer />"));
+await Expect.That(document).DoesNotHaveElement("note");
+```
+
+`HasElement` looks up a child element of the root element, so `HasElement("order")` fails for this document, unlike
+[`XDocument.Element(name)`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xcontainer.element), which
+returns the root element itself. A document without a root element fails, also when the expectation is negated:
+
+```text title="Failure message"
+Expected that document
+has attribute "id",
+but it had no root element
+```
+
 ## Names and namespaces
 
 Attributes and child elements are looked up by their

@@ -1,13 +1,8 @@
 using System;
 using System.Xml.Linq;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.Extending;
-using aweXpect.Formatting;
-using aweXpect.Helpers;
 using aweXpect.Results;
 using aweXpect.Xml;
-using static aweXpect.Formatting.Format;
 
 namespace aweXpect;
 
@@ -24,12 +19,7 @@ public static partial class ThatXElement
 	public static AndOrResult<XElement?, IThat<XElement?>> HasAttribute(
 		this IThat<XElement?> subject,
 		XName name)
-	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<XElement?, IThat<XElement?>>(subject.Get().ExpectationBuilder.AddConstraint(name,
-				static (name, it, grammars) => CreateHasAttributeConstraint(it, grammars, name)),
-			subject);
-	}
+		=> HasNodeConstraint.HasAttribute(subject, name, false, static element => element);
 
 	/// <summary>
 	///     Verifies that the subject has an attribute with the <paramref name="name" /> whose value satisfies the
@@ -45,19 +35,7 @@ public static partial class ThatXElement
 		this IThat<XElement?> subject,
 		XName name,
 		Action<IThat<string?>> expectations)
-	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
-		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		expectationBuilder.AddConstraint(name,
-			static (name, it, grammars) => CreateHasAttributeConstraint(it, grammars, name));
-		expectationBuilder
-			.ForMember(MemberAccessor<FoundNode<XAttribute>, string?>.FromFunc(found => found.Node.Value,
-					$"value of attribute {Formatter.Format(name.ToString())}"),
-				(_, stringBuilder) => stringBuilder.Append(" whose value "))
-			.AddExpectations(e => expectations(new ThatSubject<string?>(e)));
-		return new AndOrResult<XElement?, IThat<XElement?>>(expectationBuilder, subject);
-	}
+		=> HasNodeConstraint.HasAttribute(subject, name, expectations, static element => element);
 
 	/// <summary>
 	///     Verifies that the subject does not have an attribute with the <paramref name="name" />.
@@ -69,14 +47,5 @@ public static partial class ThatXElement
 	public static AndOrResult<XElement?, IThat<XElement?>> DoesNotHaveAttribute(
 		this IThat<XElement?> subject,
 		XName name)
-	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
-		return new AndOrResult<XElement?, IThat<XElement?>>(subject.Get().ExpectationBuilder.AddConstraint(name,
-				static (name, it, grammars) => CreateHasAttributeConstraint(it, grammars, name).Invert()),
-			subject);
-	}
-
-	private static HasNodeConstraint<XAttribute> CreateHasAttributeConstraint(string it,
-		ExpectationGrammars grammars, XName name)
-		=> new(it, grammars, $"attribute {Formatter.Format(name.ToString())}", element => element.Attribute(name));
+		=> HasNodeConstraint.HasAttribute(subject, name, true, static element => element);
 }

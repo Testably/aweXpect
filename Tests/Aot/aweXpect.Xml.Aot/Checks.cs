@@ -42,6 +42,13 @@ internal static class Checks
 		new("an element whose attribute value differs fails and names the attribute",
 			() => ShouldFail(async () => await That(XElement.Parse("<a x=\"2\"/>")).HasAttribute("x", x => x.IsEqualTo("1")),
 				"has attribute \"x\" whose value is equal to \"1\"", "value of attribute \"x\" was \"2\"")),
+		new("a document whose root element has the expected attribute and child element passes",
+			() => ShouldPass(async () => await That(XDocument.Parse("<a x=\"1\"><b/></a>"))
+				.HasAttribute("x", x => x.IsEqualTo("1")).And.HasElement("b", b => b.Matches("<b/>")).And
+				.DoesNotHaveElement("a"))),
+		new("a document without a root element fails also when negated",
+			() => ShouldFail(async () => await That(new XDocument()).DoesNotHaveAttribute("x"),
+				"does not have attribute \"x\"", "had no root element")),
 		new("XML strings that only differ in ignored members pass",
 			() => ShouldPass(async () => await That("<a id=\"1\" etag=\"x\"><b/></a>").IsEqualTo("<a id=\"2\"><b/></a>")
 				.AsXml(o => o.IgnoringMember("/a/@id").Ignoring(path => path.EndsWith("/@etag"))))),
