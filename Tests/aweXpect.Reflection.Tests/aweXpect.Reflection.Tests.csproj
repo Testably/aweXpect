@@ -2,9 +2,13 @@
 
 	<PropertyGroup>
 		<WarningsAsErrors>$(WarningsAsErrors);nullable</WarningsAsErrors>
+		<!-- The strong-name tests use the test assembly as the example of an assembly without a strong name. -->
+		<SignAssembly>False</SignAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj"/>
 	</ItemGroup>
 

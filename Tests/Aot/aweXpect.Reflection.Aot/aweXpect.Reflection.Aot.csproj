@@ -1,7 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Reflection.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<!--
+	    The compiled output stands for an application that is not trimmed, so it reflects like one and shows the
+	    result that the published executable has to reproduce or replace with a failure naming the switch.
+	-->
+	<PropertyGroup Condition="'$(_IsPublishing)' != 'true'">
+		<AweXpectReflectionFallback>true</AweXpectReflectionFallback>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="aweXpect"/>
 		<ProjectReference Include="..\..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj"/>
 	</ItemGroup>
 

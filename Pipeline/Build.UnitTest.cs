@@ -70,6 +70,8 @@ partial class Build
 		Solution.Tests.aweXpect_Web_Internal_Tests,
 		Solution.Tests.aweXpect_Web_Samples_Tests,
 		Solution.Tests.aweXpect_Xml_Tests,
+		Solution.Tests.aweXpect_Reflection_Tests,
+		Solution.Tests.aweXpect_Reflection_Internal_Tests,
 	];
 
 	/// <summary>

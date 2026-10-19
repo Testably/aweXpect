@@ -73,7 +73,7 @@ public sealed partial class ThatAssemblies
 
 					             Not matching items:
 					             [
-					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["TUnit.Core", "aweXpect.Reflection", "Mono.Cecil", "TUnit.Engine", "aweXpect"]
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "AutoFixture", "aweXpect"]
 					             ]
 					             """).AsWildcard();
 			}

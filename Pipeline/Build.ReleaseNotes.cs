@@ -28,6 +28,7 @@ partial class Build
 		("aweXpect.Json", ["Source/aweXpect.Json",]),
 		("aweXpect.Web", ["Source/aweXpect.Web",]),
 		("aweXpect.Xml", ["Source/aweXpect.Xml",]),
+		("aweXpect.Reflection", ["Source/aweXpect.Reflection",]),
 	];
 
 	static readonly string[] ReleaseNotesCategories =

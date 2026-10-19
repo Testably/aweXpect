@@ -20,6 +20,7 @@ partial class Build
 		Solution.Tests.Aot.aweXpect_Json_Aot,
 		Solution.Tests.Aot.aweXpect_Web_Aot,
 		Solution.Tests.Aot.aweXpect_Xml_Aot,
+		Solution.Tests.Aot.aweXpect_Reflection_Aot,
 	];
 
 	/// <summary>
