@@ -17,6 +17,7 @@ partial class Build
 	[
 		Solution.Tests.Aot.aweXpect_Aot_TUnit,
 		Solution.Tests.Aot.aweXpect_Aot_Xunit3,
+		Solution.Tests.Aot.aweXpect_Json_Aot,
 	];
 
 	/// <summary>

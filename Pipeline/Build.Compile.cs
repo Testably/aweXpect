@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Fallout.Common;
 using Fallout.Common.IO;
+using Fallout.Solutions;
 using Fallout.Common.Tooling;
 using Fallout.Common.Tools.DotNet;
 using Fallout.Common.Tools.GitVersion;
@@ -102,8 +103,11 @@ partial class Build
 				.WhenNotNull(MainVersion, (summary, version) => summary
 					.AddPair("Version", version.FileVersion)));
 
-			ClearNugetPackages(Solution.aweXpect.Directory / "bin");
-			ClearNugetPackages(Solution.aweXpect_Core.Directory / "bin");
+			foreach (Project project in PackageProjects)
+			{
+				ClearNugetPackages(project.Directory / "bin");
+			}
+
 			UpdateReadme(MainVersion.FileVersion, false);
 
 			DotNetBuild(s => s

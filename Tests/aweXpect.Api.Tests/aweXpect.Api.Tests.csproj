@@ -14,6 +14,12 @@
 		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj" ReferenceOutputAssembly="false"/>
 		<!-- aweXpect references this project, so its public API is read against the same version. -->
 		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Json\aweXpect.Json.csproj" ReferenceOutputAssembly="false"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- The netstandard2.0 build of aweXpect.Json references a newer System.Text.Json than the runtime of the tests provides. -->
+		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>
 
 	<!--

@@ -37,8 +37,12 @@
 		<NoWarn>701;1702;CA1845</NoWarn>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<!-- The shared checks verify aweXpect under each test framework; an extension brings its own checks. -->
+	<ItemGroup Condition="$(MSBuildProjectName.StartsWith('aweXpect.Aot.'))">
 		<Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Shared/%(Filename)%(Extension)"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="$(MSBuildThisFileDirectory)../../Source/aweXpect.Generators/aweXpect.Generators.csproj"
 						  OutputItemType="Analyzer"
 						  ReferenceOutputAssembly="false"/>

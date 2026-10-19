@@ -13,6 +13,11 @@ namespace Build;
 
 partial class Build
 {
+	/// <summary>
+	///     The projects whose packages are released.
+	/// </summary>
+	Project[] PackageProjects => [Solution.aweXpect_Core, Solution.aweXpect, Solution.aweXpect_Json,];
+
 	Target Pack => _ => _
 		.DependsOn(Compile)
 		.Executes(() =>
@@ -20,10 +25,8 @@ partial class Build
 			AbsolutePath packagesDirectory = ArtifactsDirectory / "Packages";
 			packagesDirectory.CreateOrCleanDirectory();
 
-			Project[] projects = [Solution.aweXpect_Core, Solution.aweXpect,];
-
 			List<string> packages = new();
-			foreach (Project project in projects)
+			foreach (Project project in PackageProjects)
 			{
 				foreach (string package in
 				         Directory.EnumerateFiles(project.Directory / "bin", "*.nupkg", SearchOption.AllDirectories))

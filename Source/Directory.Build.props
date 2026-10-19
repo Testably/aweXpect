@@ -68,20 +68,24 @@
 		<RepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..'))</RepositoryRoot>
 	</PropertyGroup>
 
+	<!--
+	    aweXpect and aweXpect.Core share the README of the repository; an extension package sets
+	    `PackageReadmeSourceFile` to its own in its project file. The items are evaluated after all properties, so they
+	    see the value of the project file.
+	-->
+	<PropertyGroup>
+		<PackageReadmeSourceFile>$(RepositoryRoot)README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/README.md')">$(RepositoryRoot)Artifacts/README.md</PackageReadmeSourceFile>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<None Include="$([MSBuild]::GetPathOfFileAbove('Logo.png', '$(MSBuildThisFileDirectory)../Docs/Images/'))"
 			  Pack="true"
 			  PackagePath="/Docs/"
 			  Link="\Docs\Logo.png"/>
-		<None Include="$(RepositoryRoot)Artifacts/README.md"
-			  Condition="Exists('$(RepositoryRoot)Artifacts/README.md')"
+		<None Include="$(PackageReadmeSourceFile)"
 			  Pack="true"
-			  PackagePath="/Docs/"
-			  Link="Docs\README.md"/>
-		<None Include="$(RepositoryRoot)README.md"
-			  Condition="!Exists('$(RepositoryRoot)Artifacts/README.md')"
-			  Pack="true"
-			  PackagePath="/Docs/"
+			  PackagePath="Docs/README.md"
 			  Link="Docs\README.md"/>
 	</ItemGroup>
 
