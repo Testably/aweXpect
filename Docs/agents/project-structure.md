@@ -62,6 +62,105 @@ aweXpect.
 - `Source/aweXpect.Core/{Formatting,Options,Results,Customization,Equivalency,Recording,Signaling,Delegates,Collections}`:
   value formatting, comparison options, result types, the customization API and the corresponding primitives.
 
+## Extension packages
+
+All extension packages put their public expectations into the namespace `aweXpect`, so that they show up next to the
+built-in ones, with the same layout as `aweXpect`: one partial class `That<Subject>` per subject, one file
+`That<Subject>.<Expectation>.cs` per expectation that also holds its negation and its constraint classes, and results
+and options in their own namespaces. `Helpers/ThrowHelper` validates arguments with `Tracing.WriteException` from
+`aweXpect.Core`; `Helpers/Polyfills` (or `Polyfills/`) holds what `netstandard2.0` lacks. A new expectation touches the
+source file, its tests, an AOT check, the API snapshots, the overview table in the package README and the page in
+`Docs/extensions/<Package>`.
+
+### aweXpect.Json
+
+- `ThatJsonString.*`: `IsValidJson`, `IsValidJsonMatching`, `IsValidJsonMatchingExactly` on `string`;
+  `JsonExtensions.AsJson()` plugs `JsonMatchType` into `IsEqualTo(...)`.
+- `ThatJsonElement.*`, `ThatNullableJsonElement.*`, `ThatJsonNode.*`: the same expectations for `JsonElement`,
+  `JsonElement?` and `JsonNode` (`Matches`, `MatchesExactly`, `IsObject`, `IsArray`, ...); the file without a suffix
+  holds the shared constraints. `ThatJsonObject.*`: `IsJsonSerializable`, `IsJsonSerializedAs` on any object.
+- `Json/` (namespace `aweXpect.Json`): `JsonOptions` and its extensions, listed in the "JSON options" context of a
+  failure; `JsonElementValidator` reports each difference by its JSON path; `ExpectationJsonConverter` serializes
+  expected values and the `It.Is...` expectations inside them, anything but JSON values by reflection behind
+  `ReflectionFallback.IsSupported`; `Customize.aweXpect.Json()` with the default document and serializer options.
+- On `netstandard2.0` the `System.Text.Json` package is used, on `net8.0`/`net10.0` the framework, so behaviour can
+  differ between target frameworks.
+
+### aweXpect.Web
+
+- `ThatHttpRequestMessage`, `ThatHttpResponseMessage`, `ThatUri`, `ThatIPAddress`; the base file of each holds shared
+  helpers.
+- `Web/Results`: fluent results such as `StatusCodeResult` (`.Success()`), `HasHeaderValueResult`
+  (`.WithValue(...)`, `.WhoseValue(...)`) and `ProblemDetailsResult`.
+- `Web/ContentProcessors`: `IContentProcessor` and the JSON, string and binary processors that format `HttpContent`;
+  `Customize.aweXpect.Web().ContentProcessors` configures them.
+- `Helpers/HttpFormatter` writes the `HTTP-Request:`/`HTTP-Response:` sections appended to failures on requests and
+  responses.
+- A relative `Uri` fails component expectations both ways (`FailIfRelative()`, "but it was relative").
+- `Tests/aweXpect.Web.Samples` is a minimal API application used by `aweXpect.Web.Samples.Tests` and the README
+  example.
+
+### aweXpect.Xml
+
+- `ThatXmlString.*` (`IsValidXml` with `.Which(...)`, `IsValidXmlMatching*`), `ThatXElement.*` and `ThatXDocument.*`
+  (`Matches`, `MatchesExactly`, `HasAttribute`, `HasElement` and their negations; a document delegates to its root
+  element). `XmlExtensions.AsXml()` is an `IStringMatchType` for `IsEqualTo(...)`.
+- `Xml/XmlComparer` compares by content: names by namespace and local name, attributes in any order, comments and
+  processing instructions ignored, text and CDATA as one text. Differences are reported by path, e.g.
+  `/order/item[2]/@price`. `MatchesXmlConstraint<TNode>` parses the expected XML once when the expectation is written;
+  `HasNodeConstraint<TSubject, TNode>` stores the found node for nested expectations.
+- `XmlOptions` is immutable: a new option must be copied in the internal copy constructor and listed in the "XML
+  options" failure context. `MembersToIgnoreTracker` names ignored members that matched nothing.
+- `Helpers/SecureXml` is the only place that parses XML: DTDs are prohibited and no resolver is set. Never parse with
+  `XDocument.Parse` or default `XmlReaderSettings`.
+
+### aweXpect.Reflection
+
+User code picks a source, navigates to a member kind, filters and expects:
+`Expect.That(In.AssemblyContaining<T>().Methods().WhichAreAsync()).HaveName("Async").AsSuffix()`.
+
+- Sources: `In.cs` selects concrete objects (`In.AllLoadedAssemblies()`, `In.Type<T>()`, ...); `Types.cs` selects
+  types by criteria. Its `In*` methods mirror the assembly sources of `In` and are mirrored again on
+  `Filtered.Types.InNamespaceResult`, so a new assembly source goes into all three.
+- `Collections/Filtered.*`: immutable filtered collections on top of `Filtered<T, TFiltered>`, `IAsyncEnumerable<T>`
+  from `net8.0` on and `IEnumerable<T>` on `netstandard2.0`; `Filter.cs` builds a filter with the description that
+  becomes part of the failure message.
+- `Filters/<Kind>Filters.<Name>.cs`: filters such as `TypeFilters.WhichAreSealed`, usually with the negated twin in
+  the same file.
+- `That<Kind>.<Name>.cs` for a single subject (`ThatType`, ...) and `That<Kinds>.<Name>.cs` for collections
+  (`ThatTypes`, ...); `ThatMember`/`ThatMembers` hold what all member kinds share.
+- `Customization/`: `Customize.aweXpect.Reflection()` (`DependencyResolver()`, `ExcludedAttributeTypes()`, ...);
+  `ExcludedAssemblyPrefixes` comes from `aweXpect.Core`.
+- `Formatting/`: members are formatted through the wrapper `FormattableMember`, registered by a module initializer,
+  so that the registration survives trimming.
+- Every method that reflects over the members, interfaces, types or assembly references of a subject checks
+  `ReflectionFallback.IsSupported` itself, because the trim analyzer does not follow the check into a called method or
+  a lambda, and throws `ReflectionFallbackHelpers.NotSupported(...)` when it is off.
+
+### aweXpect.Snapshots
+
+- `ThatSnapshot.MatchesSnapshot*.cs`: `MatchesSnapshot()` for strings, objects, binary data and files; `Results/`
+  holds the options of an expectation (`.Named(...)`, `.UniqueFor`, `.For`, `.Accepting(...)`, ...).
+- `Snapshots/` (namespace `aweXpect.Snapshots`): identity and storage (`SnapshotId`, `SnapshotStore`,
+  `DiskSnapshotStore` next to the test file); `SourceRoots` reads the source root, project directory and target
+  framework that `buildTransitive/aweXpect.Snapshots.targets` records in the test assembly, so that snapshots are found
+  in deterministic builds; the rules (`SnapshotMembers*`, `SnapshotLines*`, `SnapshotText`, ...), whose surface
+  `SnapshotRule` repeats for all snapshots (`For_ShouldOfferTheSameRulesAsForAllSnapshots` keeps both equal); the
+  extension points `SnapshotComparer` and `SnapshotReporter`, abstract classes so that members can get a default;
+  `SnapshotAcceptance` and `AcceptEnvironment` (`AWEXPECT_ACCEPT_SNAPSHOTS`, build server detection); and
+  `ClaimedSnapshots`/`OrphanedSnapshots` for orphan detection.
+- Evaluation: resolve the test file through `SourceRoots`, turn the subject into content with the rules, compare it
+  with the stored snapshot, then write the pending file or accept it (the expectation still fails) and inform the
+  reporters (never on a build server).
+- `aweXpect.Snapshots.PublicApi`: `PublicApiDeclarations` reads an assembly with Roslyn from its metadata and writes
+  its public API as C# declarations; missing dependencies are resolved from the `deps.json` and the NuGet packages
+  folder. Not trimmable.
+- `aweXpect.Snapshots.DiffEngine`: `DiffEngineReporter` opens a diff tool. Its `buildTransitive` targets compile a
+  module initializer that registers the reporter into consuming projects (.NET 5+ and C# 9+), which
+  `<AweXpectSnapshotsDiffEngine>false</AweXpectSnapshotsDiffEngine>` turns off.
+- The `buildTransitive` targets ship in the packages and affect every consumer build. A project reference does not
+  import them, so the test projects import them explicitly.
+
 ## How an expectation runs
 
 1. `Expect.That(subject)` returns an `IThat<T>` backed by an `ExpectationBuilder` for the subject.
@@ -75,7 +174,10 @@ extension authors, including generated expectations and Native AOT.
 
 ## Build settings worth knowing
 
-- Assemblies are strong-name signed with `strongname.snk` (root `Directory.Build.props`).
+- Assemblies are strong-name signed with `strongname.snk` (root `Directory.Build.props`), test projects included,
+  except `aweXpect.Reflection.Tests`, whose strong-name tests need an unsigned assembly.
+- `Source/Directory.Build.targets` adds the `beta` label to the packages with `IsBetaPackage` (see
+  [workflows](workflows.md#releases)).
 - `Source/Directory.Build.props`: `TreatWarningsAsErrors`, XML documentation, `Nullable` (annotations only on
   `netstandard2.0`), trimming and AOT analyzers for `net8.0+`, package metadata. Local builds get version
   `255.255.255.255`; `Compile` sets the real version from GitVersion.

@@ -45,12 +45,16 @@ dotnet run -c Release --project Benchmarks/aweXpect.Benchmarks -- --filter "*Str
 - Compare before and after in ABBA order (after, before, before, after) on an idle machine. Time differences below
   about 20 ns are noise; allocations are stable.
 - CI runs `Benchmarks` on every pull request and posts the result as a PR comment; on `main` it appends to the
-  history on the `benchmarks` branch that the benchmark page of the docs shows.
+  history on the `benchmarks` branch that the benchmark page of the docs shows. A method name ending in `_aweXpect`
+  is highlighted in the comment.
+- The extension packages have happy-case benchmarks in `Benchmarks/aweXpect.<Extension>.Benchmarks`. The pipeline
+  does not run them; start them with `dotnet run -c Release --project Benchmarks/aweXpect.<Extension>.Benchmarks --
+  --filter *` before and after a change.
 
 ## Mutation tests
 
 Stryker.NET mutates `aweXpect` (`MutationTestsMain`, tested by `aweXpect.Tests` and `aweXpect.Internal.Tests`) and
-`aweXpect.Core` (`MutationTestsCore`, tested by `aweXpect.Core.Tests`).
+`aweXpect.Core` (`MutationTestsCore`, tested by `aweXpect.Core.Tests`). The extension packages have no mutation tests.
 
 - Stryker starts in the folder of the mutated project (project mode), so it runs only the configured `test-projects`;
   started from the solution folder it would ignore them and run every test project. The framework projects run on
@@ -67,9 +71,15 @@ Stryker.NET mutates `aweXpect` (`MutationTestsMain`, tested by `aweXpect.Tests` 
 
 - The user docs are Markdown pages in `Docs/pages`, published to https://docs.testably.org/aweXpect by the
   `Testably/Testably.Site` repository (triggered by `notify-docs-site.yml` after a successful `Build` on `main`).
+- The docs of an extension package are in `Docs/extensions/<Package>` and are published to
+  `https://docs.testably.org/Extensions/<Package>`.
 - `Docs/agents` (this folder) is for contributors and agents and is not published.
-- Code blocks are compile-checked by the slow tests of `aweXpect.Docs.Tests`; see [testing](testing.md#documentation-tests).
-- The README of the NuGet packages is generated from `README.md` during `Compile`.
+- Code blocks in `Docs/pages` are compile-checked by the slow tests of `aweXpect.Docs.Tests`; see
+  [testing](testing.md#documentation-tests). Those in `Docs/extensions` are not, so check their examples against a
+  test.
+- The README of the `aweXpect` and `aweXpect.Core` packages is generated from `README.md` during `Compile`. An
+  extension package ships `Source/<Package>/README.md`, whose overview table links into its docs pages; keep both in
+  sync when adding or renaming an expectation.
 
 ## Pipeline targets
 
@@ -84,7 +94,7 @@ and `Release` on the build server (`--configuration Release`).
 | `TestFrameworks` | Runs the projects under `Tests/Frameworks` |
 | `CodeCoverage` | `UnitTests` and `TestFrameworks` |
 | `ApiChecks` | Runs `aweXpect.Api.Tests` |
-| `AotSmokeTests` | Runs `Tests/Aot` normally and published with Native AOT for the current platform |
+| `AotSmokeTests` | Runs `Tests/Aot` normally and published with Native AOT for the current platform (needs the native toolchain, on Windows the C++ build tools of Visual Studio) |
 | `Pack` | Collects the packages into `Artifacts/Packages` |
 | `ReleaseNotes` | Writes the changes of each package since the last stable release into `Artifacts/ReleaseNotes.md` |
 | `Benchmarks` | Runs the benchmarks and prints the report |

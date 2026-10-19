@@ -1,6 +1,6 @@
 # Design goals
 
-These goals apply to every Testably repository. They guide agents and contributors when a change has more than one reasonable solution. The goals of this repository at the end refine them.
+These goals apply to every Testably repository. They guide agents and contributors when a change has more than one reasonable solution. The goals of the packages at the end refine them.
 
 Correctness is a hard requirement. Every other goal is a strong default: follow it, and when a change has to break one, say so in the pull request and explain why.
 
@@ -14,7 +14,7 @@ When goals conflict, the earlier one wins.
 
 1. **Correct, with clear failures (must).** Behaviour is exact and covered by tests. A failure states what was expected and what was found, and tests pin the complete message.
 2. **Stable and compatible.** Follow semantic versioning: breaking changes only in a major version, on purpose and documented. Public API changes show up in the API snapshots and are reviewed. Keep dependencies minimal and their version floors low, and support the declared target frameworks.
-3. **AOT and trimming friendly.** No unguarded reflection: prefer source generators, otherwise put reflection behind a feature guard with trimming annotations. A change that touches reflection runs the AOT smoke tests.
+3. **AOT and trimming friendly.** No unguarded reflection: prefer source generators, otherwise put reflection behind a feature guard with trimming annotations. A change that touches reflection runs the AOT smoke tests. `aweXpect.Reflection` refines this goal, see its package goals.
 4. **A consistent, discoverable and pleasant API.** Extension methods exist only on the types they apply to, so IntelliSense shows what makes sense. Naming, option chaining and null handling follow the existing patterns (see the repository-specific rules). Every public member has XML documentation. Prefer minimal ceremony for the user: sensible defaults, no boilerplate, failure messages that read well.
 5. **Fast, especially on the happy path.** Succeeding calls are the common case. Avoid allocations in hot paths, and back every performance claim or change with a benchmark before and after.
 6. **Extensible.** Third parties build on the same extension points the library uses itself. New features use the public extension surface instead of internals, and the core stays small and stable.
@@ -51,7 +51,9 @@ Run the checks that match the change:
 
 Verify every review finding against the code before changing anything. If you disagree, push back once with concrete reasoning; if the reviewer or the maintainer confirms the finding, implement it.
 
-## Goals of this repository
+## Goals of the packages
+
+### aweXpect and aweXpect.Core
 
 1. **Readable both ways.** A negatable expectation has its natural negation next to it (same file, same constraint), and a negated expectation never passes on a null subject or an undecided outcome.
 2. **One meaning per option word.** `Ignoring…` relaxes a check, `As…` changes the match type, `Using` supplies a comparer, `Within` sets a tolerance or a timeout; options chain in any order.
@@ -60,3 +62,50 @@ Verify every review finding against the code before changing anything. If you di
 5. **Uniform argument handling.** Arguments are validated eagerly, expectations are marked `[GuaranteesNotNull]`, and caller expressions are captured where they make the message readable.
 6. **Trimming-safe by construction.** Reflection only through the type metadata registry, and member metadata annotations wherever a value reaches equivalency.
 7. **Predictable layout.** One method family per file in its `That<Type>` partial class, results and options in their own namespaces, generated families never written by hand.
+
+### Extension packages
+
+These goals hold for every extension package:
+
+1. **Feels like core aweXpect.** Naming, negation, result types, argument checks and messages follow the goals above, and the layout mirrors `aweXpect`.
+2. **Core is enough.** An extension builds only on the public API of `aweXpect.Core`, like a third-party extension would. If it needs more, the gap is closed in Core, in the same pull request.
+3. **Unanswerable means failed both ways.** A `null` subject, a missing element or an error while reading the subject fails the expectation and its negation instead of throwing.
+4. **Options are immutable and visible.** Each option method returns a copy, and the options in effect are listed in the failure.
+
+#### aweXpect.Json
+
+1. **Compare JSON semantically.** Numbers by value, member order irrelevant; whatever a default ignores is visible in the failure.
+2. **Serialization fails loudly without reflection.** Serializing caller values respects the reflection switch and throws a clear error when it is off; prefer reflection-free paths.
+
+#### aweXpect.Web
+
+1. **Matching follows the RFCs.** Header names are case-insensitive, URI paths case-sensitive, IPv4-mapped IPv6 addresses handled explicitly.
+2. **HTTP failures show the request and response** in one consistent format, never formatted inline.
+3. **Content is read asynchronously without consuming the stream**, never blocking.
+4. **Clear option words.** `With…` narrows, `Whose…` nests expectations, `Ignoring…` only modifies a comparison.
+5. **JSON handling stays reflection-free.**
+
+#### aweXpect.Xml
+
+1. **Parsing is always secure.** No DTDs and no external resolution.
+2. **Invalid expected XML is rejected when the expectation is written**, so a negation can still fail.
+3. **Equivalence follows XML semantics.** Prefixes, attribute order, comments and insignificant whitespace are ignored; `xml:space` and CDATA are honoured.
+4. **Element and document subjects stay in parity.**
+
+#### aweXpect.Reflection
+
+This package exists to inspect types through reflection, so it replaces goal 3 (AOT and trimming friendly) with **trimming friendly by failing loudly**: under trimming an expectation answers from preserved metadata or throws a clear error instead of avoiding reflection, and never silently checks less.
+
+1. **Three layers, one vocabulary.** Sources, filters and expectations read consistently, and singular and plural forms stay in parity.
+2. **Negations mean what they say.** Every positive has its negation where it makes sense, and a plural negation means "none are", never an inverted "not all".
+3. **Filters stay lazy, immutable and chainable**, and options never break the chain.
+4. **Option words follow core.** `Ignoring…` for string options, `Excluding…` to narrow a scope.
+5. **Messages read naturally** for singular and plural subjects.
+
+#### aweXpect.Snapshots
+
+1. **Stable identity.** Snapshot ids and file names are the same on every machine, culture and run; changing the on-disk format is a breaking change.
+2. **Writing is explicit.** A passing or negated expectation never writes a snapshot, accepting is a deliberate choice, and an accepted change still fails the run.
+3. **A small, shared rule grammar.** Selection, filter, one action, the same for per-expectation and global rules.
+4. **Messages name the API that fixes the problem.**
+5. **AOT for the core packages.** `aweXpect.Snapshots.PublicApi` opts out, as Roslyn cannot be trimmed, but must not pull reflection into `aweXpect.Snapshots`.

@@ -35,6 +35,18 @@ Correctness is a must. The other goals are strong defaults and win in this order
 - **Every expectation is documented.** `DocsApiCoverageTests` fails when a public expectation of `aweXpect` or a
   member of `Expect`, `Fail`, `Skip` or `Signaler` is not mentioned in `Docs/pages`, and every `csharp` block there
   must compile (or be marked `csharp no-compile`).
+- **Extension packages build on `aweXpect.Core` only**, never on `aweXpect`, and add no new runtime dependencies. When
+  an extension needs more from Core, extend Core in the same change. Each package has its own goals in
+  [design-goals](Docs/agents/design-goals.md#extension-packages) and its architecture in
+  [project-structure](Docs/agents/project-structure.md#extension-packages). The rules that are easy to break:
+  - `aweXpect.Xml` parses XML only through `Helpers/SecureXml` (no DTDs, no external resolution).
+  - `aweXpect.Reflection` checks `ReflectionFallback.IsSupported` in every method that reflects over a subject, as the
+    trim analyzer does not follow the check into a called method or a lambda.
+  - `aweXpect.Json` serializes caller values by reflection only behind `ReflectionFallback.IsSupported`.
+  - The `buildTransitive` targets of `aweXpect.Snapshots` and `.DiffEngine` run in every consumer build.
+    `aweXpect.Snapshots.PublicApi` is not trimmable and must not pull reflection into `aweXpect.Snapshots`.
+- **Extension expectations are documented** in `Docs/extensions/<Package>` and in the overview table of
+  `Source/<Package>/README.md`. These code blocks are not compiled.
 - **New analyzer diagnostics** go into the project's `AnalyzerReleases.Unshipped.md`.
 - Do not add `#pragma` or other suppressions for analyzer or Sonar findings without asking the maintainer first.
 

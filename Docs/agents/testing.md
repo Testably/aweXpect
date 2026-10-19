@@ -82,3 +82,34 @@ The slow tests of `aweXpect.Docs.Tests`:
   instead of real delays or wider margins. Only tests about real time itself stay on the real clock.
 - `aweXpect.Tests` targets `net48` without the `IsExternalInit` or `Index` polyfill: no records or list patterns there.
   Run `-f net48` first when a test uses a newer language feature, because `net8.0`/`net10.0` pass without it.
+- TUnit runs tests in parallel, also those of one class. A class whose tests change shared state, such as a global
+  customization or an environment variable, is marked `[NotInParallel]`.
+
+## Extension packages
+
+- Each extension has its own test projects, `Tests/aweXpect.<Extension>.Tests`, and `.Internal.Tests` where internals
+  are tested (`InternalsVisibleTo`, so they are signed). The test files mirror the source files as in `aweXpect.Tests`.
+- Each extension has an AOT smoke test in `Tests/Aot/aweXpect.<Extension>.Aot`, a console application whose checks in
+  `Checks.cs` state the result that must hold under the JIT and published with Native AOT, including the failure when
+  the reflection fallback is switched off. A new or changed expectation gets a check there.
+- `aweXpect.Web.Samples.Tests` runs against `Tests/aweXpect.Web.Samples` with a `WebApplicationFactory` and pins the
+  failure message shown in `Source/aweXpect.Web/README.md`; change both together.
+- `System.Xml` messages are localized on .NET Framework. Tests that assert one use `[UseEnglishMessages]` from
+  `Tests/aweXpect.Xml.Tests/Helpers`.
+- In `aweXpect.Reflection.Tests`, files that declare their own nested `TestAttribute` mark test methods with
+  `[TUnit.Core.Test]`. Sample types live in `TestHelpers/Types`, dependency layers for the architecture rules in
+  `TestHelpers/Dependencies`. Filter tests are usually named `Should<Behaviour>`.
+- Snapshot tests:
+  - `aweXpect.Snapshots.Tests` covers the expectations, rules, stores, comparers, reporters and acceptance. Its tests use
+    a temporary `SnapshotDirectory` or the `InMemorySnapshotStore` instead of writing next to the project.
+  - `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` change process-wide state or read the whole project
+    directory, so they are separate projects that run one test at a time (`[assembly: NotInParallel]`).
+  - `.PublicApi.Tests` checks `PublicApiDeclarations` against `PublicApi.Fixture` (a library covering the language
+    features) and `PublicApi.PackageFixture` (whose package dependency is not in its build output).
+  - `aweXpect.Snapshots.Tests`, `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` set the acceptance to
+    `None` in a module initializer, so `AWEXPECT_ACCEPT_SNAPSHOTS` has no effect there; rename the pending files by
+    hand. `.PublicApi.Tests` honours it.
+  - Snapshots unique per target framework (`@net48`, `@net8.0`, `@net10.0`) need a run on each.
+  - The test projects import `aweXpect.Snapshots.targets`, as a project reference does not; so does
+    `Tests/Aot/aweXpect.Snapshots.Aot`, which is built deterministically (`ContinuousIntegrationBuild`) to cover
+    finding snapshots through the recorded source root.
