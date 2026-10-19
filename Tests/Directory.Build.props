@@ -39,7 +39,11 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
+	<!--
+	    A fixture library next to the tests sets `IsTestProject` to false in its project file, which the items see,
+	    because they are evaluated after all properties.
+	-->
+	<ItemGroup Condition="'$(IsTestProject)' == 'true'">
 		<Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Shared/%(Filename)%(Extension)"/>
 		<Using Include="TUnit.Core"/>
 		<Using Include="aweXpect.TestHelpers"/>

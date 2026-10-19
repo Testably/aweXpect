@@ -21,6 +21,7 @@ partial class Build
 		Solution.Tests.Aot.aweXpect_Web_Aot,
 		Solution.Tests.Aot.aweXpect_Xml_Aot,
 		Solution.Tests.Aot.aweXpect_Reflection_Aot,
+		Solution.Tests.Aot.aweXpect_Snapshots_Aot,
 	];
 
 	/// <summary>

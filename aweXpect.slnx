@@ -3,6 +3,7 @@
     <Project Path="Benchmarks/aweXpect.Benchmarks/aweXpect.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Json.Benchmarks/aweXpect.Json.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Reflection.Benchmarks/aweXpect.Reflection.Benchmarks.csproj" />
+    <Project Path="Benchmarks/aweXpect.Snapshots.Benchmarks/aweXpect.Snapshots.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Web.Benchmarks/aweXpect.Web.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Xml.Benchmarks/aweXpect.Xml.Benchmarks.csproj" />
   </Folder>
@@ -21,6 +22,13 @@
     <Project Path="Tests/aweXpect.Json.Tests/aweXpect.Json.Tests.csproj" />
     <Project Path="Tests/aweXpect.Reflection.Internal.Tests/aweXpect.Reflection.Internal.Tests.csproj" />
     <Project Path="Tests/aweXpect.Reflection.Tests/aweXpect.Reflection.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.DiffEngine.Tests/aweXpect.Snapshots.DiffEngine.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.Orphans.Tests/aweXpect.Snapshots.Orphans.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.PublicApi.Fixture/aweXpect.Snapshots.PublicApi.Fixture.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.PublicApi.PackageFixture/aweXpect.Snapshots.PublicApi.PackageFixture.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.PublicApi.Tests/aweXpect.Snapshots.PublicApi.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.SourceRoots.Tests/aweXpect.Snapshots.SourceRoots.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Snapshots.Tests/aweXpect.Snapshots.Tests.csproj" />
     <Project Path="Tests/aweXpect.Tests/aweXpect.Tests.csproj" />
     <Project Path="Tests/aweXpect.Web.Internal.Tests/aweXpect.Web.Internal.Tests.csproj" />
     <Project Path="Tests/aweXpect.Web.Samples/aweXpect.Web.Samples.csproj" />
@@ -33,6 +41,7 @@
     <Project Path="Tests/Aot/aweXpect.Aot.Xunit3/aweXpect.Aot.Xunit3.csproj" />
     <Project Path="Tests/Aot/aweXpect.Json.Aot/aweXpect.Json.Aot.csproj" />
     <Project Path="Tests/Aot/aweXpect.Reflection.Aot/aweXpect.Reflection.Aot.csproj" />
+    <Project Path="Tests/Aot/aweXpect.Snapshots.Aot/aweXpect.Snapshots.Aot.csproj" />
     <Project Path="Tests/Aot/aweXpect.Web.Aot/aweXpect.Web.Aot.csproj" />
     <Project Path="Tests/Aot/aweXpect.Xml.Aot/aweXpect.Xml.Aot.csproj" />
   </Folder>
@@ -95,6 +104,9 @@
   <Project Path="Source/aweXpect.Generators/aweXpect.Generators.csproj" />
   <Project Path="Source/aweXpect.Json/aweXpect.Json.csproj" />
   <Project Path="Source/aweXpect.Reflection/aweXpect.Reflection.csproj" />
+  <Project Path="Source/aweXpect.Snapshots.DiffEngine/aweXpect.Snapshots.DiffEngine.csproj" />
+  <Project Path="Source/aweXpect.Snapshots.PublicApi/aweXpect.Snapshots.PublicApi.csproj" />
+  <Project Path="Source/aweXpect.Snapshots/aweXpect.Snapshots.csproj" />
   <Project Path="Source/aweXpect.SourceGenerators/aweXpect.SourceGenerators.csproj" />
   <Project Path="Source/aweXpect.Web/aweXpect.Web.csproj" />
   <Project Path="Source/aweXpect.Xml/aweXpect.Xml.csproj" />

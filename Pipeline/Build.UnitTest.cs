@@ -72,6 +72,11 @@ partial class Build
 		Solution.Tests.aweXpect_Xml_Tests,
 		Solution.Tests.aweXpect_Reflection_Tests,
 		Solution.Tests.aweXpect_Reflection_Internal_Tests,
+		Solution.Tests.aweXpect_Snapshots_Tests,
+		Solution.Tests.aweXpect_Snapshots_DiffEngine_Tests,
+		Solution.Tests.aweXpect_Snapshots_Orphans_Tests,
+		Solution.Tests.aweXpect_Snapshots_PublicApi_Tests,
+		Solution.Tests.aweXpect_Snapshots_SourceRoots_Tests,
 	];
 
 	/// <summary>

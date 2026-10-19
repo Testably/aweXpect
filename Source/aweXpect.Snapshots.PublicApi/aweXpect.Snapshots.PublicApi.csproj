@@ -2,6 +2,9 @@
 
 	<PropertyGroup>
 		<Description>Public API snapshots for aweXpect.</Description>
+		<IsBetaPackage>true</IsBetaPackage>
+		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Source/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
 		<!-- Roslyn, which reads the assembly, can neither be trimmed nor published with Native AOT. -->
 		<IsTrimmable>false</IsTrimmable>
 		<IsAotCompatible>false</IsAotCompatible>
@@ -12,7 +15,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+		<!-- The analyzers and generators pin an older Roslyn centrally, because they only load in compilers at least as new as it. -->
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.3.0"/>
 	</ItemGroup>
 
 	<ItemGroup>

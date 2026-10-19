@@ -13,3 +13,7 @@
 # while mounting and running tests in Linux
 *.sh    text eol=lf
 build   text eol=lf
+
+# Binary snapshots are compared byte by byte
+*.bin   binary
+*.png   binary

@@ -13,10 +13,23 @@
 		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.DiffEngine\aweXpect.Snapshots.DiffEngine.csproj"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IsExternalInit">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
 	<!--
-	    A project reference does not import the build targets of the package, so they are imported here, which also
+	    A project reference does not import the build targets of the packages, so they are imported here, which also
 	    registers the reporter like the package does.
 	-->
+	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
 	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots.DiffEngine/buildTransitive/aweXpect.Snapshots.DiffEngine.targets"/>
 
 </Project>

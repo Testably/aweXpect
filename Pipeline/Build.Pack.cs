@@ -24,6 +24,9 @@ partial class Build
 		Solution.aweXpect_Web,
 		Solution.aweXpect_Xml,
 		Solution.aweXpect_Reflection,
+		Solution.aweXpect_Snapshots,
+		Solution.aweXpect_Snapshots_DiffEngine,
+		Solution.aweXpect_Snapshots_PublicApi,
 	];
 
 	Target Pack => _ => _

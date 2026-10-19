@@ -13,9 +13,9 @@
 
 	<ItemGroup>
 		<PackageReference Remove="TUnit.Engine"/>
+		<PackageReference Remove="AutoFixture"/>
 		<PackageReference Remove="Microsoft.Testing.Extensions.TrxReport"/>
 		<PackageReference Remove="Microsoft.Testing.Extensions.CodeCoverage"/>
-		<PackageReference Remove="aweXpect"/>
 		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>
 

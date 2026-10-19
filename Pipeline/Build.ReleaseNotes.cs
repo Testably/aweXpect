@@ -29,6 +29,9 @@ partial class Build
 		("aweXpect.Web", ["Source/aweXpect.Web",]),
 		("aweXpect.Xml", ["Source/aweXpect.Xml",]),
 		("aweXpect.Reflection", ["Source/aweXpect.Reflection",]),
+		("aweXpect.Snapshots", ["Source/aweXpect.Snapshots",]),
+		("aweXpect.Snapshots.DiffEngine", ["Source/aweXpect.Snapshots.DiffEngine",]),
+		("aweXpect.Snapshots.PublicApi", ["Source/aweXpect.Snapshots.PublicApi",]),
 	];
 
 	static readonly string[] ReleaseNotesCategories =
@@ -39,7 +42,8 @@ partial class Build
 	/// </summary>
 	/// <remarks>
 	///     Pull requests are squash-merged with a conventional-commit title, so every commit on <c>main</c> is one pull
-	///     request and its subject tells the kind of change.
+	///     request and its subject tells the kind of change. Only the first parents are followed, so that the history of
+	///     a package that was imported with a merge commit counts as that one commit.
 	/// </remarks>
 	Target ReleaseNotes => _ => _
 		.After(Pack)
@@ -53,7 +57,7 @@ partial class Build
 			foreach ((string package, string[] directories) in ReleaseNotesPackages)
 			{
 				ILookup<string, string> changes = GitTasks
-					.Git($"log {previousRelease}..HEAD --format=%s -- {string.Join(" ", directories)}",
+					.Git($"log --first-parent {previousRelease}..HEAD --format=%s -- {string.Join(" ", directories):nq}",
 						logOutput: false)
 					.Select(output => output.Text)
 					.ToLookup(GetReleaseNotesCategory);

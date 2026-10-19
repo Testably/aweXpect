@@ -20,9 +20,13 @@
 
 	<ItemGroup>
 		<PackageReference Remove="TUnit.Engine"/>
+		<PackageReference Remove="AutoFixture"/>
 		<PackageReference Remove="Microsoft.Testing.Extensions.TrxReport"/>
 		<PackageReference Remove="Microsoft.Testing.Extensions.CodeCoverage"/>
-		<PackageReference Remove="aweXpect"/>
+		<PackageReference Include="IsExternalInit">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 </Project>

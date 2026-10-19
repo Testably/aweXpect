@@ -34,7 +34,7 @@ internal static class Checks
 			() => ShouldPass(RecordMatchesItsSnapshot)),
 		new("a framework exception matching its snapshot is written member-wise",
 			() => ShouldPass(FrameworkExceptionMatchesItsSnapshot)),
-		new("a custom exception matching its snapshot is written without its own members",
+		new("a custom exception matching its snapshot is written with its own members",
 			() => ShouldPass(CustomExceptionMatchesItsSnapshot)),
 		new("a snapshot named after arguments matching its snapshot passes",
 			() => ShouldPass(() => NamedAfterMatchesItsSnapshot("Abbey Road", 1969))),
@@ -86,10 +86,10 @@ internal static class Checks
 			.Which.MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
-	///     The source generator of aweXpect registers no type derived from <see cref="Exception" />, as
-	///     <see cref="Exception.TargetSite" /> requires unreferenced code, so without the reflection fallback that this
-	///     project disables, the own members of a custom exception, here <see cref="RecordPlayerException.Side" />, are
-	///     left out, while its message and inner exception are still written.
+	///     The source generator of aweXpect registers a custom exception with all its members, although
+	///     <see cref="Exception.TargetSite" /> requires unreferenced code, so even without the reflection fallback that
+	///     this project disables, its own members, here <see cref="RecordPlayerException.Side" />, are written next to its
+	///     message and inner exception.
 	/// </remarks>
 	private static async Task CustomExceptionMatchesItsSnapshot()
 		=> await That(() => throw new RecordPlayerException("The record is stuck", 3,

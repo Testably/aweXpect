@@ -5,7 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="aweXpect.Snapshots.PublicApi"/>
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport"/>
 		<PackageReference Include="TUnit.Engine"/>
 	</ItemGroup>
@@ -16,6 +15,9 @@
 		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Json\aweXpect.Json.csproj" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.DiffEngine\aweXpect.Snapshots.DiffEngine.csproj" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.PublicApi\aweXpect.Snapshots.PublicApi.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Web\aweXpect.Web.csproj" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Xml\aweXpect.Xml.csproj" ReferenceOutputAssembly="false"/>
 	</ItemGroup>
@@ -33,5 +35,8 @@
 	<Target Name="BuildAllTargetFrameworksOfReferencedProjects" AfterTargets="Build">
 		<MSBuild Projects="@(ProjectReference)" Targets="DispatchToInnerBuilds" RemoveProperties="TargetFramework"/>
 	</Target>
+
+	<!-- A project reference does not import the build targets of the package, so they are imported here. -->
+	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
 
 </Project>

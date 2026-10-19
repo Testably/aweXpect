@@ -28,6 +28,9 @@ public sealed class ApiApprovalTests
 		"aweXpect.Core",
 		"aweXpect.Json",
 		"aweXpect.Reflection",
+		"aweXpect.Snapshots",
+		"aweXpect.Snapshots.DiffEngine",
+		"aweXpect.Snapshots.PublicApi",
 		"aweXpect.Web",
 		"aweXpect.Xml",
 	];

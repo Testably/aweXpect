@@ -10,11 +10,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="aweXpect"/>
 		<PackageReference Include="BenchmarkDotNet"/>
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
 	</ItemGroup>
 
