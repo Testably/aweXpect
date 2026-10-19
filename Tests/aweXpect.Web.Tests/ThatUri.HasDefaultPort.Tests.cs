@@ -1,0 +1,157 @@
+﻿namespace aweXpect.Tests;
+
+public sealed partial class ThatUri
+{
+	public sealed class HasDefaultPort
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				Uri[] subjects = [new Uri("https://awexpect.com:8080/"),];
+
+				async Task Act()
+					=> await That(new { Uris = subjects, })
+						.Whose(x => x.Uris, items => items.All()
+							.ComplyWith(item => item.HasDefaultPort()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""*whose Uris have the default port for the used scheme for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasDefaultPort();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has the default port for the used scheme,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).HasDefaultPort();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has the default port for the used scheme,
+					             but it was relative
+					             """);
+			}
+
+			[Test]
+			[Arguments("https://www.awexpect.com:80")]
+			[Arguments("http://www.example.com:443")]
+			public async Task WhenSubjectDoesNotHaveTheDefaultPort_ShouldFail(string uriString)
+			{
+				Uri subject = new(uriString);
+
+				async Task Act()
+					=> await That(subject).HasDefaultPort();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has the default port for the used scheme,
+					              but it was {subject}
+					              """);
+			}
+
+			[Test]
+			[Arguments("https://www.awexpect.com")]
+			[Arguments("https://www.awexpect.com:443")]
+			[Arguments("http://www.example.com:80")]
+			public async Task WhenSubjectHasTheDefaultPort_ShouldSucceed(string uriString)
+			{
+				Uri subject = new(uriString);
+
+				async Task Act()
+					=> await That(subject).HasDefaultPort();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasDefaultPort());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have the default port for the used scheme,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasDefaultPort());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have the default port for the used scheme,
+					             but it was relative
+					             """)
+					.Because("a relative URI cannot answer the question, so its negation fails as well");
+			}
+
+			[Test]
+			[Arguments("https://www.awexpect.com:80")]
+			[Arguments("http://www.example.com:443")]
+			public async Task WhenSubjectDoesNotHaveTheDefaultPort_ShouldSucceed(string uriString)
+			{
+				Uri subject = new(uriString);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasDefaultPort());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			[Arguments("https://www.awexpect.com")]
+			[Arguments("https://www.awexpect.com:443")]
+			[Arguments("http://www.example.com:80")]
+			public async Task WhenSubjectHasTheDefaultPort_ShouldFail(string uriString)
+			{
+				Uri subject = new(uriString);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasDefaultPort());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have the default port for the used scheme,
+					              but it was {subject}
+					              """);
+			}
+		}
+	}
+}

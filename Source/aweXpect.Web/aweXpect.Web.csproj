@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="aweXpect.Core"/>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Text.Json"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Web.Internal.Tests" PublicKey="$(PublicKey)"/>
+	</ItemGroup>
+
+</Project>

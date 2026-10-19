@@ -1,0 +1,99 @@
+﻿using System.Net.Http;
+using System.Text;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
+using aweXpect.Helpers;
+using aweXpect.Results;
+
+namespace aweXpect;
+
+public static partial class ThatHttpRequestMessage
+{
+	/// <summary>
+	///     Verifies that the <see cref="HttpRequestMessage" /> has the <paramref name="expected" /> method.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		HasMethod(this IThat<HttpRequestMessage?> subject, HttpMethod expected)
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		return new(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(expected, static (expected, it, grammars) =>
+					new HasMethodConstraint(it, grammars, expected)),
+			subject);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the <paramref name="unexpected" /> method.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		DoesNotHaveMethod(this IThat<HttpRequestMessage?> subject, HttpMethod unexpected)
+	{
+		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+		return new(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
+					new HasMethodConstraint(it, grammars, unexpected).Invert()),
+			subject);
+	}
+
+	private sealed class HasMethodConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		HttpMethod expected)
+		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
+			IValueConstraint<HttpRequestMessage>
+	{
+		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
+		{
+			Actual = actual;
+			if (actual == null)
+			{
+				Outcome = Outcome.Failure;
+				return this;
+			}
+
+			if (actual.Method != expected)
+			{
+				Outcome = Outcome.Failure;
+				return this;
+			}
+
+			Outcome = Outcome.Success;
+			return this;
+		}
+
+		private string Article => char.ToUpperInvariant(expected.Method[0]) is 'A' or 'E' or 'I' or 'O' or 'U' ? "an" : "a";
+
+		public override string ToString()
+			=> $"has {Article} {expected} method";
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(Article).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" method");
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" had method ");
+			Formatter.Format(stringBuilder, Actual?.Method);
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(Article).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(" method");
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
+	}
+}

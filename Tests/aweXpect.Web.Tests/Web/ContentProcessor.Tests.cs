@@ -1,0 +1,59 @@
+﻿using System.Net;
+using System.Net.Http;
+using aweXpect.Web.Tests.TestHelpers;
+
+namespace aweXpect.Tests.Web.ContentProcessors;
+
+public sealed partial class ContentProcessor
+{
+	public sealed class Tests
+	{
+		[Test]
+		public async Task WithDisposedContent_ShouldReturnDefaultText()
+		{
+			StringContent content = new("foo");
+			content.Dispose();
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent(content)
+				.WithContentType("application/my-type");
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that httpResponse
+				             has status code 202 Accepted,
+				             but it had status code 200 OK
+
+				             HTTP-Response:
+				               200 OK HTTP/1.1
+				                 Content-Type: application/my-type
+				               *Content (application/my-type) with unknown length*
+				             """);
+		}
+
+		[Test]
+		public async Task WithoutContent_ShouldReturnDefaultText()
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContentType("application/my-type");
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that httpResponse
+				             has status code 202 Accepted,
+				             but it had status code 200 OK
+
+				             HTTP-Response:
+				               200 OK HTTP/1.1
+				                 Content-Type: application/my-type
+				                 Content-Length: 0
+				               *Content (application/my-type) with length 0*
+				             """);
+		}
+	}
+}
