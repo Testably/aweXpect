@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Json.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="aweXpect"/>
+		<ProjectReference Include="..\..\..\Source\aweXpect.Json\aweXpect.Json.csproj"/>
+	</ItemGroup>
+
+</Project>
