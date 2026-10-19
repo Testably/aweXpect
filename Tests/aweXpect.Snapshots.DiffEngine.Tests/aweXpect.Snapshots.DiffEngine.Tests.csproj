@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+	    Signed, so that the tests can replace the diff runner, which is internal, and never start a diff tool. The
+	    internal polyfills of the library are then visible as well, which collide with those of the tests (CS0436).
+	-->
+	<PropertyGroup>
+		<SignAssembly>True</SignAssembly>
+		<NoWarn>$(NoWarn);CS0436</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.DiffEngine\aweXpect.Snapshots.DiffEngine.csproj"/>
+	</ItemGroup>
+
+	<!--
+	    A project reference does not import the build targets of the package, so they are imported here, which also
+	    registers the reporter like the package does.
+	-->
+	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots.DiffEngine/buildTransitive/aweXpect.Snapshots.DiffEngine.targets"/>
+
+</Project>

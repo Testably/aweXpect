@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+	    Loads assemblies that record further source roots, which would affect every test in the process, so these tests
+	    run in a test project of their own.
+	-->
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+	</ItemGroup>
+
+</Project>

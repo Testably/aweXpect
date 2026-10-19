@@ -1,0 +1,6 @@
+RecordPlayerException {
+  InnerException = InvalidOperationException {
+    Message = "The record player is not running"
+  },
+  Message = "The record is stuck"
+}

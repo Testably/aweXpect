@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Snapshots</RootNamespace>
+		<Description>Opens a diff tool with DiffEngine for snapshots of aweXpect.Snapshots that are missing or different.</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DiffEngine"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Snapshots.DiffEngine.Tests" Key="$(PublicKey)"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="buildTransitive/aweXpect.Snapshots.DiffEngine.targets" Pack="true" PackagePath="buildTransitive/"/>
+		<None Include="buildTransitive/aweXpect.Snapshots.DiffEngine.Registration.cs" Pack="true" PackagePath="buildTransitive/"/>
+		<Compile Remove="buildTransitive/**"/>
+	</ItemGroup>
+
+</Project>

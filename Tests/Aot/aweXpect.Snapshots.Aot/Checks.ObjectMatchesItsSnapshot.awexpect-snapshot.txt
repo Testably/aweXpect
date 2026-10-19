@@ -1,0 +1,12 @@
+Shipment {
+  Id = 7,
+  Parcels = [
+    Parcel {
+      Weight = 1.25
+    },
+    Parcel {
+      Weight = 3.0
+    }
+  ],
+  Status = Sent
+}

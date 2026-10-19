@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+	    Checks for orphaned snapshots with the disk store, which lists every snapshot of the recorded project directories,
+	    so these tests run in a test project of their own, which has no snapshots, and only touch temporary directories.
+	-->
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+	</ItemGroup>
+
+</Project>

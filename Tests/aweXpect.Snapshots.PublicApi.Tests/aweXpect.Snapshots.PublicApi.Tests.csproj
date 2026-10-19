@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+	    Signed, so that the tests can select a reference pack from a directory of their own, which is internal. The
+	    internal polyfills of the library are then visible as well, which collide with those of the tests (CS0436).
+	-->
+	<PropertyGroup>
+		<SignAssembly>True</SignAssembly>
+		<NoWarn>$(NoWarn);CS0436</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Snapshots.PublicApi\aweXpect.Snapshots.PublicApi.csproj"/>
+		<ProjectReference Include="..\aweXpect.Snapshots.PublicApi.Fixture\aweXpect.Snapshots.PublicApi.Fixture.csproj"/>
+	</ItemGroup>
+
+	<!--
+	    The package fixture is only built, as referencing it would copy its packages into the output of the tests.
+	-->
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Snapshots.PublicApi.PackageFixture\aweXpect.Snapshots.PublicApi.PackageFixture.csproj"
+		                  ReferenceOutputAssembly="false" PrivateAssets="all"/>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>PackageFixture</_Parameter1>
+			<_Parameter2>$(MSBuildThisFileDirectory)..\aweXpect.Snapshots.PublicApi.PackageFixture\bin\$(Configuration)\netstandard2.0\aweXpect.Snapshots.PublicApi.PackageFixture.dll</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+</Project>
