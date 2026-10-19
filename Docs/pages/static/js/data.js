@@ -324,6 +324,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -380,7 +386,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -440,7 +447,8 @@ window.BENCHMARK_DATA = {
           6153.680161109338,
           12830.830071585518,
           12716.209959920247,
-          13469.414391150842
+          13469.414391150842,
+          6596.264731815883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -489,6 +497,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -573,7 +582,8 @@ window.BENCHMARK_DATA = {
           157629.54663085938,
           364450.78185096156,
           360835.12444196426,
-          385380.48684895836
+          385380.48684895836,
+          178992.7767578125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -638,7 +648,8 @@ window.BENCHMARK_DATA = {
           590287,
           590292,
           590292,
-          590292
+          590292,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -706,7 +717,8 @@ window.BENCHMARK_DATA = {
           9455.314562988282,
           20109.71484883626,
           19577.099816458565,
-          19206.561294555664
+          19206.561294555664,
+          9672.389400227865
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -718,6 +730,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1067,6 +1080,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -1116,7 +1135,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -1169,7 +1189,8 @@ window.BENCHMARK_DATA = {
           129.05741113882797,
           319.50869131088257,
           342.94660336176554,
-          306.34915406363353
+          306.34915406363353,
+          138.71444506645201
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1181,6 +1202,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1288,7 +1310,8 @@ window.BENCHMARK_DATA = {
           257.5934160436903,
           480.948417867933,
           493.0574806758336,
-          559.0478465398153
+          559.0478465398153,
+          265.9254628590175
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1300,6 +1323,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1407,7 +1431,8 @@ window.BENCHMARK_DATA = {
           193.26973274775915,
           383.6896659646715,
           394.50341510772705,
-          399.7745791435242
+          399.7745791435242,
+          223.6468460900443
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1419,6 +1444,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6381,6 +6407,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -7200,7 +7232,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -8023,7 +8056,8 @@ window.BENCHMARK_DATA = {
           74.18803690947018,
           150.6127185980479,
           148.89149589538573,
-          160.59917413393657
+          160.59917413393657,
+          78.1513781150182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8830,6 +8864,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9682,7 +9717,8 @@ window.BENCHMARK_DATA = {
           129.42204809188843,
           254.0005808217185,
           258.0033085823059,
-          262.4527729034424
+          262.4527729034424,
+          136.25635732923234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9875,6 +9911,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10622,7 +10659,8 @@ window.BENCHMARK_DATA = {
           117.34135173161825,
           231.8496056520022,
           244.99941361745198,
-          261.8423598607381
+          261.8423598607381,
+          132.18533142407736
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10634,6 +10672,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -11069,6 +11108,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -11125,7 +11170,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -11185,7 +11231,8 @@ window.BENCHMARK_DATA = {
           132.02554053919656,
           259.5313862051283,
           286.11733493804934,
-          279.0654663306016
+          279.0654663306016,
+          160.31036690565256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11204,6 +11251,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11318,7 +11366,8 @@ window.BENCHMARK_DATA = {
           263.844231898968,
           542.9683816092355,
           516.3736726125081,
-          527.1524635950724
+          527.1524635950724,
+          308.0143295434805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11330,6 +11379,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -11451,7 +11501,8 @@ window.BENCHMARK_DATA = {
           187.08469479424613,
           317.0804671874413,
           327.2018767674764,
-          345.8191385904948
+          345.8191385904948,
+          197.49301727612814
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11463,6 +11514,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -16432,6 +16484,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -17251,7 +17309,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -18074,7 +18133,8 @@ window.BENCHMARK_DATA = {
           316.0225144386292,
           645.035011100769,
           639.0630943591779,
-          708.2389707565308
+          708.2389707565308,
+          339.8828879424504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18884,6 +18944,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -19733,7 +19794,8 @@ window.BENCHMARK_DATA = {
           653.2981799565829,
           1320.4583545412336,
           1381.041144434611,
-          1460.132477393517
+          1460.132477393517,
+          704.0699275970459
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20561,6 +20623,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -20673,7 +20736,8 @@ window.BENCHMARK_DATA = {
           314.94122142058154,
           646.8888455708822,
           646.5618248667035,
-          643.0744180679321
+          643.0744180679321,
+          347.3612709363302
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20685,6 +20749,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -25698,6 +25763,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -26517,7 +26588,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -27340,7 +27412,8 @@ window.BENCHMARK_DATA = {
           291.5696660677592,
           640.4601805550711,
           640.4209254128592,
-          696.0705689112345
+          696.0705689112345,
+          334.4265292031424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28150,6 +28223,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -28999,7 +29073,8 @@ window.BENCHMARK_DATA = {
           9637.708984375,
           28272.02166513296,
           27720.800270589192,
-          27599.6657023112
+          27599.6657023112,
+          10571.065576171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29827,6 +29902,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -29939,7 +30015,8 @@ window.BENCHMARK_DATA = {
           401.0316359043121,
           778.1249496019803,
           785.4593592325847,
-          826.4341165542603
+          826.4341165542603,
+          425.74920657702853
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29951,6 +30028,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -30734,6 +30812,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -30848,7 +30932,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -30966,7 +31051,8 @@ window.BENCHMARK_DATA = {
           360.25840894992535,
           750.3315128179697,
           726.2182041168213,
-          735.735329246521
+          735.735329246521,
+          373.0331435839335
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31073,6 +31159,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -31215,7 +31302,8 @@ window.BENCHMARK_DATA = {
           26041.332474772134,
           82043.3909016927,
           83428.47364908854,
-          85469.73887532552
+          85469.73887532552,
+          29494.972002301896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31338,7 +31426,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32024,6 +32113,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -32138,7 +32233,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -32256,7 +32352,8 @@ window.BENCHMARK_DATA = {
           93.25659429175514,
           179.30994068659268,
           175.17753386497498,
-          186.72757803476773
+          186.72757803476773,
+          110.18292439835412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32333,6 +32430,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -32505,7 +32603,8 @@ window.BENCHMARK_DATA = {
           9507.399641927082,
           32832.37120361328,
           33147.64429931641,
-          31306.018702915735
+          31306.018702915735,
+          11076.802041625977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32628,7 +32727,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32740,7 +32840,8 @@ window.BENCHMARK_DATA = {
           117.17138999303182,
           237.70466898282368,
           243.2941465695699,
-          251.0994581858317
+          251.0994581858317,
+          139.39484674135844
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32752,6 +32853,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -33187,6 +33289,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -33243,7 +33351,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -33303,7 +33412,8 @@ window.BENCHMARK_DATA = {
           171.65608774698697,
           354.57267611821493,
           360.10426191488904,
-          368.94456850687664
+          368.94456850687664,
+          187.3057516983577
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33351,6 +33461,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -33436,7 +33547,8 @@ window.BENCHMARK_DATA = {
           194.87806278864542,
           364.20670493443805,
           389.23395179112754,
-          375.71736411253613
+          375.71736411253613,
+          220.09970924854278
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33448,6 +33560,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -33569,7 +33682,8 @@ window.BENCHMARK_DATA = {
           201.5483102628163,
           399.33776105244954,
           419.3142405509949,
-          425.68998495737713
+          425.68998495737713,
+          213.04699403444926
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33581,6 +33695,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -33972,6 +34087,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -34028,7 +34149,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -34088,7 +34210,8 @@ window.BENCHMARK_DATA = {
           367.50125183377946,
           797.5990753855024,
           799.918774332319,
-          827.7983581542969
+          827.7983581542969,
+          446.73118019104004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34115,6 +34238,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -34221,7 +34345,8 @@ window.BENCHMARK_DATA = {
           960.6418059894016,
           1831.3790845137376,
           1976.6952491760253,
-          2028.140828704834
+          2028.140828704834,
+          1160.9594509124756
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34233,6 +34358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -34354,7 +34480,8 @@ window.BENCHMARK_DATA = {
           434.1284122100243,
           906.782819112142,
           952.1759960174561,
-          947.1852062225341
+          947.1852062225341,
+          510.2945117155711
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34366,6 +34493,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -34757,6 +34885,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -34813,7 +34947,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -34873,7 +35008,8 @@ window.BENCHMARK_DATA = {
           6094.362887064616,
           12304.294448852539,
           12081.541130065918,
-          12083.014532906669
+          12083.014532906669,
+          6485.879282437838
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34922,6 +35058,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -35006,7 +35143,8 @@ window.BENCHMARK_DATA = {
           18308.33555485652,
           41226.83924967448,
           40712.498434884204,
-          42139.088887532555
+          42139.088887532555,
+          19462.812460763114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35061,6 +35199,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -35139,7 +35278,8 @@ window.BENCHMARK_DATA = {
           6327.568381718227,
           11412.204189593975,
           11322.25827407837,
-          11346.99682820638
+          11346.99682820638,
+          6425.284461975098
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35151,6 +35291,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -35542,6 +35683,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 08:10:50 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#1882)"
+      },
+      {
+        "sha": "369e335fdf6de703e25eb6d8abf64821dfab976c",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 08:26:25 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0 (#1884)"
       }
     ],
     "labels": [
@@ -35598,7 +35745,8 @@ window.BENCHMARK_DATA = {
       "1cb02fc3",
       "6e495ae1",
       "06c125c6",
-      "5348e226"
+      "5348e226",
+      "369e335f"
     ],
     "datasets": [
       {
@@ -35658,7 +35806,8 @@ window.BENCHMARK_DATA = {
           5792.498997824533,
           11860.760524495443,
           11594.618412780761,
-          11707.549776204427
+          11707.549776204427,
+          6105.429531977727
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35707,6 +35856,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -35791,7 +35941,8 @@ window.BENCHMARK_DATA = {
           26070.551674397786,
           59329.20127766927,
           60240.43694598858,
-          60446.32313319615
+          60446.32313319615,
+          27999.129021277793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35856,6 +36007,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -35924,7 +36076,8 @@ window.BENCHMARK_DATA = {
           11767.620774489184,
           22494.33946110652,
           22314.193932669503,
-          22333.71257672991
+          22333.71257672991,
+          12393.453134809222
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35936,6 +36089,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
