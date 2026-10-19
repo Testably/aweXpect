@@ -81,6 +81,11 @@ internal static class Checks
 		new("an unexpected content type fails and is named",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, Json)).DoesNotHaveContentType("application/json"),
 				"does not have a `Content-Type` header equal to \"application/json\"")),
+		new("a request URI that differs only in case passes when ignoring case",
+			() => ShouldPass(async () => await That(Request(Json)).HasRequestUri("https://awexpect.com/TRACKS").IgnoringCase())),
+		new("an unexpected request URI that differs only in case fails when ignoring case",
+			() => ShouldFail(async () => await That(Request(Json)).DoesNotHaveRequestUri("https://awexpect.com/TRACKS").IgnoringCase(),
+				"does not have a request URI equal to \"https://awexpect.com/TRACKS\" ignoring case")),
 		new("matching problem details pass",
 			() => ShouldPass(async () => await That(ProblemDetailsResponse())
 				.HasProblemDetailsContent("https://awexpect.com/not-found")

@@ -24,6 +24,28 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenPathDiffersOnlyInCase_IgnoringCase_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithMethod(HttpMethod.Get)
+					.WithUri("https://awexpect.com/ABC");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveRequestUri(new Uri("https://awexpect.com/abc")).IgnoringCase();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a request URI equal to "https://awexpect.com/abc" ignoring case,
+					             but it had
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ABC HTTP/1.1
+					             """)
+					.Because("IgnoringCase also ignores the case of the path");
+			}
+
+			[Test]
 			public async Task WhenPathDiffersOnlyInCase_ShouldSucceed()
 			{
 				HttpRequestMessage subject = RequestBuilder
@@ -218,6 +240,18 @@ public sealed partial class ThatHttpRequestMessage
 					             HTTP-Request:
 					               GET https://awexpect.com/ABC HTTP/1.1
 					             """);
+			}
+
+			[Test]
+			public async Task WhenUriDiffersOnlyInCase_IgnoringCase_ShouldSucceed()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithUri("https://awexpect.com/ABC");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotHaveRequestUri("https://awexpect.com/abc").IgnoringCase());
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]

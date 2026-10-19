@@ -81,6 +81,101 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenExpectedUriIsRelative_ShouldThrowArgumentException()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasRequestUri(new Uri("/tracks/1", UriKind.Relative));
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' must be a valid absolute URI.").AsPrefix()
+					.Because("the Uri overload validates the expected URI like the string overload");
+			}
+
+			[Test]
+			public async Task WhenPathDiffersOnlyInCase_IgnoringCase_ShouldSucceed()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithUri("https://music.example.com/Tracks/1?genre=JAZZ");
+
+				async Task Act()
+					=> await That(subject).HasRequestUri("https://music.example.com/tracks/1?genre=jazz").IgnoringCase()
+						.And.HasRequestUri(new Uri("https://music.example.com/TRACKS/1?genre=Jazz")).IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("IgnoringCase also ignores the case of the path and the query");
+			}
+
+			[Test]
+			public async Task WhenPathDiffersOnlyInCase_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithMethod(HttpMethod.Get)
+					.WithUri("https://music.example.com/Tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasRequestUri("https://music.example.com/tracks/1");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request URI equal to "https://music.example.com/trac…",
+					             but it had request URI "https://music.example.com/Trac…", which differs at index 26:
+					                           ↓ (actual)
+					               "…ample.com/Tracks/1"
+					               "…ample.com/tracks/1"
+					                           ↑ (expected)
+
+					             HTTP-Request:
+					               GET https://music.example.com/Tracks/1 HTTP/1.1
+					             """)
+					.Because("the path of a URI is case-sensitive");
+			}
+
+			[Test]
+			public async Task WhenQueryDiffersOnlyInCase_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithMethod(HttpMethod.Get)
+					.WithUri("https://music.example.com/tracks?genre=JAZZ");
+
+				async Task Act()
+					=> await That(subject).HasRequestUri("https://music.example.com/tracks?genre=jazz");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request URI equal to "https://music.example.com/trac…",
+					             but it had request URI "https://music.example.com/trac…", which differs at index 39:
+					                           ↓ (actual)
+					               "…cks?genre=JAZZ"
+					               "…cks?genre=jazz"
+					                           ↑ (expected)
+
+					             HTTP-Request:
+					               GET https://music.example.com/tracks?genre=JAZZ HTTP/1.1
+					             """)
+					.Because("the query of a URI is case-sensitive");
+			}
+
+			[Test]
+			[Arguments("https://music.example.com/Tracks/1?genre=JAZZ", "HTTPS://Music.Example.COM/Tracks/1?genre=JAZZ")]
+			[Arguments("HTTPS://MUSIC.EXAMPLE.COM/Tracks/1?genre=JAZZ", "https://music.example.com/Tracks/1?genre=JAZZ")]
+			public async Task WhenSchemeAndHostDifferOnlyInCase_ShouldSucceed(string actual, string expected)
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithUri(actual);
+
+				async Task Act()
+					=> await That(subject).HasRequestUri(expected).And.HasRequestUri(new Uri(expected));
+
+				await That(Act).DoesNotThrow()
+					.Because("the scheme and the host of a URI are case-insensitive");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -94,6 +189,32 @@ public sealed partial class ThatHttpRequestMessage
 					             has a request URI equal to "https://awexpect.com/",
 					             but it was <null>
 					             """);
+			}
+
+			[Test]
+			public async Task WhenUriDiffers_IgnoringCase_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithMethod(HttpMethod.Get)
+					.WithUri("https://awexpect.com/ABC");
+
+				async Task Act()
+					=> await That(subject).HasRequestUri("https://awexpect.com/abd").IgnoringCase();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request URI equal to "https://awexpect.com/abd" ignoring case,
+					             but it had request URI "https://awexpect.com/ABC", which differs at index 23:
+					                           ↓ (actual)
+					               "…ect.com/ABC"
+					               "…ect.com/abd"
+					                           ↑ (expected)
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ABC HTTP/1.1
+					             """)
+				.Because("IgnoringCase skips the case-only difference at index 21");
 			}
 
 			[Test]
@@ -187,6 +308,26 @@ public sealed partial class ThatHttpRequestMessage
 						.DoesNotComplyWith(it => it.HasRequestUri("https://awexpect.com/awexpect.Web"));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUriDiffersOnlyInCase_IgnoringCase_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithUri("https://awexpect.com/ABC");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasRequestUri("https://awexpect.com/abc").IgnoringCase());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a request URI equal to "https://awexpect.com/abc" ignoring case,
+					             but it had
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ABC HTTP/1.1
+					             """);
 			}
 
 			[Test]
