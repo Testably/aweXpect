@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<WarningsAsErrors>$(WarningsAsErrors);nullable</WarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Only the test project depends on Mono.Cecil (for the example dependency resolver);
+		     the library stays dependency-free. -->
+		<PackageReference Include="Mono.Cecil"/>
+	</ItemGroup>
+
+</Project>

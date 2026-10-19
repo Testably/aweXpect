@@ -1,0 +1,25 @@
+﻿using System;
+using System.Reflection;
+using aweXpect.Core;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Results;
+
+namespace aweXpect.Reflection;
+
+public static partial class ThatType
+{
+	/// <summary>
+	///     Verifies that the <see cref="Type" /> contains events matching the <paramref name="filter" />.
+	/// </summary>
+	/// <remarks>
+	///     By default the assertion succeeds when the type contains at least one matching event. Append a quantifier
+	///     (e.g. <see cref="QuantifierExtensions.Exactly{TResult}(TResult, Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static TypeContainingMembersResult<Type, Type?> ContainsEvents(
+		this IThat<Type?> subject,
+		Func<Filtered.Events, Filtered.Events> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contains<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
+}

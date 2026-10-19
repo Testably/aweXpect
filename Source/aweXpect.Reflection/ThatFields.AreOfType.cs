@@ -1,0 +1,144 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
+using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Options;
+using aweXpect.Results;
+#if NET8_0_OR_GREATER
+using System.Threading;
+using System.Threading.Tasks;
+#endif
+
+// ReSharper disable PossibleMultipleEnumeration
+
+namespace aweXpect.Reflection;
+
+public static partial class ThatFields
+{
+	/// <summary>
+	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>> AreOfType<TField>(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
+		=> AreOfType(subject, typeof(TField));
+
+	/// <summary>
+	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>> AreOfType(
+		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(fieldType, false);
+		return new FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<FieldInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
+			subject,
+			typeFilterOptions);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>
+		AreOfType<TField>(
+			this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
+		=> AreOfType(subject, typeof(TField));
+
+	/// <summary>
+	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>> AreOfType(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(fieldType, false);
+		return new FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<FieldInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
+			subject,
+			typeFilterOptions);
+	}
+#endif
+
+	/// <summary>
+	///     Result that allows chaining additional types for field collections.
+	/// </summary>
+	public sealed partial class FieldsOfTypeResult<TValue, TResult>(
+		ExpectationBuilder expectationBuilder,
+		TResult subject,
+		TypeFilterOptions typeFilterOptions)
+		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
+			IOptionsProvider<TypeFilterOptions>
+		where TResult : IThat<TValue>
+	{
+		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
+		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;
+
+		/// <summary>
+		///     Allow an alternative type <typeparamref name="TField" /> (or a subtype).
+		/// </summary>
+		public FieldsOfTypeResult<TValue, TResult> OrOfType<TField>()
+			=> OrOfType(typeof(TField));
+
+		/// <summary>
+		///     Allow an alternative type <paramref name="fieldType" /> (or a subtype).
+		/// </summary>
+		public FieldsOfTypeResult<TValue, TResult> OrOfType(Type fieldType)
+		{
+			typeFilterOptions.RegisterType(fieldType, false);
+			return this;
+		}
+	}
+
+	private sealed class AreOfTypeConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		TypeFilterOptions typeFilterOptions)
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
+#endif
+	{
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				field => typeFilterOptions.Matches(field?.FieldType), cancellationToken);
+#endif
+
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, field => typeFilterOptions.Matches(field?.FieldType));
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("are all ");
+			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained not matching fields");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("are not all ");
+			typeFilterOptions.AppendOfTypeDescription(stringBuilder);
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" only contained matching fields");
+	}
+}

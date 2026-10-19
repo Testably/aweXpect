@@ -1,0 +1,158 @@
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatTypes
+{
+	public sealed class DependOn
+	{
+		private const string Layer1Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1";
+
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenAllTypesDependOnNamespace_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(ViaProperty),
+					typeof(OnlyLayer1),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn(Layer1Namespace);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
+			{
+				IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
+
+				async Task Act()
+				{
+					await That(subject).DependOn();
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("namespaces").And
+					.WithMessage("The 'namespaces' collection cannot be empty.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenSomeTypeDoesNotDependOnNamespace_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(FrameworkConsumer),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn(Layer1Namespace);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all depend on namespace "{Layer1Namespace}",
+					              but it contained types without the dependency
+
+					              Not matching items:
+					              [
+					                FrameworkConsumer
+					              ]
+					              """);
+			}
+
+			[Test]
+			public async Task WhenWidenedWithOrOn_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(Layer1AndLayer2),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn("Non.Existent.Namespace").OrOn(Layer1Namespace);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Test]
+			public async Task WhenAllTypesDependOnTargetCollection_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(ViaProperty),
+					typeof(OnlyLayer1),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSomeTypeDoesNotDependOnTargetCollection_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(FrameworkConsumer),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it contained types without the dependency
+
+					              Not matching items:
+					              [
+					                FrameworkConsumer
+					              ]
+					              """);
+			}
+
+			[Test]
+			public async Task WhenWidenedWithOrOn_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(Layer1AndLayer2),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DependOn(Types.InNamespace("Non.Existent.Namespace"))
+						.OrOn(Types.InNamespace(Layer1Namespace));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}

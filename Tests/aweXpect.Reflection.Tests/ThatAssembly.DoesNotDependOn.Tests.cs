@@ -1,0 +1,152 @@
+﻿using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatAssembly
+{
+	public sealed class DoesNotDependOn
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenAssemblyDoesNotHaveADependency_ShouldSucceed()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotDependOn("NonExistentAssembly");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenAssemblyHasADependency_ShouldFail()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotDependOn("aweXpect.Core");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no dependency on assembly equal to "aweXpect.Core",
+					             but it did
+
+					             Dependencies:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenAssemblyIsNull_ShouldFail()
+			{
+				Assembly? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotDependOn("aweXpect.Core");
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             has no dependency on assembly equal to "aweXpect.Core",
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNoDependencyMatchesAsPrefix_ShouldFail()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotDependOn("System").AsPrefix();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no dependency on assembly starting with "System",
+					             but it did
+
+					             Dependencies:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenNoDependencyMatchesIgnoringCase_ShouldFail()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotDependOn("AWExPECT.cORE").IgnoringCase();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no dependency on assembly equal to "AWExPECT.cORE" ignoring case,
+					             but it did
+
+					             Dependencies:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenAssemblyDoesNotHaveADependency_ShouldFail()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.DoesNotDependOn("NonExistentAssembly"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a dependency on assembly equal to "NonExistentAssembly",
+					             but it did not
+
+					             Dependencies:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenAssemblyHasADependency_ShouldSucceed()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.DoesNotDependOn("aweXpect.Core"));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}

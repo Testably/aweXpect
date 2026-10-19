@@ -1,0 +1,94 @@
+﻿using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
+using aweXpect.Reflection.Formatting;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
+using aweXpect.Results;
+
+namespace aweXpect.Reflection;
+
+public static partial class ThatMethod
+{
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> is generic.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static GenericArgumentCollectionResult<MethodInfo, MethodInfo?> IsGeneric(
+		this IThat<MethodInfo?> subject)
+	{
+		GenericArgumentsFilterOptions genericFilterOptions = new();
+		return new GenericArgumentCollectionResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder
+				.AddConstraint(genericFilterOptions,
+					static (genericFilterOptions, it, grammars)
+					=> new IsGenericConstraint(it, grammars,
+						genericFilterOptions)),
+			subject,
+			genericFilterOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> is not generic.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotGeneric(
+		this IThat<MethodInfo?> subject)
+	{
+		GenericArgumentsFilterOptions genericFilterOptions = new();
+		return new AndOrResult<MethodInfo, IThat<MethodInfo?>>(subject.Get().ExpectationBuilder
+				.AddConstraint(genericFilterOptions,
+					static (genericFilterOptions, it, grammars)
+					=> new IsGenericConstraint(it, grammars, genericFilterOptions).Invert()),
+			subject);
+	}
+
+	private sealed class IsGenericConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		GenericArgumentsFilterOptions options)
+		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
+			IAsyncConstraint<MethodInfo?>
+	{
+		public async ValueTask<ConstraintResult> IsMetBy(MethodInfo? actual, CancellationToken cancellationToken)
+		{
+			Actual = actual;
+			Outcome = actual?.IsGenericMethod == true && await options.Matches(actual)
+				? Outcome.Success
+				: Outcome.Failure;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("is generic");
+			stringBuilder.Append(options.GetDescription());
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (Actual?.IsGenericMethod == true)
+			{
+				stringBuilder.Append(It).Append(" was generic ");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" was non-generic ");
+			}
+
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is not generic");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" was generic ");
+			Formatter.Format(stringBuilder, FormattableMember.From(Actual));
+		}
+	}
+}

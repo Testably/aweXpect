@@ -1,0 +1,55 @@
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Collections;
+
+public sealed partial class Filtered
+{
+	public sealed partial class Assemblies
+	{
+		public sealed partial class Classes
+		{
+			public sealed class NestedTests
+			{
+				[Test]
+				public async Task ShouldApplyFilterForClasses()
+				{
+					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Classes();
+
+					await That(types).All().Satisfy(t => t is { IsClass: true, IsNested: true, }).And.IsNotEmpty();
+				}
+
+				[Test]
+				public async Task ShouldConsiderAccessModifier()
+				{
+					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
+						.Nested.Classes(AccessModifiers.Public);
+
+					await That(types).All().Satisfy(type
+						=> type is { IsClass: true, IsNested: true, IsNestedPublic: true, }).And.IsNotEmpty();
+				}
+
+				[Test]
+				public async Task ShouldIncludeAbstractInformationInErrorMessage()
+				{
+					async Task Act()
+					{
+						await That(In.AllLoadedAssemblies().Nested.Classes())
+							.AreInternal();
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that nested classes in all loaded assemblies
+						             are all internal,
+						             but it contained not matching items
+
+						             Not matching items:
+						             [
+						               *
+						             ]
+						             """).AsWildcard();
+				}
+			}
+		}
+	}
+}

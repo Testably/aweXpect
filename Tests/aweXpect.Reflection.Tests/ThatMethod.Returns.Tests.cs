@@ -1,0 +1,437 @@
+﻿using System.Reflection;
+
+namespace aweXpect.Reflection.Tests;
+
+#pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
+
+public sealed partial class ThatMethod
+{
+	public sealed class Returns
+	{
+		public sealed class GenericTests
+		{
+			[Test]
+			public async Task WhenMethodDoesNotReturnExpectedType_ShouldFail()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<string>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             returns string,
+					             but it returned int
+					             """);
+			}
+
+			[Test]
+			public async Task WhenMethodInfoIsNull_ShouldFail()
+			{
+				MethodInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).Returns<int>();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             returns int,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenMethodReturnsExpectedType_ShouldSucceed()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenReturnTypeInheritsFromExpectedType_ShouldSucceed()
+			{
+				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<BaseClass>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class TypeTests
+		{
+			[Test]
+			public async Task WhenMethodDoesNotReturnExpectedType_ShouldFail()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns(typeof(string));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             returns string,
+					             but it returned int
+					             """);
+			}
+
+			[Test]
+			public async Task WhenMethodInfoIsNull_ShouldFail()
+			{
+				MethodInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).Returns(typeof(int));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             returns int,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenMethodReturnsExpectedType_ShouldSucceed()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenReturnTypeInheritsFromExpectedType_ShouldSucceed()
+			{
+				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns(typeof(BaseClass));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class OrReturnsTests
+		{
+			[Test]
+			public async Task WithMultipleOrReturns_ShouldSupportChaining()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<string>().OrReturns(typeof(bool)).OrReturns<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldFail()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<string>().OrReturns<bool>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             returns string or bool,
+					             but it returned int
+					             """);
+			}
+
+			[Test]
+			public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns(typeof(string)).OrReturns<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class OrReturnsExactlyTests
+		{
+			[Test]
+			public async Task WithMultipleOrReturns_ShouldSupportChaining()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<string>().OrReturns(typeof(bool)).OrReturnsExactly<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldFail()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns<string>().OrReturnsExactly<bool>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             returns string or exactly bool,
+					             but it returned int
+					             """);
+			}
+
+			[Test]
+			public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).Returns(typeof(string)).OrReturnsExactly<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			public sealed class GenericTests
+			{
+				[Test]
+				public async Task WhenMethodDoesNotReturnExpectedType_ShouldSucceed()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns<string>());
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task WhenMethodInfoIsNull_ShouldFail()
+				{
+					MethodInfo? subject = null;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns<int>());
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that subject
+						             does not return int,
+						             but it was <null>
+						             """)
+						.AsWildcard();
+				}
+
+				[Test]
+				public async Task WhenMethodReturnsExpectedType_ShouldFail()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns<int>());
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not return int,
+						             but it did
+						             """)
+						.AsWildcard();
+				}
+
+				[Test]
+				public async Task WhenReturnTypeInheritsFromExpectedType_ShouldFail()
+				{
+					MethodInfo subject =
+						typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns<BaseClass>());
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not return ThatMethod.BaseClass,
+						             but it did
+						             """)
+						.AsWildcard();
+				}
+			}
+
+			public sealed class TypeTests
+			{
+				[Test]
+				public async Task WhenMethodDoesNotReturnExpectedType_ShouldSucceed()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(string)));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task WhenMethodInfoIsNull_ShouldFail()
+				{
+					MethodInfo? subject = null;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(int)));
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that subject
+						             does not return int,
+						             but it was <null>
+						             """)
+						.AsWildcard();
+				}
+
+				[Test]
+				public async Task WhenMethodReturnsExpectedType_ShouldFail()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(int)));
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not return int,
+						             but it did
+						             """)
+						.AsWildcard();
+				}
+
+				[Test]
+				public async Task WhenReturnTypeInheritsFromExpectedType_ShouldFail()
+				{
+					MethodInfo subject =
+						typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(BaseClass)));
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not return ThatMethod.BaseClass,
+						             but it did
+						             """)
+						.AsWildcard();
+				}
+			}
+
+			public sealed class OrReturnsTests
+			{
+				[Test]
+				public async Task WithMultipleOrReturns_ShouldSupportChaining()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it
+							=> it.Returns<string>().OrReturns(typeof(bool)).OrReturns<Task>());
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldSucceed()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns<string>().OrReturns<bool>());
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldFail()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(it => it.Returns(typeof(string)).OrReturns<int>());
+					}
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not return string or int,
+						             but it did
+						             """)
+						.AsWildcard();
+				}
+			}
+		}
+	}
+}
+
+#pragma warning restore CA2263

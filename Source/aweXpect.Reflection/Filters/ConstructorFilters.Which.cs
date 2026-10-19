@@ -1,0 +1,21 @@
+﻿using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using aweXpect.Core;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
+
+namespace aweXpect.Reflection;
+
+public static partial class ConstructorFilters
+{
+	/// <summary>
+	///     Filters for constructors that satisfy the <paramref name="predicate" />.
+	/// </summary>
+	public static Filtered.Constructors Which(this Filtered.Constructors @this,
+		Func<ConstructorInfo, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		=> @this.Which(Filter.Suffix<ConstructorInfo>(constructor => UserCode.Invoke(predicate, constructor, "the predicate"),
+			$"matching {doNotPopulateThisValue.TrimExpression()} "));
+}

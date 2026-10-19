@@ -1,0 +1,136 @@
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
+using aweXpect.Results;
+#if NET8_0_OR_GREATER
+using System.Threading;
+using System.Threading.Tasks;
+#endif
+
+// ReSharper disable PossibleMultipleEnumeration
+
+namespace aweXpect.Reflection;
+
+public static partial class ThatMembers
+{
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are private protected.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> ArePrivateProtected<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
+		where TMember : MemberInfo?
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>(static (it, grammars)
+				=> new ArePrivateProtectedConstraint<TMember>(it, grammars)),
+			subject);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are private protected.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> ArePrivateProtected<TMember>(
+		this IThat<IAsyncEnumerable<TMember>?> subject)
+		where TMember : MemberInfo?
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>(static (it, grammars)
+				=> new ArePrivateProtectedConstraint<TMember>(it, grammars)),
+			subject);
+#endif
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not private protected.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreNotPrivateProtected<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
+		where TMember : MemberInfo?
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>(static (it, grammars)
+				=> new AreNotPrivateProtectedConstraint<TMember>(it, grammars)),
+			subject);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not private protected.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>
+		AreNotPrivateProtected<TMember>(
+			this IThat<IAsyncEnumerable<TMember>?> subject)
+		where TMember : MemberInfo?
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>(static (it, grammars)
+				=> new AreNotPrivateProtectedConstraint<TMember>(it, grammars)),
+			subject);
+#endif
+
+	private sealed class ArePrivateProtectedConstraint<TMember>(
+		string it,
+		ExpectationGrammars grammars)
+		: CollectionConstraintResult<TMember>(it, grammars),
+			IContextConstraint<IEnumerable<TMember>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
+#endif
+		where TMember : MemberInfo?
+	{
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				member => member.HasAccessModifier(AccessModifiers.PrivateProtected), cancellationToken);
+#endif
+
+		public ConstraintResult IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context)
+			=> SetValue(actual, context, member => member.HasAccessModifier(AccessModifiers.PrivateProtected));
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("are all private protected");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained not matching items");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("are not all private protected");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" only contained private protected items");
+	}
+
+	private sealed class AreNotPrivateProtectedConstraint<TMember>(
+		string it,
+		ExpectationGrammars grammars)
+		: CollectionConstraintResult<TMember>(it, grammars),
+			IContextConstraint<IEnumerable<TMember>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
+#endif
+		where TMember : MemberInfo?
+	{
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				member => !member.HasAccessModifier(AccessModifiers.PrivateProtected), cancellationToken);
+#endif
+
+		public ConstraintResult IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context)
+			=> SetValue(actual, context, member => !member.HasAccessModifier(AccessModifiers.PrivateProtected));
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("are all not private protected");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained private protected items");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("also contain a private protected item");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained no private protected items");
+	}
+}

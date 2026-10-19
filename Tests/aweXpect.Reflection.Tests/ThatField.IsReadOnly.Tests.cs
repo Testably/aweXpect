@@ -1,0 +1,100 @@
+﻿using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatField
+{
+	public sealed class IsReadOnly
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenFieldIsNotReadOnly_ShouldFail()
+			{
+				FieldInfo subject =
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsReadOnly();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              is read-only,
+					              but it was non-read-only int TestClassWithFieldModifiers.MutableField
+					              """);
+			}
+
+			[Test]
+			public async Task WhenFieldIsNull_ShouldFail()
+			{
+				FieldInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsReadOnly();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is read-only,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenFieldIsReadOnly_ShouldSucceed()
+			{
+				FieldInfo subject =
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsReadOnly();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenFieldIsNotReadOnly_ShouldSucceed()
+			{
+				FieldInfo subject =
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsReadOnly());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenFieldIsReadOnly_ShouldFail()
+			{
+				FieldInfo subject =
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsReadOnly());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              is not read-only,
+					              but it was read-only int TestClassWithFieldModifiers.ReadOnlyField
+					              """);
+			}
+		}
+	}
+}

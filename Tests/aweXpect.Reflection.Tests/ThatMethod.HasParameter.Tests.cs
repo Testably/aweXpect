@@ -1,0 +1,886 @@
+﻿using System.IO;
+using System.Reflection;
+using aweXpect.Core;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
+using aweXpect.Reflection.Tests.TestHelpers;
+
+namespace aweXpect.Reflection.Tests;
+
+// The System.Type overloads are deliberately exercised here alongside the generic ones.
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
+public sealed partial class ThatMethod
+{
+	public sealed class HasParameter
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task AsPrefix_WhenParameterNameStartsWithPrefix_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("val").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task AtIndex_WhenParameterDoesNotExistAtSpecificIndex_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().AtIndex(0);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string at index 0,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task AtIndex_WhenParameterExistsAtSpecificIndex_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>().AtIndex(0);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task AtIndexFromEnd_WhenParameterExistsAtSpecificIndexFromEnd_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().AtIndex(0).FromEnd();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByName_WhenParameterDoesNotExist_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter("value");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter with name "value",
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task HasParameterByName_WhenNameContainsAQuote_ShouldEscapeIt()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter("va\"lue");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter with name "va\"lue",
+					             but it did not
+					             """)
+					.Because("the name is formatted like every other string value");
+			}
+
+			[Test]
+			public async Task HasParameterByName_WhenParameterExists_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter("value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByType_WhenParameterDoesNotExist_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task HasParameterByType_WhenParameterExists_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByType_WhenParameterIsSubtype_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<IDisposable>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByTypeAndName_WhenParameterDoesNotExist_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("value");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with name "value",
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task HasParameterByTypeAndName_WhenParameterExists_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByTypeAndName_WhenWrongType_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>("value");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string with name "value",
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task IgnoringCase_BecauseAndAsPrefix_WhenTypeDiffers_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>("VAL").IgnoringCase().Because("we need it").AsPrefix();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string with name "VAL", because we need it,
+					             but it did not
+					             """)
+					.Because("Because(…) must return the result, so that the string options can still follow it");
+			}
+
+			[Test]
+			public async Task IgnoringCase_BecauseAndAsPrefix_WhenNameMatches_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("VAL").IgnoringCase().Because("we need it").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task IgnoringCase_WhenParameterNameDiffersInCase_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("VALUE").IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_AsPrefix_WhenParameterNameStartsWithPrefix_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int), "val").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_AsRegex_WhenParameterNameMatchesRegex_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "n[a-z]*e").AsRegex();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_AsSuffix_WhenParameterNameEndsWithSuffix_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "ame").AsSuffix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_AsWildcard_WhenParameterNameMatchesWildcard_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "n??e").AsWildcard();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_AtIndex_WhenParameterDoesNotExistAtSpecificIndex_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string)).AtIndex(0);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string at index 0,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task Type_AtIndex_WhenParameterExistsAtSpecificIndex_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int)).AtIndex(0);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_AtIndexFromEnd_WhenParameterExistsAtSpecificIndexFromEnd_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string)).AtIndex(0).FromEnd();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_HasParameterByType_WhenParameterDoesNotExist_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task Type_HasParameterByType_WhenParameterExists_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_HasParameterByType_WhenParameterIsSubtype_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(IDisposable));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_HasParameterByTypeAndName_WhenParameterDoesNotExist_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with name "value",
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task Type_HasParameterByTypeAndName_WhenParameterExists_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_HasParameterByTypeAndName_WhenWrongType_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "value");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string with name "value",
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task Type_IgnoringCase_WhenParameterNameDiffersInCase_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int), "VALUE").IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_Using_WhenParameterNameMatchesWithCustomComparer_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "nAmE")
+						.Using(new IgnoreCaseForVocalsComparer());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_WithDefaultValue_WhenParameterHasDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string)).WithDefaultValue();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_WithoutDefaultValue_WhenParameterHasNoDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int)).WithoutDefaultValue();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenParameterPredicateThrows_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+				Func<ParameterInfo, bool> predicate = _ => throw new InvalidOperationException("boom");
+
+				async Task Act()
+				{
+					ParameterCollectionResult<MethodInfo, MethodInfo?, int> result = That(methodInfo).HasParameter<int>();
+					((IOptionsProvider<ParameterFilterOptions>)result).Options
+						.AddPredicate(predicate, () => "");
+					await result;
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
+			}
+
+			[Test]
+			public async Task WithDefaultValue_BecauseAndIgnoringCase_ShouldApplyAll()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>("NAME").WithDefaultValue().Because("we need it")
+						.IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the filters of the parameter must keep the result with the options of its name");
+			}
+
+			[Test]
+			public async Task WithDefaultValue_WhenParameterHasDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithDefaultValue_WhenParameterHasNoDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task WithDefaultValueOfValue_WhenParameterHasDifferentDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("other");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task WithDefaultValueOfValue_WhenParameterHasMatchingDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithDefaultValueOfValue_WhenParameterHasNoDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task WithoutDefaultValue_WhenParameterHasDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithoutDefaultValue();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Test]
+			public async Task WithoutDefaultValue_WhenParameterHasNoDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>().WithoutDefaultValue();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+#pragma warning disable CA1822
+			// ReSharper disable UnusedParameter.Local
+			// ReSharper disable UnusedMember.Local
+			private class TestClass
+			{
+				public void MethodWithoutParameters() { }
+				public void MethodWithString(string name) { }
+				public void MethodWithIntAndString(int value, string name) { }
+				public void MethodWithDefaults(int value, string name = "default") { }
+				public void MethodWithStream(Stream stream) { }
+			}
+			// ReSharper restore UnusedParameter.Local
+			// ReSharper restore UnusedMember.Local
+#pragma warning restore CA1822
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task AtIndex_WhenParameterExistsAtSpecificIndex_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>().AtIndex(0));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int at index 0,
+					             but it did
+					             """);
+			}
+
+			[Test]
+			public async Task HasParameterByName_WhenParameterDoesNotExist_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByName_WhenParameterExists_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter with name "value",
+					             but it did
+					             """);
+			}
+
+			[Test]
+			public async Task HasParameterByType_WhenParameterDoesNotExist_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByType_WhenParameterExists_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int,
+					             but it did
+					             """);
+			}
+
+			[Test]
+			public async Task HasParameterByTypeAndName_WhenParameterDoesNotExist_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasParameterByTypeAndName_WhenParameterExists_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int with name "value",
+					             but it did
+					             """);
+			}
+
+			[Test]
+			public async Task Type_HasParameterByType_WhenParameterDoesNotExist_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter(typeof(int)));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_HasParameterByType_WhenParameterExists_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter(typeof(int)));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int,
+					             but it did
+					             """);
+			}
+
+			[Test]
+			public async Task Type_HasParameterByTypeAndName_WhenParameterDoesNotExist_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter(typeof(int), "value"));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Type_HasParameterByTypeAndName_WhenParameterExists_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter(typeof(int), "value"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int with name "value",
+					             but it did
+					             """);
+			}
+
+			[Test]
+			public async Task WhenParameterPredicateThrows_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+				Func<ParameterInfo, bool> predicate = _ => throw new InvalidOperationException("boom");
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it
+						=> ((IOptionsProvider<ParameterFilterOptions>)it.HasParameter<int>()).Options
+						.AddPredicate(predicate, () => ""));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("a predicate that throws answers neither the expectation nor its negation");
+			}
+
+#pragma warning disable CA1822
+			// ReSharper disable UnusedParameter.Local
+			// ReSharper disable UnusedMember.Local
+			private class TestClass
+			{
+				public void MethodWithoutParameters() { }
+				public void MethodWithString(string name) { }
+				public void MethodWithIntAndString(int value, string name) { }
+				public void MethodWithDefaults(int value, string name = "default") { }
+				public void MethodWithStream(Stream stream) { }
+			}
+			// ReSharper restore UnusedParameter.Local
+			// ReSharper restore UnusedMember.Local
+#pragma warning restore CA1822
+		}
+	}
+}
