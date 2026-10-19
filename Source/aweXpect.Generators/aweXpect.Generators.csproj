@@ -13,6 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all"/>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all"/>
+		<PackageReference Include="System.Collections.Immutable" VersionOverride="10.0.13" />
 	</ItemGroup>
 
 	<ItemGroup>
