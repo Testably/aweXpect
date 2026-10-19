@@ -1079,6 +1079,183 @@ public sealed partial class ThatJsonElement
 			}
 		}
 
+		public sealed class ExpectationTests
+		{
+			[Test]
+			public async Task WhenElementWithExpectationIsMissing_ShouldDescribeTheExpectation()
+			{
+				JsonElement subject = FromString("[{\"foo\": 1}]");
+
+				async Task Act()
+					=> await That(subject).Matches(new object[]
+					{
+						new { foo = 1, },
+						new { foo = It.Is<int>().That.IsGreaterThan(2), },
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new object[]
+					             {
+					             	new { foo = 1, },
+					             	new { foo = It.Is<int>().That.IsGreaterThan(2), },
+					             },
+					             but it differed as $[1] had missing {"foo":is int}
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("an expectation that was never evaluated can only describe its type");
+			}
+
+			[Test]
+			public async Task WhenElementWithExpectationIsMissing_WhenIgnoringArrayOrder_ShouldDescribeTheExpectation()
+			{
+				JsonElement subject = FromString("[{\"foo\": 1}, {\"foo\": 2}]");
+
+				async Task Act()
+					=> await That(subject).Matches(new object[]
+					{
+						new { foo = It.Is<int>().That.IsGreaterThan(2), },
+						new { foo = 5, },
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new object[]
+					             {
+					             	new { foo = It.Is<int>().That.IsGreaterThan(2), },
+					             	new { foo = 5, },
+					             },
+					             but it differed as
+					               $ had missing {"foo":is int that is greater than 2} and
+					               $ had missing {"foo":5} and
+					               $[0] had unexpected {"foo":1} and
+					               $[1] had unexpected {"foo":2}
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore array order
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectationElementIsMissing_ShouldDescribeTheExpectation()
+			{
+				JsonElement subject = FromString("[1]");
+
+				async Task Act()
+					=> await That(subject).Matches(new object[]
+					{
+						1, It.Is<int>().That.IsGreaterThan(2),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new object[]
+					             {
+					             	1, It.Is<int>().That.IsGreaterThan(2),
+					             },
+					             but it differed as $[1] had missing is int
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectedObjectWithExpectationHasDifferentKind_ShouldDescribeTheExpectation()
+			{
+				JsonElement subject = FromString("{\"foo\": 1}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						foo = new { bar = It.Is<int>().That.IsGreaterThan(2), },
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	foo = new { bar = It.Is<int>().That.IsGreaterThan(2), },
+					             },
+					             but it differed as $.foo was number 1 instead of {"bar":is int}
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNestedElementWithExpectationIsMissing_ShouldDescribeTheExpectation()
+			{
+				JsonElement subject = FromString("{\"items\": []}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						items = new[] { new { bar = new { foo = It.Is<int>().That.IsGreaterThan(2), }, }, },
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	items = new[] { new { bar = new { foo = It.Is<int>().That.IsGreaterThan(2), }, }, },
+					             },
+					             but it differed as $.items[0] had missing {"bar":{"foo":is int}}
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task
+				WhenNestedElementWithExpectationIsMissing_WhenIgnoringArrayOrder_ShouldDescribeTheExpectation()
+			{
+				JsonElement subject = FromString("{\"items\": [{\"bar\": {\"foo\": 1}}, {\"bar\": {\"foo\": 2}}]}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						items = new object[]
+						{
+							new { bar = new { foo = It.Is<int>().That.IsGreaterThan(2), }, },
+							new { bar = new { foo = 5, }, },
+						},
+					}, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches new
+					             {
+					             	items = new object[]
+					             	{
+					             		new { bar = new { foo = It.Is<int>().That.IsGreaterThan(2), }, },
+					             		new { bar = new { foo = 5, }, },
+					             	},
+					             },
+					             but it differed as
+					               $.items had missing {"bar":{"foo":is int that is greater than 2}} and
+					               $.items had missing {"bar":{"foo":5}} and
+					               $.items[0] had unexpected {"bar":{"foo":1}} and
+					               $.items[1] had unexpected {"bar":{"foo":2}}
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore array order
+					             """);
+			}
+		}
+
 		public sealed class ComparingNumbersWithinTests
 		{
 			[Test]

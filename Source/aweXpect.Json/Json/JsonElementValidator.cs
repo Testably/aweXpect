@@ -52,12 +52,14 @@ internal static class JsonElementValidator
 		{
 			JsonValueKind.Array => await result.CompareJsonArray(path, actualElement, expectedElement, options,
 				converter),
-			JsonValueKind.False => result.CompareJsonBoolean(JsonValueKind.False, path, actualElement, expectedElement),
-			JsonValueKind.True => result.CompareJsonBoolean(JsonValueKind.True, path, actualElement, expectedElement),
-			JsonValueKind.Null => result.CompareJsonNull(path, actualElement, expectedElement),
+			JsonValueKind.False => result.CompareJsonBoolean(JsonValueKind.False, path, actualElement, expectedElement,
+				converter),
+			JsonValueKind.True => result.CompareJsonBoolean(JsonValueKind.True, path, actualElement, expectedElement,
+				converter),
+			JsonValueKind.Null => result.CompareJsonNull(path, actualElement, expectedElement, converter),
 			JsonValueKind.Number => result.CompareJsonNumber(path, actualElement, expectedElement,
-				options.NumberTolerance),
-			JsonValueKind.String => result.CompareJsonString(path, actualElement, expectedElement),
+				options.NumberTolerance, converter),
+			JsonValueKind.String => result.CompareJsonString(path, actualElement, expectedElement, converter),
 			JsonValueKind.Object => await result.CompareJsonObject(path, actualElement, expectedElement, options,
 				converter),
 			_ => throw new ArgumentOutOfRangeException($"Unsupported JsonValueKind: {actualElement.ValueKind}"),
@@ -74,7 +76,8 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Array)
 		{
-			result.AddError(path, $"was {Format(actualElement, true)} instead of {Format(expectedElement)}");
+			result.AddError(path,
+				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
 			return result;
 		}
 
@@ -95,7 +98,7 @@ internal static class JsonElementValidator
 			JsonElement expectedArrayElement = expectedElement[index];
 			if (actualElement.GetArrayLength() <= index)
 			{
-				result.AddError(memberPath, $"had missing {Format(expectedArrayElement)}");
+				result.AddError(memberPath, $"had missing {FormatExpected(expectedArrayElement, converter)}");
 				continue;
 			}
 
@@ -163,7 +166,7 @@ internal static class JsonElementValidator
 
 		foreach (JsonElement missingElement in missingElements)
 		{
-			result.AddError(path, $"had missing {Format(missingElement)}");
+			result.AddError(path, $"had missing {FormatExpected(missingElement, converter)}");
 		}
 
 		if (!options.IgnoreAdditionalArrayElements)
@@ -213,13 +216,14 @@ internal static class JsonElementValidator
 		JsonValueKind valueKind,
 		string path,
 		JsonElement actualElement,
-		JsonElement expectedElement)
+		JsonElement expectedElement,
+		ExpectationJsonConverter? converter)
 	{
 		if (expectedElement.ValueKind != valueKind)
 		{
 			result.AddError(path, expectedElement.ValueKind is JsonValueKind.False or JsonValueKind.True
 				? $"was {Format(actualElement)} instead of {Format(expectedElement)}"
-				: $"was {Format(actualElement, true)} instead of {Format(expectedElement)}");
+				: $"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
 		}
 
 		return result;
@@ -229,11 +233,13 @@ internal static class JsonElementValidator
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
-		JsonElement expectedElement)
+		JsonElement expectedElement,
+		ExpectationJsonConverter? converter)
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Null)
 		{
-			result.AddError(path, $"was {Format(actualElement, true)} instead of {Format(expectedElement)}");
+			result.AddError(path,
+				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
 		}
 
 		return result;
@@ -244,11 +250,13 @@ internal static class JsonElementValidator
 		string path,
 		JsonElement actualElement,
 		JsonElement expectedElement,
-		JsonNumberTolerance? tolerance)
+		JsonNumberTolerance? tolerance,
+		ExpectationJsonConverter? converter)
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Number)
 		{
-			result.AddError(path, $"was {Format(actualElement, true)} instead of {Format(expectedElement)}");
+			result.AddError(path,
+				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
 			return result;
 		}
 
@@ -314,7 +322,8 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Object)
 		{
-			result.AddError(path, $"was {Format(actualElement, true)} instead of {Format(expectedElement)}");
+			result.AddError(path,
+				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
 			return result;
 		}
 
@@ -377,11 +386,13 @@ internal static class JsonElementValidator
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
-		JsonElement expectedElement)
+		JsonElement expectedElement,
+		ExpectationJsonConverter? converter)
 	{
 		if (expectedElement.ValueKind != JsonValueKind.String)
 		{
-			result.AddError(path, $"was {Format(actualElement, true)} instead of {Format(expectedElement)}");
+			result.AddError(path,
+				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
 			return result;
 		}
 
@@ -420,6 +431,9 @@ internal static class JsonElementValidator
 			? $"{GetKindName(jsonElement.ValueKind)} {value}"
 			: value;
 	}
+
+	private static string FormatExpected(JsonElement expectedElement, ExpectationJsonConverter? converter)
+		=> converter?.DescribeExpectations(Format(expectedElement)) ?? Format(expectedElement);
 
 	private static async Task<bool> TryMatchExpectation(
 		this JsonComparisonResult result,

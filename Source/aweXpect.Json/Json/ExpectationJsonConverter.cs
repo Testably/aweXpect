@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -275,6 +276,29 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 		Guid guid = Guid.NewGuid();
 		_expectations[guid] = value;
 		writer.WriteStringValue(Prefix + guid);
+	}
+
+	/// <summary>
+	///     Replaces the placeholders of the <c>It.Is…</c> expectations in the <paramref name="formattedValue" /> with
+	///     their descriptions.
+	/// </summary>
+	/// <remarks>
+	///     An expectation describes its constraints only once it was evaluated, otherwise just its type.
+	/// </remarks>
+	public string DescribeExpectations(string formattedValue)
+	{
+		if (formattedValue.IndexOf(Prefix, StringComparison.Ordinal) < 0)
+		{
+			return formattedValue;
+		}
+
+		StringBuilder sb = new(formattedValue);
+		foreach (KeyValuePair<Guid, Expectation> expectation in _expectations)
+		{
+			sb.Replace("\"" + Prefix + expectation.Key + "\"", expectation.Value.ToString());
+		}
+
+		return sb.ToString();
 	}
 
 	public bool TryGetExpectation(JsonElement element,
