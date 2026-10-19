@@ -3,6 +3,7 @@
     <Project Path="Benchmarks/aweXpect.Benchmarks/aweXpect.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Json.Benchmarks/aweXpect.Json.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Web.Benchmarks/aweXpect.Web.Benchmarks.csproj" />
+    <Project Path="Benchmarks/aweXpect.Xml.Benchmarks/aweXpect.Xml.Benchmarks.csproj" />
   </Folder>
   <Folder Name="/Pipeline/">
     <Project Path="Pipeline/Build.csproj">
@@ -22,12 +23,14 @@
     <Project Path="Tests/aweXpect.Web.Samples/aweXpect.Web.Samples.csproj" />
     <Project Path="Tests/aweXpect.Web.Samples.Tests/aweXpect.Web.Samples.Tests.csproj" />
     <Project Path="Tests/aweXpect.Web.Tests/aweXpect.Web.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Xml.Tests/aweXpect.Xml.Tests.csproj" />
   </Folder>
   <Folder Name="/Tests/Aot/">
     <Project Path="Tests/Aot/aweXpect.Aot.TUnit/aweXpect.Aot.TUnit.csproj" />
     <Project Path="Tests/Aot/aweXpect.Aot.Xunit3/aweXpect.Aot.Xunit3.csproj" />
     <Project Path="Tests/Aot/aweXpect.Json.Aot/aweXpect.Json.Aot.csproj" />
     <Project Path="Tests/Aot/aweXpect.Web.Aot/aweXpect.Web.Aot.csproj" />
+    <Project Path="Tests/Aot/aweXpect.Xml.Aot/aweXpect.Xml.Aot.csproj" />
   </Folder>
   <Folder Name="/Tests/Frameworks/">
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.Fallback.Tests/aweXpect.Frameworks.Fallback.Tests.csproj" />
@@ -89,5 +92,6 @@
   <Project Path="Source/aweXpect.Json/aweXpect.Json.csproj" />
   <Project Path="Source/aweXpect.SourceGenerators/aweXpect.SourceGenerators.csproj" />
   <Project Path="Source/aweXpect.Web/aweXpect.Web.csproj" />
+  <Project Path="Source/aweXpect.Xml/aweXpect.Xml.csproj" />
   <Project Path="Source/aweXpect/aweXpect.csproj" />
 </Solution>

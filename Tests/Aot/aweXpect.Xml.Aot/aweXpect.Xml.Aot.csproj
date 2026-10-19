@@ -5,7 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="aweXpect"/>
 		<ProjectReference Include="..\..\..\Source\aweXpect.Xml\aweXpect.Xml.csproj"/>
 	</ItemGroup>
 

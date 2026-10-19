@@ -1,0 +1,13 @@
+<Project>
+
+	<!--
+	    A package with `IsBetaPackage` is released with the shared version and a `beta` label: `4.1.0` becomes
+	    `4.1.0-beta.1` and `4.1.0-pre.1` becomes `4.1.0-beta.0.pre.1`. NuGet compares the numeric parts as numbers,
+	    so the beta of a release sorts above the betas of its pre-releases.
+	-->
+	<PropertyGroup Condition="'$(IsBetaPackage)' == 'true'">
+		<PackageVersion Condition="!$(Version.Contains('-'))">$(Version)-beta.1</PackageVersion>
+		<PackageVersion Condition="$(Version.Contains('-'))">$(Version.Substring(0, $(Version.IndexOf('-'))))-beta.0.$(Version.Substring($([MSBuild]::Add($(Version.IndexOf('-')), 1))))</PackageVersion>
+	</PropertyGroup>
+
+</Project>

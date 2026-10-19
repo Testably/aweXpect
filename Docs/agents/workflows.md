@@ -99,6 +99,9 @@ be added to `ProjectsWithSlowTests` in `Pipeline/Build.UnitTest.cs`; a listed pr
 
 - A tag `vX.Y.Z` releases all packages with the same version; it accepts a pre-release suffix such as `-pre.1`.
   `Compile` fails on a malformed release tag.
+- A package with `<IsBetaPackage>true</IsBetaPackage>` gets a `beta` label (`Source/Directory.Build.targets`):
+  `4.1.0-beta.1` for a release and `4.1.0-beta.0.pre.1` for a pre-release, so that the beta of a release sorts above
+  the betas of its pre-releases.
 - The GitHub release lists the changes of each package (`ReleaseNotes`) above the generated list of all pull requests.
   A commit counts for a package when it changes one of the package's source directories (`ReleaseNotesPackages` in
   `Pipeline/Build.ReleaseNotes.cs`); its conventional-commit type decides the category.

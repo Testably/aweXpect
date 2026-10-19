@@ -16,6 +16,7 @@
 		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Json\aweXpect.Json.csproj" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Web\aweXpect.Web.csproj" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Xml\aweXpect.Xml.csproj" ReferenceOutputAssembly="false"/>
 	</ItemGroup>
 
 	<ItemGroup>

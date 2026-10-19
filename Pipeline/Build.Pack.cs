@@ -16,7 +16,7 @@ partial class Build
 	/// <summary>
 	///     The projects whose packages are released.
 	/// </summary>
-	Project[] PackageProjects => [Solution.aweXpect_Core, Solution.aweXpect, Solution.aweXpect_Json, Solution.aweXpect_Web,];
+	Project[] PackageProjects => [Solution.aweXpect_Core, Solution.aweXpect, Solution.aweXpect_Json, Solution.aweXpect_Web, Solution.aweXpect_Xml,];
 
 	Target Pack => _ => _
 		.DependsOn(Compile)
