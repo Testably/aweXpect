@@ -1,3 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Web.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Source\aweXpect.Web\aweXpect.Web.csproj"/>
+	</ItemGroup>
+
 </Project>

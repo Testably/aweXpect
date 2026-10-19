@@ -1,10 +1,7 @@
 # aweXpect.Web
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)
-[![Build](https://github.com/Testably/aweXpect.Web/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/aweXpect.Web/actions/workflows/build.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Testably_aweXpect.Web)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Web&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_aweXpect.Web)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect.Web%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect.Web/main)
+[![Build](https://github.com/Testably/aweXpect/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/aweXpect/actions/workflows/build.yml)
 
 Expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress` for
 [aweXpect](https://github.com/Testably/aweXpect).

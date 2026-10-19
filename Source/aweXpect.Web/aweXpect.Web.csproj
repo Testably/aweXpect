@@ -2,10 +2,14 @@
 
 	<PropertyGroup>
 		<RootNamespace>aweXpect</RootNamespace>
+		<Description>Web and network extensions for aweXpect.</Description>
+		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Web</PackageProjectUrl>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="aweXpect.Core"/>
+		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj" PrivateAssets="contentfiles;analyzers;build"/>
+		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

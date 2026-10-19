@@ -27,6 +27,7 @@ public sealed class ApiApprovalTests
 		"aweXpect",
 		"aweXpect.Core",
 		"aweXpect.Json",
+		"aweXpect.Web",
 	];
 
 	[Test]

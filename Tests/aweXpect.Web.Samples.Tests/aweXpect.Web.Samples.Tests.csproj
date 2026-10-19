@@ -5,13 +5,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Json\aweXpect.Json.csproj" />
 		<ProjectReference Include="..\..\Source\aweXpect.Web\aweXpect.Web.csproj" />
-		<ProjectReference Include="..\..\Source\aweXpect.Web.Samples\aweXpect.Web.Samples.csproj" />
+		<ProjectReference Include="..\aweXpect.Web.Samples\aweXpect.Web.Samples.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
-		<PackageReference Include="aweXpect.Json" />
+		<PackageReference Include="IsExternalInit">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">

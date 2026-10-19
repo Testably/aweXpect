@@ -1,7 +1,7 @@
 [assembly: System.Reflection.AssemblyMetadata("IsAotCompatible", "True")]
 [assembly: System.Reflection.AssemblyMetadata("IsTrimmable", "True")]
-[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Web.git")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("aweXpect.Web.Internal.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100bd818c7b1f408c9cae5e376d754fadbead7aa6046aaf3f4911a9c032c2ca4ccd46d6d2d5c9158a15a8639f34d6bfafc236c19e9158dd8fce375c43069256487d9be2dc05ab53fb90e3e9d8241c0ff0f70133bd74e88683ff1317b1b09ae6fd6ddc6fba1454e9d5487a97af791dd5fc73383f194b3be6e441e878a8691a1518e1")]
+[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.git")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("aweXpect.Web.Internal.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010091e3b299f2a31c904fbc5c2150944568b101ba409f5ee4cd95561c0c8cf50c1960d74f682c7f462f792ab37fe315ece00775c5bdda68c06d3abb67c1d531bf8c40d85d3d36ecf19fb05cc890ca7a5f39904e04ff754a55463236c5884f41083fae1ea626eb1f9b8c5c33f7bada7e650bed6ced9f0a75413d7e919f94f804efc9")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
 namespace aweXpect
 {
