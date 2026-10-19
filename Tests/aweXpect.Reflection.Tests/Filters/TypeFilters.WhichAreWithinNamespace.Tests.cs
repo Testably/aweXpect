@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class TypeFilters
 {
-	public sealed class WithinNamespace
+	public sealed class WhichAreWithinNamespace
 	{
 		public sealed class Tests
 		{
@@ -15,7 +15,7 @@ public sealed partial class TypeFilters
 			public async Task ShouldExcludeNamespacesThatOnlyShareThePrefix()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().WithinNamespace(
+					.Types().WhichAreWithinNamespace(
 						"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 
 				await That(types).DoesNotContain(typeof(ClassInSiblingNamespaceScope));
@@ -25,7 +25,7 @@ public sealed partial class TypeFilters
 			public async Task ShouldFilterForTypesWithinNamespaceIncludingSubNamespaces()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().WithinNamespace(
+					.Types().WhichAreWithinNamespace(
 						"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 
 				await That(types).Contains(typeof(ClassInNamespaceScope));
@@ -33,7 +33,7 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ClassInSiblingNamespaceScope));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types within namespace \"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope\" in assembly")
+						"types which are within namespace \"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope\" in assembly")
 					.AsPrefix();
 			}
 		}

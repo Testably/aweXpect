@@ -59,7 +59,7 @@ your own resolver via `Customize.aweXpect.Reflection().DependencyResolver()` (se
 [Configuration](./04-configuration.md#dependency-resolver)).
 :::
 
-Namespace matching is ordinal and case-sensitive and, like `WithinNamespace`, includes sub-namespaces by
+Namespace matching is ordinal and case-sensitive and, like `WhichAreWithinNamespace`, includes sub-namespaces by
 default (so `Foo.Bar` matches `Foo.Bar.Baz` but not `Foo.BarBaz`). A dependency in the **global namespace**
 can be targeted or allowed with an empty string (`""`). Each result is chainable:
 

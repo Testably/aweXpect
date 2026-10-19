@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class TypeFilters
 {
-	public sealed class NotWithinNamespace
+	public sealed class WhichAreNotWithinNamespace
 	{
 		public sealed class Tests
 		{
@@ -15,7 +15,7 @@ public sealed partial class TypeFilters
 			public async Task ShouldFilterForTypesNotWithinNamespaceIncludingSubNamespaces()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
-					.Types().NotWithinNamespace(
+					.Types().WhichAreNotWithinNamespace(
 						"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 
 				await That(types).DoesNotContain(typeof(ClassInNamespaceScope));
@@ -23,7 +23,7 @@ public sealed partial class TypeFilters
 				await That(types).Contains(typeof(ClassInSiblingNamespaceScope));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types not within namespace \"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope\" in assembly")
+						"types which are not within namespace \"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope\" in assembly")
 					.AsPrefix();
 			}
 		}

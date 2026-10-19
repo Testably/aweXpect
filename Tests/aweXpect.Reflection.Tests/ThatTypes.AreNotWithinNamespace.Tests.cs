@@ -57,7 +57,7 @@ public sealed partial class ThatTypes
 			public async Task WhenTypesAreNotWithinNamespace_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
-					.Types().NotWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
+					.Types().WhichAreNotWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 
 				async Task Act()
 				{
@@ -132,7 +132,7 @@ public sealed partial class ThatTypes
 			public async Task WhenTypesAreNotWithinNamespace_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
-					.Types().NotWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
+					.Types().WhichAreNotWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
 
 				async Task Act()
 				{

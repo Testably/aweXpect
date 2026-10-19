@@ -563,7 +563,7 @@ public static partial class Filtered
 			private readonly string _namespace;
 
 			internal InNamespaceResult(string @namespace)
-				: base(In.AllLoadedAssemblies().Types().WithinNamespace(@namespace))
+				: base(In.AllLoadedAssemblies().Types().InNamespace(@namespace))
 			{
 				_namespace = @namespace;
 			}
@@ -596,7 +596,7 @@ public static partial class Filtered
 				=> From(In.AssemblyContaining(type));
 
 			private Types From(Assemblies assemblies)
-				=> assemblies.Types().WithinNamespace(_namespace);
+				=> assemblies.Types().InNamespace(_namespace);
 		}
 
 		/// <summary>

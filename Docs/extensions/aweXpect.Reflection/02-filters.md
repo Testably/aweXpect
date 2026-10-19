@@ -9,7 +9,7 @@ each other: a filter has an `Is…`/`Are…` expectation counterpart for the sam
 | [Access modifiers](#access-modifiers)                       | types and members             | `WhichArePublic` / `IsPublic`, `WhichAreInternal` / `IsInternal`, …                                                  |
 | [Attributes](#attributes)                                   | types, members and assemblies | `With<TAttribute>` / `Has<TAttribute>`, `Without<TAttribute>` / `DoesNotHave<TAttribute>`                            |
 | [Obsolete](#obsolete)                                       | types and members             | `WhichAreObsolete` / `IsObsolete`, `WhichAreNotObsolete` / `IsNotObsolete`                                           |
-| [Names and namespaces](#names-and-namespaces)               | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WithinNamespace` / `IsWithinNamespace`                    |
+| [Names and namespaces](#names-and-namespaces)               | types and members             | `WithName` / `HasName`, `WithNamespace` / `HasNamespace`, `WhichAreWithinNamespace` / `IsWithinNamespace`            |
 | [Types](#types)                                             | types                         | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`, `WhichContainMethods` / `ContainsMethods` |
 | [Methods](#methods)                                         | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
 | [Operators](#operators)                                     | methods and types             | `WhichAreOperators` / `IsAnOperator`, `HasOperator`, `HasImplicitConversionOperator`                                 |
@@ -99,12 +99,12 @@ await Expect.That(In.AssemblyContaining<MyClass>().Types().WhichArePublic())
 
 Shared by all types and members.
 
-|                                 | Filter                  | Expect (single)           | Expect (many)              |
-|---------------------------------|-------------------------|---------------------------|----------------------------|
-| by name                         | `.WithName("x")`        | `.HasName("x")`           | `.HaveName("x")`           |
-| not by name                     | `.WithoutName("x")`     | `.DoesNotHaveName("x")`   | `.DoNotHaveName("x")`      |
-| by namespace *(types only)*     | `.WithNamespace("x")`   | `.HasNamespace("x")`      | `.HaveNamespace("x")`      |
-| within namespace *(types only)* | `.WithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` |
+|                                 | Filter                          | Expect (single)           | Expect (many)              |
+|---------------------------------|---------------------------------|---------------------------|----------------------------|
+| by name                         | `.WithName("x")`                | `.HasName("x")`           | `.HaveName("x")`           |
+| not by name                     | `.WithoutName("x")`             | `.DoesNotHaveName("x")`   | `.DoNotHaveName("x")`      |
+| by namespace *(types only)*     | `.WithNamespace("x")`           | `.HasNamespace("x")`      | `.HaveNamespace("x")`      |
+| within namespace *(types only)* | `.WhichAreWithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` |
 
 `WithoutName`/`DoesNotHaveName`/`DoNotHaveName` are the negations of the name filter and expectations:
 `WithoutName` keeps the items whose name does *not* match, `DoesNotHaveName` verifies a single item is
@@ -129,10 +129,10 @@ await Expect.That(types).HaveName("Service").AsSuffix();
 await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterType.Name);
 ```
 
-The `WithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all its
-sub-namespaces (so `Foo.Bar` includes `Foo.Bar.Baz` but not `Foo.BarBaz`). They compare the namespace
+The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all
+its sub-namespaces (so `Foo.Bar` includes `Foo.Bar.Baz` but not `Foo.BarBaz`). They compare the namespace
 exactly and case-sensitively and do not support any of the string matching options. Each has a negated
-form (`NotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches types
+form (`WhichAreNotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches types
 outside the namespace.
 
 ## Types

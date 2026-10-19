@@ -78,10 +78,10 @@ internal static class Checks
 	];
 
 	private static Filtered.Types DomainTypes()
-		=> In.AssemblyContaining<Order>().Types().WithinNamespace(DomainNamespace);
+		=> In.AssemblyContaining<Order>().Types().WhichAreWithinNamespace(DomainNamespace);
 
 	private static Filtered.Types InfrastructureTypes()
-		=> In.AssemblyContaining<Order>().Types().WithinNamespace(InfrastructureNamespace);
+		=> In.AssemblyContaining<Order>().Types().WhichAreWithinNamespace(InfrastructureNamespace);
 
 	private static async Task<string?> ShouldPass(Func<Task> act)
 	{
