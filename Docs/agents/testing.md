@@ -18,8 +18,7 @@
 
 - `Source/aweXpect`: `aweXpect.Tests`, `aweXpect.Internal.Tests`, and `aweXpect.Docs.Tests` (slow tests) when a public
   expectation is added or renamed.
-- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there (in `Debug` only,
-  see the package split in [AGENTS.md](../../AGENTS.md#project-constraints)).
+- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there.
 - `[GuaranteesNotNull]` markings: `aweXpect.Analyzers.Tests` (`IsNotNullSuppressorTests` asserts which expectations
   suppress CS8602) and `GuaranteesNotNullTests` in `aweXpect.Tests`.
 - Generators: `aweXpect.Generators.Tests`.

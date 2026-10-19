@@ -28,7 +28,6 @@ partial class Build
 	private const string BenchmarkBranch = "benchmarks";
 
 	Target BenchmarkDotNet => _ => _
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(() =>
 		{
 			AbsolutePath benchmarkDirectory = ArtifactsDirectory / "Benchmarks";
@@ -46,7 +45,6 @@ partial class Build
 
 	Target BenchmarkResult => _ => _
 		.After(BenchmarkDotNet)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(async () =>
 		{
 			string fileContent = await File.ReadAllTextAsync(ArtifactsDirectory / "Benchmarks" / "results" /
@@ -109,7 +107,7 @@ partial class Build
 	/// </remarks>
 	Target BenchmarkReport => _ => _
 		.After(BenchmarkDotNet)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default && GitHubActions?.Ref == "refs/heads/main")
+		.OnlyWhenDynamic(() => GitHubActions?.Ref == "refs/heads/main")
 		.Executes(async () =>
 		{
 			BenchmarkFile currentFile = await DownloadBenchmarkFile("data.js");

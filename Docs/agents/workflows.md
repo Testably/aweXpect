@@ -10,8 +10,8 @@ dotnet build aweXpect.slnx
 dotnet build Source/aweXpect.Core
 ```
 
-- The default configuration is `Debug`. Only `Debug` compiles `Source/aweXpect` against the `aweXpect.Core` project;
-  every other configuration uses the released package pinned in `Directory.Packages.props`.
+- The default configuration is `Debug`. Every configuration compiles `Source/aweXpect` against the `aweXpect.Core`
+  project.
 - Building `Source/aweXpect` also builds the analyzers, code fixers and generators it packs.
 - `GeneratePackageOnBuild` is on, so every library build writes a `.nupkg` into its `bin` folder.
 
@@ -40,11 +40,8 @@ with BenchmarkDotNet.
 
 ```shell
 dotnet run -c Release --project Benchmarks/aweXpect.Benchmarks -- --filter "*String*"
-dotnet run -c Debug -p:Optimize=true --project Benchmarks/aweXpect.Benchmarks -- --filter "*String*"
 ```
 
-- A Release build measures the released `aweXpect.Core` package. To measure a local Core change, use the optimized
-  Debug build from the second line.
 - Compare before and after in ABBA order (after, before, before, after) on an idle machine. Time differences below
   about 20 ns are noise; allocations are stable.
 - CI runs `Benchmarks` on every pull request and posts the result as a PR comment; on `main` it appends to the
@@ -59,8 +56,9 @@ Stryker.NET mutates `aweXpect` (`MutationTestsMain`, tested by `aweXpect.Tests` 
   started from the solution folder it would ignore them and run every test project. The framework projects run on
   VSTest, which Stryker's runner for the Microsoft.Testing.Platform (`--test-runner mtp`) cannot execute.
 - They are currently switched off by `DisableMutationTests = true` in `Pipeline/Build.MutationTests.cs`, because
-  Stryker's runner for the Microsoft.Testing.Platform cannot capture coverage within the job time limit. The CI and
-  nightly jobs still exist and skip the targets.
+  Stryker's runner for the Microsoft.Testing.Platform cannot capture coverage within the job time limit. The nightly
+  jobs still exist and skip the targets.
+- Pull requests do not run mutation tests, only the nightly workflow does.
 - The source is split into disjoint slices (`MainMutationSlices`, `CoreMutationSlices`), selected with the build
   parameter `MutationSlice`; without it the whole project is mutated. The nightly workflow runs one job per slice.
 - A full run takes hours. Do not start one locally unless asked.
@@ -81,49 +79,37 @@ and `Release` on the build server (`--configuration Release`).
 
 | Target | What it does |
 | --- | --- |
-| `Compile` | Restores, calculates the versions with GitVersion and builds the solution and `aweXpect.Core` |
+| `Compile` | Restores, calculates the version with GitVersion and builds the solution |
 | `UnitTests` | Runs the unit test projects (`net48` only on Windows), then their slow tests |
-| `UnitTestsWithCoverage` | `UnitTests`, plus a `Debug` run against the Core project when `BuildScope` is not `Default` |
 | `TestFrameworks` | Runs the projects under `Tests/Frameworks` |
 | `CodeCoverage` | `UnitTests` and `TestFrameworks` |
 | `ApiChecks` | Runs `aweXpect.Api.Tests` |
 | `AotSmokeTests` | Runs `Tests/Aot` normally and published with Native AOT for the current platform |
 | `Pack` | Collects the packages into `Artifacts/Packages` |
+| `ReleaseNotes` | Writes the changes of each package since the last stable release into `Artifacts/ReleaseNotes.md` |
 | `Benchmarks` | Runs the benchmarks and prints the report |
 | `CodeAnalysis` | SonarCloud analysis around `CodeCoverage` (needs `SonarToken`) |
 | `MutationTestsCore`, `MutationTestsMain` | Stryker.NET mutation tests (currently disabled) |
-| `BenchmarkComment`, `MutationTestsComment`, `MutationTestsDashboard` | CI only: PR comments and dashboard upload |
+| `BenchmarkComment`, `MutationTestsDashboard` | CI only: benchmark PR comment and mutation dashboard upload |
 
 Test results go to `TestResults/`, packages and reports to `Artifacts/`. A project that gets its first slow test must
 be added to `ProjectsWithSlowTests` in `Pipeline/Build.UnitTest.cs`; a listed project without slow tests fails.
 
-### Build scope
-
-`BuildScope` in `Pipeline/Build.cs` is a temporary switch for releasing the two packages independently:
-
-- `Default`: build, test and pack both packages.
-- `CoreOnly`: for a breaking change in `aweXpect.Core`. Builds and packs only Core, runs `aweXpect.Core.Tests` and
-  `aweXpect.Generators.Tests` in `Debug`, and `UnitTestsWithCoverage` runs the remaining projects in `Debug` against
-  the Core project.
-- `MainOnly`: packs only `aweXpect` and leaves `aweXpect.Core.Tests` out of the unit tests.
-
-Outside `Default`, the framework, AOT, mutation and benchmark targets are skipped.
-
-After the Core release, bump `aweXpect.Core` in `Directory.Packages.props` and reset the scope to `Default`.
-
 ## Releases
 
-- A tag `vX.Y.Z` releases `aweXpect`, a tag `core/vX.Y.Z` releases `aweXpect.Core`; both accept a pre-release suffix
-  such as `-pre.1`. `Compile` fails on a malformed release tag.
-- After a release, a `chore: bump aweXpect.Core to vX.Y.Z` (or `aweXpect`) PR updates `Directory.Packages.props`.
+- A tag `vX.Y.Z` releases all packages with the same version; it accepts a pre-release suffix such as `-pre.1`.
+  `Compile` fails on a malformed release tag.
+- The GitHub release lists the changes of each package (`ReleaseNotes`) above the generated list of all pull requests.
+  A commit counts for a package when it changes one of the package's source directories (`ReleaseNotesPackages` in
+  `Pipeline/Build.ReleaseNotes.cs`); its conventional-commit type decides the category.
 
 ## CI workflows
 
 | Workflow | Trigger | Jobs |
 | --- | --- | --- |
-| `ci.yml` | Pull requests to `main` | `UnitTestsWithCoverage TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks`; `AotSmokeTests`; mutation tests; `Benchmarks`; `CodeAnalysis` |
-| `ci-analysis.yml` | After `CI` completes | Posts the mutation and benchmark PR comments |
-| `build.yml` | Pushes to `main`, release tags | `CodeCoverage` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks`, `CodeAnalysis`, `Pack`; on a tag, pushes to NuGet and creates the GitHub release |
+| `ci.yml` | Pull requests to `main` | `UnitTests TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks`; `AotSmokeTests`; `Benchmarks`; `CodeAnalysis` |
+| `ci-analysis.yml` | After `CI` completes | Posts the benchmark PR comment |
+| `build.yml` | Pushes to `main`, release tags | `CodeCoverage` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks`, `CodeAnalysis`, `Pack`; on a tag, `ReleaseNotes`, pushes all packages to NuGet and creates the GitHub release |
 | `nightly.yml` | Daily, when `main` changed | Sliced mutation tests and the Stryker dashboard |
 | `notify-docs-site.yml` | After `Build` on `main` | Triggers the docs site rebuild |
 

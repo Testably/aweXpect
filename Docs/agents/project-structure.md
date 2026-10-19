@@ -62,6 +62,6 @@ extension authors, including generated expectations and Native AOT.
 - Assemblies are strong-name signed with `strongname.snk` (root `Directory.Build.props`).
 - `Source/Directory.Build.props`: `TreatWarningsAsErrors`, XML documentation, `Nullable` (annotations only on
   `netstandard2.0`), trimming and AOT analyzers for `net8.0+`, package metadata. Local builds get version
-  `255.255.255.255`; `Compile` sets the real versions from GitVersion (tag prefix `core/v` for Core).
+  `255.255.255.255`; `Compile` sets the real version from GitVersion.
 - `Tests/Directory.Build.props`: test projects are executables with TUnit's reflection discovery
   (`EnableTUnitSourceGeneration=false`) and link `Tests/Shared/*.cs`.

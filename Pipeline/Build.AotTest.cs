@@ -28,7 +28,6 @@ partial class Build
 	/// </remarks>
 	Target AotSmokeTests => _ => _
 		.DependsOn(Compile)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(() =>
 		{
 			foreach (Project project in AotSmokeTestProjects)

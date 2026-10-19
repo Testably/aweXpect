@@ -5,8 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- The Release build of aweXpect references this package, so its public API is read against the same version. -->
-		<PackageReference Include="aweXpect.Core"/>
 		<PackageReference Include="aweXpect.Snapshots.PublicApi"/>
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport"/>
 		<PackageReference Include="TUnit.Engine"/>
@@ -14,7 +12,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj" ReferenceOutputAssembly="false"/>
-		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj" ReferenceOutputAssembly="false"/>
+		<!-- aweXpect references this project, so its public API is read against the same version. -->
+		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj"/>
 	</ItemGroup>
 
 	<!--

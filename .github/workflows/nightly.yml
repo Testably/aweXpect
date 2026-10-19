@@ -28,7 +28,7 @@ jobs:
         if: needs.changes.outputs.changed == 'true'
         runs-on: ubuntu-latest
         timeout-minutes: 120
-        # `aweXpect.Core` is released on its own, so its score has to be measured on `main` too, but it takes too long
+        # `aweXpect.Core` is a package of its own, so its score has to be measured on `main` too, but it takes too long
         # to run on every push. The slices are disjoint and cover everything, so the dashboard job can merge their
         # reports back into a single score.
         strategy:

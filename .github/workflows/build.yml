@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
     push:
         branches: [ main ]
-        tags: [ 'v[0-9]+.[0-9]+.[0-9]+*', 'core/v[0-9]+.[0-9]+.[0-9]+*' ]
+        tags: [ 'v[0-9]+.[0-9]+.[0-9]+*' ]
 
 concurrency:
     group: build-${{ github.ref }}
@@ -176,7 +176,16 @@ jobs:
                 with:
                     path: Artifacts/Packages
                     name: Packages
-    
+            -   name: Create release notes
+                if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+                run: ./build.sh ReleaseNotes
+            -   name: Upload release notes
+                if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+                uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+                with:
+                    path: Artifacts/ReleaseNotes.md
+                    name: ReleaseNotes
+
     push_awexpect:
         name: "Push aweXpect"
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -192,6 +201,11 @@ jobs:
                 with:
                     name: Packages
                     path: Artifacts/Packages
+            -   name: Download release notes
+                uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+                with:
+                    name: ReleaseNotes
+                    path: Artifacts
             -   name: Setup .NET SDKs
                 uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
             -   name: NuGet login
@@ -203,11 +217,11 @@ jobs:
                 run: |
                     echo "Found the following packages to push:"
                     search_dir=Artifacts/Packages
-                    for entry in Artifacts/Packages/aweXpect/*.nupkg
+                    for entry in Artifacts/Packages/*/*.nupkg
                     do
                       echo "- $entry"
                     done
-                    for entry in Artifacts/Packages/aweXpect/*.nupkg
+                    for entry in Artifacts/Packages/*/*.nupkg
                     do
                       dotnet nuget push $entry --source https://api.nuget.org/v3/index.json --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
                     done
@@ -225,8 +239,10 @@ jobs:
                 continue-on-error: true
                 uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
                 # Without `name` and `tag_name` the action releases the pushed tag and names the release after it.
+                # The release notes per package come before the generated list of all pull requests.
                 with:
                     token: ${{ secrets.GITHUB_TOKEN }}
+                    body_path: Artifacts/ReleaseNotes.md
                     generate_release_notes: true
             -   name: Report a failed GitHub release
                 if: steps.create-release.outcome == 'failure'
@@ -235,40 +251,6 @@ jobs:
                     echo "::warning title=GitHub release not created::$message"
                     echo "> [!WARNING]" >> "$GITHUB_STEP_SUMMARY"
                     echo "> $message" >> "$GITHUB_STEP_SUMMARY"
-    
-    push_core:
-        name: "Push aweXpect.Core"
-        if: ${{ startsWith(github.ref, 'refs/tags/core/v') }}
-        runs-on: macos-latest
-        environment: production
-        needs: [ pack, unit-tests, aot-smoke-tests, api-tests, publish-test-results, static-code-analysis ]
-        permissions:
-            id-token: write
-        steps:
-            -   name: Download packages
-                uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-                with:
-                    name: Packages
-                    path: Artifacts/Packages
-            -   name: Setup .NET SDKs
-                uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-            -   name: NuGet login
-                id: login
-                uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
-                with:
-                    user: ${{ secrets.NUGET_USER }}
-            -   name: Publish
-                run: |
-                    echo "Found the following packages to push:"
-                    search_dir=Artifacts/Packages
-                    for entry in Artifacts/Packages/aweXpect.Core/*.nupkg
-                    do
-                      echo "- $entry"
-                    done
-                    for entry in Artifacts/Packages/aweXpect.Core/*.nupkg
-                    do
-                      dotnet nuget push $entry --source https://api.nuget.org/v3/index.json --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
-                    done
     
     finalize-release:
         name: "Finalize release"

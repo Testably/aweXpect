@@ -17,9 +17,7 @@ partial class Build
 			Project project = Solution.Tests.aweXpect_Api_Tests;
 
 			DotNetRun(s => s
-				.SetConfiguration(Configuration == Configuration.Debug || BuildScope == BuildScope.CoreOnly
-					? "Debug"
-					: "Release")
+				.SetConfiguration(Configuration)
 				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
 				.EnableNoBuild()
 				.SetProjectFile(project)

@@ -25,10 +25,10 @@ jobs:
                         10.0.3xx
             -   name: Run unit tests (windows)
                 if: matrix.os == 'windows-latest'
-                run: ./build.ps1 UnitTestsWithCoverage TestFrameworks
+                run: ./build.ps1 UnitTests TestFrameworks
             -   name: Run unit tests (ubuntu|macos)
                 if: matrix.os != 'windows-latest'
-                run: ./build.sh UnitTestsWithCoverage TestFrameworks
+                run: ./build.sh UnitTests TestFrameworks
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -87,96 +87,6 @@ jobs:
             -   name: Run AOT smoke tests (ubuntu|macos)
                 if: matrix.os != 'windows-latest'
                 run: ./build.sh AotSmokeTests
-    
-    mutation-tests-core:
-        name: "Mutation tests (aweXpect.Core)"
-        runs-on: ubuntu-latest
-        timeout-minutes: 150
-        env:
-            DOTNET_NOLOGO: true
-            # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
-            # which surfaces as an unattributable "the runner has received a shutdown signal". It reaches only the
-            # test host, through `RuntimeHostConfigurationOption` in the test projects, because the environment
-            # variable that would do the same overrides it everywhere - including in the compiler, which needs far
-            # more memory than the test host ever does.
-            MutationTestHeapHardLimit: "0x20000000"
-        steps:
-            -   uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-                with:
-                    fetch-depth: 0
-            -   name: Setup .NET SDKs
-                uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-                with:
-                    dotnet-version: |
-                        10.0.3xx
-            -   name: Run mutation tests
-                # The sampler writes into the live job log, because a runner that runs out of memory is torn down
-                # before `if: always()` steps run, so anything it left in an artifact is lost. It has to be reaped
-                # before the step ends, because a surviving background process holds the step's stdout open, and
-                # it cannot be reaped from an `EXIT` trap, because the trap replaces the exit code of the build.
-                run: |
-                    while sleep 60; do
-                        echo "resources: $(free -m | awk 'NR==2{print "mem_used="$3"M mem_available="$7"M"}') disk_available=$(df -m --output=avail / | tail -1)M"
-                    done &
-                    sampler=$!
-                    status=0
-                    ./build.sh MutationTestsCore || status=$?
-                    pkill -P "$sampler" 2>/dev/null || true
-                    kill "$sampler" 2>/dev/null || true
-                    wait "$sampler" 2>/dev/null || true
-                    exit "$status"
-            -   name: Upload artifacts
-                if: always()
-                uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-                with:
-                    name: MutationTestsCore
-                    path: |
-                        ./Artifacts/*
-    
-    mutation-tests-main:
-        name: "Mutation tests (aweXpect)"
-        runs-on: ubuntu-latest
-        timeout-minutes: 150
-        env:
-            DOTNET_NOLOGO: true
-            # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
-            # which surfaces as an unattributable "the runner has received a shutdown signal". It reaches only the
-            # test host, through `RuntimeHostConfigurationOption` in the test projects, because the environment
-            # variable that would do the same overrides it everywhere - including in the compiler, which needs far
-            # more memory than the test host ever does.
-            MutationTestHeapHardLimit: "0x20000000"
-        steps:
-            -   uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-                with:
-                    fetch-depth: 0
-            -   name: Setup .NET SDKs
-                uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-                with:
-                    dotnet-version: |
-                        10.0.3xx
-            -   name: Run mutation tests
-                # The sampler writes into the live job log, because a runner that runs out of memory is torn down
-                # before `if: always()` steps run, so anything it left in an artifact is lost. It has to be reaped
-                # before the step ends, because a surviving background process holds the step's stdout open, and
-                # it cannot be reaped from an `EXIT` trap, because the trap replaces the exit code of the build.
-                run: |
-                    while sleep 60; do
-                        echo "resources: $(free -m | awk 'NR==2{print "mem_used="$3"M mem_available="$7"M"}') disk_available=$(df -m --output=avail / | tail -1)M"
-                    done &
-                    sampler=$!
-                    status=0
-                    ./build.sh MutationTestsMain || status=$?
-                    pkill -P "$sampler" 2>/dev/null || true
-                    kill "$sampler" 2>/dev/null || true
-                    wait "$sampler" 2>/dev/null || true
-                    exit "$status"
-            -   name: Upload artifacts
-                if: always()
-                uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-                with:
-                    name: MutationTestsMain
-                    path: |
-                        ./Artifacts/*
     
     benchmarks:
         name: "Benchmarks"
