@@ -36,20 +36,24 @@ dotnet run --project Tests/aweXpect.Api.Tests
 ## Benchmarks
 
 `Benchmarks/aweXpect.Benchmarks` compares aweXpect with FluentAssertions and TUnit.Assertions in happy-case scenarios
-with BenchmarkDotNet.
+with BenchmarkDotNet; each extension package has its happy-case benchmarks in
+`Benchmarks/aweXpect.<Extension>.Benchmarks`.
 
 ```shell
 dotnet run -c Release --project Benchmarks/aweXpect.Benchmarks -- --filter "*String*"
+./build.ps1 Benchmarks --benchmark-package aweXpect.Json
 ```
 
 - Compare before and after in ABBA order (after, before, before, after) on an idle machine. Time differences below
   about 20 ns are noise; allocations are stable.
-- CI runs `Benchmarks` on every pull request and posts the result as a PR comment; on `main` it appends to the
-  history on the `benchmarks` branch that the benchmark page of the docs shows. A method name ending in `_aweXpect`
-  is highlighted in the comment.
-- The extension packages have happy-case benchmarks in `Benchmarks/aweXpect.<Extension>.Benchmarks`. The pipeline
-  does not run them; start them with `dotnet run -c Release --project Benchmarks/aweXpect.<Extension>.Benchmarks --
-  --filter *` before and after a change.
+- `BenchmarkProjects` in `Pipeline/Build.Benchmarks.cs` lists the benchmark project of each package and the packages
+  it measures. The parameter `BenchmarkPackage` selects one of them; without it, all run.
+- CI runs one job per package. In a pull request, a job only runs the benchmarks when the pull request changes the
+  source of a measured package, the benchmark project or a shared build input (`SharedBenchmarkInputs`), and
+  `ci-analysis.yml` posts one PR comment per package that ran. A method name ending in `_aweXpect` is highlighted in
+  the comment.
+- On `main`, every package appends its results to its history on the `benchmarks` branch, which the docs site reads:
+  `Docs/pages/static/js` for `aweXpect`, `Docs/extensions/<Package>/static/js` for an extension package.
 
 ## Mutation tests
 
@@ -97,7 +101,7 @@ and `Release` on the build server (`--configuration Release`).
 | `AotSmokeTests` | Runs `Tests/Aot` normally and published with Native AOT for the current platform (needs the native toolchain, on Windows the C++ build tools of Visual Studio) |
 | `Pack` | Collects the packages into `Artifacts/Packages` |
 | `ReleaseNotes` | Writes the changes of each package since the last stable release into `Artifacts/ReleaseNotes.md` |
-| `Benchmarks` | Runs the benchmarks and prints the report |
+| `Benchmarks` | Runs the benchmarks (of `BenchmarkPackage`, or all) and prints the reports; on `main` it appends them to the `benchmarks` branch |
 | `CodeAnalysis` | SonarCloud analysis around `CodeCoverage` (needs `SonarToken`) |
 | `MutationTestsCore`, `MutationTestsMain` | Stryker.NET mutation tests (currently disabled) |
 | `BenchmarkComment`, `MutationTestsDashboard` | CI only: benchmark PR comment and mutation dashboard upload |
@@ -113,16 +117,18 @@ be added to `ProjectsWithSlowTests` in `Pipeline/Build.UnitTest.cs`; a listed pr
   `4.1.0-beta.1` for a release and `4.1.0-beta.0.pre.1` for a pre-release, so that the beta of a release sorts above
   the betas of its pre-releases.
 - The GitHub release lists the changes of each package (`ReleaseNotes`) above the generated list of all pull requests.
-  A commit counts for a package when it changes one of the package's source directories (`ReleaseNotesPackages` in
+  A commit counts for a package when it changes one of the package's source directories (`PackageDirectories` in
   `Pipeline/Build.ReleaseNotes.cs`); its conventional-commit type decides the category.
+- `build.yml` also uploads the release notes as the artifact `ReleaseNotes` on `main`, as a preview of the next
+  release.
 
 ## CI workflows
 
 | Workflow | Trigger | Jobs |
 | --- | --- | --- |
-| `ci.yml` | Pull requests to `main` | `UnitTests TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks`; `AotSmokeTests`; `Benchmarks`; `CodeAnalysis` |
-| `ci-analysis.yml` | After `CI` completes | Posts the benchmark PR comment |
-| `build.yml` | Pushes to `main`, release tags | `CodeCoverage` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks`, `CodeAnalysis`, `Pack`; on a tag, `ReleaseNotes`, pushes all packages to NuGet and creates the GitHub release |
+| `ci.yml` | Pull requests to `main` | `UnitTests TestFrameworks` on Ubuntu, Windows and macOS; `ApiChecks`; `AotSmokeTests`; `Benchmarks` per changed package; `CodeAnalysis` |
+| `ci-analysis.yml` | After `CI` completes | Posts a benchmark PR comment per package |
+| `build.yml` | Pushes to `main`, release tags | `CodeCoverage` on three platforms, `ApiChecks`, `AotSmokeTests`, `Benchmarks` per package, `CodeAnalysis`, `Pack`, `ReleaseNotes`; on a tag, pushes all packages to NuGet and creates the GitHub release |
 | `nightly.yml` | Daily, when `main` changed | Sliced mutation tests and the Stryker dashboard |
 | `notify-docs-site.yml` | After `Build` on `main` | Triggers the docs site rebuild |
 

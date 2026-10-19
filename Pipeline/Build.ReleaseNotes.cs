@@ -18,7 +18,7 @@ partial class Build
 	///     The source directories of each package. A commit belongs to the release notes of a package when it changes
 	///     one of them.
 	/// </summary>
-	static readonly (string Package, string[] Directories)[] ReleaseNotesPackages =
+	static readonly (string Package, string[] Directories)[] PackageDirectories =
 	[
 		("aweXpect", [
 			"Source/aweXpect", "Source/aweXpect.Analyzers", "Source/aweXpect.Analyzers.CodeFixers",
@@ -54,7 +54,7 @@ partial class Build
 				.Single().Text;
 
 			StringBuilder sb = new();
-			foreach ((string package, string[] directories) in ReleaseNotesPackages)
+			foreach ((string package, string[] directories) in PackageDirectories)
 			{
 				ILookup<string, string> changes = GitTasks
 					.Git($"log --first-parent {previousRelease}..HEAD --format=%s -- {string.Join(" ", directories):nq}",

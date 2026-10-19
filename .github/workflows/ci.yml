@@ -89,8 +89,14 @@ jobs:
                 run: ./build.sh AotSmokeTests
     
     benchmarks:
-        name: "Benchmarks"
+        name: "Benchmarks (${{ matrix.package }})"
         runs-on: ubuntu-latest
+        # One job per package, so that they run in parallel. A job skips the benchmarks of a package that the pull
+        # request does not change.
+        strategy:
+            fail-fast: false
+            matrix:
+                package: [ aweXpect, aweXpect.Json, aweXpect.Web, aweXpect.Xml, aweXpect.Reflection, aweXpect.Snapshots ]
         env:
             DOTNET_NOLOGO: true
         steps:
@@ -105,11 +111,13 @@ jobs:
                         10.0.3xx
             -   name: Run benchmarks
                 run: ./build.sh Benchmarks
+                env:
+                    BenchmarkPackage: ${{ matrix.package }}
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
                 with:
-                    name: Benchmarks
+                    name: Benchmarks-${{ matrix.package }}
                     path: |
                         ./Artifacts/*
                     if-no-files-found: ignore

@@ -131,6 +131,10 @@
   "allOf": [
     {
       "properties": {
+        "BenchmarkPackage": {
+          "type": "string",
+          "description": "The package whose benchmarks run - when unset, the benchmarks of all packages run"
+        },
         "Configuration": {
           "type": "string",
           "enum": [

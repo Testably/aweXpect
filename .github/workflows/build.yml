@@ -93,8 +93,14 @@ jobs:
                 run: ./build.sh AotSmokeTests
     
     benchmarks:
-        name: "Benchmarks"
+        name: "Benchmarks (${{ matrix.package }})"
         runs-on: ubuntu-latest
+        # One job per package, so that they run in parallel; each appends to the data of its package on the
+        # `benchmarks` branch.
+        strategy:
+            fail-fast: false
+            matrix:
+                package: [ aweXpect, aweXpect.Json, aweXpect.Web, aweXpect.Xml, aweXpect.Reflection, aweXpect.Snapshots ]
         permissions:
             contents: write
         env:
@@ -113,6 +119,7 @@ jobs:
                 run: ./build.sh Benchmarks
                 env:
                     GithubToken: ${{ secrets.GITHUB_TOKEN }}
+                    BenchmarkPackage: ${{ matrix.package }}
     
     static-code-analysis:
         name: "Static code analysis"
@@ -191,7 +198,7 @@ jobs:
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         runs-on: macos-latest
         environment: production
-        needs: [ pack, unit-tests, aot-smoke-tests, api-tests, publish-test-results, static-code-analysis ]
+        needs: [ pack, unit-tests, aot-smoke-tests, api-tests, publish-test-results, static-code-analysis, benchmarks ]
         permissions:
             contents: write
             id-token: write
