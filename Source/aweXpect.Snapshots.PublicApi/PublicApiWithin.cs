@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using aweXpect.Core;
 
 namespace aweXpect.Snapshots.PublicApi;
@@ -53,7 +54,7 @@ public sealed class PublicApiWithin
 	/// </exception>
 	public PublicApiOptions Type(string fullName)
 	{
-		if (ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)).IndexOf('+') >= 0)
+		if (ArgumentChecks.ThrowIfNullOrEmpty(fullName, nameof(fullName)).Contains('+'))
 		{
 			throw Tracing.WriteException(new ArgumentException(
 				$"The type '{fullName}' is nested, so it is written with its containing type: restrict the public API to the containing type instead.",
