@@ -312,6 +312,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -366,7 +372,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -424,7 +431,8 @@ window.BENCHMARK_DATA = {
           12964.154532296317,
           6617.728448232015,
           6153.680161109338,
-          12830.830071585518
+          12830.830071585518,
+          12716.209959920247
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -473,6 +481,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -553,7 +562,8 @@ window.BENCHMARK_DATA = {
           389620.8383413461,
           183201.66775948662,
           157629.54663085938,
-          364450.78185096156
+          364450.78185096156,
+          360835.12444196426
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -616,6 +626,7 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590287,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -682,7 +693,8 @@ window.BENCHMARK_DATA = {
           19412.483731951033,
           10714.093688964844,
           9455.314562988282,
-          20109.71484883626
+          20109.71484883626,
+          19577.099816458565
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -694,6 +706,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1029,6 +1042,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -1076,7 +1095,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -1127,7 +1147,8 @@ window.BENCHMARK_DATA = {
           288.19499187469484,
           138.07931208610535,
           129.05741113882797,
-          319.50869131088257
+          319.50869131088257,
+          342.94660336176554
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1139,6 +1160,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1242,7 +1264,8 @@ window.BENCHMARK_DATA = {
           575.3932268142701,
           273.9447385583605,
           257.5934160436903,
-          480.948417867933
+          480.948417867933,
+          493.0574806758336
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1254,6 +1277,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1357,7 +1381,8 @@ window.BENCHMARK_DATA = {
           410.1552434285482,
           204.17142051060995,
           193.26973274775915,
-          383.6896659646715
+          383.6896659646715,
+          394.50341510772705
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1369,6 +1394,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6317,6 +6343,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -7134,7 +7166,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -7955,7 +7988,8 @@ window.BENCHMARK_DATA = {
           148.2970512231191,
           79.97838434378306,
           74.18803690947018,
-          150.6127185980479
+          150.6127185980479,
+          148.89149589538573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8762,6 +8796,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9610,7 +9645,8 @@ window.BENCHMARK_DATA = {
           253.9572864850362,
           140.77810134206499,
           129.42204809188843,
-          254.0005808217185
+          254.0005808217185,
+          258.0033085823059
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9803,6 +9839,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10546,7 +10583,8 @@ window.BENCHMARK_DATA = {
           273.7245542208354,
           127.64832734266916,
           117.34135173161825,
-          231.8496056520022
+          231.8496056520022,
+          244.99941361745198
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10558,6 +10596,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -10979,6 +11018,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -11033,7 +11078,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -11091,7 +11137,8 @@ window.BENCHMARK_DATA = {
           273.4967151006063,
           145.45707950225244,
           132.02554053919656,
-          259.5313862051283
+          259.5313862051283,
+          286.11733493804934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11110,6 +11157,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11220,7 +11268,8 @@ window.BENCHMARK_DATA = {
           529.3715762297312,
           277.931499004364,
           263.844231898968,
-          542.9683816092355
+          542.9683816092355,
+          516.3736726125081
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11232,6 +11281,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -11349,7 +11399,8 @@ window.BENCHMARK_DATA = {
           347.82684059143065,
           180.17031400998434,
           187.08469479424613,
-          317.0804671874413
+          317.0804671874413,
+          327.2018767674764
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11361,6 +11412,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -16316,6 +16368,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -17133,7 +17191,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -17954,7 +18013,8 @@ window.BENCHMARK_DATA = {
           653.4242701848348,
           331.6790075668922,
           316.0225144386292,
-          645.035011100769
+          645.035011100769,
+          639.0630943591779
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18764,6 +18824,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -19609,7 +19670,8 @@ window.BENCHMARK_DATA = {
           1433.8262049357097,
           713.0394509860447,
           653.2981799565829,
-          1320.4583545412336
+          1320.4583545412336,
+          1381.041144434611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20435,6 +20497,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -20545,7 +20608,8 @@ window.BENCHMARK_DATA = {
           655.4781394322713,
           363.53120354243686,
           314.94122142058154,
-          646.8888455708822
+          646.8888455708822,
+          646.5618248667035
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20557,6 +20621,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -25556,6 +25621,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -26373,7 +26444,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -27194,7 +27266,8 @@ window.BENCHMARK_DATA = {
           679.827542368571,
           334.66838782174244,
           291.5696660677592,
-          640.4601805550711
+          640.4601805550711,
+          640.4209254128592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28004,6 +28077,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -28849,7 +28923,8 @@ window.BENCHMARK_DATA = {
           27691.77243276743,
           11201.227149454753,
           9637.708984375,
-          28272.02166513296
+          28272.02166513296,
+          27720.800270589192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29675,6 +29750,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -29785,7 +29861,8 @@ window.BENCHMARK_DATA = {
           776.757730620248,
           437.5274109159197,
           401.0316359043121,
-          778.1249496019803
+          778.1249496019803,
+          785.4593592325847
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -29797,6 +29874,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -30566,6 +30644,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -30678,7 +30762,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -30794,7 +30879,8 @@ window.BENCHMARK_DATA = {
           742.9608598709107,
           375.674444548289,
           360.25840894992535,
-          750.3315128179697
+          750.3315128179697,
+          726.2182041168213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30901,6 +30987,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -31039,7 +31126,8 @@ window.BENCHMARK_DATA = {
           84175.25460379464,
           29088.252829415458,
           26041.332474772134,
-          82043.3909016927
+          82043.3909016927,
+          83428.47364908854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31160,6 +31248,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -31834,6 +31923,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -31946,7 +32041,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -32062,7 +32158,8 @@ window.BENCHMARK_DATA = {
           181.34621766408284,
           102.86315651450839,
           93.25659429175514,
-          179.30994068659268
+          179.30994068659268,
+          175.17753386497498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32139,6 +32236,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -32307,7 +32405,8 @@ window.BENCHMARK_DATA = {
           32667.3033976237,
           10477.848943074545,
           9507.399641927082,
-          32832.37120361328
+          32832.37120361328,
+          33147.64429931641
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32428,6 +32527,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -32538,7 +32638,8 @@ window.BENCHMARK_DATA = {
           250.12489426930745,
           142.79237132413047,
           117.17138999303182,
-          237.70466898282368
+          237.70466898282368,
+          243.2941465695699
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32550,6 +32651,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -32971,6 +33073,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -33025,7 +33133,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -33083,7 +33192,8 @@ window.BENCHMARK_DATA = {
           364.57042706807454,
           193.2752918463487,
           171.65608774698697,
-          354.57267611821493
+          354.57267611821493,
+          360.10426191488904
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33131,6 +33241,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -33212,7 +33323,8 @@ window.BENCHMARK_DATA = {
           383.97077452341716,
           216.09783410109006,
           194.87806278864542,
-          364.20670493443805
+          364.20670493443805,
+          389.23395179112754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33224,6 +33336,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -33341,7 +33454,8 @@ window.BENCHMARK_DATA = {
           422.7968292872111,
           209.61525537172955,
           201.5483102628163,
-          399.33776105244954
+          399.33776105244954,
+          419.3142405509949
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33353,6 +33467,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -33730,6 +33845,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -33784,7 +33905,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -33842,7 +33964,8 @@ window.BENCHMARK_DATA = {
           832.5288061777751,
           430.2988192694528,
           367.50125183377946,
-          797.5990753855024
+          797.5990753855024,
+          799.918774332319
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33869,6 +33992,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -33971,7 +34095,8 @@ window.BENCHMARK_DATA = {
           2403.065929667155,
           1068.9572648366293,
           960.6418059894016,
-          1831.3790845137376
+          1831.3790845137376,
+          1976.6952491760253
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33983,6 +34108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -34100,7 +34226,8 @@ window.BENCHMARK_DATA = {
           1007.1506331125895,
           463.8951059977214,
           434.1284122100243,
-          906.782819112142
+          906.782819112142,
+          952.1759960174561
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34112,6 +34239,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -34489,6 +34617,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -34543,7 +34677,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -34601,7 +34736,8 @@ window.BENCHMARK_DATA = {
           12204.482846941266,
           6794.2167728130635,
           6094.362887064616,
-          12304.294448852539
+          12304.294448852539,
+          12081.541130065918
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34650,6 +34786,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -34730,7 +34867,8 @@ window.BENCHMARK_DATA = {
           40320.78360188802,
           19875.8828511556,
           18308.33555485652,
-          41226.83924967448
+          41226.83924967448,
+          40712.498434884204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34785,6 +34923,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -34859,7 +34998,8 @@ window.BENCHMARK_DATA = {
           11215.832321166992,
           6475.845528235803,
           6327.568381718227,
-          11412.204189593975
+          11412.204189593975,
+          11322.25827407837
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34871,6 +35011,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -35248,6 +35389,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
         "message": "ci: run Stryker in project mode (#1878)"
+      },
+      {
+        "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
+        "author": "dependabot[bot]",
+        "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.24.0 to 2.25.0 (#1881)"
       }
     ],
     "labels": [
@@ -35302,7 +35449,8 @@ window.BENCHMARK_DATA = {
       "0a5cfe8b",
       "e4ce2010",
       "1cb02fc3",
-      "6e495ae1"
+      "6e495ae1",
+      "06c125c6"
     ],
     "datasets": [
       {
@@ -35360,7 +35508,8 @@ window.BENCHMARK_DATA = {
           11851.369173177083,
           6236.243513743083,
           5792.498997824533,
-          11860.760524495443
+          11860.760524495443,
+          11594.618412780761
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35409,6 +35558,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -35489,7 +35639,8 @@ window.BENCHMARK_DATA = {
           59910.86433919271,
           27981.78483229417,
           26070.551674397786,
-          59329.20127766927
+          59329.20127766927,
+          60240.43694598858
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35552,7 +35703,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35618,7 +35770,8 @@ window.BENCHMARK_DATA = {
           22400.82074584961,
           12626.77300480434,
           11767.620774489184,
-          22494.33946110652
+          22494.33946110652,
+          22314.193932669503
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35630,6 +35783,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
