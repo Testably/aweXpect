@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using aweXpect.Customization;
 using aweXpect.Snapshots.Tests.TestHelpers;
+using TUnit.Core.Exceptions;
 
 namespace aweXpect.Snapshots.Tests;
 
@@ -14,7 +15,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task ShouldIdentifyTheSnapshotByThePathRelativeToTheSourceRoot()
 			{
 				InMemorySnapshotStore store = new();
@@ -24,7 +25,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
 					new SnapshotId("Tests/aweXpect.Snapshots.Tests/ThatSnapshot.MatchesSnapshot.Tests.cs",
@@ -32,7 +33,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder().Because("the build targets record the source root, so the id is the same on every machine");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCallerFilePathIsDeterministic_ShouldAcceptIt()
 			{
 				SnapshotId id = new($"/_9/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
@@ -48,7 +49,7 @@ public sealed partial class ThatSnapshot
 					.Because("deterministic builds map the path of the test file to a rooted path like '/_9/…'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCallerFilePathIsNotRooted_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -63,7 +64,7 @@ public sealed partial class ThatSnapshot
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamed_ShouldAddTheNameToTheSnapshotId()
 			{
 				InMemorySnapshotStore store = new();
@@ -73,7 +74,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("login");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest.login",
@@ -88,7 +89,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedWithCharactersAFileNameCannotHold_ShouldPassTheNameUnchangedToTheStore()
 			{
 				InMemorySnapshotStore store = new();
@@ -103,9 +104,9 @@ public sealed partial class ThatSnapshot
 					.Because("only the disk store escapes names for its file names");
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData(" ")]
+			[Test]
+			[Arguments("")]
+			[Arguments(" ")]
 			public async Task WhenNamedWithEmptyName_ShouldThrowArgumentException(string name)
 			{
 				string subject = "foo";
@@ -118,7 +119,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'name' cannot be empty.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedWithNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";
@@ -130,7 +131,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndSnapshotCannotBeRead_ShouldFail()
 			{
 				InMemorySnapshotStore store = new()
@@ -143,7 +144,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -151,7 +152,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndSnapshotDiffers_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -162,7 +163,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -171,7 +172,7 @@ public sealed partial class ThatSnapshot
 					.Because("accepting the pending snapshot would turn the success into a failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndSnapshotIsMissing_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -181,7 +182,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -189,7 +190,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndSnapshotMatches_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -200,7 +201,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -208,7 +209,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndSubjectIsNull_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -218,7 +219,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -227,7 +228,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingIsCanceled_ShouldNotReportThatTheSnapshotCouldNotBeRead()
 			{
 				using CancellationTokenSource cancellationTokenSource = new();
@@ -246,7 +247,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.WithCancellation(cancellationTokenSource.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -257,7 +258,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingThrows_ShouldFailWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new()
@@ -270,7 +271,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -281,7 +282,7 @@ public sealed partial class ThatSnapshot
 					.Because("the subject could not be compared with the snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingThrowsOperationCanceledException_WithoutCancellation_ShouldFail()
 			{
 				InMemorySnapshotStore store = new()
@@ -294,12 +295,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot could not be read: timed out").AsWildcard()
 					.Because("only a cancellation of the evaluation aborts it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRecordingMatchThrows_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new()
@@ -317,7 +318,7 @@ public sealed partial class ThatSnapshot
 					.Because("the snapshot matched, and recording the match only cleans up");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRecordingMismatchThrows_ShouldNameTheErrorInTheFailure()
 			{
 				InMemorySnapshotStore store = new()
@@ -330,7 +331,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -344,7 +345,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffers_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -355,7 +356,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -368,7 +369,7 @@ public sealed partial class ThatSnapshot
 					.Because("a store without a description of the mismatch leaves out the pending snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffers_ShouldRecordMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -379,7 +380,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
 					[Id] = "bar",
@@ -389,7 +390,7 @@ public sealed partial class ThatSnapshot
 					.Because("the snapshot is only changed by the user");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffersInSeveralLines_ShouldListTheDifferences()
 			{
 				InMemorySnapshotStore store = new();
@@ -400,7 +401,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -420,7 +421,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffersOnlyInNewlineStyle_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -435,7 +436,7 @@ public sealed partial class ThatSnapshot
 					.Because("version control can change the newline style when the snapshot is checked out");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsEmpty_AndSubjectIsEmpty_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -449,7 +450,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsMissing_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -459,7 +460,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -474,7 +475,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotMatches_ShouldRecordMatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -490,7 +491,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedAgainForTheSameValue_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -506,7 +507,7 @@ public sealed partial class ThatSnapshot
 					.Because("a retried or repeated test produces the same value again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedForAnotherValue_ShouldFailWithoutRecordingMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -518,7 +519,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -528,7 +529,7 @@ public sealed partial class ThatSnapshot
 					.Because("the values would overwrite each other's pending snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotsAreNamedDifferently_ShouldKeepThemApart()
 			{
 				InMemorySnapshotStore store = new();
@@ -545,7 +546,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStoreIsSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -555,7 +556,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFailWithoutAccessingTheStore()
 			{
 				InMemorySnapshotStore store = new()
@@ -568,7 +569,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",

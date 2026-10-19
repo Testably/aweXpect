@@ -9,7 +9,7 @@ public sealed partial class ThatSnapshot
 	{
 		public sealed class DiskStoreTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName()
 			{
 				string subject = "stored next to the test file";
@@ -22,12 +22,12 @@ public sealed partial class ThatSnapshot
 						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenCalledWithoutCallerInformation_ShouldUseTestFileAndMethodName.awexpect-snapshot.txt' is committed next to this test file");
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData("foo")]
-			[InlineData("foo\n")]
-			[InlineData("foo\r\n")]
-			[InlineData("\n\nfoo\n\n")]
+			[Test]
+			[Arguments("")]
+			[Arguments("foo")]
+			[Arguments("foo\n")]
+			[Arguments("foo\r\n")]
+			[Arguments("\n\nfoo\n\n")]
 			public async Task WhenAccepting_ShouldMatchTheAcceptedSnapshotInTheNextRun(string subject)
 			{
 				using SnapshotDirectory directory = new();
@@ -37,13 +37,13 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();
 				await That(Act).DoesNotThrow()
 					.Because("the accepted snapshot is read back unchanged");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_AndDirectoryDoesNotExist_ShouldReportThatNeitherSnapshotCouldBeWritten()
 			{
 				using SnapshotDirectory directory = new();
@@ -54,7 +54,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(testFilePath, SnapshotDirectory.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             *
 					             Accepted snapshot:
@@ -65,7 +65,7 @@ public sealed partial class ThatSnapshot
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_AndSnapshotIsReadOnly_ShouldWriteThePendingSnapshotInstead()
 			{
 				using SnapshotDirectory directory = new();
@@ -79,7 +79,7 @@ public sealed partial class ThatSnapshot
 						=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 							.Accepting(SnapshotAcceptance.All);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              *
 						              Accepted snapshot:
@@ -98,7 +98,7 @@ public sealed partial class ThatSnapshot
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_AndPendingSnapshotCannotBeDeleted_ShouldStillAccept()
 			{
 				using SnapshotDirectory directory = new();
@@ -111,7 +111,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              *
 					              Accepted snapshot:
@@ -121,7 +121,7 @@ public sealed partial class ThatSnapshot
 				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo" + Environment.NewLine);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_ShouldWriteTheSnapshotAndDeleteThePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -133,7 +133,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{directory.SnapshotPath}",
@@ -152,7 +152,7 @@ public sealed partial class ThatSnapshot
 					.Because("the accepted snapshot replaces the pending snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMasking_AndAccepting_ShouldWriteThePlaceholderToTheSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -162,11 +162,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.For.Text("42").Mask("<id>").Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("id=<id>" + Environment.NewLine);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMasking_ShouldWriteThePlaceholderToThePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -176,11 +176,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.For.Text(@"\d+").AsRegex().Mask("<id>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("id=<id>" + Environment.NewLine);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPathComesFromDeterministicBuild_WithoutRecordedSourceRoot_ShouldFail()
 			{
 				string subject = "foo";
@@ -188,7 +188,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot("/_9/Tests/MyTests.cs", SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "*MyTests.MyTest.awexpect-snapshot.txt",
@@ -196,7 +196,7 @@ public sealed partial class ThatSnapshot
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDirectoryDoesNotExist_ShouldReportThatThePendingSnapshotCouldNotBeWritten()
 			{
 				using SnapshotDirectory directory = new();
@@ -207,7 +207,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(testFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -221,7 +221,7 @@ public sealed partial class ThatSnapshot
 					              """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyASnapshotWithTheOldMarkerExists_ShouldNotReadIt()
 			{
 				using SnapshotDirectory directory = new();
@@ -232,7 +232,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{directory.SnapshotPath}",
@@ -244,15 +244,15 @@ public sealed partial class ThatSnapshot
 				await That(File.ReadAllText(oldSnapshotPath)).IsEqualTo("foo");
 			}
 
-			[Theory]
-			[InlineData("de-DE", "de-DE")]
-			[InlineData("äöü", "äöü")]
-			[InlineData("10:30", "10%3A30")]
-			[InlineData("v1.2", "v1%2E2")]
-			[InlineData("50%", "50%25")]
-			[InlineData("a<b>c\"d/e\\f|g?h*i", "a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai")]
-			[InlineData("a\tb", "a%09b")]
-			[InlineData("AC@DC", "AC%40DC")]
+			[Test]
+			[Arguments("de-DE", "de-DE")]
+			[Arguments("äöü", "äöü")]
+			[Arguments("10:30", "10%3A30")]
+			[Arguments("v1.2", "v1%2E2")]
+			[Arguments("50%", "50%25")]
+			[Arguments("a<b>c\"d/e\\f|g?h*i", "a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai")]
+			[Arguments("a\tb", "a%09b")]
+			[Arguments("AC@DC", "AC%40DC")]
 			public async Task WhenNamed_ShouldEscapeTheNameInTheFileNames(string name, string escapedName)
 			{
 				using SnapshotDirectory directory = new();
@@ -264,7 +264,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.Named(name);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"*\"{snapshotPath}\"*").AsWildcard();
 				await That(File.Exists(pendingPath)).IsTrue();
 				File.Move(pendingPath, snapshotPath);
@@ -272,15 +272,15 @@ public sealed partial class ThatSnapshot
 					.Because("the escaped file name is valid on every operating system and leads back to the snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamesOnlyDifferInAnEscapedCharacter_ShouldKeepTheirFilesApart()
 			{
 				using SnapshotDirectory directory = new();
 
 				await That(async () => await That("first").MatchesSnapshot(directory.TestFilePath,
-					SnapshotDirectory.MemberName).Named("a:b")).Throws<XunitException>();
+					SnapshotDirectory.MemberName).Named("a:b")).Throws<FailException>();
 				await That(async () => await That("second").MatchesSnapshot(directory.TestFilePath,
-					SnapshotDirectory.MemberName).Named("a%3Ab")).Throws<XunitException>();
+					SnapshotDirectory.MemberName).Named("a%3Ab")).Throws<FailException>();
 
 				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%3Ab.awexpect-snapshot.pending.txt")))
 					.IsEqualTo("first" + Environment.NewLine);
@@ -289,7 +289,7 @@ public sealed partial class ThatSnapshot
 					.Because("the '%' is escaped as well, so that two names never share a file");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberNameContainsCharactersAFileNameCannotHold_ShouldEscapeThem()
 			{
 				using SnapshotDirectory directory = new();
@@ -298,12 +298,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, "<Main>$");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(File.Exists(Path.Combine(directory.Path, "MyTests.%3CMain%3E$.awexpect-snapshot.pending.txt"))).IsTrue()
 					.Because("top-level statements report the member name '<Main>$'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamed_ShouldAppendTheNameToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
@@ -315,7 +315,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.Named("login");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -331,7 +331,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedAfterArguments_ShouldAppendTheirNamesAndValuesToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
@@ -345,14 +345,14 @@ public sealed partial class ThatSnapshot
 					=> await That("foo").MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.NamedAfter(release.Artist, year);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"*\"{snapshotPath}\"*").AsWildcard();
 				File.Move(pendingPath, snapshotPath);
 				await That(Act).DoesNotThrow()
 					.Because("the name is escaped like any other, but a member access adds no dot to it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForTheEnvironment_ShouldAppendTheVariantToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
@@ -368,7 +368,7 @@ public sealed partial class ThatSnapshot
 						.UniqueFor.OperatingSystem()
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -384,7 +384,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForTargetFramework_ShouldReadTheSnapshotOfTheTargetFramework()
 			{
 				string subject = CurrentEnvironment.TargetFramework == "net48"
@@ -399,7 +399,7 @@ public sealed partial class ThatSnapshot
 						$"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WhenUniqueForTargetFramework_ShouldReadTheSnapshotOfTheTargetFramework@{CurrentEnvironment.TargetFramework}.awexpect-snapshot.txt' is committed next to this test file for each target framework");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension()
 			{
 				string subject = """
@@ -417,7 +417,7 @@ public sealed partial class ThatSnapshot
 						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension.awexpect-snapshot.json' is committed next to this test file");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_ShouldUseItInTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
@@ -429,7 +429,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.WithExtension("json");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -447,7 +447,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenNamedAndUniqueForTheEnvironment_ShouldAppendTheExtensionAfterSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -462,13 +462,13 @@ public sealed partial class ThatSnapshot
 						.UniqueFor.OperatingSystem()
 						.WithExtension("html");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"*\"{snapshotPath}\"*Pending snapshot:*{pendingPath}").AsWildcard();
 				File.Move(pendingPath, snapshotPath);
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenAccepting_ShouldWriteTheSnapshotAndDeleteThePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -482,7 +482,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.WithExtension("xml").Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"*Accepted snapshot:*{snapshotPath}").AsWildcard()
 					.Because("the snapshot with the extension 'txt' is another file");
 				await That(File.ReadAllText(snapshotPath)).IsEqualTo(subject + Environment.NewLine);
@@ -492,7 +492,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenSnapshotMatches_ShouldDeleteThePendingSnapshotWithTheExtension()
 			{
 				using SnapshotDirectory directory = new();
@@ -510,7 +510,7 @@ public sealed partial class ThatSnapshot
 					.Because("the pending snapshot with the extension 'txt' belongs to another snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPendingSnapshotCannotBeDeleted_AndSnapshotMatches_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();
@@ -527,7 +527,7 @@ public sealed partial class ThatSnapshot
 					.Because("the snapshot matched, and the pending snapshot is only a leftover of an earlier run");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPendingSnapshotExists_AndSnapshotDiffers_ShouldOverwritePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -538,12 +538,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Pending snapshot:*").AsWildcard();
 				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar" + Environment.NewLine);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPendingSnapshotExists_AndSnapshotMatches_ShouldDeletePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -556,12 +556,12 @@ public sealed partial class ThatSnapshot
 				await That(File.Exists(directory.PendingPath)).IsFalse();
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData("foo")]
-			[InlineData("foo\n")]
-			[InlineData("foo\r\n")]
-			[InlineData("\n\nfoo\n\n")]
+			[Test]
+			[Arguments("")]
+			[Arguments("foo")]
+			[Arguments("foo\n")]
+			[Arguments("foo\r\n")]
+			[Arguments("\n\nfoo\n\n")]
 			public async Task WhenPendingSnapshotIsAccepted_ShouldSucceed(string subject)
 			{
 				using SnapshotDirectory directory = new();
@@ -569,14 +569,14 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*the snapshot did not exist*").AsWildcard();
 				File.Move(directory.PendingPath, directory.SnapshotPath);
 				await That(Act).DoesNotThrow()
 					.Because("renaming the pending snapshot accepts the subject unchanged");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotCannotBeRead_ShouldFailWithoutWritingPendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -588,7 +588,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{directory.SnapshotPath}",
@@ -598,7 +598,7 @@ public sealed partial class ThatSnapshot
 					.Because("the subject could not be compared with the snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffers_ShouldFail()
 			{
 				using SnapshotDirectory directory = new();
@@ -608,7 +608,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{directory.SnapshotPath}",
@@ -623,7 +623,7 @@ public sealed partial class ThatSnapshot
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffers_ShouldWritePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -633,16 +633,16 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Pending snapshot:*").AsWildcard();
 				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar" + Environment.NewLine);
 				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo")
 					.Because("the snapshot is only changed by the user");
 			}
 
-			[Theory]
-			[InlineData("foo\n")]
-			[InlineData("foo\r\n")]
+			[Test]
+			[Arguments("foo\n")]
+			[Arguments("foo\r\n")]
 			public async Task WhenSnapshotEndsWithLineBreak_ShouldIgnoreIt(string snapshot)
 			{
 				using SnapshotDirectory directory = new();
@@ -656,7 +656,7 @@ public sealed partial class ThatSnapshot
 					.Because("an editor can add a final line break when it saves the snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotHasByteOrderMark_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();
@@ -670,7 +670,7 @@ public sealed partial class ThatSnapshot
 					.Because("an editor can save the snapshot with a byte order mark");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsEmpty_AndSubjectIsEmpty_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();
@@ -684,7 +684,7 @@ public sealed partial class ThatSnapshot
 					.Because("an empty snapshot file exists, so it is not a missing snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsMissing_ShouldFail()
 			{
 				using SnapshotDirectory directory = new();
@@ -693,7 +693,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{directory.SnapshotPath}",
@@ -707,7 +707,7 @@ public sealed partial class ThatSnapshot
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsMissing_ShouldWritePendingSnapshotAsUtf8WithoutByteOrderMark()
 			{
 				using SnapshotDirectory directory = new();
@@ -716,13 +716,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Pending snapshot:*").AsWildcard();
 				await That(File.ReadAllBytes(directory.PendingPath))
 					.IsEqualTo(new System.Text.UTF8Encoding(false).GetBytes(subject + Environment.NewLine));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotMatches_ShouldSucceed()
 			{
 				using SnapshotDirectory directory = new();
@@ -736,7 +736,7 @@ public sealed partial class ThatSnapshot
 				await That(File.Exists(directory.PendingPath)).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAnObject_ShouldWriteItToThePendingSnapshotForAcceptance()
 			{
 				using SnapshotDirectory directory = new();
@@ -745,7 +745,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*the snapshot did not exist*").AsWildcard();
 				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("""
 				                                                              SnapshotLine {
@@ -760,7 +760,7 @@ public sealed partial class ThatSnapshot
 					.Because("renaming the pending snapshot accepts the written object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithBinaryData_ShouldReadTheCommittedSnapshot()
 			{
 				byte[] subject = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0xFF,];
@@ -773,7 +773,7 @@ public sealed partial class ThatSnapshot
 						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithBinaryData_ShouldReadTheCommittedSnapshot.awexpect-snapshot.bin' is committed next to this test file, with both line break styles that a text snapshot would normalize");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithBinaryData_ShouldWriteThePendingSnapshotUnchanged()
 			{
 				using SnapshotDirectory directory = new();
@@ -785,7 +785,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -801,7 +801,7 @@ public sealed partial class ThatSnapshot
 					.Because("renaming the pending snapshot accepts the bytes unchanged");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithBinaryData_WhenAccepting_ShouldWriteTheSnapshotUnchangedAndDeleteThePendingSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -815,7 +815,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
 						.WithExtension("png").Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -829,7 +829,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithFileInfo_ShouldNameTheSnapshotWithTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
@@ -842,7 +842,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",
@@ -856,7 +856,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithFileInfo_WhenTheFileDoesNotExist_ShouldNameTheSnapshotWithTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
@@ -866,7 +866,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "{snapshotPath}",

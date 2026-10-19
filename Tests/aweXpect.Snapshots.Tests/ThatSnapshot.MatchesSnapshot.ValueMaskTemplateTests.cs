@@ -26,7 +26,7 @@ public sealed partial class ThatSnapshot
 
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task Mask_WithNumber_ShouldNumberTheValues()
 			{
 				InMemorySnapshotStore store = new();
@@ -37,7 +37,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Id").Mask("<id {0}>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             ByCode = {
@@ -63,7 +63,7 @@ public sealed partial class ThatSnapshot
 					.Because("{0} is replaced with the number of the value, and equal values get the same number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WithTheSameTemplate_ShouldShareTheCounterAcrossRules()
 			{
 				InMemorySnapshotStore store = new();
@@ -77,7 +77,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("OrderId").Mask("#{0}")
 						.For.Members().WithName("Id").Mask("order {0}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             ByCode = {
@@ -103,7 +103,7 @@ public sealed partial class ThatSnapshot
 					.Because("every value masked with the same template shares one counter, and another template counts on its own");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WithoutNumber_ShouldWriteTheFixedText()
 			{
 				InMemorySnapshotStore store = new();
@@ -116,7 +116,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("ByCode").Ignore()
 						.For.Members().WithName("Lines").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             Customer = RuleCustomer {
@@ -129,7 +129,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WithBracesAroundTheTemplate_ShouldKeepThemAsTheyAre()
 			{
 				InMemorySnapshotStore store = new();
@@ -144,7 +144,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Name").Mask("{{Customer_{0}}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Id = 1,
@@ -154,7 +154,7 @@ public sealed partial class ThatSnapshot
 					.Because("{0} is replaced as plain text, not as a composite format, so braces are not escaped");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_ShouldBeTheTemplateNamedAfterTheSelection()
 			{
 				InMemorySnapshotStore store = new();
@@ -170,7 +170,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Key").Mask("{Guid_{0}}")
 						.For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleReference {
 				                                             Key = {Guid_1},
@@ -180,7 +180,7 @@ public sealed partial class ThatSnapshot
 					.Because("'.For.Guids().Mask()' is the shorthand for the template '{Guid_{0}}', so both share the counter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_OnItems_ShouldNumberTheItems()
 			{
 				InMemorySnapshotStore store = new();
@@ -191,7 +191,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<string>().Mask("<track {0}>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             <track 1>,
@@ -201,7 +201,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WithTemplateFunction_ShouldLinkTheIds()
 			{
 				InMemorySnapshotStore store = new();
@@ -215,12 +215,12 @@ public sealed partial class ThatSnapshot
 							? value.DeclaringType.Name
 							: value.Name.Substring(0, value.Name.Length - 2)) + "_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo(LinkedIds).IgnoringNewlineStyle()
 					.Because("the id of the fan and the fan id of the ticket get the same template and value, so they share a number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WithTemplateFunctionForAllSnapshots_ShouldLinkTheIds()
 			{
 				InMemorySnapshotStore store = new();
@@ -236,12 +236,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo(LinkedIds).IgnoringNewlineStyle()
 					.Because("a rule for all snapshots takes the same template function");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WhenTheTemplateFunctionReturnsNull_ShouldKeepTheValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -257,7 +257,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().Mask(value => value.Name == "Name" ? "{name}" : null)
 						.For.Members().WithName("Id").Mask("{id}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Id = {id},
@@ -267,7 +267,7 @@ public sealed partial class ThatSnapshot
 					.Because("a value without a template is not masked by that rule, so the next one applies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Mask_WhenTheTemplateFunctionThrows_ShouldThrowTheException()
 			{
 				InMemorySnapshotStore store = new();

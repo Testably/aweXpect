@@ -11,7 +11,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WhenAndBranchFails_ShouldRecordTheMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -22,12 +22,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).And.IsEmpty();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("foo")
 					.Because("the whole expectation fails");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndAccepting_ShouldNotAcceptTheSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -39,14 +39,14 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Accepting(SnapshotAcceptance.All));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*a snapshot cannot be negated").AsWildcard();
 				await That(store.Accepted).IsEmpty()
 					.Because("a negated snapshot must not replace the reviewed snapshot");
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldNotRecordTheMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -57,12 +57,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches).IsEmpty()
 					.Because("a snapshot cannot be negated, so nothing is written for it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOrBranchAfterTheSnapshotIsMet_AndAccepting_ShouldNotAcceptTheSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -81,7 +81,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Snapshots[Id]).IsEqualTo("bar");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOrBranchAfterTheSnapshotIsMet_ShouldWriteNothing()
 			{
 				InMemorySnapshotStore store = new();
@@ -97,7 +97,7 @@ public sealed partial class ThatSnapshot
 					.Because("the whole expectation is met");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOrBranchBeforeTheSnapshotIsMet_ShouldWriteNothing()
 			{
 				InMemorySnapshotStore store = new();
@@ -112,7 +112,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPartOfThatAll_AndTheSnapshotDiffers_ShouldRecordTheMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -125,11 +125,11 @@ public sealed partial class ThatSnapshot
 						That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName),
 						That(subject).IsNotEmpty());
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("foo");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPartOfThatAny_AndAnotherExpectationIsMet_ShouldWriteNothing()
 			{
 				InMemorySnapshotStore store = new();

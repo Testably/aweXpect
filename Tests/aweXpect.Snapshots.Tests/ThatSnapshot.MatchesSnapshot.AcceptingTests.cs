@@ -15,7 +15,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task ShouldAllowCombiningWithFurtherExpectations()
 			{
 				InMemorySnapshotStore store = new();
@@ -31,7 +31,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndAcceptingThrows_ShouldNameTheErrorAndRecordAMismatchInstead()
 			{
 				InMemorySnapshotStore store = new()
@@ -45,7 +45,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -63,7 +63,7 @@ public sealed partial class ThatSnapshot
 				}).Because("the value can still be reviewed and accepted by hand");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndAcceptingAndRecordingThrow_ShouldNameBothErrors()
 			{
 				InMemorySnapshotStore store = new()
@@ -78,7 +78,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -95,7 +95,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndNegated_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -107,7 +107,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Accepting(SnapshotAcceptance.All));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -115,7 +115,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndReadingThrows_ShouldNotAccept()
 			{
 				InMemorySnapshotStore store = new()
@@ -129,13 +129,13 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot could not be read: locked").AsWildcard();
 				await That(store.Accepted).IsEmpty()
 					.Because("an unreadable snapshot might match, so it must not be replaced");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndSnapshotDiffers_ShouldAcceptTheSubjectAndFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -147,7 +147,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -168,7 +168,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndSnapshotIsMissing_ShouldAcceptTheSubjectAndFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -179,7 +179,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -195,7 +195,7 @@ public sealed partial class ThatSnapshot
 					.Because("the next run compares with the accepted snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndSnapshotIsUsedForAnotherValue_ShouldNotAccept()
 			{
 				InMemorySnapshotStore store = new();
@@ -208,13 +208,13 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*was already used for another value in this test run*").AsWildcard();
 				await That(store.Accepted).IsEmpty()
 					.Because("the values would replace each other's snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndSnapshotMatches_ShouldSucceedWithoutAccepting()
 			{
 				InMemorySnapshotStore store = new();
@@ -231,7 +231,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Matches).IsEqualTo(new[] { Id, });
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_AndSubjectIsNull_ShouldNotAccept()
 			{
 				InMemorySnapshotStore store = new();
@@ -242,12 +242,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was <null>").AsWildcard();
 				await That(store.Accepted).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNew_AndNegated_ShouldNotAcceptAMissingSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -258,14 +258,14 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).Accepting(SnapshotAcceptance.New));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*a snapshot cannot be negated").AsWildcard();
 				await That(store.Accepted).IsEmpty()
 					.Because("a negated snapshot writes nothing, whatever is accepted");
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNew_AndOrBranchIsMet_ShouldNotAcceptAMissingSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -283,7 +283,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNew_AndSnapshotDiffers_ShouldRecordAMismatchWithoutAccepting()
 			{
 				InMemorySnapshotStore store = new();
@@ -295,7 +295,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.New);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -315,7 +315,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNew_AndSnapshotIsMissing_ShouldAcceptTheSubjectAndFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -326,7 +326,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.New);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -348,7 +348,7 @@ public sealed partial class ThatSnapshot
 					.Because("the next run compares with the accepted snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNone_AndSnapshotDiffers_ShouldRecordAMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -360,7 +360,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted).IsEmpty();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
@@ -368,7 +368,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNone_AndSnapshotIsMissing_ShouldRecordAMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -379,7 +379,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*the snapshot did not exist*").AsWildcard();
 				await That(store.Accepted).IsEmpty();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -388,7 +388,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNone_ShouldOverrideTheGlobalSetting()
 			{
 				InMemorySnapshotStore store = new();
@@ -400,7 +400,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*the snapshot did not exist*").AsWildcard();
 				await That(store.Accepted).IsEmpty();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -409,7 +409,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingAll_ShouldOverrideTheGlobalSetting()
 			{
 				InMemorySnapshotStore store = new();
@@ -421,7 +421,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
@@ -429,7 +429,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGloballyAcceptingAll_ShouldAccept()
 			{
 				InMemorySnapshotStore store = new();
@@ -440,7 +440,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
@@ -448,7 +448,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGloballyAcceptingNew_ShouldOnlyAcceptAMissingSnapshot()
 			{
 				SnapshotId missing = Id;
@@ -464,8 +464,8 @@ public sealed partial class ThatSnapshot
 				async Task ActOnDifferent()
 					=> await That("foo").MatchesSnapshot(different.SourceFile, different.MemberName);
 
-				await That(ActOnMissing).Throws<XunitException>();
-				await That(ActOnDifferent).Throws<XunitException>();
+				await That(ActOnMissing).Throws<FailException>();
+				await That(ActOnDifferent).Throws<FailException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
 					[missing] = "foo",
@@ -476,7 +476,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotAccepting_ShouldRecordMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -487,7 +487,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted).IsEmpty();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
@@ -496,7 +496,7 @@ public sealed partial class ThatSnapshot
 			}
 		}
 
-		[Collection(nameof(EnvironmentCollection))]
+		[NotInParallel]
 		public sealed class AcceptingEnvironmentTests
 		{
 			private const string AcceptVariable = "AWEXPECT_ACCEPT_SNAPSHOTS";
@@ -505,32 +505,26 @@ public sealed partial class ThatSnapshot
 
 			private SnapshotId Id => new(SourceFile, "MyTest");
 
-			public static TheoryData<SnapshotAcceptance?, SnapshotAcceptance?, string?, SnapshotAcceptance>
-				Combinations
+			public static IEnumerable<(SnapshotAcceptance?, SnapshotAcceptance?, string?, SnapshotAcceptance)>
+				Combinations()
 			{
-				get
+				SnapshotAcceptance?[] levels =
+					[null, SnapshotAcceptance.None, SnapshotAcceptance.New, SnapshotAcceptance.All,];
+				foreach (SnapshotAcceptance? expectation in levels)
 				{
-					SnapshotAcceptance?[] levels =
-						[null, SnapshotAcceptance.None, SnapshotAcceptance.New, SnapshotAcceptance.All,];
-					TheoryData<SnapshotAcceptance?, SnapshotAcceptance?, string?, SnapshotAcceptance> data = new();
-					foreach (SnapshotAcceptance? expectation in levels)
+					foreach (SnapshotAcceptance? setting in levels)
 					{
-						foreach (SnapshotAcceptance? setting in levels)
+						foreach (SnapshotAcceptance? variable in levels)
 						{
-							foreach (SnapshotAcceptance? variable in levels)
-							{
-								data.Add(expectation, setting, variable?.ToString().ToLowerInvariant(),
-									expectation ?? setting ?? variable ?? SnapshotAcceptance.None);
-							}
+							yield return (expectation, setting, variable?.ToString().ToLowerInvariant(),
+								expectation ?? setting ?? variable ?? SnapshotAcceptance.None);
 						}
 					}
-
-					return data;
 				}
 			}
 
-			[Theory]
-			[MemberData(nameof(Combinations))]
+			[Test]
+			[MethodDataSource(nameof(Combinations))]
 			public async Task ShouldPreferTheExpectationOverTheSettingOverTheVariable(
 				SnapshotAcceptance? expectation, SnapshotAcceptance? setting, string? variable,
 				SnapshotAcceptance expected)
@@ -543,11 +537,11 @@ public sealed partial class ThatSnapshot
 				await That(result).IsEqualTo(expected);
 			}
 
-			[Theory]
-			[InlineData("CI")]
-			[InlineData("TF_BUILD")]
-			[InlineData("JENKINS_URL")]
-			[InlineData("TEAMCITY_VERSION")]
+			[Test]
+			[Arguments("CI")]
+			[Arguments("TF_BUILD")]
+			[Arguments("JENKINS_URL")]
+			[Arguments("TEAMCITY_VERSION")]
 			public async Task WhenAcceptingAll_OnBuildServer_ShouldAccept(string buildServerVariable)
 			{
 				using EnvironmentScope environment = new((buildServerVariable, "true"));
@@ -559,16 +553,16 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted.Keys).IsEqualTo(new[] { Id, }).InAnyOrder()
 					.Because("only the default depends on the build server");
 			}
 
-			[Theory]
-			[InlineData("CI")]
-			[InlineData("TF_BUILD")]
-			[InlineData("JENKINS_URL")]
-			[InlineData("TEAMCITY_VERSION")]
+			[Test]
+			[Arguments("CI")]
+			[Arguments("TF_BUILD")]
+			[Arguments("JENKINS_URL")]
+			[Arguments("TEAMCITY_VERSION")]
 			public async Task WhenGloballyAcceptingNew_OnBuildServer_ShouldAccept(string buildServerVariable)
 			{
 				using EnvironmentScope environment = new((buildServerVariable, "true"));
@@ -580,12 +574,12 @@ public sealed partial class ThatSnapshot
 					.Because("only the environment variable depends on the build server");
 			}
 
-			[Theory]
-			[InlineData("CI", "1")]
-			[InlineData("TF_BUILD", "all")]
-			[InlineData("JENKINS_URL", "new")]
-			[InlineData("TEAMCITY_VERSION", "1")]
-			[InlineData("CI", "invalid")]
+			[Test]
+			[Arguments("CI", "1")]
+			[Arguments("TF_BUILD", "all")]
+			[Arguments("JENKINS_URL", "new")]
+			[Arguments("TEAMCITY_VERSION", "1")]
+			[Arguments("CI", "invalid")]
 			public async Task WhenVariableIsSet_OnBuildServer_ShouldNotAccept(string buildServerVariable, string value)
 			{
 				using EnvironmentScope environment = new((AcceptVariable, value), (buildServerVariable, "true"));
@@ -596,22 +590,22 @@ public sealed partial class ThatSnapshot
 					.Because("a variable that was forgotten in a pipeline must not change the snapshots");
 			}
 
-			[Theory]
-			[InlineData("all", SnapshotAcceptance.All)]
-			[InlineData("ALL", SnapshotAcceptance.All)]
-			[InlineData(" All ", SnapshotAcceptance.All)]
-			[InlineData("1", SnapshotAcceptance.All)]
-			[InlineData("true", SnapshotAcceptance.All)]
-			[InlineData("True", SnapshotAcceptance.All)]
-			[InlineData("new", SnapshotAcceptance.New)]
-			[InlineData("NEW", SnapshotAcceptance.New)]
-			[InlineData("\tnew\n", SnapshotAcceptance.New)]
-			[InlineData("none", SnapshotAcceptance.None)]
-			[InlineData("None", SnapshotAcceptance.None)]
-			[InlineData("0", SnapshotAcceptance.None)]
-			[InlineData("false", SnapshotAcceptance.None)]
-			[InlineData("FALSE", SnapshotAcceptance.None)]
-			[InlineData(" ", SnapshotAcceptance.None)]
+			[Test]
+			[Arguments("all", SnapshotAcceptance.All)]
+			[Arguments("ALL", SnapshotAcceptance.All)]
+			[Arguments(" All ", SnapshotAcceptance.All)]
+			[Arguments("1", SnapshotAcceptance.All)]
+			[Arguments("true", SnapshotAcceptance.All)]
+			[Arguments("True", SnapshotAcceptance.All)]
+			[Arguments("new", SnapshotAcceptance.New)]
+			[Arguments("NEW", SnapshotAcceptance.New)]
+			[Arguments("\tnew\n", SnapshotAcceptance.New)]
+			[Arguments("none", SnapshotAcceptance.None)]
+			[Arguments("None", SnapshotAcceptance.None)]
+			[Arguments("0", SnapshotAcceptance.None)]
+			[Arguments("false", SnapshotAcceptance.None)]
+			[Arguments("FALSE", SnapshotAcceptance.None)]
+			[Arguments(" ", SnapshotAcceptance.None)]
 			public async Task WhenVariableIsSet_WithoutBuildServer_ShouldUseItsLevel(string value,
 				SnapshotAcceptance expected)
 			{
@@ -622,7 +616,7 @@ public sealed partial class ThatSnapshot
 				await That(result).IsEqualTo(expected);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenVariableIsNotSet_ShouldNotAccept()
 			{
 				using EnvironmentScope environment = new();
@@ -632,11 +626,11 @@ public sealed partial class ThatSnapshot
 				await That(result).IsEqualTo(SnapshotAcceptance.None);
 			}
 
-			[Theory]
-			[InlineData("yes")]
-			[InlineData("2")]
-			[InlineData("al l")]
-			[InlineData("missing")]
+			[Test]
+			[Arguments("yes")]
+			[Arguments("2")]
+			[Arguments("al l")]
+			[Arguments("missing")]
 			public async Task WhenVariableIsInvalid_ShouldThrowNamingTheVariableAndTheValues(string value)
 			{
 				using EnvironmentScope environment = new((AcceptVariable, value));
@@ -654,11 +648,11 @@ public sealed partial class ThatSnapshot
 				await That(store.Accepted).IsEmpty();
 			}
 
-			[Theory]
-			[InlineData("0")]
-			[InlineData("false")]
-			[InlineData("FALSE")]
-			[InlineData("")]
+			[Test]
+			[Arguments("0")]
+			[Arguments("false")]
+			[Arguments("FALSE")]
+			[Arguments("")]
 			public async Task WhenBuildServerVariableIsDisabled_ShouldAccept(string value)
 			{
 				using EnvironmentScope environment = new((AcceptVariable, "1"), ("CI", value));
@@ -697,7 +691,7 @@ public sealed partial class ThatSnapshot
 						}
 					}
 
-					await That(Act).Throws<XunitException>();
+					await That(Act).Throws<FailException>();
 				}
 
 				if (store.Accepted.ContainsKey(different))

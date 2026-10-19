@@ -7,14 +7,14 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<IsTestProject>false</IsTestProject>
+		<OutputType>Library</OutputType>
 		<SonarQubeExclude>true</SonarQubeExclude>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Remove="xunit"/>
-		<PackageReference Remove="xunit.runner.visualstudio"/>
-		<PackageReference Remove="Microsoft.NET.Test.Sdk"/>
-		<PackageReference Remove="coverlet.collector"/>
+		<PackageReference Remove="TUnit.Engine"/>
+		<PackageReference Remove="Microsoft.Testing.Extensions.TrxReport"/>
+		<PackageReference Remove="Microsoft.Testing.Extensions.CodeCoverage"/>
 		<PackageReference Remove="aweXpect"/>
 		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>

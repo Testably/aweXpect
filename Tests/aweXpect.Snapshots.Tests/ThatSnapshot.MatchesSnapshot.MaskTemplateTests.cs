@@ -14,7 +14,7 @@ public sealed partial class ThatSnapshot
 
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WithoutNumber_ShouldBeAFixedText()
 			{
 				InMemorySnapshotStore store = new();
@@ -25,11 +25,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(@"id=\d+").AsRegex().Mask("id=<id>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("id=<id>, id=<id>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNumber_ShouldNumberTheValuesInTheOrderOfAppearance()
 			{
 				InMemorySnapshotStore store = new();
@@ -40,12 +40,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(@"id=\d+").AsRegex().Mask("<id-{0}>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<id-1>, <id-2>, <id-1>")
 					.Because("the same value keeps the same number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNumberSeveralTimes_ShouldReplaceEachOccurrence()
 			{
 				InMemorySnapshotStore store = new();
@@ -56,11 +56,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text("Ann").Mask("{0}-{0}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("1-1");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTheSameTemplate_ShouldShareTheCounterAcrossRules()
 			{
 				InMemorySnapshotStore store = new();
@@ -72,12 +72,12 @@ public sealed partial class ThatSnapshot
 						.For.Text("Ann").Mask("{Customer_{0}}")
 						.For.Text("Bob").Mask("{Customer_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Customer_1}, {Customer_2}, {Customer_1}")
 					.Because("every value masked with the same template shares one counter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDifferentTemplates_ShouldCountSeparately()
 			{
 				InMemorySnapshotStore store = new();
@@ -89,11 +89,11 @@ public sealed partial class ThatSnapshot
 						.For.Text("Ann").Mask("{Customer_{0}}")
 						.For.Text("Bob").Mask("{Artist_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Customer_1}, {Artist_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheTextDoesNotOccur_ShouldNotUseUpANumber()
 			{
 				InMemorySnapshotStore store = new();
@@ -105,11 +105,11 @@ public sealed partial class ThatSnapshot
 						.For.Text("Ann").Mask("{Customer_{0}}")
 						.For.Text("Bob").Mask("{Customer_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Customer_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalAndLocalRulesUseTheSameTemplate_ShouldShareTheCounter()
 			{
 				InMemorySnapshotStore store = new();
@@ -123,12 +123,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text("Ann").Mask("{Customer_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Customer_2}, {Customer_1}")
 					.Because("the rule of the expectation is applied first, so it numbers its value first");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithBracesAroundTheTemplate_ShouldKeepThemAsTheyAre()
 			{
 				InMemorySnapshotStore store = new();
@@ -139,12 +139,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text("Ann").Mask("{{Customer_{0}}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{{Customer_1}}")
 					.Because("'{0}' is replaced as plain text, not as a composite format, so braces are not escaped");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringCase_ShouldNumberEveryCaseTheSame()
 			{
 				InMemorySnapshotStore store = new();
@@ -156,11 +156,11 @@ public sealed partial class ThatSnapshot
 						.For.Text("abbey road").IgnoringCase().Mask("<album-{0}>")
 						.For.Text("let it be").IgnoringCase().Mask("<album-{0}>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<album-1>, <album-1>, <album-2>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithWildcard_ShouldNumberTheMatches()
 			{
 				InMemorySnapshotStore store = new();
@@ -171,11 +171,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text("Track ?").AsWildcard().Mask("{Track_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Track_1}, {Track_2}, {Track_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithRegexSubstitution_ShouldSubstituteFirstAndThenNumber()
 			{
 				InMemorySnapshotStore store = new();
@@ -186,12 +186,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(@"(\w+):\d+").AsRegex().Mask("$1:{Port_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("api:{Port_1} api:{Port_2} web:{Port_1} api:{Port_1}")
 					.Because("the substitutions are applied first, so each resulting template, e.g. 'web:{Port_{0}}', counts on its own");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskOfGuids_ShouldShareTheCounterWithTheSameTemplate()
 			{
 				InMemorySnapshotStore store = new();
@@ -203,12 +203,12 @@ public sealed partial class ThatSnapshot
 						.For.Text(SecondGuid).Mask("{Guid_{0}}")
 						.For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order {Guid_2}, customer {Guid_1}, again {Guid_2}")
 					.Because("'Mask()' is the shorthand for the template '{Guid_{0}}'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskOfDates_ShouldShareTheCounterWithTheSameTemplate()
 			{
 				InMemorySnapshotStore store = new();
@@ -220,12 +220,12 @@ public sealed partial class ThatSnapshot
 						.For.Text(@"\d{2}\.\d{2}\.\d{4}").AsRegex().Mask("{Date_{0}}")
 						.For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("released {Date_2}, recorded {Date_1}, again {Date_2}")
 					.Because("'Mask()' is the shorthand for the template '{Date_{0}}'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GuidsWithFixedText_ShouldReplaceEachGuidWithIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -235,11 +235,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask("<guid>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<guid> <guid>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GuidsWithTemplate_ShouldNumberThemIgnoringTheCase()
 			{
 				InMemorySnapshotStore store = new();
@@ -249,11 +249,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask("<guid-{0}>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<guid-1> <guid-2> <guid-1>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task DatesWithTemplate_ShouldNumberThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -263,11 +263,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask("<day {0}>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<day 1> <day 2> <day 1>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task LinesWithTemplate_ShouldNumberEqualLinesTheSame()
 			{
 				InMemorySnapshotStore store = new();
@@ -278,12 +278,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Lines().Containing("Now playing").Mask("Now playing: {Track_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id])
 					.IsEqualTo("Now playing: {Track_1}\nNow playing: {Track_2}\nNow playing: {Track_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task LinesAndTextWithTheSameTemplate_ShouldShareTheCounter()
 			{
 				InMemorySnapshotStore store = new();
@@ -296,7 +296,7 @@ public sealed partial class ThatSnapshot
 						.For.Text("Ann").Mask("{Customer_{0}}")
 						.For.Lines().Which(line => line == "Ann").Mask("{Customer_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Customer_1}\n{Customer_2} and {Customer_1}")
 					.Because("the lines are masked before the text, and the line and the text 'Ann' are the same value");
 			}

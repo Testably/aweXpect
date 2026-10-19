@@ -12,7 +12,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WithPredicate_ShouldLeaveOutTheMatchingMembers()
 			{
 				InMemorySnapshotStore store = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().Which(value => value.Name.EndsWith("Url", StringComparison.Ordinal)).Ignore()
 						.For.Members().WithName("Tracks").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -38,7 +38,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WithMethodGroup_ShouldLeaveOutTheMatchingMembers()
 			{
 				InMemorySnapshotStore store = new();
@@ -49,7 +49,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().Which(IsUrl).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -61,7 +61,7 @@ public sealed partial class ThatSnapshot
 					.Because("a method group binds to the predicate, not to the member name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringValues_WithPredicate_ShouldAlsoBeAskedForCollectionItems()
 			{
 				InMemorySnapshotStore store = new();
@@ -73,7 +73,7 @@ public sealed partial class ThatSnapshot
 						.For.Values().Which(value => value.Kind == FormattedValueKind.CollectionItem &&
 						                              Equals(value.GetValue(), "Something")).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             "Come Together",
@@ -83,7 +83,7 @@ public sealed partial class ThatSnapshot
 					.Because("the predicate decides about every nested value, so it can check the kind itself");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WhenThePredicateReadsAThrowingGetter_ShouldWriteTheException()
 			{
 				InMemorySnapshotStore store = new();
@@ -94,12 +94,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().Which(value => value.GetValue() is null).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
 					.Because("a value that cannot be read is written with its exception by the formatter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WhenThePredicateThrows_ShouldThrowTheException()
 			{
 				InMemorySnapshotStore store = new();
@@ -114,7 +114,7 @@ public sealed partial class ThatSnapshot
 					.Because("an exception of the predicate is a mistake in the test, which a placeholder would hide");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMember_WithPredicate_ShouldNumberThePlaceholderAfterTheMember()
 			{
 				InMemorySnapshotStore store = new();
@@ -127,7 +127,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().Which(value => value.DeclaringType == typeof(RuleTrack) && value.Name == "Duration").Mask()
 						.For.Members().Which(value => value.Name is "Artist" or "CoverUrl" or "PreviewUrl" or "Price").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Id = 1,
@@ -154,7 +154,7 @@ public sealed partial class ThatSnapshot
 					.Because("the same value keeps the same number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingValues_WithPredicateOnCollectionItems_ShouldNameThePlaceholderItem()
 			{
 				InMemorySnapshotStore store = new();
@@ -165,7 +165,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().Which(value => value.Kind == FormattedValueKind.CollectionItem).Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             {Item_1},
@@ -176,7 +176,7 @@ public sealed partial class ThatSnapshot
 					.Because("an item has no member name, so its placeholder is named 'Item'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMember_WithPredicateAndReplacement_ShouldWriteItWithoutQuotes()
 			{
 				InMemorySnapshotStore store = new();
@@ -187,7 +187,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().Which(value => value.Type == typeof(string)).Mask("{text}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -199,7 +199,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringWinsOverMasking()
 			{
 				InMemorySnapshotStore store = new();
@@ -211,7 +211,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().Which(value => value.Type == typeof(string)).Mask("{text}")
 						.For.Members().Which(IsUrl).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -222,7 +222,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalAndLocal_ShouldApplyTheLocalRuleFirst()
 			{
 				InMemorySnapshotStore store = new();
@@ -238,7 +238,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().Which(value => value.Name == "Title").Mask("{local}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -249,7 +249,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ExceptOnValues_ShouldOnlySelectTheValuesForWhichThePredicateIsFalse()
 			{
 				InMemorySnapshotStore store = new();
@@ -260,7 +260,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().Except(value => Equals(value.GetValue(), "Abbey Road")).Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             {Item_1},
@@ -270,7 +270,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				void MembersWhichAct()
@@ -291,7 +291,7 @@ public sealed partial class ThatSnapshot
 				await That(ValuesExceptAct).Throws<ArgumentNullException>().WithParamName("predicate");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";

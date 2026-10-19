@@ -15,7 +15,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMembers_OrOfType_ShouldMatchAnyOfTheTypes()
 			{
 				InMemorySnapshotStore store = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<int>().OrOfType<long>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleListener {
 				                                             Extra = "Abbey Road",
@@ -37,7 +37,7 @@ public sealed partial class ThatSnapshot
 					.Because("the int, the long, the long? with and without a value are left out, while a short and a string in an object member are kept");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMembers_OrOfType_ShouldNameThePlaceholderAfterTheMatchingType()
 			{
 				InMemorySnapshotStore store = new();
@@ -49,7 +49,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<int>().OrOfType<long>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleListener {
 				                                             Extra = {Int64_1},
@@ -64,7 +64,7 @@ public sealed partial class ThatSnapshot
 					.Because("each value is named after the type it matches, also by its runtime type or as a long?, and a null value is not masked");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingValues_OrOfType_ShouldShareTheNumbersWithASingleType()
 			{
 				InMemorySnapshotStore store = new();
@@ -80,7 +80,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().DeclaredIn<RuleSession>().OfType<int>().Mask()
 						.For.Values().OfType<int>().OrOfType<long>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleSession {
 				                                             Ids = [
@@ -95,7 +95,7 @@ public sealed partial class ThatSnapshot
 					.Because("the items are masked as well, and an int gets the placeholder of OfType<int>() alone, so they share the numbers");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingValues_WhenAValueMatchesSeveralTypes_ShouldNameThePlaceholderAfterTheFirst()
 			{
 				InMemorySnapshotStore store = new();
@@ -106,7 +106,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<int>().OrOfType<object>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             {Int32_1},
@@ -116,7 +116,7 @@ public sealed partial class ThatSnapshot
 					.Because("the int is also an object, but the int comes first");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OrOfExactType_ShouldNotMatchDerivedTypes()
 			{
 				InMemorySnapshotStore store = new();
@@ -132,7 +132,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfExactType<Exception>().OrOfExactType<ArgumentException>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleFailures {
 				                                             Third = *third*
@@ -141,7 +141,7 @@ public sealed partial class ThatSnapshot
 					.Because("an ArgumentNullException is neither exactly an Exception nor exactly an ArgumentException");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OrOfType_AfterOfExactType_ShouldMatchEither()
 			{
 				InMemorySnapshotStore store = new();
@@ -157,7 +157,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfExactType<Exception>().OrOfType<ArgumentException>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleFailures {
 				                                             Second = *second*
@@ -166,7 +166,7 @@ public sealed partial class ThatSnapshot
 					.Because("each alternative keeps its own semantics, so the ArgumentNullException matches as derived type, but the InvalidOperationException matches neither");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OrOfType_WithName_ShouldLinkTheIds()
 			{
 				InMemorySnapshotStore store = new();
@@ -180,7 +180,7 @@ public sealed partial class ThatSnapshot
 							? value.DeclaringType.Name.Substring("Rule".Length)
 							: value.Name.Substring(0, value.Name.Length - 2)) + "_{0}}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTour {
 				                                             Bands = [
@@ -202,7 +202,7 @@ public sealed partial class ThatSnapshot
 					.Because("the int and long ids are masked, linked by the template, while a string id is no number and a null id stays visible");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OrOfType_WithOtherFilters_ShouldCombineThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -217,7 +217,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().OfType<int>().OrOfType<long>()
 						.Which(value => value.Path.StartsWith("Bands", StringComparison.Ordinal)).Mask("{band}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTour {
 				                                             Bands = [
@@ -238,7 +238,7 @@ public sealed partial class ThatSnapshot
 					.Because("the filters after the alternatives narrow the selection down like after a single type");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_AfterOrOfType_ShouldGetTheValueAsObject()
 			{
 				InMemorySnapshotStore store = new();
@@ -249,7 +249,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<int>().OrOfType<long>().Convert(id => id.GetType().Name + " " + id);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleListener {
 				                                             Extra = "Abbey Road",
@@ -264,7 +264,7 @@ public sealed partial class ThatSnapshot
 					.Because("the converter gets each value as an object of its own type");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalRule_ShouldApplyTheAlternatives()
 			{
 				InMemorySnapshotStore store = new();
@@ -278,7 +278,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleListener {
 				                                             FavoriteSongId = {FavoriteSongId_1},
@@ -290,7 +290,7 @@ public sealed partial class ThatSnapshot
 					.Because("a selection that is also filtered by its name is named after the member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task OrOfType_ShouldOnlyFollowATypeFilter()
 			{
 				string[] surface = ApiParity.GetSurface(

@@ -13,7 +13,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task Convert_WithAType_ShouldWriteTheConvertedValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -27,7 +27,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().DeclaredIn<RuleSong>().WithName(nameof(RuleSong.Duration)).OfType<TimeSpan>()
 						.Convert(duration => Math.Round(duration.TotalMinutes));
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -47,7 +47,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WithoutAType_ShouldPassTheValueAsObject()
 			{
 				InMemorySnapshotStore store = new();
@@ -59,7 +59,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName(nameof(RuleRelease.Released)).Convert(released => ((DateTime)released).Year)
 						.For.Members().WithName(nameof(RuleRelease.Songs)).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -69,7 +69,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ConvertValues_ShouldAlsoConvertTheItems()
 			{
 				InMemorySnapshotStore store = new();
@@ -80,7 +80,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<TimeSpan>().Convert(duration => duration.TotalSeconds);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             259.0,
@@ -89,7 +89,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheConvertedValueIsAStringOrANumber_ShouldWriteItLikeAnyOtherValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -108,7 +108,7 @@ public sealed partial class ThatSnapshot
 							.Convert(duration => duration.TotalSeconds / 2)
 							.For.Members().WithName("Title").Ignore();
 
-					await That(Act).Throws<XunitException>();
+					await That(Act).Throws<FailException>();
 				}
 				finally
 				{
@@ -132,7 +132,7 @@ public sealed partial class ThatSnapshot
 					.Because("a string is written in quotes and a number in the invariant culture, like any other value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheConvertedValueIsAnObject_ShouldIndentItAtTheDepthOfTheMember()
 			{
 				InMemorySnapshotStore store = new();
@@ -150,7 +150,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName(nameof(RuleRelease.Released)).OfType<DateTime>()
 						.Convert(released => new[] { released.Year, released.Month, });
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -172,7 +172,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheConvertedValueIsAnObject_ShouldNotApplyTheMemberRulesToIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -192,7 +192,7 @@ public sealed partial class ThatSnapshot
 						.Convert(name => name.ToUpperInvariant())
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -206,7 +206,7 @@ public sealed partial class ThatSnapshot
 					.Because("the converter decides what is written, so its result is not converted or left out again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_ShouldApplyTheTextRulesToTheConvertedValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -220,7 +220,7 @@ public sealed partial class ThatSnapshot
 						.For.Dates().Mask()
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -231,7 +231,7 @@ public sealed partial class ThatSnapshot
 					.Because("the member rules act while the object is written, before the text rules");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheConverterReturnsNull_ShouldWriteNull()
 			{
 				InMemorySnapshotStore store = new();
@@ -243,7 +243,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName(nameof(RuleRelease.Title)).OfType<string>().Convert(_ => (string?)null)
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -253,7 +253,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheValueIsNull_ShouldNotCallTheConverter()
 			{
 				InMemorySnapshotStore store = new();
@@ -271,7 +271,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName(nameof(RuleRelease.Label)).Mask("{label}")
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(calls).IsEqualTo(0);
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
@@ -283,7 +283,7 @@ public sealed partial class ThatSnapshot
 					.Because("a null value is not masked, like by the other maskings");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_ShouldReadTheValueOnce()
 			{
 				InMemorySnapshotStore store = new();
@@ -296,7 +296,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName(nameof(RuleCountingRelease.Released)).OfType<DateTime>()
 						.Convert(released => released.Year);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reads).IsEqualTo(1);
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCountingRelease {
@@ -305,7 +305,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheGetterThrows_ShouldWriteTheExceptionWithoutCallingTheConverter()
 			{
 				InMemorySnapshotStore store = new();
@@ -321,13 +321,13 @@ public sealed partial class ThatSnapshot
 							return value;
 						});
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(calls).IsEqualTo(0);
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
 					.Because("a value that cannot be read is written with its exception by the formatter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheConverterThrows_ShouldThrowTheException()
 			{
 				InMemorySnapshotStore store = new();
@@ -344,7 +344,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheValueIsOfAnotherType_ShouldNotConvertIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -361,12 +361,12 @@ public sealed partial class ThatSnapshot
 						.Convert(released => released.Year)
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Released = \"Remastered\"*").AsWildcard()
 					.Because("the reissue hides the release date with a member of another type of the same name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenAnotherMaskingComesFirst_ShouldUseTheFirstOne()
 			{
 				InMemorySnapshotStore store = new();
@@ -382,7 +382,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName(nameof(RuleRelease.Released)).Mask()
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -393,7 +393,7 @@ public sealed partial class ThatSnapshot
 					.Because("the first masking or converter that matches a value replaces it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Convert_WhenTheMemberIsIgnored_ShouldLeaveItOut()
 			{
 				InMemorySnapshotStore store = new();
@@ -411,7 +411,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().DeclaredIn<RuleRelease>().WithName(nameof(RuleRelease.Released)).Ignore()
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(calls).IsEqualTo(0);
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
@@ -422,7 +422,7 @@ public sealed partial class ThatSnapshot
 					.Because("ignoring wins over converting");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalConverters_ShouldApplyThemAfterTheLocalOnes()
 			{
 				InMemorySnapshotStore store = new();
@@ -440,7 +440,7 @@ public sealed partial class ThatSnapshot
 						.Convert(title => title.Length)
 						.For.Members().WithName("Songs").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleRelease {
 				                                             Label = <null>,
@@ -450,7 +450,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalConverterAndStringSubject_ShouldIgnoreIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -462,11 +462,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("Abbey Road").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
@@ -479,7 +479,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheConverterIsNull_ShouldThrowArgumentNullException()
 			{
 				void MembersAct()

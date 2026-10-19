@@ -12,7 +12,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WithoutExtension_ShouldPassTxtToTheStore()
 			{
 				InMemorySnapshotStore store = new();
@@ -21,12 +21,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("Abbey Road").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[] { Id with { Extension = "txt", }, }).InAnyOrder();
 				await That(Id.Extension).IsEqualTo("txt");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_ShouldPassItToTheStore()
 			{
 				InMemorySnapshotStore store = new();
@@ -36,7 +36,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("json");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -48,7 +48,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches.Keys).IsEqualTo(new[] { Id with { Extension = "json", }, }).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_ShouldKeepItsCase()
 			{
 				InMemorySnapshotStore store = new();
@@ -57,12 +57,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("<album />").MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("XML");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[] { Id with { Extension = "XML", }, }).InAnyOrder()
 					.Because("the extension is kept as given, like the name of the snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenTheSnapshotWithTheExtensionMatches_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -76,7 +76,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Matches).IsEqualTo(new[] { Id with { Extension = "json", }, });
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenOnlyTheSnapshotWithoutTheExtensionExists_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -86,12 +86,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("[1969]").MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("json");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot did not exist*").AsWildcard()
 					.Because("the extension is part of the snapshot that the store reads");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenAccepting_ShouldAcceptTheSnapshotWithTheExtension()
 			{
 				InMemorySnapshotStore store = new();
@@ -101,11 +101,11 @@ public sealed partial class ThatSnapshot
 					=> await That("<h1>Abbey Road</h1>").MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.WithExtension("html").Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted.Keys).IsEqualTo(new[] { Id with { Extension = "html", }, }).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_ShouldCombineWithTheOtherOptions()
 			{
 				InMemorySnapshotStore store = new();
@@ -121,7 +121,7 @@ public sealed partial class ThatSnapshot
 						.UniqueFor.OperatingSystem()
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
 					[Id with
@@ -133,7 +133,7 @@ public sealed partial class ThatSnapshot
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenTheSnapshotWasUsedWithAnotherExtension_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -146,7 +146,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("json");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -157,24 +157,24 @@ public sealed partial class ThatSnapshot
 					.Because("the conflicting snapshot is not read");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenTheSnapshotWasUsedWithTheExtensionInAnotherCase_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				await That(async () => await That("{}").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-					.WithExtension("json")).Throws<XunitException>();
+					.WithExtension("json")).Throws<FailException>();
 
 				async Task Act()
 					=> await That("{}").MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("JSON");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot was already used with the extension \"json\" in this test run*")
 					.AsWildcard()
 					.Because("the files are the same on a file system that ignores the case, but not on others");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenTheSnapshotIsUsedAgainWithTheSameExtension_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -189,7 +189,7 @@ public sealed partial class ThatSnapshot
 					.Because("a retried or repeated test uses the same extension again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenNamedDifferently_ShouldNotConflict()
 			{
 				InMemorySnapshotStore store = new();
@@ -207,7 +207,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenNull_ShouldThrowArgumentNullException()
 			{
 				async Task Act()
@@ -218,10 +218,10 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'extension' cannot be null.*").AsWildcard();
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData(" ")]
-			[InlineData("\t")]
+			[Test]
+			[Arguments("")]
+			[Arguments(" ")]
+			[Arguments("\t")]
 			public async Task WithExtension_WhenEmpty_ShouldThrowArgumentException(string extension)
 			{
 				async Task Act()
@@ -232,11 +232,11 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'extension' cannot be empty.*").AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(".json")]
-			[InlineData("g.cs")]
-			[InlineData("pending.json")]
-			[InlineData("json.")]
+			[Test]
+			[Arguments(".json")]
+			[Arguments("g.cs")]
+			[Arguments("pending.json")]
+			[Arguments("json.")]
 			public async Task WithExtension_WhenItContainsADot_ShouldThrowArgumentException(string extension)
 			{
 				async Task Act()
@@ -248,23 +248,23 @@ public sealed partial class ThatSnapshot
 					.AsWildcard();
 			}
 
-			[Theory]
-			[InlineData("<")]
-			[InlineData(">")]
-			[InlineData(":")]
-			[InlineData("\"")]
-			[InlineData("/")]
-			[InlineData("\\")]
-			[InlineData("|")]
-			[InlineData("?")]
-			[InlineData("*")]
-			[InlineData("%")]
-			[InlineData("@")]
-			[InlineData("js on")]
-			[InlineData("json ")]
-			[InlineData("js\ton")]
-			[InlineData("js\u0001on")]
-			[InlineData("js on")]
+			[Test]
+			[Arguments("<")]
+			[Arguments(">")]
+			[Arguments(":")]
+			[Arguments("\"")]
+			[Arguments("/")]
+			[Arguments("\\")]
+			[Arguments("|")]
+			[Arguments("?")]
+			[Arguments("*")]
+			[Arguments("%")]
+			[Arguments("@")]
+			[Arguments("js on")]
+			[Arguments("json ")]
+			[Arguments("js\ton")]
+			[Arguments("js\u0001on")]
+			[Arguments("js on")]
 			public async Task WithExtension_WhenItContainsAnInvalidCharacter_ShouldThrowArgumentException(
 				string extension)
 			{
@@ -279,9 +279,9 @@ public sealed partial class ThatSnapshot
 					.Because("the extension is not escaped, and '%' and '@' have a meaning in the other parts of the file name");
 			}
 
-			[Theory]
-			[InlineData("pending")]
-			[InlineData("Pending")]
+			[Test]
+			[Arguments("pending")]
+			[Arguments("Pending")]
 			public async Task WithExtension_WhenPending_ShouldThrowArgumentException(string extension)
 			{
 				async Task Act()
@@ -295,13 +295,13 @@ public sealed partial class ThatSnapshot
 					.Because("'<Class>.<Method>.awexpect-snapshot.pending' would look like a pending file");
 			}
 
-			[Theory]
-			[InlineData("json")]
-			[InlineData("cs")]
-			[InlineData("c++")]
-			[InlineData("code-workspace")]
-			[InlineData("snapshot")]
-			[InlineData("äöü")]
+			[Test]
+			[Arguments("json")]
+			[Arguments("cs")]
+			[Arguments("c++")]
+			[Arguments("code-workspace")]
+			[Arguments("snapshot")]
+			[Arguments("äöü")]
 			public async Task WithExtension_WhenValid_ShouldPassItToTheStore(string extension)
 			{
 				InMemorySnapshotStore store = new();
@@ -310,11 +310,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension(extension);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[] { Id with { Extension = extension, }, }).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenTheSnapshotWithAnotherExtensionIsListed_ShouldReportItAsOrphaned()
 			{
 				InMemorySnapshotStore store = new();
@@ -325,7 +325,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 					               MyTests.MyTest
@@ -333,14 +333,14 @@ public sealed partial class ThatSnapshot
 					.Because("the snapshot with the extension 'txt' is left over from before the test used 'json'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExtension_WhenTheSnapshotIsListedWithTheExtensionInAnotherCase_ShouldNotReportIt()
 			{
 				InMemorySnapshotStore store = new();
 				store.Snapshots[Id with { Extension = "JSON", }] = "{}";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				await That(async () => await That("{}").MatchesSnapshot(Id.SourceFile, Id.MemberName)
-					.WithExtension("json")).Throws<XunitException>();
+					.WithExtension("json")).Throws<FailException>();
 
 				async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 

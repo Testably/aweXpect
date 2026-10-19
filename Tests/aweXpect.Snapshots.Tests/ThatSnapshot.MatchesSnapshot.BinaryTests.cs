@@ -20,7 +20,7 @@ public sealed partial class ThatSnapshot
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 			private SnapshotId PngId => Id with { Extension = "png", };
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenSnapshotMatches_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -35,7 +35,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Matches).IsEqualTo(new[] { PngId, });
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenSnapshotIsMissing_ShouldFailAndRecordTheBytesUnchanged()
 			{
 				InMemorySnapshotStore store = new();
@@ -45,7 +45,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -57,7 +57,7 @@ public sealed partial class ThatSnapshot
 					.Because("binary data is stored as it is, without the text encoding or a final line break");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenOneByteDiffers_ShouldNameItsOffsetAndTheLength()
 			{
 				InMemorySnapshotStore store = new();
@@ -68,7 +68,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -77,7 +77,7 @@ public sealed partial class ThatSnapshot
 				await That(store.MismatchBytes[PngId]).IsEqualTo(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenSubjectIsLonger_ShouldNameTheEndOfTheSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -88,11 +88,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed at byte 3 (the snapshot has 3 bytes, the subject 4)").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenSubjectIsShorter_ShouldNameTheEndOfTheSubject()
 			{
 				InMemorySnapshotStore store = new();
@@ -103,11 +103,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed at byte 1 (the snapshot has 4 bytes, the subject 1)").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenTheSnapshotHasOneByte_ShouldNameItInTheSingular()
 			{
 				InMemorySnapshotStore store = new();
@@ -118,11 +118,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed at byte 0 (both have 1 byte)").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenOnlyTheLineBreaksDiffer_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -133,12 +133,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed at byte 9 (the snapshot has 10 bytes, the subject 11)").AsWildcard()
 					.Because("binary data gets none of the text handling, so neither the newline style is ignored nor a final line break removed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenEmpty_AndTheSnapshotIsEmpty_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -152,7 +152,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenAccepting_ShouldAcceptTheBytesUnchanged()
 			{
 				InMemorySnapshotStore store = new();
@@ -164,7 +164,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png")
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -179,7 +179,7 @@ public sealed partial class ThatSnapshot
 					.Because("the accepted snapshot is read back unchanged");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenTheStoreDescribesTheMismatch_ShouldNameThePendingSnapshot()
 			{
 				DescribingStore store = new();
@@ -189,7 +189,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -200,7 +200,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenNull_ShouldFailWithoutAccessingTheStore()
 			{
 				InMemorySnapshotStore store = new()
@@ -213,7 +213,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -222,7 +222,7 @@ public sealed partial class ThatSnapshot
 				await That(store.MismatchBytes).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenNegated_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -234,7 +234,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -242,7 +242,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenNullAndNegated_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -253,11 +253,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was <null>*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenUsedForAnotherValue_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -269,12 +269,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot was already used for another value in this test run*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenUsedAgainForTheSameBytes_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -290,7 +290,7 @@ public sealed partial class ThatSnapshot
 					.Because("a retried or repeated test compares the same bytes again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenTheSnapshotWasUsedWithAnotherExtension_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -302,12 +302,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("jpg");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot was already used with the extension \"png\" in this test run*")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_ShouldCombineWithTheOtherOptions()
 			{
 				InMemorySnapshotStore store = new();
@@ -322,7 +322,7 @@ public sealed partial class ThatSnapshot
 						.UniqueFor.OperatingSystem()
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.MismatchBytes.Keys).IsEqualTo(new[]
 				{
 					PngId with
@@ -333,7 +333,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_ShouldIgnoreTheRulesForAllSnapshots()
 			{
 				InMemorySnapshotStore store = new();
@@ -347,12 +347,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("txt");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.MismatchBytes[Id]).IsEqualTo(subject)
 					.Because("rules apply to text, which binary data is not");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_ShouldNotBeSnapshottedAsACollection()
 			{
 				InMemorySnapshotStore store = new();
@@ -363,11 +363,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("txt");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.Because("a byte[] is binary data, not written by the formatter like other collections");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WithoutExtension_ShouldNotBeAnExpectation()
 			{
 				MethodInfo getAwaiter = typeof(BinarySnapshotWithoutExtension<byte[]?, IThat<byte[]?>>)
@@ -381,7 +381,7 @@ public sealed partial class ThatSnapshot
 					.Because("it cannot be combined into another expectation without the extension either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_ShouldOfferNoRules()
 			{
 				PropertyInfo? rules = typeof(BinarySnapshotResult<byte[]?, IThat<byte[]?>>).GetProperty("For");
@@ -390,11 +390,11 @@ public sealed partial class ThatSnapshot
 					.Because("rules apply to text, which binary data is not, so they are rejected at compile time");
 			}
 
-			[Theory]
-			[InlineData("", "The 'extension' cannot be empty.*")]
-			[InlineData(".png", "The 'extension' cannot contain a '.'*")]
-			[InlineData("p@g", "The 'extension' cannot contain whitespace*")]
-			[InlineData("pending", "The 'extension' cannot be \"pending\"*")]
+			[Test]
+			[Arguments("", "The 'extension' cannot be empty.*")]
+			[Arguments(".png", "The 'extension' cannot contain a '.'*")]
+			[Arguments("p@g", "The 'extension' cannot contain whitespace*")]
+			[Arguments("pending", "The 'extension' cannot be \"pending\"*")]
 			public async Task ByteArray_WithInvalidExtension_ShouldThrowArgumentException(string extension,
 				string message)
 			{
@@ -408,7 +408,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage(message).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WithNullExtension_ShouldThrowArgumentNullException()
 			{
 				byte[] subject = [1,];
@@ -419,7 +419,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<ArgumentNullException>().WithParamName("extension");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenCallerFilePathIsNotRooted_ShouldThrowBeforeTheExtension()
 			{
 				byte[] subject = [1,];
@@ -430,7 +430,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<ArgumentException>().WithParamName("callerFilePath");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Stream_ShouldReadFromTheCurrentPositionToTheEndWithoutDisposingIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -449,7 +449,7 @@ public sealed partial class ThatSnapshot
 					.Because("the stream belongs to the test, so it is not disposed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Stream_WhenNotSeekable_ShouldReadIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -459,12 +459,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("pdf");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot did not exist").AsWildcard();
 				await That(store.MismatchBytes[Id with { Extension = "pdf", }]).IsEqualTo(CoverArt);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Stream_WhenItCannotBeRead_ShouldFailBothWaysWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();
@@ -479,20 +479,20 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("pdf"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
 					             but it could not be read: *
 					             """).AsWildcard()
 					.And.WithInner<ObjectDisposedException>();
-				await That(ActNegated).Throws<XunitException>()
+				await That(ActNegated).Throws<FailException>()
 					.WithMessage("*but a snapshot cannot be negated").AsWildcard()
 					.Because("a stream that cannot be read fails both ways");
 				await That(store.MismatchBytes).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Stream_WhenNull_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -502,11 +502,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("pdf");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was <null>").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Stream_OfADerivedType_ShouldBeComparedAsBinaryData()
 			{
 				InMemorySnapshotStore store = new();
@@ -516,12 +516,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("pdf");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.MismatchBytes[Id with { Extension = "pdf", }]).IsEqualTo(CoverArt)
 					.Because("C# 13 chooses the overload for streams over the one for objects");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Stream_OfADerivedType_WhenSnapshottedAsAnObject_ShouldThrowInvalidOperationException()
 			{
 				using MemoryStream subject = new(CoverArt);
@@ -535,7 +535,7 @@ public sealed partial class ThatSnapshot
 					.Because("a compiler before C# 13 ignores the priority of the overload for streams");
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_ShouldUseTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
@@ -553,7 +553,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Matches).IsEqualTo(new[] { Id with { Extension = "pdf", }, });
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenDifferent_ShouldNameTheOffsetAndRecordTheContent()
 			{
 				using SnapshotDirectory directory = new();
@@ -567,7 +567,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -577,7 +577,7 @@ public sealed partial class ThatSnapshot
 					.Because("the extension of the file is kept as it is, like one from .WithExtension(…)");
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WithExtension_ShouldOverrideTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
@@ -590,12 +590,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("bin");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot did not exist").AsWildcard();
 				await That(store.MismatchBytes.Keys).IsEqualTo(new[] { Id with { Extension = "bin", }, }).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WithExtension_ShouldValidateIt()
 			{
 				FileInfo subject = new("liner-notes.pdf");
@@ -608,7 +608,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'extension' cannot contain a '.'*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenTheFileHasNoExtension_ShouldFailBothWays()
 			{
 				using SnapshotDirectory directory = new();
@@ -624,15 +624,15 @@ public sealed partial class ThatSnapshot
 				async Task ActNegated()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the file has no extension, so set one with .WithExtension(…)").AsWildcard();
-				await That(ActNegated).Throws<XunitException>()
+				await That(ActNegated).Throws<FailException>()
 					.WithMessage("*but a snapshot cannot be negated").AsWildcard()
 					.Because("a file without an extension fails both ways");
 				await That(store.MismatchBytes).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenTheExtensionOfTheFileCannotBeUsed_ShouldFail()
 			{
 				using SnapshotDirectory directory = new();
@@ -645,13 +645,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						"*but the extension \"pending\" of the file cannot be used for a snapshot, so set another one with .WithExtension(…)")
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenTheFileDoesNotExist_ShouldFailBothWays()
 			{
 				using SnapshotDirectory directory = new();
@@ -666,15 +666,15 @@ public sealed partial class ThatSnapshot
 				async Task ActNegated()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"*but the file \"{path}\" did not exist").AsWildcard();
-				await That(ActNegated).Throws<XunitException>()
+				await That(ActNegated).Throws<FailException>()
 					.WithMessage("*but a snapshot cannot be negated").AsWildcard()
 					.Because("a missing file fails both ways, like a null subject");
 				await That(store.MismatchBytes).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenNull_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -684,11 +684,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it was <null>").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenAccepting_ShouldAcceptTheContentWithTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
@@ -701,13 +701,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();
 				await That(store.AcceptedBytes[PngId]).IsEqualTo(CoverArt);
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task FileInfo_WhenListed_ShouldBeClaimedWithTheExtensionOfTheFile()
 			{
 				using SnapshotDirectory directory = new();
@@ -724,7 +724,7 @@ public sealed partial class ThatSnapshot
 					.Because("the snapshot with the extension of the file is used");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ByteArray_WhenTheSnapshotWithAnotherExtensionIsListed_ShouldReportItAsOrphaned()
 			{
 				InMemorySnapshotStore store = new();
@@ -735,7 +735,7 @@ public sealed partial class ThatSnapshot
 
 				async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 					               MyTests.MyTest
@@ -743,7 +743,7 @@ public sealed partial class ThatSnapshot
 					.Because("only the snapshot with the extension 'png' is used");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Text_ShouldBeStoredAsUtf8WithAnAdditionalLineBreak()
 			{
 				InMemorySnapshotStore store = new();
@@ -753,7 +753,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.MismatchBytes[Id])
 					.IsEqualTo(new UTF8Encoding(false).GetBytes(subject + Environment.NewLine))
 					.Because("the library encodes the text on top of the byte-based store, as the disk store wrote it before");

@@ -12,7 +12,7 @@ public sealed partial class ThatSnapshot
 			private const string SourceFile = "Tests/aweXpect.Snapshots.Tests/ThatSnapshot.MatchesSnapshot.UniqueForTests.cs";
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForTargetFramework_ShouldAddTheTargetFrameworkAsVariant()
 			{
 				InMemorySnapshotStore store = new();
@@ -22,7 +22,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot().UniqueFor.TargetFramework();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"*matches the snapshot \"ThatSnapshot.MatchesSnapshot.UniqueForTests.{nameof(WhenUniqueForTargetFramework_ShouldAddTheTargetFrameworkAsVariant)}@{CurrentEnvironment.TargetFramework}\"*")
 					.AsWildcard();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
@@ -34,7 +34,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder().Because("the build targets record the target framework of the test project as the build knows it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForOperatingSystem_ShouldAddTheOperatingSystemAsVariant()
 			{
 				InMemorySnapshotStore store = new();
@@ -44,14 +44,14 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).UniqueFor.OperatingSystem();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
 					Id with { Variant = CurrentEnvironment.OperatingSystem, },
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForArchitecture_ShouldAddTheArchitectureAsVariant()
 			{
 				InMemorySnapshotStore store = new();
@@ -61,14 +61,14 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).UniqueFor.Architecture();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
 					Id with { Variant = CurrentEnvironment.Architecture, },
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForSeveral_ShouldJoinThemInAFixedOrder()
 			{
 				InMemorySnapshotStore store = new();
@@ -81,7 +81,7 @@ public sealed partial class ThatSnapshot
 						.UniqueFor.OperatingSystem()
 						.UniqueFor.TargetFramework();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
 					new SnapshotId(SourceFile, nameof(WhenUniqueForSeveral_ShouldJoinThemInAFixedOrder))
@@ -92,7 +92,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder().Because("the order of the calls must not change the snapshot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForTheSameEnvironmentTwice_ShouldAddItOnce()
 			{
 				InMemorySnapshotStore store = new();
@@ -104,14 +104,14 @@ public sealed partial class ThatSnapshot
 						.UniqueFor.OperatingSystem()
 						.UniqueFor.OperatingSystem();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches.Keys).IsEqualTo(new[]
 				{
 					Id with { Variant = CurrentEnvironment.OperatingSystem, },
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamed_ShouldKeepTheNameAndTheVariant()
 			{
 				InMemorySnapshotStore store = new();
@@ -124,7 +124,7 @@ public sealed partial class ThatSnapshot
 						.Named("Let It Be")
 						.Accepting(SnapshotAcceptance.None);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches the snapshot "MyTests.MyTest.Let It Be@{CurrentEnvironment.OperatingSystem}",
@@ -139,7 +139,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyTheSharedSnapshotExists_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -150,12 +150,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).UniqueFor.Architecture();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot did not exist*").AsWildcard()
 					.Because("a snapshot per environment never falls back to the snapshot shared by every environment");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheSnapshotOfTheEnvironmentMatches_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -169,7 +169,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheTargetFrameworkIsNotRecorded_ShouldThrowInvalidOperationException()
 			{
 				string subject = "Abbey Road";
@@ -183,7 +183,7 @@ public sealed partial class ThatSnapshot
 					.Because("the runtime can differ from the target framework, so it is no fallback");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUniqueForAnotherEnvironment_ShouldNotConflictWithTheSharedSnapshot()
 			{
 				InMemorySnapshotStore store = new();

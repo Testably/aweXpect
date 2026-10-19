@@ -14,7 +14,7 @@ public sealed partial class ThatSnapshot
 
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_ShouldAcceptTheNumberedPlaceholders()
 			{
 				InMemorySnapshotStore store = new();
@@ -25,19 +25,19 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Guids().Mask().For.Dates().Mask().Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted[Id]).IsEqualTo("{Guid_1} {Date_1}");
 			}
 
-			[Theory]
-			[InlineData("2026-10-17")]
-			[InlineData("2026-10-17T09:30")]
-			[InlineData("2026-10-17T09:30:15")]
-			[InlineData("2026-10-17T09:30:15.1")]
-			[InlineData("2026-10-17T09:30:15.1234567")]
-			[InlineData("2026-10-17T09:30:15.1234567Z")]
-			[InlineData("2026-10-17T09:30:15.1234567+02:00")]
-			[InlineData("2026-10-17T09:30-05:30")]
+			[Test]
+			[Arguments("2026-10-17")]
+			[Arguments("2026-10-17T09:30")]
+			[Arguments("2026-10-17T09:30:15")]
+			[Arguments("2026-10-17T09:30:15.1")]
+			[Arguments("2026-10-17T09:30:15.1234567")]
+			[Arguments("2026-10-17T09:30:15.1234567Z")]
+			[Arguments("2026-10-17T09:30:15.1234567+02:00")]
+			[Arguments("2026-10-17T09:30-05:30")]
 			public async Task WhenMaskingDates_ShouldMaskIso8601(string date)
 			{
 				InMemorySnapshotStore store = new();
@@ -47,11 +47,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("created: {Date_1}.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingDates_ShouldMaskTheRoundTripFormatOfDateTimeAndDateTimeOffset()
 			{
 				InMemorySnapshotStore store = new();
@@ -64,12 +64,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Date_1} {Date_2} {Date_3}")
 					.Because("the aweXpect formatter writes dates with the round-trip format \"o\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingDates_ShouldNumberTheSameTextTheSame()
 			{
 				InMemorySnapshotStore store = new();
@@ -79,20 +79,20 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("from {Date_1} to {Date_2}, created {Date_1}");
 			}
 
-			[Theory]
-			[InlineData("2026-13-01")]
-			[InlineData("2026-00-01")]
-			[InlineData("2026-10-32")]
-			[InlineData("12026-10-17")]
-			[InlineData("2026-10-170")]
-			[InlineData("17.10.2026")]
-			[InlineData("10/17/2026")]
-			[InlineData("09:30:15")]
-			[InlineData("v2026.10.17")]
+			[Test]
+			[Arguments("2026-13-01")]
+			[Arguments("2026-00-01")]
+			[Arguments("2026-10-32")]
+			[Arguments("12026-10-17")]
+			[Arguments("2026-10-170")]
+			[Arguments("17.10.2026")]
+			[Arguments("10/17/2026")]
+			[Arguments("09:30:15")]
+			[Arguments("v2026.10.17")]
 			public async Task WhenMaskingDates_ShouldNotMaskSimilarText(string text)
 			{
 				InMemorySnapshotStore store = new();
@@ -102,11 +102,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingDates_WithSpaceInsteadOfT_ShouldOnlyMaskTheDate()
 			{
 				InMemorySnapshotStore store = new();
@@ -116,12 +116,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Date_1} 09:30:15")
 					.Because("only ISO 8601 with a 'T' between the date and the time is matched as one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuids_InBracesOrParentheses_ShouldKeepThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -131,11 +131,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{{Guid_1}} ({Guid_2})");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuids_InUpperAndLowerCase_ShouldNumberThemAsTheSameGuid()
 			{
 				InMemorySnapshotStore store = new();
@@ -145,11 +145,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Guid_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuids_ShouldMaskThemNextToOtherWordCharacters()
 			{
 				InMemorySnapshotStore store = new();
@@ -159,11 +159,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order_{Guid_1}_x");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuids_ShouldNumberThemInTheOrderOfAppearance()
 			{
 				InMemorySnapshotStore store = new();
@@ -173,17 +173,17 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1}, {Guid_2}, {Guid_1}")
 					.Because("the same Guid keeps the same number, so relations stay visible");
 			}
 
-			[Theory]
-			[InlineData("3f2504e04f8911d39a0c0305e82c3301")]
-			[InlineData("a3f2504e0-4f89-11d3-9a0c-0305e82c3301")]
-			[InlineData("3f2504e0-4f89-11d3-9a0c-0305e82c33011")]
-			[InlineData("3f2504e0-4f89-11d3-9a0c-0305e82c330")]
-			[InlineData("3f2504g0-4f89-11d3-9a0c-0305e82c3301")]
+			[Test]
+			[Arguments("3f2504e04f8911d39a0c0305e82c3301")]
+			[Arguments("a3f2504e0-4f89-11d3-9a0c-0305e82c3301")]
+			[Arguments("3f2504e0-4f89-11d3-9a0c-0305e82c33011")]
+			[Arguments("3f2504e0-4f89-11d3-9a0c-0305e82c330")]
+			[Arguments("3f2504g0-4f89-11d3-9a0c-0305e82c3301")]
 			public async Task WhenMaskingGuids_ShouldNotMaskSimilarText(string text)
 			{
 				InMemorySnapshotStore store = new();
@@ -193,12 +193,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject)
 					.Because("only the format \"D\" that is not part of a longer run of hexadecimal digits is a Guid");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuidsAndDates_ShouldCountThemSeparately()
 			{
 				InMemorySnapshotStore store = new();
@@ -208,11 +208,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask().For.Dates().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Date_1} {Guid_2} {Date_2}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuidsAfterAMaskingOfAGuid_ShouldNotCountTheMaskedGuid()
 			{
 				InMemorySnapshotStore store = new();
@@ -223,11 +223,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(FirstGuid).Mask("<order-id>").For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer {Guid_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuidsBeforeAMaskingOfAGuid_ShouldMaskAllGuidsFirst()
 			{
 				InMemorySnapshotStore store = new();
@@ -238,12 +238,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Guids().Mask().For.Text(FirstGuid).Mask("<order-id>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order {Guid_1}, customer {Guid_2}")
 					.Because("the maskings are applied in the order in which they are added");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldStillFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -255,7 +255,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -263,7 +263,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotContainsTheNumberedPlaceholders_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -277,7 +277,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldStillFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -287,7 +287,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -296,7 +296,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTwoValuesOnlyDifferInTheirGuids_ShouldNotConflict()
 			{
 				InMemorySnapshotStore store = new();

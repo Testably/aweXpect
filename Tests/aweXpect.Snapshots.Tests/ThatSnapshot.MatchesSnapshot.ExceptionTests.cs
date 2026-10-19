@@ -11,7 +11,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAFrameworkException_ShouldWriteItsMembersWithoutTheStackTrace()
 			{
 				InMemorySnapshotStore store = new();
@@ -30,7 +30,7 @@ public sealed partial class ThatSnapshot
 					=> await That(Play).Throws<ArgumentOutOfRangeException>()
 						.Which.MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo($$"""
 				                                             ArgumentOutOfRangeException {
 				                                               ActualValue = -1,
@@ -44,7 +44,7 @@ public sealed partial class ThatSnapshot
 					.Because("the stack trace and the other members that differ between builds, runtimes and machines are left out");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsACustomException_ShouldWriteItsOwnMembersAndTheInnerException()
 			{
 				InMemorySnapshotStore store = new();
@@ -58,7 +58,7 @@ public sealed partial class ThatSnapshot
 					=> await That(Eject).Throws<SnapshotPlayerException>()
 						.Which.MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo($$"""
 				                                             SnapshotPlayerException {
 				                                               InnerException = ArgumentException {
@@ -72,7 +72,7 @@ public sealed partial class ThatSnapshot
 					.Because("the inner exception is written member-wise as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAnAggregateException_ShouldWriteItsInnerExceptions()
 			{
 				InMemorySnapshotStore store = new();
@@ -87,7 +87,7 @@ public sealed partial class ThatSnapshot
 					=> await That(PlayAll).Throws<AggregateException>()
 						.Which.MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo($$"""
 				                                             AggregateException {
 				                                               InnerExceptions = [
@@ -105,7 +105,7 @@ public sealed partial class ThatSnapshot
 					.Because("the inner exceptions of an aggregate exception are written instead of its inner exception, which only repeats the first of them");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenApplyingMemberRulesToAnException_ShouldLeaveOutAndMaskItsMembers()
 			{
 				InMemorySnapshotStore store = new();
@@ -127,7 +127,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Data").Ignore()
 						.For.Members().WithName("ActualValue").Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           ArgumentOutOfRangeException {
 				                                             ActualValue = {ActualValue_1},

@@ -13,7 +13,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_ShouldMatchTheNameInAnyCase()
 			{
 				InMemorySnapshotStore store = new();
@@ -25,7 +25,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("previewurl").IgnoringCase().Ignore()
 						.For.Members().WithName("TITLE").IgnoringCase().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -35,7 +35,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsPrefix_ShouldMatchTheStartOfTheName()
 			{
 				InMemorySnapshotStore store = new();
@@ -46,7 +46,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Pr").AsPrefix().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -56,7 +56,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_ShouldMatchTheEndOfTheName()
 			{
 				InMemorySnapshotStore store = new();
@@ -69,7 +69,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("url").AsSuffix().IgnoringCase().Ignore()
 						.For.Members().WithName("Price").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -90,7 +90,7 @@ public sealed partial class ThatSnapshot
 					.Because("the options combine, and the name matches at any depth");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_ShouldMatchTheNameAsWildcardPattern()
 			{
 				InMemorySnapshotStore store = new();
@@ -102,7 +102,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("*Url").AsWildcard().Ignore()
 						.For.Members().WithName("?d").AsWildcard().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -113,7 +113,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_ShouldMatchTheNameAsRegexPattern()
 			{
 				InMemorySnapshotStore store = new();
@@ -124,7 +124,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("^(Duration|Price)$").AsRegex().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Id = 11,
@@ -134,7 +134,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task OnValues_ShouldMatchTheNameOfTupleItemsAndDictionaryKeys()
 			{
 				InMemorySnapshotStore store = new();
@@ -149,7 +149,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().WithName("[Let It Be]").Mask("{year}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           {
 				                                             ["Abbey Road"] = 1969,
@@ -159,7 +159,7 @@ public sealed partial class ThatSnapshot
 					.Because("the name of a dictionary value is its key in brackets");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheRegexIsInvalid_ShouldThrowArgumentExceptionAtTheAction()
 			{
 				SnapshotMembersWithName<SnapshotRule, object> selection =
@@ -172,7 +172,7 @@ public sealed partial class ThatSnapshot
 					.Because("the pattern is complete when the action is written, so it is checked there");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheRegexTimesOut_ShouldFailWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();
@@ -190,7 +190,7 @@ public sealed partial class ThatSnapshot
 						.For.Values().WithName(@"^\[(\w+\s?)*\]$").AsRegex().Ignore();
 				}
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",

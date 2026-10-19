@@ -8,7 +8,7 @@ public sealed class OrphanedSnapshotsTests
 {
 	private string SourceFile { get; } = $"/src/{Guid.NewGuid():N}/AlbumTests.cs";
 
-	[Fact]
+	[Test]
 	public async Task WhenEverySnapshotIsUsed_ShouldSucceed()
 	{
 		InMemorySnapshotStore store = new();
@@ -21,7 +21,7 @@ public sealed class OrphanedSnapshotsTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenASnapshotIsNotUsed_ShouldFailWithoutDeletingIt()
 	{
 		InMemorySnapshotStore store = new();
@@ -30,7 +30,7 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			               AlbumTests.Describes
@@ -39,7 +39,7 @@ public sealed class OrphanedSnapshotsTests
 			.Because("snapshots are only deleted while accepting changes");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSeveralSnapshotsAreNotUsed_ShouldListThemInOrder()
 	{
 		InMemorySnapshotStore store = new();
@@ -49,7 +49,7 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that every snapshot is used by a test of this run, but 2 snapshots were not used by any test:
 			               AlbumTests.Describes.Abbey Road
@@ -57,7 +57,7 @@ public sealed class OrphanedSnapshotsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOnlyAMismatchIsRecorded_ShouldReportIt()
 	{
 		InMemorySnapshotStore store = new();
@@ -66,11 +66,11 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*1 snapshot was not used by any test:*AlbumTests.Describes").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheSnapshotIsNamed_ShouldOnlyCountTheNamedSnapshotAsUsed()
 	{
 		InMemorySnapshotStore store = new();
@@ -81,12 +81,12 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*1 snapshot was not used by any test:*  AlbumTests.Describes").AsWildcard()
 			.Because("naming the snapshot moves it away from the unnamed one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheSnapshotIsNotCompared_ShouldStillCountItAsUsed()
 	{
 		InMemorySnapshotStore store = new();
@@ -100,7 +100,7 @@ public sealed class OrphanedSnapshotsTests
 			.Because("the test still refers to the snapshot, although the other expectation already succeeded");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheSnapshotOnlyDiffersInCase_ShouldCountItAsUsed()
 	{
 		InMemorySnapshotStore store = new();
@@ -115,7 +115,7 @@ public sealed class OrphanedSnapshotsTests
 			.Because("on a file system that ignores the case it is the same file, which must never be deleted");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheSnapshotIsUniqueForTheEnvironment_ShouldOnlyCountTheVariantAsUsed()
 	{
 		InMemorySnapshotStore store = new();
@@ -127,7 +127,7 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			               AlbumTests.Describes
@@ -135,7 +135,7 @@ public sealed class OrphanedSnapshotsTests
 			.Because("there is no fallback to the snapshot shared by every environment");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAVariantOfThisEnvironmentIsNotUsed_ShouldReportIt()
 	{
 		string sourceFile = "Tests/aweXpect.Snapshots.Tests/OrphanedSnapshotsTests.cs";
@@ -148,15 +148,15 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"*  OrphanedSnapshotsTests.{memberName}@{variant}").AsWildcard()
 			.Because("every part of the variant is a value of this environment, so this run would have used it");
 	}
 
-	[Theory]
-	[InlineData("beos")]
-	[InlineData("{os}@sparc")]
-	[InlineData("net35@{os}")]
+	[Test]
+	[Arguments("beos")]
+	[Arguments("{os}@sparc")]
+	[Arguments("net35@{os}")]
 	public async Task WhenAVariantIsOfAnotherEnvironment_ShouldNeverReportIt(string variant)
 	{
 		variant = variant.Replace("{os}", CurrentEnvironment.OperatingSystem);
@@ -172,7 +172,7 @@ public sealed class OrphanedSnapshotsTests
 		await That(store.Deleted).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTargetFrameworkOfAVariantCannotBeResolved_ShouldNeverReportIt()
 	{
 		InMemorySnapshotStore store = new();
@@ -186,7 +186,7 @@ public sealed class OrphanedSnapshotsTests
 			.Because("no target framework is recorded for a test file outside of the test projects");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAcceptingAll_ShouldDeleteTheSnapshotsAndStillFail()
 	{
 		SnapshotId used = new(SourceFile, "Describes", "Abbey Road");
@@ -201,7 +201,7 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			               AlbumTests.Describes.Let It Be (deleted)
@@ -210,7 +210,7 @@ public sealed class OrphanedSnapshotsTests
 		await That(store.Deleted).IsEqualTo([unused,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAcceptingAll_AndDeletingThrows_ShouldNameTheErrorAndDeleteTheOthers()
 	{
 		SnapshotId readOnly = new(SourceFile, "Describes", "Abbey Road");
@@ -224,7 +224,7 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that every snapshot is used by a test of this run, but 2 snapshots were not used by any test:
 			               AlbumTests.Describes.Abbey Road (could not be deleted: read-only)
@@ -233,7 +233,7 @@ public sealed class OrphanedSnapshotsTests
 		await That(store.Deleted).IsEqualTo([other,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAcceptingNew_ShouldReportWithoutDeleting()
 	{
 		SnapshotId unused = new(SourceFile, "Describes", "Let It Be");
@@ -244,13 +244,13 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*  AlbumTests.Describes.Let It Be").AsWildcard();
 		await That(store.Deleted).IsEmpty()
 			.Because("accepting new snapshots only adds snapshots, it never removes one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheStoreCannotList_ShouldFail()
 	{
 		InMemorySnapshotStore store = new()
@@ -261,13 +261,13 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage(
 				"Expected that every snapshot is used by a test of this run, but the snapshot store InMemorySnapshotStore cannot list its snapshots, see SnapshotStore.ListAsync.")
 			.Because("a check that was asked for must not pass without checking anything");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenListingThrows_ShouldFailWithTheException()
 	{
 		IOException exception = new("access denied");
@@ -279,18 +279,18 @@ public sealed class OrphanedSnapshotsTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage(
 				"Expected that every snapshot is used by a test of this run, but the snapshots could not be listed: access denied")
 			.And.WithInner<IOException>(inner => inner.IsSameAs(exception));
 	}
 
-	[Collection(nameof(EnvironmentCollection))]
+	[NotInParallel]
 	public sealed class EnvironmentTests
 	{
 		private string SourceFile { get; } = $"/src/{Guid.NewGuid():N}/AlbumTests.cs";
 
-		[Fact]
+		[Test]
 		public async Task WhenNotForced_AndNoBuildServerIsDetected_ShouldNotCheck()
 		{
 			using EnvironmentScope _ = new();
@@ -306,11 +306,11 @@ public sealed class OrphanedSnapshotsTests
 				.Because("a local run that only runs some of the tests cannot be told apart from a complete one");
 		}
 
-		[Theory]
-		[InlineData("CI")]
-		[InlineData("TF_BUILD")]
-		[InlineData("JENKINS_URL")]
-		[InlineData("TEAMCITY_VERSION")]
+		[Test]
+		[Arguments("CI")]
+		[Arguments("TF_BUILD")]
+		[Arguments("JENKINS_URL")]
+		[Arguments("TEAMCITY_VERSION")]
 		public async Task WhenNotForced_AndABuildServerIsDetected_ShouldReportWithoutDeleting(string variable)
 		{
 			using EnvironmentScope _ = new((variable, "true"), ("AWEXPECT_ACCEPT_SNAPSHOTS", "1"));
@@ -320,13 +320,13 @@ public sealed class OrphanedSnapshotsTests
 
 			async Task Act() => await OrphanedSnapshots.CheckAsync();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*1 snapshot was not used by any test:*  AlbumTests.Describes").AsWildcard();
 			await That(store.Deleted).IsEmpty()
 				.Because("the accept variable is ignored on a build server");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenForced_AndTheAcceptVariableIsNew_ShouldReportWithoutDeleting()
 		{
 			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", "new"));
@@ -336,12 +336,12 @@ public sealed class OrphanedSnapshotsTests
 
 			async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*  AlbumTests.Describes").AsWildcard();
 			await That(store.Deleted).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenForced_AndTheAcceptVariableIsInvalid_ShouldThrow()
 		{
 			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", "yes"));
@@ -356,9 +356,9 @@ public sealed class OrphanedSnapshotsTests
 			await That(store.Deleted).IsEmpty();
 		}
 
-		[Theory]
-		[InlineData("1")]
-		[InlineData("all")]
+		[Test]
+		[Arguments("1")]
+		[Arguments("all")]
 		public async Task WhenForced_AndTheAcceptVariableIsSet_ShouldDelete(string value)
 		{
 			using EnvironmentScope _ = new(("AWEXPECT_ACCEPT_SNAPSHOTS", value));
@@ -369,7 +369,7 @@ public sealed class OrphanedSnapshotsTests
 
 			async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*  AlbumTests.Describes (deleted)").AsWildcard();
 			await That(store.Deleted).IsEqualTo([id,]);
 		}

@@ -15,7 +15,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenComparerConsidersEqual_ShouldSucceedAndKeepTheSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -34,7 +34,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenComparerConsidersEqual_AndAcceptingAll_ShouldNotRewriteTheSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -53,7 +53,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenComparerReportsDifference_ShouldFailWithTheDescription()
 			{
 				InMemorySnapshotStore store = new();
@@ -65,7 +65,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.ComparedWith(FakeSnapshotComparer.Different("the tempo changed"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -84,7 +84,7 @@ public sealed partial class ThatSnapshot
 				}).Because("a difference is recorded for review like any other");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenDescriptionHasSeveralLines_ShouldShowThemAll()
 			{
 				InMemorySnapshotStore store = new();
@@ -98,7 +98,7 @@ public sealed partial class ThatSnapshot
 						.ComparedWith(FakeSnapshotComparer.Different(
 							$"2 tracks differ:{newLine}- Something{newLine}- Because"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not empty and matches the snapshot "MyTests.MyTest",
@@ -114,7 +114,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenSnapshotIsMissing_ShouldNotCallTheComparer()
 			{
 				InMemorySnapshotStore store = new();
@@ -125,14 +125,14 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot did not exist*").AsWildcard();
 				await That(comparer.Contexts).IsEmpty()
 					.Because("there is nothing to compare with");
 				await That(store.Mismatches.Keys).IsEqualTo([Id,]);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_ShouldGetTheIdTheSnapshotAndTheSubjectAfterTheRules()
 			{
 				SnapshotId id = Id with
@@ -160,7 +160,7 @@ public sealed partial class ThatSnapshot
 				await That(context.Actual.IsText).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_OnAnObject_ShouldCompareTheWrittenText()
 			{
 				InMemorySnapshotStore store = new();
@@ -177,7 +177,7 @@ public sealed partial class ThatSnapshot
 				await That(context.Actual.Text).IsEqualTo($"[{Environment.NewLine}  1,{Environment.NewLine}  2{Environment.NewLine}]");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_OnBinaryData_WhenComparerConsidersEqual_ShouldSucceed()
 			{
 				SnapshotId id = Id with
@@ -203,7 +203,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Matches).IsEqualTo([id,]);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_OnBinaryData_WhenComparerReportsDifference_ShouldFailWithTheDescription()
 			{
 				SnapshotId id = Id with
@@ -219,7 +219,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("png")
 						.ComparedWith(FakeSnapshotComparer.Different("2.3 % of the pixels differ"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -228,7 +228,7 @@ public sealed partial class ThatSnapshot
 				await That(store.MismatchBytes[id]).IsEqualTo([1, 2, 3,]);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_OnAFile_ShouldUseTheComparer()
 			{
 				using SnapshotDirectory directory = new();
@@ -252,7 +252,7 @@ public sealed partial class ThatSnapshot
 					.Because("the extension of the file is compared ignoring its case");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_ShouldGoBeforeTheComparersForAllSnapshots()
 			{
 				InMemorySnapshotStore store = new();
@@ -268,12 +268,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.ComparedWith(FakeSnapshotComparer.Different("expectation"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed: expectation*").AsWildcard();
 				await That(global.Contexts).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenSetTwice_ShouldUseTheLastOne()
 			{
 				InMemorySnapshotStore store = new();
@@ -286,11 +286,11 @@ public sealed partial class ThatSnapshot
 						.ComparedWith(FakeSnapshotComparer.Different("first"))
 						.ComparedWith(FakeSnapshotComparer.Different("second"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed: second*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ComparedWith_WhenNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "Abbey Road";
@@ -302,7 +302,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("comparer");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_ShouldUseTheFirstMatchingComparerInListOrder()
 			{
 				InMemorySnapshotStore store = new();
@@ -320,13 +320,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed: first match*").AsWildcard();
 				await That(skipped.Contexts).IsEmpty();
 				await That(later.Contexts).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_When_ShouldSeeTheIdTheSnapshotAndTheSubject()
 			{
 				InMemorySnapshotStore store = new();
@@ -345,7 +345,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*which differs at index 0*").AsWildcard()
 					.Because("the predicate did not select the comparer, so the built-in comparison applies");
 				SnapshotComparisonContext context = await That(contexts).HasSingle();
@@ -354,9 +354,9 @@ public sealed partial class ThatSnapshot
 				await That(context.Actual.Text).IsEqualTo("Let It Be");
 			}
 
-			[Theory]
-			[InlineData("json")]
-			[InlineData("JSON")]
+			[Test]
+			[Arguments("json")]
+			[Arguments("JSON")]
 			public async Task Comparers_ForExtension_ShouldMatchTheExtensionIgnoringCase(string extension)
 			{
 				SnapshotId id = Id with
@@ -375,11 +375,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("json");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed: json*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_WhenNoneApplies_ShouldKeepTheBuiltInTextFailure()
 			{
 				InMemorySnapshotStore store = new();
@@ -394,7 +394,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -407,7 +407,7 @@ public sealed partial class ThatSnapshot
 				await That(comparer.Contexts).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_WhenNoneApplies_ShouldKeepTheBuiltInBinaryFailure()
 			{
 				SnapshotId id = Id with
@@ -425,7 +425,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).WithExtension("bin");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -433,7 +433,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_ShouldDefaultToNone()
 			{
 				IReadOnlyList<SnapshotComparerRegistration> comparers = Customize.aweXpect.Snapshots().Comparers.Get();
@@ -441,7 +441,7 @@ public sealed partial class ThatSnapshot
 				await That(comparers).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_ShouldCopyTheList()
 			{
 				List<SnapshotComparerRegistration> comparers =
@@ -454,7 +454,7 @@ public sealed partial class ThatSnapshot
 					.Because("changing the list afterwards must not change the setting");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_WhenSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -464,7 +464,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Comparers_WhenContainingNull_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -474,7 +474,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task When_WithNullPredicate_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -484,7 +484,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("predicate");
 			}
 
-			[Fact]
+			[Test]
 			public async Task When_WithNullComparer_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -494,10 +494,10 @@ public sealed partial class ThatSnapshot
 					.WithParamName("comparer");
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData(".png")]
-			[InlineData("pending")]
+			[Test]
+			[Arguments("")]
+			[Arguments(".png")]
+			[Arguments("pending")]
 			public async Task ForExtension_WithInvalidExtension_ShouldThrowArgumentException(string extension)
 			{
 				void Act()
@@ -508,7 +508,7 @@ public sealed partial class ThatSnapshot
 					.Because("no snapshot could have the extension, so the comparer would never be used");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForExtension_WithNullComparer_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -518,7 +518,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("comparer");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Different_WithNullDescription_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -528,9 +528,9 @@ public sealed partial class ThatSnapshot
 					.WithParamName("description");
 			}
 
-			[Theory]
-			[InlineData("")]
-			[InlineData(" ")]
+			[Test]
+			[Arguments("")]
+			[Arguments(" ")]
 			public async Task Different_WithEmptyDescription_ShouldThrowArgumentException(string description)
 			{
 				void Act()
@@ -540,7 +540,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("description");
 			}
 
-			[Fact]
+			[Test]
 			public async Task SnapshotComparison_ShouldTellEqualAndDifferentApart()
 			{
 				SnapshotComparison different = SnapshotComparison.Different("louder");
@@ -551,7 +551,7 @@ public sealed partial class ThatSnapshot
 				await That(different.Description).IsEqualTo("louder");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerReportsDifference_AndAcceptingAll_ShouldAcceptTheSubject()
 			{
 				InMemorySnapshotStore store = new();
@@ -564,13 +564,13 @@ public sealed partial class ThatSnapshot
 						.ComparedWith(FakeSnapshotComparer.Different("the title changed"))
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it differed: the title changed*Accepted snapshot:*").AsWildcard();
 				await That(store.Accepted[Id]).IsEqualTo("Abbey Road (Remastered)");
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerReportsDifference_AndAcceptingNew_ShouldRecordAMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -583,13 +583,13 @@ public sealed partial class ThatSnapshot
 						.ComparedWith(FakeSnapshotComparer.Different("the title changed"))
 						.Accepting(SnapshotAcceptance.New);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted).IsEmpty()
 					.Because("accepting new snapshots never replaces an existing one");
 				await That(store.Mismatches[Id]).IsEqualTo("Abbey Road (Remastered)");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndComparerConsidersEqual_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -601,11 +601,11 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(IgnoringCase()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but a snapshot cannot be negated").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerThrows_ShouldFailBothWaysWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();
@@ -623,14 +623,14 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
 					             but the snapshot could not be compared: broken comparer
 					             """)
 					.And.WithInner<InvalidOperationException>();
-				await That(ActNegated).Throws<XunitException>()
+				await That(ActNegated).Throws<FailException>()
 					.WithMessage("*but a snapshot cannot be negated").AsWildcard();
 				await That(store.Mismatches).IsEmpty()
 					.Because("a broken comparer says nothing about the subject");
@@ -638,7 +638,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Snapshots[Id]).IsEqualTo("Abbey Road");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();
@@ -653,13 +653,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot could not be compared: broken predicate").AsWildcard()
 					.And.WithInner<FormatException>();
 				await That(store.Matches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerReturnsNull_ShouldFailWithAnInvalidOperationException()
 			{
 				InMemorySnapshotStore store = new();
@@ -671,7 +671,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.ComparedWith(new FakeSnapshotComparer(_ => null!));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						"*but the snapshot could not be compared: The comparer FakeSnapshotComparer returned null.")
 					.AsWildcard()
@@ -679,7 +679,7 @@ public sealed partial class ThatSnapshot
 					.Because("falling back to the built-in comparison would hide the broken comparer");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedAgain_AndComparerConsidersTheValuesEqual_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -698,7 +698,7 @@ public sealed partial class ThatSnapshot
 					.Because("a reused snapshot is first compared with the first value of the test run");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedAgain_AndComparerConsidersTheValuesDifferent_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -710,14 +710,14 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
 
 				await That(() => Act("Abbey Road")).DoesNotThrow();
-				await That(() => Act("Let It Be")).Throws<XunitException>()
+				await That(() => Act("Let It Be")).Throws<FailException>()
 					.WithMessage(
 						"*but the snapshot was already used for another value in this test run, so name each one with .Named(…) or .NamedAfter(…)")
 					.AsWildcard();
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedAgain_AndComparerForAllSnapshotsConsidersTheValuesEqual_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -734,7 +734,7 @@ public sealed partial class ThatSnapshot
 				await That(() => Act("ABBEY ROAD")).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedAgain_AndNoComparerWasSetForTheFirstValue_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -746,12 +746,12 @@ public sealed partial class ThatSnapshot
 					=> await That("ABBEY ROAD").MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.ComparedWith(IgnoringCase());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot was already used for another value in this test run*").AsWildcard()
 					.Because("the first value is only kept while a comparer is set");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedAgain_AndComparerThrows_ShouldFailWithTheExceptionAsCause()
 			{
 				InMemorySnapshotStore store = new();
@@ -766,13 +766,13 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).ComparedWith(comparer);
 
 				await That(() => Act("Abbey Road")).DoesNotThrow();
-				await That(() => Act("ABBEY ROAD")).Throws<XunitException>()
+				await That(() => Act("ABBEY ROAD")).Throws<FailException>()
 					.WithMessage("*but the snapshot could not be compared: broken comparer").AsWildcard()
 					.And.WithInner<InvalidOperationException>();
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedConcurrently_ShouldCompareEachValueWithTheSameFirstValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -795,7 +795,7 @@ public sealed partial class ThatSnapshot
 					.Because("every reused value is compared with the one first value of the test run");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDiskStore_WhenComparerConsidersEqual_ShouldKeepTheSnapshotAndDeleteThePendingFile()
 			{
 				using SnapshotDirectory directory = new();

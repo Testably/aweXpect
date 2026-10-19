@@ -13,7 +13,7 @@ public sealed class SourceRootsTests
 {
 	private const string CommittedSnapshot = nameof(WhenTheTestFileExistsUnderOneOfSeveralSourceRoots_ShouldUseIt);
 
-	[Fact]
+	[Test]
 	public async Task WhenDeterministicBuildsRecordSeveralSourceRoots_ShouldUseTheOneWithTheTestFile()
 	{
 		using TemporarySourceRoot otherSourceRoot = new();
@@ -28,7 +28,7 @@ public sealed class SourceRootsTests
 			.Because("every deterministic build maps its source root to '/_/', and the test file only exists in one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOtherDirectoriesRecordATargetFramework_ShouldUseTheInnermostProjectOfTheTestFile()
 	{
 		using TemporarySourceRoot otherSourceRoot = new();
@@ -48,7 +48,7 @@ public sealed class SourceRootsTests
 				"the snapshot of each target framework of this test project is committed, and neither an enclosing directory nor another source root decides it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSeveralSourceRootsAreRecorded_ShouldMaskEachOneButNoRootOfTheFileSystem()
 	{
 		using TemporarySourceRoot otherSourceRoot = new();
@@ -63,13 +63,13 @@ public sealed class SourceRootsTests
 		async Task Act()
 			=> await That(subject).MatchesSnapshot(GetCallerFilePath(), "Masking");
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		await That(store.Mismatch)
 			.IsEqualTo($"{{SourceRoot}}{Path.DirectorySeparatorChar}Let It Be.txt {fileSystemRoot}Abbey Road.txt")
 			.Because("every recorded source root is masked, unless it is a root of the file system, which would mask every path");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheSameSourceRootIsRecordedTwice_ShouldCountItOnce()
 	{
 		string sourceRoot = RecordedSourceRoots.Own.SourceRoot.TrimEnd(Path.DirectorySeparatorChar);
@@ -90,7 +90,7 @@ public sealed class SourceRootsTests
 			.Because("a source root with another trailing separator or case of the drive letter is the same directory");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTestFileExistsUnderALaterSourceRoot_ShouldReadTheSnapshotThere()
 	{
 		using TemporarySourceRoot emptySourceRoot = new();
@@ -108,7 +108,7 @@ public sealed class SourceRootsTests
 			.Because("the snapshot is read next to the test file, under the only source root that contains it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTestFileExistsUnderNoneOfSeveralSourceRoots_ShouldFail()
 	{
 		using TemporarySourceRoot otherSourceRoot = new();
@@ -118,7 +118,7 @@ public sealed class SourceRootsTests
 		async Task Act()
 			=> await That(subject).MatchesSnapshot(Path.Combine(otherSourceRoot.Path, "Tests", "Missing.cs"), "MyTest");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that subject
 			              matches the snapshot "*",
@@ -126,7 +126,7 @@ public sealed class SourceRootsTests
 			              """).AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTestFileExistsUnderOneOfSeveralSourceRoots_ShouldUseIt()
 	{
 		using TemporarySourceRoot otherSourceRoot = new();
@@ -140,7 +140,7 @@ public sealed class SourceRootsTests
 			.Because("the test file only exists under the own source root, next to its committed snapshot");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTestFileExistsUnderSeveralSourceRoots_ShouldFail()
 	{
 		await That("found").MatchesSnapshot(GetCallerFilePath(), CommittedSnapshot);
@@ -153,7 +153,7 @@ public sealed class SourceRootsTests
 		async Task Act()
 			=> await That(subject).MatchesSnapshot();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that subject
 			              matches the snapshot "*",

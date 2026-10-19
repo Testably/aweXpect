@@ -6,6 +6,7 @@
 	-->
 	<PropertyGroup>
 		<IsTestProject>false</IsTestProject>
+		<OutputType>Library</OutputType>
 		<SonarQubeExclude>true</SonarQubeExclude>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
@@ -18,10 +19,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Remove="xunit"/>
-		<PackageReference Remove="xunit.runner.visualstudio"/>
-		<PackageReference Remove="Microsoft.NET.Test.Sdk"/>
-		<PackageReference Remove="coverlet.collector"/>
+		<PackageReference Remove="TUnit.Engine"/>
+		<PackageReference Remove="Microsoft.Testing.Extensions.TrxReport"/>
+		<PackageReference Remove="Microsoft.Testing.Extensions.CodeCoverage"/>
 		<PackageReference Remove="aweXpect"/>
 	</ItemGroup>
 

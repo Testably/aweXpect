@@ -13,7 +13,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectContainsAHashSet_ShouldWriteItsItemsSorted()
 			{
 				InMemorySnapshotStore store = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             "express",
@@ -34,7 +34,7 @@ public sealed partial class ThatSnapshot
 					.Because("the order of a hash set depends on the randomized hash codes of strings, so it is sorted");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldWriteTheObjectCompletelyAndIndented()
 			{
 				InMemorySnapshotStore store = new();
@@ -44,7 +44,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           SnapshotOrder {
 				                                             Created = 2026-10-17T09:30:00.0000000Z,
@@ -74,7 +74,7 @@ public sealed partial class ThatSnapshot
 					.Because("members are written in alphabetical order, nothing is shortened, and the items of a collection in the order it enumerates them");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCurrentCultureIsNotInvariant_ShouldWriteNumbersAndDatesTheSame()
 			{
 				InMemorySnapshotStore store = new();
@@ -88,7 +88,7 @@ public sealed partial class ThatSnapshot
 					async Task Act()
 						=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-					await That(Act).Throws<XunitException>();
+					await That(Act).Throws<FailException>();
 				}
 				finally
 				{
@@ -105,7 +105,7 @@ public sealed partial class ThatSnapshot
 					.Because("the snapshot must not depend on the culture of the machine that runs the test");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectContainsItself_ShouldWriteItAsRecursive()
 			{
 				InMemorySnapshotStore store = new();
@@ -123,7 +123,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           SnapshotNode {
 				                                             Children = [
@@ -139,7 +139,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectDiffers_ShouldShowTheChangedLineAndTheWrittenObject()
 			{
 				InMemorySnapshotStore store = new();
@@ -156,7 +156,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -182,7 +182,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectIsNestedTooDeeply_ShouldFailWithoutRecordingMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -199,7 +199,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -209,7 +209,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectIsNull_ShouldFailWithoutRecordingMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -219,7 +219,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -228,7 +228,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectMatches_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -244,7 +244,7 @@ public sealed partial class ThatSnapshot
 				await That(store.Matches).IsEqualTo(new[] { Id, });
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectIsUsedAgainWithEqualContent_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();
@@ -259,7 +259,7 @@ public sealed partial class ThatSnapshot
 					.Because("another instance with the same content is written the same, so it is the same value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectIsUsedForAnotherValue_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -271,12 +271,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but the snapshot was already used for another value in this test run*").AsWildcard();
 				await That(store.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenObjectIsNegated_ShouldFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -287,7 +287,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -295,7 +295,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_ShouldAcceptTheWrittenObject()
 			{
 				InMemorySnapshotStore store = new();
@@ -306,7 +306,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).Named("pen")
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Accepted snapshot:*").AsWildcard();
 				await That(store.Accepted[Id with { Name = "pen", }]).IsEqualTo("""
 				                                                              SnapshotLine {
@@ -319,7 +319,7 @@ public sealed partial class ThatSnapshot
 					.Because("the accepted snapshot is the written object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMasking_ShouldMaskTheWrittenObject()
 			{
 				InMemorySnapshotStore store = new();
@@ -330,7 +330,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(@"Address = ""[0-9a-f-]{36}""").AsRegex().Mask(@"Address = ""<guid>""");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           SnapshotShipping {
 				                                             Address = "<guid>"
@@ -339,7 +339,7 @@ public sealed partial class ThatSnapshot
 					.Because("the masking applies to the written object, including the quotes of the formatter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaskingGuidsAndDatesGlobally_ShouldMaskTheWrittenObject()
 			{
 				InMemorySnapshotStore store = new();
@@ -354,7 +354,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           SnapshotAudit {
 				                                             Created = {Date_1},
@@ -366,7 +366,7 @@ public sealed partial class ThatSnapshot
 					.Because("the global maskings apply to the written object, and the same Guid keeps its number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAValueType_ShouldWriteIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -376,7 +376,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             1,
@@ -386,7 +386,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAnObjectHoldingAString_ShouldWriteItInQuotes()
 			{
 				InMemorySnapshotStore store = new();
@@ -396,14 +396,14 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("\"line 1\\nline 2\"")
 					.Because("the static type decides, and only a string subject is compared as raw text");
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenSubjectIsAString_ShouldCompareTheRawText(bool isNullableString)
 			{
 				InMemorySnapshotStore store = new();
@@ -423,7 +423,7 @@ public sealed partial class ThatSnapshot
 					}
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("line 1\nline 2")
 					.Because("a string subject is compared as raw text, without quotes and escaping");
 			}

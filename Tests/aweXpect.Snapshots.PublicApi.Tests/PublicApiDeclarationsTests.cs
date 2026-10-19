@@ -117,12 +117,12 @@ public sealed partial class PublicApiDeclarationsTests
 	                                        }
 	                                        """;
 
-	[Theory]
-	[InlineData("11.0.0-preview.7.26381.103", "11.0.0-preview.7.26381.103")]
-	[InlineData("11.0.0-preview.7.26381.103,11.0.0-rc.1.26420.101", "11.0.0-rc.1.26420.101")]
-	[InlineData("11.0.0-preview.2.26101.1,11.0.0-preview.10.26401.1", "11.0.0-preview.10.26401.1")]
-	[InlineData("11.0.0-rc.2.26501.1,11.0.0,11.0.0-preview.7.26381.103", "11.0.0")]
-	[InlineData("11.0.10,11.0.9", "11.0.10")]
+	[Test]
+	[Arguments("11.0.0-preview.7.26381.103", "11.0.0-preview.7.26381.103")]
+	[Arguments("11.0.0-preview.7.26381.103,11.0.0-rc.1.26420.101", "11.0.0-rc.1.26420.101")]
+	[Arguments("11.0.0-preview.2.26101.1,11.0.0-preview.10.26401.1", "11.0.0-preview.10.26401.1")]
+	[Arguments("11.0.0-rc.2.26501.1,11.0.0,11.0.0-preview.7.26381.103", "11.0.0")]
+	[Arguments("11.0.10,11.0.9", "11.0.10")]
 	public async Task FindReferencePack_ShouldReturnTheHighestPack(string installed, string expected)
 	{
 		string packs = CreatePacks("11.0", installed.Split(','));
@@ -133,7 +133,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("a release ranks above its previews and pre-release labels compare their numbers numerically");
 	}
 
-	[Fact]
+	[Test]
 	public async Task FindReferencePack_WhenNoPackOfTheVersionIsInstalled_ShouldReturnNull()
 	{
 		string packs = CreatePacks("10.0", "10.0.7", "10.0.0-rc.2.25502.107");
@@ -143,7 +143,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FindReferencePack_WhenThePackHasNoReferenceAssemblies_ShouldSkipIt()
 	{
 		string packs = CreatePacks("11.0", "11.0.0-preview.7.26381.103");
@@ -154,7 +154,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).IsEqualTo(Path.Combine(packs, "11.0.0-preview.7.26381.103", "ref", "net11.0"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteTheParametersOnASingleLineByDefault()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -170,7 +170,7 @@ public sealed partial class PublicApiDeclarationsTests
 			              "[System.Runtime.CompilerServices.CallerMemberName] string name = \"\") where T : class;\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAMethod()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -185,7 +185,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the modifiers, attributes and default values stay with their parameter and the constraints on the last line");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAnExtensionMethod()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -197,7 +197,7 @@ public sealed partial class PublicApiDeclarationsTests
 		                            "            int count) { }\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAConstructor()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -209,7 +209,7 @@ public sealed partial class PublicApiDeclarationsTests
 		                            "            string b) { }\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAnOperator()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -221,7 +221,7 @@ public sealed partial class PublicApiDeclarationsTests
 		                            "            Library.Api right) { }\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfADelegate()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -233,7 +233,7 @@ public sealed partial class PublicApiDeclarationsTests
 		                            "        [System.Runtime.CompilerServices.CallerMemberName] string name = \"\") where T : class;\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldWriteThemOnSeparateLinesOfAnIndexer()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -245,7 +245,7 @@ public sealed partial class PublicApiDeclarationsTests
 		                            "            string b = \"x\"] { get; }\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldKeepASingleParameterOnTheSameLine()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -260,7 +260,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.And.Contains("\n        public void None() { }\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldIndentThemRelativeToTheDeclaration()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", ParametersSource));
@@ -279,7 +279,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("a nested type and the global namespace indent their members differently");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithParametersOnSeparateLines_ShouldOnlySplitTheParameters()
 	{
 		Assembly assembly = typeof(Album).Assembly;
@@ -307,7 +307,7 @@ public sealed partial class PublicApiDeclarationsTests
 	private static Regex ParameterLinesRegex() => new(@"([(\[])\n( +)((?:.*,\n\2)*)");
 #endif
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteTheAttributesOfTheLibrary()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -322,7 +322,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the tests that exclude attributes would otherwise pass without excluding anything");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldNotWriteInternalAttributes()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -333,7 +333,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("consumers cannot see an internal attribute");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteInternalAttributesThatCompilersRead()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -344,7 +344,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("compilers read a polyfilled attribute by its name, so it changes how consumers compile");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteInternalFeatureSwitchAttributes()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
@@ -377,7 +377,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("trim and AOT analyzers read polyfilled feature switch attributes by their name");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringAnAttribute_ShouldExcludeItEverywhere()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -388,7 +388,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the attribute is excluded on the assembly, members, return values, accessors and parameters");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringAnAttributeByType_ShouldExcludeIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -398,7 +398,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("System.Obsolete");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringANestedAttribute_ShouldExcludeIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -409,7 +409,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("[Library.Outer.Nested]");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringAGenericAttribute_ShouldExcludeItWithAnyTypeArguments()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -420,7 +420,7 @@ public sealed partial class PublicApiDeclarationsTests
 	}
 
 #if NET
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringAGenericAttributeByType_ShouldExcludeItWithAnyTypeArguments()
 	{
 		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly,
@@ -431,7 +431,7 @@ public sealed partial class PublicApiDeclarationsTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringIndexerName_ShouldNotWriteIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", AttributesSource));
@@ -442,7 +442,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("IndexerName");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringTypeForwardedTo_ShouldNotWriteForwardedTypes()
 	{
 		FileInfo library = WriteForwardingLibrary();
@@ -453,7 +453,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("TypeForwardedTo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteTheAttributesThatAreStoredAsMetadataFlags()
 	{
 		FileInfo library = WritePseudoAttributesLibrary();
@@ -493,7 +493,7 @@ public sealed partial class PublicApiDeclarationsTests
 			         "arguments that differ from a plain [DllImport(\"x\")]");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldNotWriteSerializableForRecords()
 	{
 		FileInfo library = WritePseudoAttributesLibrary();
@@ -508,7 +508,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the compiler does not mark a record as serializable unless it declares [Serializable]");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringSerializable_ShouldNotWriteIt()
 	{
 		FileInfo library = WritePseudoAttributesLibrary();
@@ -518,7 +518,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("Serializable").And.Contains("public class Payload");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringDllImport_ShouldNotWriteIt()
 	{
 		FileInfo library = WritePseudoAttributesLibrary();
@@ -529,7 +529,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("DllImport").And.Contains("public static extern void Beep();");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringOptional_ShouldNotWriteIt()
 	{
 		FileInfo library = WritePseudoAttributesLibrary();
@@ -540,7 +540,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).Contains("Configure(int retries, int depth = 3, int timeout = 5,");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteAllTypesOfTheLibrary()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -553,7 +553,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the tests that filter types would otherwise pass without filtering anything");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringANamespace_ShouldIgnoreItAndItsSubNamespacesOnly()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -566,7 +566,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the namespace matches whole segments");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringATypeByName_ShouldIgnoreIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -576,7 +576,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("class Legacy").And.Contains("class Api");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringANestedType_ShouldKeepItsContainingType()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -586,7 +586,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("class Inner").And.Contains("class Outer");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringAGenericType_ShouldIgnoreItWithAnyTypeArguments()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -596,7 +596,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("class Box<T>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringATypeByType_ShouldIgnoreItWithItsNestedTypes()
 	{
 		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o.Ignoring.Type<Album>());
@@ -605,7 +605,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.And.Contains("record Artist");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithinANamespace_ShouldOnlyWriteItAndItsSubNamespaces()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -618,7 +618,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.And.DoesNotContain("namespace Library\n").And.DoesNotContain("namespace Other\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithinSeveralRestrictions_ShouldWriteTheTypesWithinAnyOfThem()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -630,7 +630,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.And.DoesNotContain("class Api").And.DoesNotContain("namespace Library.Generated\n");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WithinAType_ShouldOnlyWriteItWithItsNestedTypes()
 	{
 		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o.Within.Type<Album>());
@@ -639,7 +639,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.And.DoesNotContain("record Artist").And.DoesNotContain("public class GlobalType");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringWithinARestriction_ShouldIgnoreIt()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", TypesSource));
@@ -652,7 +652,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("ignoring wins over a restriction");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenFilteringNamespaces_ShouldAlsoFilterForwardedTypes()
 	{
 		FileInfo library = WriteForwardingLibrary();
@@ -662,7 +662,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("TypeForwardedTo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenTypeIsNested_ShouldThrowArgumentException()
 	{
 		void Act()
@@ -674,7 +674,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteNumbersIndependentlyOfTheCurrentCulture()
 	{
 		Assembly assembly = typeof(Album).Assembly;
@@ -697,7 +697,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("sv-SE writes negative numbers with the minus sign U+2212, e.g. the value of Mood.Sad");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldIncludeForwardedTypes()
 	{
 		FileInfo library = WriteForwardingLibrary();
@@ -713,7 +713,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("removing a forwarded type breaks the consumers that were compiled against the assembly");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
 	{
 		FileInfo library = WriteForwardingLibrary();
@@ -723,7 +723,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("TypeForwardedTo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringForwardedTypesOfAnAssembly_ShouldNotIncludeThem()
 	{
 		Assembly assembly = Assembly.LoadFile(WriteForwardingLibrary().FullName);
@@ -733,7 +733,7 @@ public sealed partial class PublicApiDeclarationsTests
 		await That(result).DoesNotContain("TypeForwardedTo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_ShouldWriteTheCompilerGeneratedMembersOfRecords()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", RecordsSource));
@@ -747,7 +747,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the test that ignores compiler-generated members would otherwise pass without ignoring anything");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringCompilerGeneratedMembers_ShouldOnlyWriteTheDeclaredMembersOfRecords()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", RecordsSource));
@@ -776,7 +776,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the compiler marks only the accessors of positional properties as compiler-generated, and the primary constructor and a hand-written override are declared");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenIgnoringCompilerGeneratedMembers_ShouldKeepAutoPropertiesAndEvents()
 	{
 		FileInfo library = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
@@ -798,7 +798,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the compiler marks only the accessors and backing fields of auto-properties and field-like events");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAReferenceIsMissing_ShouldThrowInvalidOperationException()
 	{
 		byte[] dependency = Compile("Dependency", "2.0.0.0", DependencySource);
@@ -814,7 +814,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAReferenceIsAPackageOfTheLibrary_ShouldResolveItFromTheNuGetPackages()
 	{
 		FileInfo library = new(typeof(PublicApiDeclarationsTests).Assembly
@@ -827,7 +827,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("the build output of the library does not contain System.Text.Json 10.0, which it references");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAReferenceIsOnlyFoundInALowerVersion_ShouldThrowInvalidOperationException()
 	{
 		byte[] dependency = Compile("Dependency", "2.0.0.0", DependencySource);
@@ -846,7 +846,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("a lower version may lack types of the public API, e.g. an older .NET than the assembly targets");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAssemblyIsNotLoadedFromAFile_ShouldThrowArgumentException()
 	{
 		AssemblyBuilder assembly =
@@ -860,7 +860,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAssemblyIsNotLoadedFromAFile_ShouldTraceTheException()
 	{
 		AssemblyBuilder assembly =
@@ -868,13 +868,13 @@ public sealed partial class PublicApiDeclarationsTests
 		RecordingTraceWriter traceWriter = new();
 		using CustomizationLifetime _ = Customize.aweXpect.EnableTracing(traceWriter);
 
-		Exception? exception = Record.Exception(() => PublicApiDeclarations.GenerateFrom(assembly));
+		Exception? exception = Catch.Exception(() => PublicApiDeclarations.GenerateFrom(assembly));
 
 		await That(exception).IsNotNull();
 		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAReferenceIsMissing_ShouldTraceTheException()
 	{
 		byte[] dependency = Compile("Dependency", "2.0.0.0", DependencySource);
@@ -883,13 +883,13 @@ public sealed partial class PublicApiDeclarationsTests
 		RecordingTraceWriter traceWriter = new();
 		using CustomizationLifetime _ = Customize.aweXpect.EnableTracing(traceWriter);
 
-		Exception? exception = Record.Exception(() => PublicApiDeclarations.GenerateFrom(library));
+		Exception? exception = Catch.Exception(() => PublicApiDeclarations.GenerateFrom(library));
 
 		await That(exception).IsNotNull();
 		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAssemblyIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -900,7 +900,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.WithMessage("The 'assembly' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenAssemblyFileIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -911,7 +911,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.WithMessage("The 'assemblyFile' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenOptionsOfAnAssemblyAreNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -922,7 +922,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.WithMessage("The 'options' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenOptionsOfAFileAreNull_ShouldThrowArgumentNullException()
 	{
 		FileInfo file = new(typeof(Album).Assembly.Location);
@@ -935,7 +935,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.WithMessage("The 'options' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenFileIsAReferenceAssembly_ShouldGenerateThePublicApiOfTheImplementation()
 	{
 		byte[] dependency = Compile("Dependency", "1.0.0.0", DependencySource);
@@ -951,7 +951,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.Because("a reference assembly, which cannot be loaded, has the same public API as its implementation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenGivenAFile_ShouldNotLoadTheAssembly()
 	{
 		string name = $"Unloaded{Guid.NewGuid():N}";
@@ -963,7 +963,7 @@ public sealed partial class PublicApiDeclarationsTests
 			.DoesNotContain(name);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateFrom_WhenGivenTheFileOfAnAssembly_ShouldGenerateTheSamePublicApiAsForTheAssembly()
 	{
 		Assembly assembly = typeof(Album).Assembly;

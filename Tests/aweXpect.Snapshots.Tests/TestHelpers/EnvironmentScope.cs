@@ -8,8 +8,8 @@ namespace aweXpect.Snapshots.Tests.TestHelpers;
 ///     afterwards.
 /// </summary>
 /// <remarks>
-///     The environment is shared by the whole process, so tests that use it belong to the
-///     <see cref="EnvironmentCollection" />, which does not run in parallel with other tests.
+///     The environment is shared by the whole process, so tests that use it are marked with
+///     <see cref="NotInParallelAttribute" />, which does not run them in parallel with other tests.
 /// </remarks>
 internal sealed class EnvironmentScope : IDisposable
 {
@@ -44,6 +44,3 @@ internal sealed class EnvironmentScope : IDisposable
 		}
 	}
 }
-
-[CollectionDefinition(nameof(EnvironmentCollection), DisableParallelization = true)]
-public sealed class EnvironmentCollection;

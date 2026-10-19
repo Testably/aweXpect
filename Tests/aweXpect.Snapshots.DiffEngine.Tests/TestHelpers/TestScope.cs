@@ -46,8 +46,12 @@ internal sealed class TestScope : IDisposable
 	{
 		_reporters.Dispose();
 		Directory.Delete(Path, true);
-		File.Delete(TemporaryReceivedFile);
-		File.Delete(TemporarySnapshotFile);
+		// File.Delete throws when the directory is missing, which only a mismatch outside of the file store creates.
+		if (Directory.Exists(DiffEngineReporter.TemporaryDirectory))
+		{
+			File.Delete(TemporaryReceivedFile);
+			File.Delete(TemporarySnapshotFile);
+		}
 		foreach (KeyValuePair<string, string?> originalValue in _originalValues)
 		{
 			Environment.SetEnvironmentVariable(originalValue.Key, originalValue.Value);

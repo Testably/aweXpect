@@ -10,7 +10,7 @@ namespace aweXpect.Snapshots.Orphans.Tests;
 /// </summary>
 public sealed class DiskStoreTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenEverySnapshotIsUsed_ShouldSucceed()
 	{
 		using TemporaryProject project = new();
@@ -23,7 +23,7 @@ public sealed class DiskStoreTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenASnapshotIsNotUsed_ShouldReportItsFileWithoutDeletingIt()
 	{
 		using TemporaryProject project = new();
@@ -32,7 +32,7 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			                {project.GetFullPath("AlbumTests.Describes.awexpect-snapshot.txt")}
@@ -40,7 +40,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists("AlbumTests.Describes.awexpect-snapshot.txt")).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNamedSnapshotsWithEscapedNamesAreUsed_ShouldReadTheirNamesBack()
 	{
 		using TemporaryProject project = new();
@@ -57,7 +57,7 @@ public sealed class DiskStoreTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSnapshotsUniqueForThisEnvironmentAreUsed_ShouldReadTheirVariantsBack()
 	{
 		using TemporaryProject project = new();
@@ -75,7 +75,7 @@ public sealed class DiskStoreTests
 			.Because("an '@' in a name is escaped, so the variant starts at the first '@'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenASnapshotUniqueForThisEnvironmentIsNotUsed_ShouldReportAndDeleteIt()
 	{
 		using TemporaryProject project = new();
@@ -85,7 +85,7 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			                {project.GetFullPath($"AlbumTests.Describes@{TemporaryProject.Variant}.awexpect-snapshot.txt")} (deleted)
@@ -93,7 +93,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists($"AlbumTests.Describes@{TemporaryProject.Variant}.awexpect-snapshot.txt")).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTestFileOfASnapshotUniqueForThisEnvironmentWasDeleted_ShouldReportAndDeleteIt()
 	{
 		using TemporaryProject project = new();
@@ -102,17 +102,17 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*1 snapshot was not used by any test:*(deleted)").AsWildcard()
 			.Because("the dots in the target framework are part of the variant, not of the method or the name");
 		await That(project.Exists($"AlbumTests.Describes.Let It Be@{TemporaryProject.Variant}.awexpect-snapshot.txt")).IsFalse();
 	}
 
-	[Theory]
-	[InlineData("AlbumTests.Describes@net35.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes@beos.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes@{variant}@sparc.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes.Abbey Road@net35@{variant}.awexpect-snapshot.pending.txt")]
+	[Test]
+	[Arguments("AlbumTests.Describes@net35.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes@beos.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes@{variant}@sparc.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes.Abbey Road@net35@{variant}.awexpect-snapshot.pending.txt")]
 	public async Task WhenASnapshotIsUniqueForAnotherEnvironment_ShouldNeverReportIt(string fileName)
 	{
 		fileName = fileName.Replace("{variant}", TemporaryProject.Variant);
@@ -128,7 +128,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists(fileName)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSnapshotsWithAnotherExtensionAreUsed_ShouldReadTheirExtensionsBack()
 	{
 		using TemporaryProject project = new();
@@ -146,7 +146,7 @@ public sealed class DiskStoreTests
 			.Because("the pending file is read back as the pending file of the snapshot, not as a snapshot with the extension 'pending.json'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenASnapshotWithAnotherExtensionIsNotUsed_ShouldReportAndDeleteItAndItsPendingFile()
 	{
 		using TemporaryProject project = new();
@@ -159,7 +159,7 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			                {project.GetFullPath("AlbumTests.Describes.awexpect-snapshot.json")} (deleted)
@@ -170,7 +170,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists("AlbumTests.Describes.awexpect-snapshot.txt")).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBinarySnapshotsAreUsed_ShouldReadThemBack()
 	{
 		using TemporaryProject project = new();
@@ -190,7 +190,7 @@ public sealed class DiskStoreTests
 			.Because("a binary snapshot is listed like any other snapshot with its extension");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenABinarySnapshotIsNotUsed_ShouldReportAndDeleteItAndItsPendingFile()
 	{
 		using TemporaryProject project = new();
@@ -201,7 +201,7 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			                {project.GetFullPath("AlbumTests.Cover.awexpect-snapshot.png")} (deleted)
@@ -210,7 +210,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists("AlbumTests.Cover.awexpect-snapshot.pending.png")).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOnlyAPendingFileWithAnotherExtensionIsLeft_ShouldReportAndDeleteIt()
 	{
 		using TemporaryProject project = new();
@@ -222,14 +222,14 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"*1 snapshot was not used by any test:*  {project.GetFullPath("AlbumTests.Describes.awexpect-snapshot.pending.xml")} (deleted)")
 			.AsWildcard();
 		await That(project.Exists("AlbumTests.Describes.awexpect-snapshot.pending.xml")).IsFalse();
 		await That(project.Exists("AlbumTests.Describes.awexpect-snapshot.txt")).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheExtensionIsSnapshot_ShouldReadItBack()
 	{
 		using TemporaryProject project = new();
@@ -244,7 +244,7 @@ public sealed class DiskStoreTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheNameIsTheMarker_ShouldReadItBack()
 	{
 		using TemporaryProject project = new();
@@ -260,7 +260,7 @@ public sealed class DiskStoreTests
 			.Because("only the last marker before the extension separates the name from the extension");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheClassNameContainsDots_ShouldReadTheMethodBack()
 	{
 		using TemporaryProject project = new();
@@ -273,7 +273,7 @@ public sealed class DiskStoreTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSeveralTestFilesFit_AndTheLongerOneUsesTheSnapshot_ShouldSucceed()
 	{
 		using TemporaryProject project = new();
@@ -287,7 +287,7 @@ public sealed class DiskStoreTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSeveralTestFilesFit_AndTheShorterOneUsesTheSnapshot_ShouldSucceed()
 	{
 		using TemporaryProject project = new();
@@ -302,7 +302,7 @@ public sealed class DiskStoreTests
 			.Because("the method 'Tracks' of 'AlbumTests.cs' with the name 'Count' uses the same file");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOnlyAPendingFileIsLeft_ShouldReportAndDeleteIt()
 	{
 		using TemporaryProject project = new();
@@ -312,13 +312,13 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"*  {project.GetFullPath("AlbumTests.Describes.awexpect-snapshot.pending.txt")} (deleted)")
 			.AsWildcard();
 		await That(project.Exists("AlbumTests.Describes.awexpect-snapshot.pending.txt")).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAcceptingAll_ShouldDeleteTheSnapshotAndItsPendingFileAndStillFail()
 	{
 		using TemporaryProject project = new();
@@ -332,7 +332,7 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
 			                {project.GetFullPath("AlbumTests.Describes.Let It Be.awexpect-snapshot.txt")} (deleted)
@@ -342,7 +342,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists("AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt")).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheTestFileWasDeleted_ShouldReportAndDeleteItsSnapshots()
 	{
 		using TemporaryProject project = new();
@@ -352,25 +352,25 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*2 snapshots were not used by any test:*").AsWildcard();
 		await That(project.Exists("AlbumTests.Describes.awexpect-snapshot.txt")).IsFalse();
 		await That(project.Exists("AlbumTests.Describes.Let It Be.awexpect-snapshot.txt")).IsFalse();
 	}
 
-	[Theory]
-	[InlineData("AlbumTests.Describes.v1.2.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes%ZZ.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes%3a.awexpect-snapshot.txt")]
-	[InlineData("Describes.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes@.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes@@x64.awexpect-snapshot.txt")]
-	[InlineData("AlbumTests.Describes.awexpect-snapshot")]
-	[InlineData("AlbumTests.Describes.awexpect-snapshot.pending")]
-	[InlineData("AlbumTests.Describes.awexpect-snapshot.pending.pending")]
-	[InlineData("AlbumTests.Describes.awexpect-snapshot.j%on")]
-	[InlineData("AlbumTests.Describes.awexpect-snapshot.js on")]
-	[InlineData("AlbumTests.Describes.json")]
+	[Test]
+	[Arguments("AlbumTests.Describes.v1.2.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes%ZZ.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes%3a.awexpect-snapshot.txt")]
+	[Arguments("Describes.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes@.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes@@x64.awexpect-snapshot.txt")]
+	[Arguments("AlbumTests.Describes.awexpect-snapshot")]
+	[Arguments("AlbumTests.Describes.awexpect-snapshot.pending")]
+	[Arguments("AlbumTests.Describes.awexpect-snapshot.pending.pending")]
+	[Arguments("AlbumTests.Describes.awexpect-snapshot.j%on")]
+	[Arguments("AlbumTests.Describes.awexpect-snapshot.js on")]
+	[Arguments("AlbumTests.Describes.json")]
 	public async Task WhenAFileWasNotWrittenByTheDiskStore_ShouldNeverListIt(string fileName)
 	{
 		using TemporaryProject project = new();
@@ -384,10 +384,10 @@ public sealed class DiskStoreTests
 		await That(project.Exists(fileName)).IsTrue();
 	}
 
-	[Theory]
-	[InlineData("AlbumTests.Describes.snapshot.txt")]
-	[InlineData("AlbumTests.Describes.snapshot.pending.txt")]
-	[InlineData("AlbumTests.Describes.Abbey Road@net8.0.snapshot.json")]
+	[Test]
+	[Arguments("AlbumTests.Describes.snapshot.txt")]
+	[Arguments("AlbumTests.Describes.snapshot.pending.txt")]
+	[Arguments("AlbumTests.Describes.Abbey Road@net8.0.snapshot.json")]
 	public async Task WhenAFileHasTheOldSnapshotMarker_ShouldNeverListIt(string fileName)
 	{
 		using TemporaryProject project = new();
@@ -402,11 +402,11 @@ public sealed class DiskStoreTests
 		await That(project.Exists(fileName)).IsTrue();
 	}
 
-	[Theory]
-	[InlineData("bin")]
-	[InlineData("obj")]
-	[InlineData(".vs")]
-	[InlineData("Other")]
+	[Test]
+	[Arguments("bin")]
+	[Arguments("obj")]
+	[Arguments(".vs")]
+	[Arguments("Other")]
 	public async Task WhenASnapshotIsOutsideOfTheProject_ShouldNeverListIt(string directory)
 	{
 		using TemporaryProject project = new();
@@ -422,7 +422,7 @@ public sealed class DiskStoreTests
 		await That(project.Exists($"{directory}/AlbumTests.Describes.awexpect-snapshot.txt")).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenASnapshotIsInASubdirectory_ShouldListIt()
 	{
 		using TemporaryProject project = new();
@@ -433,12 +433,12 @@ public sealed class DiskStoreTests
 
 		async Task Act() => await OrphanedSnapshots.CheckAsync(true);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"*1 snapshot was not used by any test:*  {project.GetFullPath("Albums/AlbumTests.Unused.awexpect-snapshot.txt")}")
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheBuildIsDeterministic_ShouldMatchTheListedSnapshotsWithTheUsedOnes()
 	{
 		using TemporaryProject project = new("/_1/");

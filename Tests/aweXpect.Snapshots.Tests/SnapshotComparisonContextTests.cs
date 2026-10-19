@@ -8,7 +8,7 @@ public sealed class SnapshotComparisonContextTests
 {
 	private static readonly SnapshotId Id = new("/src/AlbumTests.cs", "Describes");
 
-	[Fact]
+	[Test]
 	public async Task FromText_ShouldEncodeTheTextLikeTheStore()
 	{
 		SnapshotContent content = SnapshotContent.FromText("Abbey Road");
@@ -19,7 +19,7 @@ public sealed class SnapshotComparisonContextTests
 			.Because("a store keeps text as UTF-8 without a byte order mark and with an additional line break");
 	}
 
-	[Fact]
+	[Test]
 	public async Task FromBytes_ShouldBeBinaryData()
 	{
 		byte[] bytes = [0x50, 0x4E, 0x47,];
@@ -31,7 +31,7 @@ public sealed class SnapshotComparisonContextTests
 		await That(content.Text).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FromText_WhenNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => SnapshotContent.FromText(null!);
@@ -39,7 +39,7 @@ public sealed class SnapshotComparisonContextTests
 		await That(Act).Throws<ArgumentNullException>().WithParamName("text");
 	}
 
-	[Fact]
+	[Test]
 	public async Task FromBytes_WhenNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => SnapshotContent.FromBytes(null!);
@@ -47,10 +47,10 @@ public sealed class SnapshotComparisonContextTests
 		await That(Act).Throws<ArgumentNullException>().WithParamName("bytes");
 	}
 
-	[Theory]
-	[InlineData("id")]
-	[InlineData("snapshot")]
-	[InlineData("actual")]
+	[Test]
+	[Arguments("id")]
+	[Arguments("snapshot")]
+	[Arguments("actual")]
 	public async Task Constructor_WhenAnArgumentIsNull_ShouldThrowArgumentNullException(string parameterName)
 	{
 		SnapshotContent content = SnapshotContent.FromText("Abbey Road");
@@ -63,7 +63,7 @@ public sealed class SnapshotComparisonContextTests
 		await That(Act).Throws<ArgumentNullException>().WithParamName(parameterName);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Constructor_ShouldAllowTestingAComparerWithoutASnapshot()
 	{
 		FakeSnapshotComparer comparer = new(context => context.Actual.Text!.Equals(context.Snapshot.Text,

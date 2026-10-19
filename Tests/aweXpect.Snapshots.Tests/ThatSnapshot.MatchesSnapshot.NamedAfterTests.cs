@@ -15,7 +15,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task ShouldNameTheSnapshotAfterTheNamesAndValuesOfTheArguments()
 			{
 				InMemorySnapshotStore store = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName).NamedAfter(title, year);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that "foo"
 					             matches the snapshot "MyTests.MyTest.title=Abbey Road_year=1969",
@@ -41,7 +41,7 @@ public sealed partial class ThatSnapshot
 				}).InAnyOrder();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_ShouldAcceptTheNamedSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -52,14 +52,14 @@ public sealed partial class ThatSnapshot
 					=> await That("id=42").MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text("42").Mask("<id>").NamedAfter(title).Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
 					[Id with { Name = "title=Let It Be", }] = "id=<id>",
 				});
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArgumentIsAMemberAccess_ShouldUseTheNameOfTheMember()
 			{
 				Album album = new("Abbey Road", 1969);
@@ -69,7 +69,7 @@ public sealed partial class ThatSnapshot
 					"the name of a member access is the one that nameof returns, so that it holds no dots");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArgumentIsAnotherExpression_ShouldUseTheExpression()
 			{
 				int year = 1969;
@@ -79,7 +79,7 @@ public sealed partial class ThatSnapshot
 					"only a name or member access has a shorter name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArgumentIsFormattable_ShouldUseTheInvariantCulture()
 			{
 				CultureInfo previousCulture = CultureInfo.CurrentCulture;
@@ -99,7 +99,7 @@ public sealed partial class ThatSnapshot
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArgumentIsNull_ShouldWriteNull()
 			{
 				string? title = null;
@@ -109,7 +109,7 @@ public sealed partial class ThatSnapshot
 					"a missing value has no text of its own");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsEmpty_ShouldNameTheArgumentByItsPosition()
 			{
 				string title = "Abbey Road";
@@ -120,7 +120,7 @@ public sealed partial class ThatSnapshot
 					"a compiler before C# 10 does not set the expressions");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionSpansSeveralLines_ShouldCollapseTheWhitespace()
 			{
 				int year = 1969;
@@ -131,7 +131,7 @@ public sealed partial class ThatSnapshot
 					"the line ending of the test file can differ between checkouts");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedAfterFourArguments_ShouldUseAllOfThem()
 			{
 				string artist = "The Beatles";
@@ -144,7 +144,7 @@ public sealed partial class ThatSnapshot
 					"each argument adds its name and value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedAfterOneArgument_ShouldUseIt()
 			{
 				string title = "Abbey Road";
@@ -154,7 +154,7 @@ public sealed partial class ThatSnapshot
 					"the name of the argument is taken from the call");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedAfterSeveralStrings_ShouldNotTakeAStringAsTheExpressionOfAnotherArgument()
 			{
 				string artist = "AC/DC";
@@ -169,7 +169,7 @@ public sealed partial class ThatSnapshot
 					"the third string is an argument and not the expression of the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedAfterThreeArguments_ShouldUseAllOfThem()
 			{
 				string title = "Let It Be";
@@ -181,7 +181,7 @@ public sealed partial class ThatSnapshot
 					"each argument adds its name and value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNamedBefore_ShouldReplaceTheName()
 			{
 				string title = "Abbey Road";
@@ -191,7 +191,7 @@ public sealed partial class ThatSnapshot
 					"the last name wins, like for .Named(…)");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsUsedForAnotherValueWithOtherArguments_ShouldSucceed()
 			{
 				InMemorySnapshotStore store = new();

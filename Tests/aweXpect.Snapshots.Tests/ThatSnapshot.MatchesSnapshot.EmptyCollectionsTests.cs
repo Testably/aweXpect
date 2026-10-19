@@ -14,7 +14,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task IgnoringEmptyCollections_ShouldLeaveOutEmptyCollectionMembers()
 			{
 				InMemorySnapshotStore store = new();
@@ -25,7 +25,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WhichAreEmptyCollections().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleShelf {
 				                                             Empty = "",
@@ -38,7 +38,7 @@ public sealed partial class ThatSnapshot
 					.Because("empty arrays, lists, sets and dictionaries are left out, also in an object member, while null and an empty string are kept");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutIgnoringEmptyCollections_ShouldKeepThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -52,12 +52,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Artist").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Tracks = []*").AsWildcard()
 					.Because("leaving out empty collections is opt-in");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringEmptyCollections_ShouldKeepEmptyItemsAndDictionaryValues()
 			{
 				InMemorySnapshotStore store = new();
@@ -68,7 +68,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WhichAreEmptyCollections().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleBoxSet {
 				                                             Bonus = {
@@ -85,7 +85,7 @@ public sealed partial class ThatSnapshot
 					.Because("only members are left out, so that the items keep their place");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringEmptyCollections_WhenASequenceDoesNotKnowItsCount_ShouldKeepItAndEnumerateItOnce()
 			{
 				InMemorySnapshotStore store = new();
@@ -101,7 +101,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WhichAreEmptyCollections().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleSequences {
 				                                             Filtered = [],
@@ -112,7 +112,7 @@ public sealed partial class ThatSnapshot
 				await That(sequence.Enumerations).IsEqualTo(1);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringEmptyCollections_WhenAGetterThrows_ShouldWriteTheException()
 			{
 				InMemorySnapshotStore store = new();
@@ -123,12 +123,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WhichAreEmptyCollections().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
 					.Because("a value that cannot be read is written with its exception by the formatter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalRules_ShouldLeaveOutEmptyCollections()
 			{
 				InMemorySnapshotStore store = new();
@@ -147,7 +147,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             CoverUrl = "",
@@ -158,7 +158,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringEmptyCollections_WithAnotherFilter_ShouldOnlyLeaveOutTheMatchingMembers()
 			{
 				InMemorySnapshotStore store = new();
@@ -169,7 +169,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().Except(value => value.Name == "List").WhichAreEmptyCollections().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleShelf {
 				                                             Empty = "",
@@ -183,7 +183,7 @@ public sealed partial class ThatSnapshot
 					.Because("the filters before it still apply");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";

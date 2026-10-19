@@ -23,7 +23,7 @@ public sealed partial class ThatSnapshot
 			private static Regex TokenRegex() => new("(token)=\\w+", RegexOptions.IgnoreCase);
 #endif
 
-			[Fact]
+			[Test]
 			public async Task ShouldBeEmptyByDefault()
 			{
 				IReadOnlyList<SnapshotRule> rules = Customize.aweXpect.Snapshots().Rules.Get();
@@ -31,7 +31,7 @@ public sealed partial class ThatSnapshot
 				await That(rules).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheListIsChangedAfterSetting_ShouldKeepTheRulesOfTheSetting()
 			{
 				InMemorySnapshotStore store = new();
@@ -44,12 +44,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<name> Alice")
 					.Because("the setting keeps a copy of the list, so a later change of the list does not affect it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExtendingAnOuterSetting_ShouldApplyBoth()
 			{
 				InMemorySnapshotStore store = new();
@@ -66,11 +66,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("<name> {Guid_1}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalMaskingIsSet_ShouldApplyIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -84,11 +84,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("{Guid_1} {Date_1} {Guid_2}");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalMaskingScopeHasEnded_ShouldNotApplyIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -103,12 +103,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo(subject)
 					.Because("the global rules only apply while they are set");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalRegexMaskingUsesASubstitution_ShouldApplyIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -121,11 +121,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Token=<token>, TOKEN=<token>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalTextMaskingAsRegex_ShouldApplyIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -138,11 +138,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("http://localhost:<port>/albums");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalTextMasking_ShouldInsertTheReplacementLiterally()
 			{
 				InMemorySnapshotStore store = new();
@@ -155,11 +155,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("id=$1");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLocalAndGlobalMaskings_ShouldApplyTheLocalOnesFirst()
 			{
 				InMemorySnapshotStore store = new();
@@ -173,12 +173,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Text(FirstGuid).Mask("<order-id>");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("order <order-id>, customer {Guid_1}")
 					.Because("a specific rule of the expectation goes before a general one for all snapshots");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSeveralGlobalMaskings_ShouldApplyThemInTheirOrder()
 			{
 				InMemorySnapshotStore store = new();
@@ -192,11 +192,11 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("baz");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetToListWithNull_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -207,7 +207,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'value' cannot contain null.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -217,7 +217,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndSubjectIsNull_ShouldStillFail()
 			{
 				InMemorySnapshotStore store = new();
@@ -230,7 +230,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match the snapshot "MyTests.MyTest",
@@ -238,7 +238,7 @@ public sealed partial class ThatSnapshot
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRegexPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -248,7 +248,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("pattern");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTextAsRegexIsInvalid_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -259,7 +259,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'text' is not a valid regex pattern: *").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRegexTemplateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -269,7 +269,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("template");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTextTemplateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -279,7 +279,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("template");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGuidsTemplateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -289,7 +289,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("template");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTextIsEmpty_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -300,7 +300,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("The 'text' cannot be empty.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTextIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()

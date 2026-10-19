@@ -14,7 +14,7 @@ public sealed partial class ThatSnapshot
 		/// <remarks>
 		///     The reporters are never called on a build server, so the tests clear its environment variables.
 		/// </remarks>
-		[Collection(nameof(EnvironmentCollection))]
+		[NotInParallel]
 		public sealed class ReporterTests : IDisposable
 		{
 			private readonly EnvironmentScope _environment = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatSnapshot
 
 			public void Dispose() => _environment.Dispose();
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotIsMissing_ShouldReportTheRecordedMismatchWithoutSnapshot()
 			{
 				InMemorySnapshotStore store = new();
@@ -35,7 +35,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
 				await That(mismatch.Id).IsEqualTo(Id);
 				await That(mismatch.Store).IsSameAs(store);
@@ -47,7 +47,7 @@ public sealed partial class ThatSnapshot
 				await That(reporter.Matches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffers_ShouldReportTheSnapshotAndTheMaskedSubject()
 			{
 				InMemorySnapshotStore store = new();
@@ -60,7 +60,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName).For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
 				await That(mismatch.Actual.Text).IsEqualTo("id {Guid_1}")
 					.Because("the reporter gets the value that was compared");
@@ -69,7 +69,7 @@ public sealed partial class ThatSnapshot
 				await That(mismatch.Snapshot.Bytes).IsSameAs(store.SnapshotBytes[Id]);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBinarySnapshotDiffers_ShouldReportTheBytesWithoutText()
 			{
 				SnapshotId id = Id with
@@ -86,7 +86,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(id.SourceFile, id.MemberName).WithExtension("bin");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
 				await That(mismatch.Id).IsEqualTo(id);
 				await That(mismatch.Actual.IsText).IsFalse();
@@ -96,7 +96,7 @@ public sealed partial class ThatSnapshot
 				await That(mismatch.Snapshot.Bytes).IsEqualTo([1, 2,]);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotDiffers_ShouldReportAfterTheMismatchWasRecorded()
 			{
 				InMemorySnapshotStore store = new();
@@ -112,12 +112,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(isRecorded).IsTrue()
 					.Because("a diff tool needs the recorded mismatch, e.g. the pending file");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRecordingTheMismatchThrows_ShouldNotReport()
 			{
 				InMemorySnapshotStore store = new()
@@ -132,13 +132,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*could not be written: disk full").AsWildcard();
 				await That(reporter.Mismatches).IsEmpty()
 					.Because("there is no recorded mismatch to review");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_ShouldNotReport()
 			{
 				InMemorySnapshotStore store = new();
@@ -152,12 +152,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reporter.Mismatches).IsEmpty()
 					.Because("an accepted change needs no review");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNew_AndSnapshotIsMissing_ShouldNotReport()
 			{
 				InMemorySnapshotStore store = new();
@@ -170,12 +170,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.New);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reporter.Mismatches).IsEmpty()
 					.Because("the missing snapshot was accepted");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAcceptingNew_AndSnapshotDiffers_ShouldReportTheRecordedMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -189,12 +189,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.New);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reporter.Mismatches).HasSingle()
 					.Because("accepting new snapshots never replaces a different one, which is recorded for review");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccepting_AndAcceptingThrows_ShouldReportTheRecordedMismatch()
 			{
 				InMemorySnapshotStore store = new()
@@ -210,12 +210,12 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.Accepting(SnapshotAcceptance.All);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reporter.Mismatches).HasSingle()
 					.Because("the change was recorded for review instead");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldNotReport()
 			{
 				InMemorySnapshotStore store = new();
@@ -228,12 +228,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.MatchesSnapshot(Id.SourceFile, Id.MemberName));
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reporter.Mismatches).IsEmpty()
 					.Because("a negated snapshot records no mismatch");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOrBranchIsMet_ShouldNotReport()
 			{
 				InMemorySnapshotStore store = new();
@@ -251,7 +251,7 @@ public sealed partial class ThatSnapshot
 					.Because("the whole expectation is met, so no mismatch is recorded");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnapshotMatches_ShouldReportTheMatchBeforeTheStoreRecordsIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -278,7 +278,7 @@ public sealed partial class ThatSnapshot
 				await That(reporter.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerConsidersEqual_ShouldReportAMatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -298,7 +298,7 @@ public sealed partial class ThatSnapshot
 				await That(reporter.Mismatches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerReportsDifference_ShouldReportTheMismatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -312,14 +312,14 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.ComparedWith(FakeSnapshotComparer.Different("louder"));
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
 				await That(mismatch.Snapshot!.Text).IsEqualTo("foo");
 				await That(mismatch.Actual.Text).IsEqualTo("foo");
 				await That(reporter.Matches).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSeveralReporters_ShouldCallThemInOrder()
 			{
 				InMemorySnapshotStore store = new();
@@ -332,13 +332,13 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				store.Snapshots[Id] = "foo";
 				await That(Act).DoesNotThrow();
 				await That(log).IsEqualTo(["first: mismatch", "second: mismatch", "first: match", "second: match",]);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReporterThrowsOnMismatch_ShouldTraceAndIgnoreIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -358,7 +358,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
@@ -372,7 +372,7 @@ public sealed partial class ThatSnapshot
 				await That(traceWriter.Exceptions).Contains(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReporterThrowsOnMatch_ShouldTraceAndIgnoreIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -400,7 +400,7 @@ public sealed partial class ThatSnapshot
 				await That(traceWriter.Exceptions).Contains(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDiskStore_ShouldReportTheFilesOfTheSnapshot()
 			{
 				using SnapshotDirectory directory = new();
@@ -413,7 +413,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
 				IFileSnapshotStore store = await That(mismatch.Store).Is<IFileSnapshotStore>();
 				await That(store.GetPendingFile(mismatch.Id)).IsEqualTo(directory.PendingPath);
@@ -423,7 +423,7 @@ public sealed partial class ThatSnapshot
 				await That(mismatch.Actual.Bytes).IsEqualTo(File.ReadAllBytes(directory.PendingPath));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDiskStore_WhenSnapshotMatches_ShouldReportBeforeThePendingFileIsDeleted()
 			{
 				using SnapshotDirectory directory = new();
@@ -444,7 +444,7 @@ public sealed partial class ThatSnapshot
 				await That(File.Exists(directory.PendingPath)).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDiskStore_SnapshotContent_ShouldHaveTheEncodingOfTheStore()
 			{
 				using SnapshotDirectory directory = new();
@@ -456,7 +456,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				SnapshotMismatch mismatch = await That(reporter.Mismatches).HasSingle();
 				await That(mismatch.Actual.Bytes)
 					.IsEqualTo(new UTF8Encoding(false).GetBytes("foo" + Environment.NewLine))
@@ -465,7 +465,7 @@ public sealed partial class ThatSnapshot
 				await That(mismatch.Snapshot.Text).IsEqualTo("bar");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Reporters_ShouldDefaultToNone()
 			{
 				IReadOnlyList<SnapshotReporter> reporters = Customize.aweXpect.Snapshots().Reporters.Get();
@@ -473,7 +473,7 @@ public sealed partial class ThatSnapshot
 				await That(reporters).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Reporters_ShouldCopyTheList()
 			{
 				List<SnapshotReporter> reporters = [new RecordingReporter(),];
@@ -485,7 +485,7 @@ public sealed partial class ThatSnapshot
 					.Because("changing the list afterwards must not change the setting");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Reporters_WhenSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -495,7 +495,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Reporters_WhenContainingNull_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -505,7 +505,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task DefaultReporter_ShouldDoNothing()
 			{
 				InMemorySnapshotStore store = new();
@@ -515,17 +515,17 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				store.Snapshots[Id] = "foo";
 				await That(Act).DoesNotThrow();
 				await That(store.Mismatches.Keys).IsEqualTo([Id,]);
 			}
 
-			[Theory]
-			[InlineData("CI")]
-			[InlineData("TF_BUILD")]
-			[InlineData("JENKINS_URL")]
-			[InlineData("TEAMCITY_VERSION")]
+			[Test]
+			[Arguments("CI")]
+			[Arguments("TF_BUILD")]
+			[Arguments("JENKINS_URL")]
+			[Arguments("TEAMCITY_VERSION")]
 			public async Task OnBuildServer_ShouldNotReport(string buildServerVariable)
 			{
 				using EnvironmentScope environment = new((buildServerVariable, "true"));
@@ -537,7 +537,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				store.Snapshots[Id] = "foo";
 				await That(Act).DoesNotThrow();
 				await That(reporter.Mismatches.Concat<object>(reporter.Matches)).IsEmpty()
@@ -546,7 +546,7 @@ public sealed partial class ThatSnapshot
 					.Because("the mismatch is still recorded");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutBuildServer_ShouldReport()
 			{
 				using EnvironmentScope environment = new(("CI", "false"));
@@ -558,7 +558,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That("foo").MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(reporter.Mismatches).HasSingle();
 			}
 

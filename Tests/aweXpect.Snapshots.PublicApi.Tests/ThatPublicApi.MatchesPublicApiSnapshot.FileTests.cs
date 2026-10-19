@@ -9,7 +9,7 @@ public sealed partial class ThatPublicApi
 	{
 		public sealed class FileTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldDescribeThePublicApiOfTheAssemblyInTheFile()
 			{
 				FileInfo subject = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
@@ -24,15 +24,15 @@ public sealed partial class ThatPublicApi
 				await That(subject).MatchesPublicApiSnapshot();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeForwardedTypes()
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot();
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsAreNull_ShouldThrowWhenCalled()
 			{
 				FileInfo subject = new("Library.dll");
@@ -47,7 +47,7 @@ public sealed partial class ThatPublicApi
 					.Because("a check while the expectation is evaluated would fail it instead of throwing");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				FileInfo? subject = null;
@@ -55,7 +55,7 @@ public sealed partial class ThatPublicApi
 				async Task Act()
 					=> await That(subject).MatchesPublicApiSnapshot();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a public API which matches the snapshot "*",

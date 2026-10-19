@@ -11,7 +11,7 @@ public sealed partial class ThatSnapshot
 		{
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberDeclaredIn_ShouldOnlyLeaveOutTheMemberOfTheType()
 			{
 				InMemorySnapshotStore store = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Price)).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -47,7 +47,7 @@ public sealed partial class ThatSnapshot
 					.Because("the price of a track is a member of another type");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberDeclaredIn_ShouldLeaveOutTheMemberOfADerivedType()
 			{
 				InMemorySnapshotStore store = new();
@@ -67,7 +67,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.CoverUrl)).Ignore()
 						.For.Members().DeclaredIn<RuleAlbum>().WithName(nameof(RuleAlbum.Tracks)).Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleLiveAlbum {
 				                                             Id = 2,
@@ -77,7 +77,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberDeclaredIn_WhenTheTypeIsAnotherOne_ShouldKeepTheMember()
 			{
 				InMemorySnapshotStore store = new();
@@ -96,7 +96,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("CoverUrl").Ignore()
 						.For.Members().WithName("Tracks").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Id = 1,
@@ -107,7 +107,7 @@ public sealed partial class ThatSnapshot
 					.Because("an album is no live album, even though it declares the price");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMemberDeclaredIn_ShouldNumberThePlaceholderAfterTheMember()
 			{
 				InMemorySnapshotStore store = new();
@@ -122,7 +122,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Price").Ignore()
 						.For.Members().WithName("Duration").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -146,7 +146,7 @@ public sealed partial class ThatSnapshot
 					.Because("only the ids of the tracks are masked, not those of the album or the artist");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMemberDeclaredIn_ShouldShareTheNumbersWithOtherMemberRules()
 			{
 				InMemorySnapshotStore store = new();
@@ -162,7 +162,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().Which(value => value.Name is "CoverUrl" or "PreviewUrl" or "Price" or "Duration")
 						.Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -186,7 +186,7 @@ public sealed partial class ThatSnapshot
 					.Because("the first matching masking wins, and the same id of the album and a track keeps its number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMemberDeclaredIn_WithAField_ShouldWriteTheReplacementWithoutQuotes()
 			{
 				InMemorySnapshotStore store = new();
@@ -201,7 +201,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().DeclaredIn<RuleArtist>().WithName(nameof(RuleArtist.Name)).Mask("{artist}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleArtist {
 				                                             Id = 3,
@@ -210,7 +210,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Filters_ShouldAllHaveToMatch()
 			{
 				InMemorySnapshotStore store = new();
@@ -224,7 +224,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Id").OfType<string>().Ignore()
 						.For.Members().WithName("Url").AsSuffix().DeclaredIn<RuleAlbum>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -247,7 +247,7 @@ public sealed partial class ThatSnapshot
 					.Because("only the price of a track is a decimal declared in a track, no id is a string, and only the cover url is declared in the album");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Except_ShouldLeaveOutTheMembersForWhichThePredicateIsTrue()
 			{
 				InMemorySnapshotStore store = new();
@@ -260,7 +260,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().Which(value => value.Name is "CoverUrl" or "PreviewUrl" or "Price" or "Duration")
 						.Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleAlbum {
 				                                             Artist = RuleArtist {
@@ -284,7 +284,7 @@ public sealed partial class ThatSnapshot
 					.Because("the id of the artist is excepted");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalRules_ShouldApplyThemAfterTheLocalOnes()
 			{
 				InMemorySnapshotStore store = new();
@@ -300,7 +300,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().DeclaredIn<RuleTrack>().WithName(nameof(RuleTrack.Title)).Mask("{local}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTrack {
 				                                             Duration = 259,
@@ -311,7 +311,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";

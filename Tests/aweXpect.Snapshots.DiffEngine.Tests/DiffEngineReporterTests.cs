@@ -8,7 +8,7 @@ namespace aweXpect.Snapshots.DiffEngine.Tests;
 
 public sealed class DiffEngineReporterTests
 {
-	[Fact]
+	[Test]
 	public async Task WithFileStore_WhenSnapshotDiffers_ShouldDiffThePendingFileWithTheSnapshotFile()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -20,14 +20,14 @@ public sealed class DiffEngineReporterTests
 		async Task Act()
 			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		await That(diffRunner.Launched).IsEqualTo([(scope.PendingPath, scope.SnapshotPath),])
 			.Because("changing the snapshot in the diff tool changes the snapshot file");
 		await That(pendingFileExists).IsTrue();
 		await That(File.Exists(scope.TemporaryReceivedFile)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFileStore_WhenSnapshotIsMissing_ShouldDiffWithTheMissingSnapshotFile()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -36,12 +36,12 @@ public sealed class DiffEngineReporterTests
 		async Task Act()
 			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		await That(diffRunner.Launched).IsEqualTo([(scope.PendingPath, scope.SnapshotPath),])
 			.Because("DiffEngine creates the missing snapshot file for the diff tool");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFileStore_WhenSnapshotMatchesWithPendingFile_ShouldCloseTheDiff()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -58,7 +58,7 @@ public sealed class DiffEngineReporterTests
 		await That(File.Exists(scope.PendingPath)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFileStore_WhenSnapshotMatchesWithoutPendingFile_ShouldNotCloseADiff()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -73,7 +73,7 @@ public sealed class DiffEngineReporterTests
 			.Because("without a pending file no diff can be open, so the processes are not searched");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOtherStore_WhenSnapshotDiffers_ShouldDiffTemporaryFiles()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -85,7 +85,7 @@ public sealed class DiffEngineReporterTests
 		async Task Act()
 			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		await That(diffRunner.Launched).IsEqualTo([(scope.TemporaryReceivedFile, scope.TemporarySnapshotFile),]);
 		await That(File.ReadAllBytes(scope.TemporaryReceivedFile)).IsEqualTo(store.Mismatches[scope.Id])
 			.Because("the received file has the bytes that the store recorded");
@@ -93,7 +93,7 @@ public sealed class DiffEngineReporterTests
 		await That(File.Exists(scope.PendingPath)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOtherStore_WhenSnapshotIsMissing_ShouldDeleteAnOutdatedTemporarySnapshot()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -106,13 +106,13 @@ public sealed class DiffEngineReporterTests
 		async Task Act()
 			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		await That(diffRunner.Launched).IsEqualTo([(scope.TemporaryReceivedFile, scope.TemporarySnapshotFile),]);
 		await That(File.Exists(scope.TemporarySnapshotFile)).IsFalse()
 			.Because("the snapshot is missing, so the diff must not show an earlier one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOtherStore_WhenSnapshotMatches_ShouldCloseTheDiffAndDeleteTheTemporaryFiles()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -123,7 +123,7 @@ public sealed class DiffEngineReporterTests
 		async Task Act()
 			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		store.Snapshots[scope.Id] = store.Mismatches[scope.Id];
 		await That(Act).DoesNotThrow();
 		await That(diffRunner.Killed).IsEqualTo([(scope.TemporaryReceivedFile, scope.TemporarySnapshotFile),]);
@@ -131,7 +131,7 @@ public sealed class DiffEngineReporterTests
 		await That(File.Exists(scope.TemporarySnapshotFile)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithOtherStore_WhenSnapshotMatchesWithoutTemporaryFiles_ShouldNotCloseADiff()
 	{
 		RecordingDiffRunner diffRunner = new();
@@ -147,7 +147,7 @@ public sealed class DiffEngineReporterTests
 		await That(diffRunner.Killed).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDiffEngineIsDisabled_ShouldNeitherLaunchNorWriteFiles()
 	{
 		RecordingDiffRunner diffRunner = new()
@@ -161,13 +161,13 @@ public sealed class DiffEngineReporterTests
 		async Task Act()
 			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName);
 
-		await That(Act).Throws<XunitException>();
+		await That(Act).Throws<FailException>();
 		await That(diffRunner.Launched).IsEmpty()
 			.Because("the opt-outs of DiffEngine are respected");
 		await That(File.Exists(scope.TemporaryReceivedFile)).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetTemporaryFiles_ShouldKeepTheExtensionAndTellDirectoriesApart()
 	{
 		SnapshotId id = new("Tests/Albums/AlbumTests.cs", "Describes", "Abbey Road")
@@ -191,7 +191,7 @@ public sealed class DiffEngineReporterTests
 			.Because("test files with the same name in different directories must not share a file");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetTemporaryFiles_ShouldEscapeCharactersThatAFileNameCannotHold()
 	{
 		SnapshotId id = new("C:/src/MyTests.cs", "MyTest", "a:b%c");
@@ -202,7 +202,7 @@ public sealed class DiffEngineReporterTests
 			.IsEqualTo("C%3A%2Fsrc%2FMyTests.MyTest.a%3Ab%25c.received.txt");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Registration_ShouldAddTheReporterOnlyWhereModuleInitializersExist()
 	{
 		SnapshotReporter[] reporters = Customize.aweXpect.Global.Snapshots().Reporters.Get()

@@ -18,7 +18,7 @@ public sealed partial class ThatSnapshot
 
 			private SnapshotId Id { get; } = new($"/src/{Guid.NewGuid():N}/MyTests.cs", "MyTest");
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_ShouldLeaveOutTheMemberWithItsName()
 			{
 				InMemorySnapshotStore store = new();
@@ -33,7 +33,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Id").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Name = "Ann"
@@ -41,7 +41,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_ShouldMatchAtAnyDepthAndInCollectionsAndDictionaries()
 			{
 				InMemorySnapshotStore store = new();
@@ -52,7 +52,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Id").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             ByCode = {
@@ -74,7 +74,7 @@ public sealed partial class ThatSnapshot
 					.Because("the name is compared with the name of the member itself at any depth, so 'OrderId' is kept");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WithNameInAnotherCase_ShouldKeepTheMember()
 			{
 				InMemorySnapshotStore store = new();
@@ -89,7 +89,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("id").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Id = 1,
@@ -99,7 +99,7 @@ public sealed partial class ThatSnapshot
 					.Because("the name is compared case-sensitive by default");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WithPath_ShouldOnlyMatchThatPath()
 			{
 				InMemorySnapshotStore store = new();
@@ -112,7 +112,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("ByCode").Ignore()
 						.For.Members().WithName("Lines").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             Customer = RuleCustomer {
@@ -124,7 +124,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WithPath_ShouldMatchWholeSegmentsAtTheEndOfThePath()
 			{
 				InMemorySnapshotStore store = new();
@@ -138,7 +138,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithPath("customer.Id").Ignore()
 						.For.Members().WithName("ByCode").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             Customer = RuleCustomer {
@@ -157,7 +157,7 @@ public sealed partial class ThatSnapshot
 					.Because("an index starts a segment, 'rId' is no whole segment of 'OrderId', and the segments are compared case-sensitive");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberOfType_ShouldMatchDeclaredNullableRuntimeAndDerivedTypes()
 			{
 				InMemorySnapshotStore store = new();
@@ -176,7 +176,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().OfType<DateTime>().Ignore()
 						.For.Members().OfType<Exception>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTypes {
 				                                             Name = "kept"
@@ -185,7 +185,7 @@ public sealed partial class ThatSnapshot
 					.Because("a DateTime? member, a DateTime in an object member and a derived exception match as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberOfType_WhenAnObjectMemberHoldsAnotherType_ShouldKeepIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -200,7 +200,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<DateTime>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTypes {
 				                                             Error = <null>,
@@ -211,7 +211,7 @@ public sealed partial class ThatSnapshot
 					.Because("an object member is only left out when its value is of the type, while a DateTime? member is left out by its declared type, also when it is null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberOfExactType_ShouldNotMatchDerivedTypes()
 			{
 				InMemorySnapshotStore store = new();
@@ -229,7 +229,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().OfExactType<DateTime>().Ignore()
 						.For.Members().OfExactType<Exception>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleTypes {
 				                                             Error = *boom*,
@@ -239,7 +239,7 @@ public sealed partial class ThatSnapshot
 					.Because("a DateTime, a null DateTime? and a DateTime in an object member are exactly of the type, but an InvalidOperationException is no exact Exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberOfType_ShouldKeepTheItemsOfCollectionsAndDictionaries()
 			{
 				InMemorySnapshotStore store = new();
@@ -250,7 +250,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<DateTime>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCollections {
 				                                             Dates = [
@@ -265,7 +265,7 @@ public sealed partial class ThatSnapshot
 					.Because("only members are left out by their type, so a list of DateTime is not written as an empty list");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringValuesOfType_ShouldAlsoLeaveOutTheItems()
 			{
 				InMemorySnapshotStore store = new();
@@ -281,7 +281,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<DateTime>().Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             "Let It Be"
@@ -290,7 +290,7 @@ public sealed partial class ThatSnapshot
 					.Because("the values are the members and the items, so the items of the type are left out");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMemberOfType_WhenTheItemsAreMaskedByType_ShouldMaskThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -302,7 +302,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().OfType<DateTime>().Ignore()
 						.For.Values().OfType<DateTime>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCollections {
 				                                             Dates = [
@@ -317,7 +317,7 @@ public sealed partial class ThatSnapshot
 					.Because("the items keep their place and are masked instead");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringValue_WithThePathOfAnItem_ShouldLeaveOutTheItem()
 			{
 				InMemorySnapshotStore store = new();
@@ -330,7 +330,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Created").Ignore()
 						.For.Members().WithName("Releases").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCollections {
 				                                             Dates = [
@@ -341,7 +341,7 @@ public sealed partial class ThatSnapshot
 					.Because("an item can still be left out on purpose by its path");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMember_WithThePathOfAnItem_ShouldKeepTheItem()
 			{
 				InMemorySnapshotStore store = new();
@@ -354,7 +354,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Created").Ignore()
 						.For.Members().WithName("Releases").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCollections {
 				                                             Dates = [
@@ -366,7 +366,7 @@ public sealed partial class ThatSnapshot
 					.Because("an item is no member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAGetterThrows_ShouldNeitherIgnoreNorMaskTheValue()
 			{
 				InMemorySnapshotStore store = new();
@@ -378,12 +378,12 @@ public sealed partial class ThatSnapshot
 						.For.Members().OfType<DateTime>().Ignore()
 						.For.Members().WithName("Value").Mask("{value}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("*Value = *boom*").AsWildcard()
 					.Because("a value that cannot be read is written with its exception by the formatter");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringWinsOverMasking()
 			{
 				InMemorySnapshotStore store = new();
@@ -399,7 +399,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Id").Mask()
 						.For.Members().WithName("Id").Ignore();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Name = "Ann"
@@ -407,7 +407,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMember_ShouldNumberTheValuesAcrossTheSubject()
 			{
 				InMemorySnapshotStore store = new();
@@ -418,7 +418,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Id").Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleOrder {
 				                                             ByCode = {
@@ -444,7 +444,7 @@ public sealed partial class ThatSnapshot
 					.Because("the same value keeps the same number in the order the values are written, without quotes");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMember_WhenValueIsNull_ShouldKeepIt()
 			{
 				InMemorySnapshotStore store = new();
@@ -458,7 +458,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Text").Mask("{text}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleNote {
 				                                             Text = <null>
@@ -467,7 +467,7 @@ public sealed partial class ThatSnapshot
 					.Because("a null value does not change from run to run, so it stays visible");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMember_WithReplacement_ShouldWriteItWithoutQuotes()
 			{
 				InMemorySnapshotStore store = new();
@@ -482,7 +482,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Name").Mask("{name}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Id = 1,
@@ -491,7 +491,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingType_ShouldShareTheNumbersWithGuids()
 			{
 				InMemorySnapshotStore store = new();
@@ -507,7 +507,7 @@ public sealed partial class ThatSnapshot
 						.For.Values().OfType<Guid>().Mask()
 						.For.Guids().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleReference {
 				                                             Key = {Guid_1},
@@ -517,7 +517,7 @@ public sealed partial class ThatSnapshot
 					.Because("a Guid member and the same Guid in a string get the same number");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingType_InACollection_ShouldMaskTheItems()
 			{
 				InMemorySnapshotStore store = new();
@@ -528,7 +528,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<Guid>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           [
 				                                             {Guid_1},
@@ -538,7 +538,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingMembersOfType_InACollection_ShouldKeepTheItems()
 			{
 				InMemorySnapshotStore store = new();
@@ -549,7 +549,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<Guid>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo($$"""
 				                                           [
 				                                             {{FirstGuid}}
@@ -558,7 +558,7 @@ public sealed partial class ThatSnapshot
 					.Because("an item is no member");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MaskingType_WithReplacement_ShouldWriteItWithoutQuotes()
 			{
 				InMemorySnapshotStore store = new();
@@ -572,7 +572,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Values().OfType<Uri>().Mask("{uri}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleLink {
 				                                             Target = {uri}
@@ -580,7 +580,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TheFirstMatchingMaskingWins()
 			{
 				InMemorySnapshotStore store = new();
@@ -596,7 +596,7 @@ public sealed partial class ThatSnapshot
 						.For.Members().WithName("Key").Mask("{key}")
 						.For.Values().OfType<Guid>().Mask();
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleReference {
 				                                             Key = {key},
@@ -605,7 +605,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalAndLocal_ShouldApplyTheLocalRuleFirst()
 			{
 				InMemorySnapshotStore store = new();
@@ -624,7 +624,7 @@ public sealed partial class ThatSnapshot
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
 						.For.Members().WithName("Name").Mask("{local}");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Id = {id},
@@ -633,7 +633,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalIgnoringRules_ShouldLeaveOutTheValues()
 			{
 				InMemorySnapshotStore store = new();
@@ -650,7 +650,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Name = "Ann"
@@ -658,7 +658,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalRulesAndTheSubjectIsAString_ShouldIgnoreThem()
 			{
 				InMemorySnapshotStore store = new();
@@ -672,12 +672,12 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("Id = 1")
 					.Because("a string is compared as raw text and has no members");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyMaskedValuesDiffer_ShouldNotConflict()
 			{
 				InMemorySnapshotStore store = new();
@@ -701,7 +701,7 @@ public sealed partial class ThatSnapshot
 					.Because("the check for a snapshot used for another value compares the masked value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsEmpty_ShouldThrowArgumentException()
 			{
 				void MembersAct()
@@ -716,7 +716,7 @@ public sealed partial class ThatSnapshot
 				await That(ValuesAct).Throws<ArgumentException>().WithParamName("name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -726,7 +726,7 @@ public sealed partial class ThatSnapshot
 					.WithParamName("name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPathIsNullOrEmpty_ShouldThrow()
 			{
 				void NullAct()
@@ -739,7 +739,7 @@ public sealed partial class ThatSnapshot
 				await That(EmptyAct).Throws<ArgumentException>().WithParamName("path");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReplacementIsNull_ShouldThrowArgumentNullException()
 			{
 				void MemberAct()
@@ -756,7 +756,7 @@ public sealed partial class ThatSnapshot
 				await That(TemplateAct).Throws<ArgumentNullException>().WithParamName("template");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAString_MemberRule_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
@@ -770,7 +770,7 @@ public sealed partial class ThatSnapshot
 					.AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAString_ValueRule_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
@@ -783,7 +783,7 @@ public sealed partial class ThatSnapshot
 					.WithMessage("A member or value rule only applies to a snapshot of an object*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Rules_ShouldBeEmptyByDefault()
 			{
 				IReadOnlyList<SnapshotRule> rules = Customize.aweXpect.Snapshots().Rules.Get();
@@ -791,7 +791,7 @@ public sealed partial class ThatSnapshot
 				await That(rules).IsEmpty();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Rules_WhenSetToNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -800,7 +800,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<ArgumentNullException>().WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Rules_WhenContainingNull_ShouldThrowArgumentException()
 			{
 				void Act()
@@ -809,7 +809,7 @@ public sealed partial class ThatSnapshot
 				await That(Act).Throws<ArgumentException>().WithParamName("value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Rules_WhenTheListIsChangedAfterSetting_ShouldKeepTheSetting()
 			{
 				InMemorySnapshotStore store = new();
@@ -826,7 +826,7 @@ public sealed partial class ThatSnapshot
 				async Task Act()
 					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<FailException>();
 				await That(store.Mismatches[Id]).IsEqualTo("""
 				                                           RuleCustomer {
 				                                             Name = "Ann"
@@ -834,7 +834,7 @@ public sealed partial class ThatSnapshot
 				                                           """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task For_ShouldOfferTheSameRulesAsForAllSnapshots()
 			{
 				string[] global = ApiParity.GetSurface(

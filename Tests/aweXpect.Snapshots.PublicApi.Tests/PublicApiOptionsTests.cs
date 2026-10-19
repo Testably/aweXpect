@@ -6,9 +6,9 @@ namespace aweXpect.Snapshots.PublicApi.Tests;
 
 public sealed class PublicApiOptionsTests
 {
-	[Theory]
-	[InlineData(null, "The 'fullName' cannot be null.*")]
-	[InlineData("", "The 'fullName' cannot be empty.*")]
+	[Test]
+	[Arguments(null, "The 'fullName' cannot be null.*")]
+	[Arguments("", "The 'fullName' cannot be empty.*")]
 	public async Task IgnoringAttribute_WhenFullNameIsNullOrEmpty_ShouldThrow(string? fullName, string expectedMessage)
 	{
 		void Act()
@@ -20,9 +20,9 @@ public sealed class PublicApiOptionsTests
 			.Because("an empty name never matches an attribute, so it would be ignored silently");
 	}
 
-	[Theory]
-	[InlineData(null, "The 'fullName' cannot be null.*")]
-	[InlineData("", "The 'fullName' cannot be empty.*")]
+	[Test]
+	[Arguments(null, "The 'fullName' cannot be null.*")]
+	[Arguments("", "The 'fullName' cannot be empty.*")]
 	public async Task IgnoringType_WhenFullNameIsNullOrEmpty_ShouldThrow(string? fullName, string expectedMessage)
 	{
 		void Act()
@@ -34,9 +34,9 @@ public sealed class PublicApiOptionsTests
 			.Because("an empty name never matches a type, so it would be ignored silently");
 	}
 
-	[Theory]
-	[InlineData(null, "The 'fullName' cannot be null.*")]
-	[InlineData("", "The 'fullName' cannot be empty.*")]
+	[Test]
+	[Arguments(null, "The 'fullName' cannot be null.*")]
+	[Arguments("", "The 'fullName' cannot be empty.*")]
 	public async Task WithinType_WhenFullNameIsNullOrEmpty_ShouldThrow(string? fullName, string expectedMessage)
 	{
 		void Act()
@@ -48,7 +48,7 @@ public sealed class PublicApiOptionsTests
 			.Because("an empty name never matches a type, so the public API would be empty");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringNamespace_WhenNamespaceIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -59,7 +59,7 @@ public sealed class PublicApiOptionsTests
 			.WithMessage("The 'namespace' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithinNamespace_WhenNamespaceIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -70,7 +70,7 @@ public sealed class PublicApiOptionsTests
 			.WithMessage("The 'namespace' cannot be null.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithinNamespace_WhenNamespaceIsEmpty_ShouldOnlyWriteTheGlobalNamespace()
 	{
 		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o.Within.Namespace(""));
@@ -79,7 +79,7 @@ public sealed class PublicApiOptionsTests
 			.Because("an empty namespace is the global namespace");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringNamespace_WhenNamespaceIsEmpty_ShouldIgnoreTheGlobalNamespace()
 	{
 		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o.Ignoring.Namespace(""));
@@ -88,25 +88,25 @@ public sealed class PublicApiOptionsTests
 			.Because("an empty namespace is the global namespace");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Ignoring_WhenArgumentIsInvalid_ShouldTraceTheException()
 	{
 		RecordingTraceWriter traceWriter = new();
 		using CustomizationLifetime _ = Customize.aweXpect.EnableTracing(traceWriter);
 
-		Exception? exception = Record.Exception(() => new PublicApiOptions().Ignoring.Type(""));
+		Exception? exception = Catch.Exception(() => new PublicApiOptions().Ignoring.Type(""));
 
 		await That(exception).IsNotNull();
 		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithinType_WhenTypeIsNested_ShouldTraceTheException()
 	{
 		RecordingTraceWriter traceWriter = new();
 		using CustomizationLifetime _ = Customize.aweXpect.EnableTracing(traceWriter);
 
-		Exception? exception = Record.Exception(() => new PublicApiOptions().Within.Type<Album.Track>());
+		Exception? exception = Catch.Exception(() => new PublicApiOptions().Within.Type<Album.Track>());
 
 		await That(exception).IsNotNull();
 		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
