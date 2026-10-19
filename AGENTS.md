@@ -1,7 +1,9 @@
 # aweXpect Agent Guide
 
 aweXpect is a .NET assertion library: `aweXpect` ships the expectations, `aweXpect.Core` the engine and the API
-for extension packages. Both are released separately to NuGet.
+for extension packages. The extension packages `aweXpect.Json`, `aweXpect.Web`, `aweXpect.Xml`, `aweXpect.Reflection`
+and `aweXpect.Snapshots` (with `.DiffEngine` and `.PublicApi`) live here as well. All packages are released together
+to NuGet with one version.
 
 ## Setup
 

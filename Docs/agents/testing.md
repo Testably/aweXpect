@@ -10,15 +10,19 @@
 | `Tests/aweXpect.Generators.Tests` | TUnit, `dotnet run` | `net8.0` | All source generators, and parity of generated metadata with the reflection fallback |
 | `Tests/aweXpect.Analyzers.Tests` | TUnit, `dotnet run` | `net8.0` | Analyzers, code fixers and the `IsNotNullSuppressor` |
 | `Tests/aweXpect.Docs.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Compiles the code blocks in `Docs/pages`, checks that the API is documented |
-| `Tests/aweXpect.Api.Tests` | TUnit, `dotnet run` | `net8.0` | Public API snapshots of `aweXpect` and `aweXpect.Core` per target framework |
+| `Tests/aweXpect.Api.Tests` | TUnit, `dotnet run` | `net8.0` | Public API snapshots of all packages per target framework |
+| `Tests/aweXpect.<Extension>.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | The expectations of an extension package; some have an `.Internal.Tests` project as well |
+| `Tests/aweXpect.Snapshots.*.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Areas of the snapshot packages that need a test project of their own; the `*.Fixture` projects are libraries they read |
 | `Tests/Frameworks/*` | per framework | `net10.0` (NUnit: `net8.0`) | Integration with MSTest, NUnit, xUnit, TUnit and the fallback without a framework |
-| `Tests/Aot/*` | executables | `net10.0` | Smoke checks under Native AOT (TUnit, xUnit v3) |
+| `Tests/Aot/*` | executables | `net10.0` | Smoke checks under Native AOT (TUnit, xUnit v3, one per extension package) |
 
 `aweXpect.Tests` alone is not the whole suite. Pick the projects by what you changed:
 
 - `Source/aweXpect`: `aweXpect.Tests`, `aweXpect.Internal.Tests`, and `aweXpect.Docs.Tests` (slow tests) when a public
   expectation is added or renamed.
-- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there.
+- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there, and the tests of
+  the extension packages if they use what changed.
+- `Source/aweXpect.<Extension>`: the test projects `Tests/aweXpect.<Extension>.*Tests`.
 - `[GuaranteesNotNull]` markings: `aweXpect.Analyzers.Tests` (`IsNotNullSuppressorTests` asserts which expectations
   suppress CS8602) and `GuaranteesNotNullTests` in `aweXpect.Tests`.
 - Generators: `aweXpect.Generators.Tests`.
@@ -35,7 +39,7 @@ therefore runs almost nothing. The pipeline runs them in a step of its own for t
 
 ## Public API snapshots
 
-`ApiApprovalTests` reads the build of every target framework of `aweXpect` and `aweXpect.Core` and compares its public
+`ApiApprovalTests` reads the build of every target framework of each package (`AssemblyNames`) and compares its public
 API with the `*.awexpect-snapshot.txt` files next to it (aweXpect.Snapshots.PublicApi). The `Debug` test build reads
 the `Debug` library builds.
 

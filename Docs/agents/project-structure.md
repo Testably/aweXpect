@@ -7,8 +7,10 @@
 | `Source/` | The shipped projects |
 | `Tests/` | Test projects (see [testing](testing.md)), shared helpers in `Tests/Shared` |
 | `Benchmarks/aweXpect.Benchmarks` | BenchmarkDotNet comparison with FluentAssertions and TUnit.Assertions |
+| `Benchmarks/aweXpect.<Extension>.Benchmarks` | BenchmarkDotNet happy-case benchmarks of an extension package |
 | `Pipeline/` | The Fallout build (`Build.*.cs`, one partial file per area), started by `build.ps1`/`build.sh`/`build.cmd` |
 | `Docs/pages` | User documentation, published to the docs site |
+| `Docs/extensions/<Package>` | User documentation of an extension package |
 | `Docs/agents` | Reference for contributors and agents, not published |
 | `.github/workflows` | CI (see [workflows](workflows.md#ci-workflows)) |
 | `aweXpect.slnx` | The solution |
@@ -30,6 +32,20 @@ Two NuGet packages are built from `Source/`; the analyzer and generator projects
 
 `aweXpect` depends on `aweXpect.Core`. Extension packages reference only `aweXpect.Core`, so Core aims to stay more
 stable than `aweXpect`; the namespace `aweXpect.Core.Internal` may change in any version.
+
+The extension packages are built from `Source/` as well and reference `aweXpect.Core` as a project. Each sets its own
+description, project URL and README (`PackageReadmeSourceFile`) in its project file; the logo is the one of
+aweXpect.
+
+| Project | Package | Role |
+| --- | --- | --- |
+| `aweXpect.Json` | `aweXpect.Json` | Expectations for JSON strings and `System.Text.Json` |
+| `aweXpect.Web` | `aweXpect.Web` | Expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress` |
+| `aweXpect.Xml` | `aweXpect.Xml` (beta) | Expectations for XML strings and `System.Xml.Linq` |
+| `aweXpect.Reflection` | `aweXpect.Reflection` | Expectations for reflection types and architecture rules |
+| `aweXpect.Snapshots` | `aweXpect.Snapshots` (beta) | Snapshot testing |
+| `aweXpect.Snapshots.DiffEngine` | `aweXpect.Snapshots.DiffEngine` (beta) | Opens a diff tool with DiffEngine for snapshots that are missing or different |
+| `aweXpect.Snapshots.PublicApi` | `aweXpect.Snapshots.PublicApi` (beta) | Public API snapshots, also used by `aweXpect.Api.Tests` |
 
 ## Source layout
 
