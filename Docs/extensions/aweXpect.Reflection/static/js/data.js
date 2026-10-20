@@ -48,6 +48,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
         "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
+      },
+      {
+        "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
+        "message": "docs: update the README and the extension packages overview (#1897)"
       }
     ],
     "labels": [
@@ -58,7 +64,8 @@ window.BENCHMARK_DATA = {
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
-      "dd7508bd"
+      "dd7508bd",
+      "39b404f7"
     ],
     "datasets": [
       {
@@ -72,7 +79,8 @@ window.BENCHMARK_DATA = {
           1150.5083653376653,
           1470.658320681254,
           1445.271382522583,
-          1177.0453611101423
+          1177.0453611101423,
+          1047.1705561319986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -84,6 +92,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          992,
           992,
           992,
           992,
@@ -113,7 +122,8 @@ window.BENCHMARK_DATA = {
           854.7111960093181,
           898.764992918287,
           897.090498311179,
-          893.2992651121957
+          893.2992651121957,
+          663.1246906427236
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -125,6 +135,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -194,6 +205,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
         "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
+      },
+      {
+        "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
+        "message": "docs: update the README and the extension packages overview (#1897)"
       }
     ],
     "labels": [
@@ -204,7 +221,8 @@ window.BENCHMARK_DATA = {
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
-      "dd7508bd"
+      "dd7508bd",
+      "39b404f7"
     ],
     "datasets": [
       {
@@ -218,7 +236,8 @@ window.BENCHMARK_DATA = {
           140.93855563231878,
           141.24543137550353,
           144.55080912907917,
-          128.96873346396856
+          128.96873346396856,
+          101.59738812446594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -230,6 +249,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          384,
           384,
           384,
           384,
@@ -259,7 +279,8 @@ window.BENCHMARK_DATA = {
           200.72816676752907,
           215.40178451538085,
           241.9134787241618,
-          197.14040073981653
+          197.14040073981653,
+          161.5306053320567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -271,6 +292,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -340,6 +362,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
         "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
+      },
+      {
+        "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
+        "message": "docs: update the README and the extension packages overview (#1897)"
       }
     ],
     "labels": [
@@ -350,7 +378,8 @@ window.BENCHMARK_DATA = {
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
-      "dd7508bd"
+      "dd7508bd",
+      "39b404f7"
     ],
     "datasets": [
       {
@@ -364,7 +393,8 @@ window.BENCHMARK_DATA = {
           21500.484102376304,
           2299.7091654459637,
           1979.3088559468588,
-          1956.0963940938313
+          1956.0963940938313,
+          1491.5290897914342
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -382,6 +412,7 @@ window.BENCHMARK_DATA = {
           6783,
           6781,
           2784,
+          2376,
           2376,
           2376
         ],
@@ -405,7 +436,8 @@ window.BENCHMARK_DATA = {
           1191.416109085083,
           1231.1467041015626,
           1247.7940812792096,
-          1228.7658562978108
+          1228.7658562978108,
+          870.7888729912894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -417,6 +449,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1760,
           1760,
           1760,
           1760,
