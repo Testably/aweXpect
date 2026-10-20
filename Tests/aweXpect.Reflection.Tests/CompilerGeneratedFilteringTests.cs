@@ -31,6 +31,22 @@ public sealed class CompilerGeneratedFilteringTests
 	}
 
 	[Test]
+	public async Task Types_WhenIncludingCompilerGeneratedAfterReadingWithoutThem_ShouldContainStateMachines()
+	{
+		IReadOnlyList<Type> withoutCompilerGenerated = await GetTypes();
+		await That(withoutCompilerGenerated).None().Satisfy(t => t.Name.Contains("AsyncMethod"));
+
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+			       .Set(CompilerGeneratedMembers.Types))
+		{
+			IReadOnlyList<Type> withCompilerGenerated = await GetTypes();
+
+			await That(withCompilerGenerated).Contains(t => t.Name.Contains("AsyncMethod"))
+				.Because("the types of an assembly are cached, but not the decision to exclude compiler-generated ones");
+		}
+	}
+
+	[Test]
 	public async Task Methods_ShouldExcludeLocalFunctionsByDefault()
 	{
 		IReadOnlyList<MethodInfo> methods = await GetMethods<Sample>();

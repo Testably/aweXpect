@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Customization;
@@ -25,6 +26,8 @@ public static partial class Filtered
 		ILimitedAbstractSealedMembers
 	{
 		private const string DeclaringTypesPrefix = "declaring types of ";
+
+		private static readonly ConditionalWeakTable<Assembly, LoadableTypes> LoadableTypesCache = new();
 
 		private readonly Assemblies? _assemblies;
 		private readonly string _description;
@@ -225,6 +228,11 @@ public static partial class Filtered
 		///     <see cref="Assembly.GetTypes()" /> throws a <see cref="ReflectionTypeLoadException" /> when any type cannot be
 		///     loaded (e.g. an unresolvable dependency). The exception still exposes the types that loaded successfully via
 		///     <see cref="ReflectionTypeLoadException.Types" />, so we fall back to those instead of failing the whole query.
+		///     <para />
+		///     The types of a loaded assembly never change, so they are cached per assembly, as reading them and checking
+		///     each for <see cref="CompilerGeneratedAttribute" /> is the main cost of an
+		///     architecture rule. A dynamic assembly can still define types and a type that failed to load might load
+		///     later, so these are read again every time.
 		/// </remarks>
 		private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
 		{
@@ -233,26 +241,48 @@ public static partial class Filtered
 				throw ReflectionFallbackHelpers.NotSupported(assembly, "types");
 			}
 
-			IEnumerable<Type> types;
+			bool includeCompilerGenerated = Customize.aweXpect.Reflection()
+				.IncludedCompilerGeneratedMembers().Get().HasFlag(CompilerGeneratedMembers.Types);
+			if (LoadableTypesCache.TryGetValue(assembly, out LoadableTypes? cached))
+			{
+				return cached.Get(includeCompilerGenerated);
+			}
+
+			Type[] types;
+			bool isComplete = !assembly.IsDynamic;
 			try
 			{
 				types = assembly.GetTypes();
 			}
 			catch (ReflectionTypeLoadException exception)
 			{
-				types = exception.Types.Where(type => type is not null)!;
+				types = exception.Types.Where(type => type is not null).ToArray()!;
+				isComplete = false;
 			}
 
-			CompilerGeneratedMembers included = Customize.aweXpect.Reflection()
-				.IncludedCompilerGeneratedMembers().Get();
-			return types.Where(type => !type.IsCompilerGenerated() ||
-			                           included.HasFlag(CompilerGeneratedMembers.Types));
+			LoadableTypes loadableTypes = new(types);
+			if (isComplete)
+			{
+				loadableTypes = LoadableTypesCache.GetValue(assembly, _ => loadableTypes);
+			}
+
+			return loadableTypes.Get(includeCompilerGenerated);
 		}
 
 		/// <summary>
 		///     Get all assemblies of the filtered types.
 		/// </summary>
 		public Assemblies Assemblies() => new(this);
+
+		private sealed class LoadableTypes(Type[] types)
+		{
+			private Type[]? _withoutCompilerGenerated;
+
+			public Type[] Get(bool includeCompilerGenerated)
+				=> includeCompilerGenerated
+					? types
+					: _withoutCompilerGenerated ??= Array.FindAll(types, type => !type.IsCompilerGenerated());
+		}
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Type" />,

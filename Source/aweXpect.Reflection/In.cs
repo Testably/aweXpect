@@ -46,13 +46,13 @@ public static class In
 	///     Defines expectations on the assembly that contains the <typeparamref name="TType" />.
 	/// </summary>
 	public static Filtered.Assemblies AssemblyContaining<TType>()
-		=> new(typeof(TType).Assembly, $"in assembly containing type {Formatter.Format(typeof(TType))}");
+		=> new(typeof(TType).Assembly, static () => $"in assembly containing type {Formatter.Format(typeof(TType))}");
 
 	/// <summary>
 	///     Defines expectations on the assembly that contains the <paramref name="type" />.
 	/// </summary>
 	public static Filtered.Assemblies AssemblyContaining(Type type)
-		=> new(type.Assembly, $"in assembly containing type {Formatter.Format(type)}");
+		=> new(type.Assembly, () => $"in assembly containing type {Formatter.Format(type)}");
 
 	/// <summary>
 	///     Defines expectations on the type <typeparamref name="TType" />.
