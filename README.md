@@ -32,7 +32,7 @@ Assert unit tests in natural language using awesome expectations.
 By using async assertions per default, we have a consistent API and other perks:
 
 - Complete async support, e.g. `IAsyncEnumerable`, `HttpResponseMessage` (via
-  [aweXpect.Web](https://github.com/aweXpect/aweXpect.Web)) or similar async types
+  [aweXpect.Web](https://docs.testably.org/aweXpect/extensions/aweXpect.Web)) or similar async types
 - No need to distinguish between `action.Throws()` and `await asyncAction.ThrowsAsync()`
 - The evaluation is only triggered after the complete fluent chain is loaded, which has some nice benefits:
 	- `Because` can be registered once as a general method that can be applied at the end of the expectation instead of
@@ -47,6 +47,12 @@ By using async assertions per default, we have a consistent API and other perks:
 A focus on performance allows you to execute your tests as fast as possible.  
 Special care is taken for the happy case (succeeding tests) to be as performant as possible. See
 the [benchmarks](https://docs.testably.org/aweXpect/benchmarks) for more details.
+
+### Any runner
+
+xUnit (v2 and v3), NUnit (v3, v4 and v5), MSTest and TUnit are detected automatically: a failed expectation usually
+throws the assertion exception of the test framework. `Fail` and `Skip` fail or skip a test without an expectation.
+More information can be found in the [test frameworks guide](https://docs.testably.org/aweXpect/how-it-works/test-frameworks).
 
 ### Native AOT and trimming
 
@@ -65,25 +71,21 @@ extensions, so that the risk of version conflicts between different extensions c
 You can extend the functionality for any types, by adding extension methods on `IThat<TType>`.
 More information can be found in the [extensibility guide](https://docs.testably.org/aweXpect/extending).
 
-**Extension projects**
+## Extension packages
 
-- [aweXpect.Json](https://github.com/aweXpect/aweXpect.Json)  
-  [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)  
-  Expectations for the System.Text.Json namespace.
+Expectations for types outside the base class library are provided by separate packages. See the
+[extension packages](https://docs.testably.org/aweXpect/extensions) in the documentation for an overview.
 
-- [aweXpect.Web](https://github.com/aweXpect/aweXpect.Web)  
-  [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)  
-  Expectations for HttpClient and HttpResponseMessage.
+**Core** extensions live in the aweXpect repository and are released together with `aweXpect`, always with the
+same version. **Separate** extensions have their own repository and release cycle.
 
-- [aweXpect.Reflection](https://github.com/aweXpect/aweXpect.Reflection)  
-  [![Nuget](https://img.shields.io/nuget/v/aweXpect.Reflection)](https://www.nuget.org/packages/aweXpect.Reflection)  
-  Expectations for reflection types.
-
-- [aweXpect.Testably](https://github.com/aweXpect/aweXpect.Testably)  
-  [![Nuget](https://img.shields.io/nuget/v/aweXpect.Testably)](https://www.nuget.org/packages/aweXpect.Testably)  
-  Expectations for the file and time system
-  from [Testably.Abstractions](https://github.com/Testably/Testably.Abstractions).
-
-- [aweXpect.Mockolate](https://github.com/aweXpect/aweXpect.Mockolate)  
-  [![Nuget](https://img.shields.io/nuget/v/aweXpect.Mockolate)](https://www.nuget.org/packages/aweXpect.Mockolate)  
-  Expectations to verify interactions with mocks from [Mockolate](https://github.com/aweXpect/Mockolate).
+| Package                                                                                  | Version                                                                                                            | Release  | Expectations                                                                                            |
+|------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------|
+| [aweXpect.Json](https://docs.testably.org/aweXpect/extensions/aweXpect.Json)             | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)             | core     | JSON strings, `JsonElement`, `JsonNode` and the JSON serialization of objects                           |
+| [aweXpect.Xml](https://docs.testably.org/aweXpect/extensions/aweXpect.Xml)               | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Xml)](https://www.nuget.org/packages/aweXpect.Xml)               | core     | XML strings, `XElement` and `XDocument`                                                                 |
+| [aweXpect.Web](https://docs.testably.org/aweXpect/extensions/aweXpect.Web)               | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)               | core     | `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress`                                      |
+| [aweXpect.Reflection](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection) | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Reflection)](https://www.nuget.org/packages/aweXpect.Reflection) | core     | assemblies, types and members, for architecture and convention tests                                    |
+| [aweXpect.Snapshots](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots)   | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Snapshots)](https://www.nuget.org/packages/aweXpect.Snapshots)   | core     | strings and objects compared with a snapshot stored next to the test                                    |
+| [aweXpect.Logging](https://docs.testably.org/aweXpect/extensions/aweXpect.Logging)       | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Logging)](https://www.nuget.org/packages/aweXpect.Logging)       | separate | the records of a `FakeLogger` or `FakeLogCollector`                                                     |
+| [aweXpect.Testably](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably)     | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Testably)](https://www.nuget.org/packages/aweXpect.Testably)     | separate | the file and time systems of [Testably.Abstractions](https://github.com/Testably/Testably.Abstractions) |
+| [aweXpect.Mockolate](https://docs.testably.org/aweXpect/extensions/aweXpect.Mockolate)   | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Mockolate)](https://www.nuget.org/packages/aweXpect.Mockolate)   | separate | interactions with [Mockolate](https://github.com/Testably/Mockolate) mocks                              |

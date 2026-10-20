@@ -4,16 +4,19 @@ Expectations for types outside the base class library are provided by separate p
 methods on `IThat<T>` for its types, so once it is referenced, its expectations appear on `Expect.That(…)` next to the
 built-in ones.
 
-| Package                                                         | Expectations                                                                                                                    |
-|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| [aweXpect.Json](/aweXpect/extensions/aweXpect.Json)             | JSON strings and `JsonElement`: `IsEqualTo(…).AsJson()`, `IsValidJson`, `Matches`, `IsObject`, `IsArray`, `IsJsonSerializable` |
-| [aweXpect.Xml](/aweXpect/extensions/aweXpect.Xml)               | XML strings, `XElement` and `XDocument`: `IsEqualTo(…).AsXml()`, `IsValidXml`, `Matches`, `HasAttribute`, `HasElement`          |
-| [aweXpect.Web](/aweXpect/extensions/aweXpect.Web)               | `HttpRequestMessage` and `HttpResponseMessage`: `HasMethod`, `HasRequestUri`, `HasStatusCode`, `HasHeader`, `HasContent`        |
-| [aweXpect.Logging](/aweXpect/extensions/aweXpect.Logging)       | the records of a `FakeLogger` or `FakeLogCollector`: `Logged`, `LoggedWarning`, `DidNotLog`, `WithMessage`, `Within`, `Then`    |
-| [aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection) | assemblies, types and members, for architecture and convention tests                                                            |
-| [aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)     | the file and time systems of [Testably.Abstractions](/Abstractions): `HasFile`, `HasDirectory`, timers, watcher events          |
-| [aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)   | interactions with [Mockolate](/Mockolate) mocks: `Once`, `Never`, `AtLeast`, `Then`, `AllInteractionsAreVerified`               |
-| [aweXpect.Snapshots](/aweXpect/extensions/aweXpect.Snapshots)   | strings and objects compared with a snapshot stored next to the test: `MatchesSnapshot`                                         |
+**Core** extensions live in the aweXpect repository and are released together with `aweXpect`, always with the
+same version. **Separate** extensions have their own repository and release cycle.
+
+| Package                                                         | Version                                                                                                            | Release  | Expectations                                                                                                                   |
+|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------|
+| [aweXpect.Json](/aweXpect/extensions/aweXpect.Json)             | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)             | core     | JSON strings and `JsonElement`: `IsEqualTo(…).AsJson()`, `IsValidJson`, `Matches`, `IsObject`, `IsArray`, `IsJsonSerializable` |
+| [aweXpect.Xml](/aweXpect/extensions/aweXpect.Xml)               | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Xml)](https://www.nuget.org/packages/aweXpect.Xml)               | core     | XML strings, `XElement` and `XDocument`: `IsEqualTo(…).AsXml()`, `IsValidXml`, `Matches`, `HasAttribute`, `HasElement`         |
+| [aweXpect.Web](/aweXpect/extensions/aweXpect.Web)               | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)               | core     | `HttpRequestMessage` and `HttpResponseMessage`: `HasMethod`, `HasRequestUri`, `HasStatusCode`, `HasHeader`, `HasContent`       |
+| [aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection) | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Reflection)](https://www.nuget.org/packages/aweXpect.Reflection) | core     | assemblies, types and members, for architecture and convention tests                                                           |
+| [aweXpect.Snapshots](/aweXpect/extensions/aweXpect.Snapshots)   | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Snapshots)](https://www.nuget.org/packages/aweXpect.Snapshots)   | core     | strings and objects compared with a snapshot stored next to the test: `MatchesSnapshot`                                        |
+| [aweXpect.Logging](/aweXpect/extensions/aweXpect.Logging)       | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Logging)](https://www.nuget.org/packages/aweXpect.Logging)       | separate | the records of a `FakeLogger` or `FakeLogCollector`: `Logged`, `LoggedWarning`, `DidNotLog`, `WithMessage`, `Within`, `Then`   |
+| [aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)     | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Testably)](https://www.nuget.org/packages/aweXpect.Testably)     | separate | the file and time systems of [Testably.Abstractions](/Abstractions): `HasFile`, `HasDirectory`, timers, watcher events         |
+| [aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)   | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Mockolate)](https://www.nuget.org/packages/aweXpect.Mockolate)   | separate | interactions with [Mockolate](/Mockolate) mocks: `Once`, `Never`, `AtLeast`, `Then`, `AllInteractionsAreVerified`              |
 
 ## Write your own
 
