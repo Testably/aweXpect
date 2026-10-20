@@ -82,11 +82,16 @@ internal static class EventInfoHelpers
 		Func<Attribute, bool>? predicate = null,
 		bool inherit = true)
 	{
+		if (AttributePredicates.OnlyChecksType(predicate))
+		{
+			return eventInfo?.IsDefined(attributeType, inherit) == true;
+		}
+
 		object? attribute = eventInfo?.GetCustomAttributes(attributeType, inherit)
 			.FirstOrDefault();
 		if (attribute is Attribute attributeValue)
 		{
-			return predicate?.Invoke(attributeValue) ?? true;
+			return predicate(attributeValue);
 		}
 
 		return false;
