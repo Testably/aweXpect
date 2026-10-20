@@ -22,7 +22,7 @@ public static partial class AssemblyFilters
 	{
 		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(
 			assembly => assembly.HasAttribute<TAttribute>(inherit: inherit),
-			$" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}");
+			() => $" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}");
 		return new AssembliesWith(@this.Which(filter), filter);
 	}
 
@@ -43,7 +43,7 @@ public static partial class AssemblyFilters
 	{
 		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(
 			assembly => assembly.HasAttribute(predicate, inherit),
-			$" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");
+			() => $" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");
 		return new AssembliesWith(@this.Which(filter), filter);
 	}
 

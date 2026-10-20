@@ -24,6 +24,8 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	: ConstraintResult(grammars)
 {
 	private object? _elements;
+	private List<T>? _matching;
+	private List<T>? _notMatching;
 	private Outcome _outcome = Outcome.Undecided;
 	private Type? _subjectType;
 
@@ -58,12 +60,15 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	/// <summary>
 	///     The matching elements of the last evaluation.
 	/// </summary>
-	protected T[] Matching { get; private set; } = [];
+	/// <remarks>
+	///     The elements are only copied into an array when they are needed for a failure.
+	/// </remarks>
+	protected T[] Matching => _matching?.ToArray() ?? [];
 
 	/// <summary>
 	///     The not matching elements of the last evaluation.
 	/// </summary>
-	protected T[] NotMatching { get; private set; } = [];
+	protected T[] NotMatching => _notMatching?.ToArray() ?? [];
 
 	/// <summary>
 	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into
@@ -78,10 +83,10 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		}
 
 		List<T> matching = [];
-		List<T> notMatching = [];
+		List<T>? notMatching = null;
 		foreach (T item in context.UseMaterializedEnumerable(elements!))
 		{
-			(predicate(item) ? matching : notMatching).Add(item);
+			Add(predicate(item), item, matching, ref notMatching);
 		}
 
 		return Complete(matching, notMatching);
@@ -103,7 +108,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		}
 
 		List<T> matching = [];
-		List<T> notMatching = [];
+		List<T>? notMatching = null;
 		foreach (T item in context.UseMaterializedEnumerable(elements!))
 		{
 			if (cancellationToken.IsCancellationRequested)
@@ -111,7 +116,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 				return this;
 			}
 
-			(await predicate(item) ? matching : notMatching).Add(item);
+			Add(await predicate(item), item, matching, ref notMatching);
 		}
 
 		return Complete(matching, notMatching);
@@ -145,7 +150,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		}
 
 		List<T> matching = [];
-		List<T> notMatching = [];
+		List<T>? notMatching = null;
 		try
 		{
 			await foreach (T item in context.UseMaterializedAsyncEnumerable(elements!, cancellationToken))
@@ -155,7 +160,7 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 					return this;
 				}
 
-				(await predicate(item) ? matching : notMatching).Add(item);
+				Add(await predicate(item), item, matching, ref notMatching);
 			}
 		}
 		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -288,17 +293,32 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	{
 		_elements = elements;
 		_subjectType = subjectType;
-		Matching = [];
-		NotMatching = [];
+		_matching = null;
+		_notMatching = null;
 		_outcome = elements is null ? Outcome.FailureBothWays : Outcome.Undecided;
 		return elements is not null;
 	}
 
-	private CollectionConstraintResult<T> Complete(List<T> matching, List<T> notMatching)
+	private CollectionConstraintResult<T> Complete(List<T> matching, List<T>? notMatching)
 	{
-		Matching = matching.ToArray();
-		NotMatching = notMatching.ToArray();
-		_outcome = NotMatching.Length == 0 ? Outcome.Success : Outcome.Failure;
+		_matching = matching;
+		_notMatching = notMatching;
+		_outcome = notMatching is null ? Outcome.Success : Outcome.Failure;
 		return this;
+	}
+
+	/// <remarks>
+	///     The list of the not matching items is only created for the first one, as most evaluations have none.
+	/// </remarks>
+	private static void Add(bool isMatching, T item, List<T> matching, ref List<T>? notMatching)
+	{
+		if (isMatching)
+		{
+			matching.Add(item);
+		}
+		else
+		{
+			(notMatching ??= []).Add(item);
+		}
 	}
 }

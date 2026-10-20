@@ -31,5 +31,5 @@ public static partial class TypeFilters
 	public static Filtered.Types Except<T>(this Filtered.Types @this)
 		=> @this.Which(Filter.Suffix<Type>(
 			type => type != typeof(T),
-			$"except {Formatter.Format(typeof(T))} "));
+			() => $"except {Formatter.Format(typeof(T))} "));
 }

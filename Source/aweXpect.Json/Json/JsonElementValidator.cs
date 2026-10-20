@@ -15,7 +15,7 @@ namespace aweXpect.Json;
 /// </summary>
 internal static class JsonElementValidator
 {
-	public static Task<JsonComparisonResult> Compare(
+	public static ValueTask<JsonComparisonResult> Compare(
 		JsonElement actualElement,
 		JsonElement expectedElement,
 		JsonOptions options,
@@ -26,7 +26,7 @@ internal static class JsonElementValidator
 	/// <remarks>
 	///     The <paramref name="basePath" /> itself is never ignored, as it is the target of an explicit expectation.
 	/// </remarks>
-	public static Task<JsonComparisonResult> Compare(
+	public static ValueTask<JsonComparisonResult> Compare(
 		string basePath,
 		JsonElement actualElement,
 		JsonElement expectedElement,
@@ -35,7 +35,7 @@ internal static class JsonElementValidator
 		=> Compare(new JsonComparisonResult(options.MembersToIgnore), basePath, actualElement, expectedElement,
 			options, converter);
 
-	private static async Task<JsonComparisonResult> Compare(
+	private static async ValueTask<JsonComparisonResult> Compare(
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
@@ -66,7 +66,7 @@ internal static class JsonElementValidator
 		};
 	}
 
-	private static async Task<JsonComparisonResult> CompareJsonArray(
+	private static async ValueTask<JsonComparisonResult> CompareJsonArray(
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
@@ -129,7 +129,7 @@ internal static class JsonElementValidator
 	///     An ignored element of the subject is left out of the pairing, so it neither pairs with an expected element nor
 	///     is reported as unexpected.
 	/// </remarks>
-	private static async Task<JsonComparisonResult> CompareJsonArrayIgnoringOrder(
+	private static async ValueTask<JsonComparisonResult> CompareJsonArrayIgnoringOrder(
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
@@ -312,7 +312,7 @@ internal static class JsonElementValidator
 		       !double.IsInfinity(actual) && !double.IsInfinity(expected);
 	}
 
-	private static async Task<JsonComparisonResult> CompareJsonObject(
+	private static async ValueTask<JsonComparisonResult> CompareJsonObject(
 		this JsonComparisonResult result,
 		string path,
 		JsonElement actualElement,
@@ -329,13 +329,14 @@ internal static class JsonElementValidator
 
 		foreach (JsonProperty item in expectedElement.EnumerateObject())
 		{
-			string memberPath = path + "." + item.Name;
+			string name = item.Name;
+			string memberPath = path + "." + name;
 			if (result.IsIgnored(memberPath))
 			{
 				continue;
 			}
 
-			if (!actualElement.TryGetProperty(item.Name, out JsonElement property))
+			if (!actualElement.TryGetProperty(name, out JsonElement property))
 			{
 				if (IsTreatedAsAbsent(item.Value, options))
 				{
@@ -366,11 +367,14 @@ internal static class JsonElementValidator
 	{
 		foreach (JsonProperty property in actualElement.EnumerateObject())
 		{
-			string memberPath = path + "." + property.Name;
-			if (result.HasMemberError(memberPath) ||
-			    IsTreatedAsAbsent(property.Value, options) ||
-			    expectedElement.TryGetProperty(property.Name, out _) ||
-			    result.IsIgnored(memberPath))
+			string name = property.Name;
+			if (IsTreatedAsAbsent(property.Value, options) || expectedElement.TryGetProperty(name, out _))
+			{
+				continue;
+			}
+
+			string memberPath = path + "." + name;
+			if (result.HasMemberError(memberPath) || result.IsIgnored(memberPath))
 			{
 				continue;
 			}
@@ -396,9 +400,7 @@ internal static class JsonElementValidator
 			return result;
 		}
 
-		string? value1 = actualElement.GetString();
-		string? value2 = expectedElement.GetString();
-		if (value1 != value2)
+		if (!actualElement.ValueEquals(expectedElement.GetString()))
 		{
 			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}");
 		}
@@ -507,7 +509,7 @@ internal static class JsonElementValidator
 			_membersToIgnore = membersToIgnore;
 		}
 
-		public bool HasError => _errors.Any();
+		public bool HasError => _errors.Count > 0;
 
 		/// <summary>
 		///     Creates a separate result for a candidate of a pairing, which shares the tracking of the members to ignore.
@@ -528,7 +530,17 @@ internal static class JsonElementValidator
 			=> _errors.Add(new KeyValuePair<string, string>(memberPath, error));
 
 		public bool HasMemberError(string memberPath)
-			=> _errors.Exists(error => error.Key == memberPath);
+		{
+			for (int i = 0; i < _errors.Count; i++)
+			{
+				if (_errors[i].Key == memberPath)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		public override string ToString()
 		{

@@ -28,7 +28,7 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private readonly List<string?> _failures = new();
 	private readonly JsonOptions _options;
-	private readonly List<Func<CancellationToken, Task>> _pendingChecks = new();
+	private readonly List<(int Index, Func<CancellationToken, Task<string?>> Check)> _pendingChecks = new();
 	private readonly JsonValidation _root;
 	private readonly JsonValueKind _valueKind;
 	private int? _amount;
@@ -58,7 +58,14 @@ internal class JsonValidation : IJsonObjectResult,
 		_currentPath.Push(path);
 	}
 
-	private string CurrentPath => string.Join("", _currentPath.Reverse());
+	/// <remarks>
+	///     The stack holds the whole path of each level instead of its segment, so that the path is not joined again
+	///     every time it is read.
+	/// </remarks>
+	private string CurrentPath => _currentPath.Peek();
+
+	private void PushPath(string segment)
+		=> _currentPath.Push(CurrentPath + segment);
 
 	/// <summary>
 	///     The members to ignore by name that matched no member in a failed comparison of the whole validation, with the
@@ -82,7 +89,7 @@ internal class JsonValidation : IJsonObjectResult,
 				new ArgumentOutOfRangeException(nameof(index), "The index must not be negative.")));
 		}
 
-		_currentPath.Push($"[{index}]");
+		PushPath($"[{index}]");
 		_currentElements.Push(GetElement(_currentElements.Peek(), index, CurrentPath));
 		return this;
 	}
@@ -121,7 +128,7 @@ internal class JsonValidation : IJsonObjectResult,
 				currentElement = arrayElement.Value[i];
 			}
 
-			_currentPath.Push($"[{i}]");
+			PushPath($"[{i}]");
 
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
@@ -175,7 +182,7 @@ internal class JsonValidation : IJsonObjectResult,
 	{
 		int index = _failures.Count;
 		_failures.Add(null);
-		_pendingChecks.Add(async cancellationToken => _failures[index] = await check(cancellationToken));
+		_pendingChecks.Add((index, check));
 	}
 
 	IJsonArrayResult.IJsonArrayElementsResult IJsonArrayResult.WithArrays(
@@ -202,7 +209,7 @@ internal class JsonValidation : IJsonObjectResult,
 				currentElement = arrayElement.Value[i];
 			}
 
-			_currentPath.Push($"[{i}]");
+			PushPath($"[{i}]");
 
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
@@ -254,7 +261,7 @@ internal class JsonValidation : IJsonObjectResult,
 				currentElement = arrayElement.Value[i];
 			}
 
-			_currentPath.Push($"[{i}]");
+			PushPath($"[{i}]");
 
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
@@ -340,7 +347,7 @@ internal class JsonValidation : IJsonObjectResult,
 				new ArgumentNullException(nameof(propertyName), "The 'propertyName' cannot be null.")));
 		}
 
-		_currentPath.Push($".{propertyName}");
+		PushPath($".{propertyName}");
 		_currentElements.Push(GetProperty(_currentElements.Peek(), propertyName, CurrentPath));
 		return this;
 	}
@@ -367,7 +374,7 @@ internal class JsonValidation : IJsonObjectResult,
 			currentElement = RequireKind(GetSegment(currentElement, segments[i], segmentPath), kind, segmentPath);
 		}
 
-		_currentPath.Push(string.Concat(segments));
+		_currentPath.Push(pathBuilder.Append(segments[segments.Count - 1]).ToString());
 		_currentElements.Push(GetSegment(currentElement, segments[segments.Count - 1], CurrentPath));
 		return this;
 	}
@@ -655,9 +662,9 @@ internal class JsonValidation : IJsonObjectResult,
 	/// </summary>
 	public async Task ValidateAsync(CancellationToken cancellationToken)
 	{
-		foreach (Func<CancellationToken, Task> pendingCheck in _pendingChecks)
+		foreach ((int index, Func<CancellationToken, Task<string?>> check) in _pendingChecks)
 		{
-			await pendingCheck(cancellationToken);
+			_failures[index] = await check(cancellationToken);
 		}
 
 		_failures.RemoveAll(failure => failure is null);

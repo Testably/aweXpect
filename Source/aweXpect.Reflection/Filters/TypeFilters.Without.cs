@@ -17,5 +17,5 @@ public static partial class TypeFilters
 		where TAttribute : Attribute
 		=> @this.Which(Filter.Suffix<Type>(
 			type => !type.HasAttribute<TAttribute>(inherit: inherit),
-			$"without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
+			() => $"without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
 }

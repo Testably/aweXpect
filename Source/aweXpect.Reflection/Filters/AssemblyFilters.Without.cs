@@ -18,5 +18,5 @@ public static partial class AssemblyFilters
 		where TAttribute : Attribute
 		=> @this.Which(Filter.Suffix<Assembly>(
 			assembly => !assembly.HasAttribute<TAttribute>(inherit: inherit),
-			$" without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}"));
+			() => $" without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}"));
 }

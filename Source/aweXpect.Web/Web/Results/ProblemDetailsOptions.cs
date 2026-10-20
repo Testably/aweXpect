@@ -13,10 +13,15 @@ namespace aweXpect.Web.Results;
 /// </summary>
 public class ProblemDetailsOptions
 {
-	private readonly StringEqualityOptions _detailOptions = new("detail");
-	private readonly StringEqualityOptions _instanceOptions = new("instance");
 	private readonly List<Func<string>> _parts = new();
-	private readonly StringEqualityOptions _titleOptions = new("title");
+
+	/// <remarks>
+	///     The options of a value are only created when the value is expected, as most expectations specify only some.
+	/// </remarks>
+	private StringEqualityOptions? _detailOptions;
+
+	private StringEqualityOptions? _instanceOptions;
+	private StringEqualityOptions? _titleOptions;
 
 	/// <summary>
 	///     The title of a problem details object.
@@ -66,8 +71,10 @@ public class ProblemDetailsOptions
 		ThrowHelper.ThrowIfNull(title, nameof(title));
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Title is not null, nameof(WithTitle));
 		Title = title;
-		_parts.Add(() => $"title {Formatter.Format(title)}{_titleOptions}");
-		return _titleOptions;
+		StringEqualityOptions titleOptions = new("title");
+		_titleOptions = titleOptions;
+		_parts.Add(() => $"title {Formatter.Format(title)}{titleOptions}");
+		return titleOptions;
 	}
 
 	/// <summary>
@@ -88,8 +95,10 @@ public class ProblemDetailsOptions
 		ThrowHelper.ThrowIfNull(detail, nameof(detail));
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Detail is not null, nameof(WithDetail));
 		Detail = detail;
-		_parts.Add(() => $"detail {Formatter.Format(detail)}{_detailOptions}");
-		return _detailOptions;
+		StringEqualityOptions detailOptions = new("detail");
+		_detailOptions = detailOptions;
+		_parts.Add(() => $"detail {Formatter.Format(detail)}{detailOptions}");
+		return detailOptions;
 	}
 
 	/// <summary>
@@ -100,8 +109,10 @@ public class ProblemDetailsOptions
 		ThrowHelper.ThrowIfNull(instance, nameof(instance));
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Instance is not null, nameof(WithInstance));
 		Instance = instance;
-		_parts.Add(() => $"instance {Formatter.Format(instance)}{_instanceOptions}");
-		return _instanceOptions;
+		StringEqualityOptions instanceOptions = new("instance");
+		_instanceOptions = instanceOptions;
+		_parts.Add(() => $"instance {Formatter.Format(instance)}{instanceOptions}");
+		return instanceOptions;
 	}
 
 	/// <summary>
@@ -112,7 +123,7 @@ public class ProblemDetailsOptions
 	/// </remarks>
 	public ValueTask<bool>
 		IsTitleConsideredEqualTo(string? title)
-		=> Title is null ? new ValueTask<bool>(true) : _titleOptions.AreConsideredEqual(title, Title);
+		=> _titleOptions is null ? new ValueTask<bool>(true) : _titleOptions.AreConsideredEqual(title, Title);
 
 	/// <summary>
 	///     Checks if the <paramref name="detail" /> matches the expected <see cref="Detail" />.
@@ -122,7 +133,7 @@ public class ProblemDetailsOptions
 	/// </remarks>
 	public ValueTask<bool>
 		IsDetailConsideredEqualTo(string? detail)
-		=> Detail is null ? new ValueTask<bool>(true) : _detailOptions.AreConsideredEqual(detail, Detail);
+		=> _detailOptions is null ? new ValueTask<bool>(true) : _detailOptions.AreConsideredEqual(detail, Detail);
 
 	/// <summary>
 	///     Checks if the <paramref name="instance" /> matches the expected <see cref="Instance" />.
@@ -132,16 +143,18 @@ public class ProblemDetailsOptions
 	/// </remarks>
 	public ValueTask<bool>
 		IsInstanceConsideredEqualTo(string? instance)
-		=> Instance is null ? new ValueTask<bool>(true) : _instanceOptions.AreConsideredEqual(instance, Instance);
+		=> _instanceOptions is null
+			? new ValueTask<bool>(true)
+			: _instanceOptions.AreConsideredEqual(instance, Instance);
 
 	internal string GetTitleFailure(string it, ExpectationGrammars grammars, string? title)
-		=> _titleOptions.GetExtendedMemberFailure(it, "title", grammars, title, Title);
+		=> _titleOptions!.GetExtendedMemberFailure(it, "title", grammars, title, Title);
 
 	internal string GetDetailFailure(string it, ExpectationGrammars grammars, string? detail)
-		=> _detailOptions.GetExtendedMemberFailure(it, "detail", grammars, detail, Detail);
+		=> _detailOptions!.GetExtendedMemberFailure(it, "detail", grammars, detail, Detail);
 
 	internal string GetInstanceFailure(string it, ExpectationGrammars grammars, string? instance)
-		=> _instanceOptions.GetExtendedMemberFailure(it, "instance", grammars, instance, Instance);
+		=> _instanceOptions!.GetExtendedMemberFailure(it, "instance", grammars, instance, Instance);
 
 	/// <inheritdoc cref="object.ToString()" />
 #if NET8_0_OR_GREATER

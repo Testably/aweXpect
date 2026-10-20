@@ -14,5 +14,5 @@ public static partial class FieldFilters
 		where TAttribute : Attribute
 		=> @this.Which(Filter.Suffix<FieldInfo>(
 			fieldInfo => !fieldInfo.HasAttribute<TAttribute>(),
-			$"without {Formatter.Format(typeof(TAttribute))} "));
+			() => $"without {Formatter.Format(typeof(TAttribute))} "));
 }

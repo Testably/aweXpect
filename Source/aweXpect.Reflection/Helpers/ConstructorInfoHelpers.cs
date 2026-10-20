@@ -24,37 +24,37 @@ internal static class ConstructorInfoHelpers
 		this ConstructorInfo constructorInfo,
 		AccessModifiers accessModifiers)
 	{
-		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		if ((accessModifiers & AccessModifiers.Internal) != 0 &&
 		    constructorInfo.IsAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		if ((accessModifiers & AccessModifiers.Protected) != 0 &&
 		    constructorInfo.IsFamily)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		if ((accessModifiers & AccessModifiers.Private) != 0 &&
 		    constructorInfo.IsPrivate)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		if ((accessModifiers & AccessModifiers.Public) != 0 &&
 		    constructorInfo.IsPublic)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.PrivateProtected) &&
+		if ((accessModifiers & AccessModifiers.PrivateProtected) != 0 &&
 		    constructorInfo.IsFamilyAndAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.ProtectedInternal) &&
+		if ((accessModifiers & AccessModifiers.ProtectedInternal) != 0 &&
 		    constructorInfo.IsFamilyOrAssembly)
 		{
 			return true;
@@ -85,6 +85,11 @@ internal static class ConstructorInfoHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return constructorInfo.IsDefined(typeof(TAttribute), inherit);
+		}
+
 		object? attribute = constructorInfo.GetCustomAttributes(typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)

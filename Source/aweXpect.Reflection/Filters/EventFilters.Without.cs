@@ -18,5 +18,5 @@ public static partial class EventFilters
 		where TAttribute : Attribute
 		=> @this.Which(Filter.Suffix<EventInfo>(
 			eventInfo => !eventInfo.HasAttribute<TAttribute>(inherit: inherit),
-			$"without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
+			() => $"without {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
 }

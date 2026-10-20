@@ -31,7 +31,7 @@ public static partial class TypeFilters
 	{
 		baseType.EnsureIsClass();
 		return @this.Which(Filter.Suffix<Type>(type => type.InheritsFromClass(baseType, forceDirect),
-			$"which inherit from {Formatter.Format(baseType)} "));
+			() => $"which inherit from {Formatter.Format(baseType)} "));
 	}
 
 	/// <summary>
@@ -60,6 +60,6 @@ public static partial class TypeFilters
 	{
 		baseType.EnsureIsClass();
 		return @this.Which(Filter.Suffix<Type>(type => !type.InheritsFromClass(baseType, forceDirect),
-			$"which do not inherit from {Formatter.Format(baseType)} "));
+			() => $"which do not inherit from {Formatter.Format(baseType)} "));
 	}
 }

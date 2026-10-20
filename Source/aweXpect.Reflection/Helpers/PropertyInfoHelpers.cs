@@ -54,6 +54,11 @@ internal static class PropertyInfoHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return Attribute.IsDefined(propertyInfo, typeof(TAttribute), inherit);
+		}
+
 		object? attribute = Attribute.GetCustomAttributes(propertyInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)

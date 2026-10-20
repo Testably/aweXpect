@@ -16,7 +16,7 @@ public static partial class FieldFilters
 	{
 		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.HasAttribute<TAttribute>(),
-			$"with {Formatter.Format(typeof(TAttribute))} ");
+			() => $"with {Formatter.Format(typeof(TAttribute))} ");
 		return new FieldsWith(@this.Which(filter), filter);
 	}
 
@@ -32,7 +32,7 @@ public static partial class FieldFilters
 	{
 		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.HasAttribute(predicate),
-			$"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
+			() => $"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
 		return new FieldsWith(@this.Which(filter), filter);
 	}
 

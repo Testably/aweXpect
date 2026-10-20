@@ -10,11 +10,27 @@ namespace aweXpect.Json;
 /// </summary>
 public static class JsonAwexpectCustomizationExtensions
 {
+	private static JsonCustomization? _lastCustomization;
+
 	/// <summary>
 	///     Customize the JSON settings.
 	/// </summary>
+	/// <remarks>
+	///     The settings are read from the <paramref name="awexpectCustomization" /> on every access, so the group of the
+	///     last customization is reused instead of being created anew in every expectation.
+	/// </remarks>
 	public static JsonCustomization Json(this AwexpectCustomization awexpectCustomization)
-		=> new(awexpectCustomization);
+	{
+		JsonCustomization? cached = _lastCustomization;
+		if (cached is not null && ReferenceEquals(cached.Owner, awexpectCustomization))
+		{
+			return cached;
+		}
+
+		cached = new JsonCustomization(awexpectCustomization);
+		_lastCustomization = cached;
+		return cached;
+	}
 
 	/// <summary>
 	///     Customize the JSON settings.
@@ -34,6 +50,7 @@ public static class JsonAwexpectCustomizationExtensions
 
 		internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
 		{
+			Owner = awexpectCustomization;
 			DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
 				"aweXpect.Json.DefaultJsonDocumentOptions", new JsonDocumentOptions
 				{
@@ -50,6 +67,8 @@ public static class JsonAwexpectCustomizationExtensions
 					}
 				});
 		}
+
+		internal IAwexpectCustomization Owner { get; }
 
 		/// <summary>
 		///     The default <see cref="JsonDocumentOptions" />.

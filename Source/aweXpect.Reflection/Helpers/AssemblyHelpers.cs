@@ -36,6 +36,11 @@ internal static class AssemblyHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return Attribute.IsDefined(assembly, typeof(TAttribute), inherit);
+		}
+
 		object? attribute = Attribute.GetCustomAttributes(assembly, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
