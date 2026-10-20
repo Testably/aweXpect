@@ -1,0 +1,144 @@
+---
+title: Benchmarks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import BenchmarkResult from '@site/src/components/BenchmarkResult';
+import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
+
+These benchmarks compare the happy-path overhead of aweXpect.Reflection (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
+
+:::info[Methodology]
+
+- **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Reflection.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
+- **Job**: `MediumRun` with the in-process toolchain.
+- **Runner**: `ubuntu-latest` GitHub Actions agent, refreshed on every push to `main`.
+- FluentAssertions has no expectations on nullability or dependencies. For these, its benchmark does what a FluentAssertions user writes instead, which does not cover everything aweXpect.Reflection verifies.
+- Each tab shows the latest measured time and allocated memory; bars are scaled within the row so length corresponds to magnitude. **Lower is better.**
+
+:::
+
+<BenchmarkSummary package="aweXpect.Reflection" />
+
+<Tabs groupId="aweXpectReflectionBenchmark">
+
+<TabItem value="TypeHasAttribute" label="Attribute" default>
+
+Verifies that a type is decorated with an attribute.
+
+<BenchmarkResult package="aweXpect.Reflection" name="TypeHasAttribute" />
+
+```csharp title="aweXpect"
+await Expect.That(_entityType).Has<EntityAttribute>();
+```
+
+```csharp title="FluentAssertions"
+_entityType.Should().BeDecoratedWith<EntityAttribute>();
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.TypeHasAttribute.cs)
+
+</TabItem>
+
+<TabItem value="TypeIsNotStatic" label="Not static">
+
+Verifies that a type is not static.
+
+<BenchmarkResult package="aweXpect.Reflection" name="TypeIsNotStatic" />
+
+```csharp title="aweXpect"
+await Expect.That(_type).IsNotStatic();
+```
+
+```csharp title="FluentAssertions"
+_type.Should().NotBeStatic();
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.TypeIsNotStatic.cs)
+
+</TabItem>
+
+<TabItem value="TypeNullability" label="Nullability">
+
+Verifies that all members of a type are non-nullable.
+FluentAssertions reads the nullability of the declared properties with a `NullabilityInfoContext` and verifies that none of them is nullable. As the type only has auto-properties, this covers the same members.
+
+<BenchmarkResult package="aweXpect.Reflection" name="TypeNullability" />
+
+```csharp title="aweXpect"
+await Expect.That(_trackType).OnlyHasNonNullableMembers();
+```
+
+```csharp title="FluentAssertions"
+NullabilityInfoContext context = new();
+_trackType.GetProperties(DeclaredMembers).Select(property => context.Create(property).ReadState)
+    .Should().NotContain(NullabilityState.Nullable);
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.TypeNullability.cs)
+
+</TabItem>
+
+<TabItem value="TypesAreSealed" label="Sealed types">
+
+Verifies the convention that all types in a namespace of an assembly are sealed, as an architecture test does.
+
+<BenchmarkResult package="aweXpect.Reflection" name="TypesAreSealed" />
+
+```csharp title="aweXpect"
+await Expect.That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
+    .AreSealed();
+```
+
+```csharp title="FluentAssertions"
+AllTypes.From(_assembly).ThatAreUnderNamespace(_namespace).Should().BeSealed();
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.TypesAreSealed.cs)
+
+</TabItem>
+
+<TabItem value="MethodsAreAsync" label="Async methods">
+
+Verifies the convention that all methods returning a `Task` in a namespace of an assembly are async, as an architecture test does.
+
+<BenchmarkResult package="aweXpect.Reflection" name="MethodsAreAsync" />
+
+```csharp title="aweXpect"
+await Expect.That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace)
+        .Methods().WhichReturn<Task>())
+    .AreAsync();
+```
+
+```csharp title="FluentAssertions"
+AllTypes.From(_assembly).ThatAreUnderNamespace(_namespace).Methods().ThatReturn<Task>().Should().BeAsync();
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.MethodsAreAsync.cs)
+
+</TabItem>
+
+<TabItem value="TypesDoNotDependOn" label="Dependencies">
+
+Verifies the architecture rule that no type in a namespace of an assembly depends on the `System.Net` namespace.
+FluentAssertions collects the types of the fields, properties, method return values and method parameters and verifies that none of them is in the namespace. This is not equivalent: it ignores e.g. base types, interfaces, generic arguments and attributes.
+
+<BenchmarkResult package="aweXpect.Reflection" name="TypesDoNotDependOn" />
+
+```csharp title="aweXpect"
+await Expect.That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
+    .DoNotDependOn("System.Net");
+```
+
+```csharp title="FluentAssertions"
+AllTypes.From(_assembly).ThatAreUnderNamespace(_namespace).SelectMany(GetSignatureTypes).Should()
+    .NotContain(type => type.Namespace != null &&
+                        (type.Namespace == "System.Net" || type.Namespace.StartsWith("System.Net.")));
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.TypesDoNotDependOn.cs)
+
+</TabItem>
+
+</Tabs>

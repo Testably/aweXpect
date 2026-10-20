@@ -1,0 +1,152 @@
+---
+title: Benchmarks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import BenchmarkResult from '@site/src/components/BenchmarkResult';
+import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
+
+These benchmarks compare the happy-path overhead of aweXpect.Web (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
+
+:::info[Methodology]
+
+- **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Web.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
+- **Job**: `MediumRun` with the in-process toolchain.
+- **Runner**: `ubuntu-latest` GitHub Actions agent, refreshed on every push to `main`.
+- FluentAssertions has no expectations on `HttpResponseMessage` or `Uri`, so its benchmarks do what a FluentAssertions user writes instead, e.g. read the content as a `string`.
+- Each tab shows the latest measured time and allocated memory; bars are scaled within the row so length corresponds to magnitude. **Lower is better.**
+
+:::
+
+<BenchmarkSummary package="aweXpect.Web" />
+
+<Tabs groupId="aweXpectWebBenchmark">
+
+<TabItem value="SuccessStatusCode" label="Status code" default>
+
+Verifies that the response has a success status code.
+FluentAssertions verifies `IsSuccessStatusCode`.
+
+<BenchmarkResult package="aweXpect.Web" name="SuccessStatusCode" />
+
+```csharp title="aweXpect"
+await Expect.That(_response).HasStatusCode().Success();
+```
+
+```csharp title="FluentAssertions"
+_response.IsSuccessStatusCode.Should().BeTrue();
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.SuccessStatusCode.cs)
+
+</TabItem>
+
+<TabItem value="Header" label="Header">
+
+Verifies that the response has a header with the expected value.
+FluentAssertions verifies that the header has a single value which is equal to the expected one.
+
+<BenchmarkResult package="aweXpect.Web" name="Header" />
+
+```csharp title="aweXpect"
+await Expect.That(_response).HasHeader("x-vendor").WithValue("VENDOR");
+```
+
+```csharp title="FluentAssertions"
+_response.Headers.GetValues("x-vendor").Should().ContainSingle().Which.Should().Be("VENDOR");
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.Header.cs)
+
+</TabItem>
+
+<TabItem value="Content" label="Content">
+
+Verifies that the response has the expected content.
+FluentAssertions reads the content as a `string`.
+
+<BenchmarkResult package="aweXpect.Web" name="Content" />
+
+```csharp title="aweXpect"
+await Expect.That(_response).HasContent("response-bar");
+```
+
+```csharp title="FluentAssertions"
+(await _response.Content.ReadAsStringAsync()).Should().Be("response-bar");
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.Content.cs)
+
+</TabItem>
+
+<TabItem value="ProblemDetails" label="Problem details">
+
+Verifies that the response has a problem details content with the expected type, title and status.
+FluentAssertions reads the content as a `string`, parses it into a `JsonNode` and compares it with an anonymous object.
+
+<BenchmarkResult package="aweXpect.Web" name="ProblemDetails" />
+
+```csharp title="aweXpect"
+await Expect.That(_problemResponse)
+    .HasProblemDetailsContent("https://httpstatuses.com/404")
+    .WithTitle("Track not found")
+    .WithStatus(404);
+```
+
+```csharp title="FluentAssertions"
+JsonNode.Parse(await _problemResponse.Content.ReadAsStringAsync()).Should().BeEquivalentTo(new
+{
+    type = "https://httpstatuses.com/404",
+    title = "Track not found",
+    status = 404,
+});
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.ProblemDetails.cs)
+
+</TabItem>
+
+<TabItem value="RequestMessage" label="Request">
+
+Verifies the method and the URI of the request that led to the response.
+FluentAssertions compares the `Method` and the `RequestUri` of the `RequestMessage`.
+
+<BenchmarkResult package="aweXpect.Web" name="RequestMessage" />
+
+```csharp title="aweXpect"
+await Expect.That(_response).HasRequestMessage(request => request
+    .HasMethod(HttpMethod.Get).And
+    .HasRequestUri("https://music.example.com/tracks/1"));
+```
+
+```csharp title="FluentAssertions"
+_response.RequestMessage.Should().NotBeNull();
+_response.RequestMessage!.Method.Should().Be(HttpMethod.Get);
+_response.RequestMessage.RequestUri.Should().Be(new Uri("https://music.example.com/tracks/1"));
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.RequestMessage.cs)
+
+</TabItem>
+
+<TabItem value="QueryParameter" label="Query parameter">
+
+Verifies that a `Uri` has a query parameter with the expected value.
+FluentAssertions parses the query with `HttpUtility.ParseQueryString` and verifies the value of the parameter.
+
+<BenchmarkResult package="aweXpect.Web" name="QueryParameter" />
+
+```csharp title="aweXpect"
+await Expect.That(_uri).HasQueryParameter("page").WithValue("2");
+```
+
+```csharp title="FluentAssertions"
+HttpUtility.ParseQueryString(_uri.Query)["page"].Should().Be("2");
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.QueryParameter.cs)
+
+</TabItem>
+
+</Tabs>
