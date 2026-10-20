@@ -20,8 +20,17 @@ internal sealed class MembersToIgnoreTracker(XmlOptions options)
 	/// </summary>
 	private const int ComparedPathsToRemember = 1000;
 
-	private readonly HashSet<string> _comparedPaths = new(StringComparer.Ordinal);
-	private readonly HashSet<string> _matchedPatterns = new(StringComparer.Ordinal);
+	/// <summary>
+	///     The set of a tracker without members to ignore, which is never changed, so that every comparison without
+	///     members to ignore can share it.
+	/// </summary>
+	private static readonly HashSet<string> Untracked = new(StringComparer.Ordinal);
+
+	private readonly HashSet<string> _comparedPaths =
+		options.MembersToIgnore.Count == 0 ? Untracked : new HashSet<string>(StringComparer.Ordinal);
+
+	private readonly HashSet<string> _matchedPatterns =
+		options.MembersToIgnore.Count == 0 ? Untracked : new HashSet<string>(StringComparer.Ordinal);
 
 	/// <summary>
 	///     Checks if the member at the <paramref name="path" /> is ignored, and tracks the result.
