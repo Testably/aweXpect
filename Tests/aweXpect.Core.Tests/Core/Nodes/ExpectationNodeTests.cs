@@ -1007,6 +1007,25 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenMemberExpectationsCompleteAsynchronously_ShouldPrependTheMember()
+	{
+		ExpectationNode node = new();
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: "))
+			.AddConstraint(new DummyAsyncConstraint<int>(async v =>
+			{
+				await Task.Yield();
+				return new DummyConstraintResult<int>(Outcome.Failure, v, $"is {v}", "it was not");
+			}));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo(" length: is 6");
+		await That(result.TryGetValue(out string? value)).IsTrue();
+		await That(value).IsEqualTo("foobar");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenMemberThrows_ShouldNotUseTheDescriptionOfTheMemberConstraint()
 	{
 		ExpectationNode node = new();
