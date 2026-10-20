@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12535.305913289389,
           12764.462727473332,
           13265.374138465295,
           9438.285522460938,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           6596.264731815883,
           14381.650234767369,
           6290.744794718425,
-          13431.071209716796
+          13431.071209716796,
+          12424.916563767652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -443,12 +443,12 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           3040,
-          3040,
           3088,
           3088,
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          374195.22265625,
           392134.18125,
           377371.628515625,
           293860.6474609375,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           178992.7767578125,
           386189.5509314904,
           164726.92766462054,
-          383894.373828125
+          383894.373828125,
+          374467.87669270835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590225,
@@ -594,6 +593,7 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590287,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          18772.20353581355,
           20086.381243024553,
           19197.259187825523,
           17536.11997680664,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           9672.389400227865,
           19215.74513898577,
           9687.401100745568,
-          19379.468263753257
+          19379.468263753257,
+          19723.56197466169
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          306.9443253449031,
           283.9505867640177,
           262.74484459559125,
           284.5397834437234,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           138.71444506645201,
           288.87488724390664,
           133.83350161143713,
-          321.3382097244263
+          321.3382097244263,
+          284.3743395487467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          504.2283857890538,
           537.6015279633658,
           479.22045939309254,
           582.8737354914348,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           265.9254628590175,
           554.4303117116292,
           245.48654237160315,
-          585.8575134913127
+          585.8575134913127,
+          545.8857168833415
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          408.87290208680287,
           414.6734790166219,
           397.2279572804769,
           406.0813612571129,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           223.6468460900443,
           415.90519326527914,
           201.15392077886142,
-          423.61332578659056
+          423.61332578659056,
+          414.86068773269653
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          145.90668115615844,
           163.39442869822184,
           137.40051256815593,
           165.9204727013906,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           78.1513781150182,
           161.91783633232117,
           71.98160390342984,
-          159.558003060023
+          159.558003060023,
+          159.92800674438476
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1909,7 +1909,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
-          512,
+          536,
           536,
           536,
           536,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.06234607696533,
           272.8674462182181,
           245.99453417460123,
           319.2019171374185,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           136.25635732923234,
           282.20928891499835,
           124.0122208254678,
-          282.2658065795898
+          282.2658065795898,
+          287.0499791463216
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          245.82162682215372,
           252.99966198603312,
           244.07392279307047,
           242.43157631556193,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           132.18533142407736,
           262.03795232772825,
           117.29486432442299,
-          260.21722440719606
+          260.21722440719606,
+          265.300892499777
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          284.33359142450183,
           278.191194500242,
           273.1169457117716,
           269.6064307873066,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           160.31036690565256,
           286.83811818636383,
           158.95665551821392,
-          290.03494990666707
+          290.03494990666707,
+          290.4190535545349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          545.3726666768392,
           563.3078155517578,
           586.2725223813738,
           639.0722876957485,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           308.0143295434805,
           578.0748713175456,
           274.1330770810445,
-          558.4174865722656
+          558.4174865722656,
+          587.2065956115723
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          339.0808546702067,
           355.15742444992065,
           364.86238646507263,
           340.9181462605794,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           197.49301727612814,
           356.6350205739339,
           167.49061036109924,
-          355.74284947713215
+          355.74284947713215,
+          354.8124809946333
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          649.0716806139264,
           658.9432414599827,
           633.7696231433323,
           576.9589465005057,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           339.8828879424504,
           677.4312150319417,
           326.325720173972,
-          676.0812699635824
+          676.0812699635824,
+          679.669674873352
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3378,7 +3378,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
+          872,
           872,
           872,
           872,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1393.0922468821207,
           1453.0168445587158,
           1373.5659450531007,
           1493.8372756958008,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           704.0699275970459,
           1511.5495142618815,
           653.0351298877171,
-          1548.958098856608
+          1548.958098856608,
+          1486.8155450820923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          660.1025011062623,
           648.3773095448812,
           625.6183510462444,
           624.6077039082845,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           347.3612709363302,
           679.0160875956218,
           324.8136201540629,
-          688.8696273394993
+          688.8696273394993,
+          677.3187940597534
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          655.6204875310262,
           653.0624830722809,
           626.2280548095703,
           577.4701204981122,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           334.4265292031424,
           666.5183174769084,
           322.32280286153156,
-          665.4261503953201
+          665.4261503953201,
+          660.7158184051514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4111,7 +4111,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912,
+          920,
           920,
           920,
           920,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27887.573141915458,
           28410.641943359376,
           27444.59106009347,
           17684.85667855399,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           10571.065576171875,
           27809.289346313475,
           9898.959427897136,
-          28042.715085856118
+          28042.715085856118,
+          28682.911216227214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33465,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          804.692634264628,
           826.4792725880941,
           794.8108036858695,
           745.6506352057824,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           425.74920657702853,
           817.8249410220554,
           413.0651320139567,
-          803.446176801409
+          803.446176801409,
+          826.0765203067234
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          744.3005462793203,
           743.0805713335673,
           768.1799621582031,
           745.015421740214,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           373.0331435839335,
           775.7946770191193,
           352.61233282089233,
-          835.8362019220988
+          835.8362019220988,
+          794.5244412104289
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4846,7 +4846,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
-          1848,
+          1856,
           1856,
           1856,
           1856,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82880.52755972055,
           84265.83816092355,
           85322.30723353794,
           33565.46903991699,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           29494.972002301896,
           86439.80888671875,
           27904.526094563804,
-          84306.2785970052
+          84306.2785970052,
+          84374.98778827373
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5252,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
       {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          183.5748676141103,
           191.85911434491476,
           162.5062539100647,
           200.02734831663278,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           110.18292439835412,
           189.88281548817952,
           103.88230061531067,
-          189.71347365379333
+          189.71347365379333,
+          195.00022001266478
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32423.43391113281,
           32192.955029296874,
           31236.718094889322,
           16281.876959664482,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           11076.802041625977,
           33640.369152832034,
           10583.883628336589,
-          33131.544795735674
+          33131.544795735674,
+          32748.927028111048
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5558,7 +5558,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,6 +5599,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          255.7457534154256,
           258.7912476979769,
           261.0001422564189,
           237.94517867905753,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           139.39484674135844,
           262.76921288172406,
           121.74509482724326,
-          259.55491431554157
+          259.55491431554157,
+          269.2464275677999
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          619.9793544769287,
           470.3805774961199,
           451.62953694661456,
           421.1136974266597,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           187.3057516983577,
           374.35020939509076,
           185.4253969703402,
-          373.67607855796814
+          373.67607855796814,
+          361.2869338671366
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6159,7 +6159,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          696,
           720,
           720,
           720,
@@ -6187,6 +6186,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          373.8811431271689,
           433.2085972150167,
           411.77138430277506,
           462.4986918449402,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           220.09970924854278,
           429.19574999809265,
           201.283979956309,
-          421.0189789258517
+          421.0189789258517,
+          395.88827346165976
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          398.0087053934733,
           431.85279965400696,
           411.37439753214517,
           388.1898558820997,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           213.04699403444926,
           421.6277090390523,
           195.17111146450043,
-          428.7466734568278
+          428.7466734568278,
+          416.4393012864249
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1151.8307791392008,
           1070.1917322794595,
           1056.3045282363892,
           1013.8042799631754,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           446.73118019104004,
           822.7165323893229,
           398.11624749501544,
-          815.643183026995
+          815.643183026995,
+          834.7785130182903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6898,7 +6898,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
-          1720,
+          1688,
           1688,
           1688,
           1688,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1887.3938435872396,
           2073.025442123413,
           1886.8613792419433,
           2113.136282348633,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1160.9594509124756,
           2046.8121988932292,
           1001.4748270670573,
-          2101.1886351449148
+          2101.1886351449148,
+          2045.080423082624
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          949.4310310999552,
           972.6625693003336,
           905.5249994141715,
           881.8255934715271,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           510.2945117155711,
           1001.8998962402344,
           457.94817669051037,
-          951.0506235758463
+          951.0506235758463,
+          968.4909497578939
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12135.059914725167,
           12159.236760457357,
           12077.013885498047,
           9942.863399799053,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           6485.879282437838,
           12201.915075937906,
           6186.8094482421875,
-          12294.065668378558
+          12294.065668378558,
+          12412.906634990986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7653,7 +7653,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
-          1720,
+          1736,
           1736,
           1736,
           1736,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          42559.10313197545,
           42393.89460536412,
           41413.62630615234,
           31695.344120570593,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           19462.812460763114,
           41700.580928548174,
           18247.640270996093,
-          41551.82961331881
+          41551.82961331881,
+          41864.14045817057
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11270.076776776996,
           11256.76350402832,
           11269.664648873466,
           9598.459203447614,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           6425.284461975098,
           11353.587936401367,
           6037.893575032552,
-          11379.745162963867
+          11379.745162963867,
+          11381.553640093121
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
-        "message": "perf: let a consumer read a materialized sequence by position (#1809)"
-      },
-      {
         "sha": "45e98efc0d769f0e7467f27fa03171988c93f288",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:12:08 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
-      "bea504d5",
       "45e98efc",
       "d07cd823",
       "fffb597a",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "369e335f",
       "2ae068a3",
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          23663.978812081474,
           23638.22805434007,
           23639.355893648586,
           19387.11317007882,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           6105.429531977727,
           11900.612076895577,
           5779.480037943522,
-          11643.378771100726
+          11643.378771100726,
+          11762.522556011494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8364,7 +8364,6 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
-          2640,
           2208,
           2208,
           2208,
@@ -8387,6 +8386,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          61104.8171648298,
           61753.93634033203,
           60793.590393066406,
           45626.36217753092,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           27999.129021277793,
           60121.76591609074,
           27257.15004788912,
-          59424.55138724191
+          59424.55138724191,
+          60382.052001953125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8485,7 +8485,6 @@ window.BENCHMARK_DATA = {
         "data": [
           23554,
           23554,
-          23554,
           23553,
           23553,
           23554,
@@ -8528,6 +8527,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22388.99493408203,
           22202.768191019695,
           22406.342309134347,
           18875.248361440805,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           12393.453134809222,
           22450.989362444197,
           12171.45713297526,
-          22322.189472743445
+          22322.189472743445,
+          22550.113385881697
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
