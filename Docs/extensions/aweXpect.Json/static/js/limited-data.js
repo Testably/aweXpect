@@ -48,6 +48,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
         "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
+      },
+      {
+        "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
+        "message": "docs: update the README and the extension packages overview (#1897)"
       }
     ],
     "labels": [
@@ -58,7 +64,8 @@ window.BENCHMARK_DATA = {
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
-      "dd7508bd"
+      "dd7508bd",
+      "39b404f7"
     ],
     "datasets": [
       {
@@ -72,7 +79,8 @@ window.BENCHMARK_DATA = {
           1307.5368900299072,
           1929.9819597516741,
           2074.014804295131,
-          2446.018781389509
+          2446.018781389509,
+          2389.7055789402552
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -87,6 +95,7 @@ window.BENCHMARK_DATA = {
           14531,
           14541,
           14530,
+          2520,
           2520,
           2520,
           2520,
@@ -113,7 +122,8 @@ window.BENCHMARK_DATA = {
           6657.376680227427,
           10324.007733858549,
           12149.76840536935,
-          13051.381185913086
+          13051.381185913086,
+          14724.000497671273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -125,6 +135,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -194,6 +205,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
         "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
+      },
+      {
+        "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
+        "message": "docs: update the README and the extension packages overview (#1897)"
       }
     ],
     "labels": [
@@ -204,7 +221,8 @@ window.BENCHMARK_DATA = {
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
-      "dd7508bd"
+      "dd7508bd",
+      "39b404f7"
     ],
     "datasets": [
       {
@@ -218,7 +236,8 @@ window.BENCHMARK_DATA = {
           1007.3367557525635,
           1453.7463124593098,
           1594.2021198272705,
-          1746.5741109114426
+          1746.5741109114426,
+          1910.2248825073243
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -233,6 +252,7 @@ window.BENCHMARK_DATA = {
           14342,
           14341,
           14342,
+          2328,
           2328,
           2328,
           2328,
@@ -259,7 +279,8 @@ window.BENCHMARK_DATA = {
           6120.470632825579,
           9715.201798072228,
           11165.273520914714,
-          12008.93495686849
+          12008.93495686849,
+          13795.800675964356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -271,6 +292,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
