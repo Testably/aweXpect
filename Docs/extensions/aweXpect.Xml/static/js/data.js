@@ -72,6 +72,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
@@ -86,7 +92,8 @@ window.BENCHMARK_DATA = {
       "39b404f7",
       "b5dab01f",
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -104,7 +111,8 @@ window.BENCHMARK_DATA = {
           900.7302189509074,
           865.0074442454746,
           698.0744481767927,
-          658.8167662620544
+          658.8167662620544,
+          933.5579040527343
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -123,6 +131,7 @@ window.BENCHMARK_DATA = {
           1816,
           1816,
           1488,
+          1312,
           1312,
           1312,
           1312,
@@ -153,7 +162,8 @@ window.BENCHMARK_DATA = {
           682.8371315638225,
           723.0871920267741,
           674.2990703582764,
-          659.3050287246704
+          659.3050287246704,
+          773.8593872706095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -165,6 +175,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -262,6 +273,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
@@ -276,7 +293,8 @@ window.BENCHMARK_DATA = {
       "39b404f7",
       "b5dab01f",
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -294,7 +312,8 @@ window.BENCHMARK_DATA = {
           4890.580227661133,
           4768.738585408529,
           4462.017372131348,
-          3918.233770751953
+          3918.233770751953,
+          4906.336723836263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -317,7 +336,8 @@ window.BENCHMARK_DATA = {
           24487,
           24487,
           24487,
-          24487
+          24487,
+          24486
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -343,7 +363,8 @@ window.BENCHMARK_DATA = {
           5368.210540262858,
           5186.283226776123,
           4998.080684026082,
-          4951.588141377767
+          4951.588141377767,
+          5322.461625235422
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -355,6 +376,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -392,11 +414,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -404,7 +433,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           2657.705650874547,
-          2424.159815724691
+          2424.159815724691,
+          2810.139778137207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -416,6 +446,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          13032,
           13032,
           13032
         ],
@@ -433,7 +464,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           3306.319850921631,
-          2855.828574879964
+          2855.828574879964,
+          3757.186168162028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -445,6 +477,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443
         ],
@@ -472,11 +505,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -484,7 +524,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           37174.54638671875,
-          36258.42045710637
+          36258.42045710637,
+          48146.74324253627
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -496,6 +537,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          99704,
           99704,
           99704
         ],
@@ -513,7 +555,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           222737.04000418526,
-          218628.15122767858
+          218628.15122767858,
+          369119.97662760416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -526,7 +569,8 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           544246,
-          544245
+          544245,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
