@@ -154,7 +154,11 @@ public static partial class ThatJsonObject
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
 		private string? _serializationError;
-		private string? _serialized;
+		/// <remarks>
+		///     The subject is serialized to UTF-8, which the comparison parses directly, and only converted to a
+		///     <see langword="string" /> for the context of a failure.
+		/// </remarks>
+		private byte[]? _serialized;
 
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -165,7 +169,7 @@ public static partial class ThatJsonObject
 			_serialized = null;
 			ExpectationJsonConverter converter = new(context, cancellationToken);
 			using JsonDocument expectedDocument = parseExpected(converter);
-			if (!TrySerialize(actual, out string serialized))
+			if (!TrySerialize(actual, out byte[] serialized))
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
@@ -187,24 +191,24 @@ public static partial class ThatJsonObject
 		///     Any exception of the serializer, e.g. of a converter or a property getter, fails the expectation, except
 		///     the error that reflection is switched off, which names the fix and must not be swallowed.
 		/// </remarks>
-		private bool TrySerialize(T actual, out string serialized)
+		private bool TrySerialize(T actual, out byte[] serialized)
 		{
 			try
 			{
 				serialized = typeInfo is null
 					? SerializeByReflection(actual)
-					: JsonSerializer.Serialize(actual, typeInfo);
+					: JsonSerializer.SerializeToUtf8Bytes(actual, typeInfo);
 				return true;
 			}
 			catch (Exception exception) when (typeInfo is not null || ReflectionFallback.IsSupported)
 			{
 				_serializationError = exception.Message;
-				serialized = "";
+				serialized = [];
 				return false;
 			}
 		}
 
-		private string SerializeByReflection(T actual)
+		private byte[] SerializeByReflection(T actual)
 		{
 			if (!ReflectionFallback.IsSupported)
 			{
@@ -212,7 +216,7 @@ public static partial class ThatJsonObject
 					$"The subject of type {Formatter.Format(typeof(T))}"));
 			}
 
-			return JsonSerializer.Serialize(actual,
+			return JsonSerializer.SerializeToUtf8Bytes(actual,
 				serializerOptions ?? Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get());
 		}
 
@@ -220,7 +224,7 @@ public static partial class ThatJsonObject
 		{
 			if (_serialized is not null)
 			{
-				contexts.Add(new ResultContext.Fixed("Serialized", _serialized));
+				contexts.Add(new ResultContext.Fixed("Serialized", Encoding.UTF8.GetString(_serialized)));
 			}
 
 			options.AddContext(contexts, _comparisonResult?.GetUnmatchedMembersToIgnore());

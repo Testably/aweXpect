@@ -34,7 +34,7 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 
 	private static JsonSerializerOptions? _defaultOptions;
 
-	private readonly Dictionary<Guid, Expectation> _expectations = new();
+	private Dictionary<Guid, Expectation>? _expectations;
 
 	public IEvaluationContext Context => context;
 
@@ -301,7 +301,7 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	private void WriteExpectation(Utf8JsonWriter writer, Expectation value)
 	{
 		Guid guid = Guid.NewGuid();
-		_expectations[guid] = value;
+		(_expectations ??= new Dictionary<Guid, Expectation>())[guid] = value;
 		writer.WriteStringValue(Prefix + guid);
 	}
 
@@ -314,7 +314,7 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	/// </remarks>
 	public string DescribeExpectations(string formattedValue)
 	{
-		if (formattedValue.IndexOf(Prefix, StringComparison.Ordinal) < 0)
+		if (_expectations is null || formattedValue.IndexOf(Prefix, StringComparison.Ordinal) < 0)
 		{
 			return formattedValue;
 		}
@@ -331,7 +331,7 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	public bool TryGetExpectation(JsonElement element,
 		[NotNullWhen(true)] out EquivalencyExpectationBuilder? equivalencyExpectationBuilder)
 	{
-		if (element.ValueKind == JsonValueKind.String)
+		if (_expectations is not null && element.ValueKind == JsonValueKind.String)
 		{
 			string? value = element.GetString();
 			if (value?.StartsWith(Prefix, StringComparison.Ordinal) == true &&
@@ -387,7 +387,7 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 			JsonSerializerOptions options)
 		{
 			Guid guid = Guid.Parse(reader.GetString()!);
-			if (_current?._expectations.TryGetValue(guid, out Expectation? expectation) == true)
+			if (_current?._expectations?.TryGetValue(guid, out Expectation? expectation) == true)
 			{
 				return expectation;
 			}

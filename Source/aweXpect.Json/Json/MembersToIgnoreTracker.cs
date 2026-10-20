@@ -22,8 +22,17 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 	/// </summary>
 	private const int ComparedPathsToRemember = 1000;
 
-	private readonly HashSet<string> _comparedPaths = new(StringComparer.Ordinal);
-	private readonly HashSet<string> _matchedNames = new(StringComparer.OrdinalIgnoreCase);
+	/// <summary>
+	///     The sets of a tracker without members to ignore, which are never changed, so that every comparison without
+	///     members to ignore can share them.
+	/// </summary>
+	private static readonly HashSet<string> Untracked = new(StringComparer.Ordinal);
+
+	private readonly HashSet<string> _comparedPaths =
+		membersToIgnore.Length == 0 ? Untracked : new HashSet<string>(StringComparer.Ordinal);
+
+	private readonly HashSet<string> _matchedNames =
+		membersToIgnore.Length == 0 ? Untracked : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
 	/// <summary>
 	///     Checks if the value at the <paramref name="memberPath" /> is ignored, and tracks the result.
@@ -35,8 +44,7 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 			return false;
 		}
 
-		MemberToIgnore? memberToIgnore =
-			Array.Find(membersToIgnore, member => member.IgnoreMember(memberPath, typeof(JsonElement)));
+		MemberToIgnore? memberToIgnore = Find(memberPath);
 		if (memberToIgnore is NamedMemberToIgnore named)
 		{
 			_matchedNames.Add(named.MemberName);
@@ -48,6 +56,13 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 
 		return memberToIgnore is not null;
 	}
+
+	/// <remarks>
+	///     A separate method, because the closure over the <paramref name="memberPath" /> is allocated when the method is
+	///     entered, also for a comparison without members to ignore.
+	/// </remarks>
+	private MemberToIgnore? Find(string memberPath)
+		=> Array.Find(membersToIgnore, member => member.IgnoreMember(memberPath, typeof(JsonElement)));
 
 	/// <summary>
 	///     Returns each member to ignore by name that matched none of the compared paths, with the compared path it most
