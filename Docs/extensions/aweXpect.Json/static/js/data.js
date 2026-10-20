@@ -60,6 +60,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -72,7 +78,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -88,7 +95,8 @@ window.BENCHMARK_DATA = {
           2074.014804295131,
           2446.018781389509,
           2389.7055789402552,
-          2357.9106992085776
+          2357.9106992085776,
+          2373.6216667175295
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -103,6 +111,7 @@ window.BENCHMARK_DATA = {
           14531,
           14541,
           14530,
+          2520,
           2520,
           2520,
           2520,
@@ -133,7 +142,8 @@ window.BENCHMARK_DATA = {
           12149.76840536935,
           13051.381185913086,
           14724.000497671273,
-          14506.134258563701
+          14506.134258563701,
+          16132.371877034506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -145,6 +155,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -228,6 +239,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -240,7 +257,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -256,7 +274,8 @@ window.BENCHMARK_DATA = {
           1594.2021198272705,
           1746.5741109114426,
           1910.2248825073243,
-          1887.9338513783046
+          1887.9338513783046,
+          1825.8039059956868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -271,6 +290,7 @@ window.BENCHMARK_DATA = {
           14342,
           14341,
           14342,
+          2328,
           2328,
           2328,
           2328,
@@ -301,7 +321,8 @@ window.BENCHMARK_DATA = {
           11165.273520914714,
           12008.93495686849,
           13795.800675964356,
-          13295.847416178385
+          13295.847416178385,
+          14596.103698730469
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -322,7 +343,284 @@ window.BENCHMARK_DATA = {
           25312,
           25312,
           25312,
+          25312,
           25312
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "JsonArrayElements": {
+    "commits": [
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      }
+    ],
+    "labels": [
+      "40ae946f"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          5381.484197889055
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          6104
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          47792.53284505208
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          61926
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "JsonArrayInAnyOrder": {
+    "commits": [
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      }
+    ],
+    "labels": [
+      "40ae946f"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          40482.60314127604
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          40368
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          296766.2811748798
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          521594
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "JsonEquality": {
+    "commits": [
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      }
+    ],
+    "labels": [
+      "40ae946f"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          3517.216092036321
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          3288
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          1881.7004268352803
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          2624
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "JsonProperty": {
+    "commits": [
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      }
+    ],
+    "labels": [
+      "40ae946f"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          3573.886152903239
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          5528
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          1825.0977980749947
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          6224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
