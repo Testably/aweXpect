@@ -342,6 +342,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -401,7 +407,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -464,7 +471,8 @@ window.BENCHMARK_DATA = {
           13469.414391150842,
           6596.264731815883,
           14381.650234767369,
-          6290.744794718425
+          6290.744794718425,
+          13431.071209716796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -513,6 +521,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -603,7 +612,8 @@ window.BENCHMARK_DATA = {
           385380.48684895836,
           178992.7767578125,
           386189.5509314904,
-          164726.92766462054
+          164726.92766462054,
+          383894.373828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -671,7 +681,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590292,
-          590287
+          590287,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -742,7 +753,8 @@ window.BENCHMARK_DATA = {
           19206.561294555664,
           9672.389400227865,
           19215.74513898577,
-          9687.401100745568
+          9687.401100745568,
+          19379.468263753257
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -754,6 +766,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1124,6 +1137,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -1176,7 +1195,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -1232,7 +1252,8 @@ window.BENCHMARK_DATA = {
           306.34915406363353,
           138.71444506645201,
           288.87488724390664,
-          133.83350161143713
+          133.83350161143713,
+          321.3382097244263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1244,6 +1265,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1357,7 +1379,8 @@ window.BENCHMARK_DATA = {
           559.0478465398153,
           265.9254628590175,
           554.4303117116292,
-          245.48654237160315
+          245.48654237160315,
+          585.8575134913127
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1369,6 +1392,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1482,7 +1506,8 @@ window.BENCHMARK_DATA = {
           399.7745791435242,
           223.6468460900443,
           415.90519326527914,
-          201.15392077886142
+          201.15392077886142,
+          423.61332578659056
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1494,6 +1519,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6477,6 +6503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -7299,7 +7331,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -8125,7 +8158,8 @@ window.BENCHMARK_DATA = {
           160.59917413393657,
           78.1513781150182,
           161.91783633232117,
-          71.98160390342984
+          71.98160390342984,
+          159.558003060023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8932,6 +8966,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9790,7 +9825,8 @@ window.BENCHMARK_DATA = {
           262.4527729034424,
           136.25635732923234,
           282.20928891499835,
-          124.0122208254678
+          124.0122208254678,
+          282.2658065795898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9983,6 +10019,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10736,7 +10773,8 @@ window.BENCHMARK_DATA = {
           261.8423598607381,
           132.18533142407736,
           262.03795232772825,
-          117.29486432442299
+          117.29486432442299,
+          260.21722440719606
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10748,6 +10786,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -11204,6 +11243,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -11263,7 +11308,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -11326,7 +11372,8 @@ window.BENCHMARK_DATA = {
           279.0654663306016,
           160.31036690565256,
           286.83811818636383,
-          158.95665551821392
+          158.95665551821392,
+          290.03494990666707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11345,6 +11392,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11465,7 +11513,8 @@ window.BENCHMARK_DATA = {
           527.1524635950724,
           308.0143295434805,
           578.0748713175456,
-          274.1330770810445
+          274.1330770810445,
+          558.4174865722656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11477,6 +11526,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -11604,7 +11654,8 @@ window.BENCHMARK_DATA = {
           345.8191385904948,
           197.49301727612814,
           356.6350205739339,
-          167.49061036109924
+          167.49061036109924,
+          355.74284947713215
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11616,6 +11667,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -16606,6 +16658,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -17428,7 +17486,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -18254,7 +18313,8 @@ window.BENCHMARK_DATA = {
           708.2389707565308,
           339.8828879424504,
           677.4312150319417,
-          326.325720173972
+          326.325720173972,
+          676.0812699635824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19064,6 +19124,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -19919,7 +19980,8 @@ window.BENCHMARK_DATA = {
           1460.132477393517,
           704.0699275970459,
           1511.5495142618815,
-          653.0351298877171
+          653.0351298877171,
+          1548.958098856608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20750,6 +20812,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -20865,7 +20928,8 @@ window.BENCHMARK_DATA = {
           643.0744180679321,
           347.3612709363302,
           679.0160875956218,
-          324.8136201540629
+          324.8136201540629,
+          688.8696273394993
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20877,6 +20941,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -25911,6 +25976,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -26733,7 +26804,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -27559,7 +27631,8 @@ window.BENCHMARK_DATA = {
           696.0705689112345,
           334.4265292031424,
           666.5183174769084,
-          322.32280286153156
+          322.32280286153156,
+          665.4261503953201
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28369,6 +28442,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -29224,7 +29298,8 @@ window.BENCHMARK_DATA = {
           27599.6657023112,
           10571.065576171875,
           27809.289346313475,
-          9898.959427897136
+          9898.959427897136,
+          28042.715085856118
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30055,6 +30130,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -30170,7 +30246,8 @@ window.BENCHMARK_DATA = {
           826.4341165542603,
           425.74920657702853,
           817.8249410220554,
-          413.0651320139567
+          413.0651320139567,
+          803.446176801409
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30182,6 +30259,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -30986,6 +31064,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -31103,7 +31187,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -31224,7 +31309,8 @@ window.BENCHMARK_DATA = {
           735.735329246521,
           373.0331435839335,
           775.7946770191193,
-          352.61233282089233
+          352.61233282089233,
+          835.8362019220988
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31331,6 +31417,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -31479,7 +31566,8 @@ window.BENCHMARK_DATA = {
           85469.73887532552,
           29494.972002301896,
           86439.80888671875,
-          27904.526094563804
+          27904.526094563804,
+          84306.2785970052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31605,7 +31693,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32309,6 +32398,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -32426,7 +32521,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -32547,7 +32643,8 @@ window.BENCHMARK_DATA = {
           186.72757803476773,
           110.18292439835412,
           189.88281548817952,
-          103.88230061531067
+          103.88230061531067,
+          189.71347365379333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32624,6 +32721,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -32802,7 +32900,8 @@ window.BENCHMARK_DATA = {
           31306.018702915735,
           11076.802041625977,
           33640.369152832034,
-          10583.883628336589
+          10583.883628336589,
+          33131.544795735674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32928,7 +33027,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33043,7 +33143,8 @@ window.BENCHMARK_DATA = {
           251.0994581858317,
           139.39484674135844,
           262.76921288172406,
-          121.74509482724326
+          121.74509482724326,
+          259.55491431554157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33055,6 +33156,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -33511,6 +33613,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -33570,7 +33678,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -33633,7 +33742,8 @@ window.BENCHMARK_DATA = {
           368.94456850687664,
           187.3057516983577,
           374.35020939509076,
-          185.4253969703402
+          185.4253969703402,
+          373.67607855796814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33681,6 +33791,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -33772,7 +33883,8 @@ window.BENCHMARK_DATA = {
           375.71736411253613,
           220.09970924854278,
           429.19574999809265,
-          201.283979956309
+          201.283979956309,
+          421.0189789258517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33784,6 +33896,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -33911,7 +34024,8 @@ window.BENCHMARK_DATA = {
           425.68998495737713,
           213.04699403444926,
           421.6277090390523,
-          195.17111146450043
+          195.17111146450043,
+          428.7466734568278
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33923,6 +34037,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -34335,6 +34450,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -34394,7 +34515,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -34457,7 +34579,8 @@ window.BENCHMARK_DATA = {
           827.7983581542969,
           446.73118019104004,
           822.7165323893229,
-          398.11624749501544
+          398.11624749501544,
+          815.643183026995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34484,6 +34607,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -34596,7 +34720,8 @@ window.BENCHMARK_DATA = {
           2028.140828704834,
           1160.9594509124756,
           2046.8121988932292,
-          1001.4748270670573
+          1001.4748270670573,
+          2101.1886351449148
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34608,6 +34733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -34735,7 +34861,8 @@ window.BENCHMARK_DATA = {
           947.1852062225341,
           510.2945117155711,
           1001.8998962402344,
-          457.94817669051037
+          457.94817669051037,
+          951.0506235758463
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34747,6 +34874,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -35159,6 +35287,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -35218,7 +35352,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -35281,7 +35416,8 @@ window.BENCHMARK_DATA = {
           12083.014532906669,
           6485.879282437838,
           12201.915075937906,
-          6186.8094482421875
+          6186.8094482421875,
+          12294.065668378558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35330,6 +35466,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -35420,7 +35557,8 @@ window.BENCHMARK_DATA = {
           42139.088887532555,
           19462.812460763114,
           41700.580928548174,
-          18247.640270996093
+          18247.640270996093,
+          41551.82961331881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35475,6 +35613,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -35559,7 +35698,8 @@ window.BENCHMARK_DATA = {
           11346.99682820638,
           6425.284461975098,
           11353.587936401367,
-          6037.893575032552
+          6037.893575032552,
+          11379.745162963867
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35571,6 +35711,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -35983,6 +36124,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
@@ -36042,7 +36189,8 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
@@ -36105,7 +36253,8 @@ window.BENCHMARK_DATA = {
           11707.549776204427,
           6105.429531977727,
           11900.612076895577,
-          5779.480037943522
+          5779.480037943522,
+          11643.378771100726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36154,6 +36303,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -36244,7 +36394,8 @@ window.BENCHMARK_DATA = {
           60446.32313319615,
           27999.129021277793,
           60121.76591609074,
-          27257.15004788912
+          27257.15004788912,
+          59424.55138724191
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36309,6 +36460,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -36383,7 +36535,8 @@ window.BENCHMARK_DATA = {
           22333.71257672991,
           12393.453134809222,
           22450.989362444197,
-          12171.45713297526
+          12171.45713297526,
+          22322.189472743445
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36395,6 +36548,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
