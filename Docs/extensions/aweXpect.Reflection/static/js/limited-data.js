@@ -84,6 +84,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
         "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
+      },
+      {
+        "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
+        "message": "docs: show the benchmark results of the extension packages (#1905)"
       }
     ],
     "labels": [
@@ -100,7 +106,8 @@ window.BENCHMARK_DATA = {
       "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
-      "c0e60219"
+      "c0e60219",
+      "706259ec"
     ],
     "datasets": [
       {
@@ -120,7 +127,8 @@ window.BENCHMARK_DATA = {
           668.9395637512207,
           1207.0783353169759,
           1232.9899127960205,
-          1166.1441913604735
+          1166.1441913604735,
+          714.809748853956
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -145,6 +153,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          928,
           928
         ],
         "borderColor": "#63A2AC",
@@ -173,7 +182,8 @@ window.BENCHMARK_DATA = {
           491.21615368525187,
           878.7575756953313,
           932.2978339513143,
-          887.3353712375348
+          887.3353712375348,
+          537.7388259447538
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -185,6 +195,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -296,6 +307,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
         "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
+      },
+      {
+        "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
+        "message": "docs: show the benchmark results of the extension packages (#1905)"
       }
     ],
     "labels": [
@@ -312,7 +329,8 @@ window.BENCHMARK_DATA = {
       "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
-      "c0e60219"
+      "c0e60219",
+      "706259ec"
     ],
     "datasets": [
       {
@@ -332,7 +350,8 @@ window.BENCHMARK_DATA = {
           78.38583626065936,
           155.72609308787756,
           139.76076733271282,
-          123.02739322980246
+          123.02739322980246,
+          75.04443422158559
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -357,6 +376,7 @@ window.BENCHMARK_DATA = {
           384,
           384,
           384,
+          320,
           320
         ],
         "borderColor": "#63A2AC",
@@ -385,7 +405,8 @@ window.BENCHMARK_DATA = {
           122.38917222817739,
           198.24876863161722,
           207.969647026062,
-          205.63874741962977
+          205.63874741962977,
+          129.6072610616684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -397,6 +418,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -508,6 +530,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
         "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
+      },
+      {
+        "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
+        "message": "docs: show the benchmark results of the extension packages (#1905)"
       }
     ],
     "labels": [
@@ -524,7 +552,8 @@ window.BENCHMARK_DATA = {
       "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
-      "c0e60219"
+      "c0e60219",
+      "706259ec"
     ],
     "datasets": [
       {
@@ -544,7 +573,8 @@ window.BENCHMARK_DATA = {
           1137.2635820706685,
           2196.8258761088055,
           2267.1600270589192,
-          2238.0090393066407
+          2238.0090393066407,
+          1188.6649475097656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -569,6 +599,7 @@ window.BENCHMARK_DATA = {
           2560,
           2464,
           2464,
+          2400,
           2400
         ],
         "borderColor": "#63A2AC",
@@ -597,7 +628,8 @@ window.BENCHMARK_DATA = {
           769.5205779393514,
           1524.5135557810465,
           1547.005021794637,
-          1502.1154323305402
+          1502.1154323305402,
+          894.5015827178955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -619,6 +651,7 @@ window.BENCHMARK_DATA = {
           1760,
           1760,
           1760,
+          1985,
           1985,
           1985,
           1985,
@@ -660,13 +693,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
         "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
+      },
+      {
+        "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
+        "message": "docs: show the benchmark results of the extension packages (#1905)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
-      "c0e60219"
+      "c0e60219",
+      "706259ec"
     ],
     "datasets": [
       {
@@ -676,7 +716,8 @@ window.BENCHMARK_DATA = {
           9746.355307442802,
           5139.496166483561,
           5132.073151221643,
-          5123.244040897915
+          5123.244040897915,
+          2928.5740023295084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -691,7 +732,8 @@ window.BENCHMARK_DATA = {
           7486,
           4923,
           4867,
-          4803
+          4803,
+          4802
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -709,7 +751,8 @@ window.BENCHMARK_DATA = {
           2051.886098044259,
           3715.010679098276,
           3904.993136479304,
-          3804.1863491351787
+          3804.1863491351787,
+          2190.5589385986327
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -721,6 +764,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4011,
           4011,
           4011,
           4011,
@@ -762,13 +806,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
         "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
+      },
+      {
+        "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
+        "message": "docs: show the benchmark results of the extension packages (#1905)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
-      "c0e60219"
+      "c0e60219",
+      "706259ec"
     ],
     "datasets": [
       {
@@ -778,7 +829,8 @@ window.BENCHMARK_DATA = {
           2311.872230529785,
           2241.7311589167666,
           2371.3942461649576,
-          2189.7888651529947
+          2189.7888651529947,
+          1298.1158770152501
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -793,6 +845,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3184,
           3184
         ],
         "borderColor": "#63A2AC",
@@ -811,7 +864,8 @@ window.BENCHMARK_DATA = {
           1217.6808053334555,
           2266.10031636556,
           2377.4020746866863,
-          2253.6752520243326
+          2253.6752520243326,
+          1306.6807187398274
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -823,6 +877,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -864,13 +919,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
         "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
+      },
+      {
+        "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
+        "message": "docs: show the benchmark results of the extension packages (#1905)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
-      "c0e60219"
+      "c0e60219",
+      "706259ec"
     ],
     "datasets": [
       {
@@ -880,7 +942,8 @@ window.BENCHMARK_DATA = {
           2030.3434870583671,
           3726.6908449808757,
           3955.1790445963543,
-          3851.0465672810874
+          3851.0465672810874,
+          2094.610780843099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -895,6 +958,7 @@ window.BENCHMARK_DATA = {
           4153,
           4057,
           4057,
+          3993,
           3993
         ],
         "borderColor": "#63A2AC",
@@ -913,7 +977,8 @@ window.BENCHMARK_DATA = {
           157771.4544959435,
           280279.67119140626,
           279093.7619280134,
-          278348.7387532552
+          278348.7387532552,
+          174977.35283954328
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -928,7 +993,8 @@ window.BENCHMARK_DATA = {
           17618,
           17620,
           17620,
-          17620
+          17620,
+          17618
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
