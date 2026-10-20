@@ -231,7 +231,7 @@ internal static class ExpectationWriter
 		string returnValue = "this";
 		if (model.IsAsync)
 		{
-			call = $"await {call}.ConfigureAwait(false)";
+			call = $"await {call}";
 			sb.Append("\t\tpublic async ").Append(ValueTask).Append('<').Append(ConstraintResult)
 				.Append("> IsMetBy(").Append(overload.ThatType)
 				.AppendLine(" actual, global::System.Threading.CancellationToken cancellationToken)");

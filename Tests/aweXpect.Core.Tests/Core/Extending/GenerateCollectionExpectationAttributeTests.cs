@@ -80,6 +80,21 @@ public sealed class GenerateCollectionExpectationAttributeTests
 #endif
 
 	[Test]
+	public async Task AsyncPredicate_ShouldKeepTheSynchronizationContextOfTheCaller()
+	{
+		Account[] subject = [new("Alice", 1), new("Bob", 1), new("Carol", 1),];
+
+		SynchronizationContext? callerContext = await SingleThreadedSynchronizationContext.Run(async () =>
+		{
+			await That(subject).All().AreVerified();
+			return SynchronizationContext.Current;
+		});
+
+		await That(subject).All().Satisfy(x => x.VerifiedOn is not null && x.VerifiedOn == callerContext)
+			.Because("the predicate of every item runs on the synchronization context of the caller, like the UI thread of WPF or WinForms");
+	}
+
+	[Test]
 	public async Task AsyncPredicate_ShouldReceiveTheCancellationTokenOfTheEvaluation()
 	{
 		Account[] subject = [new("Alice", 1), new("Bob", 1),];

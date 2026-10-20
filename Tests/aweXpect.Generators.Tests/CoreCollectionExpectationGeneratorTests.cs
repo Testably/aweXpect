@@ -443,7 +443,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated).Contains("protected override async global::System.Threading.Tasks.ValueTask<global::aweXpect.Core.Extending.PredicateResult> IsMatch(").Exactly(2);
-		await That(result.Generated).Contains("=> await global::Lib.ThatSample.IsZero(item).ConfigureAwait(false);").Exactly(2)
+		await That(result.Generated).Contains("=> await global::Lib.ThatSample.IsZero(item);").Exactly(2)
 			.Because("only the awaited bool converts to a PredicateResult");
 	}
 
@@ -478,7 +478,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int> elements)");
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
 		await That(result.Generated)
-			.Contains("=> item is null ? false : await global::Lib.ThatSample.IsZero(item.Value).ConfigureAwait(false);")
+			.Contains("=> item is null ? false : await global::Lib.ThatSample.IsZero(item.Value);")
 			.Exactly(2);
 	}
 

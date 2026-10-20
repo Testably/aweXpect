@@ -19,7 +19,7 @@ public sealed class CoreExpectationGeneratorTests
 		await ThatCompiles(result);
 		await That(result.Generated).Contains("global::aweXpect.Core.Constraints.IAsyncConstraint<int>");
 		await That(result.Generated)
-			.Contains("await global::Lib.ThatSample.IsZero(actual, cancellationToken).ConfigureAwait(false)");
+			.Contains("await global::Lib.ThatSample.IsZero(actual, cancellationToken) ? ");
 		await That(result.Generated).Contains(" IsZero(this global::aweXpect.Core.IThat<int> subject)")
 			.Because("the cancellation token is no parameter of the expectation");
 	}
@@ -34,7 +34,7 @@ public sealed class CoreExpectationGeneratorTests
 			""");
 
 		await ThatCompiles(result);
-		await That(result.Generated).Contains("await global::Lib.ThatSample.IsZero(actual).ConfigureAwait(false)");
+		await That(result.Generated).Contains("await global::Lib.ThatSample.IsZero(actual) ? ");
 	}
 
 	[Test]
@@ -627,7 +627,7 @@ public sealed class CoreExpectationGeneratorTests
 
 		await ThatCompiles(result);
 		await That(result.Generated)
-			.Contains("global::aweXpect.Core.Extending.PredicateResult result = await global::Lib.ThatSample.IsZero(actual).ConfigureAwait(false);");
+			.Contains("global::aweXpect.Core.Extending.PredicateResult result = await global::Lib.ThatSample.IsZero(actual);");
 	}
 
 	[Test]
