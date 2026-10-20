@@ -80,6 +80,11 @@ internal class ExpectationNode : Node
 	/// </summary>
 	protected void SetInnerNode(Node node) => _inner = node;
 
+	/// <summary>
+	///     The node which contains the nested expectations, if any.
+	/// </summary>
+	protected Node? InnerNode => _inner;
+
 	/// <inheritdoc />
 	/// <remarks>
 	///     A node with a single constraint, or with only the expectations on a member, returns its result without
