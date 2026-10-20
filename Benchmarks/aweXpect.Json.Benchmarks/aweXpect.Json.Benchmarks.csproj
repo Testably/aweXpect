@@ -16,6 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Json\aweXpect.Json.csproj"/>
 	</ItemGroup>
 

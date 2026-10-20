@@ -49,7 +49,7 @@ partial class Build
 	(string Package, Project Project, string[] MeasuredPackages)[] BenchmarkProjects =>
 	[
 		("aweXpect", Solution.Benchmarks.aweXpect_Benchmarks, ["aweXpect", "aweXpect.Core",]),
-		("aweXpect.Json", Solution.Benchmarks.aweXpect_Json_Benchmarks, ["aweXpect.Json", "aweXpect.Core",]),
+		("aweXpect.Json", Solution.Benchmarks.aweXpect_Json_Benchmarks, ["aweXpect.Json", "aweXpect", "aweXpect.Core",]),
 		("aweXpect.Web", Solution.Benchmarks.aweXpect_Web_Benchmarks, ["aweXpect.Web", "aweXpect.Core",]),
 		("aweXpect.Xml", Solution.Benchmarks.aweXpect_Xml_Benchmarks, ["aweXpect.Xml", "aweXpect", "aweXpect.Core",]),
 		("aweXpect.Reflection", Solution.Benchmarks.aweXpect_Reflection_Benchmarks,

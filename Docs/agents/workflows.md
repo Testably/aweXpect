@@ -36,9 +36,10 @@ dotnet run --project Tests/aweXpect.Api.Tests
 ## Benchmarks
 
 `Benchmarks/aweXpect.Benchmarks` compares aweXpect with FluentAssertions and TUnit.Assertions in happy-case scenarios
-with BenchmarkDotNet; each extension package compares a few common scenarios with FluentAssertions in
+with BenchmarkDotNet; each extension package compares its main feature areas with FluentAssertions in
 `Benchmarks/aweXpect.<Extension>.Benchmarks`. Where FluentAssertions has no expectation for the subject, its benchmark
-does what a FluentAssertions user writes instead, e.g. read the content of a response as a string. `aweXpect.Snapshots`
+does what a FluentAssertions user writes instead, e.g. read the content of a response as a string, and the summary of
+the benchmark says so. `aweXpect.Snapshots`
 has no benchmarks: its time goes into file access, and FluentAssertions has no snapshots to compare with.
 
 ```shell

@@ -21,3 +21,12 @@ public sealed class Track
 	public string Title { get; set; } = "";
 	public TimeSpan Duration { get; set; }
 }
+
+public sealed class AlbumRepository
+{
+	public async Task SaveAsync(Album album) => await Task.Yield();
+
+	public async Task DeleteAsync(Album album) => await Task.Yield();
+
+	public async Task AddTrackAsync(Album album, Track track) => await Task.Yield();
+}
