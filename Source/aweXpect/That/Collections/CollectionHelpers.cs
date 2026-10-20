@@ -16,7 +16,6 @@ using aweXpect.Helpers;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 #endif
 
 namespace aweXpect;
@@ -410,26 +409,75 @@ internal static class CollectionHelpers
 	///     For expectations that report a canceled evaluation as undecided, which must not be aborted instead, when the
 	///     <paramref name="source" /> throws because of the cancellation instead of providing the next item.
 	/// </remarks>
-	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
-		[EnumeratorCancellation] CancellationToken cancellationToken)
-	{
-		await using IAsyncEnumerator<TItem> enumerator = source.GetAsyncEnumerator(cancellationToken);
-		while (await MoveNextUntilCancelled(enumerator, cancellationToken))
-		{
-			yield return enumerator.Current;
-		}
-	}
-
-	private static async ValueTask<bool> MoveNextUntilCancelled<TItem>(IAsyncEnumerator<TItem> enumerator,
+	internal static IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
 		CancellationToken cancellationToken)
+		=> new UntilCancelledEnumerable<TItem>(source, cancellationToken);
+
+	/// <summary>
+	///     Enumerates the source of <see cref="UntilCancelled{TItem}" />.
+	/// </summary>
+	/// <remarks>
+	///     Written by hand instead of as an async iterator, because the iterator allocates a large state machine for
+	///     every expectation and completes every item through its own value task source, while an item that the source
+	///     provides synchronously is passed on right away here. Like an iterator, the first enumerator is the
+	///     enumerable itself.
+	/// </remarks>
+	private sealed class UntilCancelledEnumerable<TItem>(
+		IAsyncEnumerable<TItem> source,
+		CancellationToken cancellationToken)
+		: IAsyncEnumerable<TItem>, IAsyncEnumerator<TItem>
 	{
-		try
+		private IAsyncEnumerator<TItem>? _enumerator;
+		private bool _isEnumerated;
+
+		public TItem Current => _enumerator!.Current;
+
+		/// <remarks>
+		///     The enumeration is canceled by the token passed to <see cref="UntilCancelled{TItem}" />, so the
+		///     <paramref name="token" /> is not used.
+		/// </remarks>
+		public IAsyncEnumerator<TItem> GetAsyncEnumerator(CancellationToken token = default)
 		{
-			return await enumerator.MoveNextAsync();
+			if (_isEnumerated)
+			{
+				return new UntilCancelledEnumerable<TItem>(source, cancellationToken).GetAsyncEnumerator(token);
+			}
+
+			_isEnumerated = true;
+			return this;
 		}
-		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+
+		public ValueTask<bool> MoveNextAsync()
 		{
-			return false;
+			_enumerator ??= source.GetAsyncEnumerator(cancellationToken);
+			ValueTask<bool> moveNext;
+			try
+			{
+				moveNext = _enumerator.MoveNextAsync();
+			}
+			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			{
+				return new ValueTask<bool>(false);
+			}
+
+			return moveNext.IsCompletedSuccessfully
+				? new ValueTask<bool>(moveNext.Result)
+				: MoveNextUntilCancelled(moveNext);
+		}
+
+		public ValueTask DisposeAsync()
+			=> _enumerator?.DisposeAsync() ?? default;
+
+		private async ValueTask<bool> MoveNextUntilCancelled(ValueTask<bool> moveNext)
+		{
+			try
+			{
+				return await moveNext;
+			}
+			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			{
+				return false;
+			}
 		}
 	}
 #endif
