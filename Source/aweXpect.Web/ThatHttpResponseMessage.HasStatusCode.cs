@@ -31,6 +31,7 @@ public static partial class ThatHttpResponseMessage
 					it, grammars,
 					expected,
 					m => m.StatusCode,
-					(a, e) => a.Equals(e),
-					$"status code {Formatter.Format(expected)}")), subject);
+					(a, e) => a == e,
+					"status code ",
+					true)), subject);
 }
