@@ -42,6 +42,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
         "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
+      },
+      {
+        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
+        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
       }
     ],
     "labels": [
@@ -51,7 +57,8 @@ window.BENCHMARK_DATA = {
       "78b13d35",
       "87d3aeb2",
       "fe413769",
-      "3514e5d3"
+      "3514e5d3",
+      "dd7508bd"
     ],
     "datasets": [
       {
@@ -64,7 +71,8 @@ window.BENCHMARK_DATA = {
           2442.302179609026,
           1307.5368900299072,
           1929.9819597516741,
-          2074.014804295131
+          2074.014804295131,
+          2446.018781389509
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -79,6 +87,7 @@ window.BENCHMARK_DATA = {
           14531,
           14541,
           14530,
+          2520,
           2520,
           2520,
           2520,
@@ -103,7 +112,8 @@ window.BENCHMARK_DATA = {
           14057.160717303936,
           6657.376680227427,
           10324.007733858549,
-          12149.76840536935
+          12149.76840536935,
+          13051.381185913086
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -115,6 +125,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -177,6 +188,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
         "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
+      },
+      {
+        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
+        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
       }
     ],
     "labels": [
@@ -186,7 +203,8 @@ window.BENCHMARK_DATA = {
       "78b13d35",
       "87d3aeb2",
       "fe413769",
-      "3514e5d3"
+      "3514e5d3",
+      "dd7508bd"
     ],
     "datasets": [
       {
@@ -199,7 +217,8 @@ window.BENCHMARK_DATA = {
           1803.8105926513672,
           1007.3367557525635,
           1453.7463124593098,
-          1594.2021198272705
+          1594.2021198272705,
+          1746.5741109114426
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -214,6 +233,7 @@ window.BENCHMARK_DATA = {
           14342,
           14341,
           14342,
+          2328,
           2328,
           2328,
           2328,
@@ -238,7 +258,8 @@ window.BENCHMARK_DATA = {
           12604.763811747232,
           6120.470632825579,
           9715.201798072228,
-          11165.273520914714
+          11165.273520914714,
+          12008.93495686849
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -250,6 +271,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
