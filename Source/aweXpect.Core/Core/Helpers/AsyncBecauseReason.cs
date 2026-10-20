@@ -150,7 +150,7 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		string? resolvedReason;
 		try
 		{
-			resolvedReason = await reason.AbandonOnCancellation(cancellationToken).ConfigureAwait(false);
+			resolvedReason = await reason.AbandonOnCancellation(cancellationToken);
 		}
 		catch (OperationCanceledException) when (reason is { IsCanceled: false, IsFaulted: false, })
 		{

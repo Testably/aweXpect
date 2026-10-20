@@ -10,6 +10,7 @@ internal sealed class Account(string name, int level)
 	public string Name { get; } = name;
 	public int Level { get; } = level;
 	public CancellationToken ReceivedToken { get; set; }
+	public SynchronizationContext? VerifiedOn { get; set; }
 
 	public override string ToString() => Name;
 }
@@ -78,6 +79,7 @@ internal static partial class ThatAccount
 	{
 		await Task.Yield();
 		account.ReceivedToken = cancellationToken;
+		account.VerifiedOn = SynchronizationContext.Current;
 		return account.Level > 0;
 	}
 

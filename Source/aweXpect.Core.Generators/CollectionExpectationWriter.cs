@@ -237,8 +237,8 @@ internal static class CollectionExpectationWriter
 		bool awaitsBool = model.PredicateKind != PredicateKind.Synchronous && !model.ReturnsPredicateResult;
 		string match = model.PredicateKind switch
 		{
-			_ when awaitsBool && item.FailsOnNull => $"item is null ? false : await {call}.ConfigureAwait(false)",
-			_ when awaitsBool => $"await {call}.ConfigureAwait(false)",
+			_ when awaitsBool && item.FailsOnNull => $"item is null ? false : await {call}",
+			_ when awaitsBool => $"await {call}",
 			PredicateKind.Synchronous when item.FailsOnNull && !model.ReturnsPredicateResult
 				=> $"new {result}(!(item is null) && {call})",
 			PredicateKind.Synchronous or PredicateKind.Task when item.FailsOnNull
