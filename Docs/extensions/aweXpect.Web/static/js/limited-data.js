@@ -54,6 +54,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
         "message": "docs: update the README and the extension packages overview (#1897)"
+      },
+      {
+        "sha": "b5dab01f19c9c2a9669e9f2ea53356ffa9349652",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
+        "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
       }
     ],
     "labels": [
@@ -65,7 +71,8 @@ window.BENCHMARK_DATA = {
       "fe413769",
       "3514e5d3",
       "dd7508bd",
-      "39b404f7"
+      "39b404f7",
+      "b5dab01f"
     ],
     "datasets": [
       {
@@ -80,7 +87,8 @@ window.BENCHMARK_DATA = {
           511.06023858388266,
           211.7148337841034,
           207.94492700894673,
-          403.7941200182988
+          403.7941200182988,
+          340.85249172846477
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -98,6 +106,7 @@ window.BENCHMARK_DATA = {
           944,
           944,
           944,
+          728,
           728,
           728,
           728
@@ -123,7 +132,8 @@ window.BENCHMARK_DATA = {
           1010.8425723484585,
           543.9756457989032,
           569.9150924682617,
-          959.2850583394369
+          959.2850583394369,
+          831.7780774661472
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -135,6 +145,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -211,6 +222,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
         "message": "docs: update the README and the extension packages overview (#1897)"
+      },
+      {
+        "sha": "b5dab01f19c9c2a9669e9f2ea53356ffa9349652",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
+        "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
       }
     ],
     "labels": [
@@ -222,7 +239,8 @@ window.BENCHMARK_DATA = {
       "fe413769",
       "3514e5d3",
       "dd7508bd",
-      "39b404f7"
+      "39b404f7",
+      "b5dab01f"
     ],
     "datasets": [
       {
@@ -237,7 +255,8 @@ window.BENCHMARK_DATA = {
           271.12410670060376,
           115.1127900821822,
           105.97076732771737,
-          193.97291277249653
+          193.97291277249653,
+          166.5883249123891
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -255,6 +274,7 @@ window.BENCHMARK_DATA = {
           784,
           784,
           784,
+          568,
           568,
           568,
           568
@@ -280,7 +300,8 @@ window.BENCHMARK_DATA = {
           265.13456317356656,
           142.2578024693898,
           131.59890479700906,
-          248.3692032269069
+          248.3692032269069,
+          220.05329035123188
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -292,6 +313,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
