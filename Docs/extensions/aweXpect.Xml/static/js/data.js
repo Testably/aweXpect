@@ -18,12 +18,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
         "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
+      },
+      {
+        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
+        "message": "refactor: speed up matching JSON against an expected object (#1891)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
-      "391462ba"
+      "391462ba",
+      "78b13d35"
     ],
     "datasets": [
       {
@@ -32,7 +39,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1097.8751047679357,
           1078.875713857015,
-          806.6300570624215
+          806.6300570624215,
+          915.2430147024302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44,6 +52,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1816,
           1816,
           1816,
           1816
@@ -63,7 +72,8 @@ window.BENCHMARK_DATA = {
         "data": [
           730.8021795409066,
           668.750609261649,
-          528.2589103062948
+          528.2589103062948,
+          596.14315478007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -75,6 +85,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776
@@ -109,12 +120,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
         "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
+      },
+      {
+        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
+        "message": "refactor: speed up matching JSON against an expected object (#1891)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
-      "391462ba"
+      "391462ba",
+      "78b13d35"
     ],
     "datasets": [
       {
@@ -123,7 +141,8 @@ window.BENCHMARK_DATA = {
         "data": [
           12670.111607142857,
           12171.387325032552,
-          8267.12919834682
+          8267.12919834682,
+          9192.517417399089
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -136,6 +155,7 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           34880,
+          34885,
           34885,
           34885
         ],
@@ -154,7 +174,8 @@ window.BENCHMARK_DATA = {
         "data": [
           5336.80074603741,
           5097.102923583984,
-          3744.885112489973
+          3744.885112489973,
+          4400.290140005259
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -166,6 +187,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758
