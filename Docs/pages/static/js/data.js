@@ -360,6 +360,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -422,7 +428,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -488,7 +495,8 @@ window.BENCHMARK_DATA = {
           6290.744794718425,
           13431.071209716796,
           12424.916563767652,
-          13485.223824637276
+          13485.223824637276,
+          12807.232430594308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -537,6 +545,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -633,7 +642,8 @@ window.BENCHMARK_DATA = {
           164726.92766462054,
           383894.373828125,
           374467.87669270835,
-          381430.7604166667
+          381430.7604166667,
+          367431.6522042411
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -704,7 +714,8 @@ window.BENCHMARK_DATA = {
           590287,
           590292,
           590292,
-          590292
+          590292,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -778,7 +789,8 @@ window.BENCHMARK_DATA = {
           9687.401100745568,
           19379.468263753257,
           19723.56197466169,
-          19269.201989310128
+          19269.201989310128,
+          19883.603173828124
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -790,6 +802,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1181,6 +1194,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -1236,7 +1255,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -1295,7 +1315,8 @@ window.BENCHMARK_DATA = {
           133.83350161143713,
           321.3382097244263,
           284.3743395487467,
-          281.5726981798808
+          281.5726981798808,
+          280.744578906468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1307,6 +1328,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1426,7 +1448,8 @@ window.BENCHMARK_DATA = {
           245.48654237160315,
           585.8575134913127,
           545.8857168833415,
-          545.6367696762085
+          545.6367696762085,
+          524.7363516489664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1438,6 +1461,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1557,7 +1581,8 @@ window.BENCHMARK_DATA = {
           201.15392077886142,
           423.61332578659056,
           414.86068773269653,
-          420.18242228825886
+          420.18242228825886,
+          409.01357405526295
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1569,6 +1594,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6573,6 +6599,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -7398,7 +7430,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -8227,7 +8260,8 @@ window.BENCHMARK_DATA = {
           71.98160390342984,
           159.558003060023,
           159.92800674438476,
-          155.88796105384827
+          155.88796105384827,
+          157.59672282536823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9034,6 +9068,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -9898,7 +9933,8 @@ window.BENCHMARK_DATA = {
           124.0122208254678,
           282.2658065795898,
           287.0499791463216,
-          286.11980530420936
+          286.11980530420936,
+          258.83759247461956
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10091,6 +10127,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -10850,7 +10887,8 @@ window.BENCHMARK_DATA = {
           117.29486432442299,
           260.21722440719606,
           265.300892499777,
-          267.3511466662089
+          267.3511466662089,
+          261.93149512608846
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -10862,6 +10900,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -11339,6 +11378,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -11401,7 +11446,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -11467,7 +11513,8 @@ window.BENCHMARK_DATA = {
           158.95665551821392,
           290.03494990666707,
           290.4190535545349,
-          290.02106494903563
+          290.02106494903563,
+          283.8399627049764
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11486,6 +11533,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11612,7 +11660,8 @@ window.BENCHMARK_DATA = {
           274.1330770810445,
           558.4174865722656,
           587.2065956115723,
-          569.1244530995687
+          569.1244530995687,
+          529.2615350087484
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11624,6 +11673,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -11757,7 +11807,8 @@ window.BENCHMARK_DATA = {
           167.49061036109924,
           355.74284947713215,
           354.8124809946333,
-          351.2292379697164
+          351.2292379697164,
+          347.3147570169889
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11769,6 +11820,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -16780,6 +16832,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -17605,7 +17663,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -18434,7 +18493,8 @@ window.BENCHMARK_DATA = {
           326.325720173972,
           676.0812699635824,
           679.669674873352,
-          694.2464557647705
+          694.2464557647705,
+          681.3976145426433
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19244,6 +19304,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -20105,7 +20166,8 @@ window.BENCHMARK_DATA = {
           653.0351298877171,
           1548.958098856608,
           1486.8155450820923,
-          1381.0726502736409
+          1381.0726502736409,
+          1470.3232198861929
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20939,6 +21001,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -21057,7 +21120,8 @@ window.BENCHMARK_DATA = {
           324.8136201540629,
           688.8696273394993,
           677.3187940597534,
-          645.0629905064901
+          645.0629905064901,
+          666.6414422988892
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21069,6 +21133,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -26124,6 +26189,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -26949,7 +27020,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -27778,7 +27850,8 @@ window.BENCHMARK_DATA = {
           322.32280286153156,
           665.4261503953201,
           660.7158184051514,
-          673.9764590263367
+          673.9764590263367,
+          646.7950919696262
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28588,6 +28661,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -29449,7 +29523,8 @@ window.BENCHMARK_DATA = {
           9898.959427897136,
           28042.715085856118,
           28682.911216227214,
-          28239.413805280412
+          28239.413805280412,
+          27983.34929402669
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30283,6 +30358,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -30401,7 +30477,8 @@ window.BENCHMARK_DATA = {
           413.0651320139567,
           803.446176801409,
           826.0765203067234,
-          789.3217925389607
+          789.3217925389607,
+          823.4265757878621
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30413,6 +30490,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -31238,6 +31316,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -31358,7 +31442,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -31482,7 +31567,8 @@ window.BENCHMARK_DATA = {
           352.61233282089233,
           835.8362019220988,
           794.5244412104289,
-          756.0569742202758
+          756.0569742202758,
+          764.6649042765299
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31589,6 +31675,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
+          1856,
           1856,
           1856,
           1856,
@@ -31743,7 +31830,8 @@ window.BENCHMARK_DATA = {
           27904.526094563804,
           84306.2785970052,
           84374.98778827373,
-          85070.69497915414
+          85070.69497915414,
+          83612.60432535807
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31870,6 +31958,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252
@@ -32594,6 +32683,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -32714,7 +32809,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -32838,7 +32934,8 @@ window.BENCHMARK_DATA = {
           103.88230061531067,
           189.71347365379333,
           195.00022001266478,
-          189.10568833351135
+          189.10568833351135,
+          196.65326636632284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32915,6 +33012,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -33099,7 +33197,8 @@ window.BENCHMARK_DATA = {
           10583.883628336589,
           33131.544795735674,
           32748.927028111048,
-          33051.00584309896
+          33051.00584309896,
+          32339.84567464193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33228,6 +33327,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -33346,7 +33446,8 @@ window.BENCHMARK_DATA = {
           121.74509482724326,
           259.55491431554157,
           269.2464275677999,
-          249.51677201588947
+          249.51677201588947,
+          248.2201798439026
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33358,6 +33459,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -33835,6 +33937,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -33897,7 +34005,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -33963,7 +34072,8 @@ window.BENCHMARK_DATA = {
           185.4253969703402,
           373.67607855796814,
           361.2869338671366,
-          378.7131065981729
+          378.7131065981729,
+          360.9726122220357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34011,6 +34121,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -34108,7 +34219,8 @@ window.BENCHMARK_DATA = {
           201.283979956309,
           421.0189789258517,
           395.88827346165976,
-          411.08862390518186
+          411.08862390518186,
+          399.202547677358
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34120,6 +34232,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -34253,7 +34366,8 @@ window.BENCHMARK_DATA = {
           195.17111146450043,
           428.7466734568278,
           416.4393012864249,
-          420.6346224784851
+          420.6346224784851,
+          425.9174425942557
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34265,6 +34379,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -34698,6 +34813,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -34760,7 +34881,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -34826,7 +34948,8 @@ window.BENCHMARK_DATA = {
           398.11624749501544,
           815.643183026995,
           834.7785130182903,
-          826.7595612843832
+          826.7595612843832,
+          806.4954381942749
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34853,6 +34976,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -34971,7 +35095,8 @@ window.BENCHMARK_DATA = {
           1001.4748270670573,
           2101.1886351449148,
           2045.080423082624,
-          2034.205393110003
+          2034.205393110003,
+          2001.4416610717774
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34983,6 +35108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -35116,7 +35242,8 @@ window.BENCHMARK_DATA = {
           457.94817669051037,
           951.0506235758463,
           968.4909497578939,
-          963.7541193644206
+          963.7541193644206,
+          944.0517686435154
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35128,6 +35255,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -35561,6 +35689,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -35623,7 +35757,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -35689,7 +35824,8 @@ window.BENCHMARK_DATA = {
           6186.8094482421875,
           12294.065668378558,
           12412.906634990986,
-          12597.300221369816
+          12597.300221369816,
+          12430.40533564641
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35738,6 +35874,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -35834,7 +35971,8 @@ window.BENCHMARK_DATA = {
           18247.640270996093,
           41551.82961331881,
           41864.14045817057,
-          42212.26511492048
+          42212.26511492048,
+          41537.927233886716
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35889,6 +36027,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -35979,7 +36118,8 @@ window.BENCHMARK_DATA = {
           6037.893575032552,
           11379.745162963867,
           11381.553640093121,
-          11727.328328813825
+          11727.328328813825,
+          11562.734325702373
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35991,6 +36131,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -36424,6 +36565,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
@@ -36486,7 +36633,8 @@ window.BENCHMARK_DATA = {
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -36552,7 +36700,8 @@ window.BENCHMARK_DATA = {
           5779.480037943522,
           11643.378771100726,
           11762.522556011494,
-          12061.380863734654
+          12061.380863734654,
+          11939.927749633789
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36601,6 +36750,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -36697,7 +36847,8 @@ window.BENCHMARK_DATA = {
           27257.15004788912,
           59424.55138724191,
           60382.052001953125,
-          60913.325411283055
+          60913.325411283055,
+          62026.5597882952
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36768,6 +36919,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
+          23554,
           23554
         ],
         "borderColor": "#FF671B",
@@ -36842,7 +36994,8 @@ window.BENCHMARK_DATA = {
           12171.45713297526,
           22322.189472743445,
           22550.113385881697,
-          22978.201373760516
+          22978.201373760516,
+          22762.531415666854
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36854,6 +37007,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
