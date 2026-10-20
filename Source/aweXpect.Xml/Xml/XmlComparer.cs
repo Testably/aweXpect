@@ -25,6 +25,7 @@ namespace aweXpect.Xml;
 internal static class XmlComparer
 {
 	internal const char PathSeparator = '/';
+	private static readonly XName XmlSpace = XNamespace.Xml + "space";
 
 	/// <param name="actual">The element of the subject.</param>
 	/// <param name="expected">The expected element.</param>
@@ -72,6 +73,12 @@ internal static class XmlComparer
 	/// </remarks>
 	private static void CompareAttributes(XElement actual, XElement expected, string path, Comparison comparison)
 	{
+		if (!comparison.HasMembersToIgnore && HasEveryAttributeByName(actual, expected))
+		{
+			CompareAttributesByName(actual, expected, path, comparison);
+			return;
+		}
+
 		XmlComparisonResult result = comparison.Result;
 		List<XAttribute> unpairedAttributes = actual.Attributes().Where(a => !a.IsNamespaceDeclaration).ToList();
 		foreach (XAttribute expectedAttribute in expected.Attributes().Where(a => !a.IsNamespaceDeclaration))
@@ -121,11 +128,80 @@ internal static class XmlComparer
 		}
 	}
 
+	private static bool HasEveryAttributeByName(XElement actual, XElement expected)
+	{
+		for (XAttribute? attribute = expected.FirstAttribute; attribute is not null; attribute = attribute.NextAttribute)
+		{
+			if (!attribute.IsNamespaceDeclaration && actual.Attribute(attribute.Name) is null)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	///     Compares the attributes by their name, when every expected attribute has an attribute with the same name in the
+	///     subject and no member is ignored.
+	/// </summary>
+	/// <remarks>
+	///     The general comparison pairs the attributes the same way then, but allocates a list of the unpaired
+	///     attributes and a path for every attribute.
+	/// </remarks>
+	private static void CompareAttributesByName(XElement actual, XElement expected, string path,
+		Comparison comparison)
+	{
+		XmlComparisonResult result = comparison.Result;
+		for (XAttribute? expectedAttribute = expected.FirstAttribute;
+		     expectedAttribute is not null;
+		     expectedAttribute = expectedAttribute.NextAttribute)
+		{
+			if (expectedAttribute.IsNamespaceDeclaration)
+			{
+				continue;
+			}
+
+			XAttribute actualAttribute = actual.Attribute(expectedAttribute.Name)!;
+			if (actualAttribute.Value != expectedAttribute.Value)
+			{
+				result.AddError($"{path}{PathSeparator}@{expectedAttribute.Name.LocalName}",
+					$"was {Formatter.Format(actualAttribute.Value)} instead of {Formatter.Format(expectedAttribute.Value)}");
+			}
+		}
+
+		if (comparison.IgnoreAdditionalNodes)
+		{
+			return;
+		}
+
+		for (XAttribute? actualAttribute = actual.FirstAttribute;
+		     actualAttribute is not null;
+		     actualAttribute = actualAttribute.NextAttribute)
+		{
+			if (!actualAttribute.IsNamespaceDeclaration && expected.Attribute(actualAttribute.Name) is null)
+			{
+				result.AddError($"{path}{PathSeparator}@{actualAttribute.Name.LocalName}", "was unexpected");
+			}
+		}
+	}
+
 	private static void CompareChildren(XElement actual, XElement expected, string path, Comparison comparison)
 	{
 		XmlComparisonResult result = comparison.Result;
 		List<Content> actualChildren = GetContent(actual, path);
 		List<Content> expectedChildren = GetContent(expected, path);
+		if (!comparison.Options.IgnoreElementOrder && !comparison.HasMembersToIgnore &&
+		    HaveSameNames(actualChildren, expectedChildren))
+		{
+			for (int i = 0; i < expectedChildren.Count; i++)
+			{
+				CompareChild(actualChildren[i], expectedChildren[i], comparison);
+			}
+
+			return;
+		}
+
 		Dictionary<Content, Content> pairs = comparison.Options.IgnoreElementOrder
 			? PairIgnoringOrder(actualChildren, expectedChildren, comparison)
 			: PairByKey(actualChildren, expectedChildren, path, comparison);
@@ -136,14 +212,9 @@ internal static class XmlComparer
 			{
 				result.AddError(expectedChild.Path, "was missing");
 			}
-			else if (expectedChild.Element is not null)
+			else
 			{
-				CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, comparison);
-			}
-			else if (actualChild.Text != expectedChild.Text)
-			{
-				result.AddError(expectedChild.Path,
-					$"was {Formatter.Format(actualChild.Text)} instead of {Formatter.Format(expectedChild.Text)}");
+				CompareChild(actualChild, expectedChild, comparison);
 			}
 		}
 
@@ -157,6 +228,41 @@ internal static class XmlComparer
 		{
 			result.AddError(unexpectedChild.Path, "was unexpected");
 		}
+	}
+
+	private static void CompareChild(Content actualChild, Content expectedChild, Comparison comparison)
+	{
+		if (expectedChild.Element is not null)
+		{
+			CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, comparison);
+		}
+		else if (actualChild.Text != expectedChild.Text)
+		{
+			comparison.Result.AddError(expectedChild.Path,
+				$"was {Formatter.Format(actualChild.Text)} instead of {Formatter.Format(expectedChild.Text)}");
+		}
+	}
+
+	/// <summary>
+	///     Checks if the children have the same names in the same order, so that <see cref="PairByKey" /> would pair
+	///     them by their position without any difference in their order, and they can be compared one by one.
+	/// </summary>
+	private static bool HaveSameNames(List<Content> actualChildren, List<Content> expectedChildren)
+	{
+		if (actualChildren.Count != expectedChildren.Count)
+		{
+			return false;
+		}
+
+		for (int i = 0; i < expectedChildren.Count; i++)
+		{
+			if (actualChildren[i].Name != expectedChildren[i].Name)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/// <summary>
@@ -255,69 +361,55 @@ internal static class XmlComparer
 	/// </remarks>
 	private static List<Content> GetContent(XElement parent, string parentPath)
 	{
-		List<(XElement? Element, string? Text)> nodes = new();
-		StringBuilder? text = null;
+		ContentCollector collector = new(parentPath);
 		bool preservesWhitespace = PreservesWhitespace(parent);
-		foreach (XNode node in parent.Nodes())
+		for (XNode? node = parent.FirstNode; node is not null; node = node.NextNode)
 		{
 			if (node is XText textNode)
 			{
-				if (!preservesWhitespace && node is not XCData && IsWhitespace(textNode.Value))
+				if (preservesWhitespace || node is XCData || !IsWhitespace(textNode.Value))
 				{
-					continue;
+					collector.AddText(textNode.Value);
 				}
-
-				text ??= new StringBuilder();
-				text.Append(textNode.Value);
 			}
 			else if (node is XElement element)
 			{
-				AddText(nodes, text);
-				text = null;
-				nodes.Add((element, null));
+				collector.AddElement(element);
 			}
 		}
 
-		AddText(nodes, text);
-
-		Dictionary<string, int> counts = nodes
-			.GroupBy(GetName)
-			.ToDictionary(group => group.Key, group => group.Count());
-		Dictionary<string, int> occurrences = new();
-		List<Content> content = new(nodes.Count);
-		foreach ((XElement? Element, string? Text) node in nodes)
-		{
-			string name = GetName(node);
-			occurrences.TryGetValue(name, out int occurrence);
-			occurrences[name] = ++occurrence;
-			content.Add(new Content(node.Element, node.Text, content.Count, parentPath, name, occurrence,
-				counts[name] > 1));
-		}
-
-		return content;
-
-		static void AddText(List<(XElement?, string?)> nodes, StringBuilder? text)
-		{
-			if (text is { Length: > 0, })
-			{
-				nodes.Add((null, text.ToString()));
-			}
-		}
-
-		static string GetName((XElement? Element, string? Text) node)
-			=> node.Element?.Name.LocalName ?? "text()";
+		return collector.Complete();
 	}
 
 	/// <remarks>
 	///     The ancestors are included, as <c>xml:space</c> is inherited, also from outside a subject nested in a document.
 	/// </remarks>
 	private static bool PreservesWhitespace(XElement element)
-		=> element.AncestorsAndSelf()
-			.Select(e => e.Attribute(XNamespace.Xml + "space"))
-			.FirstOrDefault(attribute => attribute is not null)?.Value == "preserve";
+	{
+		for (XElement? ancestor = element; ancestor is not null; ancestor = ancestor.Parent)
+		{
+			XAttribute? attribute = ancestor.Attribute(XmlSpace);
+			if (attribute is not null)
+			{
+				return attribute.Value == "preserve";
+			}
+		}
+
+		return false;
+	}
 
 	private static bool IsWhitespace(string text)
-		=> text.All(c => c is ' ' or '\t' or '\r' or '\n');
+	{
+		foreach (char c in text)
+		{
+			if (c is not (' ' or '\t' or '\r' or '\n'))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	private static string DescribeNamespaces(XNamespace actual, XNamespace expected)
 		=> $"was in {DescribeNamespace(actual)} instead of {DescribeNamespace(expected)}";
@@ -335,6 +427,7 @@ internal static class XmlComparer
 		public bool IgnoreAdditionalNodes { get; } = ignoreAdditionalNodes;
 		public MembersToIgnoreTracker Tracker { get; } = tracker;
 		public XmlComparisonResult Result { get; } = new(tracker);
+		public bool HasMembersToIgnore => Options.MembersToIgnore.Count > 0;
 
 		public bool IsIgnored(string path)
 			=> Tracker.IsIgnored(path);
@@ -344,22 +437,100 @@ internal static class XmlComparer
 	///     A child element or text, identified by its <see cref="Key" /> of its name and its occurrence among the
 	///     siblings of the same name.
 	/// </summary>
+	/// <remarks>
+	///     The <see cref="Key" /> and the <see cref="Segment" /> are only built when needed, as children with the same
+	///     names in both documents are compared without them.
+	/// </remarks>
 	private sealed class Content(
 		XElement? element,
 		string? text,
 		int position,
 		string parentPath,
 		string name,
-		int occurrence,
-		bool hasSiblingsOfSameName)
+		int occurrence)
 	{
+		private string? _key;
+		private string? _segment;
+
 		public XElement? Element { get; } = element;
 		public string? Text { get; } = text;
 		public int Position { get; } = position;
 		public string Name { get; } = name;
-		public string Key { get; } = $"{name}[{occurrence}]";
-		public string Segment { get; } = hasSiblingsOfSameName ? $"{name}[{occurrence}]" : name;
+		public bool HasSiblingsOfSameName { get; set; }
+		public string Key => _key ??= $"{Name}[{occurrence}]";
+		public string Segment => _segment ??= HasSiblingsOfSameName ? Key : Name;
 		public string Path => parentPath + PathSeparator + Segment;
+	}
+
+	/// <summary>
+	///     Collects the children for <see cref="GetContent" />, joining adjacent texts and counting the siblings of the
+	///     same name.
+	/// </summary>
+	/// <remarks>
+	///     The occurrences are only counted from the second child on, as a single child needs no dictionary.
+	/// </remarks>
+	private sealed class ContentCollector(string parentPath)
+	{
+		private readonly List<Content> _content = new();
+		private StringBuilder? _joinedText;
+		private Dictionary<string, int>? _occurrences;
+		private string? _text;
+
+		public void AddText(string value)
+		{
+			if (_text is null)
+			{
+				_text = value;
+			}
+			else
+			{
+				(_joinedText ??= new StringBuilder(_text)).Append(value);
+			}
+		}
+
+		public void AddElement(XElement element)
+		{
+			CompleteText();
+			Add(element, null, element.Name.LocalName);
+		}
+
+		public List<Content> Complete()
+		{
+			CompleteText();
+			if (_occurrences is not null)
+			{
+				foreach (Content child in _content)
+				{
+					child.HasSiblingsOfSameName = _occurrences[child.Name] > 1;
+				}
+			}
+
+			return _content;
+		}
+
+		private void CompleteText()
+		{
+			string? joined = _joinedText?.ToString() ?? _text;
+			_text = null;
+			_joinedText = null;
+			if (joined is { Length: > 0, })
+			{
+				Add(null, joined, "text()");
+			}
+		}
+
+		private void Add(XElement? element, string? value, string name)
+		{
+			int occurrence = 1;
+			if (_content.Count > 0)
+			{
+				_occurrences ??= new Dictionary<string, int> { [_content[0].Name] = 1, };
+				_occurrences.TryGetValue(name, out occurrence);
+				_occurrences[name] = ++occurrence;
+			}
+
+			_content.Add(new Content(element, value, _content.Count, parentPath, name, occurrence));
+		}
 	}
 
 	internal sealed class XmlComparisonResult(MembersToIgnoreTracker tracker)
