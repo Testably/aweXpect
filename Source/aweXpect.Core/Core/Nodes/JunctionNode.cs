@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +15,26 @@ namespace aweXpect.Core.Nodes;
 internal abstract class JunctionNode : Node
 {
 	private readonly bool _isAnd;
-	private readonly List<(string, Node)> _nodes = new();
 	private string? _currentSeparator;
+
+	/// <summary>
+	///     The operands before the first one in <see cref="_furtherOperands" />.
+	/// </summary>
+	/// <remarks>
+	///     Most junctions combine two operands, so the first one before the <see cref="Current" /> one is kept in this
+	///     field, and only further ones in a list, which is then allocated.
+	/// </remarks>
+	private (string, Node) _firstOperand;
+
+	/// <summary>
+	///     The operands after the <see cref="_firstOperand" /> and before the <see cref="Current" /> one.
+	/// </summary>
+	private List<(string, Node)>? _furtherOperands;
+
+	/// <summary>
+	///     The number of operands before the <see cref="Current" /> one.
+	/// </summary>
+	private int _operandCount;
 
 	protected JunctionNode(Node node, bool isAnd)
 	{
@@ -53,7 +70,17 @@ internal abstract class JunctionNode : Node
 
 	public override void AddNode(Node node, string? separator = null)
 	{
-		_nodes.Add((_currentSeparator ?? DefaultSeparator, Current));
+		(string, Node) operand = (_currentSeparator ?? DefaultSeparator, Current);
+		if (_operandCount == 0)
+		{
+			_firstOperand = operand;
+		}
+		else
+		{
+			(_furtherOperands ??= []).Add(operand);
+		}
+
+		_operandCount++;
 		Current = node;
 		_currentSeparator = separator;
 	}
@@ -77,7 +104,7 @@ internal abstract class JunctionNode : Node
 		ConstraintResult? combinedResult = null;
 		ConstraintResult? source = null;
 		bool isSkipped = false;
-		for (int index = 0; index <= _nodes.Count; index++)
+		for (int index = 0; index <= _operandCount; index++)
 		{
 			(string separator, Node node) = GetNode(index);
 			if (!IsOperand(node))
@@ -118,17 +145,15 @@ internal abstract class JunctionNode : Node
 	///     All nodes, including the <see cref="Current" /> one.
 	/// </summary>
 	/// <remarks>
-	///     The <see cref="Current" /> node must not be added to <see cref="_nodes" /> here, because the expectation
-	///     can be evaluated multiple times (e.g. by <see cref="EventuallyExpectationBuilder{TValue}" />).
+	///     The <see cref="Current" /> node must not be added to the operands here, because the expectation can be
+	///     evaluated multiple times (e.g. by <see cref="EventuallyExpectationBuilder{TValue}" />).
 	/// </remarks>
 	private IEnumerable<(string, Node)> GetNodes()
 	{
-		foreach ((string, Node) node in _nodes)
+		for (int index = 0; index <= _operandCount; index++)
 		{
-			yield return node;
+			yield return GetNode(index);
 		}
-
-		yield return (_currentSeparator ?? DefaultSeparator, Current);
 	}
 
 	/// <summary>
@@ -138,7 +163,14 @@ internal abstract class JunctionNode : Node
 	///     Every evaluation walks the nodes, so it reads them by index instead of allocating an iterator.
 	/// </remarks>
 	private (string, Node) GetNode(int index)
-		=> index < _nodes.Count ? _nodes[index] : (_currentSeparator ?? DefaultSeparator, Current);
+	{
+		if (index == _operandCount)
+		{
+			return (_currentSeparator ?? DefaultSeparator, Current);
+		}
+
+		return index == 0 ? _firstOperand : _furtherOperands![index - 1];
+	}
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -162,7 +194,22 @@ internal abstract class JunctionNode : Node
 	public override bool Equals(object? obj) => obj is JunctionNode other && Equals(other);
 
 	private bool Equals(JunctionNode other)
-		=> _isAnd == other._isAnd && Current.Equals(other.Current) && _nodes.SequenceEqual(other._nodes);
+	{
+		if (_isAnd != other._isAnd || _operandCount != other._operandCount || !Current.Equals(other.Current))
+		{
+			return false;
+		}
+
+		for (int index = 0; index < _operandCount; index++)
+		{
+			if (!GetNode(index).Equals(other.GetNode(index)))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode()
@@ -171,9 +218,9 @@ internal abstract class JunctionNode : Node
 		{
 			// ReSharper disable once NonReadonlyMemberInGetHashCode
 			int hash = 19 * Current.GetHashCode();
-			foreach (Node node in _nodes.Select(x => x.Item2))
+			for (int index = 0; index < _operandCount; index++)
 			{
-				hash = (hash * 31) + node.GetHashCode();
+				hash = (hash * 31) + GetNode(index).Item2.GetHashCode();
 			}
 
 			return hash;
