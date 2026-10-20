@@ -56,7 +56,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				.ForMember(
 					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			_returnValue);
 	}
@@ -87,7 +87,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			_returnValue);
 	}
@@ -152,8 +152,8 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-					.AddExpectations(
-						e => expectations(new ThatSubject<TMember?>(e)),
+					.AddExpectations(expectations,
+						static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 						grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 				_returnValue);
 		}
@@ -185,8 +185,8 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-					.AddExpectations(
-						e => expectations(new ThatSubject<TMember?>(e)),
+					.AddExpectations(expectations,
+						static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 						grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 				_returnValue);
 		}

@@ -28,7 +28,7 @@ public static partial class ThatString
 					" that ",
 					false)
 				.Validate((it, grammars) => new HasLinesConstraint(it, grammars))
-				.AddExpectations(e => expectations(
+				.AddExpectations(expectations, static (expectations, e) => expectations(
 						new ThatSubject<IEnumerable<string>>(e)),
 					grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural),
 			subject);

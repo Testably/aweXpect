@@ -121,7 +121,8 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
             .ForMember(
                 MemberAccessor<Track?, string?>.FromFunc(track => track?.Title, "title "),
                 (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
-            .AddExpectations(e => expectations(new ThatSubject<string?>(e)),
+            .AddExpectations(expectations,
+                static (expectations, e) => expectations(new ThatSubject<string?>(e)),
                 grammars => grammars | ExpectationGrammars.Nested),
         subject);
 ```
@@ -130,6 +131,8 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 
 - The second argument of `ForMember` writes the text in front of the nested expectations.
 - The name of the member replaces `it` in their result texts ("title was …"), unless you pass `replaceIt: false`.
+- `AddExpectations` hands the caller's `expectations` to the `static` lambda, so that adding them allocates neither a
+  closure nor a delegate. An overload without this state takes a lambda that captures what it needs.
 - The function passed to `AddExpectations` sets the grammars of the nested expectations.
 - `Validate(…)` before `AddExpectations` adds a constraint on the subject itself, e.g. based on
   `ConstraintResult.WithNotNullValue<T>` to rule out a `null` subject, as `WithInner` does.

@@ -91,7 +91,7 @@ public class HasHeaderValueResult<TType, TThat>
 					return values[0];
 				}, "the value "),
 				(_, stringBuilder) => stringBuilder.Append(" whose value "))
-			.AddExpectations(e => expectations(new ThatSubject<string?>(e)));
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)));
 		return this;
 	}
 
@@ -106,7 +106,7 @@ public class HasHeaderValueResult<TType, TThat>
 			.ForMember(
 				MemberAccessor<TType, string?[]?>.FromFunc(t => _headerValueAccessor(t), "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
-			.AddExpectations(e => expectations(new ThatSubject<string?[]>(e)),
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?[]>(e)),
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);
 		return this;
 	}

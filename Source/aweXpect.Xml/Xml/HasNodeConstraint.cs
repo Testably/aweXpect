@@ -45,7 +45,7 @@ internal static class HasNodeConstraint
 			.ForMember(MemberAccessor<FoundNode<XAttribute>, string?>.FromFunc(found => found.Node.Value,
 					$"value of attribute {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" whose value "))
-			.AddExpectations(e => expectations(new ThatSubject<string?>(e)));
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)));
 		return new AndOrResult<TSubject?, IThat<TSubject?>>(expectationBuilder, source);
 	}
 
@@ -78,7 +78,7 @@ internal static class HasNodeConstraint
 			.ForMember(MemberAccessor<FoundNode<XElement>, XElement?>.FromFunc(found => found.Node,
 					$"element {Formatter.Format(name.ToString())}"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
-			.AddExpectations(e => expectations(new ThatSubject<XElement?>(e)));
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<XElement?>(e)));
 		return new AndOrResult<TSubject?, IThat<TSubject?>>(expectationBuilder, source);
 	}
 

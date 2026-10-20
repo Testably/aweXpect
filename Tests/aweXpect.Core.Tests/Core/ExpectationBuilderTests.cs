@@ -635,6 +635,21 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task ForMember_WithState_ShouldPassTheStateToTheExpectations()
+	{
+		ManualExpectationBuilder<string> sut = new();
+
+		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+			.AddExpectations(3, static (expected, expectationBuilder) => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == expected, $"equal to {expected}")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3");
+	}
+
+	[Test]
 	public async Task ForMember_WithSucceedingExpectation_ShouldReturnSuccessConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
