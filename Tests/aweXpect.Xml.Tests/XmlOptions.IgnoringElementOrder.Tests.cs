@@ -16,6 +16,7 @@ public sealed partial class XmlOptionsTests
 		[Arguments("<p>c<b/>a</p>", "<p>a<b/>c</p>", "texts in mixed content")]
 		[Arguments("<a><b x=\"2\"><c/></b><b x=\"1\"/><d/></a>", "<a><d/><b x=\"1\"/><b x=\"2\"><c/></b></a>",
 			"elements with content")]
+		[Arguments("<a><b>2<c/></b><b>1<c/></b></a>", "<a><b><c/>1</b><b><c/>2</b></a>", "elements with texts")]
 		public async Task WhenOnlyTheOrderDiffers_ShouldSucceed(string subject, string expected, string because)
 		{
 			async Task Act()
@@ -59,6 +60,36 @@ public sealed partial class XmlOptionsTests
 				              - ignore element order
 				             """)
 				.Because("the equivalent elements are paired first, and the remaining ones are compared");
+		}
+
+		[Test]
+		public async Task WhenCandidatesDifferInNestedElements_ShouldReportTheDifferencesOfThePairByName()
+		{
+			string subject = "<a><b>x<c/></b><b>y<c/><d/></b></a>";
+			string expected = "<a><b><c/>y</b><b><c/>z</b></a>";
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringElementOrder());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is XML equivalent to <a><b><c/>y</b><b><c/>z</b></a>,
+				             but it differed as
+				               /a/b[1]/text() was "x" instead of "y" and
+				               /a/b[2]/text() was "y" instead of "z" and
+				               /a/b[2]/d was unexpected
+
+				             Actual:
+				             <a><b>x<c/></b><b>y<c/><d/></b></a>
+
+				             Expected:
+				             <a><b><c/>y</b><b><c/>z</b></a>
+
+				             XML options:
+				              - ignore element order
+				             """)
+				.Because("a candidate with an additional element or another text is not equivalent, and the remaining elements are compared in their order");
 		}
 
 		[Test]

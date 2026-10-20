@@ -64,7 +64,10 @@ internal static class XmlComparer
 		}
 
 		CompareAttributes(actual, expected, path, comparison);
-		CompareChildren(actual, expected, path, comparison);
+		if (!comparison.IsDecided)
+		{
+			CompareChildren(actual, expected, path, comparison);
+		}
 	}
 
 	/// <remarks>
@@ -165,6 +168,12 @@ internal static class XmlComparer
 			XAttribute actualAttribute = actual.Attribute(expectedAttribute.Name)!;
 			if (actualAttribute.Value != expectedAttribute.Value)
 			{
+				if (comparison.StopsAtFirstDifference)
+				{
+					result.AddUndescribedDifference();
+					return;
+				}
+
 				result.AddError($"{path}{PathSeparator}@{expectedAttribute.Name.LocalName}",
 					$"was {Formatter.Format(actualAttribute.Value)} instead of {Formatter.Format(expectedAttribute.Value)}");
 			}
@@ -212,7 +221,7 @@ internal static class XmlComparer
 			{
 				result.AddError(expectedChild.Path, "was missing");
 			}
-			else
+			else if (!expectedChild.IsPairedAsEquivalent)
 			{
 				CompareChild(actualChild, expectedChild, comparison);
 			}
@@ -238,8 +247,15 @@ internal static class XmlComparer
 		}
 		else if (actualChild.Text != expectedChild.Text)
 		{
-			comparison.Result.AddError(expectedChild.Path,
-				$"was {Formatter.Format(actualChild.Text)} instead of {Formatter.Format(expectedChild.Text)}");
+			if (comparison.StopsAtFirstDifference)
+			{
+				comparison.Result.AddUndescribedDifference();
+			}
+			else
+			{
+				comparison.Result.AddError(expectedChild.Path,
+					$"was {Formatter.Format(actualChild.Text)} instead of {Formatter.Format(expectedChild.Text)}");
+			}
 		}
 	}
 
@@ -307,45 +323,84 @@ internal static class XmlComparer
 	///     <para />
 	///     The pairing is greedy, so that an expected child can be paired with a child of the subject that a later
 	///     expected child would have needed, when additional nodes are ignored.
+	///     <para />
+	///     A child that is paired as equivalent is marked, so that it is not compared a second time.
 	/// </remarks>
 	private static Dictionary<Content, Content> PairIgnoringOrder(List<Content> actualChildren,
 		List<Content> expectedChildren, Comparison comparison)
 	{
-		actualChildren.RemoveAll(child => comparison.IsIgnored(child.Path));
-		expectedChildren.RemoveAll(child => comparison.IsIgnored(child.Path));
-		List<Content> unpairedChildren = new(actualChildren);
-		Dictionary<Content, Content> pairs = new();
-		foreach (Content expectedChild in expectedChildren)
+		if (comparison.HasMembersToIgnore)
 		{
-			Pair(expectedChild, unpairedChildren.Find(child =>
-				child.Name == expectedChild.Name && IsEquivalent(child, expectedChild, comparison)));
+			actualChildren.RemoveAll(child => comparison.IsIgnored(child.Path));
+			expectedChildren.RemoveAll(child => comparison.IsIgnored(child.Path));
 		}
 
-		foreach (Content expectedChild in expectedChildren.Where(child => !pairs.ContainsKey(child)))
+		List<Content> unpairedChildren = new(actualChildren);
+		Dictionary<Content, Content> pairs = new();
+		Comparison candidate = comparison.ForCandidate();
+		foreach (Content expectedChild in expectedChildren)
 		{
-			Pair(expectedChild, unpairedChildren.Find(child => child.Name == expectedChild.Name));
+			int index = FindEquivalent(unpairedChildren, expectedChild, candidate);
+			if (index >= 0)
+			{
+				expectedChild.IsPairedAsEquivalent = true;
+				pairs.Add(expectedChild, unpairedChildren[index]);
+				unpairedChildren.RemoveAt(index);
+			}
+		}
+
+		if (pairs.Count < expectedChildren.Count)
+		{
+			PairRemainingByName(unpairedChildren, expectedChildren, pairs);
 		}
 
 		return pairs;
+	}
 
-		void Pair(Content expectedChild, Content? actualChild)
+	private static int FindEquivalent(List<Content> unpairedChildren, Content expectedChild, Comparison candidate)
+	{
+		for (int i = 0; i < unpairedChildren.Count; i++)
 		{
-			if (actualChild is not null)
+			Content child = unpairedChildren[i];
+			if (child.Name == expectedChild.Name && IsEquivalent(child, expectedChild, candidate))
 			{
-				pairs.Add(expectedChild, actualChild);
-				unpairedChildren.Remove(actualChild);
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	private static void PairRemainingByName(List<Content> unpairedChildren, List<Content> expectedChildren,
+		Dictionary<Content, Content> pairs)
+	{
+		foreach (Content expectedChild in expectedChildren)
+		{
+			if (pairs.ContainsKey(expectedChild))
+			{
+				continue;
+			}
+
+			int index = unpairedChildren.FindIndex(child => child.Name == expectedChild.Name);
+			if (index >= 0)
+			{
+				pairs.Add(expectedChild, unpairedChildren[index]);
+				unpairedChildren.RemoveAt(index);
 			}
 		}
 	}
 
-	private static bool IsEquivalent(Content actualChild, Content expectedChild, Comparison comparison)
+	/// <remarks>
+	///     The <paramref name="candidate" /> comparison is reused for every child, so its result is cleared first.
+	/// </remarks>
+	private static bool IsEquivalent(Content actualChild, Content expectedChild, Comparison candidate)
 	{
 		if (expectedChild.Element is null)
 		{
 			return actualChild.Text == expectedChild.Text;
 		}
 
-		Comparison candidate = new(comparison.Options, comparison.IgnoreAdditionalNodes, comparison.Tracker);
+		candidate.Result.Clear();
 		CompareElements(actualChild.Element!, expectedChild.Element, expectedChild.Path, candidate);
 		return !candidate.Result.HasError;
 	}
@@ -421,13 +476,37 @@ internal static class XmlComparer
 	///     The <paramref name="tracker" /> is shared with the comparisons of the candidates for a pair, so that a member
 	///     to ignore that matched while looking for an equivalent child counts as matched.
 	/// </remarks>
-	private sealed class Comparison(XmlOptions options, bool ignoreAdditionalNodes, MembersToIgnoreTracker tracker)
+	private sealed class Comparison(
+		XmlOptions options,
+		bool ignoreAdditionalNodes,
+		MembersToIgnoreTracker tracker,
+		bool stopsAtFirstDifference = false)
 	{
 		public XmlOptions Options { get; } = options;
 		public bool IgnoreAdditionalNodes { get; } = ignoreAdditionalNodes;
 		public MembersToIgnoreTracker Tracker { get; } = tracker;
 		public XmlComparisonResult Result { get; } = new(tracker);
 		public bool HasMembersToIgnore => Options.MembersToIgnore.Count > 0;
+
+		/// <summary>
+		///     Whether only the existence of a difference matters, so that a difference is not described.
+		/// </summary>
+		public bool StopsAtFirstDifference { get; } = stopsAtFirstDifference;
+
+		/// <summary>
+		///     Whether the outcome is known and the remaining nodes need not be compared.
+		/// </summary>
+		public bool IsDecided => StopsAtFirstDifference && Result.HasError;
+
+		/// <summary>
+		///     Creates the comparison of the candidates for a pair, which shares the tracking of the members to ignore.
+		/// </summary>
+		/// <remarks>
+		///     A candidate only needs to know whether it differs, so it stops at the first difference without describing
+		///     it, unless members are ignored, whose tracking has to see every path.
+		/// </remarks>
+		public Comparison ForCandidate()
+			=> new(Options, IgnoreAdditionalNodes, Tracker, !HasMembersToIgnore);
 
 		public bool IsIgnored(string path)
 			=> Tracker.IsIgnored(path);
@@ -450,6 +529,7 @@ internal static class XmlComparer
 		int occurrence)
 	{
 		private string? _key;
+		private string? _path;
 		private string? _segment;
 
 		public XElement? Element { get; } = element;
@@ -457,9 +537,10 @@ internal static class XmlComparer
 		public int Position { get; } = position;
 		public string Name { get; } = name;
 		public bool HasSiblingsOfSameName { get; set; }
+		public bool IsPairedAsEquivalent { get; set; }
 		public string Key => _key ??= $"{Name}[{occurrence}]";
 		public string Segment => _segment ??= HasSiblingsOfSameName ? Key : Name;
-		public string Path => parentPath + PathSeparator + Segment;
+		public string Path => _path ??= parentPath + PathSeparator + Segment;
 	}
 
 	/// <summary>
@@ -536,11 +617,24 @@ internal static class XmlComparer
 	internal sealed class XmlComparisonResult(MembersToIgnoreTracker tracker)
 	{
 		private readonly List<KeyValuePair<string, string>> _errors = new();
+		private bool _hasUndescribedDifference;
 
-		public bool HasError => _errors.Count > 0;
+		public bool HasError => _hasUndescribedDifference || _errors.Count > 0;
 
 		public void AddError(string path, string error)
 			=> _errors.Add(new KeyValuePair<string, string>(path, error));
+
+		public void Clear()
+		{
+			_errors.Clear();
+			_hasUndescribedDifference = false;
+		}
+
+		/// <summary>
+		///     Records a difference of a comparison that only needs to know whether there is one.
+		/// </summary>
+		public void AddUndescribedDifference()
+			=> _hasUndescribedDifference = true;
 
 		/// <summary>
 		///     Returns each member to ignore by path that matched no member, with the path it most likely meant, when the
