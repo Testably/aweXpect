@@ -96,7 +96,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                package: [ aweXpect, aweXpect.Json, aweXpect.Web, aweXpect.Xml, aweXpect.Reflection, aweXpect.Snapshots ]
+                package: [ aweXpect, aweXpect.Json, aweXpect.Web, aweXpect.Xml, aweXpect.Reflection ]
         env:
             DOTNET_NOLOGO: true
         steps:

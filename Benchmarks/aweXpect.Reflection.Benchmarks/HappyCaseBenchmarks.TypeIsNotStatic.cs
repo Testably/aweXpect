@@ -1,4 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
+using FluentAssertions;
+using FluentAssertions.Types;
 
 namespace aweXpect.Reflection.Benchmarks;
 
@@ -12,4 +14,8 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public async Task TypeIsNotStatic_aweXpect()
 		=> await Expect.That(_type).IsNotStatic();
+
+	[Benchmark]
+	public AndConstraint<TypeAssertions> TypeIsNotStatic_FluentAssertions()
+		=> _type.Should().NotBeStatic();
 }

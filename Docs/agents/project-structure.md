@@ -7,7 +7,7 @@
 | `Source/` | The shipped projects |
 | `Tests/` | Test projects (see [testing](testing.md)), shared helpers in `Tests/Shared` |
 | `Benchmarks/aweXpect.Benchmarks` | BenchmarkDotNet comparison with FluentAssertions and TUnit.Assertions |
-| `Benchmarks/aweXpect.<Extension>.Benchmarks` | BenchmarkDotNet happy-case benchmarks of an extension package |
+| `Benchmarks/aweXpect.<Extension>.Benchmarks` | BenchmarkDotNet comparison of an extension package with FluentAssertions (none for `aweXpect.Snapshots`) |
 | `Pipeline/` | The Fallout build (`Build.*.cs`, one partial file per area), started by `build.ps1`/`build.sh`/`build.cmd` |
 | `Docs/pages` | User documentation, published to the docs site |
 | `Docs/extensions/<Package>` | User documentation of an extension package |

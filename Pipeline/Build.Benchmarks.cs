@@ -54,8 +54,6 @@ partial class Build
 		("aweXpect.Xml", Solution.Benchmarks.aweXpect_Xml_Benchmarks, ["aweXpect.Xml", "aweXpect", "aweXpect.Core",]),
 		("aweXpect.Reflection", Solution.Benchmarks.aweXpect_Reflection_Benchmarks,
 			["aweXpect.Reflection", "aweXpect.Core",]),
-		("aweXpect.Snapshots", Solution.Benchmarks.aweXpect_Snapshots_Benchmarks,
-			["aweXpect.Snapshots", "aweXpect", "aweXpect.Core",]),
 	];
 
 	Target BenchmarkDotNet => _ => _

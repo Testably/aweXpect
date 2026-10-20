@@ -3,7 +3,6 @@
     <Project Path="Benchmarks/aweXpect.Benchmarks/aweXpect.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Json.Benchmarks/aweXpect.Json.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Reflection.Benchmarks/aweXpect.Reflection.Benchmarks.csproj" />
-    <Project Path="Benchmarks/aweXpect.Snapshots.Benchmarks/aweXpect.Snapshots.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Web.Benchmarks/aweXpect.Web.Benchmarks.csproj" />
     <Project Path="Benchmarks/aweXpect.Xml.Benchmarks/aweXpect.Xml.Benchmarks.csproj" />
   </Folder>
