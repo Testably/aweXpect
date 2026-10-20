@@ -76,8 +76,7 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Array)
 		{
-			result.AddError(path,
-				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+			result.AddKindDifference(path, actualElement, expectedElement, converter);
 			return result;
 		}
 
@@ -138,25 +137,37 @@ internal static class JsonElementValidator
 		ExpectationJsonConverter? converter)
 	{
 		JsonElement[] actualElements = actualElement.EnumerateArray().ToArray();
-		bool[] isPaired = Enumerable.Range(0, actualElements.Length)
-			.Select(index => result.IsIgnored(path + "[" + index + "]"))
-			.ToArray();
-		List<JsonElement> missingElements = new();
-		foreach (JsonElement expectedArrayElement in expectedElement.EnumerateArray())
+		bool[] isPaired = new bool[actualElements.Length];
+		if (result.HasMembersToIgnore)
 		{
-			int index = await result.FindUnpairedMatch(path, actualElements, expectedArrayElement, isPaired, options,
-				converter);
-			if (index < 0)
+			for (int index = 0; index < actualElements.Length; index++)
 			{
-				missingElements.Add(expectedArrayElement);
-			}
-			else
-			{
-				isPaired[index] = true;
+				isPaired[index] = result.IsIgnored(path + "[" + index + "]");
 			}
 		}
 
-		List<int> unpairedIndices = Enumerable.Range(0, isPaired.Length).Where(index => !isPaired[index]).ToList();
+		List<JsonElement> missingElements = new();
+		JsonComparisonResult candidate = result.ForCandidate();
+		foreach (JsonElement expectedArrayElement in expectedElement.EnumerateArray())
+		{
+			int index = await candidate.FindUnpairedMatch(path, actualElements, expectedArrayElement, isPaired, options,
+				converter);
+			if (index >= 0)
+			{
+				isPaired[index] = true;
+			}
+			else if (result.StopsAtFirstDifference)
+			{
+				result.AddUndescribedDifference();
+				return result;
+			}
+			else
+			{
+				missingElements.Add(expectedArrayElement);
+			}
+		}
+
+		List<int> unpairedIndices = GetUnpairedIndices(isPaired);
 		if (missingElements.Count == 1 && unpairedIndices.Count == 1)
 		{
 			int index = unpairedIndices[0];
@@ -171,13 +182,43 @@ internal static class JsonElementValidator
 
 		if (!options.IgnoreAdditionalArrayElements)
 		{
-			foreach (int index in unpairedIndices)
-			{
-				result.AddError(path + "[" + index + "]", $"had unexpected {Format(actualElements[index])}");
-			}
+			result.AddUnexpectedElements(path, actualElements, unpairedIndices);
 		}
 
 		return result;
+	}
+
+	private static List<int> GetUnpairedIndices(bool[] isPaired)
+	{
+		List<int> unpairedIndices = new();
+		for (int index = 0; index < isPaired.Length; index++)
+		{
+			if (!isPaired[index])
+			{
+				unpairedIndices.Add(index);
+			}
+		}
+
+		return unpairedIndices;
+	}
+
+	private static void AddUnexpectedElements(this JsonComparisonResult result, string path,
+		JsonElement[] actualElements, List<int> unexpectedIndices)
+	{
+		if (result.StopsAtFirstDifference)
+		{
+			if (unexpectedIndices.Count > 0)
+			{
+				result.AddUndescribedDifference();
+			}
+
+			return;
+		}
+
+		foreach (int index in unexpectedIndices)
+		{
+			result.AddError(path + "[" + index + "]", $"had unexpected {Format(actualElements[index])}");
+		}
 	}
 
 	/// <summary>
@@ -185,11 +226,12 @@ internal static class JsonElementValidator
 	///     <paramref name="expectedElement" />, or <c>-1</c> if there is none.
 	/// </summary>
 	/// <remarks>
-	///     Each candidate is compared in a separate result, so that the differences of a candidate that does not match are
-	///     not reported, but which shares the tracking of the members to ignore.
+	///     Each candidate is compared in the separate <paramref name="candidate" /> result, so that the differences of a
+	///     candidate that does not match are not reported, but which shares the tracking of the members to ignore. It is
+	///     reused for every candidate, so it is cleared first.
 	/// </remarks>
-	private static async Task<int> FindUnpairedMatch(
-		this JsonComparisonResult result,
+	private static async ValueTask<int> FindUnpairedMatch(
+		this JsonComparisonResult candidate,
 		string path,
 		JsonElement[] actualElements,
 		JsonElement expectedElement,
@@ -199,10 +241,14 @@ internal static class JsonElementValidator
 	{
 		for (int index = 0; index < actualElements.Length; index++)
 		{
-			if (!isPaired[index] &&
-			    !(await result.ForCandidate().Compare(path + "[" + index + "]", actualElements[index],
-					    expectedElement, options, converter))
-				    .HasError)
+			if (isPaired[index])
+			{
+				continue;
+			}
+
+			candidate.Clear();
+			if (!(await candidate.Compare(path + "[" + index + "]", actualElements[index], expectedElement, options,
+				    converter)).HasError)
 			{
 				return index;
 			}
@@ -221,9 +267,14 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != valueKind)
 		{
-			result.AddError(path, expectedElement.ValueKind is JsonValueKind.False or JsonValueKind.True
-				? $"was {Format(actualElement)} instead of {Format(expectedElement)}"
-				: $"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+			if (expectedElement.ValueKind is JsonValueKind.False or JsonValueKind.True)
+			{
+				result.AddValueDifference(path, actualElement, expectedElement);
+			}
+			else
+			{
+				result.AddKindDifference(path, actualElement, expectedElement, converter);
+			}
 		}
 
 		return result;
@@ -238,8 +289,7 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Null)
 		{
-			result.AddError(path,
-				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+			result.AddKindDifference(path, actualElement, expectedElement, converter);
 		}
 
 		return result;
@@ -255,14 +305,13 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Number)
 		{
-			result.AddError(path,
-				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+			result.AddKindDifference(path, actualElement, expectedElement, converter);
 			return result;
 		}
 
 		if (!AreEqualNumbers(actualElement, expectedElement, tolerance))
 		{
-			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}{tolerance}");
+			result.AddValueDifference(path, actualElement, expectedElement, tolerance);
 		}
 
 		return result;
@@ -322,13 +371,17 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.Object)
 		{
-			result.AddError(path,
-				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+			result.AddKindDifference(path, actualElement, expectedElement, converter);
 			return result;
 		}
 
 		foreach (JsonProperty item in expectedElement.EnumerateObject())
 		{
+			if (result.IsDecided)
+			{
+				return result;
+			}
+
 			string name = item.Name;
 			string memberPath = path + "." + name;
 			if (result.IsIgnored(memberPath))
@@ -350,7 +403,7 @@ internal static class JsonElementValidator
 			await result.Compare(memberPath, property, item.Value, options, converter);
 		}
 
-		if (!options.IgnoreAdditionalProperties)
+		if (!options.IgnoreAdditionalProperties && !result.IsDecided)
 		{
 			result.AddUnexpectedProperties(path, actualElement, expectedElement, options);
 		}
@@ -395,14 +448,13 @@ internal static class JsonElementValidator
 	{
 		if (expectedElement.ValueKind != JsonValueKind.String)
 		{
-			result.AddError(path,
-				$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+			result.AddKindDifference(path, actualElement, expectedElement, converter);
 			return result;
 		}
 
 		if (!actualElement.ValueEquals(expectedElement.GetString()))
 		{
-			result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}");
+			result.AddValueDifference(path, actualElement, expectedElement);
 		}
 
 		return result;
@@ -432,6 +484,31 @@ internal static class JsonElementValidator
 		return includeType && jsonElement.ValueKind != JsonValueKind.Null
 			? $"{GetKindName(jsonElement.ValueKind)} {value}"
 			: value;
+	}
+
+	private static void AddKindDifference(this JsonComparisonResult result, string path, JsonElement actualElement,
+		JsonElement expectedElement, ExpectationJsonConverter? converter)
+	{
+		if (result.StopsAtFirstDifference)
+		{
+			result.AddUndescribedDifference();
+			return;
+		}
+
+		result.AddError(path,
+			$"was {Format(actualElement, true)} instead of {FormatExpected(expectedElement, converter)}");
+	}
+
+	private static void AddValueDifference(this JsonComparisonResult result, string path, JsonElement actualElement,
+		JsonElement expectedElement, JsonNumberTolerance? tolerance = null)
+	{
+		if (result.StopsAtFirstDifference)
+		{
+			result.AddUndescribedDifference();
+			return;
+		}
+
+		result.AddError(path, $"was {Format(actualElement)} instead of {Format(expectedElement)}{tolerance}");
 	}
 
 	private static string FormatExpected(JsonElement expectedElement, ExpectationJsonConverter? converter)
@@ -499,25 +576,50 @@ internal static class JsonElementValidator
 
 		private readonly MembersToIgnoreTracker _membersToIgnore;
 
+		private bool _hasUndescribedDifference;
+
 		public JsonComparisonResult(MemberToIgnore[] membersToIgnore)
-			: this(new MembersToIgnoreTracker(membersToIgnore))
+			: this(new MembersToIgnoreTracker(membersToIgnore), false)
 		{
 		}
 
-		private JsonComparisonResult(MembersToIgnoreTracker membersToIgnore)
+		private JsonComparisonResult(MembersToIgnoreTracker membersToIgnore, bool stopsAtFirstDifference)
 		{
 			_membersToIgnore = membersToIgnore;
+			StopsAtFirstDifference = stopsAtFirstDifference;
 		}
 
-		public bool HasError => _errors.Count > 0;
+		public bool HasError => _hasUndescribedDifference || _errors.Count > 0;
+
+		public bool HasMembersToIgnore => _membersToIgnore.HasMembersToIgnore;
+
+		/// <summary>
+		///     Whether only the existence of a difference matters, so that a difference is not described.
+		/// </summary>
+		public bool StopsAtFirstDifference { get; }
+
+		/// <summary>
+		///     Whether the outcome is known and the remaining values need not be compared.
+		/// </summary>
+		public bool IsDecided => StopsAtFirstDifference && HasError;
 
 		/// <summary>
 		///     Creates a separate result for a candidate of a pairing, which shares the tracking of the members to ignore.
 		/// </summary>
-		public JsonComparisonResult ForCandidate() => new(_membersToIgnore);
+		/// <remarks>
+		///     The candidate only needs to know whether it differs, so it stops at the first difference without describing
+		///     it, unless members are ignored, whose tracking has to see every path.
+		/// </remarks>
+		public JsonComparisonResult ForCandidate() => new(_membersToIgnore, !HasMembersToIgnore);
 
 		public bool IsIgnored(string memberPath)
 			=> _membersToIgnore.IsIgnored(memberPath);
+
+		/// <summary>
+		///     Records a difference of a comparison that only needs to know whether there is one.
+		/// </summary>
+		public void AddUndescribedDifference()
+			=> _hasUndescribedDifference = true;
 
 		/// <summary>
 		///     Returns each member to ignore by name that matched no compared path, with the path it most likely meant, or
@@ -525,6 +627,15 @@ internal static class JsonElementValidator
 		/// </summary>
 		public Dictionary<string, string?>? GetUnmatchedMembersToIgnore()
 			=> HasError ? _membersToIgnore.GetUnmatchedMembersToIgnore() : null;
+
+		/// <summary>
+		///     Removes the differences, so that the result can be reused for the next candidate of a pairing.
+		/// </summary>
+		public void Clear()
+		{
+			_errors.Clear();
+			_hasUndescribedDifference = false;
+		}
 
 		public void AddError(string memberPath, string error)
 			=> _errors.Add(new KeyValuePair<string, string>(memberPath, error));

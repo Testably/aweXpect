@@ -34,6 +34,8 @@ internal sealed class MembersToIgnoreTracker(MemberToIgnore[] membersToIgnore)
 	private readonly HashSet<string> _matchedNames =
 		membersToIgnore.Length == 0 ? Untracked : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+	public bool HasMembersToIgnore => membersToIgnore.Length > 0;
+
 	/// <summary>
 	///     Checks if the value at the <paramref name="memberPath" /> is ignored, and tracks the result.
 	/// </summary>
