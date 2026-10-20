@@ -23,6 +23,35 @@ public sealed partial class ThatEnum
 			}
 
 			[Test]
+			public async Task WhenSubjectHasOnlySomeOfTheExpectedFlags_ShouldFail()
+			{
+				MyColors subject = MyColors.Blue | MyColors.Green;
+				MyColors expected = MyColors.Blue | MyColors.Green | MyColors.Red;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("flags are only equal when all of them are set in both values");
+			}
+
+			[Test]
+			public async Task WhenSubjectHasTheSameFlags_ShouldSucceed()
+			{
+				MyColors subject = MyColors.Blue | MyColors.Green;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(MyColors.Green | MyColors.Blue);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			[Arguments(MyColors.Blue, MyColors.Green)]
 			[Arguments(MyColors.Green, MyColors.Blue)]
 			public async Task WhenSubjectIsDifferent_ShouldFail(MyColors subject, MyColors expected)

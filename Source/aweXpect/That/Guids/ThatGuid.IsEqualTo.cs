@@ -33,7 +33,7 @@ public static partial class ThatGuid
 		public ConstraintResult IsMetBy(Guid actual)
 		{
 			Actual = actual;
-			Outcome = actual.Equals(expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = expected.HasValue && actual.Equals(expected.Value) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

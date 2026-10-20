@@ -9,6 +9,22 @@ public sealed partial class ThatGuid
 			public sealed class Tests
 			{
 				[Test]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					Guid? subject = FixedGuid();
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(null);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to <null>,
+						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					Guid? subject = null;
