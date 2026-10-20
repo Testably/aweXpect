@@ -53,4 +53,65 @@ public sealed class UriExtensionsTests
 
 		await That(result).IsNull();
 	}
+
+	[Test]
+	[Arguments("https://awexpect.com/?name", true)]
+	[Arguments("https://awexpect.com/?other=1&na%6De=", true)]
+	[Arguments("https://awexpect.com/?Name=1", false)]
+	[Arguments("https://awexpect.com/?other=name#name", false)]
+	public async Task HasQueryParameter_ShouldReturnIfTheNameExists(string uri, bool expected)
+	{
+		bool result = new Uri(uri).HasQueryParameter("name");
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	public async Task HasQueryParameter_WhenNameIsWhitespace_ShouldReturnFalse()
+	{
+		Uri uri = new("https://awexpect.com/?%20=1");
+
+		bool result = uri.HasQueryParameter(" ");
+
+		await That(result).IsFalse();
+	}
+
+	[Test]
+	[Arguments("https://awexpect.com/?name", "")]
+	[Arguments("https://awexpect.com/?name=", "")]
+	[Arguments("https://awexpect.com/?other=2&name=a+b", "a b")]
+	[Arguments("https://awexpect.com/?na%6De=a%26b&other=name", "a&b")]
+	[Arguments("https://awexpect.com/?name=1#name=2", "1")]
+	public async Task TryGetSingleQueryParameterValue_WhenNameExistsOnce_ShouldReturnTheDecodedValue(string uri,
+		string expected)
+	{
+		bool result = new Uri(uri).TryGetSingleQueryParameterValue("name", out string? value);
+
+		await That(result).IsTrue();
+		await That(value).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments("https://awexpect.com/?other=1")]
+	[Arguments("https://awexpect.com/?Name=1")]
+	[Arguments("https://awexpect.com/?name=1&name=1")]
+	[Arguments("https://awexpect.com/?name=1&na%6De")]
+	public async Task TryGetSingleQueryParameterValue_WhenNameIsMissingOrRepeated_ShouldReturnFalse(string uri)
+	{
+		bool result = new Uri(uri).TryGetSingleQueryParameterValue("name", out string? value);
+
+		await That(result).IsFalse();
+		await That(value).IsNull();
+	}
+
+	[Test]
+	public async Task TryGetSingleQueryParameterValue_WhenNameIsWhitespace_ShouldReturnFalse()
+	{
+		Uri uri = new("https://awexpect.com/?%20=1");
+
+		bool result = uri.TryGetSingleQueryParameterValue(" ", out string? value);
+
+		await That(result).IsFalse();
+		await That(value).IsNull();
+	}
 }

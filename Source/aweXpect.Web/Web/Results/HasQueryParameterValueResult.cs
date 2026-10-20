@@ -122,25 +122,28 @@ public class HasQueryParameterValueResult
 		: ConstraintResult.WithNotNullValue<Uri?>(it, grammars),
 			IAsyncConstraint<Uri?>
 	{
+		private string? _value;
 		private string[]? _values;
 
 		public async ValueTask<ConstraintResult> IsMetBy(Uri? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_value = null;
+			_values = null;
 			if (actual?.IsAbsoluteUri != true)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			_values = actual.GetQueryParameterValues(name);
-			if (_values is null || _values.Length != 1)
+			if (!actual.TryGetSingleQueryParameterValue(name, out _value))
 			{
+				_values = actual.GetQueryParameterValues(name);
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			Outcome = await options.AreConsideredEqual(_values[0], expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -175,7 +178,7 @@ public class HasQueryParameterValueResult
 
 		private void AppendValueFailure(StringBuilder stringBuilder)
 			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "query parameter value", Grammars,
-				_values?[0], expected));
+				_value, expected));
 	}
 
 	private sealed class WithValuesConstraint(
