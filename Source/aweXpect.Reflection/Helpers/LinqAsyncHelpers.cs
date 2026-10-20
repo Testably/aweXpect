@@ -157,6 +157,44 @@ internal static class LinqAsyncHelpers
 #endif
 
 #if NET8_0_OR_GREATER
+	public static async IAsyncEnumerable<TResult> SelectManyNotNull<TSource, TResult>(
+		this IEnumerable<TSource?> source,
+		Func<TSource, IEnumerable<TResult>> selector)
+	{
+		foreach (TSource? item in source)
+		{
+			if (item is null)
+			{
+				continue;
+			}
+
+			foreach (TResult result in selector(item))
+			{
+				yield return result;
+			}
+		}
+	}
+#else
+	public static IEnumerable<TResult> SelectManyNotNull<TSource, TResult>(
+		this IEnumerable<TSource?> source,
+		Func<TSource, IEnumerable<TResult>> selector)
+	{
+		foreach (TSource? item in source)
+		{
+			if (item is null)
+			{
+				continue;
+			}
+
+			foreach (TResult result in selector(item))
+			{
+				yield return result;
+			}
+		}
+	}
+#endif
+
+#if NET8_0_OR_GREATER
 	public static async IAsyncEnumerable<TSource> Distinct<TSource>(
 		this IAsyncEnumerable<TSource> source)
 	{

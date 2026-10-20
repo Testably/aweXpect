@@ -537,6 +537,21 @@ public sealed partial class Filtered
 				await That(assemblies).IsEmpty();
 				await That(description).IsEqualTo("in my assembly");
 			}
+
+			[Test]
+			public async Task Types_ShouldSkipNullAssembliesAndApplyTheFiltersOfTheAssemblies()
+			{
+				Assembly assembly = typeof(Tests).Assembly;
+				Assembly otherAssembly = typeof(In).Assembly;
+				Reflection.Collections.Filtered.Assemblies assemblies =
+					new([null, assembly, otherAssembly,], "in my assemblies");
+
+				Reflection.Collections.Filtered.Types allTypes = assemblies.Types();
+				Reflection.Collections.Filtered.Types filteredTypes = assemblies.Which(a => a == assembly).Types();
+
+				await That(allTypes).Contains(typeof(Tests)).And.Contains(typeof(In));
+				await That(filteredTypes).Contains(typeof(Tests)).And.DoesNotContain(typeof(In));
+			}
 		}
 	}
 }

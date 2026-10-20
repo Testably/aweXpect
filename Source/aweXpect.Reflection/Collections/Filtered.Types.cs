@@ -45,7 +45,9 @@ public static partial class Filtered
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
 		internal Types(Assemblies assemblies, string description) : base(
-			assemblies.SelectMany(GetLoadableTypes))
+			assemblies.UnfilteredSource is { } source
+				? source.SelectManyNotNull(GetLoadableTypes)
+				: assemblies.SelectMany(GetLoadableTypes))
 		{
 			_assemblies = assemblies;
 			_description = description;
