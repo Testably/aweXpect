@@ -13,6 +13,7 @@ using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
+using aweXpect.Results;
 
 namespace aweXpect.Core;
 
@@ -23,11 +24,7 @@ public abstract class ExpectationBuilder
 {
 	private protected const string DefaultCurrentSubject = "it";
 
-	private CancellationToken _cancellationToken;
-
 	private EvaluationContext.EvaluationContext? _evaluationContext;
-	private bool _hasCancellationToken;
-	private bool _hasTimeout;
 
 	/// <summary>
 	///     The current name for the subject (defaults to <see cref="DefaultCurrentSubject" />).
@@ -37,16 +34,19 @@ public abstract class ExpectationBuilder
 	private Node _node = new ExpectationNode();
 
 	/// <summary>
-	///     The other exceptions of the faulted subject in the current evaluation.
+	///     The settings that only few expectations use, or <see langword="null" /> when none was set.
 	/// </summary>
-	private Exception[]? _otherExceptions;
+	/// <remarks>
+	///     Every expectation allocates a builder, so keeping these settings in an object of their own, which is only
+	///     allocated when one is set, keeps every expectation 32 bytes smaller.
+	/// </remarks>
+	private RareSettings? _rareSettings;
 
 	/// <summary>
 	///     The which node that still waits for the expectations on its member, or <see langword="null" />.
 	/// </summary>
 	/// <remarks>
-	///     Two fields instead of a nullable tuple, and the cancellation token and the timeout as values with a flag
-	///     instead of nullable values, keep every expectation 24 bytes smaller.
+	///     Two fields instead of a nullable tuple keep every expectation smaller.
 	/// </remarks>
 	private Node? _pendingWhichNode;
 
@@ -66,10 +66,6 @@ public abstract class ExpectationBuilder
 	private SubjectContextScopes? _subjectContexts;
 
 	private readonly string _subjectExpression;
-
-	private TimeSpan _timeout;
-
-	private ITimeSystem? _timeSystem;
 
 	/// <summary>
 	///     Initializes the <see cref="ExpectationBuilder" /> with the <paramref name="subjectExpression" />
@@ -104,7 +100,7 @@ public abstract class ExpectationBuilder
 	///     When not set, the expectation will still use the cancellation token from
 	///     <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />.
 	/// </remarks>
-	public CancellationToken? CancellationToken => _hasCancellationToken ? _cancellationToken : null;
+	public CancellationToken? CancellationToken => _rareSettings?.CancellationToken;
 
 	/// <summary>
 	///     The explicit timeout to be applied to the expectation.
@@ -114,7 +110,7 @@ public abstract class ExpectationBuilder
 	///     limited by the timeout from <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />, if
 	///     it is tighter.
 	/// </remarks>
-	public TimeSpan? Timeout => _hasTimeout ? _timeout : null;
+	public TimeSpan? Timeout => _rareSettings?.Timeout;
 
 	/// <summary>
 	///     The expected grammatical form of the expectation text.
@@ -573,9 +569,8 @@ public abstract class ExpectationBuilder
 	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
 	public void WithCancellation(CancellationToken cancellationToken)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_hasCancellationToken, nameof(WithCancellation));
-		_cancellationToken = cancellationToken;
-		_hasCancellationToken = true;
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(CancellationToken is not null, nameof(WithCancellation));
+		GetRareSettings().CancellationToken = cancellationToken;
 	}
 
 	/// <summary>
@@ -589,9 +584,10 @@ public abstract class ExpectationBuilder
 	public void WithTimeout(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		_timeout = TimerHelpers.Tighter(Timeout, timeout) ?? timeout;
-		_hasTimeout = true;
+		GetRareSettings().Timeout = TimerHelpers.Tighter(Timeout, timeout) ?? timeout;
 	}
+
+	private RareSettings GetRareSettings() => _rareSettings ??= new RareSettings();
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -864,14 +860,20 @@ public abstract class ExpectationBuilder
 	{
 		if (otherExceptions is not null)
 		{
-			_otherExceptions = otherExceptions;
+			GetRareSettings().OtherExceptions = otherExceptions;
 		}
 	}
 
 	/// <summary>
 	///     Forgets the other exceptions of a previous attempt to meet the expectations.
 	/// </summary>
-	internal void ResetOtherExceptions() => _otherExceptions = null;
+	internal void ResetOtherExceptions()
+	{
+		if (_rareSettings is not null)
+		{
+			_rareSettings.OtherExceptions = null;
+		}
+	}
 
 	/// <summary>
 	///     Creates the exception message from the <paramref name="failure" />.
@@ -1066,7 +1068,7 @@ public abstract class ExpectationBuilder
 	{
 		try
 		{
-			ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
+			ITimeSystem timeSystem = _rareSettings?.TimeSystem ?? RealTimeSystem.Instance;
 			context.TimeSystem = timeSystem;
 			(TestCancellation? testCancellation, ITraceWriter? traceWriter) =
 				Customize.aweXpect.GetEvaluationSettings();
@@ -1138,7 +1140,9 @@ public abstract class ExpectationBuilder
 			await ResolvePendingReasons();
 		}
 
-		return _otherExceptions is null ? result : new ConstraintResult.WithOtherExceptions(result, _otherExceptions);
+		return _rareSettings?.OtherExceptions is { } otherExceptions
+			? new ConstraintResult.WithOtherExceptions(result, otherExceptions)
+			: result;
 	}
 
 	/// <summary>
@@ -1200,9 +1204,25 @@ public abstract class ExpectationBuilder
 	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
 	internal void UseTimeSystem(ITimeSystem timeSystem)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_timeSystem is not null,
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_rareSettings?.TimeSystem is not null,
 			nameof(TimeSystemExtensions.WithTimeSystem));
-		_timeSystem = timeSystem;
+		GetRareSettings().TimeSystem = timeSystem;
+	}
+
+	/// <summary>
+	///     The settings of the expectation that only few expectations use.
+	/// </summary>
+	private sealed class RareSettings
+	{
+		public CancellationToken? CancellationToken { get; set; }
+
+		/// <summary>
+		///     The other exceptions of the faulted subject in the current evaluation.
+		/// </summary>
+		public Exception[]? OtherExceptions { get; set; }
+
+		public TimeSpan? Timeout { get; set; }
+		public ITimeSystem? TimeSystem { get; set; }
 	}
 
 	/// <summary>
@@ -1299,12 +1319,20 @@ public abstract class ExpectationBuilder
 	}
 }
 
-internal class ExpectationBuilder<TValue> : ExpectationBuilder
+/// <remarks>
+///     The builder is also the subject of the expectations, so that specifying them allocates no further object.
+/// </remarks>
+internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TValue>, IThatSubject<TValue>
 {
 	/// <summary>
-	///     The subject.
+	///     The source of the subject, or <see langword="null" /> for a subject that is the <see cref="_value" /> itself.
 	/// </summary>
-	private readonly IValueSource<TValue> _subjectSource;
+	private readonly IValueSource<TValue>? _subjectSource;
+
+	/// <summary>
+	///     The subject, when it is no <see cref="_subjectSource" />.
+	/// </summary>
+	private readonly TValue _value = default!;
 
 	internal ExpectationBuilder(
 		IValueSource<TValue> subjectSource,
@@ -1313,6 +1341,33 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	{
 		_subjectSource = subjectSource;
 	}
+
+	internal ExpectationBuilder(
+		TValue value,
+		string subjectExpression)
+		: base(subjectExpression)
+	{
+		_value = value;
+	}
+
+	/// <inheritdoc />
+	ExpectationBuilder IExpectThat<TValue>.ExpectationBuilder => this;
+
+	/// <inheritdoc />
+	AndOrWhoseResult<TType, IThatSubject<TValue>> IThatSubject<TValue>.Is<TType>()
+		=> new ThatSubject<TValue>(this).Is<TType>();
+
+	/// <inheritdoc />
+	AndOrResult<TValue, IThatSubject<TValue>> IThatSubject<TValue>.IsNot<TType>()
+		=> new ThatSubject<TValue>(this).IsNot<TType>();
+
+	/// <inheritdoc />
+	AndOrWhoseResult<TType, IThatSubject<TValue>> IThatSubject<TValue>.IsExactly<TType>()
+		=> new ThatSubject<TValue>(this).IsExactly<TType>();
+
+	/// <inheritdoc />
+	AndOrResult<TValue, IThatSubject<TValue>> IThatSubject<TValue>.IsNotExactly<TType>()
+		=> new ThatSubject<TValue>(this).IsNotExactly<TType>();
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc />
@@ -1340,12 +1395,11 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		if (timeout is null && !cancellationToken.CanBeCanceled &&
-		    _subjectSource is ValueSource<TValue> { Value: not DelegateValue, } valueSource &&
-		    !IsTracing)
+		if (timeout is null && !cancellationToken.CanBeCanceled && _subjectSource is null &&
+		    _value is not DelegateValue && !IsTracing)
 		{
 			context.Cancellation = EvaluationCancellation.None;
-			return rootNode.IsMetBy(valueSource.Value, context, cancellationToken);
+			return rootNode.IsMetBy(_value, context, cancellationToken);
 		}
 
 		return IsMetAsync(rootNode, context, timeSystem, timeout, cancellationToken);
@@ -1362,21 +1416,24 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		context.Cancellation = cancellation;
 		CancellationToken token = cancellation.Token;
 
-		if (_subjectSource.IsNullTaskSubject)
+		if (_subjectSource is { IsNullTaskSubject: true, })
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
 				ExpectationTextEvaluationContext.For(context), token);
 			return NullSubjectResult.CreateForNullTaskSubject(expectation, default(TValue));
 		}
 
-		TValue data;
+		TValue data = _value;
 		try
 		{
-			data = await _subjectSource.GetValue(timeSystem, token);
+			if (_subjectSource is not null)
+			{
+				data = await _subjectSource.GetValue(timeSystem, token);
+			}
 		}
 		catch (Exception exception)
 		{
-			AddOtherExceptions(_subjectSource.GetOtherExceptions(exception));
+			AddOtherExceptions(_subjectSource!.GetOtherExceptions(exception));
 			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
 			if (IsTracing)
 			{

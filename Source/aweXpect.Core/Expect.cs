@@ -18,24 +18,21 @@ public static class Expect
 	/// </summary>
 	public static IThatSubject<T> That<T>(T subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new ThatSubject<T>(new ExpectationBuilder<T>(
-			new ValueSource<T>(subject), doNotPopulateThisValue));
+		=> new ExpectationBuilder<T>(subject, doNotPopulateThisValue);
 
 	/// <summary>
 	///     Specifies expectations for the current <paramref name="subject" />.
 	/// </summary>
 	public static IThatSubject<T[]?> That<T>(T[]? subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new ThatSubject<T[]?>(new ExpectationBuilder<T[]?>(
-			new ValueSource<T[]?>(subject), doNotPopulateThisValue));
+		=> new ExpectationBuilder<T[]?>(subject, doNotPopulateThisValue);
 
 	/// <summary>
 	///     Specifies expectations for the current asynchronous <paramref name="subject" />.
 	/// </summary>
 	public static IThatSubject<T> That<T>(Task<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new ThatSubject<T>(new ExpectationBuilder<T>(
-			new AsyncValueSource<T>(subject), doNotPopulateThisValue));
+		=> new ExpectationBuilder<T>(new AsyncValueSource<T>(subject), doNotPopulateThisValue);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -43,8 +40,7 @@ public static class Expect
 	/// </summary>
 	public static IThat<SpanWrapper<T>> That<T>(ReadOnlySpan<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new ThatSubject<SpanWrapper<T>>(new ExpectationBuilder<SpanWrapper<T>>(
-			new ValueSource<SpanWrapper<T>>(new SpanWrapper<T>(subject)), doNotPopulateThisValue));
+		=> new ExpectationBuilder<SpanWrapper<T>>(new SpanWrapper<T>(subject), doNotPopulateThisValue);
 #endif
 
 #if NET8_0_OR_GREATER
@@ -53,8 +49,7 @@ public static class Expect
 	/// </summary>
 	public static IThat<SpanWrapper<T>> That<T>(Span<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new ThatSubject<SpanWrapper<T>>(new ExpectationBuilder<SpanWrapper<T>>(
-			new ValueSource<SpanWrapper<T>>(new SpanWrapper<T>(subject)), doNotPopulateThisValue));
+		=> new ExpectationBuilder<SpanWrapper<T>>(new SpanWrapper<T>(subject), doNotPopulateThisValue);
 #endif
 
 	/// <summary>
@@ -62,8 +57,7 @@ public static class Expect
 	/// </summary>
 	public static IThatSubject<T> That<T>(ValueTask<T> subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new ThatSubject<T>(new ExpectationBuilder<T>(
-			new AsyncValueSource<T>(subject.AsTask()), doNotPopulateThisValue));
+		=> new ExpectationBuilder<T>(new AsyncValueSource<T>(subject.AsTask()), doNotPopulateThisValue);
 
 	/// <summary>
 	///     Specifies expectations for the current <see cref="Action" /> <paramref name="delegate" />.
@@ -239,8 +233,7 @@ public static class Expect
 	/// </summary>
 	public static ThatBoolSubject That(bool subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
-		=> new(new ExpectationBuilder<bool>(
-			new ValueSource<bool>(subject), doNotPopulateThisValue));
+		=> new(new ExpectationBuilder<bool>(subject, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Verifies that all provided <paramref name="expectations" /> are met.
