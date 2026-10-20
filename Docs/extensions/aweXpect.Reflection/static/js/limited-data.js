@@ -72,6 +72,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
@@ -86,7 +92,8 @@ window.BENCHMARK_DATA = {
       "39b404f7",
       "b5dab01f",
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -104,7 +111,8 @@ window.BENCHMARK_DATA = {
           1047.1705561319986,
           1127.244567326137,
           668.9395637512207,
-          1207.0783353169759
+          1207.0783353169759,
+          1232.9899127960205
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -116,6 +124,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          992,
           992,
           992,
           992,
@@ -153,7 +162,8 @@ window.BENCHMARK_DATA = {
           663.1246906427236,
           876.2382152557373,
           491.21615368525187,
-          878.7575756953313
+          878.7575756953313,
+          932.2978339513143
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -165,6 +175,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -262,6 +273,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
@@ -276,7 +293,8 @@ window.BENCHMARK_DATA = {
       "39b404f7",
       "b5dab01f",
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -294,7 +312,8 @@ window.BENCHMARK_DATA = {
           101.59738812446594,
           155.4909336566925,
           78.38583626065936,
-          155.72609308787756
+          155.72609308787756,
+          139.76076733271282
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -306,6 +325,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          384,
           384,
           384,
           384,
@@ -343,7 +363,8 @@ window.BENCHMARK_DATA = {
           161.5306053320567,
           206.24218384424844,
           122.38917222817739,
-          198.24876863161722
+          198.24876863161722,
+          207.969647026062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -355,6 +376,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -452,6 +474,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
@@ -466,7 +494,8 @@ window.BENCHMARK_DATA = {
       "39b404f7",
       "b5dab01f",
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -484,7 +513,8 @@ window.BENCHMARK_DATA = {
           1491.5290897914342,
           1893.081797327314,
           1137.2635820706685,
-          2196.8258761088055
+          2196.8258761088055,
+          2267.1600270589192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -507,6 +537,7 @@ window.BENCHMARK_DATA = {
           2376,
           2376,
           2560,
+          2464,
           2464
         ],
         "borderColor": "#63A2AC",
@@ -533,7 +564,8 @@ window.BENCHMARK_DATA = {
           870.7888729912894,
           1185.8571901957193,
           769.5205779393514,
-          1524.5135557810465
+          1524.5135557810465,
+          1547.005021794637
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -555,6 +587,7 @@ window.BENCHMARK_DATA = {
           1760,
           1760,
           1760,
+          1985,
           1985,
           1985
         ],
@@ -582,11 +615,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -594,7 +634,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           9746.355307442802,
-          5139.496166483561
+          5139.496166483561,
+          5132.073151221643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -607,7 +648,8 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           7486,
-          4923
+          4923,
+          4867
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -623,7 +665,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           2051.886098044259,
-          3715.010679098276
+          3715.010679098276,
+          3904.993136479304
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -635,6 +678,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4011,
           4011,
           4011
         ],
@@ -662,11 +706,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -674,7 +725,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           2311.872230529785,
-          2241.7311589167666
+          2241.7311589167666,
+          2371.3942461649576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -686,6 +738,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          3248,
           3248,
           3248
         ],
@@ -703,7 +756,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           1217.6808053334555,
-          2266.10031636556
+          2266.10031636556,
+          2377.4020746866863
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -715,6 +769,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288
         ],
@@ -742,11 +797,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
         "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
+      },
+      {
+        "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
+        "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
       }
     ],
     "labels": [
       "40ae946f",
-      "c2e176c2"
+      "c2e176c2",
+      "f8bfa2a9"
     ],
     "datasets": [
       {
@@ -754,7 +816,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           2030.3434870583671,
-          3726.6908449808757
+          3726.6908449808757,
+          3955.1790445963543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -767,6 +830,7 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           4153,
+          4057,
           4057
         ],
         "borderColor": "#63A2AC",
@@ -783,7 +847,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           157771.4544959435,
-          280279.67119140626
+          280279.67119140626,
+          279093.7619280134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -796,6 +861,7 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           17618,
+          17620,
           17620
         ],
         "borderColor": "#FF671B",
