@@ -23,7 +23,7 @@ public static class SynchronousBoundary
 	{
 		operation.ThrowIfNull();
 		ValueTask<TResult> result = CallerSchedulesContinuations() ? StartDetached(operation) : operation();
-		return result.IsCompletedSuccessfully ? result.Result : result.AsTask().GetAwaiter().GetResult();
+		return result.AsTask().GetAwaiter().GetResult();
 	}
 
 	internal static bool CallerSchedulesContinuations()
