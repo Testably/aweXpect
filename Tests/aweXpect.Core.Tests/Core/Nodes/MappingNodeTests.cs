@@ -119,6 +119,24 @@ public class MappingNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenMemberExpectationsCompleteAsynchronously_ShouldUseInnerConstraintWithOuterValue()
+	{
+		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node.AddConstraint(new DummyAsyncConstraint<int>(async v =>
+		{
+			await Task.Yield();
+			return new DummyConstraintResult<int>(Outcome.Success, v, $"yeah: {v}");
+		}));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo("yeah: 6");
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(result.TryGetValue(out string? value)).IsTrue();
+		await That(value).IsEqualTo("foobar");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenMemberThrows_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
