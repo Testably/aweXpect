@@ -43,9 +43,9 @@ public static partial class ValueFormatters
 		Exception? value,
 		FormattingOptions? options = null)
 	{
-		StringBuilder stringBuilder = new();
+		StringBuilder stringBuilder = RentStringBuilder();
 		formatter.Format(stringBuilder, value, options);
-		return stringBuilder.ToString();
+		return ToStringAndReturn(stringBuilder);
 	}
 
 	/// <summary>
