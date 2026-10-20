@@ -18,12 +18,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
         "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
+      },
+      {
+        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
+        "message": "refactor: speed up matching JSON against an expected object (#1891)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
-      "391462ba"
+      "391462ba",
+      "78b13d35"
     ],
     "datasets": [
       {
@@ -32,7 +39,8 @@ window.BENCHMARK_DATA = {
         "data": [
           725.2527442932129,
           740.71807568868,
-          1173.8407468795776
+          1173.8407468795776,
+          1204.02774365743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44,6 +52,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          992,
           992,
           992,
           992
@@ -63,7 +72,8 @@ window.BENCHMARK_DATA = {
         "data": [
           511.2527196747916,
           621.1502604484558,
-          924.3166027069092
+          924.3166027069092,
+          959.6624974470872
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -75,6 +85,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248
@@ -109,12 +120,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
         "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
+      },
+      {
+        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
+        "message": "refactor: speed up matching JSON against an expected object (#1891)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
-      "391462ba"
+      "391462ba",
+      "78b13d35"
     ],
     "datasets": [
       {
@@ -123,7 +141,8 @@ window.BENCHMARK_DATA = {
         "data": [
           74.25871433661534,
           111.08356503077916,
-          151.24119797774725
+          151.24119797774725,
+          156.74714631693703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -135,6 +154,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          384,
           384,
           384,
           384
@@ -154,7 +174,8 @@ window.BENCHMARK_DATA = {
         "data": [
           124.19380749974933,
           235.07810057004292,
-          245.9582951227824
+          245.9582951227824,
+          255.5991012573242
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -166,6 +187,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032
@@ -200,12 +222,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
         "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
+      },
+      {
+        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
+        "message": "refactor: speed up matching JSON against an expected object (#1891)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
-      "391462ba"
+      "391462ba",
+      "78b13d35"
     ],
     "datasets": [
       {
@@ -214,7 +243,8 @@ window.BENCHMARK_DATA = {
         "data": [
           8639.393259684244,
           20809.158352661132,
-          20136.952707926434
+          20136.952707926434,
+          20580.747135416666
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -228,7 +258,8 @@ window.BENCHMARK_DATA = {
         "data": [
           6768,
           6770,
-          6793
+          6793,
+          6783
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -245,7 +276,8 @@ window.BENCHMARK_DATA = {
         "data": [
           654.906969944636,
           919.966920705942,
-          1323.509884561811
+          1323.509884561811,
+          1246.4895590373449
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -257,6 +289,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1760,
           1760,
           1760,
           1760
