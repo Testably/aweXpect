@@ -6,17 +6,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          725.2527442932129
+          725.2527442932129,
+          740.71807568868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28,6 +36,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          992,
           992
         ],
         "borderColor": "#63A2AC",
@@ -43,7 +52,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          511.2527196747916
+          511.2527196747916,
+          621.1502604484558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55,6 +65,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248
         ],
         "borderColor": "#FF671B",
@@ -75,17 +86,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          74.25871433661534
+          74.25871433661534,
+          111.08356503077916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -97,6 +116,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          384,
           384
         ],
         "borderColor": "#63A2AC",
@@ -112,7 +132,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          124.19380749974933
+          124.19380749974933,
+          235.07810057004292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -124,6 +145,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032
         ],
         "borderColor": "#FF671B",
@@ -144,17 +166,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8639.393259684244
+          8639.393259684244,
+          20809.158352661132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -166,7 +196,8 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          6768
+          6768,
+          6770
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -181,7 +212,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          654.906969944636
+          654.906969944636,
+          919.966920705942
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -193,6 +225,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1760,
           1760
         ],
         "borderColor": "#FF671B",
