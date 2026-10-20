@@ -107,7 +107,6 @@ internal static class LinqAsyncHelpers
 	public static async IAsyncEnumerable<TSource> WhereNotNull<TSource>(
 		this IEnumerable<TSource?> source)
 	{
-		await Task.Yield();
 		foreach (TSource? item in source)
 		{
 			if (item is not null)

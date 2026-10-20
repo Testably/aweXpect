@@ -71,7 +71,17 @@ public abstract class Filtered<T, TFiltered>
 	{
 		await foreach (T item in _source.WithCancellation(cancellationToken))
 		{
-			if (await Filters.AllAsync(filter => filter.Applies(item)))
+			bool applies = true;
+			foreach (IFilter<T> filter in Filters)
+			{
+				if (!await filter.Applies(item))
+				{
+					applies = false;
+					break;
+				}
+			}
+
+			if (applies)
 			{
 				yield return item;
 			}
