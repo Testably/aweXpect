@@ -22,9 +22,17 @@ namespace aweXpect.Json;
 ///     with the <paramref name="context" /> and the <paramref name="cancellationToken" />.
 /// </summary>
 internal class ExpectationJsonConverter(IEvaluationContext context, CancellationToken cancellationToken)
-	: JsonConverter<Expectation>
 {
 	private const string Prefix = "Expectation:::";
+
+	/// <remarks>
+	///     The serializer caches its expensive metadata per set of equal options, which a converter instance per call
+	///     would defeat. So the converters in the options are shared and write into the converter of the serialization
+	///     that currently runs on this thread, as the serialization is synchronous.
+	/// </remarks>
+	[ThreadStatic] private static ExpectationJsonConverter? _current;
+
+	private static JsonSerializerOptions? _defaultOptions;
 
 	private readonly Dictionary<Guid, Expectation> _expectations = new();
 
@@ -53,8 +61,8 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 		if (serializerOptions?.TypeInfoResolver is not null)
 		{
 			JsonSerializerOptions resolverOptions = new(serializerOptions);
-			resolverOptions.Converters.Add(this);
-			resolverOptions.Converters.Add(new ObjectConverter(this));
+			resolverOptions.Converters.Add(ExpectationConverter.Instance);
+			resolverOptions.Converters.Add(ObjectConverter.Instance);
 			return ParseWithResolver(expected, documentOptions, resolverOptions);
 		}
 
@@ -63,20 +71,56 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 			throw Tracing.WriteException(ReflectionFallbackHelpers.SerializationNotSupported("The expected value"));
 		}
 
-#pragma warning disable CA1869
-		JsonSerializerOptions options = new(serializerOptions ?? JsonSerializerOptions.Default);
-#pragma warning restore CA1869
-		options.Converters.Add(this);
-		return JsonDocument.Parse(JsonSerializer.Serialize(expected, options), documentOptions);
+		JsonSerializerOptions options = serializerOptions is null
+			? GetDefaultReflectionOptions(JsonSerializerOptions.Default)
+			: CreateReflectionOptions(serializerOptions);
+		byte[] json;
+		ExpectationJsonConverter? previous = SetCurrent(this);
+		try
+		{
+			json = JsonSerializer.SerializeToUtf8Bytes(expected, options);
+		}
+		finally
+		{
+			SetCurrent(previous);
+		}
+
+		return JsonDocument.Parse(json, documentOptions);
+	}
+
+	private static JsonSerializerOptions GetDefaultReflectionOptions(JsonSerializerOptions defaultOptions)
+		=> _defaultOptions ??= CreateReflectionOptions(defaultOptions);
+
+	private static JsonSerializerOptions CreateReflectionOptions(JsonSerializerOptions serializerOptions)
+	{
+		JsonSerializerOptions options = new(serializerOptions);
+		options.Converters.Add(ExpectationConverter.Instance);
+		return options;
+	}
+
+	/// <summary>
+	///     Sets the <paramref name="converter" /> of the serialization on this thread and returns the previous one.
+	/// </summary>
+	private static ExpectationJsonConverter? SetCurrent(ExpectationJsonConverter? converter)
+	{
+		ExpectationJsonConverter? previous = _current;
+		_current = converter;
+		return previous;
 	}
 
 	private JsonDocument ParseWithResolver(object? expected, JsonDocumentOptions documentOptions,
 		JsonSerializerOptions options)
 	{
 		using MemoryStream stream = new();
-		using (Utf8JsonWriter writer = new(stream))
+		ExpectationJsonConverter? previous = SetCurrent(this);
+		try
 		{
+			using Utf8JsonWriter writer = new(stream);
 			WriteWithResolver(writer, expected, options);
+		}
+		finally
+		{
+			SetCurrent(previous);
 		}
 
 		return JsonDocument.Parse(new ReadOnlyMemory<byte>(stream.GetBuffer(), 0, (int)stream.Length),
@@ -254,23 +298,6 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 		return true;
 	}
 
-	public override bool CanConvert(Type typeToConvert)
-		=> typeof(Expectation).IsAssignableFrom(typeToConvert);
-
-	public override Expectation? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-	{
-		Guid guid = Guid.Parse(reader.GetString()!);
-		if (_expectations.TryGetValue(guid, out Expectation? expectation))
-		{
-			return expectation;
-		}
-
-		return default;
-	}
-
-	public override void Write(Utf8JsonWriter writer, Expectation value, JsonSerializerOptions options)
-		=> WriteExpectation(writer, value);
-
 	private void WriteExpectation(Utf8JsonWriter writer, Expectation value)
 	{
 		Guid guid = Guid.NewGuid();
@@ -307,7 +334,7 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 		if (element.ValueKind == JsonValueKind.String)
 		{
 			string? value = element.GetString();
-			if (value?.StartsWith(Prefix) == true &&
+			if (value?.StartsWith(Prefix, StringComparison.Ordinal) == true &&
 #if NET8_0_OR_GREATER
 			    Guid.TryParse(value.AsSpan(Prefix.Length), out Guid guid) &&
 #else
@@ -332,8 +359,10 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 	///     Writes the values of <see langword="object" /> members like the serializer, but finds the <c>It.Is…</c>
 	///     expectations among them, which a source-generated resolver cannot resolve.
 	/// </summary>
-	private sealed class ObjectConverter(ExpectationJsonConverter converter) : JsonConverter<object>
+	private sealed class ObjectConverter : JsonConverter<object>
 	{
+		public static readonly ObjectConverter Instance = new();
+
 		public override bool CanConvert(Type typeToConvert)
 			=> typeToConvert == typeof(object);
 
@@ -341,6 +370,32 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 			=> JsonElement.ParseValue(ref reader);
 
 		public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
-			=> converter.WriteWithResolver(writer, value, options);
+			=> _current!.WriteWithResolver(writer, value, options);
+	}
+
+	/// <summary>
+	///     Writes the <c>It.Is…</c> expectations as placeholders, which the comparison replaces with the expectation.
+	/// </summary>
+	private sealed class ExpectationConverter : JsonConverter<Expectation>
+	{
+		public static readonly ExpectationConverter Instance = new();
+
+		public override bool CanConvert(Type typeToConvert)
+			=> typeof(Expectation).IsAssignableFrom(typeToConvert);
+
+		public override Expectation? Read(ref Utf8JsonReader reader, Type typeToConvert,
+			JsonSerializerOptions options)
+		{
+			Guid guid = Guid.Parse(reader.GetString()!);
+			if (_current?._expectations.TryGetValue(guid, out Expectation? expectation) == true)
+			{
+				return expectation;
+			}
+
+			return default;
+		}
+
+		public override void Write(Utf8JsonWriter writer, Expectation value, JsonSerializerOptions options)
+			=> _current!.WriteExpectation(writer, value);
 	}
 }
