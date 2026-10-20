@@ -100,7 +100,7 @@ internal sealed class NamespaceDependencyOptions
 				continue;
 			}
 
-			if (@namespace.EndsWith(".", StringComparison.Ordinal))
+			if (@namespace.EndsWith('.'))
 			{
 				throw Tracing.WriteException(new ArgumentException(
 					"The namespaces must not end with a dot (sub-namespaces are matched automatically)."));

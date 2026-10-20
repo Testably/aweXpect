@@ -52,7 +52,7 @@ public static class MethodInfoExtensions
 
 		return declaringType
 			.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)
-			.Where(nestedType => nestedType.Name.StartsWith("<", StringComparison.Ordinal) &&
+			.Where(nestedType => nestedType.Name.StartsWith('<') &&
 			                     nestedType.IsDefined(typeof(ExtensionAttribute), false))
 			.Any(groupingType => groupingType
 				.GetMethods(BindingFlags.Public | BindingFlags.NonPublic |

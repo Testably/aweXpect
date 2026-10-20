@@ -162,6 +162,7 @@ public sealed class InTests
 		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
 	}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 	[Test]
 	public async Task Type_WithTypeParameter_ShouldIncludeSpecifiedType()
 	{
@@ -171,6 +172,7 @@ public sealed class InTests
 			.IsEqualTo(typeof(InTests));
 		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
 	}
+#pragma warning restore CA2263
 
 	[Test]
 	public async Task Types_WhenGetTypesThrowsReflectionTypeLoadException_ShouldUseTypesThatLoaded()

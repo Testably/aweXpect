@@ -23,6 +23,7 @@ public sealed partial class PropertyFilters
 			}
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class TypeTests
 		{
 			[Test]
@@ -39,6 +40,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 		}
+#pragma warning restore CA2263
 
 		public sealed class OrOfTypeGenericTests
 		{
@@ -46,7 +48,7 @@ public sealed partial class PropertyFilters
 			public async Task FirstCheckIsOfType_ShouldNotAllowDerivedTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfType(typeof(OtherDummy)).OrOfExactType<DummyBase>();
+					.Properties().OfType<OtherDummy>().OrOfExactType<DummyBase>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
@@ -75,6 +77,7 @@ public sealed partial class PropertyFilters
 			}
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class OrOfTypeTests
 		{
 			[Test]
@@ -111,6 +114,7 @@ public sealed partial class PropertyFilters
 					.AsPrefix();
 			}
 		}
+#pragma warning restore CA2263
 
 		private class TestClass
 		{

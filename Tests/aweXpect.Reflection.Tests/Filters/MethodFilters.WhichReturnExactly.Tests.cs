@@ -53,6 +53,7 @@ public sealed partial class MethodFilters
 			}
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class TypeTests
 		{
 			[Test]
@@ -85,6 +86,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 		}
+#pragma warning restore CA2263
 
 		public sealed class OrReturnExactlyGenericTests
 		{
@@ -136,6 +138,7 @@ public sealed partial class MethodFilters
 			}
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class OrReturnExactlyTests
 		{
 			[Test]
@@ -174,6 +177,7 @@ public sealed partial class MethodFilters
 					.AsPrefix();
 			}
 		}
+#pragma warning restore CA2263
 
 		public sealed class MixingWithWhichReturnTests
 		{

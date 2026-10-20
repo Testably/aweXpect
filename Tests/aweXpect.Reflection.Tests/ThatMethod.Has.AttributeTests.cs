@@ -98,9 +98,9 @@ public sealed partial class ThatMethod
 			private class TestClass
 			{
 				[Test(Value = "MethodValue")]
-				public void TestMethod() { }
+				public static void TestMethod() { }
 
-				public void NoAttributeMethod() { }
+				public static void NoAttributeMethod() { }
 			}
 			// ReSharper restore UnusedMember.Local
 		}
@@ -162,9 +162,9 @@ public sealed partial class ThatMethod
 			private class TestClass
 			{
 				[Test(Value = "MethodValue")]
-				public void TestMethod() { }
+				public static void TestMethod() { }
 
-				public void NoAttributeMethod() { }
+				public static void NoAttributeMethod() { }
 			}
 			// ReSharper restore UnusedMember.Local
 		}

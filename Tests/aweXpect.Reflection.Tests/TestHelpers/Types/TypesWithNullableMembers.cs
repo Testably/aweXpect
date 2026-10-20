@@ -124,7 +124,7 @@ public class DerivedClassWithPrivateNonNullableBaseEvent : BaseClassWithPrivateN
 // ReSharper disable ValueParameterNotUsed
 public class ClassWithCustomNullableEvent
 {
-	public event EventHandler? NullableCustomEvent
+	public static event EventHandler? NullableCustomEvent
 	{
 		add { }
 		remove { }
@@ -133,7 +133,7 @@ public class ClassWithCustomNullableEvent
 
 public class ClassWithCustomNonNullableEvent
 {
-	public event EventHandler NonNullableCustomEvent
+	public static event EventHandler NonNullableCustomEvent
 	{
 		add { }
 		remove { }

@@ -197,12 +197,12 @@ public sealed partial class ThatMethods
 			private class TestClass
 			{
 				[Test(Value = "Method1Value")]
-				public void TestMethod1() { }
+				public static void TestMethod1() { }
 
 				[Test(Value = "Method2Value")]
-				public void TestMethod2() { }
+				public static void TestMethod2() { }
 
-				public void NoAttributeMethod() { }
+				public static void NoAttributeMethod() { }
 			}
 			// ReSharper restore UnusedMember.Local
 		}
@@ -362,16 +362,16 @@ public sealed partial class ThatMethods
 				private class TestClass
 				{
 					[Test(Value = "Method1Value")]
-					public void TestMethod1() { }
+					public static void TestMethod1() { }
 
 					[Bar(Name = "bar")]
-					public void BarMethod() { }
+					public static void BarMethod() { }
 
 					[Test(Value = "BothValue")]
 					[Bar(Name = "both")]
-					public void BothMethod() { }
+					public static void BothMethod() { }
 
-					public void NoAttributeMethod() { }
+					public static void NoAttributeMethod() { }
 				}
 				// ReSharper restore UnusedMember.Local
 			}
@@ -449,9 +449,9 @@ public sealed partial class ThatMethods
 			private class TestClass
 			{
 				[Test(Value = "Method1Value")]
-				public void TestMethod1() { }
+				public static void TestMethod1() { }
 
-				public void NoAttributeMethod() { }
+				public static void NoAttributeMethod() { }
 			}
 			// ReSharper restore UnusedMember.Local
 		}

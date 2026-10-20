@@ -354,7 +354,7 @@ internal static class TypeHelpers
 	///     <see cref="ExtensionAttribute" /> and have an unspeakable name (which a source identifier can never have).
 	/// </remarks>
 	internal static bool IsExtensionGroupingType(this Type type)
-		=> type.Name.StartsWith("<", StringComparison.Ordinal) &&
+		=> type.Name.StartsWith('<') &&
 		   type.IsDefined(typeof(ExtensionAttribute), false);
 
 	/// <summary>

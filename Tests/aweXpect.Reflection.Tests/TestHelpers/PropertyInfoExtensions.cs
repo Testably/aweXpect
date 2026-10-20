@@ -18,7 +18,7 @@ public static class PropertyInfoExtensions
 	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> to check.</param>
 	public static bool IsReallyExtensionProperty(this PropertyInfo? propertyInfo)
 		=> propertyInfo?.DeclaringType is { } declaringType &&
-		   declaringType.Name.StartsWith("<", StringComparison.Ordinal) &&
+		   declaringType.Name.StartsWith('<') &&
 		   declaringType.IsDefined(typeof(ExtensionAttribute), false);
 
 #if NET10_0_OR_GREATER
@@ -28,7 +28,7 @@ public static class PropertyInfoExtensions
 	/// </summary>
 	public static PropertyInfo GetExtensionProperty(this Type owner, string name)
 		=> owner.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)
-			.Where(t => t.Name.StartsWith("<", StringComparison.Ordinal) &&
+			.Where(t => t.Name.StartsWith('<') &&
 			            t.IsDefined(typeof(ExtensionAttribute), false))
 			.SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic |
 			                                 BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly))

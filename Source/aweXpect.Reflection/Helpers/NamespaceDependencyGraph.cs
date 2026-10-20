@@ -48,14 +48,7 @@ internal sealed class NamespaceDependencyGraph
 	/// </summary>
 	public static NamespaceDependencyGraph Build(IEnumerable<Type?> types, string? sliceRoot, bool excludeSubNamespaces)
 	{
-		List<Type> nodes = [];
-		foreach (Type? type in types)
-		{
-			if (type is not null)
-			{
-				nodes.Add(type);
-			}
-		}
+		List<Type> nodes = [..types.OfType<Type>(),];
 
 		Func<string?, string> nodeKey = CreateNodeKeySelector(nodes, sliceRoot, excludeSubNamespaces);
 		return new NamespaceDependencyGraph(DetectCycles(BuildAdjacency(nodes, nodeKey)));

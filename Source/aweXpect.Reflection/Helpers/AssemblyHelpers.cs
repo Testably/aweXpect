@@ -108,7 +108,7 @@ internal static class AssemblyHelpers
 		   excludedPrefixes.Any(prefix
 			   => prefix.Length > 0 &&
 			      assemblyName.StartsWith(prefix, StringComparison.Ordinal) &&
-			      (prefix.EndsWith(".", StringComparison.Ordinal) ||
+			      (prefix.EndsWith('.') ||
 			       assemblyName.Length == prefix.Length ||
 			       assemblyName[prefix.Length] == '.'));
 
@@ -187,7 +187,11 @@ internal static class AssemblyHelpers
 		{
 			string trimmed = part.Trim();
 			if (trimmed.StartsWith(versionPrefix, StringComparison.OrdinalIgnoreCase) &&
+#if NETSTANDARD2_0
 			    Version.TryParse(trimmed.Substring(versionPrefix.Length), out Version? parsed))
+#else
+			    Version.TryParse(trimmed.AsSpan(versionPrefix.Length), out Version? parsed))
+#endif
 			{
 				version = parsed;
 			}

@@ -23,6 +23,7 @@ public sealed partial class FieldFilters
 			}
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class TypeTests
 		{
 			[Test]
@@ -39,6 +40,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 		}
+#pragma warning restore CA2263
 
 		public sealed class OrOfTypeGenericTests
 		{
@@ -46,7 +48,7 @@ public sealed partial class FieldFilters
 			public async Task FirstCheckIsOfType_ShouldNotAllowDerivedTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfType(typeof(OtherDummy)).OrOfExactType<DummyBase>();
+					.Fields().OfType<OtherDummy>().OrOfExactType<DummyBase>();
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
@@ -75,6 +77,7 @@ public sealed partial class FieldFilters
 			}
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class OrOfTypeTests
 		{
 			[Test]
@@ -111,6 +114,7 @@ public sealed partial class FieldFilters
 					.AsPrefix();
 			}
 		}
+#pragma warning restore CA2263
 
 		private class TestClass
 		{
