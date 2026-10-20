@@ -191,6 +191,46 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task AddSubjectContexts_ForAMember_WhenNegated_ShouldLabelTheContextWithTheMember()
+	{
+		Pair subject = new(1, 2);
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it
+				=> it.Whose(x => x.Second, second => second.WithSubjectContext().IsEqualTo(2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Second is not equal to 2,
+			             but Second was 2
+
+			             Subject (Second):
+			             2
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_ForAMember_WhenTheMemberIsNull_ShouldNotCallTheCallback()
+	{
+		int calls = 0;
+		Track subject = new(null);
+
+		async Task Act()
+			=> await That(subject).Whose(x => x.Title, title => title
+				.WithSubjectContext((_, _) => calls++).IsEqualTo("Abbey Road"));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Title is equal to "Abbey Road",
+			             but Title was <null>
+			             """);
+		await That(calls).IsEqualTo(0)
+			.Because("the callback is only called for a value of its type");
+	}
+
+	[Test]
 	public async Task AddSubjectContexts_ForAnItem_ShouldLabelTheContextWithTheItem()
 	{
 		int[] subject = [1, 2,];
@@ -1413,6 +1453,8 @@ public class ExpectationBuilderTests
 	}
 
 	private sealed record Pair(int First, int Second);
+
+	private sealed record Track(string? Title);
 
 #if NET8_0_OR_GREATER
 	/// <remarks>

@@ -15,8 +15,15 @@ namespace aweXpect.Core.Nodes;
 ///     The result is also wrapped when it is met, as an outer negation can still fail it, unless
 ///     <paramref name="wrapsMetResult" /> is <see langword="false" /> for the whole expectation, whose result nothing
 ///     negates.
+///     <para />
+///     For the expectations on a member, the result is not wrapped when <paramref name="isOfMember" /> is set, because
+///     the <see cref="MappingNode" /> adds the <see cref="SubjectContexts" /> to the result that it creates anyway.
 /// </remarks>
-internal sealed class SubjectContextsNode(Node inner, SubjectContext subjectContexts, bool wrapsMetResult = true)
+internal sealed class SubjectContextsNode(
+	Node inner,
+	SubjectContext subjectContexts,
+	bool wrapsMetResult = true,
+	bool isOfMember = false)
 	: Node
 {
 	private readonly SubjectContext _subjectContexts = subjectContexts;
@@ -25,6 +32,17 @@ internal sealed class SubjectContextsNode(Node inner, SubjectContext subjectCont
 	///     The node with the expectations on the subject.
 	/// </summary>
 	public Node Inner { get; private set; } = inner;
+
+	/// <summary>
+	///     Whether the <see cref="SubjectContexts" /> are added by the <see cref="MappingNode" /> of the member, instead
+	///     of by this node.
+	/// </summary>
+	public bool IsOfMember { get; } = isOfMember;
+
+	/// <summary>
+	///     The subject contexts of the subject.
+	/// </summary>
+	public SubjectContext SubjectContexts => _subjectContexts;
 
 	/// <inheritdoc />
 	public override void AddConstraint(IConstraint constraint, string it = "it")
@@ -51,7 +69,7 @@ internal sealed class SubjectContextsNode(Node inner, SubjectContext subjectCont
 		CancellationToken cancellationToken) where TValue : default
 	{
 		ValueTask<ConstraintResult> isMet = Inner.IsMetBy(value, context, cancellationToken);
-		if (context is ExpectationTextEvaluationContext)
+		if (IsOfMember || context is ExpectationTextEvaluationContext)
 		{
 			return isMet;
 		}
@@ -103,7 +121,10 @@ internal sealed class SubjectContextsNode(Node inner, SubjectContext subjectCont
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode() => Inner.GetHashCode();
 
-	private sealed class SubjectContextsResult<TValue> : ConstraintResult
+	/// <summary>
+	///     The result of the expectations on a subject, which adds the contexts of the subject.
+	/// </summary>
+	internal sealed class SubjectContextsResult<TValue> : ConstraintResult
 	{
 		private readonly SubjectContext _subjectContexts;
 		private readonly TValue? _value;

@@ -170,19 +170,19 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 
 		if (!isMet.IsCompletedSuccessfully)
 		{
-			return AwaitMember(isMet, nestedEvaluation, value!);
+			return AwaitMember(isMet, nestedEvaluation, value!, member);
 		}
 
 		nestedEvaluation.Dispose();
-		return new ValueTask<ConstraintResult>(new MemberResult<TValue>(isMet.Result, value!));
+		return new ValueTask<ConstraintResult>(CreateMemberResult(isMet.Result, value!, member));
 	}
 
 	/// <summary>
 	///     Awaits the expectations on the member of the fast path in <see cref="IsMetByValue{TValue}" />, which did not
 	///     complete synchronously, within the <paramref name="nestedEvaluation" />.
 	/// </summary>
-	private static async ValueTask<ConstraintResult> AwaitMember<TValue>(ValueTask<ConstraintResult> isMet,
-		EvaluationContext.EvaluationContext.NestedEvaluation nestedEvaluation, TValue value)
+	private async ValueTask<ConstraintResult> AwaitMember<TValue>(ValueTask<ConstraintResult> isMet,
+		EvaluationContext.EvaluationContext.NestedEvaluation nestedEvaluation, TValue value, TTarget member)
 	{
 		ConstraintResult memberResult;
 		using (nestedEvaluation)
@@ -190,7 +190,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			memberResult = await isMet;
 		}
 
-		return new MemberResult<TValue>(memberResult, value);
+		return CreateMemberResult(memberResult, value, member);
 	}
 
 	private async ValueTask<ConstraintResult> FromMemberException<TValue>(Exception exception, TValue? value,
@@ -257,6 +257,34 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		using (EvaluationContext.EvaluationContext.StartNestedEvaluation(context))
 		{
 			memberResult = await IsMetByMember(member, context, cancellationToken);
+		}
+
+		return CreateMemberResult(memberResult, value, member);
+	}
+
+	/// <summary>
+	///     The result of the expectations on the <paramref name="member" />, which also adds the contexts of the member,
+	///     when its expectations added subject contexts, see <see cref="SubjectContextsNode.IsOfMember" />.
+	/// </summary>
+	/// <remarks>
+	///     The contexts are only added when the expectations were evaluated on the member, like the
+	///     <see cref="SubjectContextsNode" /> does.
+	/// </remarks>
+	private ConstraintResult CreateMemberResult<TValue>(ConstraintResult memberResult, TValue value, TTarget? member)
+	{
+		if (InnerNode is SubjectContextsNode { IsOfMember: true, } subjectContextsNode)
+		{
+			if (member is TNarrowed narrowedMember)
+			{
+				return new MemberWithContextsResult<TValue>(memberResult, value, subjectContextsNode.SubjectContexts,
+					narrowedMember);
+			}
+
+			if (member is null)
+			{
+				return new MemberWithContextsResult<TValue>(memberResult, value, subjectContextsNode.SubjectContexts,
+					default);
+			}
 		}
 
 		return new MemberResult<TValue>(memberResult, value);
@@ -395,7 +423,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			=> Inner.AppendResult(stringBuilder, indentation);
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, Inner);
+			=> contexts.VisitOptionalMember(_prefix is null ? null : _member, GetContextsResult());
 
 		public override ConstraintResult Negate()
 		{
@@ -403,10 +431,15 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			Outcome = Inner.Outcome;
 			return this;
 		}
+
+		/// <summary>
+		///     The result whose contexts are those of the member.
+		/// </summary>
+		protected virtual ConstraintResult GetContextsResult() => Inner;
 	}
 
 	/// <inheritdoc cref="MemberResult" />
-	private sealed class MemberResult<TValue>(ConstraintResult inner, TValue memberValue) : MemberResult(inner)
+	private class MemberResult<TValue>(ConstraintResult inner, TValue memberValue) : MemberResult(inner)
 	{
 		public override bool TryGetStoredValue<TStored>(out TStored? value) where TStored : default
 		{
@@ -419,5 +452,23 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			value = default;
 			return typeof(TStored).IsAssignableFrom(typeof(TValue));
 		}
+	}
+
+	/// <summary>
+	///     A <see cref="MemberResult{TValue}" />, whose contexts start with the <paramref name="subjectContexts" /> of the
+	///     <paramref name="member" />.
+	/// </summary>
+	/// <remarks>
+	///     The contexts are only read for a failure, so the result that adds them is only created then, instead of for
+	///     every evaluation.
+	/// </remarks>
+	private sealed class MemberWithContextsResult<TValue>(
+		ConstraintResult inner,
+		TValue memberValue,
+		SubjectContext subjectContexts,
+		TNarrowed? member) : MemberResult<TValue>(inner, memberValue)
+	{
+		protected override ConstraintResult GetContextsResult()
+			=> new SubjectContextsNode.SubjectContextsResult<TNarrowed>(Inner, member, subjectContexts);
 	}
 }
