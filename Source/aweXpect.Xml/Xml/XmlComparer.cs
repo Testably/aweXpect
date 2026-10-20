@@ -361,71 +361,24 @@ internal static class XmlComparer
 	/// </remarks>
 	private static List<Content> GetContent(XElement parent, string parentPath)
 	{
-		List<Content> content = new();
-		Dictionary<string, int>? occurrences = null;
-		string? text = null;
-		StringBuilder? joinedText = null;
+		ContentCollector collector = new(parentPath);
 		bool preservesWhitespace = PreservesWhitespace(parent);
 		for (XNode? node = parent.FirstNode; node is not null; node = node.NextNode)
 		{
 			if (node is XText textNode)
 			{
-				if (!preservesWhitespace && node is not XCData && IsWhitespace(textNode.Value))
+				if (preservesWhitespace || node is XCData || !IsWhitespace(textNode.Value))
 				{
-					continue;
-				}
-
-				if (text is null)
-				{
-					text = textNode.Value;
-				}
-				else
-				{
-					(joinedText ??= new StringBuilder(text)).Append(textNode.Value);
+					collector.AddText(textNode.Value);
 				}
 			}
 			else if (node is XElement element)
 			{
-				AddText();
-				Add(element, null, element.Name.LocalName);
+				collector.AddElement(element);
 			}
 		}
 
-		AddText();
-
-		if (occurrences is not null)
-		{
-			foreach (Content child in content)
-			{
-				child.HasSiblingsOfSameName = occurrences[child.Name] > 1;
-			}
-		}
-
-		return content;
-
-		void AddText()
-		{
-			string? joined = joinedText?.ToString() ?? text;
-			text = null;
-			joinedText = null;
-			if (joined is { Length: > 0, })
-			{
-				Add(null, joined, "text()");
-			}
-		}
-
-		void Add(XElement? element, string? value, string name)
-		{
-			int occurrence = 1;
-			if (content.Count > 0)
-			{
-				occurrences ??= new Dictionary<string, int> { [content[0].Name] = 1, };
-				occurrences.TryGetValue(name, out occurrence);
-				occurrences[name] = ++occurrence;
-			}
-
-			content.Add(new Content(element, value, content.Count, parentPath, name, occurrence));
-		}
+		return collector.Complete();
 	}
 
 	/// <remarks>
@@ -507,6 +460,77 @@ internal static class XmlComparer
 		public string Key => _key ??= $"{Name}[{occurrence}]";
 		public string Segment => _segment ??= HasSiblingsOfSameName ? Key : Name;
 		public string Path => parentPath + PathSeparator + Segment;
+	}
+
+	/// <summary>
+	///     Collects the children for <see cref="GetContent" />, joining adjacent texts and counting the siblings of the
+	///     same name.
+	/// </summary>
+	/// <remarks>
+	///     The occurrences are only counted from the second child on, as a single child needs no dictionary.
+	/// </remarks>
+	private sealed class ContentCollector(string parentPath)
+	{
+		private readonly List<Content> _content = new();
+		private StringBuilder? _joinedText;
+		private Dictionary<string, int>? _occurrences;
+		private string? _text;
+
+		public void AddText(string value)
+		{
+			if (_text is null)
+			{
+				_text = value;
+			}
+			else
+			{
+				(_joinedText ??= new StringBuilder(_text)).Append(value);
+			}
+		}
+
+		public void AddElement(XElement element)
+		{
+			CompleteText();
+			Add(element, null, element.Name.LocalName);
+		}
+
+		public List<Content> Complete()
+		{
+			CompleteText();
+			if (_occurrences is not null)
+			{
+				foreach (Content child in _content)
+				{
+					child.HasSiblingsOfSameName = _occurrences[child.Name] > 1;
+				}
+			}
+
+			return _content;
+		}
+
+		private void CompleteText()
+		{
+			string? joined = _joinedText?.ToString() ?? _text;
+			_text = null;
+			_joinedText = null;
+			if (joined is { Length: > 0, })
+			{
+				Add(null, joined, "text()");
+			}
+		}
+
+		private void Add(XElement? element, string? value, string name)
+		{
+			int occurrence = 1;
+			if (_content.Count > 0)
+			{
+				_occurrences ??= new Dictionary<string, int> { [_content[0].Name] = 1, };
+				_occurrences.TryGetValue(name, out occurrence);
+				_occurrences[name] = ++occurrence;
+			}
+
+			_content.Add(new Content(element, value, _content.Count, parentPath, name, occurrence));
+		}
 	}
 
 	internal sealed class XmlComparisonResult(MembersToIgnoreTracker tracker)
