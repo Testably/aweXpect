@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
+using aweXpect.Core.Helpers;
 using aweXpect.Equivalency;
 using aweXpect.Recording;
 
@@ -396,8 +397,8 @@ public static class TypeMetadataRegistry
 	}
 
 	/// <summary>
-	///     Compares the values of a member of a primitive or enum type on two objects of the registered type without
-	///     boxing them.
+	///     Compares the values of a member of a sealed type that is compared by value on two objects of the registered
+	///     type without boxing them or reading them as objects.
 	/// </summary>
 	internal abstract class ValueComparer
 	{
@@ -408,15 +409,26 @@ public static class TypeMetadataRegistry
 		///     and returns whether the values are equal, and only when they are not, the values themselves.
 		/// </summary>
 		/// <remarks>
-		///     The values are equal exactly when their <see cref="object.Equals(object)" /> says so, which for a
-		///     primitive or enum type never throws.
+		///     The values are equal exactly when their <see cref="object.Equals(object)" /> says so, which for these
+		///     types never throws, and two <see cref="DateTime" /> values also need compatible kinds, as in
+		///     <see cref="DateTimeKindComparison" />.
 		/// </remarks>
 		public abstract (bool IsEqual, object? Actual, object? Expected) Compare(object actual, object expected);
 
 		public static ValueComparer? For<T, TMember>(Func<T, TMember> getValue)
-			=> typeof(TMember).IsPrimitive || typeof(TMember).IsEnum
+			=> IsComparedByEquals(typeof(TMember))
 				? new Typed<T, TMember>(getValue)
 				: null;
+
+		/// <remarks>
+		///     The values of these types are always of the member type itself, and the equivalency compares them by
+		///     <see cref="object.Equals(object)" /> by default. A member of another type is read as an object, e.g. a
+		///     <see cref="System.Text.StringBuilder" />, which is compared by its content.
+		/// </remarks>
+		private static bool IsComparedByEquals(Type type)
+			=> type.IsPrimitive || type.IsEnum || type == typeof(string) || type == typeof(decimal) ||
+			   type == typeof(DateTime) || type == typeof(DateTimeOffset) || type == typeof(TimeSpan) ||
+			   type == typeof(Guid);
 
 		private sealed class Typed<T, TMember>(Func<T, TMember> getValue) : ValueComparer
 		{
@@ -426,7 +438,8 @@ public static class TypeMetadataRegistry
 			{
 				TMember actualValue = getValue((T)actual);
 				TMember expectedValue = getValue((T)expected);
-				return EqualityComparer<TMember>.Default.Equals(actualValue, expectedValue)
+				return EqualityComparer<TMember>.Default.Equals(actualValue, expectedValue) &&
+				       !DateTimeKindComparison.AreKindsIncompatible(actualValue, expectedValue)
 					? (true, null, null)
 					: (false, actualValue, expectedValue);
 			}

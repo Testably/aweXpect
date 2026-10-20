@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,16 +19,23 @@ public static partial class EquivalencyComparison
 	///     <paramref name="typeOptions" /> that apply to the objects, and the <paramref name="pendingMappings" /> that
 	///     the enclosing objects handed down, which win as they are more specific.
 	/// </summary>
+	/// <remarks>
+	///     A loop instead of a query, because the closure of a query over the objects would be allocated for every
+	///     compared object, also without any mapping.
+	/// </remarks>
 	private static List<ActiveMapping>? GetActiveMappings(object actual, object expected,
 		EquivalencyTypeOptions typeOptions, List<ActiveMapping>? pendingMappings)
 	{
 		List<ActiveMapping>? mappings = null;
 		if (typeOptions.MemberMappings.Length > 0 && !ReferenceEquals(actual, NoActualObject))
 		{
-			foreach (MemberMapping mapping in typeOptions.MemberMappings
-				         .Where(mapping => mapping.AppliesTo(actual, expected)))
+			MemberMapping[] memberMappings = typeOptions.MemberMappings;
+			for (int i = 0; i < memberMappings.Length; i++)
 			{
-				(mappings ??= []).Add(new ActiveMapping(mapping, actual, 0));
+				if (memberMappings[i].AppliesTo(actual, expected))
+				{
+					(mappings ??= []).Add(new ActiveMapping(memberMappings[i], actual, 0));
+				}
 			}
 		}
 

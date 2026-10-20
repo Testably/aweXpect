@@ -1,5 +1,4 @@
 ﻿using aweXpect.Core.Extending;
-using aweXpect.Core.Sources;
 
 namespace aweXpect.Core.Tests.Core.Extending;
 
@@ -31,6 +30,6 @@ public sealed class ThatExtensionsTests
 	private sealed class ThatWithExpectThat : IExpectThat<int>
 	{
 		public ExpectationBuilder ExpectationBuilder { get; }
-			= new ExpectationBuilder<int>(new ValueSource<int>(0), "");
+			= new ExpectationBuilder<int>(0, "");
 	}
 }
