@@ -201,6 +201,37 @@ public sealed partial class ThatSnapshot
 					.Because("a pattern that times out fails both ways, like a line rule or a masking");
 				await That(store.Mismatches).IsEmpty();
 			}
+
+			[Test]
+			public async Task WhenTheComparisonYieldsOnTheSynchronizationContextOfTheCaller_ShouldNotDeadlock()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				RuleTrack subject = RuleTrack.ComeTogether();
+
+				await SingleThreadedSynchronizationContext.Run(async () =>
+				{
+					async Task Act()
+						=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+							.For.Members().WithName("PreviewUrl").AsYieldingMatch().Ignore()
+							.For.Members().WithName("Title").AsYieldingMatch().Ignore();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             matches the snapshot "MyTests.MyTest",
+						             but the snapshot did not exist*
+						             """).AsWildcard();
+				});
+
+				await That(store.Mismatches[Id]).IsEqualTo("""
+				                                           RuleTrack {
+				                                             Duration = 259,
+				                                             Id = 11,
+				                                             Price = 1.29
+				                                           }
+				                                           """).IgnoringNewlineStyle();
+			}
 		}
 	}
 }

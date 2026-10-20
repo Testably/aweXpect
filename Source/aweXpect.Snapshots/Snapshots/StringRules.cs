@@ -1,6 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 
 namespace aweXpect.Snapshots;
@@ -27,7 +28,7 @@ internal static class StringRules
 	{
 		try
 		{
-			return options.AreConsideredEqual(actual, expected).AsTask().GetAwaiter().GetResult();
+			return SynchronousBoundary.Wait(() => options.AreConsideredEqual(actual, expected));
 		}
 		catch (ArgumentException exception) when (exception.InnerException is RegexMatchTimeoutException timeout)
 		{

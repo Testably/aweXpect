@@ -820,6 +820,10 @@ namespace aweXpect.Core.Extending
         public static string PrependAOrAn(this string value) { }
         public static string TrimCommonWhiteSpace(this string value) { }
     }
+    public static class SynchronousBoundary
+    {
+        public static TResult Wait<TResult>(System.Func<System.Threading.Tasks.ValueTask<TResult>> operation) { }
+    }
     public static class ThatExtensions
     {
         public static aweXpect.Core.IExpectThat<T> Get<T>(this aweXpect.Core.IThat<T> subject) { }

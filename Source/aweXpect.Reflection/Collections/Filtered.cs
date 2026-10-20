@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 #else
 using System.Collections;
+using aweXpect.Core.Extending;
 #endif
 using System.Collections.Generic;
 using System.Linq;
@@ -80,7 +81,7 @@ public abstract class Filtered<T, TFiltered>
 #else
 	/// <inheritdoc />
 	public IEnumerator<T> GetEnumerator()
-		=> _source.Where(a => Filters.All(f => f.Applies(a).GetAwaiter().GetResult())).GetEnumerator();
+		=> _source.Where(a => Filters.All(f => SynchronousBoundary.Wait(() => f.Applies(a)))).GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 #endif
