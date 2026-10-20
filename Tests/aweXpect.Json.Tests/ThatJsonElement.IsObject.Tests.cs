@@ -1277,6 +1277,56 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			[Arguments("1.5", 1, "$.a was 1.5 instead of 1")]
+			[Arguments("2147483648", int.MaxValue, "$.a was 2147483648 instead of 2147483647")]
+			[Arguments("9223372036854775808", long.MaxValue, "$.a was 9223372036854775808 instead of 9223372036854775807")]
+			[Arguments("\"1\"", 1, "$.a was string \"1\" instead of 1")]
+			[Arguments("1", "1", "$.a was number 1 instead of \"1\"")]
+			[Arguments("true", false, "$.a was True instead of False")]
+			public async Task WhenMatchingDifferentSimpleValue_ShouldFail(string value, object expected, string error)
+			{
+				JsonElement subject = FromString($"{{\"a\": {value}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("a").Matching(expected));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object and $.a matches expected,
+					              but it differed as {error}
+
+					              JSON options:
+					               - ignore additional properties
+					              """);
+			}
+
+			[Test]
+			[Arguments("\"Let It Be\"", "Let It Be")]
+			[Arguments("\"Caf\\u00e9 \\\"live\\\"\\n\"", "Caf\u00e9 \"live\"\n")]
+			[Arguments("\"\"", "")]
+			[Arguments("true", true)]
+			[Arguments("false", false)]
+			[Arguments("-0", 0)]
+			[Arguments("1.0", 1)]
+			[Arguments("1e0", 1L)]
+			[Arguments("2147483647", int.MaxValue)]
+			[Arguments("-2147483648", int.MinValue)]
+			[Arguments("9223372036854775807", long.MaxValue)]
+			[Arguments("-9223372036854775808", long.MinValue)]
+			[Arguments("1", 1.0)]
+			public async Task WhenMatchingEqualSimpleValue_ShouldSucceed(string value, object expected)
+			{
+				JsonElement subject = FromString($"{{\"a\": {value}}}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("a").Matching(expected));
+
+				await That(Act).DoesNotThrow()
+					.Because("an equal string, boolean or number matches regardless of how the JSON writes it");
+			}
+
+			[Test]
 			public async Task WhenMatchSucceeds_ShouldSucceed()
 			{
 				JsonElement subject = FromString("{\"foo\": 2}");

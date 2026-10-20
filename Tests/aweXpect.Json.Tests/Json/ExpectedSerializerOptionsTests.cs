@@ -73,6 +73,32 @@ public sealed partial class ExpectedSerializerOptionsTests
 	}
 
 	[Test]
+	public async Task CustomizedDefault_ShouldSerializeTheExpectedValueOfMatchingAlsoForSimpleValues()
+	{
+		JsonElement subject = Parse("{\"rating\": 42}");
+
+		async Task Act()
+			=> await That(subject).IsObject(o => o.With("rating").Matching(42));
+
+		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions
+		       {
+			       NumberHandling = JsonNumberHandling.WriteAsString,
+		       }))
+		{
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is an object and $.rating matches 42,
+				             but it differed as $.rating was number 42 instead of "42"
+
+				             JSON options:
+				              - ignore additional properties
+				             """)
+				.Because("the customized options write the expected number as a string, although the property equals it");
+		}
+	}
+
+	[Test]
 	public async Task ExpectationInObjectMember_WithSourceGeneratedContext_ShouldBeEvaluated()
 	{
 		JsonElement subject = Parse("{\"Title\": \"Let It Be\", \"Rating\": 3}");
