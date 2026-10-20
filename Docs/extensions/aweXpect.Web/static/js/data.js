@@ -12,11 +12,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
@@ -24,7 +31,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           240.23763929094588,
-          248.64943994794572
+          248.64943994794572,
+          491.37959524790443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36,6 +44,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          944,
           944,
           944
         ],
@@ -53,7 +62,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           479.16028465543474,
-          506.0401243796715
+          506.0401243796715,
+          962.7225375856672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65,6 +75,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288
         ],
@@ -92,11 +103,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
         "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
+      },
+      {
+        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
+        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
       }
     ],
     "labels": [
       "68feb62f",
-      "66de07e4"
+      "66de07e4",
+      "391462ba"
     ],
     "datasets": [
       {
@@ -104,7 +122,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           132.2429928439004,
-          141.93751222746712
+          141.93751222746712,
+          255.7064263343811
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -116,6 +135,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          784,
           784,
           784
         ],
@@ -133,7 +153,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           132.73189579645793,
-          140.00120902061462
+          140.00120902061462,
+          245.2166986465454
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -145,6 +166,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952
         ],
