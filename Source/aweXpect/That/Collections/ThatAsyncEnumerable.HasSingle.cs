@@ -20,13 +20,13 @@ public static partial class ThatAsyncEnumerable
 		this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
-		AsyncHasSingleConstraint<TItem> constraint = null!;
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		SingleItemSource<TItem> source = new();
 		return new AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				constraint = new AsyncHasSingleConstraint<TItem>(it, grammars, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),
+				static (state, it, grammars) => state.Source.Use(
+					new AsyncHasSingleConstraint<TItem>(it, grammars, state.Options))),
 			options,
-			_ => Task.FromResult(constraint.SingleItem));
+			source);
 	}
 }
 #endif
