@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12097.446114173303,
           12246.197796412876,
           12785.174252827963,
           12646.42695399693,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           12424.916563767652,
           13485.223824637276,
           12807.232430594308,
-          6933.414092381795
+          6933.414092381795,
+          12767.840677114633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -439,12 +439,12 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           3040,
-          3040,
           3088,
           3088,
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          356747.362109375,
           384922.93899739586,
           362531.04908854165,
           366663.6552734375,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           374467.87669270835,
           381430.7604166667,
           367431.6522042411,
-          173091.82380558894
+          173091.82380558894,
+          380337.9591145833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590287,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590290,
-          590286
+          590286,
+          590291
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          18611.634877522785,
           20371.974380493164,
           19877.455685424804,
           19032.301462026742,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19723.56197466169,
           19269.201989310128,
           19883.603173828124,
-          10319.672215053013
+          10319.672215053013,
+          19591.704960123698
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          345.01939748128257,
           302.17039854185924,
           308.2851254599435,
           281.621517590114,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           284.3743395487467,
           281.5726981798808,
           280.744578906468,
-          149.64187732764654
+          149.64187732764654,
+          347.90267648696897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          474.25586230414257,
           523.0753211975098,
           526.7330489476522,
           471.6873571872711,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           545.8857168833415,
           545.6367696762085,
           524.7363516489664,
-          278.45073550542196
+          278.45073550542196,
+          497.61085344950357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          385.27157148948083,
           402.7815722737993,
           395.5228319168091,
           380.6131037076314,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           414.86068773269653,
           420.18242228825886,
           409.01357405526295,
-          219.6762054761251
+          219.6762054761251,
+          386.5802331606547
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          139.6733043352763,
           151.64684874216715,
           152.6473163286845,
           150.22545315424603,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           159.92800674438476,
           155.88796105384827,
           157.59672282536823,
-          84.48009303410848
+          84.48009303410848,
+          157.87480880419415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1905,7 +1905,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
-          512,
+          536,
           536,
           536,
           536,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          241.41593173833994,
           275.70652716500416,
           266.7450994173686,
           241.35142548878989,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           287.0499791463216,
           286.11980530420936,
           258.83759247461956,
-          138.22454252243043
+          138.22454252243043,
+          268.11383196512855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          294.8144802025386,
           267.21025371551514,
           258.96040428601776,
           246.56834882100424,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           265.300892499777,
           267.3511466662089,
           261.93149512608846,
-          131.6892367509695
+          131.6892367509695,
+          247.4781662940979
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          267.1164376894633,
           275.3108608382089,
           265.6070151646932,
           277.08701848983765,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           290.4190535545349,
           290.02106494903563,
           283.8399627049764,
-          147.94141961733501
+          147.94141961733501,
+          271.78245530809676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          497.47190316518146,
           546.8120442708333,
           502.54338143666587,
           552.4785277048746,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           587.2065956115723,
           569.1244530995687,
           529.2615350087484,
-          293.05900564193723
+          293.05900564193723,
+          542.1914770762125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          332.3636480649312,
           352.3641858100891,
           315.6501748561859,
           351.4092748846327,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           354.8124809946333,
           351.2292379697164,
           347.3147570169889,
-          191.29842136587416
+          191.29842136587416,
+          339.4984240849813
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          619.8607745170593,
           618.6942302840097,
           620.0752228418986,
           635.0638177235921,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           679.669674873352,
           694.2464557647705,
           681.3976145426433,
-          335.329885993685
+          335.329885993685,
+          683.5605815887451
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3374,7 +3374,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
+          872,
           872,
           872,
           872,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1308.4317564646403,
           1428.070587839399,
           1402.2821521759033,
           1332.4344986506871,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1486.8155450820923,
           1381.0726502736409,
           1470.3232198861929,
-          709.8711673736573
+          709.8711673736573,
+          1364.5790824890137
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          652.4163558142526,
           642.1701154708862,
           648.8908589908054,
           642.2845128377279,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           677.3187940597534,
           645.0629905064901,
           666.6414422988892,
-          363.0286763827006
+          363.0286763827006,
+          651.1118293762207
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          629.318281173706,
           624.0816643054669,
           629.2487077713013,
           658.6403460184733,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           660.7158184051514,
           673.9764590263367,
           646.7950919696262,
-          333.79513757569447
+          333.79513757569447,
+          648.7541647593181
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4107,7 +4107,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912,
+          920,
           920,
           920,
           920,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26488.795467122396,
           28202.29796189528,
           27947.321333821616,
           27836.36817626953,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28682.911216227214,
           28239.413805280412,
           27983.34929402669,
-          10494.499317714146
+          10494.499317714146,
+          27464.266174316406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          801.1132623036702,
           804.8856128692627,
           799.5999504089356,
           814.3094218571981,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           826.0765203067234,
           789.3217925389607,
           823.4265757878621,
-          429.7796032905579
+          429.7796032905579,
+          804.3840206782023
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          763.5548663457234,
           784.9777473449707,
           748.1129201253256,
           721.5044732411702,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           794.5244412104289,
           756.0569742202758,
           764.6649042765299,
-          390.46921273640226
+          390.46921273640226,
+          732.819833959852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4842,7 +4842,6 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
-          1848,
           1856,
           1856,
           1856,
@@ -4867,7 +4866,8 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
-          1856
+          1856,
+          1760
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          81973.57697550456,
           85351.39825846354,
           84880.90716959635,
           83034.60528157552,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           84374.98778827373,
           85070.69497915414,
           83612.60432535807,
-          29294.616748046876
+          29294.616748046876,
+          84047.27150181362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
       {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          184.53483346303304,
           225.6815455876864,
           190.17030108769734,
           209.11784984270733,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           195.00022001266478,
           189.10568833351135,
           196.65326636632284,
-          101.61307245095571
+          101.61307245095571,
+          179.1150725444158
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31542.44803059896,
           32663.787858072916,
           31513.383405412947,
           31131.67742513021,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32748.927028111048,
           33051.00584309896,
           32339.84567464193,
-          10235.486079915365
+          10235.486079915365,
+          32834.87023925781
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5554,7 +5554,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          234.97096369947707,
           249.37043199539184,
           232.65089921156564,
           251.37362850629367,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           269.2464275677999,
           249.51677201588947,
           248.2201798439026,
-          128.80031770070394
+          128.80031770070394,
+          246.82633206049601
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          433.5041737238566,
           415.3544657780574,
           438.75073738098143,
           431.9166880387526,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           361.2869338671366,
           378.7131065981729,
           360.9726122220357,
-          200.64068616231282
+          200.64068616231282,
+          361.4581654753004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6182,7 +6182,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
-          720,
+          744,
           744,
           744,
           744,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          370.6075694010808,
           388.9793713569641,
           385.7267467180888,
           383.10490332330977,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           395.88827346165976,
           411.08862390518186,
           399.202547677358,
-          215.84019565582275
+          215.84019565582275,
+          391.0479053815206
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          391.5098382142874,
           427.23298069408963,
           406.482049147288,
           408.0639473710741,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           416.4393012864249,
           420.6346224784851,
           425.9174425942557,
-          213.92019899686179
+          213.92019899686179,
+          413.71126317977905
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1059.1332497914632,
           1101.9341340382894,
           1050.0359012058802,
           739.5118446667989,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           834.7785130182903,
           826.7595612843832,
           806.4954381942749,
-          421.2194682121277
+          421.2194682121277,
+          816.4584756851197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6894,7 +6894,7 @@ window.BENCHMARK_DATA = {
         "data": [
           1720,
           1720,
-          1720,
+          1688,
           1688,
           1688,
           1688,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1786.9721809387206,
           1956.3434903281075,
           1904.2053008760724,
           1919.9408293406168,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2045.080423082624,
           2034.205393110003,
           2001.4416610717774,
-          1030.6404298146565
+          1030.6404298146565,
+          1934.1909952799479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          925.5686873118083,
           980.6418190002441,
           913.3872331619262,
           964.9470352172851,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           968.4909497578939,
           963.7541193644206,
           944.0517686435154,
-          495.660335949489
+          495.660335949489,
+          922.7897835413615
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12069.595923790564,
           12388.134509495327,
           12146.282791137695,
           11906.806794386644,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           12412.906634990986,
           12597.300221369816,
           12430.40533564641,
-          6483.9353596613955
+          6483.9353596613955,
+          12286.442967341496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7649,7 +7649,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
-          1720,
+          1736,
           1736,
           1736,
           1736,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40786.8328125,
           42644.73285851112,
           41289.762925368086,
           41345.34637451172,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           41864.14045817057,
           42212.26511492048,
           41537.927233886716,
-          18828.915138753255
+          18828.915138753255,
+          41039.73001607259
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11268.596181597028,
           11358.313351949057,
           11512.17822011312,
           11165.123045701246,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           11381.553640093121,
           11727.328328813825,
           11562.734325702373,
-          6341.513245646159
+          6341.513245646159,
+          11427.620523725238
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "b18620093d67ea9b835638ceb506896563718acb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 16:29:54 2026 \u002B0200",
-        "message": "perf: evaluate a combination that completes synchronously without async state machines (#1812)"
-      },
-      {
         "sha": "2be671ac46d99c88dd3ce099dd5cac7d014705a8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 16:49:21 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
-      "b1862009",
       "2be671ac",
       "553d47fe",
       "21e72b87",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          23496.272271728514,
           24031.67944771903,
           23500.70990862165,
           11387.974061148507,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11762.522556011494,
           12061.380863734654,
           11939.927749633789,
-          6105.555753072103
+          6105.555753072103,
+          11780.102596827915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8360,7 +8360,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2640,
           2640,
-          2640,
           2208,
           2208,
           2208,
@@ -8383,6 +8382,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59158.46435546875,
           62790.551060267855,
           57900.49540201823,
           60040.32421439035,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           60382.052001953125,
           60913.325411283055,
           62026.5597882952,
-          28376.715168544226
+          28376.715168544226,
+          60268.68197631836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23553,
           23553,
@@ -8532,6 +8531,7 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22564.215334065757,
           22492.251274695762,
           22590.460643223352,
           22604.188334147137,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           22550.113385881697,
           22978.201373760516,
           22762.531415666854,
-          12592.395905630929
+          12592.395905630929,
+          22569.46350969587
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
