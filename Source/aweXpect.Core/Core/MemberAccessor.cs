@@ -9,6 +9,15 @@ namespace aweXpect.Core;
 /// </summary>
 public abstract class MemberAccessor
 {
+	/// <summary>
+	///     Whether <see cref="ToString()" /> appends a space to the <see cref="_name" />.
+	/// </summary>
+	/// <remarks>
+	///     The space is only appended when the name is read for a failure message, so that the subject of the
+	///     expectations on the member (<see cref="GetTrimmedName" />) needs no second string.
+	/// </remarks>
+	private readonly bool _appendsSpace;
+
 	private readonly string _name;
 
 	/// <summary>
@@ -19,9 +28,20 @@ public abstract class MemberAccessor
 		_name = name;
 	}
 
+	private protected MemberAccessor(string name, bool appendsSpace)
+	{
+		_name = name;
+		_appendsSpace = appendsSpace;
+	}
+
 	/// <inheritdoc />
 	public override string ToString()
-		=> _name;
+		=> _appendsSpace ? _name + " " : _name;
+
+	/// <summary>
+	///     The name without surrounding white-space, e.g. as the subject of the expectations on the member.
+	/// </summary>
+	internal string GetTrimmedName() => _name.Trim();
 }
 
 /// <summary>
@@ -31,8 +51,8 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 {
 	private readonly Func<TSource, TTarget> _accessor;
 
-	private MemberAccessor(Func<TSource, TTarget> accessor, string name) :
-		base(name)
+	private MemberAccessor(Func<TSource, TTarget> accessor, string name, bool appendsSpace = false) :
+		base(name, appendsSpace)
 	{
 		_accessor = accessor;
 	}
@@ -50,7 +70,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 		Func<TSource, TTarget> compiled = expression.Compile();
 		return new MemberAccessor<TSource, TTarget>(
 			v => compiled(v),
-			$"{ExpressionHelpers.GetMemberPath(expression)} ");
+			ExpressionHelpers.GetMemberPath(expression), true);
 	}
 
 	/// <summary>
@@ -71,7 +91,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	/// </remarks>
 	public static MemberAccessor<TSource, TTarget> FromFuncAsMemberAccessor(
 		Func<TSource, TTarget> func, string name)
-		=> new(func, ExtractMemberPath(name.Trim()));
+		=> new(func, ExtractMemberPath(name.Trim()), true);
 
 	/// <inheritdoc cref="object.Equals(object?)" />
 	public override bool Equals(object? obj) => obj is MemberAccessor<TSource, TTarget> other && Equals(other);
@@ -82,59 +102,90 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode() => ToString().GetHashCode();
 
+	/// <remarks>
+	///     The parameter and the body are compared by their position in the <paramref name="expression" />, so that
+	///     only the returned member path is allocated, as this runs for every expectation on a member.
+	/// </remarks>
 	private static string ExtractMemberPath(string expression)
 	{
 		// Example: "x => x.Foo" would result in "Foo"
 		int idx = expression.IndexOf("=>", StringComparison.Ordinal);
-		if (idx > 0)
+		if (idx <= 0)
 		{
-			string parameter = expression.Substring(0, idx).Trim();
-			if (TryGetAsyncParameter(parameter, out string asyncParameter))
-			{
-				string? path = GetAwaitedMemberPath(asyncParameter, expression.Substring(idx + 2).Trim());
-				return $"{path ?? expression} ";
-			}
-
-			if (parameter.Length > 2 && parameter[0] == '(' && parameter[parameter.Length - 1] == ')')
-			{
-				parameter = parameter.Substring(1, parameter.Length - 2).Trim();
-			}
-
-			if (IsIdentifier(parameter))
-			{
-				string body = expression.Substring(idx + 2).Trim();
-				if (body == parameter)
-				{
-					return "it ";
-				}
-
-				return $"{WithoutLeadingParameter(parameter, body)} ";
-			}
+			return expression;
 		}
 
-		return $"{expression} ";
+		int parameterStart = 0;
+		int parameterEnd = idx;
+		TrimRange(expression, ref parameterStart, ref parameterEnd);
+		if (string.CompareOrdinal(expression, parameterStart, "async", 0, 5) == 0 &&
+		    TryGetAsyncParameter(expression.Substring(parameterStart, parameterEnd - parameterStart),
+			    out string asyncParameter))
+		{
+			return GetAwaitedMemberPath(asyncParameter, expression.Substring(idx + 2).Trim()) ?? expression;
+		}
+
+		if (parameterEnd - parameterStart > 2 && expression[parameterStart] == '(' &&
+		    expression[parameterEnd - 1] == ')')
+		{
+			parameterStart++;
+			parameterEnd--;
+			TrimRange(expression, ref parameterStart, ref parameterEnd);
+		}
+
+		if (!IsIdentifier(expression, parameterStart, parameterEnd))
+		{
+			return expression;
+		}
+
+		int bodyStart = idx + 2;
+		int bodyEnd = expression.Length;
+		TrimRange(expression, ref bodyStart, ref bodyEnd);
+		int parameterLength = parameterEnd - parameterStart;
+		if (bodyEnd - bodyStart >= parameterLength &&
+		    string.CompareOrdinal(expression, bodyStart, expression, parameterStart, parameterLength) == 0)
+		{
+			if (bodyEnd - bodyStart == parameterLength)
+			{
+				return "it";
+			}
+
+			bodyStart += GetLeadingParameterLength(expression, bodyStart + parameterLength, bodyEnd, parameterLength);
+		}
+
+		return expression.Substring(bodyStart, bodyEnd - bodyStart);
 	}
 
 	// Only a leading parameter access is stripped; any other body (e.g. a cast) is kept whole,
 	// because removing the parameter from it would no longer read as the selected member.
-	private static string WithoutLeadingParameter(string parameter, string body)
+	private static int GetLeadingParameterLength(string expression, int afterParameter, int bodyEnd,
+		int parameterLength)
 	{
-		if (body.StartsWith(parameter + "?.", StringComparison.Ordinal))
+		if (bodyEnd - afterParameter >= 2 && expression[afterParameter] == '?' &&
+		    expression[afterParameter + 1] == '.')
 		{
-			return body.Substring(parameter.Length + 2);
+			return parameterLength + 2;
 		}
 
-		if (body.StartsWith(parameter + ".", StringComparison.Ordinal))
+		if (expression[afterParameter] == '.')
 		{
-			return body.Substring(parameter.Length + 1);
+			return parameterLength + 1;
 		}
 
-		if (body.StartsWith(parameter + "[", StringComparison.Ordinal))
+		return expression[afterParameter] == '[' ? parameterLength : 0;
+	}
+
+	private static void TrimRange(string value, ref int start, ref int end)
+	{
+		while (start < end && char.IsWhiteSpace(value[start]))
 		{
-			return body.Substring(parameter.Length);
+			start++;
 		}
 
-		return body;
+		while (end > start && char.IsWhiteSpace(value[end - 1]))
+		{
+			end--;
+		}
 	}
 
 	private static bool TryGetAsyncParameter(string parameter, out string name)
@@ -402,15 +453,21 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 		return -1;
 	}
 
-	private static bool IsIdentifier(string value)
+	private static bool IsIdentifier(string value) => IsIdentifier(value, 0, value.Length);
+
+	private static bool IsIdentifier(string value, int start, int end)
 	{
-		int start = value.Length > 1 && value[0] == '@' ? 1 : 0;
-		if (value.Length == start || char.IsDigit(value[start]))
+		if (end - start > 1 && value[start] == '@')
+		{
+			start++;
+		}
+
+		if (end == start || char.IsDigit(value[start]))
 		{
 			return false;
 		}
 
-		for (int i = start; i < value.Length; i++)
+		for (int i = start; i < end; i++)
 		{
 			if (!char.IsLetterOrDigit(value[i]) && value[i] != '_')
 			{

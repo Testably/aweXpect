@@ -10,7 +10,7 @@ namespace aweXpect.Core.Nodes;
 /// </summary>
 internal sealed class MappingResult : CombinedResult
 {
-	private readonly Action<StringBuilder> _appendMemberText;
+	private readonly MappingNode _mappingNode;
 	private readonly string? _member;
 
 	/// <summary>
@@ -19,11 +19,10 @@ internal sealed class MappingResult : CombinedResult
 	/// </summary>
 	private string? _negatedRightExpectation;
 
-	public MappingResult(ConstraintResult left, ConstraintResult right, Action<StringBuilder> appendMemberText,
-		string? member)
+	public MappingResult(ConstraintResult left, ConstraintResult right, MappingNode mappingNode, string? member)
 		: base(left, right, true, FurtherProcessingStrategy.Continue)
 	{
-		_appendMemberText = appendMemberText;
+		_mappingNode = mappingNode;
 		_member = member;
 		Outcome = CombineOutcomes();
 	}
@@ -63,7 +62,7 @@ internal sealed class MappingResult : CombinedResult
 	private void AppendRightExpectation(StringBuilder stringBuilder, string? indentation)
 	{
 		StringBuilder separator = new();
-		_appendMemberText(separator);
+		_mappingNode.AppendMemberText(separator);
 		stringBuilder.AppendSeparatedExpectation(separator.ToString(), Right, indentation);
 	}
 

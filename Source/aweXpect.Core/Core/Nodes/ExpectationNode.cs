@@ -13,10 +13,14 @@ namespace aweXpect.Core.Nodes;
 
 internal class ExpectationNode : Node
 {
-	private Func<ConstraintResult?, ConstraintResult, ConstraintResult>? _combineResults;
 	private IConstraint? _constraint;
 
 	private Node? _inner;
+
+	/// <summary>
+	///     The mapping that combines its result with the result of the constraint, if the node maps to a member.
+	/// </summary>
+	private MappingNode? _mapping;
 
 	private string _it = "it";
 
@@ -52,7 +56,7 @@ internal class ExpectationNode : Node
 	public override Node AddMapping(MappingNode mappingNode)
 	{
 		_inner = mappingNode;
-		_combineResults = mappingNode.CombineResults;
+		_mapping = mappingNode;
 		return mappingNode;
 	}
 
@@ -219,7 +223,7 @@ internal class ExpectationNode : Node
 		{
 			ConstraintResult innerResult =
 				await IsInnerMetBy(_inner, value, result ?? source, context, cancellationToken);
-			innerResult = _combineResults?.Invoke(result, innerResult) ?? innerResult;
+			innerResult = _mapping?.CombineResults(result, innerResult) ?? innerResult;
 			return await ApplyReasons(innerResult, context, cancellationToken);
 		}
 

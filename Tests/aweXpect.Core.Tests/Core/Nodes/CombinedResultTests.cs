@@ -123,7 +123,7 @@ public sealed class CombinedResultTests
 	public async Task Negate_WhenAMappingIsNegatedTwice_ShouldRestoreItsOutcomeAndExpectation()
 	{
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(Success, "parent"),
-			new DummyConstraintResult(Failure, "member"), sb => sb.Append(" whose value "), "value");
+			new DummyConstraintResult(Failure, "member"), CreateMappingNode(" whose value "), "value");
 
 		sut.Negate().Negate();
 
@@ -138,7 +138,7 @@ public sealed class CombinedResultTests
 		Outcome expectedWhenNegated)
 	{
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(parentOutcome),
-			new DummyConstraintResult(FailureBothWays), sb => sb.Append(" whose member "), "member");
+			new DummyConstraintResult(FailureBothWays), CreateMappingNode(" whose member "), "member");
 
 		sut.Negate();
 
@@ -201,6 +201,9 @@ public sealed class CombinedResultTests
 		await That(value).IsSameAs(left)
 			.Because("a skipped operand was not evaluated");
 	}
+
+	private static MappingNode CreateMappingNode(string memberText)
+		=> new MappingNode<object, object, object>(MemberAccessor<object, object>.FromFunc(value => value, memberText));
 
 	private sealed class FailureCauseResult(Outcome outcome, Exception failureCause)
 		: ConstraintResult(FurtherProcessingStrategy.Continue)

@@ -36,6 +36,11 @@ internal abstract class MappingNode : ExpectationNode
 	///     <paramref name="combinedResult" /> of the expectations on the value, if any.
 	/// </summary>
 	internal abstract ConstraintResult CombineResults(ConstraintResult? combinedResult, ConstraintResult result);
+
+	/// <summary>
+	///     Appends the text that introduces the member to the <paramref name="stringBuilder" />.
+	/// </summary>
+	internal abstract void AppendMemberText(StringBuilder stringBuilder);
 }
 
 /// <summary>
@@ -49,8 +54,8 @@ internal abstract class MappingNode : ExpectationNode
 /// </remarks>
 internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 {
-	private readonly Action<StringBuilder> _appendMemberText;
 	private readonly MemberAccessor<TSource, Task<TTarget>>? _asyncMemberAccessor;
+	private readonly Action<MemberAccessor, StringBuilder>? _expectationTextGenerator;
 	private readonly MemberAccessor<TSource, TTarget>? _memberAccessor;
 
 	/// <summary>
@@ -61,7 +66,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	{
 		_memberAccessor = memberAccessor;
 		MemberAccessor = memberAccessor;
-		_appendMemberText = CreateMemberText(memberAccessor, expectationTextGenerator);
+		_expectationTextGenerator = expectationTextGenerator;
 	}
 
 	/// <summary>
@@ -72,21 +77,25 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	{
 		_asyncMemberAccessor = asyncMemberAccessor;
 		MemberAccessor = asyncMemberAccessor;
-		_appendMemberText = CreateMemberText(asyncMemberAccessor, expectationTextGenerator);
+		_expectationTextGenerator = expectationTextGenerator;
 	}
 
 	/// <inheritdoc />
 	public override MemberAccessor MemberAccessor { get; }
 
-	private static Action<StringBuilder> CreateMemberText(MemberAccessor memberAccessor,
-		Action<MemberAccessor, StringBuilder>? expectationTextGenerator)
+	/// <inheritdoc />
+	/// <remarks>
+	///     A method instead of a delegate per node, because the text is only read for a failure.
+	/// </remarks>
+	internal override void AppendMemberText(StringBuilder stringBuilder)
 	{
-		if (expectationTextGenerator is null)
+		if (_expectationTextGenerator is null)
 		{
-			return stringBuilder => stringBuilder.Append(memberAccessor);
+			stringBuilder.Append(MemberAccessor);
+			return;
 		}
 
-		return stringBuilder => expectationTextGenerator(memberAccessor, stringBuilder);
+		_expectationTextGenerator(MemberAccessor, stringBuilder);
 	}
 
 	/// <inheritdoc />
@@ -164,14 +173,14 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
 		{
 			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
-			return MemberExceptionResult.Create(result, exception, MemberAccessor.ToString().Trim(), value,
+			return MemberExceptionResult.Create(result, exception, MemberAccessor.GetTrimmedName(), value,
 				memberTask?.GetOtherExceptions(exception));
 		}
 
 		if (_asyncMemberAccessor is not null && memberTask is null)
 		{
 			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
-			return NullSubjectResult.CreateForNullTask(result, MemberAccessor.ToString().Trim(), value);
+			return NullSubjectResult.CreateForNullTask(result, MemberAccessor.GetTrimmedName(), value);
 		}
 
 		ConstraintResult memberResult;
@@ -194,7 +203,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
 		StringBuilder separator = new();
-		_appendMemberText(separator);
+		AppendMemberText(separator);
 		stringBuilder.AppendSeparatedExpectation(separator.ToString(),
 			sb => base.AppendExpectation(sb, indentation));
 	}
@@ -252,11 +261,11 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		if (combinedResult == null)
 		{
 			return result is MemberResult memberResult
-				? memberResult.PrependMemberText(_appendMemberText, ContextMember)
-				: result.PrependExpectationText(_appendMemberText, ContextMember);
+				? memberResult.PrependMemberText(this, ContextMember)
+				: result.PrependExpectationText(AppendMemberText, ContextMember);
 		}
 
-		return new MappingResult(combinedResult, result, _appendMemberText, ContextMember);
+		return new MappingResult(combinedResult, result, this, ContextMember);
 	}
 
 	/// <summary>
@@ -271,7 +280,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	private abstract class MemberResult : ConstraintResult
 	{
 		private string? _member;
-		private Action<StringBuilder>? _prefix;
+		private MappingNode? _prefix;
 
 		protected MemberResult(ConstraintResult inner) : base(inner.FurtherProcessingStrategy)
 		{
@@ -291,7 +300,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 
 		internal override bool IsNegatedAnd => Inner.IsNegatedAnd;
 
-		public MemberResult PrependMemberText(Action<StringBuilder> prefix, string? member)
+		public MemberResult PrependMemberText(MappingNode prefix, string? member)
 		{
 			_prefix = prefix;
 			_member = member;
@@ -307,7 +316,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			}
 
 			StringBuilder prefix = new();
-			_prefix(prefix);
+			_prefix.AppendMemberText(prefix);
 			stringBuilder.AppendSeparatedExpectation(prefix.ToString(),
 				sb => Inner.AppendExpectation(sb, indentation));
 		}

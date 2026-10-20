@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,11 +12,14 @@ namespace aweXpect.Core.Nodes;
 ///     result of the <see cref="Inner" /> node, which holds all expectations on the subject.
 /// </summary>
 /// <remarks>
-///     The result is also wrapped when it is met, as an outer negation can still fail it.
+///     The result is also wrapped when it is met, as an outer negation can still fail it, unless
+///     <paramref name="wrapsMetResult" /> is <see langword="false" /> for the whole expectation, whose result nothing
+///     negates.
 /// </remarks>
-internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subjectContexts) : Node
+internal sealed class SubjectContextsNode(Node inner, SubjectContext subjectContexts, bool wrapsMetResult = true)
+	: Node
 {
-	private readonly List<SubjectContext> _subjectContexts = subjectContexts;
+	private readonly SubjectContext _subjectContexts = subjectContexts;
 
 	/// <summary>
 	///     The node with the expectations on the subject.
@@ -61,11 +62,18 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 		}
 
 		ConstraintResult result = isMet.Result;
-		return new ValueTask<ConstraintResult>(new SubjectContextsResult<TValue>(result, value, _subjectContexts));
+		return !wrapsMetResult && result.Outcome == Outcome.Success
+			? isMet
+			: new ValueTask<ConstraintResult>(new SubjectContextsResult<TValue>(result, value, _subjectContexts));
 	}
 
 	private async ValueTask<ConstraintResult> AwaitAndWrap<TValue>(ValueTask<ConstraintResult> isMet, TValue? value)
-		=> new SubjectContextsResult<TValue>(await isMet, value, _subjectContexts);
+	{
+		ConstraintResult result = await isMet.ConfigureAwait(false);
+		return !wrapsMetResult && result.Outcome == Outcome.Success
+			? result
+			: new SubjectContextsResult<TValue>(result, value, _subjectContexts);
+	}
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -74,18 +82,34 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 	/// <inheritdoc cref="object.Equals(object?)" />
 	public override bool Equals(object? obj)
 		=> obj is SubjectContextsNode other && Inner.Equals(other.Inner) &&
-		   _subjectContexts.Select(c => c.Callback).SequenceEqual(other._subjectContexts.Select(c => c.Callback));
+		   HaveSameCallbacks(_subjectContexts, other._subjectContexts);
+
+	private static bool HaveSameCallbacks(SubjectContext? left, SubjectContext? right)
+	{
+		while (left is not null && right is not null)
+		{
+			if (!left.Callback.Equals(right.Callback))
+			{
+				return false;
+			}
+
+			left = left.Next;
+			right = right.Next;
+		}
+
+		return left is null && right is null;
+	}
 
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode() => Inner.GetHashCode();
 
 	private sealed class SubjectContextsResult<TValue> : ConstraintResult
 	{
-		private readonly List<SubjectContext> _subjectContexts;
+		private readonly SubjectContext _subjectContexts;
 		private readonly TValue? _value;
 		private ConstraintResult _inner;
 
-		public SubjectContextsResult(ConstraintResult inner, TValue? value, List<SubjectContext> subjectContexts)
+		public SubjectContextsResult(ConstraintResult inner, TValue? value, SubjectContext subjectContexts)
 			: base(inner.FurtherProcessingStrategy)
 		{
 			_inner = inner;
@@ -133,7 +157,9 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 		/// <inheritdoc cref="ConstraintResult.AppendContexts(ResultContextCollector)" />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			foreach (SubjectContext subjectContext in _subjectContexts)
+			for (SubjectContext? subjectContext = _subjectContexts;
+			     subjectContext is not null;
+			     subjectContext = subjectContext.Next)
 			{
 				subjectContext.AppendContexts(_value, contexts);
 			}
@@ -146,8 +172,17 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 /// <summary>
 ///     The callback of <see cref="ExpectationBuilder.AddSubjectContexts{TValue}" />.
 /// </summary>
+/// <remarks>
+///     The subject contexts of a subject are chained in the order they were added, as a subject rarely has more than
+///     one and a list would cost more.
+/// </remarks>
 internal abstract class SubjectContext
 {
+	/// <summary>
+	///     The subject context that was added after this one, or <see langword="null" />.
+	/// </summary>
+	public SubjectContext? Next { get; set; }
+
 	/// <summary>
 	///     The callback, which identifies the subject context, so that it is only added once.
 	/// </summary>
