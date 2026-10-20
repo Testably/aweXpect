@@ -396,6 +396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -464,7 +470,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -536,7 +543,8 @@ window.BENCHMARK_DATA = {
           12767.840677114633,
           13071.264615885417,
           12782.875373331706,
-          12930.86651284354
+          12930.86651284354,
+          12161.331097920736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -585,6 +593,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -693,7 +702,8 @@ window.BENCHMARK_DATA = {
           380337.9591145833,
           380743.09919084824,
           366869.13255208335,
-          374332.2424316406
+          374332.2424316406,
+          333559.60625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -770,7 +780,8 @@ window.BENCHMARK_DATA = {
           590291,
           590292,
           590290,
-          590287
+          590287,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -850,7 +861,8 @@ window.BENCHMARK_DATA = {
           19591.704960123698,
           19926.72748674665,
           18828.92937360491,
-          19355.920731764574
+          19355.920731764574,
+          18560.86735636393
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -862,6 +874,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1295,6 +1308,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -1356,7 +1375,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -1421,7 +1441,8 @@ window.BENCHMARK_DATA = {
           347.90267648696897,
           318.79838536580405,
           303.04539222717284,
-          282.900653553009
+          282.900653553009,
+          275.5467573234013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1433,6 +1454,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1564,7 +1586,8 @@ window.BENCHMARK_DATA = {
           497.61085344950357,
           566.0890389955961,
           508.40030854088917,
-          544.5324167251587
+          544.5324167251587,
+          576.3078407560076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1576,6 +1599,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1707,7 +1731,8 @@ window.BENCHMARK_DATA = {
           386.5802331606547,
           419.013505084174,
           413.61526072820027,
-          403.3854622681936
+          403.3854622681936,
+          380.8436924298604
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1719,6 +1744,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6765,6 +6791,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -7596,7 +7628,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -8431,7 +8464,8 @@ window.BENCHMARK_DATA = {
           157.87480880419415,
           160.89665835698446,
           155.31868969599407,
-          152.00374499956766
+          152.00374499956766,
+          153.13168195088704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9238,6 +9272,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -10114,7 +10149,8 @@ window.BENCHMARK_DATA = {
           268.11383196512855,
           279.3737553278605,
           284.5175122261047,
-          254.4663369814555
+          254.4663369814555,
+          266.26093737284344
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10307,6 +10343,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -11078,7 +11115,8 @@ window.BENCHMARK_DATA = {
           247.4781662940979,
           271.83663380940754,
           248.57068192164104,
-          258.4038040297372
+          258.4038040297372,
+          267.1239589055379
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11090,6 +11128,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -11609,6 +11648,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -11677,7 +11722,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -11749,7 +11795,8 @@ window.BENCHMARK_DATA = {
           271.78245530809676,
           288.20306339263914,
           281.13643503189087,
-          271.5523865904127
+          271.5523865904127,
+          274.633469804128
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11768,6 +11815,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11906,7 +11954,8 @@ window.BENCHMARK_DATA = {
           542.1914770762125,
           567.5544557571411,
           568.9786823817661,
-          508.177921295166
+          508.177921295166,
+          547.2779916127523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11918,6 +11967,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -12063,7 +12113,8 @@ window.BENCHMARK_DATA = {
           339.4984240849813,
           409.38812058766683,
           338.5008266312735,
-          320.9899472554525
+          320.9899472554525,
+          338.503156375885
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12075,6 +12126,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -17128,6 +17180,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -17959,7 +18017,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -18794,7 +18853,8 @@ window.BENCHMARK_DATA = {
           683.5605815887451,
           672.6781906763713,
           664.6360087712605,
-          670.0918502807617
+          670.0918502807617,
+          644.017866007487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19604,6 +19664,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -20477,7 +20538,8 @@ window.BENCHMARK_DATA = {
           1364.5790824890137,
           1500.9931957244874,
           1412.9502451578776,
-          1301.1216748101372
+          1301.1216748101372,
+          1454.5325317382812
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21317,6 +21379,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -21441,7 +21504,8 @@ window.BENCHMARK_DATA = {
           651.1118293762207,
           681.681399790446,
           680.9607451121012,
-          653.9903538386027
+          653.9903538386027,
+          650.7262543996175
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21453,6 +21517,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -26550,6 +26615,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -27381,7 +27452,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -28216,7 +28288,8 @@ window.BENCHMARK_DATA = {
           648.7541647593181,
           663.0657948176066,
           659.1956061681111,
-          648.0003033955892
+          648.0003033955892,
+          668.4242586771647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29026,6 +29099,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -29899,7 +29973,8 @@ window.BENCHMARK_DATA = {
           27464.266174316406,
           29468.374289957683,
           28126.84192911784,
-          28262.343292236328
+          28262.343292236328,
+          21275.813532511394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30739,6 +30814,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -30863,7 +30939,8 @@ window.BENCHMARK_DATA = {
           804.3840206782023,
           830.1895308494568,
           839.3253615061442,
-          798.7865164438883
+          798.7865164438883,
+          754.4136435190836
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30875,6 +30952,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -31742,6 +31820,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -31868,7 +31952,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -31998,7 +32083,8 @@ window.BENCHMARK_DATA = {
           732.819833959852,
           728.3294523874919,
           672.4928464889526,
-          686.9835518519084
+          686.9835518519084,
+          672.365507443746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32130,6 +32216,7 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
+          1760,
           1760,
           1760,
           1760,
@@ -32271,7 +32358,8 @@ window.BENCHMARK_DATA = {
           84047.27150181362,
           84674.21430664063,
           84255.80981445312,
-          83220.97748674665
+          83220.97748674665,
+          63636.55314941406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32403,6 +32491,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -33164,6 +33253,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -33290,7 +33385,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -33420,7 +33516,8 @@ window.BENCHMARK_DATA = {
           179.1150725444158,
           185.97163674036662,
           208.61744101842245,
-          185.67947270075481
+          185.67947270075481,
+          188.21348755700248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33497,6 +33594,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -33693,7 +33791,8 @@ window.BENCHMARK_DATA = {
           32834.87023925781,
           32462.916735839844,
           32585.56709798177,
-          32340.34287109375
+          32340.34287109375,
+          19003.044596354168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33828,6 +33927,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -33952,7 +34052,8 @@ window.BENCHMARK_DATA = {
           246.82633206049601,
           274.26774803797406,
           246.5422890526908,
-          241.47993920644123
+          241.47993920644123,
+          268.211040687561
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33964,6 +34065,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -34483,6 +34585,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -34551,7 +34659,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -34623,7 +34732,8 @@ window.BENCHMARK_DATA = {
           361.4581654753004,
           364.51087306340537,
           359.8615823745728,
-          356.6248843193054
+          356.6248843193054,
+          381.0567145665487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34671,6 +34781,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -34780,7 +34891,8 @@ window.BENCHMARK_DATA = {
           391.0479053815206,
           411.94895734786985,
           374.3104826609294,
-          367.9100030263265
+          367.9100030263265,
+          429.60222258934607
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34792,6 +34904,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -34937,7 +35050,8 @@ window.BENCHMARK_DATA = {
           413.71126317977905,
           444.2142570813497,
           391.1294521185068,
-          394.7840934753418
+          394.7840934753418,
+          433.5565303053175
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34949,6 +35063,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -35424,6 +35539,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -35492,7 +35613,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -35564,7 +35686,8 @@ window.BENCHMARK_DATA = {
           816.4584756851197,
           834.1136222839356,
           809.7396153767903,
-          831.3580392837524
+          831.3580392837524,
+          797.9655483881633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35591,6 +35714,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -35721,7 +35845,8 @@ window.BENCHMARK_DATA = {
           1934.1909952799479,
           2276.6943890707835,
           1956.640271759033,
-          1934.5048047383627
+          1934.5048047383627,
+          2086.4835370381675
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35733,6 +35858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -35878,7 +36004,8 @@ window.BENCHMARK_DATA = {
           922.7897835413615,
           982.8708117167155,
           917.7512769063313,
-          923.3069434483846
+          923.3069434483846,
+          936.6117260615031
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35890,6 +36017,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -36365,6 +36493,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -36433,7 +36567,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -36505,7 +36640,8 @@ window.BENCHMARK_DATA = {
           12286.442967341496,
           12313.227788289389,
           12522.528411865234,
-          12274.643423461914
+          12274.643423461914,
+          11025.540795462472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36554,6 +36690,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -36662,7 +36799,8 @@ window.BENCHMARK_DATA = {
           41039.73001607259,
           42019.86980765207,
           43240.566931152345,
-          42323.45726318359
+          42323.45726318359,
+          35336.429896763395
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36717,6 +36855,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -36819,7 +36958,8 @@ window.BENCHMARK_DATA = {
           11427.620523725238,
           11487.831527709961,
           11484.656599862235,
-          11467.199547400842
+          11467.199547400842,
+          10668.078244722807
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36831,6 +36971,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -37306,6 +37447,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:36:22 2026 \u002B0200",
         "message": "refactor: format values without allocating a context and a builder when a custom formatter is registered (#1896)"
+      },
+      {
+        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
+        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
       }
     ],
     "labels": [
@@ -37374,7 +37521,8 @@ window.BENCHMARK_DATA = {
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
-      "b5dab01f"
+      "b5dab01f",
+      "40ae946f"
     ],
     "datasets": [
       {
@@ -37446,7 +37594,8 @@ window.BENCHMARK_DATA = {
           11780.102596827915,
           11829.860947745186,
           12044.538322957356,
-          11630.327285766602
+          11630.327285766602,
+          10379.725567626952
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37495,6 +37644,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -37603,7 +37753,8 @@ window.BENCHMARK_DATA = {
           60268.68197631836,
           60779.27548828125,
           62757.506181989396,
-          61661.332481971156
+          61661.332481971156,
+          50398.350755964006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37680,7 +37831,8 @@ window.BENCHMARK_DATA = {
           23553,
           23554,
           23554,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37760,7 +37912,8 @@ window.BENCHMARK_DATA = {
           22569.46350969587,
           22695.000967843192,
           22906.23571573893,
-          22462.32637532552
+          22462.32637532552,
+          20601.948231288367
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37772,6 +37925,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
