@@ -24,13 +24,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -40,7 +47,8 @@ window.BENCHMARK_DATA = {
           1097.8751047679357,
           1078.875713857015,
           806.6300570624215,
-          915.2430147024302
+          915.2430147024302,
+          1148.4123452504475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52,6 +60,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1816,
           1816,
           1816,
           1816,
@@ -73,7 +82,8 @@ window.BENCHMARK_DATA = {
           730.8021795409066,
           668.750609261649,
           528.2589103062948,
-          596.14315478007
+          596.14315478007,
+          780.3684758458819
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -85,6 +95,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -126,13 +137,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
         "message": "refactor: speed up matching JSON against an expected object (#1891)"
+      },
+      {
+        "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
+        "message": "refactor: format the expected status code only when the expectation fails (#1894)"
       }
     ],
     "labels": [
       "68feb62f",
       "66de07e4",
       "391462ba",
-      "78b13d35"
+      "78b13d35",
+      "87d3aeb2"
     ],
     "datasets": [
       {
@@ -142,7 +160,8 @@ window.BENCHMARK_DATA = {
           12670.111607142857,
           12171.387325032552,
           8267.12919834682,
-          9192.517417399089
+          9192.517417399089,
+          13008.33838704427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -157,7 +176,8 @@ window.BENCHMARK_DATA = {
           34880,
           34885,
           34885,
-          34885
+          34885,
+          34880
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -175,7 +195,8 @@ window.BENCHMARK_DATA = {
           5336.80074603741,
           5097.102923583984,
           3744.885112489973,
-          4400.290140005259
+          4400.290140005259,
+          6438.485093688965
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -187,6 +208,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
