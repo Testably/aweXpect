@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests.Collections;
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Collections;
 
 public sealed partial class Filtered
 {
@@ -82,6 +84,25 @@ public sealed partial class Filtered
 
 				await That(types).IsNotEmpty();
 				await That(description).IsEqualTo("types in assembly containing type Filtered.Types.Tests");
+			}
+
+			[Test]
+			public async Task Which_WhenAnAsyncFilterYieldsOnTheSynchronizationContextOfTheCaller_ShouldNotDeadlock()
+			{
+				Reflection.Collections.Filtered.Types types = In.Type<Tests>().Which(new YieldingFilter());
+
+				await SingleThreadedSynchronizationContext.Run(async () => await That(types).IsNotEmpty());
+			}
+
+			private sealed class YieldingFilter : IFilter<Type>
+			{
+				public async ValueTask<bool> Applies(Type value)
+				{
+					await Task.Yield();
+					return true;
+				}
+
+				public string Describes(string text) => text;
 			}
 		}
 	}

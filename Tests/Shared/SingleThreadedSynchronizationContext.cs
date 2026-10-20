@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading;
 
-namespace aweXpect.Core.Tests.TestHelpers;
+namespace aweXpect.TestHelpers;
 
 /// <remarks>
 ///     Runs all continuations on one dedicated thread, like the UI thread of WPF or WinForms does.
@@ -12,6 +12,16 @@ internal sealed class SingleThreadedSynchronizationContext : SynchronizationCont
 
 	public override void Post(SendOrPostCallback d, object? state) => _queue.Add((d, state));
 
+	public static Task Run(Func<Task> action)
+		=> Run(async () =>
+		{
+			await action();
+			return true;
+		});
+
+	/// <remarks>
+	///     It gives up after ten seconds, so that a deadlock fails the test instead of hanging the test run.
+	/// </remarks>
 	public static async Task<T> Run<T>(Func<Task<T>> action)
 	{
 		TaskCompletionSource<Task<T>> started = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -32,6 +42,11 @@ internal sealed class SingleThreadedSynchronizationContext : SynchronizationCont
 			IsBackground = true,
 		};
 		thread.Start();
+		if (await Task.WhenAny(started.Task, Task.Delay(TimeSpan.FromSeconds(10))) != started.Task)
+		{
+			throw new TimeoutException("The action did not complete on the synchronization context within ten seconds.");
+		}
+
 		return await await started.Task;
 	}
 }

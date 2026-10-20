@@ -148,3 +148,18 @@ await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery
   within …".
 
 </details>
+
+## Synchronous boundaries
+
+Some code has to answer synchronously although it calls asynchronous code, e.g. an `IEnumerable<T>` that filters its
+items with an asynchronous predicate. Wait there with `SynchronousBoundary.Wait` from `aweXpect.Core.Extending`
+instead of `.GetAwaiter().GetResult()`:
+
+```csharp no-compile
+public IEnumerator<Track> GetEnumerator()
+    => _tracks.Where(track => SynchronousBoundary.Wait(() => IsInCatalogAsync(track))).GetEnumerator();
+```
+
+The expectations of aweXpect run on the synchronization context of the caller, e.g. on the UI thread of a WPF or
+WinForms test. Blocking that thread would deadlock as soon as the asynchronous code continues on it, so `Wait` starts
+the operation without the synchronization context and the task scheduler of the caller.
