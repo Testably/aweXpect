@@ -96,7 +96,9 @@ table of `00-index.md`.
   `Customize.aweXpect.Web().ContentProcessors` configures them.
 - `Helpers/HttpFormatter` writes the `HTTP-Request:`/`HTTP-Response:` sections appended to failures on requests and
   responses.
-- A relative `Uri` fails component expectations both ways (`FailIfRelative()`, "but it was relative").
+- A relative `Uri` fails component expectations both ways ("but it was relative"): the constraints of `ThatUri`
+  derive from `AbsoluteUriConstraint`, while the property results and `HasQueryParameter`, whose `WhoseValue` maps
+  to a member, put `FailIfRelative()` in front.
 - `Tests/aweXpect.Web.Samples` is a minimal API application used by `aweXpect.Web.Samples.Tests` and the example
   on the index page of the docs.
 
