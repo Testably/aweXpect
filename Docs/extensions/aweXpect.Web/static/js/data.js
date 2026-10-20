@@ -78,6 +78,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
         "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
+      },
+      {
+        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
+        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
       }
     ],
     "labels": [
@@ -93,7 +99,8 @@ window.BENCHMARK_DATA = {
       "b5dab01f",
       "40ae946f",
       "c2e176c2",
-      "f8bfa2a9"
+      "f8bfa2a9",
+      "c0e60219"
     ],
     "datasets": [
       {
@@ -112,7 +119,8 @@ window.BENCHMARK_DATA = {
           340.85249172846477,
           400.3086359024048,
           310.4744209766388,
-          194.59093516213554
+          194.59093516213554,
+          397.7752680097307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -136,7 +144,8 @@ window.BENCHMARK_DATA = {
           728,
           728,
           728,
-          728
+          728,
+          664
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -163,7 +172,8 @@ window.BENCHMARK_DATA = {
           831.7780774661472,
           950.9255721909659,
           768.0385799407959,
-          488.63950770696005
+          488.63950770696005,
+          950.0418487548828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -175,6 +185,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -279,6 +290,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
         "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
+      },
+      {
+        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
+        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
       }
     ],
     "labels": [
@@ -294,7 +311,8 @@ window.BENCHMARK_DATA = {
       "b5dab01f",
       "40ae946f",
       "c2e176c2",
-      "f8bfa2a9"
+      "f8bfa2a9",
+      "c0e60219"
     ],
     "datasets": [
       {
@@ -313,7 +331,8 @@ window.BENCHMARK_DATA = {
           166.5883249123891,
           199.08713877995808,
           172.49066912210904,
-          106.72830493633563
+          106.72830493633563,
+          188.33495831489563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -337,7 +356,8 @@ window.BENCHMARK_DATA = {
           568,
           568,
           568,
-          568
+          568,
+          504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -364,7 +384,8 @@ window.BENCHMARK_DATA = {
           220.05329035123188,
           256.2028199513753,
           227.57875340779623,
-          132.7498309135437
+          132.7498309135437,
+          239.14522199630738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -376,6 +397,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -420,12 +442,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
         "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
+      },
+      {
+        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
+        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
-      "f8bfa2a9"
+      "f8bfa2a9",
+      "c0e60219"
     ],
     "datasets": [
       {
@@ -434,7 +463,8 @@ window.BENCHMARK_DATA = {
         "data": [
           698.5639862060547,
           508.6798000971476,
-          354.9212050437927
+          354.9212050437927,
+          628.3123481114706
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -448,7 +478,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1208,
           1208,
-          1208
+          1208,
+          1040
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -465,7 +496,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1246.2395397186278,
           742.6188469568889,
-          459.5191803659712
+          459.5191803659712,
+          927.7227094014486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -477,6 +509,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088
@@ -511,12 +544,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
         "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
+      },
+      {
+        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
+        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
-      "f8bfa2a9"
+      "f8bfa2a9",
+      "c0e60219"
     ],
     "datasets": [
       {
@@ -525,7 +565,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1683.6093157359533,
           1068.9163294474283,
-          990.9442194620768
+          990.9442194620768,
+          1661.2446229117256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -539,7 +580,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1952,
           1792,
-          1792
+          1792,
+          1728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -556,7 +598,8 @@ window.BENCHMARK_DATA = {
         "data": [
           20474.48770359584,
           12062.250297546387,
-          9783.402879842122
+          9783.402879842122,
+          20622.016970120945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -570,6 +613,7 @@ window.BENCHMARK_DATA = {
         "data": [
           34713,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -602,12 +646,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
         "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
+      },
+      {
+        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
+        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
-      "f8bfa2a9"
+      "f8bfa2a9",
+      "c0e60219"
     ],
     "datasets": [
       {
@@ -616,7 +667,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1382.2916792551675,
           634.8672311782836,
-          446.43845116297405
+          446.43845116297405,
+          887.9110375813076
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -630,7 +682,8 @@ window.BENCHMARK_DATA = {
         "data": [
           2944,
           1456,
-          1456
+          1456,
+          1408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -647,7 +700,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1290.2306609834943,
           990.8289800371442,
-          678.8305410385132
+          678.8305410385132,
+          1266.8902228037516
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -659,6 +713,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968
@@ -693,12 +748,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
         "message": "fix: honor comparison predicates for primitive members of registered types (#1898)"
+      },
+      {
+        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
+        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
       }
     ],
     "labels": [
       "40ae946f",
       "c2e176c2",
-      "f8bfa2a9"
+      "f8bfa2a9",
+      "c0e60219"
     ],
     "datasets": [
       {
@@ -707,7 +769,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1386.2848340352377,
           894.9806112925212,
-          861.3152570724487
+          861.3152570724487,
+          1351.3349540710449
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -721,7 +784,8 @@ window.BENCHMARK_DATA = {
         "data": [
           1832,
           1832,
-          1832
+          1832,
+          1664
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -738,7 +802,8 @@ window.BENCHMARK_DATA = {
         "data": [
           758.2722127278646,
           617.3273561341422,
-          426.7081581865038
+          426.7081581865038,
+          729.8756811278207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -750,6 +815,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768
