@@ -1,6 +1,7 @@
 ﻿#if NET8_0_OR_GREATER
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,33 +38,9 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 	///     The items are replayed by index, so that an enumeration nested in another one continues where the other one
 	///     stopped, instead of cutting it short.
 	/// </remarks>
-	public async IAsyncEnumerator<T> GetAsyncEnumerator(
+	public IAsyncEnumerator<T> GetAsyncEnumerator(
 		CancellationToken cancellationToken = default)
-	{
-		for (int index = 0;; index++)
-		{
-			if (index < _materializedItems.Count)
-			{
-				yield return _materializedItems[index];
-				continue;
-			}
-
-			if (Count is not null || _isSourceReleased)
-			{
-				yield break;
-			}
-
-			if (!await MoveNext())
-			{
-				break;
-			}
-
-			cancellationToken.ThrowIfCancellationRequested();
-			yield return _materializedItems[index];
-		}
-
-		Count = _materializedItems.Count;
-	}
+		=> new Enumerator(this, cancellationToken);
 
 	#endregion
 
@@ -212,6 +189,99 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 				TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
 				TaskScheduler.Default);
 			throw;
+		}
+	}
+
+	/// <summary>
+	///     Enumerates the items received so far and continues the source after them.
+	/// </summary>
+	/// <remarks>
+	///     Written by hand instead of as an async iterator, because it is smaller than the state machine of an iterator
+	///     and the items are mostly received synchronously. Like an iterator, it ends once the source ended or threw.
+	/// </remarks>
+	private sealed class Enumerator(MaterializingAsyncEnumerable<T> source, CancellationToken cancellationToken)
+		: IAsyncEnumerator<T>
+	{
+		private int _index = -1;
+		private bool _isFinished;
+
+		/// <inheritdoc />
+		public T Current { get; private set; } = default!;
+
+		/// <inheritdoc />
+		public ValueTask<bool> MoveNextAsync()
+		{
+			if (_isFinished)
+			{
+				return new ValueTask<bool>(false);
+			}
+
+			int index = _index + 1;
+			if (index < source._materializedItems.Count)
+			{
+				_index = index;
+				Current = source._materializedItems[index];
+				return new ValueTask<bool>(true);
+			}
+
+			if (source.Count is not null || source._isSourceReleased)
+			{
+				_isFinished = true;
+				return new ValueTask<bool>(false);
+			}
+
+			ValueTask<bool> moveNext = source.MoveNext();
+			return moveNext.IsCompletedSuccessfully
+				? new ValueTask<bool>(Continue(moveNext.Result, index))
+				: AwaitMoveNext(moveNext, index);
+		}
+
+		/// <inheritdoc />
+		public ValueTask DisposeAsync()
+		{
+			_isFinished = true;
+			return default;
+		}
+
+		[AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
+		private async ValueTask<bool> AwaitMoveNext(ValueTask<bool> moveNext, int index)
+		{
+			bool hasNext;
+			try
+			{
+				hasNext = await moveNext.ConfigureAwait(false);
+			}
+			catch
+			{
+				_isFinished = true;
+				throw;
+			}
+
+			return Continue(hasNext, index);
+		}
+
+		/// <summary>
+		///     Continues with the item at the <paramref name="index" />, which the source just received, or ends the
+		///     enumeration and the source, when it <paramref name="hasNext" /> no further item.
+		/// </summary>
+		private bool Continue(bool hasNext, int index)
+		{
+			if (!hasNext)
+			{
+				_isFinished = true;
+				source.Count = source._materializedItems.Count;
+				return false;
+			}
+
+			if (cancellationToken.IsCancellationRequested)
+			{
+				_isFinished = true;
+				cancellationToken.ThrowIfCancellationRequested();
+			}
+
+			_index = index;
+			Current = source._materializedItems[index];
+			return true;
 		}
 	}
 }

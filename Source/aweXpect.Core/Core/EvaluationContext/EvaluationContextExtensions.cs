@@ -206,7 +206,10 @@ public static class EvaluationContextExtensions
 			cancellationToken);
 	}
 
-	private static readonly string[] MaterializationKeys =
+	/// <summary>
+	///     The keys under which the <see cref="MaterializationCache" /> of each overload is stored.
+	/// </summary>
+	internal static readonly string[] MaterializationKeys =
 	[
 		MaterializedEnumerableKey,
 #if NET8_0_OR_GREATER
@@ -220,26 +223,6 @@ public static class EvaluationContextExtensions
 	/// </summary>
 	internal static bool IsMaterializationKey(string key)
 		=> Array.IndexOf(MaterializationKeys, key) >= 0;
-
-	/// <summary>
-	///     The materializations of the source collections in the <paramref name="evaluationContext" />.
-	/// </summary>
-	internal static IEnumerable<IMaterialization> GetMaterializations(this IEvaluationContext evaluationContext)
-	{
-		foreach (string key in MaterializationKeys)
-		{
-			if (evaluationContext.TryReceive(key, out List<(object Source, object Materialized)>? cache))
-			{
-				foreach ((object _, object materialized) in cache)
-				{
-					if (materialized is IMaterialization materialization)
-					{
-						yield return materialization;
-					}
-				}
-			}
-		}
-	}
 
 	/// <summary>
 	///     Keeps one materialization per source collection, because nested expectations (e.g. <c>ComplyWith</c> on
@@ -260,22 +243,23 @@ public static class EvaluationContextExtensions
 		string key, object source, TState state, Func<TState, TMaterialized> materialize)
 		where TMaterialized : class
 	{
-		if (!evaluationContext.TryReceive(key, out List<(object Source, object Materialized)>? cache))
+		if (!evaluationContext.TryReceive(key, out MaterializationCache? cache))
 		{
-			cache = [];
-			evaluationContext.Store(key, cache);
+			TMaterialized firstMaterialized = materialize(state);
+			evaluationContext.Store(key, new MaterializationCache(source, firstMaterialized));
+			return firstMaterialized;
 		}
 
-		foreach ((object cachedSource, object materialized) in cache)
+		for (int i = 0; i < cache.Count; i++)
 		{
-			if (IsSameSource(cachedSource, source) && materialized is TMaterialized existingValue)
+			if (IsSameSource(cache.GetSource(i), source) && cache.GetMaterialized(i) is TMaterialized existingValue)
 			{
 				return existingValue;
 			}
 		}
 
 		TMaterialized materializedEnumerable = materialize(state);
-		cache.Add((source, materializedEnumerable));
+		cache.Add(source, materializedEnumerable);
 		return materializedEnumerable;
 	}
 

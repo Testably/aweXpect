@@ -14,7 +14,17 @@ internal class EvaluationContext : IEvaluationContext
 {
 	private Extras? _extras;
 	private int _nestingDepth;
-	private Dictionary<string, object?>? _store;
+
+	/// <summary>
+	///     The values stored outside a nested evaluation.
+	/// </summary>
+	/// <remarks>
+	///     An array searched linearly instead of a dictionary, as an evaluation stores only a few values, mostly the
+	///     materialized collections, and a dictionary costs more than the materialization itself.
+	/// </remarks>
+	private (string Key, object? Value)[]? _store;
+
+	private int _storeCount;
 
 	/// <summary>
 	///     The time system of the evaluation, with which a repeated check measures the time and waits between its checks.
@@ -138,12 +148,25 @@ internal class EvaluationContext : IEvaluationContext
 
 	private async Task ReleaseAll()
 	{
-		foreach (IMaterialization materialization in this.GetMaterializations())
+		foreach (string key in EvaluationContextExtensions.MaterializationKeys)
 		{
-			Task release = materialization.ReleaseSource();
-			if (!release.IsCompleted)
+			if (!TryReceive(key, out MaterializationCache? cache))
 			{
-				await AwaitOrAbandon(release);
+				continue;
+			}
+
+			for (int i = 0; i < cache.Count; i++)
+			{
+				if (cache.GetMaterialized(i) is not IMaterialization materialization)
+				{
+					continue;
+				}
+
+				Task release = materialization.ReleaseSource();
+				if (!release.IsCompleted)
+				{
+					await AwaitOrAbandon(release);
+				}
 			}
 		}
 
@@ -299,17 +322,43 @@ internal class EvaluationContext : IEvaluationContext
 			return;
 		}
 
-		_store ??= new Dictionary<string, object?>();
-		_store[key] = value;
+		int index = IndexOfStoredKey(key);
+		if (index >= 0)
+		{
+			_store![index].Value = value;
+			return;
+		}
+
+		if (_store is null)
+		{
+			_store = new (string, object?)[2];
+		}
+		else if (_storeCount == _store.Length)
+		{
+			Array.Resize(ref _store, _storeCount * 2);
+		}
+
+		_store[_storeCount++] = (key, value);
 	}
 
 	/// <inheritdoc />
 	public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
 	{
-		Dictionary<string, object?>? store = IsNested(key) ? GetNestedStore() : _store;
-		if (store != null &&
-		    store.TryGetValue(key, out object? storedValue)
-		    && storedValue is T typeMatchingValue)
+		object? storedValue = null;
+		bool isStored;
+		if (IsNested(key))
+		{
+			Dictionary<string, object?>? nestedStore = GetNestedStore();
+			isStored = nestedStore is not null && nestedStore.TryGetValue(key, out storedValue);
+		}
+		else
+		{
+			int index = _store is null ? -1 : IndexOfStoredKey(key);
+			isStored = index >= 0;
+			storedValue = isStored ? _store![index].Value : null;
+		}
+
+		if (isStored && storedValue is T typeMatchingValue)
 		{
 			value = typeMatchingValue;
 			return true;
@@ -317,6 +366,27 @@ internal class EvaluationContext : IEvaluationContext
 
 		value = default;
 		return false;
+	}
+
+	/// <remarks>
+	///     A <see langword="null" /> <paramref name="key" /> throws, like for the nested stores.
+	/// </remarks>
+	private int IndexOfStoredKey(string key)
+	{
+		if (key is null)
+		{
+			throw new ArgumentNullException(nameof(key));
+		}
+
+		for (int i = 0; i < _storeCount; i++)
+		{
+			if (string.Equals(_store![i].Key, key, StringComparison.Ordinal))
+			{
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	/// <inheritdoc />
