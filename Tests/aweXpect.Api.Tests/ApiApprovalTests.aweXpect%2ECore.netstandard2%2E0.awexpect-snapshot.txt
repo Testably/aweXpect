@@ -35,7 +35,6 @@ namespace aweXpect
         public static aweXpect.Core.Expectation.Combination.All ThatAll(params aweXpect.Core.Expectation[] expectations) { }
         public static aweXpect.Core.Expectation.Combination.Any ThatAny(params aweXpect.Core.Expectation[] expectations) { }
     }
-    [System.Diagnostics.StackTraceHidden]
     public static class Fail
     {
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
@@ -141,7 +140,6 @@ namespace aweXpect
         public static TSelf With<TSelf, TParameter>(this aweXpect.Results.ISignalerResult<TSelf, TParameter> result, System.Func<TParameter, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TSelf : aweXpect.Results.ISignalerResult<TSelf, TParameter> { }
         public static TResult Within<TResult>(this TResult result, System.TimeSpan timeout) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions> { }
     }
-    [System.Diagnostics.StackTraceHidden]
     public static class Skip
     {
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
@@ -190,7 +188,6 @@ namespace aweXpect
 }
 namespace aweXpect.Core
 {
-    [System.Diagnostics.StackTraceHidden]
     public abstract class Expectation
     {
         protected Expectation() { }
@@ -1718,7 +1715,6 @@ namespace aweXpect.Results
         public aweXpect.Results.ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true) { }
         public TResult Within(System.TimeSpan tolerance) { }
     }
-    [System.Diagnostics.StackTraceHidden]
     public class ExpectationResult : aweXpect.Core.Expectation, aweXpect.Core.IOptionsProvider<aweXpect.Core.ExpectationBuilder>
     {
         public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
@@ -1734,14 +1730,12 @@ namespace aweXpect.Results
     {
         public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
     }
-    [System.Diagnostics.StackTraceHidden]
     public class ExpectationResult<TType, TSelf> : aweXpect.Core.Expectation, aweXpect.Core.IOptionsProvider<aweXpect.Core.ExpectationBuilder> where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf>
     {
         public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         protected aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
         public TSelf Because(System.Threading.Tasks.Task<string?> reason) { }
         public TSelf Because(string? reason) { }
-        [System.Diagnostics.StackTraceHidden]
         public System.Runtime.CompilerServices.ValueTaskAwaiter<TType> GetAwaiter() { }
         public override string? ToString() { }
         public TSelf WithCancellation(System.Threading.CancellationToken cancellationToken) { }

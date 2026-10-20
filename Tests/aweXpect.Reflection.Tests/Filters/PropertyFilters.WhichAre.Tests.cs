@@ -1,0 +1,56 @@
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Filters;
+
+public sealed partial class PropertyFilters
+{
+	public sealed class WhichAre
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task ShouldAllowFilteringForInternalProperties()
+			{
+				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
+					.Properties().WhichAre(AccessModifiers.Internal);
+
+				await That(properties).AreInternal().And.IsNotEmpty();
+				await That(properties.GetDescription())
+					.IsEqualTo("internal properties in assembly").AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldAllowFilteringForPrivateProperties()
+			{
+				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
+					.Properties().WhichAre(AccessModifiers.Private);
+
+				await That(properties).ArePrivate().And.IsNotEmpty();
+				await That(properties.GetDescription())
+					.IsEqualTo("private properties in assembly").AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldAllowFilteringForProtectedProperties()
+			{
+				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
+					.Properties().WhichAre(AccessModifiers.Protected);
+
+				await That(properties).AreProtected().And.IsNotEmpty();
+				await That(properties.GetDescription())
+					.IsEqualTo("protected properties in assembly").AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldAllowFilteringForPublicProperties()
+			{
+				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
+					.Properties().WhichAre(AccessModifiers.Public);
+
+				await That(properties).ArePublic().And.IsNotEmpty();
+				await That(properties.GetDescription())
+					.IsEqualTo("public properties in assembly").AsPrefix();
+			}
+		}
+	}
+}

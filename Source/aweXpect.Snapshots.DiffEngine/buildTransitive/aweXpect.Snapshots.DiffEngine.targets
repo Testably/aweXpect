@@ -1,0 +1,23 @@
+<Project>
+
+	<!--
+	    Registers the `DiffEngineReporter` for every snapshot with a module initializer that is compiled into the
+	    project, so that referencing the package is enough. It is added to the reporters that are already set, and only
+	    once, also when several projects of the test assembly reference the package.
+	    `<AweXpectSnapshotsDiffEngine>false</AweXpectSnapshotsDiffEngine>` turns it off, e.g. to register the reporter
+	    yourself.
+	    A module initializer needs C# 9 and `ModuleInitializerAttribute`, which .NET Framework and .NET Core before .NET 5
+	    lack, so such projects register the reporter themselves instead of getting a polyfill that could collide with
+	    their own.
+	-->
+	<ItemGroup Condition="'$(AweXpectSnapshotsDiffEngine)' != 'false' and
+						  '$(Language)' == 'C#' and
+						  '$(TargetFrameworkIdentifier)' == '.NETCoreApp' and
+						  $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)', '5.0')) and
+						  !$([System.Text.RegularExpressions.Regex]::IsMatch('$(LangVersion)', '^(ISO-\d|[1-7](\.\d)?|8(\.0)?)$'))">
+		<Compile Include="$(MSBuildThisFileDirectory)aweXpect.Snapshots.DiffEngine.Registration.cs"
+				 Link="aweXpect.Snapshots.DiffEngine.Registration.cs"
+				 Visible="false"/>
+	</ItemGroup>
+
+</Project>

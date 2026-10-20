@@ -1,0 +1,105 @@
+﻿using System.Net;
+using System.Net.Http;
+using aweXpect.Customization;
+using aweXpect.Web;
+using aweXpect.Web.ContentProcessors;
+using aweXpect.Web.Tests.TestHelpers;
+
+namespace aweXpect.Tests.Web.ContentProcessors;
+
+public sealed partial class ContentProcessor
+{
+	public sealed class StringContentProcessorTests
+	{
+		[Test]
+		[Arguments("application/json")]
+		[Arguments("application/problem+json")]
+		public async Task JsonString_WithoutJsonProcessor_ShouldIncludeTextContentInFailureMessage(
+			string contentType)
+		{
+			using (Customize.aweXpect.Web().ContentProcessors.Set([new StringContentProcessor(),]))
+			{
+				HttpResponseMessage httpResponse = new HttpResponseBuilder()
+					.WithContent("{\"my-content\":1}")
+					.WithContentType(contentType);
+
+				async Task Act()
+					=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($$"""
+					               Expected that httpResponse
+					               has status code 202 Accepted,
+					               but it had status code 200 OK
+
+					               HTTP-Response:
+					                 200 OK HTTP/1.1
+					                   Content-Type: {{contentType}}
+					                   Content-Length: 16
+					                 {"my-content":1}
+					               """);
+			}
+		}
+
+		[Test]
+		public async Task TextFile_ShouldIncludeTextContentInFailureMessage()
+		{
+			string content = """
+			                 body {
+			                     background-color: powderblue;
+			                 }
+			                 """;
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent(content)
+				.WithContentType("text/css");
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
+
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
+				                   Content-Type: text/css
+				                   Content-Length: {{content.Length}}
+				                 body {
+				                     background-color: powderblue;
+				                 }
+				               """);
+		}
+
+		[Test]
+		[Arguments("application/xml")]
+		[Arguments("application/html")]
+		[Arguments("text/plain")]
+		[Arguments("text/csv")]
+		[Arguments("text/html")]
+		public async Task WhenContentTypeIsInterpretedAsStringContent_ShouldIncludeTextContentInFailureMessage(
+			string contentType)
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent("{\"my-content\":1}")
+				.WithContentType(contentType);
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
+
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
+				                   Content-Type: {{contentType}}
+				                   Content-Length: 16
+				                 {"my-content":1}
+				               """);
+		}
+	}
+}

@@ -1,0 +1,23 @@
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Filters;
+
+public sealed partial class FieldFilters
+{
+	public sealed class WhichAreNotPublic
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task ShouldAllowFilteringForNonPublicFieldsWithExplicitMethod()
+			{
+				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
+					.Fields().WhichAreNotPublic();
+
+				await That(fields).AreNotPublic().And.IsNotEmpty();
+				await That(fields.GetDescription())
+					.IsEqualTo("non-public fields in assembly").AsPrefix();
+			}
+		}
+	}
+}

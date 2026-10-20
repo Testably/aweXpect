@@ -1,0 +1,124 @@
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatEvents
+{
+	public sealed class DoNotHave
+	{
+		public sealed class AttributeTests
+		{
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task AsyncEnumerable_WhenAnEventHasAttribute_ShouldFail()
+			{
+				IAsyncEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.TestEvent)),
+				}.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
+					             ]
+					             """);
+			}
+#endif
+
+			[Test]
+			public async Task Negated_WhenNoEventHasAttribute_ShouldFail()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.NoAttributeEvent)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but it only contained matching events
+
+					             Collection:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.NoAttributeEvent
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenAnEventHasAttribute_ShouldFail()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.TestEvent)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNoEventHasAttribute_ShouldSucceed()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.NoAttributeEvent)), null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[AttributeUsage(AttributeTargets.Event)]
+			private class FooAttribute : Attribute
+			{
+			}
+
+#pragma warning disable CS0067 // Event is never used
+			private class TestClass
+			{
+				[Foo] public event Action? TestEvent;
+
+				public event Action? NoAttributeEvent;
+			}
+#pragma warning restore CS0067
+		}
+	}
+}

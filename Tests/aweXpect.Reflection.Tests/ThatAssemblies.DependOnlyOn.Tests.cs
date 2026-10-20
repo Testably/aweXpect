@@ -1,0 +1,189 @@
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatAssemblies
+{
+	public sealed class DependOnlyOn
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenAllAssembliesDependOnlyOnAllowed_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn("aweXpect.Core");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenAllowedAssembliesAreGiven_ShouldDescribeAssemblies()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn("First", "Second");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have dependencies only on assemblies equal to "First" or equal to "Second",
+					             but it contained assemblies with disallowed dependencies*
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenAllowedMatchesAsWildcard_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn("aweXpect.*").AsWildcard();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenAnAssemblyDependsOnDisallowedAssembly_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn("aweXpect.Core");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have dependencies only on assemblies equal to "aweXpect.Core",
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "AutoFixture", "aweXpect"]
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenAssemblyIsNull_ShouldFail()
+			{
+				IEnumerable<Assembly?> subject = new Assembly?[]
+				{
+					null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn("aweXpect.Core");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have dependencies only on assemblies equal to "aweXpect.Core",
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenMultipleAssembliesHaveDisallowedDependencies_ShouldSeparateWithComma()
+			{
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly, typeof(ThatAssemblies).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn("NonExistentAssembly");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in the assemblies *
+					             all have dependencies only on assemblies equal to "NonExistentAssembly",
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* depends on *,
+					               aweXpect.Reflection.Tests, Version=* depends on *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenNoAllowedAssembliesAreGiven_ShouldDescribeNoAssemblies()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DependOnlyOn();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have dependencies only on no assemblies,
+					             but it contained assemblies with disallowed dependencies*
+					             """).AsWildcard();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenAllAssembliesDependOnlyOnAllowed_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DependOnlyOn("aweXpect.Core"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in the assemblies *
+					             not all have dependencies only on assemblies equal to "aweXpect.Core",
+					             but it only contained assemblies depending only on the allowed assemblies
+
+					             Collection:
+					             [
+					               aweXpect.Reflection, Version=*, Culture=neutral, PublicKeyToken=*
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenAnAssemblyDependsOnDisallowedAssembly_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DependOnlyOn("aweXpect.Core"));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}

@@ -1,0 +1,23 @@
+using System;
+using aweXpect.Core;
+using aweXpect.Results;
+using aweXpect.Xml;
+
+namespace aweXpect;
+
+public static partial class ThatXmlString
+{
+	/// <summary>
+	///     Verifies that the subject is a well-formed XML document whose root element matches the
+	///     <paramref name="expected" /> XML, ignoring additional attributes and child nodes of the subject.
+	/// </summary>
+	/// <remarks>
+	///     This is a shortcut for <c>IsValidXml().Which(root => root.Matches(expected, options))</c>.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<string?, IThat<string?>> IsValidXmlMatching(
+		this IThat<string?> subject,
+		string expected,
+		Func<XmlOptions, XmlOptions>? options = null)
+		=> subject.IsValidXml().Which(root => root.Matches(expected, options));
+}

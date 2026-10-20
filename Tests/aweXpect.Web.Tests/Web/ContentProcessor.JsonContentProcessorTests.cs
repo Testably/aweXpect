@@ -1,0 +1,68 @@
+﻿using System.Net;
+using System.Net.Http;
+using aweXpect.Web.Tests.TestHelpers;
+
+namespace aweXpect.Tests.Web.ContentProcessors;
+
+public sealed partial class ContentProcessor
+{
+	public sealed class JsonContentProcessorTests
+	{
+		[Test]
+		[Arguments("application/json")]
+		[Arguments("application/problem+json")]
+		public async Task JsonContent_WithInvalidJson_ShouldIncludeRawTextInFailureMessage(
+			string contentType)
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent("{\"my-content\":1")
+				.WithContentType(contentType);
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
+
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
+				                   Content-Type: {{contentType}}
+				                   Content-Length: 15
+				                 {"my-content":1
+				                 *** JSON parse error: '1' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 15. ***
+				               """);
+		}
+
+		[Test]
+		[Arguments("application/json")]
+		[Arguments("application/problem+json")]
+		public async Task JsonContent_WithValidJson_ShouldIncludePrettifiedJsonInFailureMessage(
+			string contentType)
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent("{\"my-content\":1,}")
+				.WithContentType(contentType);
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
+
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
+				                   Content-Type: {{contentType}}
+				                   Content-Length: 17
+				                 {
+				                   "my-content": 1
+				                 }
+				               """);
+		}
+	}
+}

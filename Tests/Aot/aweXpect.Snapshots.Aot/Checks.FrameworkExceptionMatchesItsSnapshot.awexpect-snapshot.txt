@@ -1,0 +1,8 @@
+ArgumentOutOfRangeException {
+  ActualValue = <null>,
+  Data = {
+    ["Track"] = "Come Together"
+  },
+  Message = "Play count must be positive. (Parameter 'playCount')",
+  ParamName = "playCount"
+}

@@ -1,0 +1,100 @@
+﻿using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatProperty
+{
+	public sealed class IsWritable
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenPropertyIsNull_ShouldFail()
+			{
+				PropertyInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsWritable();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is writable,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyIsReadOnly_ShouldFail()
+			{
+				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
+					.GetProperty(nameof(TestClassWithReadWriteProperties.ReadOnlyProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).IsWritable();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              is writable,
+					              but it was not writable public string TestClassWithReadWriteProperties.ReadOnlyProperty { get; }
+					              """);
+			}
+
+			[Test]
+			public async Task WhenPropertyIsWritable_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
+					.GetProperty(nameof(TestClassWithReadWriteProperties.WriteOnlyProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).IsWritable();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenPropertyIsReadOnly_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
+					.GetProperty(nameof(TestClassWithReadWriteProperties.ReadOnlyProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsWritable());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyIsWritable_ShouldFail()
+			{
+				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
+					.GetProperty(nameof(TestClassWithReadWriteProperties.WriteOnlyProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsWritable());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              is not writable,
+					              but it was writable public string TestClassWithReadWriteProperties.WriteOnlyProperty { set; }
+					              """);
+			}
+		}
+	}
+}

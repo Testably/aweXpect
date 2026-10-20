@@ -1,0 +1,215 @@
+﻿namespace aweXpect.Tests;
+
+public sealed partial class ThatUri
+{
+	public sealed class HasScheme
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasScheme().EqualTo("https");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme equal to "https",
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).HasScheme().EqualTo("https");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme equal to "https",
+					             but it was relative
+					             """);
+			}
+
+			[Test]
+			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().Containing("http");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().EqualTo("http");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme equal to "http",
+					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
+					               "s"
+					             """);
+			}
+
+			[Test]
+			public async Task EqualTo_WhenSubjectEqualsExpectedScheme_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().EqualTo("https");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task NotEqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().NotEqualTo("https");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have scheme equal to "https",
+					             but it had scheme "https"
+					             """);
+			}
+
+			[Test]
+			public async Task NotEqualTo_WhenSubjectEqualsExpectedScheme_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).HasScheme().NotEqualTo("http");
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Uri? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have scheme equal to "https",
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsRelative_ShouldFail()
+			{
+				Uri subject = new("tracks/1", UriKind.Relative);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have scheme equal to "https",
+					             but it was relative
+					             """)
+					.Because("a relative URI cannot answer the question, so its negation fails as well");
+			}
+
+			[Test]
+			public async Task Containing_WhenSubjectSchemeContainsTheExpectedValue_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().Containing("http"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have scheme containing "http",
+					             but it had scheme "https"
+					             """);
+			}
+
+			[Test]
+			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("http"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task EqualTo_WhenSubjectEqualsExpectedScheme_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().EqualTo("https"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have scheme equal to "https",
+					             but it had scheme "https"
+					             """);
+			}
+
+			[Test]
+			public async Task NotEqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().NotEqualTo("https"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task NotEqualTo_WhenSubjectEqualsExpectedScheme_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com:80");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasScheme().NotEqualTo("http"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme equal to "http",
+					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
+					               "s"
+					             """);
+			}
+		}
+	}
+}

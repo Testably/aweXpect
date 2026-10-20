@@ -1,0 +1,56 @@
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Filters;
+
+public sealed partial class ConstructorFilters
+{
+	public sealed class WhichAre
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task ShouldAllowFilteringForInternalConstructors()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WhichAre(AccessModifiers.Internal);
+
+				await That(constructors).AreInternal().And.IsNotEmpty();
+				await That(constructors.GetDescription())
+					.IsEqualTo("internal constructors in assembly").AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldAllowFilteringForPrivateConstructors()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WhichAre(AccessModifiers.Private);
+
+				await That(constructors).ArePrivate().And.IsNotEmpty();
+				await That(constructors.GetDescription())
+					.IsEqualTo("private constructors in assembly").AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldAllowFilteringForProtectedConstructors()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WhichAre(AccessModifiers.Protected);
+
+				await That(constructors).AreProtected().And.IsNotEmpty();
+				await That(constructors.GetDescription())
+					.IsEqualTo("protected constructors in assembly").AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldAllowFilteringForPublicConstructors()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WhichAre(AccessModifiers.Public);
+
+				await That(constructors).ArePublic().And.IsNotEmpty();
+				await That(constructors.GetDescription())
+					.IsEqualTo("public constructors in assembly").AsPrefix();
+			}
+		}
+	}
+}

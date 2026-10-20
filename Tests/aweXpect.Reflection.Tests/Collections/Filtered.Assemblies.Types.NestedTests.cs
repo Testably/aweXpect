@@ -1,0 +1,79 @@
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Collections;
+
+public sealed partial class Filtered
+{
+	public sealed partial class Assemblies
+	{
+		public sealed partial class Types
+		{
+			public sealed class NestedTests
+			{
+				[Test]
+				public async Task ShouldApplyFilterForNestedTypes()
+				{
+					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Types();
+
+					await That(types).All().Satisfy(t => t.IsNested);
+				}
+
+				[Test]
+				public async Task ShouldConsiderAccessModifier()
+				{
+					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
+						.Nested.Types(AccessModifiers.Public);
+
+					await That(types).All().Satisfy(type
+						=> type is { IsNested: true, IsNestedPublic: true, });
+				}
+
+				[Test]
+				public async Task ShouldIncludeNestedInformationInErrorMessage()
+				{
+					async Task Act()
+					{
+						await That(In.AllLoadedAssemblies().Nested.Types())
+							.AreNotNested();
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that nested types in all loaded assemblies
+						             are all not nested,
+						             but it contained nested types
+
+						             Not matching items:
+						             [
+						               *
+						             ]
+						             """).AsWildcard();
+				}
+
+				[Test]
+				[MethodDataSource(typeof(Assemblies), nameof(Filters.AssemblyFilters.GetAccessModifiers))]
+				public async Task WithAccessModifier_ShouldIncludeNestedInformationInErrorMessage(
+					AccessModifiers accessModifier, string expectedString)
+				{
+					async Task Act()
+					{
+						await That(In.AllLoadedAssemblies().Nested.Types(accessModifier))
+							.AreNotNested();
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that {expectedString}nested types in all loaded assemblies
+						              are all not nested,
+						              but it contained nested types
+
+						              Not matching items:
+						              [
+						                *
+						              ]
+						              """).AsWildcard();
+				}
+			}
+		}
+	}
+}

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,7 +22,6 @@ namespace Build;
 partial class Build
 {
 	string BranchName;
-	AssemblyVersion CoreVersion;
 	AssemblyVersion MainVersion;
 	string SemVer;
 
@@ -39,24 +37,15 @@ partial class Build
 			else if (GitHubActions.Ref.StartsWith("refs/tags/", StringComparison.OrdinalIgnoreCase))
 			{
 				if (!Regex.IsMatch(GitHubActions.Ref,
-					    @"\Arefs/tags/(core/)?v\d+\.\d+\.\d+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\z"))
+					    @"\Arefs/tags/v\d+\.\d+\.\d+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?\z"))
 				{
 					Assert.Fail(
-						$"The tag '{GitHubActions.Ref["refs/tags/".Length..]}' is no valid release tag (expected 'v1.2.3' or 'core/v1.2.3', optionally with a pre-release suffix like '-pre.1')");
+						$"The tag '{GitHubActions.Ref["refs/tags/".Length..]}' is no valid release tag (expected 'v1.2.3', optionally with a pre-release suffix like '-pre.1')");
 				}
 
 				int preReleaseIndex = GitHubActions.Ref.IndexOf('-');
 				preRelease = preReleaseIndex > 0 ? GitHubActions.Ref[preReleaseIndex..] : "";
 			}
-
-			CoreVersion = AssemblyVersion.FromGitVersion(GitVersionTasks.GitVersion(s => s
-					.SetFramework("net8.0")
-					.SetNoFetch(true)
-					.SetNoCache(true)
-					.DisableProcessOutputLogging()
-					.SetUpdateAssemblyInfo(false)
-					.AddProcessAdditionalArguments("/overrideconfig", "tag-prefix=core/v"))
-				.Result, preRelease);
 
 			GitVersion gitVersion = GitVersionTasks.GitVersion(s => s
 					.SetFramework("net8.0")
@@ -112,53 +101,24 @@ partial class Build
 		{
 			ReportSummary(s => s
 				.WhenNotNull(MainVersion, (summary, version) => summary
-					.AddPair("Version", version.FileVersion))
-				.WhenNotNull(CoreVersion, (summary, version) => summary
-					.AddPair("Core", version.FileVersion)));
+					.AddPair("Version", version.FileVersion)));
 
-			if (BuildScope != BuildScope.CoreOnly)
+			foreach (Project project in PackageProjects)
 			{
-				ClearNugetPackages(Solution.aweXpect.Directory / "bin");
-				UpdateReadme(MainVersion.FileVersion, false);
-
-				DotNetBuild(s => s
-					.SetProjectFile(Solution)
-					.SetConfiguration(Configuration)
-					.EnableNoLogo()
-					.SetVersion(MainVersion.FileVersion + CoreVersion.PreRelease)
-					.SetAssemblyVersion(MainVersion.FileVersion)
-					.SetFileVersion(MainVersion.FileVersion)
-					.SetInformationalVersion(MainVersion.InformationalVersion));
+				ClearNugetPackages(project.Directory / "bin");
 			}
 
-			ClearNugetPackages(Solution.aweXpect_Core.Directory / "bin");
-			UpdateReadme(CoreVersion.FileVersion, true);
+			UpdateReadme(MainVersion.FileVersion, false);
+			UpdateExtensionReadmes();
 
-			Dictionary<Project, Configuration> projects = new()
-			{
-				{
-					Solution.aweXpect_Core, Configuration
-				},
-			};
-			if (BuildScope == BuildScope.CoreOnly)
-			{
-				projects.Add(Solution.Tests.aweXpect_Core_Tests, Configuration.Debug);
-				projects.Add(Solution.Tests.aweXpect_Generators_Tests, Configuration.Debug);
-				projects.Add(Solution.Tests.aweXpect_Api_Tests, Configuration.Debug);
-			}
-
-			foreach (var (project, configuration) in projects)
-			{
-				DotNetBuild(s => s
-					.SetProjectFile(project)
-					.SetConfiguration(configuration)
-					.EnableNoLogo()
-					.SetProcessAdditionalArguments($"/p:SolutionDir={RootDirectory}")
-					.SetVersion(CoreVersion.FileVersion + CoreVersion.PreRelease)
-					.SetAssemblyVersion(CoreVersion.FileVersion)
-					.SetFileVersion(CoreVersion.FileVersion)
-					.SetInformationalVersion(CoreVersion.InformationalVersion));
-			}
+			DotNetBuild(s => s
+				.SetProjectFile(Solution)
+				.SetConfiguration(Configuration)
+				.EnableNoLogo()
+				.SetVersion(MainVersion.FileVersion + MainVersion.PreRelease)
+				.SetAssemblyVersion(MainVersion.FileVersion)
+				.SetFileVersion(MainVersion.FileVersion)
+				.SetInformationalVersion(MainVersion.InformationalVersion));
 		});
 
 	private void UpdateReadme(string fileVersion, bool forCore)
@@ -213,6 +173,30 @@ partial class Build
 
 		File.WriteAllText(ArtifactsDirectory / "README.md", sb.ToString());
 	}
+
+	/// <summary>
+	///     Writes the README of each extension package from the index page of its docs, as nuget.org cannot follow the
+	///     relative links between the docs pages.
+	/// </summary>
+	private void UpdateExtensionReadmes()
+	{
+		foreach (AbsolutePath docsDirectory in (RootDirectory / "Docs" / "extensions").GetDirectories())
+		{
+			string package = docsDirectory.Name;
+			string readme = RelativeDocsLink.Replace(File.ReadAllText(docsDirectory / "00-index.md"),
+				match => $"](https://docs.testably.org/aweXpect/extensions/{package}/{GetDocsSlug(match.Groups["path"].Value)}/{match.Groups["anchor"].Value})");
+			(ArtifactsDirectory / package).CreateDirectory();
+			File.WriteAllText(ArtifactsDirectory / package / "README.md", readme);
+		}
+	}
+
+	private static readonly Regex RelativeDocsLink = new(@"\]\(\./(?<path>[^)#\s]+)\.mdx?(?<anchor>#[^)\s]*)?\)");
+
+	/// <summary>
+	///     The URL path of a docs page, which Docusaurus derives from its file path without the number prefixes.
+	/// </summary>
+	private static string GetDocsSlug(string path)
+		=> string.Join('/', path.Split('/').Select(segment => Regex.Replace(segment, @"^\d+-", "")));
 
 	private static void ClearNugetPackages(string binPath)
 	{

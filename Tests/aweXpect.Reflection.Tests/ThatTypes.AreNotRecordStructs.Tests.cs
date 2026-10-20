@@ -1,0 +1,137 @@
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatTypes
+{
+	public sealed class AreNotRecordStructs
+	{
+		public sealed class TypeTests
+		{
+			[Test]
+			public async Task WhenEnumerableContainsNoRecordStructTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(IPublicInterface),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenEnumerableContainsRecordStructType_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(IPublicInterface), typeof(PublicRecordStruct),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all not record structs,
+					             but it contained record structs
+
+					             Not matching items:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenAssembliesContainOnlyInterfaceTypes_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AreNotRecordStructs>().Interfaces();
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenFilteringOnlyRecordStructs_ShouldFail()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AreNotRecordStructs>().Types()
+					.Which(type => type.IsRecordStruct());
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that types matching type => type.IsRecordStruct() in assembly containing type ThatTypes.AreNotRecordStructs
+					             are all not record structs,
+					             but it contained record structs
+
+					             Not matching items:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenAssembliesContainOnlyInterfaceTypes_ShouldFail()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AreNotRecordStructs>().Interfaces();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotRecordStructs());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that interfaces in assembly containing type ThatTypes.AreNotRecordStructs
+					             also contain a record struct,
+					             but it only contained not record structs
+
+					             Collection:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenFilteringOnlyRecordStructs_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AreNotRecordStructs>().Types()
+					.Which(type => type.IsRecordStruct());
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotRecordStructs());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}

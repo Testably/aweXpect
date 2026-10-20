@@ -1,0 +1,110 @@
+﻿using System.Net.Http;
+
+namespace aweXpect.Tests;
+
+public sealed partial class ThatHttpRequestMessage
+{
+	public sealed partial class HasHeader
+	{
+		public sealed class WhoseValuesTests
+		{
+			[Test]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WhoseValues(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenHeaderDoesNotExist_ShouldFail()
+			{
+				string name = "x-my-header";
+				string[] value = ["foo", "bar", "baz",];
+				string otherKey = "x-some-other-key";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeaders(name, value);
+
+				async Task Act()
+					=> await That(subject).HasHeader(otherKey).WhoseValues(v => v.HasCount().EqualTo(3));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-some-other-key" header whose values have exactly 3 items,
+					             but it did not contain the expected header
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: foo
+					                 x-my-header: bar
+					                 x-my-header: baz
+					             """);
+			}
+
+			[Test]
+			public async Task WhenHeaderExistsAndValueDoesNotSatisfyTheExpectations_ShouldFail()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				string expectedValue = "some other header";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader(name, value);
+
+				async Task Act()
+					=> await That(subject).HasHeader(name).WhoseValues(v => v.Contains(expectedValue));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-my-header" header whose values contain "some other header" at least once,
+					             but the values did not contain it
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: some header
+
+					             Collection (the values):
+					             [
+					               "some header"
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenHeaderExistsAndValueSatisfiesTheExpectations_ShouldSucceed()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader(name, value);
+
+				async Task Act()
+					=> await That(subject).HasHeader(name).WhoseValues(v => v.Contains(value));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-key").WhoseValues(v => v.IsEmpty());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-my-key" header whose values are empty,
+					             but it was <null>
+					             """);
+			}
+		}
+	}
+}

@@ -1,0 +1,131 @@
+﻿using System.Reflection;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatProperty
+{
+	public sealed class HasName
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenExpectedValueIsOnlySubstring_ShouldFail()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+				{
+					await That(subject).HasName("Property");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has name equal to "Property",
+					             but it had name "PublicProperty", which differs at index 1:
+					                 ↓ (actual)
+					               "PublicProperty"
+					               "Property"
+					                 ↑ (expected)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyInfoHasExpectedPrefix_ShouldSucceed()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+				{
+					await That(subject).HasName("Public").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyInfoHasMatchingName_ShouldSucceed()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+				{
+					await That(subject).HasName("PublicProperty");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyInfoIsNull_ShouldFail()
+			{
+				PropertyInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).HasName("foo");
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             has name equal to "foo",
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyInfoMatchesIgnoringCase_ShouldSucceed()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+				{
+					await That(subject).HasName("pUBLICpROPERTY").IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenPropertyInfoDoesNotHaveName_ShouldSucceed()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentProperty"));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyInfoHasName_ShouldFail()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("PublicProperty"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has name not equal to "PublicProperty",
+					             but it had name "PublicProperty"
+					             """);
+			}
+		}
+	}
+}

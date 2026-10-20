@@ -1,0 +1,99 @@
+﻿using System.Linq;
+using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatConstructor
+{
+	public sealed class IsNotStatic
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenConstructorIsNotStatic_ShouldSucceed()
+			{
+				ConstructorInfo subject = typeof(TestClassWithStaticMembers).GetConstructors().First(c => !c.IsStatic);
+
+				async Task Act()
+				{
+					await That(subject).IsNotStatic();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenConstructorIsNull_ShouldFail()
+			{
+				ConstructorInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotStatic();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is not static,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenConstructorIsStatic_ShouldFail()
+			{
+				ConstructorInfo subject = typeof(TestClassWithStaticMembers)
+					.GetConstructors(BindingFlags.Static | BindingFlags.NonPublic).First();
+
+				async Task Act()
+				{
+					await That(subject).IsNotStatic();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              is not static,
+					              but it was static TestClassWithStaticMembers()
+					              """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenConstructorIsNotStatic_ShouldFail()
+			{
+				ConstructorInfo subject = typeof(TestClassWithStaticMembers).GetConstructors().First(c => !c.IsStatic);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              is static,
+					              but it was non-static TestClassWithStaticMembers()
+					              """);
+			}
+
+			[Test]
+			public async Task WhenConstructorIsStatic_ShouldSucceed()
+			{
+				ConstructorInfo subject = typeof(TestClassWithStaticMembers)
+					.GetConstructors(BindingFlags.Static | BindingFlags.NonPublic).First();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}

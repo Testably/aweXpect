@@ -1,0 +1,659 @@
+﻿using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatMethods
+{
+	public sealed partial class AreGeneric
+	{
+		public sealed class WithArgument
+		{
+			public sealed class GenericTests
+			{
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
+				public async Task AtIndex_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
+					bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>().AtIndex(index);
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass at index {{index}},
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
+				public async Task AtIndex_FromEnd_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
+					bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>().AtIndex(index)
+							.FromEnd();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass at index {{index}} from end,
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				public async Task ForMethodWithRestrictedMatchingArgument_ShouldSucceed()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>();
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task ForMethodWithRestrictedNotMatchingArgument_ShouldFail()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>();
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument of type ThatMethod.DerivedClass,
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				public async Task ForMethodWithUnrestrictedArgument_ShouldFail()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithUnrestrictedArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>();
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument of type ThatMethod.BaseClass,
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>()
+						             ]
+						             """);
+				}
+			}
+
+			public sealed class GenericNamedTests
+			{
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
+				public async Task AtIndex_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
+					bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar").AtIndex(index);
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar" at index {{index}},
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
+				public async Task AtIndex_FromEnd_ForMethodWithMatchingArgument_ShouldSucceedWhenIndexMatches(int index,
+					bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar").AtIndex(index)
+							.FromEnd();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar" at index {{index}} from end,
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				public async Task ForMethodWithRestrictedMatchingArgumentAndName_ShouldSucceed()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar");
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task ForMethodWithRestrictedMatchingArgumentAndNotMatchingName_ShouldFail()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("Tbar");
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument of type ThatMethod.BaseClass and name equal to "Tbar",
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				public async Task ForMethodWithRestrictedNotMatchingArgumentAndMatchingName_ShouldFail()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>("TBar");
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument of type ThatMethod.DerivedClass and name equal to "TBar",
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				public async Task ForMethodWithUnrestrictedArgument_ShouldFail()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithUnrestrictedArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar");
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar",
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				[Arguments("TBa", true)]
+				[Arguments("Tba", false)]
+				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(prefix).AsPrefix();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass and name starting with "{{prefix}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments("T[a-zA-Z]*r", true)]
+				[Arguments("T[a-zA-Z]*o", false)]
+				public async Task ShouldSupportAsRegex(string regex, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(regex).AsRegex();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass and name matching regex "{{regex}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments("Bar", true)]
+				[Arguments("bar", false)]
+				public async Task ShouldSupportAsSuffix(string suffix, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(suffix).AsSuffix();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass and name ending with "{{suffix}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments("T??r", true)]
+				[Arguments("T??o", false)]
+				public async Task ShouldSupportAsWildcard(string wildcard, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>(wildcard).AsWildcard();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument of type ThatMethod.BaseClass and name matching "{{wildcard}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(false, false)]
+				public async Task ShouldSupportIgnoringCase(bool ignoreCase, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBAR")
+							.IgnoringCase(ignoreCase);
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument of type ThatMethod.BaseClass and name equal to "TBAR",
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				public async Task ShouldSupportUsingCustomComparer()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBAr")
+							.Using(new IgnoreCaseForVocalsComparer());
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NamedTests
+			{
+				[Test]
+				[Arguments(0, false)]
+				[Arguments(1, true)]
+				[Arguments(2, false)]
+				public async Task AtIndex_ForMethodWithMatchingArgumentName_ShouldSucceedWhenIndexMatches(int index,
+					bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index);
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument name equal to "TBar" at index {{index}},
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments(0, true)]
+				[Arguments(1, false)]
+				[Arguments(2, false)]
+				public async Task AtIndex_FromEnd_ForMethodWithMatchingArgumentName_ShouldSucceedWhenIndexMatches(
+					int index,
+					bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument name equal to "TBar" at index {{index}} from end,
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				public async Task ForMethodWithMatchingArgumentName_ShouldSucceed()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument("TBar");
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				public async Task ForMethodWithNotMatchingArgumentName_ShouldFail()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument("Tbar");
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument name equal to "Tbar",
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				[Arguments("TBa", true)]
+				[Arguments("Tba", false)]
+				public async Task ShouldSupportAsPrefix(string prefix, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument(prefix).AsPrefix();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument name starting with "{{prefix}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments("T[a-zA-Z]*r", true)]
+				[Arguments("T[a-zA-Z]*s", false)]
+				public async Task ShouldSupportAsRegex(string regex, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument(regex).AsRegex();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument name matching regex "{{regex}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments("Bar", true)]
+				[Arguments("bar", false)]
+				public async Task ShouldSupportAsSuffix(string suffix, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument(suffix).AsSuffix();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument name ending with "{{suffix}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments("T??r", true)]
+				[Arguments("T??s", false)]
+				public async Task ShouldSupportAsWildcard(string wildcard, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument(wildcard).AsWildcard();
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage($$"""
+						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						               are all generic with argument name matching "{{wildcard}}",
+						               but it contained not matching methods
+
+						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+						               """);
+				}
+
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(false, false)]
+				public async Task ShouldSupportIgnoringCase(bool ignoreCase, bool expectSuccess)
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument("TBAR").IgnoringCase(ignoreCase);
+					}
+
+					await That(Act).Throws()
+						.OnlyIf(!expectSuccess)
+						.WithMessage("""
+						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+						             are all generic with argument name equal to "TBAR",
+						             but it contained not matching methods
+
+						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+						             """);
+				}
+
+				[Test]
+				public async Task ShouldSupportUsingCustomComparer()
+				{
+					Filtered.Methods subject = GetMethods("GenericWithRestrictedSecondArgumentMethod");
+
+					async Task Act()
+					{
+						await That(subject).AreGeneric().WithArgument("TBAr")
+							.Using(new IgnoreCaseForVocalsComparer());
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,95 @@
+﻿using System.Reflection;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatMethod
+{
+	public sealed class IsNotGeneric
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenMethodIsGeneric_ShouldFail()
+			{
+				MethodInfo? subject = GetMethod("GenericMethod");
+
+				async Task Act()
+				{
+					await That(subject).IsNotGeneric();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is not generic,
+					             but it was generic T ThatMethod.ClassWithMethods.GenericMethod<T>(T value)
+					             """);
+			}
+
+			[Test]
+			public async Task WhenMethodIsNotGeneric_ShouldSucceed()
+			{
+				MethodInfo? subject = GetMethod("NonGenericMethod");
+
+				async Task Act()
+				{
+					await That(subject).IsNotGeneric();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenMethodIsNull_ShouldFail()
+			{
+				MethodInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotGeneric();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is not generic,
+					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenMethodIsGeneric_ShouldSucceed()
+			{
+				MethodInfo? subject = GetMethod("GenericMethod");
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenMethodIsNotGeneric_ShouldFail()
+			{
+				MethodInfo? subject = GetMethod("NonGenericMethod");
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is generic,
+					             but it was non-generic int ThatMethod.ClassWithMethods.NonGenericMethod()
+					             """);
+			}
+		}
+	}
+}

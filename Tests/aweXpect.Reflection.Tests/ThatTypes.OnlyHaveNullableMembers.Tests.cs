@@ -1,0 +1,211 @@
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatTypes
+{
+	public sealed class OnlyHaveNullableMembers
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenAllTypesOnlyHaveNullableMembers_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithNullableMembers),
+					typeof(ClassWithSingleNullableProperty),
+					typeof(ClassWithoutMembers),
+				];
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithNullableMembers),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             only have nullable members,
+					             but it contained types with non-nullable members
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenMultipleTypesDoNotComply_ShouldListAllWithComma()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithSingleNonNullableProperty),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              only have nullable members,
+					              but it contained types with non-nullable members
+
+					              Not matching items:
+					              [
+					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }],
+					                <null>
+					              ]
+					              """);
+			}
+
+			[Test]
+			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithNullableMembers),
+					typeof(ClassWithSingleNonNullableProperty),
+				];
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					              Expected that subject
+					              only have nullable members,
+					              but it contained types with non-nullable members
+
+					              Not matching items:
+					              [
+					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }]
+					              ]
+					              """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenAllTypesOnlyHaveNullableMembers_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithSingleNullableProperty),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.OnlyHaveNullableMembers());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             not all only have nullable members,
+					             but it only contained types with only nullable members
+
+					             Collection:
+					             [
+					               ClassWithSingleNullableProperty
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithNullableMembers),
+					typeof(ClassWithSingleNonNullableProperty),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.OnlyHaveNullableMembers());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Test]
+			public async Task WhenAllTypesOnlyHaveNullableMembers_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+					{
+						typeof(ClassWithNullableMembers), typeof(ClassWithSingleNullableProperty),
+					}
+					.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldFail()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+					{
+						typeof(ClassWithNullableMembers), typeof(ClassWithSingleNonNullableProperty),
+					}
+					.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNullableMembers();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             only have nullable members,
+					             but it contained types with non-nullable members
+
+					             Not matching items:
+					             [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
+	}
+}

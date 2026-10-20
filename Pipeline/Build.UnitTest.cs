@@ -46,8 +46,7 @@ partial class Build
 		.OnlyWhenDynamic(() => EnvironmentInfo.IsWin)
 		.Executes(() =>
 		{
-			RunUnitTests(UnitTestProjects(BuildScope), framework => framework == NetFramework,
-				BuildScope == BuildScope.CoreOnly ? Configuration.Debug : Configuration, TestResultsDirectory, true);
+			RunUnitTests(UnitTestProjects, framework => framework == NetFramework);
 		});
 
 	Target DotNetUnitTests => _ => _
@@ -55,65 +54,30 @@ partial class Build
 		.DependsOn(Compile)
 		.Executes(() =>
 		{
-			RunUnitTests(UnitTestProjects(BuildScope), framework => framework != NetFramework,
-				BuildScope == BuildScope.CoreOnly ? Configuration.Debug : Configuration, TestResultsDirectory, true);
+			RunUnitTests(UnitTestProjects, framework => framework != NetFramework);
 		});
 
-	Project[] UnitTestProjects(BuildScope buildScope)
-		=> buildScope switch
-		{
-			// The generator of aweXpect.Core is tested by compiling its output against the Core project, which only the
-			// Debug configuration references, so its coverage counts for a Core change as well.
-			BuildScope.CoreOnly => [Solution.Tests.aweXpect_Core_Tests, Solution.Tests.aweXpect_Generators_Tests,],
-			BuildScope.MainOnly =>
-			[
-				Solution.Tests.aweXpect_Analyzers_Tests,
-				Solution.Tests.aweXpect_Generators_Tests,
-				Solution.Tests.aweXpect_Tests,
-				Solution.Tests.aweXpect_Internal_Tests,
-				Solution.Tests.aweXpect_Docs_Tests,
-			],
-			_ =>
-			[
-				Solution.Tests.aweXpect_Core_Tests,
-				Solution.Tests.aweXpect_Analyzers_Tests,
-				Solution.Tests.aweXpect_Generators_Tests,
-				Solution.Tests.aweXpect_Tests,
-				Solution.Tests.aweXpect_Internal_Tests,
-				Solution.Tests.aweXpect_Docs_Tests,
-			],
-		};
-
-	Target DebugUnitTests => _ => _
-		.Unlisted()
-		.DependsOn(UnitTests)
-		.OnlyWhenDynamic(() => BuildScope != BuildScope.Default)
-		.Executes(() =>
-		{
-			DotNetBuild(s => s
-				.SetProjectFile(Solution)
-				.SetConfiguration(Configuration.Debug)
-				.EnableNoLogo());
-
-			// The projects that `UnitTests` did not run in Debug: under `CoreOnly` it runs its own projects in Debug.
-			Project[] projects = BuildScope == BuildScope.CoreOnly
-				? UnitTestProjects(BuildScope.MainOnly).Except(UnitTestProjects(BuildScope.CoreOnly)).ToArray()
-				: UnitTestProjects(BuildScope.Default);
-
-			AbsolutePath resultsDirectory = TestResultsDirectory / Configuration.Debug;
-			RunUnitTests(projects, framework => framework != NetFramework,
-				Configuration.Debug, resultsDirectory, false);
-
-			if (EnvironmentInfo.IsWin)
-			{
-				RunUnitTests(projects, framework => framework == NetFramework,
-					Configuration.Debug, resultsDirectory, false);
-			}
-		});
-
-	Target UnitTestsWithCoverage => _ => _
-		.DependsOn(UnitTests)
-		.DependsOn(DebugUnitTests);
+	Project[] UnitTestProjects =>
+	[
+		Solution.Tests.aweXpect_Core_Tests,
+		Solution.Tests.aweXpect_Analyzers_Tests,
+		Solution.Tests.aweXpect_Generators_Tests,
+		Solution.Tests.aweXpect_Tests,
+		Solution.Tests.aweXpect_Internal_Tests,
+		Solution.Tests.aweXpect_Docs_Tests,
+		Solution.Tests.aweXpect_Json_Tests,
+		Solution.Tests.aweXpect_Web_Tests,
+		Solution.Tests.aweXpect_Web_Internal_Tests,
+		Solution.Tests.aweXpect_Web_Samples_Tests,
+		Solution.Tests.aweXpect_Xml_Tests,
+		Solution.Tests.aweXpect_Reflection_Tests,
+		Solution.Tests.aweXpect_Reflection_Internal_Tests,
+		Solution.Tests.aweXpect_Snapshots_Tests,
+		Solution.Tests.aweXpect_Snapshots_DiffEngine_Tests,
+		Solution.Tests.aweXpect_Snapshots_Orphans_Tests,
+		Solution.Tests.aweXpect_Snapshots_PublicApi_Tests,
+		Solution.Tests.aweXpect_Snapshots_SourceRoots_Tests,
+	];
 
 	/// <summary>
 	///     Runs the tests of the <paramref name="projects" /> for their matching target frameworks, and then their
@@ -123,11 +87,10 @@ partial class Build
 	///     The test projects are executables of the Microsoft.Testing.Platform, which <c>dotnet test</c> only runs
 	///     when the whole repository opts into that platform, so they are started with <c>dotnet run</c>.
 	///     <para />
-	///     With <paramref name="withReports" />, every run writes a TRX file and a Cobertura coverage file named
-	///     after the project, the target framework and the step into the <paramref name="resultsDirectory" />.
+	///     Every run writes a TRX file and a Cobertura coverage file named after the project, the target framework and
+	///     the step into the <see cref="TestResultsDirectory" />.
 	/// </remarks>
-	void RunUnitTests(Project[] projects, Func<string, bool> includeFramework, Configuration configuration,
-		AbsolutePath resultsDirectory, bool withReports)
+	void RunUnitTests(Project[] projects, Func<string, bool> includeFramework)
 	{
 		(Project Project, string Framework)[] testRuns = projects
 			.SelectMany(project => (project.GetTargetFrameworks() ?? [])
@@ -139,7 +102,7 @@ partial class Build
 
 		// All runs are part of one invocation, so that a failed run neither skips the remaining runs nor the slow tests.
 		DotNetRun(s => s
-				.SetConfiguration(configuration)
+				.SetConfiguration(Configuration)
 				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
 				.EnableNoBuild()
 				.CombineWith(
@@ -155,14 +118,14 @@ partial class Build
 							testRun.IsSlow
 								? $"{testRun.Project.Name}_{testRun.Framework}_Slow"
 								: $"{testRun.Project.Name}_{testRun.Framework}",
-							testRun.IsSlow, resultsDirectory, withReports))),
+							testRun.IsSlow, TestResultsDirectory))),
 			completeOnFailure: true);
 	}
 
 	/// <summary>
 	///     The arguments for the test application behind <c>dotnet run</c>.
 	/// </summary>
-	static string[] TestArguments(string name, bool isSlow, AbsolutePath resultsDirectory, bool withReports)
+	static string[] TestArguments(string name, bool isSlow, AbsolutePath resultsDirectory)
 	{
 		List<string> arguments = ["--", "--disable-logo", $"--results-directory \"{resultsDirectory}\"",];
 		if (isSlow)
@@ -171,17 +134,14 @@ partial class Build
 			arguments.AddRange([$"--treenode-filter \"{SlowTestsFilter}\"", "--minimum-expected-tests 1",]);
 		}
 
-		if (withReports)
-		{
-			arguments.AddRange(
-			[
-				"--report-trx",
-				$"--report-trx-filename {name}.trx",
-				"--coverage",
-				"--coverage-output-format cobertura",
-				$"--coverage-output {name}.cobertura.xml",
-			]);
-		}
+		arguments.AddRange(
+		[
+			"--report-trx",
+			$"--report-trx-filename {name}.trx",
+			"--coverage",
+			"--coverage-output-format cobertura",
+			$"--coverage-output {name}.cobertura.xml",
+		]);
 
 		return arguments.ToArray();
 	}

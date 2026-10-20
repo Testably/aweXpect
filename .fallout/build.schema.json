@@ -38,19 +38,17 @@
         "CodeAnalysisEnd",
         "CodeCoverage",
         "Compile",
-        "DebugUnitTests",
         "DotNetFrameworkUnitTests",
         "DotNetUnitTests",
-        "MutationTestsComment",
         "MutationTestsCore",
         "MutationTestsDashboard",
         "MutationTestsMain",
         "Pack",
+        "ReleaseNotes",
         "Restore",
         "TestFrameworks",
         "TestingPlatformFrameworks",
         "UnitTests",
-        "UnitTestsWithCoverage",
         "VsTestFrameworks",
         "XunitTestingPlatformFrameworks"
       ]
@@ -133,6 +131,10 @@
   "allOf": [
     {
       "properties": {
+        "BenchmarkPackage": {
+          "type": "string",
+          "description": "The package whose benchmarks run - when unset, the benchmarks of all packages run"
+        },
         "Configuration": {
           "type": "string",
           "enum": [

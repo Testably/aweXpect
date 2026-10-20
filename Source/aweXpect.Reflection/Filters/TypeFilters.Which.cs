@@ -1,0 +1,20 @@
+﻿using System;
+using System.Runtime.CompilerServices;
+using aweXpect.Core;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
+
+namespace aweXpect.Reflection;
+
+public static partial class TypeFilters
+{
+	/// <summary>
+	///     Filters for types that satisfy the <paramref name="predicate" />.
+	/// </summary>
+	public static Filtered.Types Which(this Filtered.Types @this,
+		Func<Type, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		=> @this.Which(Filter.Suffix<Type>(type => UserCode.Invoke(predicate, type, "the predicate"),
+			$"matching {doNotPopulateThisValue.TrimExpression()} "));
+}

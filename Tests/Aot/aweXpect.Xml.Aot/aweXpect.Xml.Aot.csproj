@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Xml.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Source\aweXpect.Xml\aweXpect.Xml.csproj"/>
+	</ItemGroup>
+
+</Project>

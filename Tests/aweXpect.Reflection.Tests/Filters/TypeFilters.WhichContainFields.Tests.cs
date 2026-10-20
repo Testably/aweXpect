@@ -1,0 +1,82 @@
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Filters;
+
+public sealed partial class TypeFilters
+{
+	public sealed class WhichContainFields
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task ShouldFilterByMatchingField()
+			{
+				Filtered.Types types = In.Types<ClassWithMarkedField, UntaggedClass>()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>());
+
+				await That(types).IsEqualTo([typeof(ClassWithMarkedField),]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task ShouldUseTheInnerFilterDescription()
+			{
+				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>());
+
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"types which contain fields with TypeFilters.WhichContainFields.MarkerAttribute at least once ")
+					.AsPrefix();
+			}
+
+			[Test]
+			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingField()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>());
+
+				await That(types).IsEmpty();
+			}
+
+			[Test]
+			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingField()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedField),]).InAnyOrder();
+			}
+		}
+
+		[AttributeUsage(AttributeTargets.Field)]
+		private class MarkerAttribute : Attribute
+		{
+		}
+
+		private class ClassWithMarkedField
+		{
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+			[Marker] public int? MarkedField;
+#pragma warning restore CS0649
+		}
+
+		private class UntaggedClass
+		{
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+			public int? PlainField;
+#pragma warning restore CS0649
+		}
+
+		private class BaseClassWithMarkedField
+		{
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+			[Marker] public int? Inherited;
+#pragma warning restore CS0649
+		}
+
+		private class DerivedClassWithInheritedMarkedField : BaseClassWithMarkedField
+		{
+		}
+	}
+}

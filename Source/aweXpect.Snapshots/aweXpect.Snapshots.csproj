@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect</RootNamespace>
+		<IsBetaPackage>true</IsBetaPackage>
+		<Description>Snapshot testing for aweXpect.</Description>
+		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Snapshots/00-index.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj" PrivateAssets="contentfiles;analyzers;build"/>
+		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="buildTransitive/aweXpect.Snapshots.targets" Pack="true" PackagePath="buildTransitive/"/>
+	</ItemGroup>
+
+</Project>

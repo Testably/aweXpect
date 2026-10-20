@@ -13,10 +13,8 @@ using Fallout.Common;
 using Fallout.Common.IO;
 using Fallout.Common.Tooling;
 using Fallout.Common.Tools.DotNet;
-using Octokit;
 using Serilog;
 using static Fallout.Common.Tools.DotNet.DotNetTasks;
-using ProductHeaderValue = Octokit.ProductHeaderValue;
 using Project = Fallout.Solutions.Project;
 
 // ReSharper disable UnusedMember.Local
@@ -85,7 +83,6 @@ partial class Build
 	Target MutationTestsCore => _ => _
 		.DependsOn(Compile)
 		.OnlyWhenDynamic(() => !DisableMutationTests)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(() =>
 		{
 			// The framework projects run on VSTest, which the runner for the Microsoft.Testing.Platform cannot execute.
@@ -96,84 +93,16 @@ partial class Build
 	Target MutationTestsMain => _ => _
 		.DependsOn(Compile)
 		.OnlyWhenDynamic(() => !DisableMutationTests)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(() =>
 		{
 			ExecuteMutationTest(Solution.aweXpect,
 				[Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,], MainMutationSlices);
 		});
 
-	Target MutationTestsComment => _ => _
-		.After(MutationTestsMain)
-		.After(MutationTestsCore)
-		.DependsOn(MutationTestsDashboard)
-		.OnlyWhenDynamic(() => !DisableMutationTests)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
-		.Executes(async () =>
-		{
-			// The artifacts are untrusted, because the pull request controls the code that produces them, so the pull
-			// request to comment on comes from the event of the workflow run.
-			int? prId = await BuildExtensions.ResolvePullRequestOfWorkflowRun(GithubToken);
-			if (prId == null)
-			{
-				Log.Information(
-					"The workflow run belongs to no pull request, so there is no mutation comment to write");
-				return;
-			}
-
-			List<string> mutationCommentBodies = [];
-			foreach (AbsolutePath file in ArtifactsDirectory.GetFiles("MutationTest_*.md", 2))
-			{
-				mutationCommentBodies.Add(await File.ReadAllTextAsync(file));
-			}
-
-			if (mutationCommentBodies.Count == 0)
-			{
-				Log.Warning("No files matching \"MutationTest_*.md\" found");
-				return;
-			}
-
-			GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
-			Credentials tokenAuth = new(GithubToken);
-			gitHubClient.Credentials = tokenAuth;
-			IReadOnlyList<IssueComment> comments =
-				await gitHubClient.Issue.Comment.GetAllForIssue("Testably",
-					"aweXpect", prId.Value);
-			IssueComment existingComment = null;
-			Log.Information($"Found {comments.Count} comments");
-			foreach (IssueComment comment in comments)
-			{
-				if (comment.IsPipelineComment("## :alien: Mutation Results"))
-				{
-					Log.Information($"Found comment: {comment.Body}");
-					existingComment = comment;
-				}
-			}
-
-			string body = "## :alien: Mutation Results"
-			              + Environment.NewLine
-			              + $"[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect%2Fpull/{prId}/merge)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect/pull/{prId}/merge)"
-			              + Environment.NewLine
-			              + string.Join(Environment.NewLine, mutationCommentBodies).AsUntrustedCommentContent();
-			if (existingComment == null)
-			{
-				Log.Information($"Create comment:\n{body}");
-				await gitHubClient.Issue.Comment.Create("Testably", "aweXpect",
-					prId.Value, body);
-			}
-			else
-			{
-				Log.Information($"Update comment:\n{body}");
-				await gitHubClient.Issue.Comment.Update("Testably", "aweXpect",
-					existingComment.Id, body);
-			}
-		});
-
 	Target MutationTestsDashboard => _ => _
 		.After(MutationTestsMain)
 		.After(MutationTestsCore)
 		.OnlyWhenDynamic(() => !DisableMutationTests)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(async () =>
 		{
 			string version = await GetMutationDashboardVersion();
@@ -435,14 +364,6 @@ partial class Build
 		AbsolutePath strykerOutputDirectory = ArtifactsDirectory / "Stryker";
 		strykerOutputDirectory.CreateOrCleanDirectory();
 		toolPath.CreateOrCleanDirectory();
-
-		// Stryker resolves the project references before it builds the solution in `Debug`, but the
-		// `Compile` target leaves `project.assets.json` restored for `Release`, where `aweXpect` and
-		// `aweXpect.Core.Tests` reference the released packages instead of the projects. Without this
-		// restore, Stryker compiles the mutants against both assemblies and fails with CS0433.
-		DotNetRestore(_ => _
-			.SetProjectFile(Solution)
-			.SetConfigFile(RootDirectory / "nuget.config"));
 
 		DotNetToolInstall(_ => _
 			.SetPackageName("dotnet-stryker")

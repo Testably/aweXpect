@@ -1,0 +1,44 @@
+﻿namespace aweXpect.Reflection.Tests.Collections;
+
+public sealed partial class Filtered
+{
+	public sealed partial class Assemblies
+	{
+		public sealed partial class Classes
+		{
+			public sealed class SealedTests
+			{
+				[Test]
+				public async Task ShouldApplyFilterForClasses()
+				{
+					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Sealed.Classes();
+
+					await That(types).All().Satisfy(t => t is
+						{ IsClass: true, IsAbstract: false, IsSealed: true, IsInterface: false, }).And.IsNotEmpty();
+				}
+
+				[Test]
+				public async Task ShouldIncludeAbstractInformationInErrorMessage()
+				{
+					async Task Act()
+					{
+						await That(In.AllLoadedAssemblies().Sealed.Classes())
+							.AreInternal();
+					}
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that sealed classes in all loaded assemblies
+						             are all internal,
+						             but it contained not matching items
+
+						             Not matching items:
+						             [
+						               *
+						             ]
+						             """).AsWildcard();
+				}
+			}
+		}
+	}
+}

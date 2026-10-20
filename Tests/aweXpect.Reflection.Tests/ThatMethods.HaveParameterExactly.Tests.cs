@@ -1,0 +1,566 @@
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+
+namespace aweXpect.Reflection.Tests;
+
+// The System.Type overloads are deliberately exercised here alongside the generic ones.
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
+public sealed partial class ThatMethods
+{
+	public sealed class HaveParameterExactly
+	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenAllHaveExactType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenAllHaveExactTypeWithName_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>("stream");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNotAllHaveExactType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>("other");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "other",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithName_WhenSubtypeParameterMatchesName_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!, // MemoryStream is not exactly Stream
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>("stream");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "stream",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithType_WhenAllHaveExactType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithType_WhenAllHaveExactTypeWithName_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithType_WhenExactTypeButNameDoesNotMatch_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "other");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "other",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithType_WhenNotAllHaveExactType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithType_WhenSubtypeParameterMatchesName_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!, // MemoryStream is not exactly Stream
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "stream",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task AsyncEnumerable_WhenAllHaveExactType_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WhenAllHaveExactTypeWithName_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>("stream");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WhenNotAllHaveExactType_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithName_WhenSubtypeParameterMatchesName_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>("stream");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "stream",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly<Stream>("other");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "other",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithType_WhenAllHaveExactType_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithType_WhenAllHaveExactTypeWithName_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithType_WhenNotAllHaveExactType_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithTypeAndName_WhenSubtypeParameterMatchesName_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "stream",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithTypeAndName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "other");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "other",
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+					             """);
+			}
+#endif
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenAllHaveExactType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameterExactly<Stream>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             not all have parameter of exact type Stream,
+					             but it only contained methods with a matching parameter
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNotAllHaveExactType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameterExactly<Stream>());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithType_WhenAllHaveExactType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameterExactly(typeof(Stream)));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             not all have parameter of exact type Stream,
+					             but it only contained methods with a matching parameter
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithType_WhenNotAllHaveExactType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameterExactly(typeof(Stream)));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+#pragma warning disable CA1822
+		// ReSharper disable UnusedParameter.Local
+		// ReSharper disable UnusedMember.Local
+		private class TestClass
+		{
+			public void FirstMethodWithStream(Stream stream) { }
+			public void SecondMethodWithStream(Stream stream) { }
+			public void MethodWithMemoryStream(MemoryStream stream) { }
+		}
+		// ReSharper restore UnusedParameter.Local
+		// ReSharper restore UnusedMember.Local
+#pragma warning restore CA1822
+	}
+}

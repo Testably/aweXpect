@@ -10,16 +10,19 @@
 | `Tests/aweXpect.Generators.Tests` | TUnit, `dotnet run` | `net8.0` | All source generators, and parity of generated metadata with the reflection fallback |
 | `Tests/aweXpect.Analyzers.Tests` | TUnit, `dotnet run` | `net8.0` | Analyzers, code fixers and the `IsNotNullSuppressor` |
 | `Tests/aweXpect.Docs.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Compiles the code blocks in `Docs/pages`, checks that the API is documented |
-| `Tests/aweXpect.Api.Tests` | TUnit, `dotnet run` | `net8.0` | Public API snapshots of `aweXpect` and `aweXpect.Core` per target framework |
+| `Tests/aweXpect.Api.Tests` | TUnit, `dotnet run` | `net8.0` | Public API snapshots of all packages per target framework |
+| `Tests/aweXpect.<Extension>.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | The expectations of an extension package; some have an `.Internal.Tests` project as well |
+| `Tests/aweXpect.Snapshots.*.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Areas of the snapshot packages that need a test project of their own; the `*.Fixture` projects are libraries they read |
 | `Tests/Frameworks/*` | per framework | `net10.0` (NUnit: `net8.0`) | Integration with MSTest, NUnit, xUnit, TUnit and the fallback without a framework |
-| `Tests/Aot/*` | executables | `net10.0` | Smoke checks under Native AOT (TUnit, xUnit v3) |
+| `Tests/Aot/*` | executables | `net10.0` | Smoke checks under Native AOT (TUnit, xUnit v3, one per extension package) |
 
 `aweXpect.Tests` alone is not the whole suite. Pick the projects by what you changed:
 
 - `Source/aweXpect`: `aweXpect.Tests`, `aweXpect.Internal.Tests`, and `aweXpect.Docs.Tests` (slow tests) when a public
   expectation is added or renamed.
-- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there (in `Debug` only,
-  see the package split in [AGENTS.md](../../AGENTS.md#project-constraints)).
+- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there, and the tests of
+  the extension packages if they use what changed.
+- `Source/aweXpect.<Extension>`: the test projects `Tests/aweXpect.<Extension>.*Tests`.
 - `[GuaranteesNotNull]` markings: `aweXpect.Analyzers.Tests` (`IsNotNullSuppressorTests` asserts which expectations
   suppress CS8602) and `GuaranteesNotNullTests` in `aweXpect.Tests`.
 - Generators: `aweXpect.Generators.Tests`.
@@ -36,7 +39,7 @@ therefore runs almost nothing. The pipeline runs them in a step of its own for t
 
 ## Public API snapshots
 
-`ApiApprovalTests` reads the build of every target framework of `aweXpect` and `aweXpect.Core` and compares its public
+`ApiApprovalTests` reads the build of every target framework of each package (`AssemblyNames`) and compares its public
 API with the `*.awexpect-snapshot.txt` files next to it (aweXpect.Snapshots.PublicApi). The `Debug` test build reads
 the `Debug` library builds.
 
@@ -79,3 +82,34 @@ The slow tests of `aweXpect.Docs.Tests`:
   instead of real delays or wider margins. Only tests about real time itself stay on the real clock.
 - `aweXpect.Tests` targets `net48` without the `IsExternalInit` or `Index` polyfill: no records or list patterns there.
   Run `-f net48` first when a test uses a newer language feature, because `net8.0`/`net10.0` pass without it.
+- TUnit runs tests in parallel, also those of one class. A class whose tests change shared state, such as a global
+  customization or an environment variable, is marked `[NotInParallel]`.
+
+## Extension packages
+
+- Each extension has its own test projects, `Tests/aweXpect.<Extension>.Tests`, and `.Internal.Tests` where internals
+  are tested (`InternalsVisibleTo`, so they are signed). The test files mirror the source files as in `aweXpect.Tests`.
+- Each extension has an AOT smoke test in `Tests/Aot/aweXpect.<Extension>.Aot`, a console application whose checks in
+  `Checks.cs` state the result that must hold under the JIT and published with Native AOT, including the failure when
+  the reflection fallback is switched off. A new or changed expectation gets a check there.
+- `aweXpect.Web.Samples.Tests` runs against `Tests/aweXpect.Web.Samples` with a `WebApplicationFactory` and pins the
+  failure message shown in `Docs/extensions/aweXpect.Web/00-index.md`; change both together.
+- `System.Xml` messages are localized on .NET Framework. Tests that assert one use `[UseEnglishMessages]` from
+  `Tests/aweXpect.Xml.Tests/Helpers`.
+- In `aweXpect.Reflection.Tests`, files that declare their own nested `TestAttribute` mark test methods with
+  `[TUnit.Core.Test]`. Sample types live in `TestHelpers/Types`, dependency layers for the architecture rules in
+  `TestHelpers/Dependencies`. Filter tests are usually named `Should<Behaviour>`.
+- Snapshot tests:
+  - `aweXpect.Snapshots.Tests` covers the expectations, rules, stores, comparers, reporters and acceptance. Its tests use
+    a temporary `SnapshotDirectory` or the `InMemorySnapshotStore` instead of writing next to the project.
+  - `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` change process-wide state or read the whole project
+    directory, so they are separate projects that run one test at a time (`[assembly: NotInParallel]`).
+  - `.PublicApi.Tests` checks `PublicApiDeclarations` against `PublicApi.Fixture` (a library covering the language
+    features) and `PublicApi.PackageFixture` (whose package dependency is not in its build output).
+  - `aweXpect.Snapshots.Tests`, `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` set the acceptance to
+    `None` in a module initializer, so `AWEXPECT_ACCEPT_SNAPSHOTS` has no effect there; rename the pending files by
+    hand. `.PublicApi.Tests` honours it.
+  - Snapshots unique per target framework (`@net48`, `@net8.0`, `@net10.0`) need a run on each.
+  - The test projects import `aweXpect.Snapshots.targets`, as a project reference does not; so does
+    `Tests/Aot/aweXpect.Snapshots.Aot`, which is built deterministically (`ContinuousIntegrationBuild`) to cover
+    finding snapshots through the recorded source root.

@@ -1,0 +1,1148 @@
+﻿using System.Collections.Generic;
+using aweXpect.Equivalency;
+
+namespace aweXpect.Json.Tests;
+
+public sealed partial class ThatJsonString
+{
+	public sealed class IsValidJsonMatching
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenItemsArePlural_ShouldUsePluralForm()
+			{
+				string subject = "1\n2";
+
+				async Task Act()
+					=> await That(subject).HasLines(l => l.All().ComplyWith(it => it.IsValidJsonMatching(1)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines of which all are valid JSON which matches 1,
+					             but only 1 of 2 were
+
+					             Not matching items:
+					             [
+					               "2"
+					             ]
+
+					             Collection:
+					             [
+					               "1",
+					               "2"
+					             ]
+
+					             JSON options (item [1]):
+					              - ignore additional properties
+					             """)
+					.Because("the lines are the plural subject of the expectation");
+			}
+
+			[Test]
+			public async Task WhenNestedInThatAll_ShouldIndentTheDifferences()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await ThatAll(That(subject).IsValidJsonMatching([2, 1,]));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject is valid JSON which matches [2, 1,]
+					             but
+					              [01] it differed as
+					                     $[0] was 1 instead of 2 and
+					                     $[1] was 2 instead of 1
+
+					             [01] JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("every line of the differences belongs to the nested result");
+			}
+
+			[Test]
+			[Arguments("true", true, true)]
+			[Arguments("true", false, false)]
+			[Arguments("false", true, false)]
+			[Arguments("false", false, true)]
+			public async Task BooleanValue_ShouldSucceedWhenMatching(string subject, bool expected, bool isMatch)
+			{
+				string subjectString = subject == "true" ? "True" : "False";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(expected);
+
+				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              is valid JSON which matches expected,
+					              but it differed as $ was {subjectString} instead of {expected}
+
+					              JSON options:
+					               - ignore additional properties
+					              """);
+			}
+
+			[Test]
+			[Arguments("42.1", 42.1, true)]
+			[Arguments("1.2", 2.1, false)]
+			public async Task DoubleValue_ShouldSucceedWhenMatching(string subject, double expected, bool isMatch)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(expected);
+
+				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              is valid JSON which matches expected,
+					              but it differed as $ was {subject} instead of *
+					              """).AsWildcard();
+			}
+
+			[Test]
+			[Arguments("42", 42, true)]
+			[Arguments("1", 2, false)]
+			public async Task IntegerValue_ShouldSucceedWhenMatching(string subject, int expected, bool isMatch)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(expected);
+
+				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              is valid JSON which matches expected,
+					              but it differed as $ was {subject} instead of {expected}
+
+					              JSON options:
+					               - ignore additional properties
+					              """);
+			}
+
+			[Test]
+			[Arguments("null", true)]
+			[Arguments("{}", false)]
+			public async Task NullValue_ShouldSucceedWhenMatching(string subject, bool isMatch)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(null);
+
+				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              is valid JSON which matches null,
+					              but it differed as $ was object {subject} instead of <null>
+
+					              JSON options:
+					               - ignore additional properties
+					              """);
+			}
+
+			[Test]
+			public async Task ShouldSupportNestedObjects()
+			{
+				string subject = "[{\"foo\": 2}, {\"foo\": 3}, {\"foo\": 4, \"bar\": 2}]";
+
+				await That(subject).IsValidJsonMatching([
+					new
+					{
+						foo = 2,
+					},
+					new
+					{
+						foo = 3,
+					},
+					new
+					{
+						foo = 4,
+					},
+				]);
+			}
+
+			[Test]
+			[Arguments("\"foo\"", "foo", true)]
+			[Arguments("\"foo\"", "bar", false)]
+			public async Task StringValue_ShouldSucceedWhenMatching(string subject, string expected, bool isMatch)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(expected, o => o.IgnoringAdditionalProperties());
+
+				await That(Act).Throws<FailException>().OnlyIf(!isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              is valid JSON which matches expected,
+					              but it differed as $ was {subject} instead of "{expected}"
+
+					              JSON options:
+					               - ignore additional properties
+					              """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(null);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches null,
+					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNullJson_WhenMatchingAgainstNull_ShouldSucceed()
+			{
+				string? subject = "null";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(null);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsInvalidJson_ShouldFail()
+			{
+				string subject = "{ invalid";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches 1,
+					             but it was "{ invalid", which could not be parsed as JSON: *
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsInvalidJson_AndNegated_ShouldFail()
+			{
+				string subject = "{ invalid";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsValidJsonMatching(1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not valid JSON which matches 1,
+					             but it was "{ invalid", which could not be parsed as JSON: *
+					             """).AsWildcard()
+					.Because("a subject that is no JSON cannot be compared, so the negation must not be met either");
+			}
+		}
+
+		public sealed class ArrayTests
+		{
+			[Test]
+			[MethodDataSource(nameof(MatchingArrayValues))]
+			public async Task MatchingValues_ShouldSucceed(string[] expected, string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			[MethodDataSource(nameof(NotMatchingArrayValues))]
+			public async Task NotMatchingValues_ShouldFail(string[] expected, string subject, string errorMessage)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is valid JSON which matches expected,
+					              but it differed {errorMessage}
+
+					              JSON options:
+					               - ignore additional properties
+					              """);
+			}
+
+			[Test]
+			public async Task WhenElementsAreInDifferentOrder_ShouldFail()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([2, 1,]);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [2, 1,],
+					             but it differed as
+					               $[0] was 1 instead of 2 and
+					               $[1] was 2 instead of 1
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
+			{
+				string subject = "[1, 2]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2, 3,]);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2, 3,],
+					             but it differed as $[2] had missing 3
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectContainsAdditionalElements_ShouldFail()
+			{
+				string subject = "[1, 2, 3]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2,]);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it differed as $[2] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("additional array elements are only ignored with IgnoringAdditionalArrayElements");
+			}
+
+			[Test]
+			public async Task WhenSubjectContainsAdditionalElements_WhenIgnoringAdditionalArrayElements_ShouldSucceed()
+			{
+				string subject = "[1, 2, 3]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2,], o => o.IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNestedArrayContainsAdditionalElements_ShouldFail()
+			{
+				string subject = """{"id": 1, "items": ["A", "B", "C"]}""";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						items = new[] { "A", "B", },
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	items = new[] { "A", "B", },
+					             },
+					             but it differed as $.items[2] had unexpected "C"
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("the additional property is ignored, but the additional array element is not");
+			}
+
+			[Test]
+			public async Task WhenSubjectContainsAdditionalElements_WhenNotIgnoringAdditionalProperties_ShouldFail()
+			{
+				string subject = "[1, 2, 3]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2,], o => o.IgnoringAdditionalProperties(false));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,] exactly,
+					             but it differed as $[2] had unexpected 3
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrder_ShouldFail()
+			{
+				string subject = "[3, 2, 1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2,], o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it differed as $[0] had unexpected 3
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore array order
+					             """)
+					.Because("the unpaired element is an additional array element, which is not ignored");
+			}
+
+			[Test]
+			public async Task
+				WhenSubjectContainsExpectedElementsInDifferentOrder_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldSucceed()
+			{
+				string subject = "[3, 2, 1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 2,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectMissesExpectedElement_WhenIgnoringArrayOrderAndAdditionalArrayElements_ShouldFail()
+			{
+				string subject = "[3, 2, 1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching([1, 4,],
+						o => o.IgnoringArrayOrder().IgnoringAdditionalArrayElements());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 4,],
+					             but it differed as $ had missing 4
+
+					             JSON options:
+					              - ignore additional properties
+					              - ignore additional array elements
+					              - ignore array order
+					             """);
+			}
+
+			public static IEnumerable<Func<(string[], string)>> MatchingArrayValues()
+				=> [
+					() => (
+						[], "[]"
+					),
+					() => (
+						[
+							"foo", "bar",
+						],
+						"[\"foo\", \"bar\"]"
+					),
+				];
+
+			public static IEnumerable<Func<(string[], string, string)>> NotMatchingArrayValues()
+				=> [
+					() => (
+						[
+							"foo",
+						],
+						"[]", "as $[0] had missing \"foo\""
+					),
+					() => (
+						[], "[\"foo\"]", "as $[0] had unexpected \"foo\""
+					),
+					() => (
+						[
+							"bar", "foo",
+						],
+						"[\"foo\", \"bar\"]", """
+						                      as
+						                        $[0] was "foo" instead of "bar" and
+						                        $[1] was "bar" instead of "foo"
+						                      """
+					),
+				];
+		}
+
+		public sealed class ObjectTests
+		{
+			[Test]
+			public async Task WhenPropertyDiffers_ShouldNameItsJsonPath()
+			{
+				string json = """{"title": "Yesterday", "artist": "The Beatles", "durationSeconds": 125}""";
+
+				async Task Act()
+					=> await That(json).IsValidJsonMatching(new { title = "Let It Be" });
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that json
+					             is valid JSON which matches new { title = "Let It Be" },
+					             but it differed as $.title was "Yesterday" instead of "Let It Be"
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("the docs show this failure message");
+			}
+
+			[Test]
+			public async Task WhenIgnoredPropertyDiffers_WhenIgnoringMember_ShouldSucceed()
+			{
+				string subject = "{\"id\": 1, \"name\": \"a\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						id = 2,
+						name = "a",
+					}, o => o.IgnoringMember("id"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			[Arguments("{}", "$.foo was missing")]
+			[Arguments("{\"foo\": 2}")]
+			public async Task ShouldFailIfPropertyIsMissing(string subject,
+				string? errorMessage = null)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = 2,
+					});
+
+				await That(Act).Throws<FailException>().OnlyIf(errorMessage != null)
+					.WithMessage($$"""
+					               Expected that subject
+					               is valid JSON which matches new
+					               {
+					               	foo = 2,
+					               },
+					               but it differed as {{errorMessage}}
+
+					               JSON options:
+					                - ignore additional properties
+					               """);
+			}
+
+			[Test]
+			[Arguments("{}")]
+			[Arguments("{\"foo\": 1}")]
+			public async Task WhenExpectedIsEmpty_ShouldSucceed(string subject)
+			{
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new object());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsDouble_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						bar2 = It.Is<double>().That.IsLessThan(2.0),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	bar2 = It.Is<double>().That.IsLessThan(2.0),
+					             },
+					             but it differed as $.bar2 was 2.1, which differs by 0.1
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsFalse_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						baz2 = It.Is<bool>().That.IsTrue(),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	baz2 = It.Is<bool>().That.IsTrue(),
+					             },
+					             but it differed as $.baz2 was False
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsInt_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						bar = It.Is<int>().That.IsGreaterThan(3),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	bar = It.Is<int>().That.IsGreaterThan(3),
+					             },
+					             but it differed as $.bar was 2, which differs by -1
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsList_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						list = It.Is<object[]>().That.Contains(4),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	list = It.Is<object[]>().That.Contains(4),
+					             },
+					             but it differed as $.list did not contain it
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsNull_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						empty = It.Is<object?>().That.IsNotNull(),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	empty = It.Is<object?>().That.IsNotNull(),
+					             },
+					             but it differed as $.empty was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyIsNull_AndItIsExpectsAPrefix_ShouldFail()
+			{
+				string subject = "{\"foo\": null}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.StartsWith("a"),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.StartsWith("a"),
+					             },
+					             but it differed as $.foo was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("a null value has no content that could start with the prefix");
+			}
+
+			[Test]
+			public async Task WhenPropertyIsNull_AndItIsExpectsNoPrefix_ShouldFail()
+			{
+				string subject = "{\"foo\": null}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.DoesNotStartWith("a"),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.DoesNotStartWith("a"),
+					             },
+					             but it differed as $.foo was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("a null value has no content, so the negated expectation fails as well");
+			}
+
+			[Test]
+			public async Task WhenItIsPredicateThrows_ShouldFail()
+			{
+				string subject = "{\"foo\": \"bar\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.Satisfies(_ => throw new InvalidOperationException("Yesterday")),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.Satisfies(_ => throw new InvalidOperationException("Yesterday")),
+					             },
+					             but it differed as $.foo the predicate did throw an InvalidOperationException:
+					               Yesterday
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("a predicate that throws answered nothing, so it must not count as met");
+			}
+
+			[Test]
+			public async Task WhenItIsWaitsLongerThanTheTimeout_ShouldStopAtTheTimeout()
+			{
+				string subject = "{\"foo\": \"bar\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+						{
+							foo = It.Is<string>().That.Satisfies(_ => false).Within(TimeSpan.FromSeconds(30)),
+						})
+						.WithTimeout(TimeSpan.FromMilliseconds(100));
+
+				await That(Act).Throws<FailException>().Within(TimeSpan.FromSeconds(10))
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.Satisfies(_ => false).Within(TimeSpan.FromSeconds(30)),
+					             },
+					             but it did not finish within 0:00.100
+
+					             JSON options:
+					              - ignore additional properties
+					             """)
+					.Because("the nested expectation must be canceled by the timeout of the evaluation");
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsObject_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						nested = new
+						{
+							foo = It.Is<string>().That.IsEqualTo("A"),
+						},
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	nested = new
+					             	{
+					             		foo = It.Is<string>().That.IsEqualTo("A"),
+					             	},
+					             },
+					             but it differed as $.nested.foo was "" with a length of 0, which is shorter than the expected length of 1 and misses:
+					               "A"
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsString_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.EndsWith("bc"),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.EndsWith("bc"),
+					             },
+					             but it differed as $.foo was "xyz", which differs at index 2:
+					                  ↓ (actual)
+					               "xyz"
+					                "bc"
+					                  ↑ (expected suffix)
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyDoesNotMatchItIsTrue_ShouldFail()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						baz1 = It.Is<bool>().That.IsFalse(),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	baz1 = It.Is<bool>().That.IsFalse(),
+					             },
+					             but it differed as $.baz1 was True
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyHasDifferentValue_ShouldFail()
+			{
+				string subject = "{\"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						bar = 3,
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	bar = 3,
+					             },
+					             but it differed as $.bar was 2 instead of 3
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenPropertyMatchesItIs_ShouldSucceed()
+			{
+				string subject = """
+				                 {
+				                   "foo": "xyz",
+				                   "bar": 2,
+				                   "bar2": 2.1,
+				                   "baz1": true,
+				                   "baz2": false,
+				                   "empty": null,
+				                   "list": [1, 2, 3],
+				                   "nested": {
+				                     "foo": ""
+				                   }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						//foo = It.Is<string>().That.EndsWith("yz"),
+						//bar = It.Is<int>().That.IsGreaterThan(1),
+						//bar2 = It.Is<double>().That.IsBetween(2.0).And(2.2),
+						//baz1 = It.Is<bool>().That.IsTrue(),
+						//baz2 = It.Is<bool>().That.IsFalse(),
+						//empty = It.Is<object?>().That.IsNull(),
+						list = It.Is<object[]>().That.HasItem(2).AtIndex(1),
+						nested = new
+						{
+							foo = It.Is<string>().That.IsEmpty(),
+						},
+					});
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectHasAdditionalProperties_ShouldSucceed()
+			{
+				string subject = "{\"foo\": null, \"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						bar = 2,
+					}, o => o.IgnoringAdditionalProperties());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectHasAdditionalProperties_WhenNotIgnoringAdditionalProperties_ShouldFail()
+			{
+				string subject = "{\"foo\": null, \"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						bar = 2,
+					}, o => o.IgnoringAdditionalProperties(false));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	bar = 2,
+					             } exactly,
+					             but it differed as $.foo had unexpected <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectHasAdditionalNullProperty_WhenNotIgnoringAdditionalProperties_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				string subject = "{\"foo\": null, \"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						bar = 2,
+					}, o => o.IgnoringAdditionalProperties(false).TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenExpectedNullPropertyIsMissing_WhenTreatingNullAsAbsent_ShouldSucceed()
+			{
+				string subject = "{\"bar\": 2}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = (string?)null,
+					}, o => o.TreatingNullAsAbsent());
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class ComparingNumbersWithinTests
+		{
+			[Test]
+			public async Task WhenNumberIsWithinTheTolerance_ShouldSucceed()
+			{
+				string subject = "{\"price\": 9.96, \"name\": \"a\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						price = 10,
+					}, o => o.ComparingNumbersWithin(0.05));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNumberIsOutsideTheTolerance_ShouldFail()
+			{
+				string subject = "{\"price\": 9.94, \"name\": \"a\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						price = 10,
+					}, o => o.ComparingNumbersWithin(0.05));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	price = 10,
+					             },
+					             but it differed as $.price was 9.94 instead of 10 ± 0.05
+
+					             JSON options:
+					              - ignore additional properties
+					              - compare numbers within ± 0.05
+					             """);
+			}
+		}
+	}
+}

@@ -1,0 +1,258 @@
+﻿using System.Linq;
+using System.Reflection;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
+
+namespace aweXpect.Reflection.Internal.Tests.Helpers;
+
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
+public sealed class PropertyInfoHelpersTests
+{
+	[Test]
+	public async Task HasAccessModifier_Internal_ShouldMatchForExpectedProperty()
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
+			.Single(c => c.Name == nameof(AccessModifierTestClass.InternalProperty));
+
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsTrue();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
+	}
+
+	[Test]
+	[Arguments(nameof(AccessModifierTestClass.PublicPropertyWithPrivateGetter))]
+	[Arguments(nameof(AccessModifierTestClass.PublicPropertyWithPrivateSetter))]
+	public async Task HasAccessModifier_MixedAccessConditionsForGetterAndSetter_ShouldMatchBoth(string propertyName)
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
+			.Single(c => c.Name == propertyName);
+
+		await That(propertyInfo).IsNotNull();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsTrue();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
+	}
+
+	[Test]
+	public async Task HasAccessModifier_Private_ShouldMatchForExpectedProperty()
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
+			.Single(c => c.Name == "PrivateProperty");
+
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsTrue();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
+	}
+
+	[Test]
+	public async Task HasAccessModifier_Protected_ShouldMatchForExpectedProperty()
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
+			.Single(c => c.Name == "ProtectedProperty");
+
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsTrue();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
+	}
+
+	[Test]
+	public async Task HasAccessModifier_Public_ShouldMatchForExpectedProperty()
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
+			.Single(c => c.Name == nameof(AccessModifierTestClass.PublicProperty));
+
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
+	}
+
+	[Test]
+	public async Task HasAccessModifier_WhenNull_ShouldReturnFalse()
+	{
+		PropertyInfo? propertyInfo = null;
+
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
+	}
+
+	[Test]
+	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result = propertyInfo.HasAttribute<DummyAttribute>();
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result = propertyInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result1 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Test]
+	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.PropertyWithAttributeInBaseClass))!;
+
+		bool result = propertyInfo.HasAttribute<DummyAttribute>();
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property2WithoutAttribute))!;
+
+		bool result = propertyInfo.HasAttribute<DummyAttribute>();
+
+		await That(result).IsFalse();
+	}
+
+	[Test]
+	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result1 = propertyInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
+		bool result2 = propertyInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Test]
+	public async Task IsExtensionProperty_WhenNull_ShouldReturnFalse()
+	{
+		PropertyInfo? propertyInfo = null;
+
+		await That(propertyInfo.IsExtensionProperty()).IsFalse();
+	}
+
+	[Test]
+	public async Task IsExtensionProperty_WhenRegularProperty_ShouldReturnFalse()
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass)
+			.GetProperty(nameof(AccessModifierTestClass.PublicProperty))!;
+
+		await That(propertyInfo.IsExtensionProperty()).IsFalse();
+	}
+
+	[Test]
+	public async Task IsReallyStatic_WhenInstanceProperty_ShouldReturnFalse()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.InstanceProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsFalse();
+	}
+
+	[Test]
+	public async Task IsReallyStatic_WhenOnlyGetterIsStatic_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.StaticGetOnlyProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task IsReallyStatic_WhenOnlySetterIsStatic_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.StaticSetOnlyProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsTrue();
+	}
+
+	[AttributeUsage(AttributeTargets.Property)]
+	private class DummyAttribute : Attribute
+	{
+		public DummyAttribute(int value)
+		{
+			Value = value;
+		}
+
+		public int Value { get; }
+	}
+
+	private class TestClass : TestClassBase
+	{
+		[Dummy(1)] public int Property1WithAttribute { get; set; } = 1;
+
+		public int Property2WithoutAttribute { get; set; } = 1;
+
+		public override int PropertyWithAttributeInBaseClass { get; set; } = 1;
+	}
+
+	private class TestClassBase
+	{
+		[Dummy(1)] public virtual int PropertyWithAttributeInBaseClass { get; set; } = 1;
+	}
+
+	private class AccessModifierTestClass
+	{
+		internal int InternalProperty { get; set; }
+
+		private int PrivateProperty { get; set; }
+
+		protected int ProtectedProperty { get; set; }
+		public int PublicProperty { get; set; }
+		public int PublicPropertyWithPrivateSetter { get; private set; }
+		public int PublicPropertyWithPrivateGetter { private get; set; }
+	}
+
+	private class StaticAccessorTestClass
+	{
+		private static int _staticSetOnly;
+
+		public static int StaticGetOnlyProperty => 1;
+
+		public static int StaticSetOnlyProperty
+		{
+			set => _staticSetOnly = value;
+		}
+
+		public int InstanceProperty { get; set; }
+	}
+}
+
+#pragma warning restore CA2263 // Prefer generic overload when type is known

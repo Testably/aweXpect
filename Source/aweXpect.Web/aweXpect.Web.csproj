@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect</RootNamespace>
+		<Description>Web and network extensions for aweXpect.</Description>
+		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Web</PackageProjectUrl>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Web/00-index.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Web/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Web/README.md</PackageReadmeSourceFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj" PrivateAssets="contentfiles;analyzers;build"/>
+		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Text.Json"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Web.Internal.Tests" PublicKey="$(PublicKey)"/>
+	</ItemGroup>
+
+</Project>

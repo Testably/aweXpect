@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
+using aweXpect.Core;
+using aweXpect.Core.Extending;
+using aweXpect.Json;
+using aweXpect.Results;
+
+namespace aweXpect;
+
+public static partial class ThatNullableJsonElement
+{
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<JsonElement?, IThat<JsonElement?>> Matches(
+		this IThat<JsonElement?> subject,
+		object? expected,
+		Func<JsonOptions, JsonOptions>? options = null,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		JsonOptions jsonOptions = new()
+		{
+			IgnoreAdditionalProperties = true,
+		};
+		if (options != null)
+		{
+			jsonOptions = options(jsonOptions);
+		}
+
+		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
+				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
+			subject);
+	}
+
+	/// <summary>
+	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> array.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<JsonElement?, IThat<JsonElement?>> Matches<T>(
+		this IThat<JsonElement?> subject,
+		IEnumerable<T> expected,
+		Func<JsonOptions, JsonOptions>? options = null,
+		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		JsonOptions jsonOptions = new()
+		{
+			IgnoreAdditionalProperties = true,
+		};
+		if (options != null)
+		{
+			jsonOptions = options(jsonOptions);
+		}
+
+		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
+				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
+			subject);
+	}
+}

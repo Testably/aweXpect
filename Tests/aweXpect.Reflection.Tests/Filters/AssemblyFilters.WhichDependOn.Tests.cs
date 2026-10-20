@@ -1,0 +1,70 @@
+﻿using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests.Filters;
+
+public sealed partial class AssemblyFilters
+{
+	public sealed class WhichDependOn
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task ShouldFilterForAssembliesWithDependency()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichDependOn("aweXpect.Core");
+
+				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have a dependency on assembly equal to \"aweXpect.Core\"");
+			}
+
+			[Test]
+			public async Task ShouldSupportAsPrefix()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichDependOn("aweXpect.C").AsPrefix();
+
+				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have a dependency on assembly starting with \"aweXpect.C\"");
+			}
+
+			[Test]
+			public async Task ShouldSupportAsWildcard()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichDependOn("aweXpect.*").AsWildcard();
+
+				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have a dependency on assembly matching \"aweXpect.*\"");
+			}
+
+			[Test]
+			public async Task ShouldSupportIgnoringCase()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichDependOn("awexpect.core").IgnoringCase();
+
+				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have a dependency on assembly equal to \"awexpect.core\" ignoring case");
+			}
+
+			[Test]
+			public async Task WhenAssemblyHasNoSuchDependency_ShouldBeFilteredOut()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichDependOn("NonExistentAssembly");
+
+				await That(assemblies).IsEmpty();
+			}
+		}
+	}
+}

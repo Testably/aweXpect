@@ -17,6 +17,11 @@ partial class Build
 	[
 		Solution.Tests.Aot.aweXpect_Aot_TUnit,
 		Solution.Tests.Aot.aweXpect_Aot_Xunit3,
+		Solution.Tests.Aot.aweXpect_Json_Aot,
+		Solution.Tests.Aot.aweXpect_Web_Aot,
+		Solution.Tests.Aot.aweXpect_Xml_Aot,
+		Solution.Tests.Aot.aweXpect_Reflection_Aot,
+		Solution.Tests.Aot.aweXpect_Snapshots_Aot,
 	];
 
 	/// <summary>
@@ -28,7 +33,6 @@ partial class Build
 	/// </remarks>
 	Target AotSmokeTests => _ => _
 		.DependsOn(Compile)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(() =>
 		{
 			foreach (Project project in AotSmokeTestProjects)

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect</RootNamespace>
+		<Description>Extensions on System.Text.Json for aweXpect.</Description>
+		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Json</PackageProjectUrl>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Json/00-index.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Json/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Json/README.md</PackageReadmeSourceFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj" PrivateAssets="contentfiles;analyzers;build"/>
+		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Text.Json"/>
+	</ItemGroup>
+
+</Project>

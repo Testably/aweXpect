@@ -1,0 +1,256 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
+using aweXpect.Customization;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
+
+// ReSharper disable PossibleMultipleEnumeration
+
+namespace aweXpect.Reflection;
+
+public static partial class ThatTypes
+{
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) only types in the <paramref name="namespaces" /> (including sub-namespaces), their own namespace
+	///     or framework assemblies.
+	/// </summary>
+	/// <remarks>
+	///     Dependencies on types whose assembly name matches one of the
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
+	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
+	///     <c>SystemsBiology.Core</c>) are ignored, so
+	///     that framework namespaces do not have to be listed explicitly. The default prefixes include
+	///     <c>Microsoft</c>, so e.g. <c>Microsoft.EntityFrameworkCore</c> is also ignored; forbid such a dependency
+	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static NamespaceDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+	{
+		NamespaceDependencyOptions options = new(namespaces);
+		return new NamespaceDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<NamespaceDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DependOnlyOnConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) only types in the <paramref name="namespaces" /> (including sub-namespaces), their own namespace
+	///     or framework assemblies.
+	/// </summary>
+	/// <remarks>
+	///     Dependencies on types whose assembly name matches one of the
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
+	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
+	///     <c>SystemsBiology.Core</c>) are ignored, so
+	///     that framework namespaces do not have to be listed explicitly. The default prefixes include
+	///     <c>Microsoft</c>, so e.g. <c>Microsoft.EntityFrameworkCore</c> is also ignored; forbid such a dependency
+	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+	{
+		NamespaceDependencyOptions options = new(namespaces);
+		return new NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<NamespaceDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DependOnlyOnConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+#endif
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) only types in the filtered collections of types <paramref name="target" /> or
+	///     <paramref name="additional" />, their own namespace or framework assemblies.
+	/// </summary>
+	/// <remarks>
+	///     The target collections are resolved once per assertion; a dependency is allowed when it is a member of the
+	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
+	///     collection matches any construction of it). A type's own namespace is always allowed, including its
+	///     sub-namespaces unless
+	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <para />
+	///     Dependencies on types whose assembly name matches one of the
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
+	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
+	///     <c>SystemsBiology.Core</c>) are ignored, so
+	///     that framework types do not have to be included explicitly. The default prefixes include
+	///     <c>Microsoft</c>, so e.g. <c>Microsoft.EntityFrameworkCore</c> is also ignored; forbid such a dependency
+	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static TypeSetDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
+	{
+		TypeSetDependencyOptions options = new(target, additional);
+		return new TypeSetDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<TypeSetDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DependOnlyOnTypeSetConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) only types in the filtered collections of types <paramref name="target" /> or
+	///     <paramref name="additional" />, their own namespace or framework assemblies.
+	/// </summary>
+	/// <remarks>
+	///     The target collections are resolved once per assertion; a dependency is allowed when it is a member of the
+	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
+	///     collection matches any construction of it). A type's own namespace is always allowed, including its
+	///     sub-namespaces unless
+	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <para />
+	///     Dependencies on types whose assembly name matches one of the
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
+	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
+	///     <c>SystemsBiology.Core</c>) are ignored, so
+	///     that framework types do not have to be included explicitly. The default prefixes include
+	///     <c>Microsoft</c>, so e.g. <c>Microsoft.EntityFrameworkCore</c> is also ignored; forbid such a dependency
+	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static TypeSetDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
+	{
+		TypeSetDependencyOptions options = new(target, additional);
+		return new TypeSetDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<TypeSetDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DependOnlyOnTypeSetConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+#endif
+
+	private sealed class DependOnlyOnConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		NamespaceDependencyOptions options)
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
+#endif
+	{
+		private readonly Dictionary<Type, IReadOnlyList<string>> _violations = new();
+
+		private bool DependsOnlyOnAllowed(Type? type)
+		{
+			if (type is null)
+			{
+				return false;
+			}
+
+			IReadOnlyList<string> violations = type.GetDependencyNamespaceViolations(options);
+			if (violations.Count > 0)
+			{
+				_violations[type] = violations;
+			}
+
+			return violations.Count == 0;
+		}
+
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
+#endif
+
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, DependsOnlyOnAllowed);
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("all depend only on ").Append(options.Describe());
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained types with disallowed dependencies");
+		protected override Func<string?> FormatItems(Type?[] items)
+			=> () => DependencyViolationRenderer.FormatItemsWithDisallowedDependencies(items, _violations);
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("not all depend only on ").Append(options.Describe());
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" only contained types depending only on the allowed namespaces");
+	}
+
+	private sealed class DependOnlyOnTypeSetConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		TypeSetDependencyOptions options)
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
+#endif
+	{
+		private readonly Dictionary<Type, IReadOnlyList<string>> _violations = new();
+
+		private bool DependsOnlyOnAllowed(Type? type, ResolvedTypeSet allowed)
+		{
+			if (type is null)
+			{
+				return false;
+			}
+
+			IReadOnlyList<string> violations = type.GetDependencyTypeSetViolations(allowed);
+			if (violations.Count > 0)
+			{
+				_violations[type] = violations;
+			}
+
+			return violations.Count == 0;
+		}
+
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
+			return await SetAsyncValue(actual, context, type => DependsOnlyOnAllowed(type, allowed), cancellationToken);
+		}
+#endif
+
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
+			return SetValue(actual, context, type => DependsOnlyOnAllowed(type, allowed));
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("all depend only on ").Append(options.Describe());
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained types with disallowed dependencies");
+		protected override Func<string?> FormatItems(Type?[] items)
+			=> () => DependencyViolationRenderer.FormatItemsWithDisallowedDependencies(items, _violations);
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("not all depend only on ").Append(options.Describe());
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" only contained types depending only on the allowed types");
+	}
+}

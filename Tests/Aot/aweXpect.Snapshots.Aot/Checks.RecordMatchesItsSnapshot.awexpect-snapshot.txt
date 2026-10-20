@@ -1,0 +1,8 @@
+Album {
+  Price = 12.99,
+  Title = "Abbey Road",
+  Tracks = [
+    "Come Together",
+    "Something"
+  ]
+}

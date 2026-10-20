@@ -1,0 +1,9 @@
+<Project>
+
+	<!--
+	    A project reference does not import the package targets that a consumer gets. They are imported here, after
+	    the project file, like the targets of a package, so that they see the properties the project sets.
+	-->
+	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Core/buildTransitive/aweXpect.Core.targets"/>
+
+</Project>

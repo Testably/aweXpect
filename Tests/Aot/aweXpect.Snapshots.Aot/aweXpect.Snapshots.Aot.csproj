@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>aweXpect.Snapshots.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Source\aweXpect.Snapshots\aweXpect.Snapshots.csproj"/>
+	</ItemGroup>
+
+	<!--
+	    The smoke tests are built deterministically, as a CI build of a consumer is, so that the snapshots are only found
+	    when the source root that the build targets of the package record maps the paths `/_/…` back. A project
+	    reference does not import the build targets of the package, so they are imported here.
+	-->
+	<PropertyGroup>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildThisFileDirectory)../../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
+
+</Project>

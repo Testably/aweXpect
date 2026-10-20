@@ -1,0 +1,149 @@
+﻿using System.Net;
+using System.Net.Http;
+
+namespace aweXpect.Tests;
+
+public sealed partial class ThatHttpResponseMessage
+{
+	public sealed partial class HasStatusCode
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder,];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasStatusCode(HttpStatusCode.NotFound)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""*whose Responses have status code 404 NotFound for all items,*""").AsWildcard()
+					.Because("the verb agrees with the plural member");
+			}
+
+			[Test]
+			public async Task WhenFailing_ShouldIncludeRequestInMessage()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(HttpStatusCode.BadRequest)
+					.WithContent("some content")
+					.WithRequest(HttpMethod.Get, "https://awexpect.com")
+					.WithRequestContent("request content");
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has status code 200 OK,
+					             but it had status code 400 BadRequest
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 15
+					               request content
+
+					             HTTP-Response:
+					               400 BadRequest HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Test]
+			public async Task WhenFailing_ShouldIncludeResponseContentAndStatusCodeInMessage()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(HttpStatusCode.BadRequest)
+					.WithContent("some content");
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has status code 200 OK,
+					             but it had status code 400 BadRequest
+
+					             HTTP-Response:
+					               400 BadRequest HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Test]
+			public async Task WhenResponseHasNoContent_ShouldIncludeResponseInMessage()
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.BadRequest);
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has status code 200 OK,
+					             but it had status code 400 BadRequest
+
+					             HTTP-Response:
+					               400 BadRequest HTTP/1.1*
+					             """).AsWildcard()
+					.Because("the content of a new response is null on the .NET Framework and empty otherwise");
+			}
+
+			[Test]
+			public async Task WhenStatusCodeDiffersFromExpected_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(HttpStatusCode.BadRequest);
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
+
+				await That(Act).Throws<FailException>();
+			}
+
+			[Test]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(SuccessStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(RedirectStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ClientErrorStatusCodes))]
+			[MethodDataSource(typeof(ThatHttpResponseMessage), nameof(ServerErrorStatusCodes))]
+			public async Task WhenStatusCodeIsExpected_ShouldSucceed(HttpStatusCode statusCode)
+			{
+				HttpStatusCode expected = statusCode;
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(statusCode);
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(HttpStatusCode.Accepted);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has status code 202 Accepted,
+					             but it was <null>
+					             """);
+			}
+		}
+	}
+}

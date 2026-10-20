@@ -14,14 +14,6 @@ namespace Build;
 )]
 partial class Build : FalloutBuild
 {
-	/// <summary>
-	///     Set this flag temporarily when you introduce breaking changes in the core library.
-	///     This will change the build pipeline to only build and publish the aweXpect.Core or aweXpect package.
-	///     <para />
-	///     Afterward, you can update the package reference in `Directory.Packages.props` and reset this flag.
-	/// </summary>
-	readonly BuildScope BuildScope = BuildScope.Default;
-
 	[Parameter("Github Token")] readonly string GithubToken;
 	[GitRepository] readonly GitRepository Repository;
 

@@ -1,0 +1,67 @@
+using System.IO;
+using static aweXpect.Snapshots.PublicApi.Tests.TestHelpers.Compiler;
+
+namespace aweXpect.Snapshots.PublicApi.Tests;
+
+public sealed partial class ThatPublicApi
+{
+	public sealed partial class MatchesPublicApiSnapshot
+	{
+		public sealed class FileTests
+		{
+			[Test]
+			public async Task ShouldDescribeThePublicApiOfTheAssemblyInTheFile()
+			{
+				FileInfo subject = WriteFile("Library.dll", Compile("Library", "1.0.0.0", """
+					namespace Library;
+					public class Api
+					{
+					    public string Name { get; set; } = "";
+					    public void Play(int volume = 5) { }
+					}
+					"""));
+
+				await That(subject).MatchesPublicApiSnapshot();
+			}
+
+			[Test]
+			public async Task ShouldIncludeForwardedTypes()
+				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot();
+
+			[Test]
+			public async Task WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
+				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
+
+			[Test]
+			public async Task WhenOptionsAreNull_ShouldThrowWhenCalled()
+			{
+				FileInfo subject = new("Library.dll");
+				Func<PublicApiOptions, PublicApiOptions> options = null!;
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot(options);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("options").And
+					.WithMessage("The 'options' cannot be null.*").AsWildcard()
+					.Because("a check while the expectation is evaluated would fail it instead of throwing");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				FileInfo? subject = null;
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a public API which matches the snapshot "*",
+					             but it was <null>
+					             """).AsWildcard().IgnoringNewlineStyle();
+			}
+		}
+	}
+}

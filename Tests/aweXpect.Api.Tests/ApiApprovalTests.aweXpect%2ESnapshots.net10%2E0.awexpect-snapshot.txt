@@ -1,0 +1,269 @@
+[assembly: System.Reflection.AssemblyMetadata("IsAotCompatible", "True")]
+[assembly: System.Reflection.AssemblyMetadata("IsTrimmable", "True")]
+[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.git")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+namespace aweXpect
+{
+    public static class ThatSnapshot
+    {
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BinarySnapshotWithoutExtension<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.Stream?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BinarySnapshotWithoutExtension<byte[]?, aweXpect.Core.IThat<byte[]?>> MatchesSnapshot(this aweXpect.Core.IThat<byte[]?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<T, aweXpect.Core.IThat<T>> MatchesSnapshot<[aweXpect.Core.Metadata.RequiresMemberMetadata] T>(this aweXpect.Core.IThat<T> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> WithExtension(this aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> result, string extension) { }
+        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> WithExtension(this aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> result, string extension) { }
+    }
+}
+namespace aweXpect.Results
+{
+    public class BinarySnapshotResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat, aweXpect.Results.BinarySnapshotResult<TType, TThat>>
+    {
+    }
+    public sealed class BinarySnapshotWithoutExtension<TType, TThat>
+    {
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.Obsolete("A snapshot of binary data needs a file extension, e.g. .MatchesSnapshot().WithExtension(\"png\").", true)]
+        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
+        public aweXpect.Results.BinarySnapshotResult<TType, TThat> WithExtension(string extension) { }
+    }
+    public class SnapshotResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
+    {
+        public aweXpect.Snapshots.SnapshotFor<aweXpect.Results.SnapshotResult<TType, TThat>> For { get; }
+    }
+    public class SnapshotResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, TThat, TSelf> where TSelf : aweXpect.Results.SnapshotResult<TType, TThat, TSelf>
+    {
+        public aweXpect.Results.SnapshotUniqueFor<TSelf> UniqueFor { get; }
+        public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
+        public TSelf ComparedWith(aweXpect.Snapshots.SnapshotComparer comparer) { }
+        public TSelf Named(string name) { }
+        public TSelf NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
+    }
+    public sealed class SnapshotUniqueFor<TResult>
+    {
+        public TResult Architecture() { }
+        public TResult OperatingSystem() { }
+        public TResult TargetFramework() { }
+    }
+}
+namespace aweXpect.Snapshots
+{
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public readonly struct EndOfArguments
+    {
+    }
+    public interface IFileSnapshotStore
+    {
+        string GetPendingFile(aweXpect.Snapshots.SnapshotId id);
+        string GetSnapshotFile(aweXpect.Snapshots.SnapshotId id);
+    }
+    public static class OrphanedSnapshots
+    {
+        public static System.Threading.Tasks.Task CheckAsync(bool force = false, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
+    }
+    public enum SnapshotAcceptance
+    {
+        None = 0,
+        New = 1,
+        All = 2,
+    }
+    public abstract class SnapshotComparer
+    {
+        protected SnapshotComparer() { }
+        public abstract System.Threading.Tasks.ValueTask<aweXpect.Snapshots.SnapshotComparison> CompareAsync(aweXpect.Snapshots.SnapshotComparisonContext context, System.Threading.CancellationToken cancellationToken);
+        public static aweXpect.Snapshots.SnapshotComparerRegistration ForExtension(string extension, aweXpect.Snapshots.SnapshotComparer comparer) { }
+        public static aweXpect.Snapshots.SnapshotComparerRegistration When(System.Func<aweXpect.Snapshots.SnapshotComparisonContext, bool> predicate, aweXpect.Snapshots.SnapshotComparer comparer) { }
+    }
+    public sealed class SnapshotComparerRegistration
+    {
+    }
+    public sealed class SnapshotComparison
+    {
+        public string? Description { get; }
+        public bool IsEqual { get; }
+        public static aweXpect.Snapshots.SnapshotComparison Equal { get; }
+        public static aweXpect.Snapshots.SnapshotComparison Different(string description) { }
+    }
+    public sealed class SnapshotComparisonContext
+    {
+        public SnapshotComparisonContext(aweXpect.Snapshots.SnapshotId id, aweXpect.Snapshots.SnapshotContent snapshot, aweXpect.Snapshots.SnapshotContent actual) { }
+        public aweXpect.Snapshots.SnapshotContent Actual { get; }
+        public aweXpect.Snapshots.SnapshotId Id { get; }
+        public aweXpect.Snapshots.SnapshotContent Snapshot { get; }
+    }
+    public sealed class SnapshotContent
+    {
+        public byte[] Bytes { get; }
+        public bool IsText { get; }
+        public string? Text { get; }
+        public static aweXpect.Snapshots.SnapshotContent FromBytes(byte[] bytes) { }
+        public static aweXpect.Snapshots.SnapshotContent FromText(string text) { }
+    }
+    public sealed class SnapshotEmptyCollections<TReturn>
+    {
+        public TReturn Ignore() { }
+    }
+    public sealed class SnapshotFor<TReturn>
+    {
+        public aweXpect.Snapshots.SnapshotKnownText<TReturn> Dates() { }
+        public aweXpect.Snapshots.SnapshotKnownText<TReturn> Guids() { }
+        public aweXpect.Snapshots.SnapshotLines<TReturn> Lines() { }
+        public aweXpect.Snapshots.SnapshotKnownText<TReturn> MachineName() { }
+        public aweXpect.Snapshots.SnapshotMembers<TReturn, object> Members() { }
+        public aweXpect.Snapshots.SnapshotPaths<TReturn> Paths() { }
+        public aweXpect.Snapshots.SnapshotPattern<TReturn> Regex(System.Text.RegularExpressions.Regex pattern) { }
+        public aweXpect.Snapshots.SnapshotText<TReturn> Text(string text) { }
+        public aweXpect.Snapshots.SnapshotKnownText<TReturn> UserName() { }
+        public aweXpect.Snapshots.SnapshotValues<TReturn, object> Values() { }
+    }
+    public sealed record SnapshotId : System.IEquatable<aweXpect.Snapshots.SnapshotId>
+    {
+        public SnapshotId(string SourceFile, string MemberName, string? Name = null) { }
+        public string Extension { get; init; }
+        public string MemberName { get; init; }
+        public string? Name { get; init; }
+        public string SourceFile { get; init; }
+        public string? Variant { get; init; }
+        public void Deconstruct(out string SourceFile, out string MemberName, out string? Name) { }
+        public bool Equals(aweXpect.Snapshots.SnapshotId? other) { }
+        public override bool Equals(object? obj) { }
+        public override int GetHashCode() { }
+        public override string ToString() { }
+        public static bool operator ==(aweXpect.Snapshots.SnapshotId? left, aweXpect.Snapshots.SnapshotId? right) { }
+        public static bool operator !=(aweXpect.Snapshots.SnapshotId? left, aweXpect.Snapshots.SnapshotId? right) { }
+    }
+    public sealed class SnapshotKnownText<TReturn>
+    {
+        public TReturn Mask() { }
+        public TReturn Mask(string template) { }
+    }
+    public class SnapshotLines<TReturn>
+    {
+        public aweXpect.Snapshots.SnapshotLinesContaining<TReturn> Containing(string text) { }
+        public TReturn Convert(System.Func<string, string?> convert) { }
+        public aweXpect.Snapshots.SnapshotLines<TReturn> Except(System.Func<string, bool> predicate) { }
+        public TReturn Ignore() { }
+        public TReturn Mask(string template) { }
+        public aweXpect.Snapshots.SnapshotLines<TReturn> Which(System.Func<string, bool> predicate) { }
+    }
+    public sealed class SnapshotLinesContaining<TReturn> : aweXpect.Snapshots.SnapshotLines<TReturn>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+    }
+    public sealed class SnapshotMatch
+    {
+        public aweXpect.Snapshots.SnapshotId Id { get; }
+        public aweXpect.Snapshots.SnapshotStore Store { get; }
+    }
+    public class SnapshotMembers<TReturn, TValue>
+    {
+        public TReturn Convert<[aweXpect.Core.Metadata.RequiresMemberMetadata] TResult>(System.Func<TValue, TResult> convert) { }
+        public aweXpect.Snapshots.SnapshotMembers<TReturn, TValue> DeclaredIn<T>() { }
+        public aweXpect.Snapshots.SnapshotMembers<TReturn, TValue> Except(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public TReturn Ignore() { }
+        public TReturn Mask() { }
+        public TReturn Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template) { }
+        public TReturn Mask(string template) { }
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, T> OfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, T> OfType<T>() { }
+        public aweXpect.Snapshots.SnapshotMembers<TReturn, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotEmptyCollections<TReturn> WhichAreEmptyCollections() { }
+        public aweXpect.Snapshots.SnapshotMembersWithName<TReturn, TValue> WithName(string name) { }
+        public aweXpect.Snapshots.SnapshotMembers<TReturn, TValue> WithPath(string path) { }
+    }
+    public sealed class SnapshotMembersOfType<TReturn, TValue> : aweXpect.Snapshots.SnapshotMembers<TReturn, TValue>
+    {
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, object> OrOfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotMembersOfType<TReturn, object> OrOfType<T>() { }
+    }
+    public sealed class SnapshotMembersWithName<TReturn, TValue> : aweXpect.Snapshots.SnapshotMembers<TReturn, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+    }
+    public sealed class SnapshotMismatch
+    {
+        public aweXpect.Snapshots.SnapshotContent Actual { get; }
+        public aweXpect.Snapshots.SnapshotId Id { get; }
+        public aweXpect.Snapshots.SnapshotContent? Snapshot { get; }
+        public aweXpect.Snapshots.SnapshotStore Store { get; }
+    }
+    public sealed class SnapshotPaths<TReturn>
+    {
+        public TReturn Keep() { }
+    }
+    public class SnapshotPattern<TReturn>
+    {
+        public TReturn Mask(string template) { }
+    }
+    public abstract class SnapshotReporter
+    {
+        protected SnapshotReporter() { }
+        public virtual System.Threading.Tasks.ValueTask OnMatchAsync(aweXpect.Snapshots.SnapshotMatch match, System.Threading.CancellationToken cancellationToken) { }
+        public virtual System.Threading.Tasks.ValueTask OnMismatchAsync(aweXpect.Snapshots.SnapshotMismatch mismatch, System.Threading.CancellationToken cancellationToken) { }
+    }
+    public sealed class SnapshotRule
+    {
+        public static aweXpect.Snapshots.SnapshotFor<aweXpect.Snapshots.SnapshotRule> For { get; }
+    }
+    public abstract class SnapshotStore
+    {
+        protected SnapshotStore() { }
+        public abstract System.Threading.Tasks.ValueTask AcceptAsync(aweXpect.Snapshots.SnapshotId id, byte[] actual, System.Threading.CancellationToken cancellationToken);
+        public virtual System.Threading.Tasks.ValueTask DeleteAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken) { }
+        public virtual string Describe(aweXpect.Snapshots.SnapshotId id) { }
+        public virtual string? DescribeMismatch(aweXpect.Snapshots.SnapshotId id) { }
+        public virtual System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotId>?> ListAsync(System.Threading.CancellationToken cancellationToken) { }
+        public abstract System.Threading.Tasks.ValueTask<byte[]?> ReadAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken);
+        public virtual System.Threading.Tasks.ValueTask RecordMatchAsync(aweXpect.Snapshots.SnapshotId id, System.Threading.CancellationToken cancellationToken) { }
+        public abstract System.Threading.Tasks.ValueTask RecordMismatchAsync(aweXpect.Snapshots.SnapshotId id, byte[] actual, System.Threading.CancellationToken cancellationToken);
+    }
+    public sealed class SnapshotText<TReturn> : aweXpect.Snapshots.SnapshotPattern<TReturn>
+    {
+        public aweXpect.Snapshots.SnapshotText<TReturn> AsRegex() { }
+        public aweXpect.Snapshots.SnapshotText<TReturn> AsWildcard() { }
+        public aweXpect.Snapshots.SnapshotText<TReturn> IgnoringCase(bool ignoreCase = true) { }
+    }
+    public class SnapshotValues<TReturn, TValue>
+    {
+        public TReturn Convert<[aweXpect.Core.Metadata.RequiresMemberMetadata] TResult>(System.Func<TValue, TResult> convert) { }
+        public aweXpect.Snapshots.SnapshotValues<TReturn, TValue> DeclaredIn<T>() { }
+        public aweXpect.Snapshots.SnapshotValues<TReturn, TValue> Except(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public TReturn Ignore() { }
+        public TReturn Mask() { }
+        public TReturn Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template) { }
+        public TReturn Mask(string template) { }
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, T> OfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, T> OfType<T>() { }
+        public aweXpect.Snapshots.SnapshotValues<TReturn, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotValuesWithName<TReturn, TValue> WithName(string name) { }
+        public aweXpect.Snapshots.SnapshotValues<TReturn, TValue> WithPath(string path) { }
+    }
+    public sealed class SnapshotValuesOfType<TReturn, TValue> : aweXpect.Snapshots.SnapshotValues<TReturn, TValue>
+    {
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, object> OrOfExactType<T>() { }
+        public aweXpect.Snapshots.SnapshotValuesOfType<TReturn, object> OrOfType<T>() { }
+    }
+    public sealed class SnapshotValuesWithName<TReturn, TValue> : aweXpect.Snapshots.SnapshotValues<TReturn, TValue>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+    }
+    public static class SnapshotsAwexpectCustomizationExtensions
+    {
+        public static aweXpect.Snapshots.SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization Snapshots(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public class SnapshotsCustomization
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotAcceptance?> Acceptance { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotComparerRegistration>> Comparers { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotReporter>> Reporters { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotRule>> Rules { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
+        }
+    }
+}
+

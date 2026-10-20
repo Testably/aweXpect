@@ -1,0 +1,13 @@
+Playlist {
+  Name = "Road Trip",
+  Songs = [
+    Song {
+      Id = {Id_1},
+      Title = "Highway to Hell"
+    },
+    Song {
+      Id = {Id_2},
+      Title = "Let It Be"
+    }
+  ]
+}
