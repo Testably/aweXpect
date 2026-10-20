@@ -30,6 +30,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
         "message": "refactor: format the expected status code only when the expectation fails (#1894)"
+      },
+      {
+        "sha": "fe413769d7b2d5c371fae9dae4e8394586b5c644",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
+        "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
       }
     ],
     "labels": [
@@ -37,7 +43,8 @@ window.BENCHMARK_DATA = {
       "66de07e4",
       "391462ba",
       "78b13d35",
-      "87d3aeb2"
+      "87d3aeb2",
+      "fe413769"
     ],
     "datasets": [
       {
@@ -48,7 +55,8 @@ window.BENCHMARK_DATA = {
           1078.875713857015,
           806.6300570624215,
           915.2430147024302,
-          1148.4123452504475
+          1148.4123452504475,
+          1153.9634455362955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60,6 +68,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          1816,
           1816,
           1816,
           1816,
@@ -83,7 +92,8 @@ window.BENCHMARK_DATA = {
           668.750609261649,
           528.2589103062948,
           596.14315478007,
-          780.3684758458819
+          780.3684758458819,
+          781.9141397476196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -95,6 +105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -143,6 +154,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
         "message": "refactor: format the expected status code only when the expectation fails (#1894)"
+      },
+      {
+        "sha": "fe413769d7b2d5c371fae9dae4e8394586b5c644",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
+        "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
       }
     ],
     "labels": [
@@ -150,7 +167,8 @@ window.BENCHMARK_DATA = {
       "66de07e4",
       "391462ba",
       "78b13d35",
-      "87d3aeb2"
+      "87d3aeb2",
+      "fe413769"
     ],
     "datasets": [
       {
@@ -161,7 +179,8 @@ window.BENCHMARK_DATA = {
           12171.387325032552,
           8267.12919834682,
           9192.517417399089,
-          13008.33838704427
+          13008.33838704427,
+          13387.325060163226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -177,7 +196,8 @@ window.BENCHMARK_DATA = {
           34885,
           34885,
           34885,
-          34880
+          34880,
+          34885
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -196,7 +216,8 @@ window.BENCHMARK_DATA = {
           5097.102923583984,
           3744.885112489973,
           4400.290140005259,
-          6438.485093688965
+          6438.485093688965,
+          6425.82346089681
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -208,6 +229,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
