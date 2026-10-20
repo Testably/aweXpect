@@ -1,0 +1,102 @@
+---
+title: Benchmarks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import BenchmarkResult from '@site/src/components/BenchmarkResult';
+import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
+
+These benchmarks compare the happy-path overhead of aweXpect.Xml (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
+
+:::info[Methodology]
+
+- **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Xml.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
+- **Job**: `MediumRun` with the in-process toolchain.
+- **Runner**: `ubuntu-latest` GitHub Actions agent, refreshed on every push to `main`.
+- FluentAssertions has expectations on `XElement` and `XDocument`, but not on XML strings. Where it lacks an expectation, its benchmark does what a FluentAssertions user writes instead, e.g. parse the string into an `XDocument`.
+- Each tab shows the latest measured time and allocated memory; bars are scaled within the row so length corresponds to magnitude. **Lower is better.**
+
+:::
+
+<BenchmarkSummary package="aweXpect.Xml" />
+
+<Tabs groupId="aweXpectXmlBenchmark">
+
+<TabItem value="XmlString" label="XML string" default>
+
+Verifies that an XML `string` is equivalent to the expected one, regardless of its formatting and the order of its attributes.
+FluentAssertions parses both strings into an `XDocument`.
+
+<BenchmarkResult package="aweXpect.Xml" name="XmlString" />
+
+```csharp title="aweXpect"
+await Expect.That(_xmlSubject).IsEqualTo(_xmlExpectation).AsXml();
+```
+
+```csharp title="FluentAssertions"
+XDocument.Parse(_xmlSubject).Should().BeEquivalentTo(XDocument.Parse(_xmlExpectation));
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Xml.Benchmarks/HappyCaseBenchmarks.XmlString.cs)
+
+</TabItem>
+
+<TabItem value="ElementMatches" label="Element">
+
+Verifies that an `XElement` is equivalent to the expected XML, regardless of its formatting and the order of its attributes.
+FluentAssertions parses the expected XML into an `XElement`.
+
+<BenchmarkResult package="aweXpect.Xml" name="ElementMatches" />
+
+```csharp title="aweXpect"
+await Expect.That(_xmlElement).MatchesExactly(_xmlExpectation);
+```
+
+```csharp title="FluentAssertions"
+_xmlElement.Should().BeEquivalentTo(XElement.Parse(_xmlExpectation));
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Xml.Benchmarks/HappyCaseBenchmarks.ElementMatches.cs)
+
+</TabItem>
+
+<TabItem value="ElementOrder" label="Element order">
+
+Verifies that an `XElement` with 10 child elements is equivalent to the expected XML with the child elements in reverse order.
+FluentAssertions has no XML equivalency that ignores the element order, so it only approximates the expectation by comparing the `sku` attributes of the child elements in any order.
+
+<BenchmarkResult package="aweXpect.Xml" name="ElementOrder" />
+
+```csharp title="aweXpect"
+await Expect.That(_order).MatchesExactly(_reversedOrder, o => o.IgnoringElementOrder());
+```
+
+```csharp title="FluentAssertions"
+_order.Elements("item").Select(item => item.Attribute("sku")!.Value).Should()
+    .BeEquivalentTo(XElement.Parse(_reversedOrder).Elements("item").Select(item => item.Attribute("sku")!.Value));
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Xml.Benchmarks/HappyCaseBenchmarks.ElementOrder.cs)
+
+</TabItem>
+
+<TabItem value="Attribute" label="Attribute">
+
+Verifies that an `XElement` has an attribute with the expected value.
+
+<BenchmarkResult package="aweXpect.Xml" name="Attribute" />
+
+```csharp title="aweXpect"
+await Expect.That(_xmlElement).HasAttribute("title", it => it.IsEqualTo("Let It Be"));
+```
+
+```csharp title="FluentAssertions"
+_xmlElement.Should().HaveAttributeWithValue("title", "Let It Be");
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Xml.Benchmarks/HappyCaseBenchmarks.Attribute.cs)
+
+</TabItem>
+
+</Tabs>

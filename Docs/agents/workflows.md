@@ -56,7 +56,9 @@ dotnet run -c Release --project Benchmarks/aweXpect.Benchmarks -- --filter "*Str
   `ci-analysis.yml` posts one PR comment per package that ran. A method name ending in `_aweXpect` is highlighted in
   the comment.
 - On `main`, every package appends its results to its history on the `benchmarks` branch, which the docs site reads:
-  `Docs/pages/static/js` for `aweXpect`, `Docs/extensions/<Package>/static/js` for an extension package.
+  `Docs/pages/static/js` for `aweXpect`, `Docs/extensions/<Package>/static/js` for an extension package. The results
+  are shown in `Docs/pages/12-benchmarks.mdx` and `Docs/extensions/<Package>/99-benchmarks.mdx`; a new benchmark
+  needs a tab there.
 
 ## Mutation tests
 
