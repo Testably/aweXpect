@@ -16,9 +16,14 @@ public partial class HappyCaseBenchmarks
 		RequestMessage = new HttpRequestMessage
 		{
 			Method = HttpMethod.Get,
+			RequestUri = new Uri("https://music.example.com/tracks/1"),
 			Content = new StringContent("request-foo"),
 		},
 		Content = new StringContent("response-bar"),
+		Headers =
+		{
+			{ "x-vendor", "VENDOR" },
+		},
 		StatusCode = HttpStatusCode.OK,
 	};
 
