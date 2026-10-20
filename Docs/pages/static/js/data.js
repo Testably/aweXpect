@@ -402,6 +402,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -471,7 +477,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -544,7 +551,8 @@ window.BENCHMARK_DATA = {
           13071.264615885417,
           12782.875373331706,
           12930.86651284354,
-          12161.331097920736
+          12161.331097920736,
+          12973.617682823768
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -593,6 +601,7 @@ window.BENCHMARK_DATA = {
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -703,7 +712,8 @@ window.BENCHMARK_DATA = {
           380743.09919084824,
           366869.13255208335,
           374332.2424316406,
-          333559.60625
+          333559.60625,
+          377927.78155048075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -781,7 +791,8 @@ window.BENCHMARK_DATA = {
           590292,
           590290,
           590287,
-          590290
+          590290,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -862,7 +873,8 @@ window.BENCHMARK_DATA = {
           19926.72748674665,
           18828.92937360491,
           19355.920731764574,
-          18560.86735636393
+          18560.86735636393,
+          19459.704374186196
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -874,6 +886,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1314,6 +1327,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -1376,7 +1395,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -1442,7 +1462,8 @@ window.BENCHMARK_DATA = {
           318.79838536580405,
           303.04539222717284,
           282.900653553009,
-          275.5467573234013
+          275.5467573234013,
+          318.83840522766116
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1454,6 +1475,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          600,
           600,
           600,
           600,
@@ -1587,7 +1609,8 @@ window.BENCHMARK_DATA = {
           566.0890389955961,
           508.40030854088917,
           544.5324167251587,
-          576.3078407560076
+          576.3078407560076,
+          545.812861251831
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1599,6 +1622,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -1732,7 +1756,8 @@ window.BENCHMARK_DATA = {
           419.013505084174,
           413.61526072820027,
           403.3854622681936,
-          380.8436924298604
+          380.8436924298604,
+          414.13615633646646
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1744,6 +1769,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -6797,6 +6823,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -7629,7 +7661,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -8465,7 +8498,8 @@ window.BENCHMARK_DATA = {
           160.89665835698446,
           155.31868969599407,
           152.00374499956766,
-          153.13168195088704
+          153.13168195088704,
+          151.69424080848694
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9272,6 +9306,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          536,
           536,
           536,
           536,
@@ -10150,7 +10185,8 @@ window.BENCHMARK_DATA = {
           279.3737553278605,
           284.5175122261047,
           254.4663369814555,
-          266.26093737284344
+          266.26093737284344,
+          278.4389914830526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10343,6 +10379,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -11116,7 +11153,8 @@ window.BENCHMARK_DATA = {
           271.83663380940754,
           248.57068192164104,
           258.4038040297372,
-          267.1239589055379
+          267.1239589055379,
+          263.1948678334554
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11128,6 +11166,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -11654,6 +11693,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -11723,7 +11768,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -11796,7 +11842,8 @@ window.BENCHMARK_DATA = {
           288.20306339263914,
           281.13643503189087,
           271.5523865904127,
-          274.633469804128
+          274.633469804128,
+          281.6031672795614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11815,6 +11862,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          576,
           576,
           576,
           576,
@@ -11955,7 +12003,8 @@ window.BENCHMARK_DATA = {
           567.5544557571411,
           568.9786823817661,
           508.177921295166,
-          547.2779916127523
+          547.2779916127523,
+          555.6839349746704
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11967,6 +12016,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -12114,7 +12164,8 @@ window.BENCHMARK_DATA = {
           409.38812058766683,
           338.5008266312735,
           320.9899472554525,
-          338.503156375885
+          338.503156375885,
+          339.0941930770874
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12126,6 +12177,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -17186,6 +17238,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -18018,7 +18076,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -18854,7 +18913,8 @@ window.BENCHMARK_DATA = {
           672.6781906763713,
           664.6360087712605,
           670.0918502807617,
-          644.017866007487
+          644.017866007487,
+          724.5473428726197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19664,6 +19724,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          872,
           872,
           872,
           872,
@@ -20539,7 +20600,8 @@ window.BENCHMARK_DATA = {
           1500.9931957244874,
           1412.9502451578776,
           1301.1216748101372,
-          1454.5325317382812
+          1454.5325317382812,
+          1480.9957383473713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21380,6 +21442,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -21505,7 +21568,8 @@ window.BENCHMARK_DATA = {
           681.681399790446,
           680.9607451121012,
           653.9903538386027,
-          650.7262543996175
+          650.7262543996175,
+          651.2884432247707
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21517,6 +21581,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -26621,6 +26686,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -27453,7 +27524,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -28289,7 +28361,8 @@ window.BENCHMARK_DATA = {
           663.0657948176066,
           659.1956061681111,
           648.0003033955892,
-          668.4242586771647
+          668.4242586771647,
+          697.8973037719727
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29099,6 +29172,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
+          920,
           920,
           920,
           920,
@@ -29974,7 +30048,8 @@ window.BENCHMARK_DATA = {
           29468.374289957683,
           28126.84192911784,
           28262.343292236328,
-          21275.813532511394
+          21275.813532511394,
+          27876.408895639273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30815,6 +30890,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -30940,7 +31016,8 @@ window.BENCHMARK_DATA = {
           830.1895308494568,
           839.3253615061442,
           798.7865164438883,
-          754.4136435190836
+          754.4136435190836,
+          781.755993906657
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30952,6 +31029,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -31826,6 +31904,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -31953,7 +32037,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -32084,7 +32169,8 @@ window.BENCHMARK_DATA = {
           728.3294523874919,
           672.4928464889526,
           686.9835518519084,
-          672.365507443746
+          672.365507443746,
+          710.9916900488047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32216,6 +32302,7 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
+          1760,
           1760,
           1760,
           1760,
@@ -32359,7 +32446,8 @@ window.BENCHMARK_DATA = {
           84674.21430664063,
           84255.80981445312,
           83220.97748674665,
-          63636.55314941406
+          63636.55314941406,
+          85735.19432779947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32491,6 +32579,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -33259,6 +33348,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -33386,7 +33481,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -33517,7 +33613,8 @@ window.BENCHMARK_DATA = {
           185.97163674036662,
           208.61744101842245,
           185.67947270075481,
-          188.21348755700248
+          188.21348755700248,
+          169.66866821050644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33594,6 +33691,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          552,
           552,
           552,
           552,
@@ -33792,7 +33890,8 @@ window.BENCHMARK_DATA = {
           32462.916735839844,
           32585.56709798177,
           32340.34287109375,
-          19003.044596354168
+          19003.044596354168,
+          31599.64034830729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33928,6 +34027,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -34053,7 +34153,8 @@ window.BENCHMARK_DATA = {
           274.26774803797406,
           246.5422890526908,
           241.47993920644123,
-          268.211040687561
+          268.211040687561,
+          256.7979057629903
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34065,6 +34166,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -34591,6 +34693,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -34660,7 +34768,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -34733,7 +34842,8 @@ window.BENCHMARK_DATA = {
           364.51087306340537,
           359.8615823745728,
           356.6248843193054,
-          381.0567145665487
+          381.0567145665487,
+          393.2888808250427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34781,6 +34891,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -34892,7 +35003,8 @@ window.BENCHMARK_DATA = {
           411.94895734786985,
           374.3104826609294,
           367.9100030263265,
-          429.60222258934607
+          429.60222258934607,
+          403.6646994590759
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34904,6 +35016,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -35051,7 +35164,8 @@ window.BENCHMARK_DATA = {
           444.2142570813497,
           391.1294521185068,
           394.7840934753418,
-          433.5565303053175
+          433.5565303053175,
+          421.3822946548462
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35063,6 +35177,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -35545,6 +35660,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -35614,7 +35735,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -35687,7 +35809,8 @@ window.BENCHMARK_DATA = {
           834.1136222839356,
           809.7396153767903,
           831.3580392837524,
-          797.9655483881633
+          797.9655483881633,
+          817.8794736128586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35714,6 +35837,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1688,
           1688,
           1688,
           1688,
@@ -35846,7 +35970,8 @@ window.BENCHMARK_DATA = {
           2276.6943890707835,
           1956.640271759033,
           1934.5048047383627,
-          2086.4835370381675
+          2086.4835370381675,
+          1926.0452201843261
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35858,6 +35983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -36005,7 +36131,8 @@ window.BENCHMARK_DATA = {
           982.8708117167155,
           917.7512769063313,
           923.3069434483846,
-          936.6117260615031
+          936.6117260615031,
+          956.8472429275513
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36017,6 +36144,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -36499,6 +36627,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -36568,7 +36702,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -36641,7 +36776,8 @@ window.BENCHMARK_DATA = {
           12313.227788289389,
           12522.528411865234,
           12274.643423461914,
-          11025.540795462472
+          11025.540795462472,
+          12350.95728125939
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36690,6 +36826,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
+          1736,
           1736,
           1736,
           1736,
@@ -36800,7 +36937,8 @@ window.BENCHMARK_DATA = {
           42019.86980765207,
           43240.566931152345,
           42323.45726318359,
-          35336.429896763395
+          35336.429896763395,
+          42145.70847981771
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36855,6 +36993,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -36959,7 +37098,8 @@ window.BENCHMARK_DATA = {
           11487.831527709961,
           11484.656599862235,
           11467.199547400842,
-          10668.078244722807
+          10668.078244722807,
+          11545.183874947685
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36971,6 +37111,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -37453,6 +37594,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
         "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
+      },
+      {
+        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
+        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
       }
     ],
     "labels": [
@@ -37522,7 +37669,8 @@ window.BENCHMARK_DATA = {
       "dd7508bd",
       "39b404f7",
       "b5dab01f",
-      "40ae946f"
+      "40ae946f",
+      "c2e176c2"
     ],
     "datasets": [
       {
@@ -37595,7 +37743,8 @@ window.BENCHMARK_DATA = {
           11829.860947745186,
           12044.538322957356,
           11630.327285766602,
-          10379.725567626952
+          10379.725567626952,
+          11947.496971638997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37644,6 +37793,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -37754,7 +37904,8 @@ window.BENCHMARK_DATA = {
           60779.27548828125,
           62757.506181989396,
           61661.332481971156,
-          50398.350755964006
+          50398.350755964006,
+          60739.25038364955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37832,7 +37983,8 @@ window.BENCHMARK_DATA = {
           23554,
           23554,
           23554,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37913,7 +38065,8 @@ window.BENCHMARK_DATA = {
           22695.000967843192,
           22906.23571573893,
           22462.32637532552,
-          20601.948231288367
+          20601.948231288367,
+          22682.448538643974
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37925,6 +38078,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
