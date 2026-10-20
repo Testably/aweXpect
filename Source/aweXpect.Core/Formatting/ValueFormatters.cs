@@ -26,8 +26,21 @@ public static partial class ValueFormatters
 	/// </remarks>
 	[ThreadStatic] private static FormattingContext? _registeredFormatterContext;
 
+	/// <remarks>
+	///     Reused, so that formatting a value as a string does not allocate a builder each time. It is taken while in
+	///     use, so that a nested format, e.g. by a registered formatter, uses a builder of its own.
+	/// </remarks>
+	[ThreadStatic] private static StringBuilder? _cachedStringBuilder;
+
+	/// <remarks>
+	///     Reused, so that a value given to the registered formatters without a context does not allocate one to track
+	///     it. It is taken while in use, like the <see cref="_cachedStringBuilder" />.
+	/// </remarks>
+	[ThreadStatic] private static FormattingContext? _cachedContext;
+
 	private const int MaximumDepth = 20;
 	private const int MaximumNumberOfWrittenContents = 1000;
+	private const int MaximumCachedStringBuilderCapacity = 360;
 
 	/// <summary>
 	///     Fallback for formatting arbitrary objects.
@@ -38,9 +51,9 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null,
 		FormattingContext? context = null)
 	{
-		StringBuilder stringBuilder = new();
+		StringBuilder stringBuilder = RentStringBuilder();
 		formatter.Format(stringBuilder, value, options, context);
-		return stringBuilder.ToString();
+		return ToStringAndReturn(stringBuilder);
 	}
 
 	/// <summary>
@@ -355,14 +368,71 @@ public static partial class ValueFormatters
 			return false;
 		}
 
-		StringBuilder stringBuilder = new();
+		StringBuilder stringBuilder = RentStringBuilder();
 		if (!TryFormatWithRegistrations(stringBuilder, value, options, registrations, null))
 		{
+			ReturnStringBuilder(stringBuilder);
 			return false;
 		}
 
-		formattedValue = stringBuilder.ToString();
+		formattedValue = ToStringAndReturn(stringBuilder);
 		return true;
+	}
+
+	private static StringBuilder RentStringBuilder()
+	{
+		StringBuilder? stringBuilder = _cachedStringBuilder;
+		if (stringBuilder is null)
+		{
+			return new StringBuilder();
+		}
+
+		_cachedStringBuilder = null;
+		return stringBuilder;
+	}
+
+	private static string ToStringAndReturn(StringBuilder stringBuilder)
+	{
+		string result = stringBuilder.ToString();
+		ReturnStringBuilder(stringBuilder);
+		return result;
+	}
+
+	/// <remarks>
+	///     A large builder is dropped, so that one long message does not keep its memory for the lifetime of the thread.
+	/// </remarks>
+	private static void ReturnStringBuilder(StringBuilder stringBuilder)
+	{
+		if (stringBuilder.Capacity <= MaximumCachedStringBuilderCapacity)
+		{
+			stringBuilder.Clear();
+			_cachedStringBuilder = stringBuilder;
+		}
+	}
+
+	private static FormattingContext RentContext()
+	{
+		FormattingContext? context = _cachedContext;
+		if (context is null)
+		{
+			return new FormattingContext();
+		}
+
+		_cachedContext = null;
+		return context;
+	}
+
+	/// <remarks>
+	///     The state is reset in case an exception left it behind.
+	/// </remarks>
+	private static void ReturnContext(FormattingContext context)
+	{
+		context.FormattedObjects.Clear();
+		context.Depth = 0;
+		context.NumberOfWrittenContents = 0;
+		context.Value = null;
+		context.FormatValueException = null;
+		_cachedContext = context;
 	}
 
 	/// <remarks>
@@ -380,15 +450,17 @@ public static partial class ValueFormatters
 	{
 		FormattingContext? previousContext = _registeredFormatterContext;
 		context ??= previousContext;
-		if (context is null && options?.FormatValue is not null)
+		bool isTracked = !value.GetType().IsValueType;
+		FormattingContext? rentedContext = null;
+		if (context is null && (isTracked || options?.FormatValue is not null))
 		{
-			context = new FormattingContext();
+			context = rentedContext = RentContext();
 		}
 
 		FormattingContext? trackingContext = null;
-		if (!value.GetType().IsValueType)
+		if (isTracked)
 		{
-			trackingContext = context ??= new FormattingContext();
+			trackingContext = context!;
 			if (!trackingContext.FormattedObjects.Add(value))
 			{
 				return false;
@@ -417,6 +489,10 @@ public static partial class ValueFormatters
 		{
 			_registeredFormatterContext = previousContext;
 			trackingContext?.FormattedObjects.Remove(value);
+			if (rentedContext is not null)
+			{
+				ReturnContext(rentedContext);
+			}
 		}
 
 		return false;

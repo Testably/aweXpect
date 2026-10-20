@@ -79,9 +79,9 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		StringBuilder stringBuilder = new();
+		StringBuilder stringBuilder = RentStringBuilder();
 		formatter.Format(stringBuilder, value, options);
-		return stringBuilder.ToString();
+		return ToStringAndReturn(stringBuilder);
 	}
 
 	/// <summary>

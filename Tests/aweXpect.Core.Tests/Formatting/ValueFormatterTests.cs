@@ -299,6 +299,23 @@ public class ValueFormatterTests
 	}
 
 	[Test]
+	public async Task CustomFormatter_WhenItFormatsTheSameStringAgain_ShouldUseTheBuiltInFormatting()
+	{
+		string first;
+		string second;
+		using (ValueFormatter.Register(new WrappingStringFormatter()))
+		{
+			first = Formatter.Format("text");
+			second = Formatter.Format("text");
+		}
+
+		await That(first).IsEqualTo("<\"text\">")
+			.Because("a string is tracked while a registered formatter formats it, like any other reference");
+		await That(second).IsEqualTo(first)
+			.Because("the formatting state is reused between calls without leaking into the next one");
+	}
+
+	[Test]
 	public async Task CustomFormatter_WhenItThrows_ShouldEscapeLineBreaksInTheMessage()
 	{
 		MyThrowingFormattableClass subject = new();
@@ -566,6 +583,20 @@ public class ValueFormatterTests
 			{
 				_depth--;
 			}
+		}
+	}
+
+	private sealed class WrappingStringFormatter : IValueFormatter
+	{
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			if (value is not string text)
+			{
+				return false;
+			}
+
+			stringBuilder.Append('<').Append(Formatter.Format(text, options)).Append('>');
+			return true;
 		}
 	}
 }
