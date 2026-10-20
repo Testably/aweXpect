@@ -64,6 +64,20 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
+			public async Task WhenMemberOfTheSameTypeIsComparedByValue_ShouldUseThePredicate()
+			{
+				Track subject = new(7);
+				Track expected = new(8);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected,
+						o => o.Comparing<int, int>((_, _) => true));
+
+				await That(Act).DoesNotThrow()
+					.Because("the predicate decides also for a member whose values are compared without reading them as objects");
+			}
+
+			[Test]
 			public async Task WhenMemberValueIsNull_ShouldNotCallThePredicate()
 			{
 				OrderDto subject = new(7, null);
@@ -263,6 +277,11 @@ public sealed partial class ThatObject
 			private sealed class OrderEntity(int number, Entity? customer)
 			{
 				public Entity? Customer { get; } = customer;
+				public int Number { get; } = number;
+			}
+
+			internal sealed class Track(int number)
+			{
 				public int Number { get; } = number;
 			}
 		}

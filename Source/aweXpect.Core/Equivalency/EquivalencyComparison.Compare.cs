@@ -413,20 +413,25 @@ public static partial class EquivalencyComparison
 	///     <paramref name="valueComparer" /> of its registration instead of being read as objects.
 	/// </summary>
 	/// <remarks>
-	///     Only when both objects share the registration of the member, and its type is compared by value, as it would
-	///     be after reading the values. The comparer then decides like <see cref="CompareByValue" />, because a
-	///     primitive or enum type is neither compared by content nor a <see cref="DateTime" />.
+	///     Only when both objects share the registration of the member, no predicate could compare its values, and its
+	///     type is compared by value, as it would be after reading the values. The comparer then decides like
+	///     <see cref="CompareByValue" />, because a primitive or enum type is neither compared by content nor a
+	///     <see cref="DateTime" />.
 	/// </remarks>
 	private static bool UsesValueComparer(EquivalencyMember member, Func<object, object?> actualAccessor,
 		EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context,
 		[NotNullWhen(true)] out TypeMetadataRegistry.ValueComparer? valueComparer)
 	{
 		valueComparer = member.ValueComparer;
-		return valueComparer is not null &&
-		       ReferenceEquals(actualAccessor, member.GetValue) &&
-		       IsComparedByValue(valueComparer.MemberType,
-			       GetRegisteredOptions(valueComparer.MemberType, options, context) ??
-			       context.GetInheritedOptions(options, typeOptions), options);
+		if (valueComparer is null || !ReferenceEquals(actualAccessor, member.GetValue))
+		{
+			return false;
+		}
+
+		EquivalencyTypeOptions memberOptions = GetRegisteredOptions(valueComparer.MemberType, options, context) ??
+		                                       context.GetInheritedOptions(options, typeOptions);
+		return memberOptions.TypePairComparisons.Length == 0 &&
+		       IsComparedByValue(valueComparer.MemberType, memberOptions, options);
 	}
 
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
