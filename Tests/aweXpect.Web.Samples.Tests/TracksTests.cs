@@ -40,7 +40,7 @@ public class TracksTests(WebApplicationFactory<Program> factory)
 			                 "artist": "The Beatles"
 			               }
 			             """)
-			.Because("the README shows this code and its failure message");
+			.Because("the docs show this code and its failure message");
 	}
 
 	[Test]

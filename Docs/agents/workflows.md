@@ -76,14 +76,14 @@ Stryker.NET mutates `aweXpect` (`MutationTestsMain`, tested by `aweXpect.Tests` 
 - The user docs are Markdown pages in `Docs/pages`, published to https://docs.testably.org/aweXpect by the
   `Testably/Testably.Site` repository (triggered by `notify-docs-site.yml` after a successful `Build` on `main`).
 - The docs of an extension package are in `Docs/extensions/<Package>` and are published to
-  `https://docs.testably.org/Extensions/<Package>`.
+  `https://docs.testably.org/aweXpect/extensions/<Package>`.
 - `Docs/agents` (this folder) is for contributors and agents and is not published.
 - Code blocks in `Docs/pages` are compile-checked by the slow tests of `aweXpect.Docs.Tests`; see
   [testing](testing.md#documentation-tests). Those in `Docs/extensions` are not, so check their examples against a
   test.
-- The README of the `aweXpect` and `aweXpect.Core` packages is generated from `README.md` during `Compile`. An
-  extension package ships `Source/<Package>/README.md`, whose overview table links into its docs pages; keep both in
-  sync when adding or renaming an expectation.
+- The README of the `aweXpect` and `aweXpect.Core` packages is generated from `README.md` during `Compile`, that of an
+  extension package from `Docs/extensions/<Package>/00-index.md`, with absolute links to the docs pages, as nuget.org
+  cannot follow relative ones. Without `Compile`, a package ships the index page as it is.
 
 ## Pipeline targets
 

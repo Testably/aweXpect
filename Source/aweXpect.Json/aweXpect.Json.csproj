@@ -4,7 +4,8 @@
 		<RootNamespace>aweXpect</RootNamespace>
 		<Description>Extensions on System.Text.Json for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Json</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Json/00-index.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Json/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Json/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -34,8 +34,8 @@ Two NuGet packages are built from `Source/`; the analyzer and generator projects
 stable than `aweXpect`; the namespace `aweXpect.Core.Internal` may change in any version.
 
 The extension packages are built from `Source/` as well and reference `aweXpect.Core` as a project. Each sets its own
-description, project URL and README (`PackageReadmeSourceFile`) in its project file; the logo is the one of
-aweXpect.
+description, project URL and README (`PackageReadmeSourceFile`, the index page of its docs) in its project file; the
+logo is the one of aweXpect.
 
 | Project | Package | Role |
 | --- | --- | --- |
@@ -69,8 +69,8 @@ built-in ones, with the same layout as `aweXpect`: one partial class `That<Subje
 `That<Subject>.<Expectation>.cs` per expectation that also holds its negation and its constraint classes, and results
 and options in their own namespaces. `Helpers/ThrowHelper` validates arguments with `Tracing.WriteException` from
 `aweXpect.Core`; `Helpers/Polyfills` (or `Polyfills/`) holds what `netstandard2.0` lacks. A new expectation touches the
-source file, its tests, an AOT check, the API snapshots, the overview table in the package README and the page in
-`Docs/extensions/<Package>`.
+source file, its tests, an AOT check, the API snapshots, and in `Docs/extensions/<Package>` its page and the overview
+table of `00-index.md`.
 
 ### aweXpect.Json
 
@@ -97,8 +97,8 @@ source file, its tests, an AOT check, the API snapshots, the overview table in t
 - `Helpers/HttpFormatter` writes the `HTTP-Request:`/`HTTP-Response:` sections appended to failures on requests and
   responses.
 - A relative `Uri` fails component expectations both ways (`FailIfRelative()`, "but it was relative").
-- `Tests/aweXpect.Web.Samples` is a minimal API application used by `aweXpect.Web.Samples.Tests` and the README
-  example.
+- `Tests/aweXpect.Web.Samples` is a minimal API application used by `aweXpect.Web.Samples.Tests` and the example
+  on the index page of the docs.
 
 ### aweXpect.Xml
 

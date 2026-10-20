@@ -499,7 +499,7 @@ public sealed partial class ThatJsonString
 					             JSON options:
 					              - ignore additional properties
 					             """)
-					.Because("the README shows this failure message");
+					.Because("the docs show this failure message");
 			}
 
 			[Test]

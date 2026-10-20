@@ -45,8 +45,8 @@ Correctness is a must. The other goals are strong defaults and win in this order
   - `aweXpect.Json` serializes caller values by reflection only behind `ReflectionFallback.IsSupported`.
   - The `buildTransitive` targets of `aweXpect.Snapshots` and `.DiffEngine` run in every consumer build.
     `aweXpect.Snapshots.PublicApi` is not trimmable and must not pull reflection into `aweXpect.Snapshots`.
-- **Extension expectations are documented** in `Docs/extensions/<Package>` and in the overview table of
-  `Source/<Package>/README.md`. These code blocks are not compiled.
+- **Extension expectations are documented** in `Docs/extensions/<Package>`, including the overview table of its
+  `00-index.md`, which is also the package README on NuGet. These code blocks are not compiled.
 - **New analyzer diagnostics** go into the project's `AnalyzerReleases.Unshipped.md`.
 - Do not add `#pragma` or other suppressions for analyzer or Sonar findings without asking the maintainer first.
 
