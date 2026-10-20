@@ -18,9 +18,13 @@ internal class ExpectationNode : Node
 	private Node? _inner;
 
 	/// <summary>
-	///     The mapping that combines its result with the result of the constraint, if the node maps to a member.
+	///     Whether the <see cref="_inner" /> node is the mapping that combines its result with the result of the
+	///     constraint, i.e. whether the node maps to a member.
 	/// </summary>
-	private MappingNode? _mapping;
+	/// <remarks>
+	///     A flag instead of a second reference to the mapping keeps every node smaller.
+	/// </remarks>
+	private bool _isInnerMapping;
 
 	private string _it = "it";
 
@@ -56,7 +60,7 @@ internal class ExpectationNode : Node
 	public override Node AddMapping(MappingNode mappingNode)
 	{
 		_inner = mappingNode;
-		_mapping = mappingNode;
+		_isInnerMapping = true;
 		return mappingNode;
 	}
 
@@ -223,7 +227,9 @@ internal class ExpectationNode : Node
 		{
 			ConstraintResult innerResult =
 				await IsInnerMetBy(_inner, value, result ?? source, context, cancellationToken);
-			innerResult = _mapping?.CombineResults(result, innerResult) ?? innerResult;
+			innerResult = _isInnerMapping
+				? ((MappingNode)_inner).CombineResults(result, innerResult)
+				: innerResult;
 			return await ApplyReasons(innerResult, context, cancellationToken);
 		}
 

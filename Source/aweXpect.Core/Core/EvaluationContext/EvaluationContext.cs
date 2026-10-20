@@ -29,7 +29,21 @@ internal class EvaluationContext : IEvaluationContext
 	/// <summary>
 	///     The time system of the evaluation, with which a repeated check measures the time and waits between its checks.
 	/// </summary>
-	public ITimeSystem TimeSystem { get; set; } = RealTimeSystem.Instance;
+	/// <remarks>
+	///     Only another time system than the real one is kept in the <see cref="Extras" />, so that the context of most
+	///     expectations stays smaller.
+	/// </remarks>
+	public ITimeSystem TimeSystem
+	{
+		get => _extras?.TimeSystem ?? RealTimeSystem.Instance;
+		set
+		{
+			if (_extras is not null || !ReferenceEquals(value, RealTimeSystem.Instance))
+			{
+				GetExtras().TimeSystem = value;
+			}
+		}
+	}
 
 	/// <summary>
 	///     Starts the evaluation of an item or a member in the <paramref name="context" />, whose stored values are
@@ -234,10 +248,10 @@ internal class EvaluationContext : IEvaluationContext
 		EvaluationContext check = new()
 		{
 			Cancellation = Cancellation,
-			TimeSystem = TimeSystem,
 			_extras = new Extras
 			{
 				RepeatedBy = this,
+				TimeSystem = _extras?.TimeSystem,
 			},
 		};
 		List<EvaluationContext> checks = GetExtras().Checks ??= [];
@@ -518,5 +532,6 @@ internal class EvaluationContext : IEvaluationContext
 		public List<AsyncBecauseReason>? PendingReasons { get; set; }
 		public List<Action>? Releases { get; set; }
 		public EvaluationContext? RepeatedBy { get; init; }
+		public ITimeSystem? TimeSystem { get; set; }
 	}
 }
