@@ -76,13 +76,13 @@ internal static class TypeHelpers
 	///     The compiler-generated members that are currently included via customization.
 	/// </summary>
 	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
-		=> Customization.IncludedCompilerGeneratedMembers().Get();
+		=> Customization.GetIncludedCompilerGeneratedMembers();
 
 	/// <summary>
 	///     The special-name methods that are currently included via customization.
 	/// </summary>
 	private static SpecialNameMembers IncludedSpecialNameMembers
-		=> Customization.IncludedSpecialNameMembers().Get();
+		=> Customization.GetIncludedSpecialNameMembers();
 
 	/// <summary>
 	///     The reflection customization of the current async flow, which falls back to the global one.
