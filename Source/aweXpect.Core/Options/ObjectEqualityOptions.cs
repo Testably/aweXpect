@@ -36,7 +36,7 @@ internal static class ObjectEqualityOptions
 	internal static ValueTask<IObjectMatchResult> ExplainWithActualValue(bool isMatch)
 		=> new(isMatch ? ActualValueResult.Match : ActualValueResult.NoMatch);
 
-	private sealed class EqualsMatchType : IObjectMatchType
+	internal sealed class EqualsMatchType : IObjectMatchType
 	{
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString() => "";
@@ -52,7 +52,7 @@ internal static class ObjectEqualityOptions
 			TExpected expected)
 			=> ExplainWithActualValue(IsEqual(actual, expected));
 
-		private static bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
+		internal static bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		{
 			if (actual is null && expected is null)
 			{
@@ -271,8 +271,14 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	internal bool UsesEqualsMatch => MatchType == ObjectEqualityOptions.EqualsMatch;
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The default comparison is called directly, because the generic virtual call to the match type costs more
+	///     than comparing most items.
+	/// </remarks>
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
-		=> MatchType.AreConsideredEqual(actual, expected);
+		=> UsesEqualsMatch
+			? new ValueTask<bool>(ObjectEqualityOptions.EqualsMatchType.IsEqual(actual, expected))
+			: MatchType.AreConsideredEqual(actual, expected);
 
 	/// <summary>
 	///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value and returns a result that
@@ -284,7 +290,9 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// </remarks>
 	public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TExpected>(TSubject actual,
 		TExpected expected)
-		=> MatchType.AreConsideredEqualWithExplanation(actual, expected);
+		=> UsesEqualsMatch
+			? ObjectEqualityOptions.ExplainWithActualValue(ObjectEqualityOptions.EqualsMatchType.IsEqual(actual, expected))
+			: MatchType.AreConsideredEqualWithExplanation(actual, expected);
 
 	/// <summary>
 	///     Returns the options to use for all comparisons of the evaluation in the <paramref name="context" />.

@@ -148,6 +148,33 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	[Arguments(180, true)]
+	[Arguments(181, false)]
+	public async Task AreConsideredEqual_WhenTheSubjectIsAValueType_ShouldCompareTheValues(int expectedSeconds,
+		bool expectedResult)
+	{
+		ObjectEqualityOptions<TrackLength> sut = new();
+
+		bool result = await sut.AreConsideredEqual(new TrackLength(180), new TrackLength(expectedSeconds));
+
+		await That(result).IsEqualTo(expectedResult);
+	}
+
+	[Test]
+	[Arguments("Something", true)]
+	[Arguments("Yesterday", false)]
+	public async Task AreConsideredEqual_WhenTheSubjectOverridesEquals_ShouldUseIt(string expectedTitle,
+		bool expectedResult)
+	{
+		ObjectEqualityOptions<Track> sut = new();
+
+		bool result = await sut.AreConsideredEqual(new Track("Something"), new Track(expectedTitle));
+
+		await That(result).IsEqualTo(expectedResult)
+			.Because("different instances are equal when their Equals says so");
+	}
+
+	[Test]
 	[Arguments(false, "is equal to 3")]
 	[Arguments(true, "is not equal to 3")]
 	public async Task GetExpectation_ShouldDescribeTheEquality(bool isNegated, string expected)
@@ -499,6 +526,20 @@ public class ObjectEqualityOptionsTests
 		public override bool Equals(object? obj) => throw exception;
 
 		public override int GetHashCode() => 0;
+	}
+
+	private sealed class Track(string title)
+	{
+		public string Title { get; } = title;
+
+		public override bool Equals(object? obj) => obj is Track other && other.Title == Title;
+
+		public override int GetHashCode() => Title.GetHashCode();
+	}
+
+	private readonly struct TrackLength(int seconds)
+	{
+		public int Seconds { get; } = seconds;
 	}
 
 	private sealed class DummyMatchType : IObjectMatchType
