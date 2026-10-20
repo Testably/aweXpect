@@ -59,6 +59,35 @@ public sealed partial class ThatObject
 					.Because("an Unspecified Kind is compatible with both Utc and Local");
 			}
 
+			[Test]
+			public async Task WhenRegisteredTypeHasIncompatibleKinds_ShouldFail()
+			{
+				RegisteredReading subject = new(Utc);
+				RegisteredReading expected = new(Local);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($$"""
+					               Expected that subject
+					               is equivalent to expected,
+					               but it was not:
+					                 Property Timestamp differed:
+					                     Actual: {{Formatter.Format(Utc)}}
+					                   Expected: {{Formatter.Format(Local)}}
+
+					               Equivalency options:
+					                - include public fields and properties
+					               """)
+					.Because("the registration of the type compares the values without reading them as objects");
+			}
+
+			internal sealed class RegisteredReading(DateTime timestamp)
+			{
+				public DateTime Timestamp { get; } = timestamp;
+			}
+
 			private sealed class Reading(DateTime timestamp)
 			{
 				public DateTime Timestamp { get; } = timestamp;
