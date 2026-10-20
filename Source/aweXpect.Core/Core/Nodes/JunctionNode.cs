@@ -216,11 +216,10 @@ internal abstract class JunctionNode : Node
 	{
 		unchecked
 		{
-			// ReSharper disable once NonReadonlyMemberInGetHashCode
-			int hash = 19 * Current.GetHashCode();
-			for (int index = 0; index < _operandCount; index++)
+			int hash = 19;
+			foreach ((_, Node node) in GetNodes())
 			{
-				hash = (hash * 31) + GetNode(index).Item2.GetHashCode();
+				hash = (hash * 31) + node.GetHashCode();
 			}
 
 			return hash;
