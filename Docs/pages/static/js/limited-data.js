@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6555.821635564168,
           12535.305913289389,
           12764.462727473332,
           13265.374138465295,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           13469.414391150842,
           6596.264731815883,
           14381.650234767369,
-          6290.744794718425
+          6290.744794718425,
+          13431.071209716796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -444,12 +444,12 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           3040,
-          3040,
           3088,
           3088,
           3088,
           3096,
           3096,
+          3880,
           3880,
           3880,
           3880,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          189413.85319010416,
           374195.22265625,
           392134.18125,
           377371.628515625,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           385380.48684895836,
           178992.7767578125,
           386189.5509314904,
-          164726.92766462054
+          164726.92766462054,
+          383894.373828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590224,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590292,
-          590287
+          590287,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          12166.199898856026,
           18772.20353581355,
           20086.381243024553,
           19197.259187825523,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19206.561294555664,
           9672.389400227865,
           19215.74513898577,
-          9687.401100745568
+          9687.401100745568,
+          19379.468263753257
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          181.82756209373474,
           306.9443253449031,
           283.9505867640177,
           262.74484459559125,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           306.34915406363353,
           138.71444506645201,
           288.87488724390664,
-          133.83350161143713
+          133.83350161143713,
+          321.3382097244263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          331.0620517730713,
           504.2283857890538,
           537.6015279633658,
           479.22045939309254,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           559.0478465398153,
           265.9254628590175,
           554.4303117116292,
-          245.48654237160315
+          245.48654237160315,
+          585.8575134913127
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          261.37859092439925,
           408.87290208680287,
           414.6734790166219,
           397.2279572804769,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           399.7745791435242,
           223.6468460900443,
           415.90519326527914,
-          201.15392077886142
+          201.15392077886142,
+          423.61332578659056
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          102.63410041332244,
           145.90668115615844,
           163.39442869822184,
           137.40051256815593,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           160.59917413393657,
           78.1513781150182,
           161.91783633232117,
-          71.98160390342984
+          71.98160390342984,
+          159.558003060023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1910,7 +1910,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
-          512,
+          536,
           536,
           536,
           536,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          183.83041546344757,
           253.06234607696533,
           272.8674462182181,
           245.99453417460123,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           262.4527729034424,
           136.25635732923234,
           282.20928891499835,
-          124.0122208254678
+          124.0122208254678,
+          282.2658065795898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          140.15554475784302,
           245.82162682215372,
           252.99966198603312,
           244.07392279307047,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           261.8423598607381,
           132.18533142407736,
           262.03795232772825,
-          117.29486432442299
+          117.29486432442299,
+          260.21722440719606
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          170.37307264123643,
           284.33359142450183,
           278.191194500242,
           273.1169457117716,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           279.0654663306016,
           160.31036690565256,
           286.83811818636383,
-          158.95665551821392
+          158.95665551821392,
+          290.03494990666707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          413.9302067756653,
           545.3726666768392,
           563.3078155517578,
           586.2725223813738,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           527.1524635950724,
           308.0143295434805,
           578.0748713175456,
-          274.1330770810445
+          274.1330770810445,
+          558.4174865722656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          221.40054513726915,
           339.0808546702067,
           355.15742444992065,
           364.86238646507263,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           345.8191385904948,
           197.49301727612814,
           356.6350205739339,
-          167.49061036109924
+          167.49061036109924,
+          355.74284947713215
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          377.7996959319481,
           649.0716806139264,
           658.9432414599827,
           633.7696231433323,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           708.2389707565308,
           339.8828879424504,
           677.4312150319417,
-          326.325720173972
+          326.325720173972,
+          676.0812699635824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3379,7 +3379,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
+          872,
           872,
           872,
           872,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          915.3745296918429,
           1393.0922468821207,
           1453.0168445587158,
           1373.5659450531007,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1460.132477393517,
           704.0699275970459,
           1511.5495142618815,
-          653.0351298877171
+          653.0351298877171,
+          1548.958098856608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          409.44116151332855,
           660.1025011062623,
           648.3773095448812,
           625.6183510462444,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           643.0744180679321,
           347.3612709363302,
           679.0160875956218,
-          324.8136201540629
+          324.8136201540629,
+          688.8696273394993
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          392.56831844036395,
           655.6204875310262,
           653.0624830722809,
           626.2280548095703,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           696.0705689112345,
           334.4265292031424,
           666.5183174769084,
-          322.32280286153156
+          322.32280286153156,
+          665.4261503953201
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4112,7 +4112,7 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912,
+          920,
           920,
           920,
           920,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11769.582413991293,
           27887.573141915458,
           28410.641943359376,
           27444.59106009347,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           27599.6657023112,
           10571.065576171875,
           27809.289346313475,
-          9898.959427897136
+          9898.959427897136,
+          28042.715085856118
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          482.3008575439453,
           804.692634264628,
           826.4792725880941,
           794.8108036858695,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           826.4341165542603,
           425.74920657702853,
           817.8249410220554,
-          413.0651320139567
+          413.0651320139567,
+          803.446176801409
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          445.76871263980865,
           744.3005462793203,
           743.0805713335673,
           768.1799621582031,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           735.735329246521,
           373.0331435839335,
           775.7946770191193,
-          352.61233282089233
+          352.61233282089233,
+          835.8362019220988
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4847,7 +4847,7 @@ window.BENCHMARK_DATA = {
           1848,
           1848,
           1848,
-          1848,
+          1856,
           1856,
           1856,
           1856,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31058.216958852914,
           82880.52755972055,
           84265.83816092355,
           85322.30723353794,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           85469.73887532552,
           29494.972002301896,
           86439.80888671875,
-          27904.526094563804
+          27904.526094563804,
+          84306.2785970052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
       {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          120.64632336298625,
           183.5748676141103,
           191.85911434491476,
           162.5062539100647,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           186.72757803476773,
           110.18292439835412,
           189.88281548817952,
-          103.88230061531067
+          103.88230061531067,
+          189.71347365379333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12654.644130452474,
           32423.43391113281,
           32192.955029296874,
           31236.718094889322,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           31306.018702915735,
           11076.802041625977,
           33640.369152832034,
-          10583.883628336589
+          10583.883628336589,
+          33131.544795735674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5559,7 +5559,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          147.67371101379393,
           255.7457534154256,
           258.7912476979769,
           261.0001422564189,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           251.0994581858317,
           139.39484674135844,
           262.76921288172406,
-          121.74509482724326
+          121.74509482724326,
+          259.55491431554157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          335.4380095163981,
           619.9793544769287,
           470.3805774961199,
           451.62953694661456,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           368.94456850687664,
           187.3057516983577,
           374.35020939509076,
-          185.4253969703402
+          185.4253969703402,
+          373.67607855796814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6160,7 +6160,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           696,
-          696,
           720,
           720,
           720,
@@ -6188,6 +6187,7 @@ window.BENCHMARK_DATA = {
           720,
           720,
           720,
+          744,
           744,
           744,
           744,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          263.01649208068847,
           373.8811431271689,
           433.2085972150167,
           411.77138430277506,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           375.71736411253613,
           220.09970924854278,
           429.19574999809265,
-          201.283979956309
+          201.283979956309,
+          421.0189789258517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          264.56047274271646,
           398.0087053934733,
           431.85279965400696,
           411.37439753214517,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           425.68998495737713,
           213.04699403444926,
           421.6277090390523,
-          195.17111146450043
+          195.17111146450043,
+          428.7466734568278
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          640.7282141367594,
           1151.8307791392008,
           1070.1917322794595,
           1056.3045282363892,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           827.7983581542969,
           446.73118019104004,
           822.7165323893229,
-          398.11624749501544
+          398.11624749501544,
+          815.643183026995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6899,7 +6899,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
-          1720,
+          1688,
           1688,
           1688,
           1688,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1279.0739683004526,
           1887.3938435872396,
           2073.025442123413,
           1886.8613792419433,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2028.140828704834,
           1160.9594509124756,
           2046.8121988932292,
-          1001.4748270670573
+          1001.4748270670573,
+          2101.1886351449148
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          584.2220613039457,
           949.4310310999552,
           972.6625693003336,
           905.5249994141715,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           947.1852062225341,
           510.2945117155711,
           1001.8998962402344,
-          457.94817669051037
+          457.94817669051037,
+          951.0506235758463
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7080.700775733361,
           12135.059914725167,
           12159.236760457357,
           12077.013885498047,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           12083.014532906669,
           6485.879282437838,
           12201.915075937906,
-          6186.8094482421875
+          6186.8094482421875,
+          12294.065668378558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7654,7 +7654,7 @@ window.BENCHMARK_DATA = {
           1720,
           1720,
           1720,
-          1720,
+          1736,
           1736,
           1736,
           1736,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          23994.497277396065,
           42559.10313197545,
           42393.89460536412,
           41413.62630615234,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           42139.088887532555,
           19462.812460763114,
           41700.580928548174,
-          18247.640270996093
+          18247.640270996093,
+          41551.82961331881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18608,
           18609,
           18609,
           18609,
@@ -7786,6 +7785,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          6847.346667698452,
           11270.076776776996,
           11256.76350402832,
           11269.664648873466,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           11346.99682820638,
           6425.284461975098,
           11353.587936401367,
-          6037.893575032552
+          6037.893575032552,
+          11379.745162963867
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "25bdf4e4b7ed0a031fc3873065925fe191f8a815",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 11 14:49:19 2026 \u002B0200",
-        "message": "chore: count the items of an array in the items count benchmark (#1810)"
-      },
-      {
         "sha": "bea504d55f003736ca7abde9ae6f66d9150549c2",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 11 15:05:37 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
         "message": "feat!: release all aweXpect packages from one repository with one version"
+      },
+      {
+        "sha": "66de07e4365ee3790661f33baba3106193b6e939",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
+        "message": "chore: rename the ReSharper settings back to aweXpect.sln.DotSettings (#1887)"
       }
     ],
     "labels": [
-      "25bdf4e4",
       "bea504d5",
       "45e98efc",
       "d07cd823",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "5348e226",
       "369e335f",
       "2ae068a3",
-      "68feb62f"
+      "68feb62f",
+      "66de07e4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14552.560348510742,
           23663.978812081474,
           23638.22805434007,
           23639.355893648586,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11707.549776204427,
           6105.429531977727,
           11900.612076895577,
-          5779.480037943522
+          5779.480037943522,
+          11643.378771100726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8365,7 +8365,6 @@ window.BENCHMARK_DATA = {
           2640,
           2640,
           2640,
-          2640,
           2208,
           2208,
           2208,
@@ -8388,6 +8387,7 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
+          2216,
           2216,
           2216,
           2216,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          33270.43501281738,
           61104.8171648298,
           61753.93634033203,
           60793.590393066406,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           60446.32313319615,
           27999.129021277793,
           60121.76591609074,
-          27257.15004788912
+          27257.15004788912,
+          59424.55138724191
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23554,
           23554,
@@ -8529,6 +8528,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          13545.327889578683,
           22388.99493408203,
           22202.768191019695,
           22406.342309134347,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           22333.71257672991,
           12393.453134809222,
           22450.989362444197,
-          12171.45713297526
+          12171.45713297526,
+          22322.189472743445
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
