@@ -21,7 +21,7 @@ public static partial class EventFilters
 	{
 		IChangeableFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
 			eventInfo => eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType),
-			$"of type {Formatter.Format(handlerType)} ");
+			() => $"of type {Formatter.Format(handlerType)} ");
 		return new EventsOfType(@this.Which(filter), filter);
 	}
 

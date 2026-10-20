@@ -30,7 +30,7 @@ public static partial class TypeFilters
 	{
 		type.EnsureIsNotOpenGeneric();
 		return @this.Which(Filter.Suffix<Type>(t => type.IsAssignableFrom(t),
-			$"which are assignable to {Formatter.Format(type)} "));
+			() => $"which are assignable to {Formatter.Format(type)} "));
 	}
 
 	/// <summary>
@@ -57,7 +57,7 @@ public static partial class TypeFilters
 	{
 		type.EnsureIsNotOpenGeneric();
 		return @this.Which(Filter.Suffix<Type>(t => !type.IsAssignableFrom(t),
-			$"which are not assignable to {Formatter.Format(type)} "));
+			() => $"which are not assignable to {Formatter.Format(type)} "));
 	}
 
 	/// <summary>
@@ -82,7 +82,7 @@ public static partial class TypeFilters
 	{
 		type.EnsureIsNotOpenGeneric();
 		return @this.Which(Filter.Suffix<Type>(t => t.IsAssignableFrom(type),
-			$"which are assignable from {Formatter.Format(type)} "));
+			() => $"which are assignable from {Formatter.Format(type)} "));
 	}
 
 	/// <summary>
@@ -107,6 +107,6 @@ public static partial class TypeFilters
 	{
 		type.EnsureIsNotOpenGeneric();
 		return @this.Which(Filter.Suffix<Type>(t => !t.IsAssignableFrom(type),
-			$"which are not assignable from {Formatter.Format(type)} "));
+			() => $"which are not assignable from {Formatter.Format(type)} "));
 	}
 }

@@ -21,7 +21,7 @@ public static partial class MethodFilters
 	{
 		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.ReturnType.IsOrInheritsFrom(returnType, true),
-			$"which return exactly {Formatter.Format(returnType)} ");
+			() => $"which return exactly {Formatter.Format(returnType)} ");
 		return new MethodsWhichReturn(@this.Which(filter), filter);
 	}
 

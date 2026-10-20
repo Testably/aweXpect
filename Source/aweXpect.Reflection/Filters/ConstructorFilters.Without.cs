@@ -14,5 +14,5 @@ public static partial class ConstructorFilters
 		where TAttribute : Attribute
 		=> @this.Which(Filter.Suffix<ConstructorInfo>(
 			constructorInfo => !constructorInfo.HasAttribute<TAttribute>(),
-			$"without {Formatter.Format(typeof(TAttribute))} "));
+			() => $"without {Formatter.Format(typeof(TAttribute))} "));
 }

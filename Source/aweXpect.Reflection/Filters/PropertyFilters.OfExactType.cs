@@ -21,7 +21,7 @@ public static partial class PropertyFilters
 	{
 		IChangeableFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
 			propertyInfo => propertyInfo.PropertyType.IsOrInheritsFrom(propertyType, true),
-			$"of exact type {Formatter.Format(propertyType)} ");
+			() => $"of exact type {Formatter.Format(propertyType)} ");
 		return new PropertiesOfType(@this.Which(filter), filter);
 	}
 

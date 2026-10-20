@@ -22,7 +22,7 @@ public static partial class PropertyFilters
 	{
 		IChangeableFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
 			propertyInfo => propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
-			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
+			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
 		return new PropertiesWith(@this.Which(filter), filter);
 	}
 
@@ -43,7 +43,7 @@ public static partial class PropertyFilters
 	{
 		IChangeableFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
 			propertyInfo => propertyInfo.HasAttribute(predicate, inherit),
-			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
+			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
 		return new PropertiesWith(@this.Which(filter), filter);
 	}
 

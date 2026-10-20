@@ -29,37 +29,37 @@ internal static class FieldInfoHelpers
 			return false;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		if ((accessModifiers & AccessModifiers.Internal) != 0 &&
 		    fieldInfo.IsAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		if ((accessModifiers & AccessModifiers.Protected) != 0 &&
 		    fieldInfo.IsFamily)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		if ((accessModifiers & AccessModifiers.Private) != 0 &&
 		    fieldInfo.IsPrivate)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		if ((accessModifiers & AccessModifiers.Public) != 0 &&
 		    fieldInfo.IsPublic)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.PrivateProtected) &&
+		if ((accessModifiers & AccessModifiers.PrivateProtected) != 0 &&
 		    fieldInfo.IsFamilyAndAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.ProtectedInternal) &&
+		if ((accessModifiers & AccessModifiers.ProtectedInternal) != 0 &&
 		    fieldInfo.IsFamilyOrAssembly)
 		{
 			return true;
@@ -89,6 +89,11 @@ internal static class FieldInfoHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return fieldInfo.IsDefined(typeof(TAttribute), inherit);
+		}
+
 		object? attribute = fieldInfo.GetCustomAttributes(typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)

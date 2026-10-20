@@ -21,7 +21,7 @@ public static partial class FieldFilters
 	{
 		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.FieldType.IsOrInheritsFrom(fieldType),
-			$"of type {Formatter.Format(fieldType)} ");
+			() => $"of type {Formatter.Format(fieldType)} ");
 		return new FieldsOfType(@this.Which(filter), filter);
 	}
 

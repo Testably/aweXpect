@@ -31,7 +31,7 @@ public static partial class TypeFilters
 	{
 		interfaceType.EnsureIsInterface();
 		return @this.Which(Filter.Suffix<Type>(type => type.Implements(interfaceType, forceDirect),
-			$"which implement {Formatter.Format(interfaceType)} "));
+			() => $"which implement {Formatter.Format(interfaceType)} "));
 	}
 
 	/// <summary>
@@ -60,6 +60,6 @@ public static partial class TypeFilters
 	{
 		interfaceType.EnsureIsInterface();
 		return @this.Which(Filter.Suffix<Type>(type => !type.Implements(interfaceType, forceDirect),
-			$"which do not implement {Formatter.Format(interfaceType)} "));
+			() => $"which do not implement {Formatter.Format(interfaceType)} "));
 	}
 }

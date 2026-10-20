@@ -31,37 +31,37 @@ internal static class MethodInfoHelpers
 			return false;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		if ((accessModifiers & AccessModifiers.Internal) != 0 &&
 		    methodInfo.IsAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		if ((accessModifiers & AccessModifiers.Protected) != 0 &&
 		    methodInfo.IsFamily)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		if ((accessModifiers & AccessModifiers.Private) != 0 &&
 		    methodInfo.IsPrivate)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		if ((accessModifiers & AccessModifiers.Public) != 0 &&
 		    methodInfo.IsPublic)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.PrivateProtected) &&
+		if ((accessModifiers & AccessModifiers.PrivateProtected) != 0 &&
 		    methodInfo.IsFamilyAndAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.ProtectedInternal) &&
+		if ((accessModifiers & AccessModifiers.ProtectedInternal) != 0 &&
 		    methodInfo.IsFamilyOrAssembly)
 		{
 			return true;
@@ -91,6 +91,11 @@ internal static class MethodInfoHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return Attribute.IsDefined(methodInfo, typeof(TAttribute), inherit);
+		}
+
 		object? attribute = Attribute.GetCustomAttributes(methodInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
@@ -158,7 +163,7 @@ internal static class MethodInfoHelpers
 	/// </remarks>
 	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
 	public static bool IsAsync(this MethodInfo? methodInfo)
-		=> methodInfo?.GetCustomAttribute<AsyncStateMachineAttribute>() is not null;
+		=> methodInfo?.IsDefined(typeof(AsyncStateMachineAttribute), false) == true;
 
 	/// <summary>
 	///     Gets a value indicating whether the <see cref="MethodInfo" /> is an extension method.

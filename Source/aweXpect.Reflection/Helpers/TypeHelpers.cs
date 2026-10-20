@@ -32,6 +32,27 @@ internal static class TypeHelpers
 	private static readonly ConditionalWeakTable<Assembly, string> AssemblyNames = new();
 
 	/// <summary>
+	///     Caches per member whether it or one of its declaring types is compiler-generated, as the attributes of a loaded
+	///     member never change.
+	/// </summary>
+	private static readonly ConditionalWeakTable<MemberInfo, object> CompilerGeneratedCache = new();
+
+	/// <summary>
+	///     Caches per <see cref="Type" /> whether it is a grouping type of the C# extension block syntax.
+	/// </summary>
+	private static readonly ConditionalWeakTable<Type, object> ExtensionGroupingCache = new();
+
+	/// <summary>
+	///     The cached value of a <see langword="true" /> result, so that it needs no boxing.
+	/// </summary>
+	private static readonly object TrueMarker = new();
+
+	/// <summary>
+	///     The cached value of a <see langword="false" /> result, so that it needs no boxing.
+	/// </summary>
+	private static readonly object FalseMarker = new();
+
+	/// <summary>
 	///     The built-in signature-level dependency resolver (see <see cref="GetSignatureDependencies" />), exposed
 	///     as a stable singleton delegate: it is the default of the <c>DependencyResolver</c> customization, and
 	///     because <see cref="ResolvedDependencies" /> is keyed by the resolver delegate, the default must be the
@@ -90,7 +111,7 @@ internal static class TypeHelpers
 				                 BindingFlags.Instance |
 				                 BindingFlags.Static)
 				.Where(m => !m.IsCompilerGenerated() ||
-				            included.HasFlag(CompilerGeneratedMembers.Constructors))
+				            (included & CompilerGeneratedMembers.Constructors) != 0)
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -140,7 +161,7 @@ internal static class TypeHelpers
 
 			return events
 				.Where(m => !m.IsCompilerGenerated() ||
-				            included.HasFlag(CompilerGeneratedMembers.Events))
+				            (included & CompilerGeneratedMembers.Events) != 0)
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -190,7 +211,7 @@ internal static class TypeHelpers
 			return fields
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
-				            included.HasFlag(CompilerGeneratedMembers.Fields))
+				            (included & CompilerGeneratedMembers.Fields) != 0)
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -296,7 +317,7 @@ internal static class TypeHelpers
 			return properties
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
-				            included.HasFlag(CompilerGeneratedMembers.Properties))
+				            (included & CompilerGeneratedMembers.Properties) != 0)
 				.Concat(type.GetExtensionProperties())
 				.ToArray();
 		}
@@ -329,21 +350,15 @@ internal static class TypeHelpers
 	/// <summary>
 	///     Determines whether the <paramref name="member" /> (or any of its declaring types) is compiler-generated.
 	/// </summary>
+	/// <remarks>
+	///     The result is cached per member, because reading the attributes is the main cost of listing the members, and
+	///     the declaring types are checked again for each of their members.
+	/// </remarks>
 	public static bool IsCompilerGenerated(this MemberInfo member)
-	{
-		for (Type? type = member as Type ?? member.DeclaringType;
-		     type is not null;
-		     type = type.DeclaringType)
-		{
-			if (type.IsDefined(typeof(CompilerGeneratedAttribute), false) ||
-			    type.IsExtensionGroupingType())
-			{
-				return true;
-			}
-		}
-
-		return member.IsDefined(typeof(CompilerGeneratedAttribute), false);
-	}
+		=> ReferenceEquals(CompilerGeneratedCache.GetValue(member, static m => ToMarker(
+			m.IsDefined(typeof(CompilerGeneratedAttribute), false) ||
+			(m is Type type && type.IsExtensionGroupingType()) ||
+			m.DeclaringType?.IsCompilerGenerated() == true)), TrueMarker);
 
 	/// <summary>
 	///     Determines whether the <paramref name="type" /> is a compiler-generated grouping type that backs the C#
@@ -353,9 +368,16 @@ internal static class TypeHelpers
 	///     These types are not marked with <see cref="CompilerGeneratedAttribute" />, but they always carry the
 	///     <see cref="ExtensionAttribute" /> and have an unspeakable name (which a source identifier can never have).
 	/// </remarks>
+	/// <remarks>
+	///     The result is cached per type, as it is checked for every nested type when the properties are listed.
+	/// </remarks>
 	internal static bool IsExtensionGroupingType(this Type type)
 		=> type.Name.StartsWith('<') &&
-		   type.IsDefined(typeof(ExtensionAttribute), false);
+		   ReferenceEquals(ExtensionGroupingCache.GetValue(type, static t => ToMarker(
+			   t.IsDefined(typeof(ExtensionAttribute), false))), TrueMarker);
+
+	private static object ToMarker(bool value)
+		=> value ? TrueMarker : FalseMarker;
 
 	/// <summary>
 	///     Collects the extension properties declared with the C# extension block syntax that the
@@ -401,14 +423,14 @@ internal static class TypeHelpers
 		{
 			bool isOperator = method.Name.StartsWith("op_", StringComparison.Ordinal);
 			if (isOperator
-				    ? includedSpecialName.HasFlag(SpecialNameMembers.Operators)
-				    : includedSpecialName.HasFlag(SpecialNameMembers.Accessors))
+				    ? (includedSpecialName & SpecialNameMembers.Operators) != 0
+				    : (includedSpecialName & SpecialNameMembers.Accessors) != 0)
 			{
 				return true;
 			}
 
 			return method.IsCompilerGenerated() &&
-			       includedCompilerGenerated.HasFlag(CompilerGeneratedMembers.Methods);
+			       (includedCompilerGenerated & CompilerGeneratedMembers.Methods) != 0;
 		}
 
 		if (method.IsExtensionPropertyAccessor())
@@ -416,11 +438,11 @@ internal static class TypeHelpers
 			// The public accessor implementation of an extension property is not flagged as special-name (there is no
 			// property on the public class for it to be special-named against), so it would otherwise leak into the
 			// results. It is treated like a regular get_/set_ accessor: excluded by default, opt-in via Accessors.
-			return includedSpecialName.HasFlag(SpecialNameMembers.Accessors);
+			return (includedSpecialName & SpecialNameMembers.Accessors) != 0;
 		}
 
 		return !method.IsCompilerGenerated() ||
-		       includedCompilerGenerated.HasFlag(CompilerGeneratedMembers.Methods);
+		       (includedCompilerGenerated & CompilerGeneratedMembers.Methods) != 0;
 	}
 
 	/// <summary>
@@ -465,6 +487,11 @@ internal static class TypeHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return type?.IsDefined(typeof(TAttribute), inherit) == true;
+		}
+
 		object? attribute = type?.GetCustomAttributes(typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute attributeValue)
@@ -1540,37 +1567,37 @@ internal static class TypeHelpers
 
 	private static bool HasAccessModifierForNestedClass(Type type, AccessModifiers accessModifiers)
 	{
-		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		if ((accessModifiers & AccessModifiers.Internal) != 0 &&
 		    type.IsNestedAssembly)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		if ((accessModifiers & AccessModifiers.Protected) != 0 &&
 		    type.IsNestedFamily)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		if ((accessModifiers & AccessModifiers.Private) != 0 &&
 		    type.IsNestedPrivate)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		if ((accessModifiers & AccessModifiers.Public) != 0 &&
 		    type.IsNestedPublic)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.PrivateProtected) &&
+		if ((accessModifiers & AccessModifiers.PrivateProtected) != 0 &&
 		    type.IsNestedFamANDAssem)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.ProtectedInternal) &&
+		if ((accessModifiers & AccessModifiers.ProtectedInternal) != 0 &&
 		    type.IsNestedFamORAssem)
 		{
 			return true;
@@ -1582,19 +1609,19 @@ internal static class TypeHelpers
 	private static bool HasAccessModifierForNotNestedClass(Type type,
 		AccessModifiers accessModifiers)
 	{
-		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		if ((accessModifiers & AccessModifiers.Internal) != 0 &&
 		    !type.IsVisible)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		if ((accessModifiers & AccessModifiers.Public) != 0 &&
 		    type.IsPublic)
 		{
 			return true;
 		}
 
-		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		if ((accessModifiers & AccessModifiers.Private) != 0 &&
 		    type.IsNotPublic)
 		{
 			return true;

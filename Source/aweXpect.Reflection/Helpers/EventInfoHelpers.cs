@@ -46,6 +46,11 @@ internal static class EventInfoHelpers
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
+		if (predicate is null)
+		{
+			return Attribute.IsDefined(eventInfo, typeof(TAttribute), inherit);
+		}
+
 		object? attribute = Attribute.GetCustomAttributes(eventInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
