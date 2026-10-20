@@ -36,6 +36,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
@@ -44,7 +50,8 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
@@ -56,7 +63,8 @@ window.BENCHMARK_DATA = {
           42254.887282151445,
           2442.302179609026,
           1307.5368900299072,
-          1929.9819597516741
+          1929.9819597516741,
+          2074.014804295131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -71,6 +79,7 @@ window.BENCHMARK_DATA = {
           14531,
           14541,
           14530,
+          2520,
           2520,
           2520,
           2520
@@ -93,7 +102,8 @@ window.BENCHMARK_DATA = {
           14543.159549419697,
           14057.160717303936,
           6657.376680227427,
-          10324.007733858549
+          10324.007733858549,
+          12149.76840536935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -105,6 +115,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -160,6 +171,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
         "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
+      },
+      {
+        "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
+        "message": "refactor: make subject contexts, member expectations and materialized collections cheaper on the happy path (#1895)"
       }
     ],
     "labels": [
@@ -168,7 +185,8 @@ window.BENCHMARK_DATA = {
       "391462ba",
       "78b13d35",
       "87d3aeb2",
-      "fe413769"
+      "fe413769",
+      "3514e5d3"
     ],
     "datasets": [
       {
@@ -180,7 +198,8 @@ window.BENCHMARK_DATA = {
           40511.48933628627,
           1803.8105926513672,
           1007.3367557525635,
-          1453.7463124593098
+          1453.7463124593098,
+          1594.2021198272705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -195,6 +214,7 @@ window.BENCHMARK_DATA = {
           14342,
           14341,
           14342,
+          2328,
           2328,
           2328,
           2328
@@ -217,7 +237,8 @@ window.BENCHMARK_DATA = {
           13392.435609944661,
           12604.763811747232,
           6120.470632825579,
-          9715.201798072228
+          9715.201798072228,
+          11165.273520914714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -229,6 +250,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
