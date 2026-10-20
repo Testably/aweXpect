@@ -85,14 +85,12 @@ internal static class HasNodeConstraint
 	private static HasNodeConstraint<TSubject, XAttribute> CreateAttribute<TSubject>(string it,
 		ExpectationGrammars grammars, XName name, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
-		=> new(it, grammars, $"attribute {Formatter.Format(name.ToString())}", getElement,
-			element => element.Attribute(name));
+		=> new(it, grammars, "attribute", name, getElement, static (element, name) => element.Attribute(name));
 
 	private static HasNodeConstraint<TSubject, XElement> CreateElement<TSubject>(string it,
 		ExpectationGrammars grammars, XName name, Func<TSubject, XElement?> getElement)
 		where TSubject : XNode
-		=> new(it, grammars, $"element {Formatter.Format(name.ToString())}", getElement,
-			element => element.Element(name));
+		=> new(it, grammars, "element", name, getElement, static (element, name) => element.Element(name));
 }
 
 /// <summary>
@@ -101,15 +99,23 @@ internal static class HasNodeConstraint
 /// </summary>
 /// <param name="it">The name of the subject.</param>
 /// <param name="grammars">The grammars of the expectation.</param>
-/// <param name="node">The description of the node, e.g. <c>attribute "id"</c>.</param>
+/// <param name="kind">The kind of the node, e.g. <c>attribute</c>.</param>
+/// <param name="name">The name of the node.</param>
 /// <param name="getElement">Selects the element of the subject, e.g. the root element of a document.</param>
-/// <param name="find">Looks up the node in the element, or returns <see langword="null" /> if it does not exist.</param>
+/// <param name="find">
+///     Looks up the node with the <paramref name="name" /> in the element, or returns <see langword="null" /> if it does
+///     not exist.
+/// </param>
+/// <remarks>
+///     The node is only described in a failure, so that a met expectation does not format its name.
+/// </remarks>
 internal sealed class HasNodeConstraint<TSubject, TNode>(
 	string it,
 	ExpectationGrammars grammars,
-	string node,
+	string kind,
+	XName name,
 	Func<TSubject, XElement?> getElement,
-	Func<XElement, TNode?> find)
+	Func<XElement, XName, TNode?> find)
 	: ConstraintResult.WithNotNullValue<TSubject?>(it, grammars),
 		IValueConstraint<TSubject?>
 	where TSubject : XNode
@@ -137,7 +143,7 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 			return this;
 		}
 
-		TNode? found = find(element);
+		TNode? found = find(element, name);
 		_found = found is null ? null : new FoundNode<TNode>(found);
 		Outcome = found is not null ? Outcome.Success : Outcome.Failure;
 		return this;
@@ -158,18 +164,18 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(node);
+		=> AppendNode(stringBuilder.Append(Grammars.Verb("has ", "have ")));
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		if (!TryAppendMissingElement(stringBuilder))
 		{
-			stringBuilder.Append(It).Append(" did not have ").Append(node);
+			AppendNode(stringBuilder.Append(It).Append(" did not have "));
 		}
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(node);
+		=> AppendNode(stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")));
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -178,6 +184,9 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 			stringBuilder.Append(It).Append(" did");
 		}
 	}
+
+	private void AppendNode(StringBuilder stringBuilder)
+		=> Formatter.Format(stringBuilder.Append(kind).Append(' '), name.ToString());
 
 	private bool TryAppendMissingElement(StringBuilder stringBuilder)
 	{
