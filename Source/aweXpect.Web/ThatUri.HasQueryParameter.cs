@@ -59,7 +59,7 @@ public static partial class ThatUri
 				return this;
 			}
 
-			if (actual.GetQueryParameterValues(name) is not null)
+			if (actual.HasQueryParameter(name))
 			{
 				Outcome = Outcome.Success;
 				return this;
