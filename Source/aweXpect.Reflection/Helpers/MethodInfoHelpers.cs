@@ -13,6 +13,10 @@ namespace aweXpect.Reflection.Helpers;
 /// </summary>
 internal static class MethodInfoHelpers
 {
+	private static readonly ConditionalWeakTable<MethodInfo, object> AsyncCache = new();
+	private static readonly object AsyncMarker = new();
+	private static readonly object NotAsyncMarker = new();
+
 	/// <summary>
 	///     Checks if the <paramref name="methodInfo" /> has the specified <paramref name="accessModifiers" />.
 	/// </summary>
@@ -160,10 +164,14 @@ internal static class MethodInfoHelpers
 	///     Detection is based on the <see cref="AsyncStateMachineAttribute" /> which the compiler emits for methods
 	///     declared with the <see langword="async" /> keyword. This also covers <see langword="async" />
 	///     <see langword="void" /> methods and is more accurate than inspecting the return type.
+	///     <para />
+	///     The result is cached per method, as reading the attribute is the main cost of an expectation on asynchronous
+	///     methods, and the attributes of a loaded method never change.
 	/// </remarks>
 	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
 	public static bool IsAsync(this MethodInfo? methodInfo)
-		=> methodInfo?.IsDefined(typeof(AsyncStateMachineAttribute), false) == true;
+		=> methodInfo is not null && ReferenceEquals(AsyncCache.GetValue(methodInfo, static m
+			=> m.IsDefined(typeof(AsyncStateMachineAttribute), false) ? AsyncMarker : NotAsyncMarker), AsyncMarker);
 
 	/// <summary>
 	///     Gets a value indicating whether the <see cref="MethodInfo" /> is an extension method.

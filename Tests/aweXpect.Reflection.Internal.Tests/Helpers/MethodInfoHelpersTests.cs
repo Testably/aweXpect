@@ -136,6 +136,32 @@ public sealed class MethodInfoHelpersTests
 	}
 
 	[Test]
+	public async Task IsAsync_WhenMethodIsAsync_ShouldReturnTrueOnEveryCall()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.AsyncMethod))!;
+
+		await That(methodInfo.IsAsync()).IsTrue();
+		await That(methodInfo.IsAsync()).IsTrue().Because("the cached result is returned on the second call");
+	}
+
+	[Test]
+	public async Task IsAsync_WhenMethodIsNotAsync_ShouldReturnFalseOnEveryCall()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
+
+		await That(methodInfo.IsAsync()).IsFalse();
+		await That(methodInfo.IsAsync()).IsFalse().Because("the cached result is returned on the second call");
+	}
+
+	[Test]
+	public async Task IsAsync_WhenNull_ShouldReturnFalse()
+	{
+		MethodInfo? methodInfo = null;
+
+		await That(methodInfo.IsAsync()).IsFalse();
+	}
+
+	[Test]
 	public async Task IsExtensionPropertyAccessor_WhenInstanceMethod_ShouldReturnFalse()
 	{
 		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
@@ -180,6 +206,9 @@ public sealed class MethodInfoHelpersTests
 			=> throw new NotSupportedException();
 
 		public static int StaticMethod() => 0;
+
+		public static async Task AsyncMethod()
+			=> await Task.Yield();
 
 		public override void MethodWithAttributeInBaseClass()
 			=> throw new NotSupportedException();
