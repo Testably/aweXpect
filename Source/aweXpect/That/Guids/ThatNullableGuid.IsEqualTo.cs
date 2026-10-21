@@ -33,7 +33,7 @@ public static partial class ThatNullableGuid
 		public ConstraintResult IsMetBy(Guid? actual)
 		{
 			Actual = actual;
-			Outcome = actual.Equals(expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = Nullable.Equals(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -36,7 +37,9 @@ public static partial class ThatEnum
 		public ConstraintResult IsMetBy(TEnum actual)
 		{
 			Actual = actual;
-			Outcome = actual.Equals(expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = expected.HasValue && EqualityComparer<TEnum>.Default.Equals(actual, expected.Value)
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
