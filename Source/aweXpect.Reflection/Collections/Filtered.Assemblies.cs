@@ -21,6 +21,7 @@ public static partial class Filtered
 		ITypeAssemblies.IPrivate
 	{
 		private readonly Func<string> _description;
+		private readonly IEnumerable<Assembly?>? _unfilteredSource;
 
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
@@ -58,6 +59,7 @@ public static partial class Filtered
 			: base(source.WhereNotNull())
 		{
 			_description = description;
+			_unfilteredSource = source;
 		}
 
 		/// <summary>
@@ -70,7 +72,17 @@ public static partial class Filtered
 		private Assemblies(Assemblies inner, List<IFilter<Assembly>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
+			_unfilteredSource = inner._unfilteredSource;
 		}
+
+		/// <summary>
+		///     The source of the assemblies when no filter applies, or <see langword="null" />.
+		/// </summary>
+		/// <remarks>
+		///     The types of the assemblies are listed from it directly, as enumerating this collection asynchronously costs
+		///     more than listing the types.
+		/// </remarks>
+		internal IEnumerable<Assembly?>? UnfilteredSource => Filters.Count == 0 ? _unfilteredSource : null;
 
 		/// <summary>
 		///     Filters for public types.

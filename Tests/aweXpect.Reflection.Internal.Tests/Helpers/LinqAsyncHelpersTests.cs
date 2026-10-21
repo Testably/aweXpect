@@ -8,6 +8,24 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 public sealed class LinqAsyncHelpersTests
 {
 	[Test]
+	public async Task SelectManyNotNull_ShouldSkipNullItemsAndKeepTheOrder()
+	{
+		string?[] source = ["ab", null, "c",];
+
+		List<char> result = [];
+#if NET8_0_OR_GREATER
+		await foreach (char item in source.SelectManyNotNull(s => s))
+#else
+		foreach (char item in source.SelectManyNotNull(s => s))
+#endif
+		{
+			result.Add(item);
+		}
+
+		await That(result).IsEqualTo(['a', 'b', 'c',]);
+	}
+
+	[Test]
 	public async Task SplitWhereAnyAsync_ShouldSeparateBasedOnGeneratedItems()
 	{
 		int[] source = [1, 2, 3,];
