@@ -46,7 +46,7 @@ public static partial class ThatHttpRequestMessage
 						async m => m.Content == null ? null : await m.Content.ReadAsStringAsync(),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
-				.AddExpectations(e => expectations(new ThatSubject<string?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<string?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
 	}

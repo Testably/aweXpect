@@ -22,7 +22,7 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			this);
 	}
@@ -41,7 +41,7 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			this);
 	}

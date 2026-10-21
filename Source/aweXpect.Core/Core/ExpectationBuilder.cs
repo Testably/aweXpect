@@ -479,13 +479,15 @@ public abstract class ExpectationBuilder
 		=> new(this, null, memberAccessor, expectationTextGenerator, replaceIt);
 
 	/// <summary>
-	///     Adds the <paramref name="memberNode" /> and the <paramref name="expectations" /> on the member, after the
-	///     constraint from the <paramref name="sourceConstraint" /> on the value, if any.
+	///     Adds the <paramref name="memberNode" /> and the <paramref name="expectations" /> on the member, which receive
+	///     the <paramref name="state" />, after the constraint from the <paramref name="sourceConstraint" /> on the value,
+	///     if any.
 	/// </summary>
-	private ExpectationBuilder AddMemberExpectations<TSource>(
+	private ExpectationBuilder AddMemberExpectations<TSource, TState>(
 		MappingNode memberNode,
 		bool replaceIt,
-		Action<ExpectationBuilder> expectations,
+		TState state,
+		Action<TState, ExpectationBuilder> expectations,
 		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars,
 		Func<string, ExpectationGrammars, IValueConstraint<TSource>>? sourceConstraint)
 	{
@@ -517,7 +519,7 @@ public abstract class ExpectationBuilder
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
 		ExpectationGrammars = expectationGrammars?.Invoke(memberGrammars) ?? memberGrammars;
 		int outerReasonCount = _reasons?.Count ?? 0;
-		expectations.Invoke(this);
+		expectations.Invoke(state, this);
 		ExpectationGrammars = previousGrammars;
 
 		CompleteWhichNode();
@@ -1275,6 +1277,23 @@ public abstract class ExpectationBuilder
 			Action<ExpectationBuilder> expectation,
 			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
 			=> _expectationBuilder.AddMemberExpectations(CreateMappingNode<TMember>(), _replaceIt, expectation,
+				static (expectation, expectationBuilder) => expectation(expectationBuilder),
+				expectationGrammars, _sourceConstraintBuilder);
+
+		/// <summary>
+		///     Add expectations for the current <typeparamref name="TMember" />, which receive the
+		///     <paramref name="state" />.
+		/// </summary>
+		/// <remarks>
+		///     Pass what the <paramref name="expectation" /> needs, e.g. the expectations of the caller, as
+		///     <paramref name="state" /> instead of capturing it, so that a <see langword="static" /> lambda can be used,
+		///     which allocates neither a closure nor a delegate.
+		/// </remarks>
+		public ExpectationBuilder AddExpectations<TState>(
+			TState state,
+			Action<TState, ExpectationBuilder> expectation,
+			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
+			=> _expectationBuilder.AddMemberExpectations(CreateMappingNode<TMember>(), _replaceIt, state, expectation,
 				expectationGrammars, _sourceConstraintBuilder);
 
 		/// <summary>
@@ -1292,6 +1311,7 @@ public abstract class ExpectationBuilder
 			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
 			where TNarrowed : TMember
 			=> _expectationBuilder.AddMemberExpectations(CreateMappingNode<TNarrowed>(), _replaceIt, expectation,
+				static (expectation, expectationBuilder) => expectation(expectationBuilder),
 				expectationGrammars, _sourceConstraintBuilder);
 
 		/// <summary>

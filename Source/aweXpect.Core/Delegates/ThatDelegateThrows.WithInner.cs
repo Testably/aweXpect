@@ -23,7 +23,7 @@ public partial class ThatDelegateThrows<TException>
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
-				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
 	}
@@ -77,7 +77,7 @@ public partial class ThatDelegateThrows<TException>
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))
-				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
+				.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
 	}

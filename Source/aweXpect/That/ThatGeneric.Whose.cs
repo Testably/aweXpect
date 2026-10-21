@@ -35,7 +35,7 @@ public static partial class ThatGeneric
 			.ForMember(
 				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
-			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}
@@ -67,7 +67,7 @@ public static partial class ThatGeneric
 			.ForAsyncMember(
 				MemberAccessor<T, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
-			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<TMember?>(e)),
 				memberGrammars => MemberGrammars<TMember>(memberGrammars, grammars));
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder, subject);
 	}

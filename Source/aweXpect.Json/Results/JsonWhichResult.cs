@@ -27,7 +27,7 @@ public class JsonWhichResult(
 					return jsonDocument.RootElement.Clone();
 				}, "it"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
-			.AddExpectations(e => expectations(new ThatSubject<JsonElement?>(e)));
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<JsonElement?>(e)));
 		return this;
 	}
 }

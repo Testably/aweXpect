@@ -33,7 +33,7 @@ public sealed class XmlWhichResult : AndOrResult<string?, IThat<string?>>
 		ExpectationBuilder
 			.ForMember(MemberAccessor<XDocument, XElement?>.FromFunc(document => document.Root, "it"),
 				(_, stringBuilder) => stringBuilder.Append(" which "))
-			.AddExpectations(e => expectations(new ThatSubject<XElement?>(e)));
+			.AddExpectations(expectations, static (expectations, e) => expectations(new ThatSubject<XElement?>(e)));
 		return this;
 	}
 }
