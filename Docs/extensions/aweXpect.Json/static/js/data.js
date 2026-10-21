@@ -150,6 +150,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
         "message": "refactor: compare enums and GUIDs without boxing (#1914)"
+      },
+      {
+        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
+        "message": "refactor: add expectations on a member without a closure (#1922)"
       }
     ],
     "labels": [
@@ -177,7 +183,8 @@ window.BENCHMARK_DATA = {
       "0993f949",
       "c58a0ca2",
       "a65978ac",
-      "cf954d73"
+      "cf954d73",
+      "0bac86a9"
     ],
     "datasets": [
       {
@@ -208,7 +215,8 @@ window.BENCHMARK_DATA = {
           2014.3255303700764,
           2137.1783646803638,
           2186.526701790946,
-          2167.4484387715656
+          2167.4484387715656,
+          2089.276038851057
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -236,6 +244,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1288,
           1288,
           1288,
           1288,
@@ -283,7 +292,8 @@ window.BENCHMARK_DATA = {
           14029.53034769694,
           15785.769415283203,
           15467.650754801432,
-          15402.08388264974
+          15402.08388264974,
+          16405.978548177085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -295,6 +305,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -483,6 +494,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
         "message": "refactor: compare enums and GUIDs without boxing (#1914)"
+      },
+      {
+        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
+        "message": "refactor: add expectations on a member without a closure (#1922)"
       }
     ],
     "labels": [
@@ -510,7 +527,8 @@ window.BENCHMARK_DATA = {
       "0993f949",
       "c58a0ca2",
       "a65978ac",
-      "cf954d73"
+      "cf954d73",
+      "0bac86a9"
     ],
     "datasets": [
       {
@@ -541,7 +559,8 @@ window.BENCHMARK_DATA = {
           1422.8097575505574,
           1593.859359060015,
           1531.099872295673,
-          1583.5541142781576
+          1583.5541142781576,
+          1479.4907387953538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -569,6 +588,7 @@ window.BENCHMARK_DATA = {
           1216,
           1216,
           1216,
+          1224,
           1224,
           1224,
           1224,
@@ -616,7 +636,8 @@ window.BENCHMARK_DATA = {
           12880.618063354492,
           14458.46565246582,
           14126.028885977608,
-          14154.284542377178
+          14154.284542377178,
+          14842.046515909831
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -628,6 +649,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -756,6 +778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
         "message": "refactor: compare enums and GUIDs without boxing (#1914)"
+      },
+      {
+        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
+        "message": "refactor: add expectations on a member without a closure (#1922)"
       }
     ],
     "labels": [
@@ -773,7 +801,8 @@ window.BENCHMARK_DATA = {
       "0993f949",
       "c58a0ca2",
       "a65978ac",
-      "cf954d73"
+      "cf954d73",
+      "0bac86a9"
     ],
     "datasets": [
       {
@@ -794,7 +823,8 @@ window.BENCHMARK_DATA = {
           4509.860707092285,
           4760.760692342123,
           4578.080839538574,
-          4785.992984008789
+          4785.992984008789,
+          4648.083818708147
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -812,6 +842,7 @@ window.BENCHMARK_DATA = {
           3496,
           3496,
           3496,
+          3520,
           3520,
           3520,
           3520,
@@ -849,7 +880,8 @@ window.BENCHMARK_DATA = {
           38673.99718299279,
           48328.24166666667,
           42673.760904947914,
-          46869.422551081734
+          46869.422551081734,
+          48116.435006277905
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -875,6 +907,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61932,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -979,6 +1012,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
         "message": "refactor: compare enums and GUIDs without boxing (#1914)"
+      },
+      {
+        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
+        "message": "refactor: add expectations on a member without a closure (#1922)"
       }
     ],
     "labels": [
@@ -996,7 +1035,8 @@ window.BENCHMARK_DATA = {
       "0993f949",
       "c58a0ca2",
       "a65978ac",
-      "cf954d73"
+      "cf954d73",
+      "0bac86a9"
     ],
     "datasets": [
       {
@@ -1017,7 +1057,8 @@ window.BENCHMARK_DATA = {
           9260.587910461425,
           9563.986525472004,
           9472.83072611491,
-          9108.803155517578
+          9108.803155517578,
+          9377.361384073893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1035,6 +1076,7 @@ window.BENCHMARK_DATA = {
           29880,
           29880,
           29880,
+          7048,
           7048,
           7048,
           7048,
@@ -1072,7 +1114,8 @@ window.BENCHMARK_DATA = {
           270817.4520357572,
           299873.75364583335,
           287392.14599609375,
-          294419.1672363281
+          294419.1672363281,
+          302584.3828473772
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1098,6 +1141,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521573,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -1202,6 +1246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
         "message": "refactor: compare enums and GUIDs without boxing (#1914)"
+      },
+      {
+        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
+        "message": "refactor: add expectations on a member without a closure (#1922)"
       }
     ],
     "labels": [
@@ -1219,7 +1269,8 @@ window.BENCHMARK_DATA = {
       "0993f949",
       "c58a0ca2",
       "a65978ac",
-      "cf954d73"
+      "cf954d73",
+      "0bac86a9"
     ],
     "datasets": [
       {
@@ -1240,7 +1291,8 @@ window.BENCHMARK_DATA = {
           2880.457930156163,
           2995.2801439921063,
           3179.6271011352537,
-          2940.541816711426
+          2940.541816711426,
+          2951.1923433031357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1258,6 +1310,7 @@ window.BENCHMARK_DATA = {
           1536,
           1536,
           1536,
+          1544,
           1544,
           1544,
           1544,
@@ -1295,7 +1348,8 @@ window.BENCHMARK_DATA = {
           1968.1592641194661,
           1984.7466013772148,
           2126.5519622802735,
-          1956.1818823133196
+          1956.1818823133196,
+          2093.6677487691245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1307,6 +1361,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -1425,6 +1480,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
         "message": "refactor: compare enums and GUIDs without boxing (#1914)"
+      },
+      {
+        "sha": "0bac86a9757dbb7f41900c137bdbb03928c007b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
+        "message": "refactor: add expectations on a member without a closure (#1922)"
       }
     ],
     "labels": [
@@ -1442,7 +1503,8 @@ window.BENCHMARK_DATA = {
       "0993f949",
       "c58a0ca2",
       "a65978ac",
-      "cf954d73"
+      "cf954d73",
+      "0bac86a9"
     ],
     "datasets": [
       {
@@ -1463,7 +1525,8 @@ window.BENCHMARK_DATA = {
           2017.0294237772623,
           2056.798341878255,
           2161.130169187273,
-          2014.2628242492676
+          2014.2628242492676,
+          2054.2856057484946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1482,6 +1545,7 @@ window.BENCHMARK_DATA = {
           3920,
           3920,
           3928,
+          2872,
           2872,
           2872,
           2872,
@@ -1518,7 +1582,8 @@ window.BENCHMARK_DATA = {
           1830.6382367451986,
           2432.828634643555,
           2095.842677561442,
-          1745.1242872873943
+          1745.1242872873943,
+          1869.58156644381
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1530,6 +1595,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
