@@ -208,6 +208,20 @@ public class EvaluationContextTests
 	}
 
 	[Test]
+	public async Task TimeSystem_WhenResetToTheRealTimeSystem_ShouldUseTheRealTimeSystem()
+	{
+		Context context = new()
+		{
+			TimeSystem = new VirtualTimeSystem(),
+		};
+
+		context.TimeSystem = RealTimeSystem.Instance;
+
+		await That(context.TimeSystem).IsSameAs(RealTimeSystem.Instance)
+			.Because("the real time system replaces another one that was set before");
+	}
+
+	[Test]
 	public async Task UseMaterializedEnumerable_InAnItemEvaluation_ShouldShareTheMaterializationOfTheEvaluation()
 	{
 		Context context = new();

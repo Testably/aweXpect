@@ -57,8 +57,6 @@ public abstract class ExpectationBuilder
 
 	private List<IBecauseReason>? _reasons;
 
-	private string? _subject;
-
 	/// <summary>
 	///     The subject contexts of the current subject and of the subject that the pending which node continues, or
 	///     <see langword="null" /> when none were added.
@@ -119,9 +117,10 @@ public abstract class ExpectationBuilder
 
 	/// <remarks>
 	///     The expression is only trimmed when it is read, e.g. for a failure message, because trimming a multi-line
-	///     expression costs more than a met expectation.
+	///     expression costs more than a met expectation. It is not kept, as it is rarely read more than once and every
+	///     expectation allocates a builder.
 	/// </remarks>
-	internal string Subject => _subject ??= _subjectExpression.TrimCommonWhiteSpace();
+	internal string Subject => _subjectExpression.TrimCommonWhiteSpace();
 
 	/// <summary>
 	///     Verifies that the subject is <see langword="true" />, when no expectation was added.
