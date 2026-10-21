@@ -96,14 +96,15 @@ internal abstract class JunctionNode : Node
 	/// <remarks>
 	///     An operand that continues the preceding one, e.g. from <c>AndWhose</c>, receives the result of the last
 	///     operand that does not, so that its members continue from the same stored value.
+	///     <para />
+	///     The operands are evaluated without a state machine as long as they complete synchronously, because most
+	///     expectations do, and only the remaining ones are awaited.
 	/// </remarks>
-	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
+	public override ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{
-		ConstraintResult? combinedResult = null;
-		ConstraintResult? source = null;
-		bool isSkipped = false;
+		Evaluation evaluation = default;
 		for (int index = 0; index <= _operandCount; index++)
 		{
 			(string separator, Node node) = GetNode(index);
@@ -112,34 +113,91 @@ internal abstract class JunctionNode : Node
 				continue;
 			}
 
-			ConstraintResult result;
-			if (isSkipped)
+			ValueTask<ConstraintResult> isMet = IsOperandMetBy(node, value, context, evaluation, cancellationToken);
+			if (!isMet.IsCompletedSuccessfully)
 			{
-				result = await node.IsMetBy(value, ExpectationTextEvaluationContext.For(context), cancellationToken);
-				result = result.AsExpectationOnly();
-			}
-			else if (node is ExpectationNode { ContinuesPrecedingOperand: true, } continuingNode)
-			{
-				result = await continuingNode.IsMetByContinuing(value, source, context, cancellationToken);
-			}
-			else
-			{
-				result = await node.IsMetBy(value, context, cancellationToken);
-				source = result;
+				return IsMetByAsync(isMet, index, separator, evaluation, value, context, cancellationToken);
 			}
 
-			combinedResult = CombineResults(combinedResult, result, separator,
-				combinedResult?.FurtherProcessingStrategy);
-			if (result.FurtherProcessingStrategy == FurtherProcessingStrategy.IgnoreCompletely)
+			if (evaluation.Add(this, node, isMet.Result, separator))
 			{
-				return combinedResult;
+				return new ValueTask<ConstraintResult>(evaluation.CombinedResult!);
 			}
-
-			isSkipped = isSkipped || SkipsFollowingOperands(result, combinedResult);
 		}
 
-		return combinedResult!;
+		return new ValueTask<ConstraintResult>(evaluation.CombinedResult!);
 	}
+
+	/// <summary>
+	///     Continues the evaluation of <see cref="IsMetBy{TValue}" /> with the operand at the <paramref name="index" />,
+	///     whose result <paramref name="isMet" /> did not complete synchronously.
+	/// </summary>
+	private async ValueTask<ConstraintResult> IsMetByAsync<TValue>(ValueTask<ConstraintResult> isMet,
+		int index,
+		string separator,
+		Evaluation evaluation,
+		TValue? value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		if (evaluation.Add(this, GetNode(index).Item2, await isMet, separator))
+		{
+			return evaluation.CombinedResult!;
+		}
+
+		for (index++; index <= _operandCount; index++)
+		{
+			(string nextSeparator, Node node) = GetNode(index);
+			if (!IsOperand(node))
+			{
+				continue;
+			}
+
+			ConstraintResult result = await IsOperandMetBy(node, value, context, evaluation, cancellationToken);
+			if (evaluation.Add(this, node, result, nextSeparator))
+			{
+				return evaluation.CombinedResult!;
+			}
+		}
+
+		return evaluation.CombinedResult!;
+	}
+
+	/// <summary>
+	///     Evaluates the operand <paramref name="node" /> as part of the <paramref name="evaluation" />.
+	/// </summary>
+	private static ValueTask<ConstraintResult> IsOperandMetBy<TValue>(Node node,
+		TValue? value,
+		IEvaluationContext context,
+		Evaluation evaluation,
+		CancellationToken cancellationToken)
+	{
+		if (evaluation.IsSkipped)
+		{
+			return AsExpectationOnly(node.IsMetBy(value, ExpectationTextEvaluationContext.For(context),
+				cancellationToken));
+		}
+
+		if (node is ExpectationNode { ContinuesPrecedingOperand: true, } continuingNode)
+		{
+			return continuingNode.IsMetByContinuing(value, evaluation.Source, context, cancellationToken);
+		}
+
+		return node.IsMetBy(value, context, cancellationToken);
+	}
+
+	private static ValueTask<ConstraintResult> AsExpectationOnly(ValueTask<ConstraintResult> isMet)
+	{
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return AsExpectationOnlyAsync(isMet);
+		}
+
+		return new ValueTask<ConstraintResult>(isMet.Result.AsExpectationOnly());
+	}
+
+	private static async ValueTask<ConstraintResult> AsExpectationOnlyAsync(ValueTask<ConstraintResult> isMet)
+		=> (await isMet).AsExpectationOnly();
 
 	/// <summary>
 	///     All nodes, including the <see cref="Current" /> one.
@@ -239,5 +297,49 @@ internal abstract class JunctionNode : Node
 
 		return new JunctionResult(combinedResult, result, _isAnd, separator,
 			furtherProcessingStrategy ?? FurtherProcessingStrategy.Continue);
+	}
+
+	/// <summary>
+	///     The state of an evaluation of <see cref="IsMetBy{TValue}" />, which is passed on when an operand does not
+	///     complete synchronously.
+	/// </summary>
+	private struct Evaluation
+	{
+		/// <summary>
+		///     The results of the operands so far.
+		/// </summary>
+		public ConstraintResult? CombinedResult { get; private set; }
+
+		/// <summary>
+		///     The result of the last operand that does not continue the preceding one.
+		/// </summary>
+		public ConstraintResult? Source { get; private set; }
+
+		/// <summary>
+		///     Whether the following operands are only evaluated for their expectation text.
+		/// </summary>
+		public bool IsSkipped { get; private set; }
+
+		/// <summary>
+		///     Adds the <paramref name="result" /> of the operand <paramref name="node" />.
+		/// </summary>
+		/// <returns><see langword="true" />, when the following operands are ignored completely.</returns>
+		public bool Add(JunctionNode junction, Node node, ConstraintResult result, string separator)
+		{
+			if (!IsSkipped && node is not ExpectationNode { ContinuesPrecedingOperand: true, })
+			{
+				Source = result;
+			}
+
+			CombinedResult = junction.CombineResults(CombinedResult, result, separator,
+				CombinedResult?.FurtherProcessingStrategy);
+			if (result.FurtherProcessingStrategy == FurtherProcessingStrategy.IgnoreCompletely)
+			{
+				return true;
+			}
+
+			IsSkipped = IsSkipped || junction.SkipsFollowingOperands(result, CombinedResult);
+			return false;
+		}
 	}
 }

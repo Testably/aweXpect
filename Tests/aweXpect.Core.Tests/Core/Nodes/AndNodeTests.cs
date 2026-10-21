@@ -236,6 +236,20 @@ public sealed class AndNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenOperandCompletesAsynchronously_ShouldEvaluateFollowingOperands()
+	{
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "foo")));
+		node.AddNode(AsynchronousNode(new DummyConstraintResult(Outcome.Success, "bar")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "baz", "r")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("foo and bar and baz");
+		await That(result.GetResultText()).IsEqualTo("r");
+	}
+
+	[Test]
 	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
 	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Success)]
 	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
@@ -561,6 +575,40 @@ public sealed class AndNodeTests
 	}
 
 	[Test]
+	public async Task WithProcessingStrategy_WhenAsynchronousOperandIgnoresCompletely_ShouldSkipFollowingOperands()
+	{
+		AndNode node = new(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Success, "foo")));
+		node.AddNode(AsynchronousNode(
+			new DummyConstraintResult(Outcome.Success, "bar", null, FurtherProcessingStrategy.IgnoreCompletely)));
+		node.AddNode(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Failure, "baz", "-")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo("foo and bar");
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+	}
+
+	[Test]
+	public async Task
+		WithProcessingStrategy_WhenFailedAsynchronousOperandIgnoresResult_ShouldOnlyUseExpectationOfFollowingOperands()
+	{
+		AndNode node = new(AsynchronousNode(
+			new DummyConstraintResult(Outcome.Failure, "foo", "l", FurtherProcessingStrategy.IgnoreResult)));
+		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure, "bar", "r"), new Exception("baz"), "it")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("foo and bar");
+		await That(result.GetResultText()).IsEqualTo("l");
+		await That(result.FailureCause).IsNull()
+			.Because("the following operands are only evaluated for their expectation text");
+	}
+
+	[Test]
 	public async Task WithProcessingStrategy_WhenFailedOperandIgnoresResult_ShouldOnlyUseExpectationOfFollowingOperands()
 	{
 		AndNode node = new(new DummyNode("",
@@ -611,5 +659,19 @@ public sealed class AndNodeTests
 			=> await That(true).IsTrue().And.IsNotEqualTo(false);
 
 		await That(Act).DoesNotThrow();
+	}
+
+	/// <summary>
+	///     A node whose <paramref name="result" /> does not complete synchronously.
+	/// </summary>
+	private static ExpectationNode AsynchronousNode(ConstraintResult result)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyAsyncConstraint<int>(async _ =>
+		{
+			await Task.Yield();
+			return result;
+		}));
+		return node;
 	}
 }

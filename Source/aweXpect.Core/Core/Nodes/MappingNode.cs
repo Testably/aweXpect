@@ -130,7 +130,77 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 		return IsMetByValue(value, context, cancellationToken);
 	}
 
-	private async ValueTask<ConstraintResult> IsMetByValue<TValue>(
+	/// <remarks>
+	///     A member that is accessed directly and whose expectations complete synchronously is verified without a state
+	///     machine, because most members are of this kind.
+	/// </remarks>
+	private ValueTask<ConstraintResult> IsMetByValue<TValue>(
+		TValue? value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		if (_asyncMemberAccessor is not null || context is ExpectationTextEvaluationContext ||
+		    value is not TSource typedValue || value is DelegateValue { IsNull: true, })
+		{
+			return IsMetByValueAsync(value, context, cancellationToken);
+		}
+
+		TTarget member;
+		try
+		{
+			member = _memberAccessor!.AccessMember(typedValue);
+		}
+		catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
+		{
+			return FromMemberException(exception, value, context, cancellationToken);
+		}
+
+		ValueTask<ConstraintResult> isMet;
+		EvaluationContext.EvaluationContext.NestedEvaluation nestedEvaluation =
+			EvaluationContext.EvaluationContext.StartNestedEvaluation(context);
+		try
+		{
+			isMet = IsMetByMember(member, context, cancellationToken);
+		}
+		catch
+		{
+			nestedEvaluation.Dispose();
+			throw;
+		}
+
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return AwaitMember(isMet, nestedEvaluation, value!);
+		}
+
+		nestedEvaluation.Dispose();
+		return new ValueTask<ConstraintResult>(new MemberResult<TValue>(isMet.Result, value!));
+	}
+
+	/// <summary>
+	///     Awaits the expectations on the member of the fast path in <see cref="IsMetByValue{TValue}" />, which did not
+	///     complete synchronously, within the <paramref name="nestedEvaluation" />.
+	/// </summary>
+	private static async ValueTask<ConstraintResult> AwaitMember<TValue>(ValueTask<ConstraintResult> isMet,
+		EvaluationContext.EvaluationContext.NestedEvaluation nestedEvaluation, TValue value)
+	{
+		ConstraintResult memberResult;
+		using (nestedEvaluation)
+		{
+			memberResult = await isMet;
+		}
+
+		return new MemberResult<TValue>(memberResult, value);
+	}
+
+	private async ValueTask<ConstraintResult> FromMemberException<TValue>(Exception exception, TValue? value,
+		IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		ConstraintResult result = await GetExpectationResult(context, cancellationToken);
+		return MemberExceptionResult.Create(result, exception, MemberAccessor.GetTrimmedName(), value);
+	}
+
+	private async ValueTask<ConstraintResult> IsMetByValueAsync<TValue>(
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)

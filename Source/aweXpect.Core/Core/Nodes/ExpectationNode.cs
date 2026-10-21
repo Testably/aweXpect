@@ -82,13 +82,25 @@ internal class ExpectationNode : Node
 
 	/// <inheritdoc />
 	/// <remarks>
-	///     A node with a single constraint returns its result without starting a state machine, when the constraint
-	///     completes synchronously, because most expectations are of this kind.
+	///     A node with a single constraint, or with only the expectations on a member, returns its result without
+	///     starting a state machine, when they complete synchronously, because most expectations are of this kind.
 	/// </remarks>
 	public override ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{
+		if (_constraint is null && _inner is not null && _reasons is null &&
+		    context is not ExpectationTextEvaluationContext)
+		{
+			ValueTask<ConstraintResult> isInnerMet = IsInnerMetBy(_inner, value, null, context, cancellationToken);
+			if (!isInnerMet.IsCompletedSuccessfully)
+			{
+				return AwaitInner(isInnerMet);
+			}
+
+			return new ValueTask<ConstraintResult>(CombineWithMapping(isInnerMet.Result));
+		}
+
 		if (_inner is null && _reasons is null && context is not ExpectationTextEvaluationContext)
 		{
 			try
@@ -134,6 +146,18 @@ internal class ExpectationNode : Node
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 		=> IsMetByAsync(value, source, context, cancellationToken);
+
+	/// <summary>
+	///     The <paramref name="innerResult" /> of a node without a constraint, combined with the mapping, if any.
+	/// </summary>
+	private ConstraintResult CombineWithMapping(ConstraintResult innerResult)
+		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(null, innerResult) : innerResult;
+
+	/// <summary>
+	///     Awaits the inner node of the fast path in <see cref="IsMetBy{TValue}" />, which did not complete synchronously.
+	/// </summary>
+	private async ValueTask<ConstraintResult> AwaitInner(ValueTask<ConstraintResult> isInnerMet)
+		=> CombineWithMapping(await isInnerMet);
 
 	/// <summary>
 	///     Returns the result of an asynchronous constraint of the fast path in <see cref="IsMetBy{TValue}" /> without
