@@ -71,11 +71,12 @@ have no mutation tests.
 - Stryker starts in the folder of the mutated project (project mode), so it runs only the configured `test-projects`;
   started from the solution folder it would ignore them and run every test project. The framework projects run on
   VSTest, which Stryker's runner for the Microsoft.Testing.Platform (`--test-runner mtp`) cannot execute.
-- `MutationTestsMain` and `MutationTestsCore` are switched off by `DisableMainMutationTests = true` and
-  `DisableCoreMutationTests = true` in `Pipeline/Build.MutationTests.cs`, because Stryker's runner for the
-  Microsoft.Testing.Platform cannot capture the coverage of their tests within the job time limit. Their nightly jobs
-  still exist and skip the targets, and the dashboard ignores their artifacts. `DisableExtensionMutationTests = true`
-  switches off those of the extension packages. With all flags set the dashboard target is skipped too.
+- `MutationTestsMain` is switched off by `DisableMainMutationTests = true` in `Pipeline/Build.MutationTests.cs`,
+  because Stryker's runner for the Microsoft.Testing.Platform cannot capture the coverage of `aweXpect.Tests` within
+  the job time limit. Its nightly jobs still exist and skip the target, and the dashboard ignores their artifacts.
+  `MutationTestsCore` runs as a trial; `DisableCoreMutationTests = true` switches it off again, and
+  `DisableExtensionMutationTests = true` switches off those of the extension packages. With all flags set the
+  dashboard target is skipped too.
 - Pull requests do not run mutation tests, only the nightly workflow does.
 - The source is split into disjoint slices (`MainMutationSlices`, `CoreMutationSlices`, `ReflectionMutationSlices`),
   selected with the build parameter `MutationSlice`; without it the whole project is mutated. The nightly workflow
@@ -114,7 +115,7 @@ and `Release` on the build server (`--configuration Release`).
 | `ReleaseNotes` | Writes the changes of each package since the last stable release into `Artifacts/ReleaseNotes.md` |
 | `Benchmarks` | Runs the benchmarks (of `BenchmarkPackage`, or all) and prints the reports; on `main` it appends them to the `benchmarks` branch |
 | `CodeAnalysis` | SonarCloud analysis around `CodeCoverage` (needs `SonarToken`) |
-| `MutationTestsCore`, `MutationTestsMain`, `MutationTests<Package>` | Stryker.NET mutation tests (`MutationTestsCore` and `MutationTestsMain` currently disabled) |
+| `MutationTestsCore`, `MutationTestsMain`, `MutationTests<Package>` | Stryker.NET mutation tests (`MutationTestsMain` currently disabled) |
 | `BenchmarkComment`, `MutationTestsDashboard` | CI only: benchmark PR comment and mutation dashboard upload |
 
 Test results go to `TestResults/`, packages and reports to `Artifacts/`. A project that gets its first slow test must

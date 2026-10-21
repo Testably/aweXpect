@@ -24,11 +24,12 @@ namespace Build;
 
 partial class Build
 {
-	// Stryker's runner for the Microsoft.Testing.Platform cannot capture the coverage of the unit tests within the
-	// time limit of the mutation jobs: https://github.com/stryker-mutator/stryker-net/issues/3871
-	// The test suites of the extension packages are small enough, so their mutation tests run.
+	// Stryker's runner for the Microsoft.Testing.Platform cannot capture the coverage of the 26k tests of `aweXpect.Tests`
+	// within the time limit of the mutation jobs: https://github.com/stryker-mutator/stryker-net/issues/3871
+	// `aweXpect.Core.Tests` and the test suites of the extension packages are small enough, so their mutation tests run
+	// (`MutationTestsCore` as a trial).
 	private static bool DisableMainMutationTests = true;
-	private static bool DisableCoreMutationTests = true;
+	private static bool DisableCoreMutationTests = false;
 	private static bool DisableExtensionMutationTests = false;
 
 	private const long MaxMutationReportSize = 100 * 1024 * 1024;
