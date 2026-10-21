@@ -227,10 +227,7 @@ internal class ExpectationNode : Node
 		{
 			ConstraintResult innerResult =
 				await IsInnerMetBy(_inner, value, result ?? source, context, cancellationToken);
-			innerResult = _isInnerMapping
-				? ((MappingNode)_inner).CombineResults(result, innerResult)
-				: innerResult;
-			return await ApplyReasons(innerResult, context, cancellationToken);
+			return await ApplyReasons(CombineWithMapping(result, innerResult), context, cancellationToken);
 		}
 
 		if (result is null)
@@ -242,6 +239,13 @@ internal class ExpectationNode : Node
 
 		return await ApplyReasons(result, context, cancellationToken);
 	}
+
+	/// <summary>
+	///     The <paramref name="innerResult" /> combined with the <paramref name="result" /> of the constraint by the
+	///     mapping, when the node maps to a member.
+	/// </summary>
+	private ConstraintResult CombineWithMapping(ConstraintResult? result, ConstraintResult innerResult)
+		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(result, innerResult) : innerResult;
 
 	/// <summary>
 	///     Verifies the <paramref name="inner" /> node, whose members continue from the value that the
