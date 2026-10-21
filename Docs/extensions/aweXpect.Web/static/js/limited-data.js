@@ -156,6 +156,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
         "message": "refactor: add expectations on a member without a closure (#1922)"
+      },
+      {
+        "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
+        "message": "refactor: cache the members of a type per scope and customization (#1916)"
       }
     ],
     "labels": [
@@ -184,7 +190,8 @@ window.BENCHMARK_DATA = {
       "c58a0ca2",
       "a65978ac",
       "cf954d73",
-      "0bac86a9"
+      "0bac86a9",
+      "bbe7c60f"
     ],
     "datasets": [
       {
@@ -216,7 +223,8 @@ window.BENCHMARK_DATA = {
           394.18769454956055,
           212.4745385306222,
           186.37349847384863,
-          399.0800528844198
+          399.0800528844198,
+          391.1945202691214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -241,6 +249,7 @@ window.BENCHMARK_DATA = {
           728,
           728,
           728,
+          664,
           664,
           664,
           664,
@@ -293,7 +302,8 @@ window.BENCHMARK_DATA = {
           1097.59041557312,
           566.366476504008,
           498.6835419336955,
-          956.9267114911761
+          956.9267114911761,
+          989.2830537160238
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -305,6 +315,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -500,6 +511,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
         "message": "refactor: add expectations on a member without a closure (#1922)"
+      },
+      {
+        "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
+        "message": "refactor: cache the members of a type per scope and customization (#1916)"
       }
     ],
     "labels": [
@@ -528,7 +545,8 @@ window.BENCHMARK_DATA = {
       "c58a0ca2",
       "a65978ac",
       "cf954d73",
-      "0bac86a9"
+      "0bac86a9",
+      "bbe7c60f"
     ],
     "datasets": [
       {
@@ -560,7 +578,8 @@ window.BENCHMARK_DATA = {
           218.01225686073303,
           102.6596689860026,
           102.03862513701121,
-          184.09860936232977
+          184.09860936232977,
+          201.5021471977234
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -585,6 +604,7 @@ window.BENCHMARK_DATA = {
           568,
           568,
           568,
+          504,
           504,
           504,
           504,
@@ -637,7 +657,8 @@ window.BENCHMARK_DATA = {
           307.8604507446289,
           125.60277970020587,
           128.5894257823626,
-          260.6876114777156
+          260.6876114777156,
+          269.09197708765663
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -649,6 +670,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -784,6 +806,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
         "message": "refactor: add expectations on a member without a closure (#1922)"
+      },
+      {
+        "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
+        "message": "refactor: cache the members of a type per scope and customization (#1916)"
       }
     ],
     "labels": [
@@ -802,7 +830,8 @@ window.BENCHMARK_DATA = {
       "c58a0ca2",
       "a65978ac",
       "cf954d73",
-      "0bac86a9"
+      "0bac86a9",
+      "bbe7c60f"
     ],
     "datasets": [
       {
@@ -824,7 +853,8 @@ window.BENCHMARK_DATA = {
           645.3139192141019,
           375.0598983446757,
           307.3451868534088,
-          641.7087911605835
+          641.7087911605835,
+          636.8076470920017
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -839,6 +869,7 @@ window.BENCHMARK_DATA = {
           1208,
           1208,
           1208,
+          1040,
           1040,
           1040,
           1040,
@@ -881,7 +912,8 @@ window.BENCHMARK_DATA = {
           1062.521921157837,
           502.6202091489519,
           465.52166611353556,
-          952.1896078745524
+          952.1896078745524,
+          924.3430284353403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -893,6 +925,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -1018,6 +1051,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
         "message": "refactor: add expectations on a member without a closure (#1922)"
+      },
+      {
+        "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
+        "message": "refactor: cache the members of a type per scope and customization (#1916)"
       }
     ],
     "labels": [
@@ -1036,7 +1075,8 @@ window.BENCHMARK_DATA = {
       "c58a0ca2",
       "a65978ac",
       "cf954d73",
-      "0bac86a9"
+      "0bac86a9",
+      "bbe7c60f"
     ],
     "datasets": [
       {
@@ -1058,7 +1098,8 @@ window.BENCHMARK_DATA = {
           1525.3293093272619,
           1046.780322756086,
           974.1606340408325,
-          1686.652564729963
+          1686.652564729963,
+          1695.5294080461774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1073,6 +1114,7 @@ window.BENCHMARK_DATA = {
           1952,
           1792,
           1792,
+          1728,
           1728,
           1728,
           1728,
@@ -1115,7 +1157,8 @@ window.BENCHMARK_DATA = {
           16641.725103759767,
           9448.027668879582,
           8945.516994222005,
-          21109.815547398157
+          21109.815547398157,
+          21872.96661783854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1140,6 +1183,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713
@@ -1252,6 +1296,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
         "message": "refactor: add expectations on a member without a closure (#1922)"
+      },
+      {
+        "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
+        "message": "refactor: cache the members of a type per scope and customization (#1916)"
       }
     ],
     "labels": [
@@ -1270,7 +1320,8 @@ window.BENCHMARK_DATA = {
       "c58a0ca2",
       "a65978ac",
       "cf954d73",
-      "0bac86a9"
+      "0bac86a9",
+      "bbe7c60f"
     ],
     "datasets": [
       {
@@ -1292,7 +1343,8 @@ window.BENCHMARK_DATA = {
           818.0172380719866,
           404.3309288575099,
           421.3687074865614,
-          795.2316314833505
+          795.2316314833505,
+          819.6555839947292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1307,6 +1359,7 @@ window.BENCHMARK_DATA = {
           2944,
           1456,
           1456,
+          1408,
           1408,
           1408,
           1408,
@@ -1349,7 +1402,8 @@ window.BENCHMARK_DATA = {
           1463.4684765679497,
           654.7118100019602,
           712.6511957804362,
-          1279.3847400665284
+          1279.3847400665284,
+          1353.0668294270833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1361,6 +1415,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -1486,6 +1541,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:10:55 2026 \u002B0200",
         "message": "refactor: add expectations on a member without a closure (#1922)"
+      },
+      {
+        "sha": "bbe7c60fa35f4cc79ff40eb2a83e6737e8673f32",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
+        "message": "refactor: cache the members of a type per scope and customization (#1916)"
       }
     ],
     "labels": [
@@ -1504,7 +1565,8 @@ window.BENCHMARK_DATA = {
       "c58a0ca2",
       "a65978ac",
       "cf954d73",
-      "0bac86a9"
+      "0bac86a9",
+      "bbe7c60f"
     ],
     "datasets": [
       {
@@ -1526,7 +1588,8 @@ window.BENCHMARK_DATA = {
           1138.0173733051006,
           794.1295502185822,
           859.8897573030912,
-          1322.9199147542317
+          1322.9199147542317,
+          1329.4379381815593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1553,6 +1616,7 @@ window.BENCHMARK_DATA = {
           1664,
           1664,
           1664,
+          1576,
           1576
         ],
         "borderColor": "#63A2AC",
@@ -1583,7 +1647,8 @@ window.BENCHMARK_DATA = {
           898.0194584528605,
           381.71880575588773,
           470.6881640298026,
-          771.1986887795584
+          771.1986887795584,
+          812.3925682476589
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1595,6 +1660,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
