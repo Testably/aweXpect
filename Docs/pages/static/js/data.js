@@ -498,6 +498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -583,7 +589,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -672,7 +679,8 @@ window.BENCHMARK_DATA = {
           9620.308968680245,
           5408.134867741512,
           10826.336772664388,
-          5381.225715637207
+          5381.225715637207,
+          5464.7155136108395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -753,6 +761,7 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
+          2192,
           2192,
           2192,
           2192,
@@ -863,7 +872,8 @@ window.BENCHMARK_DATA = {
           340386.35963541665,
           175291.95838341347,
           389730.56382533483,
-          171276.558984375
+          171276.558984375,
+          173229.0203125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -957,6 +967,7 @@ window.BENCHMARK_DATA = {
           590264,
           590288,
           590287,
+          590288,
           590288
         ],
         "borderColor": "#FF671B",
@@ -1054,7 +1065,8 @@ window.BENCHMARK_DATA = {
           19854.75565592448,
           9770.70318016639,
           19836.965574137368,
-          9524.460566202799
+          9524.460566202799,
+          10106.86986694336
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1066,6 +1078,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1618,6 +1631,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -1696,7 +1715,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -1778,7 +1798,8 @@ window.BENCHMARK_DATA = {
           280.8681308746338,
           124.70931466988155,
           286.1320460319519,
-          121.59014929135641
+          121.59014929135641,
+          132.95610520044963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1852,6 +1873,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          536,
           536,
           536,
           536,
@@ -1955,7 +1977,8 @@ window.BENCHMARK_DATA = {
           561.72357006073,
           281.55164749805743,
           580.1069484710694,
-          250.36088568369547
+          250.36088568369547,
+          278.85690934317455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1967,6 +1990,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2132,7 +2156,8 @@ window.BENCHMARK_DATA = {
           414.3041692733765,
           214.69076423985618,
           421.1796060562134,
-          189.3589603583018
+          189.3589603583018,
+          202.26494453634535
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2144,6 +2169,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -7309,6 +7335,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -8157,7 +8189,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -9009,7 +9042,8 @@ window.BENCHMARK_DATA = {
           147.88106650572556,
           71.63586087737765,
           146.15568361282348,
-          65.47874252796173
+          65.47874252796173,
+          69.63745698758534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9853,6 +9887,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          472,
           472,
           472,
           472,
@@ -10726,7 +10761,8 @@ window.BENCHMARK_DATA = {
           310.7603740374247,
           145.37879670583285,
           289.5054749806722,
-          125.27454794247946
+          125.27454794247946,
+          129.76419677734376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10919,6 +10955,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -11724,7 +11761,8 @@ window.BENCHMARK_DATA = {
           245.60043805440267,
           134.03258325258892,
           265.4258304323469,
-          119.78643496831258
+          119.78643496831258,
+          124.04547018664223
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11736,6 +11774,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -12374,6 +12413,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -12459,7 +12504,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -12548,7 +12594,8 @@ window.BENCHMARK_DATA = {
           257.97858483450756,
           132.12613875071207,
           266.7761610349019,
-          120.1500928912844
+          120.1500928912844,
+          128.75609509150186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12629,6 +12676,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          512,
           512,
           512,
           512,
@@ -12739,7 +12787,8 @@ window.BENCHMARK_DATA = {
           742.8673530578614,
           273.95417066720813,
           592.8681760152181,
-          253.36002119382223
+          253.36002119382223,
+          280.6179686546326
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12751,6 +12800,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -12930,7 +12980,8 @@ window.BENCHMARK_DATA = {
           361.92818420273915,
           184.81839354832968,
           361.62912280218944,
-          163.7732898871104
+          163.7732898871104,
+          181.32304186480386
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12942,6 +12993,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -18114,6 +18166,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -18962,7 +19020,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -19814,7 +19873,8 @@ window.BENCHMARK_DATA = {
           644.0138727188111,
           342.7781965255737,
           690.4651132992336,
-          298.9867090543111
+          298.9867090543111,
+          336.1037010465349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20658,6 +20718,7 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
+          808,
           808,
           808,
           808,
@@ -21531,7 +21592,8 @@ window.BENCHMARK_DATA = {
           1545.9638675962176,
           679.0924419675555,
           1524.835861714681,
-          639.689951356252
+          639.689951356252,
+          694.5381983121237
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22388,6 +22450,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -22529,7 +22592,8 @@ window.BENCHMARK_DATA = {
           690.6053834642682,
           339.6213544332064,
           703.9255782536098,
-          322.19654444853467
+          322.19654444853467,
+          349.99290259679157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -22541,6 +22605,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -27757,6 +27822,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -28605,7 +28676,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -29457,7 +29529,8 @@ window.BENCHMARK_DATA = {
           662.762922507066,
           325.85306007521496,
           680.1663172585623,
-          293.07493488605206
+          293.07493488605206,
+          317.23540414174397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30301,6 +30374,7 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
+          856,
           856,
           856,
           856,
@@ -31174,7 +31248,8 @@ window.BENCHMARK_DATA = {
           24769.02348109654,
           10611.078597005207,
           29451.29003252302,
-          9806.512108939034
+          9806.512108939034,
+          10480.286251613072
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32031,6 +32106,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -32172,7 +32248,8 @@ window.BENCHMARK_DATA = {
           818.1286020914714,
           415.7761540072305,
           825.9699424743652,
-          394.5781969657311
+          394.5781969657311,
+          443.0443371454875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32184,6 +32261,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -33170,6 +33248,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -33313,7 +33397,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -33460,7 +33545,8 @@ window.BENCHMARK_DATA = {
           696.2378072102864,
           341.05101684423596,
           731.9995660100665,
-          329.3894197146098
+          329.3894197146098,
+          351.9861197838417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33599,6 +33685,7 @@ window.BENCHMARK_DATA = {
           1760,
           1760,
           1760,
+          1696,
           1696,
           1696,
           1696,
@@ -33767,7 +33854,8 @@ window.BENCHMARK_DATA = {
           62078.393724714006,
           30337.048248291016,
           85772.94388020833,
-          29234.881917317707
+          29234.881917317707,
+          28949.237184964695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33919,6 +34007,7 @@ window.BENCHMARK_DATA = {
           5254,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -34779,6 +34868,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -34922,7 +35017,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -35069,7 +35165,8 @@ window.BENCHMARK_DATA = {
           183.17925725664412,
           87.9132330318292,
           184.13523068794836,
-          83.01264185564858
+          83.01264185564858,
+          88.71445781844002
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35208,6 +35305,7 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
+          488,
           488,
           488,
           488,
@@ -35376,7 +35474,8 @@ window.BENCHMARK_DATA = {
           25632.379846191405,
           10768.677486713115,
           33185.6685546875,
-          9152.88156636556
+          9152.88156636556,
+          10663.796454796424
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35528,6 +35627,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -35669,7 +35769,8 @@ window.BENCHMARK_DATA = {
           247.67886056900025,
           138.99979482094446,
           260.3278019587199,
-          116.53572600228446
+          116.53572600228446,
+          125.74929951704465
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35681,6 +35782,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -36319,6 +36421,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -36404,7 +36512,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -36493,7 +36602,8 @@ window.BENCHMARK_DATA = {
           364.0537227221898,
           175.42030254999796,
           369.9896094982441,
-          163.3111227108882
+          163.3111227108882,
+          168.71691239674885
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36574,6 +36684,7 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
+          680,
           680,
           680,
           680,
@@ -36684,7 +36795,8 @@ window.BENCHMARK_DATA = {
           467.8851353100368,
           224.31509488423666,
           387.2253023147583,
-          201.81340049107868
+          201.81340049107868,
+          208.12784337997437
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36696,6 +36808,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -36875,7 +36988,8 @@ window.BENCHMARK_DATA = {
           417.8546433051427,
           210.21304730268625,
           425.4159557660421,
-          202.9220724105835
+          202.9220724105835,
+          210.7193374792735
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36887,6 +37001,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -37481,6 +37596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -37566,7 +37687,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -37655,7 +37777,8 @@ window.BENCHMARK_DATA = {
           764.0498026529948,
           334.93609300026526,
           688.8996116002401,
-          301.36155179341637
+          301.36155179341637,
+          321.1674878438314
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37747,6 +37870,7 @@ window.BENCHMARK_DATA = {
           1496,
           1496,
           1496,
+          1448,
           1448,
           1448,
           1448
@@ -37846,7 +37970,8 @@ window.BENCHMARK_DATA = {
           2159.425786336263,
           1163.6858486175538,
           2178.0223190307615,
-          943.921571118491
+          943.921571118491,
+          1031.1148284031794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37858,6 +37983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -38037,7 +38163,8 @@ window.BENCHMARK_DATA = {
           958.4810537610736,
           494.18572063446044,
           1008.600541305542,
-          443.5740555695125
+          443.5740555695125,
+          481.9709744771322
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38049,6 +38176,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -38643,6 +38771,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -38728,7 +38862,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -38817,7 +38952,8 @@ window.BENCHMARK_DATA = {
           10905.619344075521,
           5943.126779409556,
           11641.690082256611,
-          5591.453640529087
+          5591.453640529087,
+          5984.411084311349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38898,6 +39034,7 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
+          1616,
           1616,
           1616,
           1616,
@@ -39008,7 +39145,8 @@ window.BENCHMARK_DATA = {
           36303.73956298828,
           18381.807141985213,
           42792.07820347377,
-          17426.521166120256
+          17426.521166120256,
+          19139.905946858726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39063,6 +39201,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -39199,7 +39338,8 @@ window.BENCHMARK_DATA = {
           10117.671493530273,
           5706.421149662563,
           10667.837913004558,
-          5454.340957641602
+          5454.340957641602,
+          5770.868584187826
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39211,6 +39351,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -39805,6 +39946,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:25:33 2026 \u002B0200",
         "message": "refactor: cache the members of a type per scope and customization (#1916)"
+      },
+      {
+        "sha": "e89c6f830151e3660e880f5cd57210187643f3b9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
+        "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
       }
     ],
     "labels": [
@@ -39890,7 +40037,8 @@ window.BENCHMARK_DATA = {
       "a65978ac",
       "cf954d73",
       "0bac86a9",
-      "bbe7c60f"
+      "bbe7c60f",
+      "e89c6f83"
     ],
     "datasets": [
       {
@@ -39979,7 +40127,8 @@ window.BENCHMARK_DATA = {
           10656.673046875,
           5407.552336374919,
           10900.834936959403,
-          5286.946806771414
+          5286.946806771414,
+          5634.599613189697
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40060,6 +40209,7 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
+          2096,
           2096,
           2096,
           2096,
@@ -40170,7 +40320,8 @@ window.BENCHMARK_DATA = {
           52036.582881382536,
           26717.786451067244,
           61726.108834402905,
-          25474.280279306266
+          25474.280279306266,
+          27282.48709716797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40264,6 +40415,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -40361,7 +40513,8 @@ window.BENCHMARK_DATA = {
           19738.99327959333,
           11346.652376615084,
           21086.785744803292,
-          10737.759923662457
+          10737.759923662457,
+          11490.09434400286
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40373,6 +40526,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
