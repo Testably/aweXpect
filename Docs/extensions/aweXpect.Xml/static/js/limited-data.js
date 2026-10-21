@@ -144,6 +144,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
         "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
+      },
+      {
+        "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
+        "message": "refactor: compare enums and GUIDs without boxing (#1914)"
       }
     ],
     "labels": [
@@ -170,7 +176,8 @@ window.BENCHMARK_DATA = {
       "b137d18f",
       "0993f949",
       "c58a0ca2",
-      "a65978ac"
+      "a65978ac",
+      "cf954d73"
     ],
     "datasets": [
       {
@@ -200,7 +207,8 @@ window.BENCHMARK_DATA = {
           672.8545249303182,
           1001.6646273930868,
           882.0162577629089,
-          898.3718014399211
+          898.3718014399211,
+          443.9966308048793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -225,6 +233,7 @@ window.BENCHMARK_DATA = {
           1312,
           1312,
           1312,
+          1248,
           1248,
           1248,
           1248,
@@ -273,7 +282,8 @@ window.BENCHMARK_DATA = {
           556.8801913942609,
           727.985545022147,
           694.9843821525574,
-          713.0111842836652
+          713.0111842836652,
+          373.4973191874368
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -285,6 +295,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -466,6 +477,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
         "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
+      },
+      {
+        "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
+        "message": "refactor: compare enums and GUIDs without boxing (#1914)"
       }
     ],
     "labels": [
@@ -492,7 +509,8 @@ window.BENCHMARK_DATA = {
       "b137d18f",
       "0993f949",
       "c58a0ca2",
-      "a65978ac"
+      "a65978ac",
+      "cf954d73"
     ],
     "datasets": [
       {
@@ -522,7 +540,8 @@ window.BENCHMARK_DATA = {
           3632.285236065204,
           5022.076195643498,
           4538.455469767253,
-          4844.753460184733
+          4844.753460184733,
+          2514.8070652301494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -557,6 +576,7 @@ window.BENCHMARK_DATA = {
           24332,
           24266,
           24266,
+          24332,
           24332
         ],
         "borderColor": "#63A2AC",
@@ -595,7 +615,8 @@ window.BENCHMARK_DATA = {
           4121.673295593262,
           5793.708106994629,
           4920.892924717495,
-          5471.42101542155
+          5471.42101542155,
+          3004.3554715474447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -607,6 +628,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -728,6 +750,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
         "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
+      },
+      {
+        "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
+        "message": "refactor: compare enums and GUIDs without boxing (#1914)"
       }
     ],
     "labels": [
@@ -744,7 +772,8 @@ window.BENCHMARK_DATA = {
       "b137d18f",
       "0993f949",
       "c58a0ca2",
-      "a65978ac"
+      "a65978ac",
+      "cf954d73"
     ],
     "datasets": [
       {
@@ -764,7 +793,8 @@ window.BENCHMARK_DATA = {
           1903.2650626046318,
           2832.9575669424876,
           2570.2948762257893,
-          2763.6087374369304
+          2763.6087374369304,
+          1408.001352183024
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -784,6 +814,7 @@ window.BENCHMARK_DATA = {
           13008,
           13008,
           13008,
+          12880,
           12880,
           12880,
           12880,
@@ -817,7 +848,8 @@ window.BENCHMARK_DATA = {
           2736.7471258980886,
           3789.8725752149307,
           3588.1917678833006,
-          3571.8411410013837
+          3571.8411410013837,
+          1927.5555466871995
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -829,6 +861,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -940,6 +973,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
         "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
+      },
+      {
+        "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
+        "message": "refactor: compare enums and GUIDs without boxing (#1914)"
       }
     ],
     "labels": [
@@ -956,7 +995,8 @@ window.BENCHMARK_DATA = {
       "b137d18f",
       "0993f949",
       "c58a0ca2",
-      "a65978ac"
+      "a65978ac",
+      "cf954d73"
     ],
     "datasets": [
       {
@@ -976,7 +1016,8 @@ window.BENCHMARK_DATA = {
           10897.71849822998,
           15035.568275960286,
           13271.83160502116,
-          14553.717759195964
+          14553.717759195964,
+          7804.194562639509
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -996,6 +1037,7 @@ window.BENCHMARK_DATA = {
           25720,
           25720,
           25720,
+          25592,
           25592,
           25592,
           25592,
@@ -1029,7 +1071,8 @@ window.BENCHMARK_DATA = {
           256028.6185872396,
           363927.22236328124,
           320819.91217447916,
-          355145.34900841344
+          355145.34900841344,
+          177235.63560384113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1043,6 +1086,7 @@ window.BENCHMARK_DATA = {
         "data": [
           544246,
           544245,
+          544335,
           544335,
           544335,
           544335,
