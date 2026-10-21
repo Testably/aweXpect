@@ -120,6 +120,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:15:44 2026 \u002B0200",
         "message": "refactor: verify a single item without a closure and delegates (#1913)"
+      },
+      {
+        "sha": "b137d18fa287ae63f7018ef7ed8e390ce11e1461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:29:10 2026 \u002B0200",
+        "message": "refactor: compare with the default equality without a generic virtual call (#1912)"
       }
     ],
     "labels": [
@@ -142,7 +148,8 @@ window.BENCHMARK_DATA = {
       "3163a4fa",
       "66a7a545",
       "b5b8319c",
-      "0957a2c4"
+      "0957a2c4",
+      "b137d18f"
     ],
     "datasets": [
       {
@@ -168,7 +175,8 @@ window.BENCHMARK_DATA = {
           2174.311677042643,
           1101.6544732411703,
           1585.1990526835123,
-          1070.854496547154
+          1070.854496547154,
+          1065.4882354736328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -196,6 +204,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1288,
           1288,
           1288,
           1288,
@@ -233,7 +242,8 @@ window.BENCHMARK_DATA = {
           15976.005877685548,
           6865.468930380685,
           10155.96916809082,
-          6632.61763458252
+          6632.61763458252,
+          6539.448955829327
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -245,6 +255,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -398,6 +409,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:15:44 2026 \u002B0200",
         "message": "refactor: verify a single item without a closure and delegates (#1913)"
+      },
+      {
+        "sha": "b137d18fa287ae63f7018ef7ed8e390ce11e1461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:29:10 2026 \u002B0200",
+        "message": "refactor: compare with the default equality without a generic virtual call (#1912)"
       }
     ],
     "labels": [
@@ -420,7 +437,8 @@ window.BENCHMARK_DATA = {
       "3163a4fa",
       "66a7a545",
       "b5b8319c",
-      "0957a2c4"
+      "0957a2c4",
+      "b137d18f"
     ],
     "datasets": [
       {
@@ -446,7 +464,8 @@ window.BENCHMARK_DATA = {
           1484.3796505561243,
           811.7359501293728,
           1108.4963245391846,
-          793.4280578749521
+          793.4280578749521,
+          794.0415310064951
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -474,6 +493,7 @@ window.BENCHMARK_DATA = {
           1216,
           1216,
           1216,
+          1224,
           1224,
           1224,
           1224,
@@ -511,7 +531,8 @@ window.BENCHMARK_DATA = {
           14521.370029703776,
           6444.250165666853,
           9435.346967061361,
-          6141.8885299682615
+          6141.8885299682615,
+          6143.023424784343
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -523,6 +544,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -616,6 +638,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:15:44 2026 \u002B0200",
         "message": "refactor: verify a single item without a closure and delegates (#1913)"
+      },
+      {
+        "sha": "b137d18fa287ae63f7018ef7ed8e390ce11e1461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:29:10 2026 \u002B0200",
+        "message": "refactor: compare with the default equality without a generic virtual call (#1912)"
       }
     ],
     "labels": [
@@ -628,7 +656,8 @@ window.BENCHMARK_DATA = {
       "3163a4fa",
       "66a7a545",
       "b5b8319c",
-      "0957a2c4"
+      "0957a2c4",
+      "b137d18f"
     ],
     "datasets": [
       {
@@ -644,7 +673,8 @@ window.BENCHMARK_DATA = {
           4384.610429491316,
           2707.204483540853,
           3451.761081968035,
-          2554.0025874546595
+          2554.0025874546595,
+          2520.840660603841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -662,6 +692,7 @@ window.BENCHMARK_DATA = {
           3496,
           3496,
           3496,
+          3520,
           3520,
           3520,
           3520,
@@ -689,7 +720,8 @@ window.BENCHMARK_DATA = {
           42672.511814662386,
           19622.24956665039,
           28862.221793619792,
-          17997.021810678336
+          17997.021810678336,
+          18684.376663208008
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -707,6 +739,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
+          61925,
           61925,
           61925,
           61925,
@@ -784,6 +817,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:15:44 2026 \u002B0200",
         "message": "refactor: verify a single item without a closure and delegates (#1913)"
+      },
+      {
+        "sha": "b137d18fa287ae63f7018ef7ed8e390ce11e1461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:29:10 2026 \u002B0200",
+        "message": "refactor: compare with the default equality without a generic virtual call (#1912)"
       }
     ],
     "labels": [
@@ -796,7 +835,8 @@ window.BENCHMARK_DATA = {
       "3163a4fa",
       "66a7a545",
       "b5b8319c",
-      "0957a2c4"
+      "0957a2c4",
+      "b137d18f"
     ],
     "datasets": [
       {
@@ -812,7 +852,8 @@ window.BENCHMARK_DATA = {
           9949.948411207934,
           4987.680371965681,
           7146.150932820638,
-          4608.363588605608
+          4608.363588605608,
+          4765.948191833496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -830,6 +871,7 @@ window.BENCHMARK_DATA = {
           29880,
           29880,
           29880,
+          7048,
           7048,
           7048,
           7048,
@@ -857,7 +899,8 @@ window.BENCHMARK_DATA = {
           281185.26057942706,
           144514.4286934989,
           200489.27436523436,
-          133094.8201904297
+          133094.8201904297,
+          131480.97555776744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -876,6 +919,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521572,
+          521594,
           521594,
           521594,
           521594
@@ -952,6 +996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:15:44 2026 \u002B0200",
         "message": "refactor: verify a single item without a closure and delegates (#1913)"
+      },
+      {
+        "sha": "b137d18fa287ae63f7018ef7ed8e390ce11e1461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:29:10 2026 \u002B0200",
+        "message": "refactor: compare with the default equality without a generic virtual call (#1912)"
       }
     ],
     "labels": [
@@ -964,7 +1014,8 @@ window.BENCHMARK_DATA = {
       "3163a4fa",
       "66a7a545",
       "b5b8319c",
-      "0957a2c4"
+      "0957a2c4",
+      "b137d18f"
     ],
     "datasets": [
       {
@@ -980,7 +1031,8 @@ window.BENCHMARK_DATA = {
           3206.258263996669,
           1612.7405030386788,
           2247.1464256873496,
-          1533.5578412373861
+          1533.5578412373861,
+          1518.3721103668213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -998,6 +1050,7 @@ window.BENCHMARK_DATA = {
           1536,
           1536,
           1536,
+          1544,
           1544,
           1544,
           1544,
@@ -1025,7 +1078,8 @@ window.BENCHMARK_DATA = {
           2132.018918100993,
           1060.486162185669,
           1478.6154039927892,
-          1062.6415860312325
+          1062.6415860312325,
+          1007.050311602079
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1037,6 +1091,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -1120,6 +1175,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:15:44 2026 \u002B0200",
         "message": "refactor: verify a single item without a closure and delegates (#1913)"
+      },
+      {
+        "sha": "b137d18fa287ae63f7018ef7ed8e390ce11e1461",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:29:10 2026 \u002B0200",
+        "message": "refactor: compare with the default equality without a generic virtual call (#1912)"
       }
     ],
     "labels": [
@@ -1132,7 +1193,8 @@ window.BENCHMARK_DATA = {
       "3163a4fa",
       "66a7a545",
       "b5b8319c",
-      "0957a2c4"
+      "0957a2c4",
+      "b137d18f"
     ],
     "datasets": [
       {
@@ -1148,7 +1210,8 @@ window.BENCHMARK_DATA = {
           2998.297959391276,
           1088.5334243774414,
           1504.4896626790364,
-          1069.7431047984533
+          1069.7431047984533,
+          1081.045092855181
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1167,6 +1230,7 @@ window.BENCHMARK_DATA = {
           3920,
           3920,
           3928,
+          2872,
           2872,
           2872,
           2872
@@ -1193,7 +1257,8 @@ window.BENCHMARK_DATA = {
           2079.934279515193,
           949.1533430644444,
           1331.3987437656947,
-          864.3948205539158
+          864.3948205539158,
+          877.9139845711844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1205,6 +1270,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
