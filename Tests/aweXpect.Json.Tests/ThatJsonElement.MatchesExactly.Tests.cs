@@ -727,6 +727,58 @@ public sealed partial class ThatJsonElement
 			}
 
 			[Test]
+			public async Task WhenElementsOfEveryKindAreInAnyOrder_WhenIgnoringArrayOrder_ShouldSucceed()
+			{
+				JsonElement subject = FromString("""
+				                                 [null, true, false, "a", 1, [1, 2, 3], [1, 2], {"a": 1, "b": 2}, {"a": 2, "b": 2}]
+				                                 """);
+				JsonElement expected = FromString("""
+				                                  [{"a": 2, "b": 2}, {"a": 1, "b": 2}, [2, 1], [3, 2, 1], 1, "a", false, true, null]
+				                                  """);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(expected, o => o.IgnoringArrayOrder());
+
+				await That(Act).DoesNotThrow()
+					.Because("each expected element is paired with the element of any kind that matches it");
+			}
+
+			[Test]
+			public async Task WhenElementsOfEveryKindDiffer_WhenIgnoringArrayOrder_ShouldReportThemAsMissingAndUnexpected()
+			{
+				JsonElement subject = FromString("""
+				                                 [null, true, "a", [1, 2, 3], {"a": 1, "b": 2}]
+				                                 """);
+				JsonElement expected = FromString("""
+				                                  [{"a": 1, "b": 3}, [3, 1], "b", false, 1]
+				                                  """);
+
+				async Task Act()
+					=> await That(subject).MatchesExactly(expected, o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches expected exactly,
+					             but it differed as
+					               $ had missing {"a":1,"b":3} and
+					               $ had missing [3,1] and
+					               $ had missing "b" and
+					               $ had missing False and
+					               $ had missing 1 and
+					               $[0] had unexpected <null> and
+					               $[1] had unexpected True and
+					               $[2] had unexpected "a" and
+					               $[3] had unexpected [1,2,3] and
+					               $[4] had unexpected {"a":1,"b":2}
+
+					             JSON options:
+					              - ignore array order
+					             """)
+					.Because("a candidate of another kind, with another value or with an additional element does not match");
+			}
+
+			[Test]
 			public async Task WhenNestedArraysAreInDifferentOrder_WhenIgnoringArrayOrder_ShouldSucceed()
 			{
 				JsonElement subject = FromString("[[1, 2], [3, 4, 5]]");
