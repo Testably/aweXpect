@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6861.284078470866,
           12421.406861525316,
           12496.73488323505,
           13080.987020639273,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5408.134867741512,
           10826.336772664388,
           5381.225715637207,
-          5464.7155136108395
+          5464.7155136108395,
+          10890.095181274413
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3088,
           3096,
           3096,
           3880,
@@ -469,7 +468,8 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
-          2192
+          2192,
+          2168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          205385.36598557694,
           378961.86875,
           366736.21819196426,
           383840.941796875,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           175291.95838341347,
           389730.56382533483,
           171276.558984375,
-          173229.0203125
+          173229.0203125,
+          367925.5975260417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590226,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590287,
           590288,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          12472.836968994141,
           20068.747473580497,
           19177.849635532923,
           19932.613854980467,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           9770.70318016639,
           19836.965574137368,
           9524.460566202799,
-          10106.86986694336
+          10106.86986694336,
+          19173.963389078777
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          207.12579550743104,
           319.7000914255778,
           359.03796838124595,
           326.2151486714681,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           124.70931466988155,
           286.1320460319519,
           121.59014929135641,
-          132.95610520044963
+          132.95610520044963,
+          327.0365262372153
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1187,7 +1187,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536
+          536,
+          512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          378.2134840965271,
           519.9569649378459,
           504.27239751815796,
           536.68154519399,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           281.55164749805743,
           580.1069484710694,
           250.36088568369547,
-          278.85690934317455
+          278.85690934317455,
+          488.27002703348796
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          289.82909094492595,
           407.7315179824829,
           403.92290452548434,
           413.399849096934,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           214.69076423985618,
           421.1796060562134,
           189.3589603583018,
-          202.26494453634535
+          202.26494453634535,
+          377.1775811059134
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          104.08127458890279,
           174.27535274823506,
           153.22138957977296,
           162.44515345891315,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           71.63586087737765,
           146.15568361282348,
           65.47874252796173,
-          69.63745698758534
+          69.63745698758534,
+          122.70457618053143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1920,7 +1920,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1935,7 +1934,8 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
-          472
+          472,
+          448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          196.98380131721495,
           260.67188380559287,
           268.07214767592296,
           277.98049046198526,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           145.37879670583285,
           289.5054749806722,
           125.27454794247946,
-          129.76419677734376
+          129.76419677734376,
+          255.67919741358077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          154.8402912457784,
           252.18514610926312,
           248.56553770701092,
           259.5931412378947,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           134.03258325258892,
           265.4258304323469,
           119.78643496831258,
-          124.04547018664223
+          124.04547018664223,
+          237.19032276471455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          182.34853585561117,
           298.23871854373385,
           281.43434371267045,
           285.66499205430347,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           132.12613875071207,
           266.7761610349019,
           120.1500928912844,
-          128.75609509150186
+          128.75609509150186,
+          239.05454270044962
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2653,7 +2653,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2668,7 +2667,8 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
-          512
+          512,
+          488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          393.68072278683,
           589.0532191594442,
           559.042838160197,
           585.0306126730783,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           273.95417066720813,
           592.8681760152181,
           253.36002119382223,
-          280.6179686546326
+          280.6179686546326,
+          522.4018257776896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          227.4628293434779,
           360.1869178158896,
           366.7763278325399,
           362.4129788534982,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           184.81839354832968,
           361.62912280218944,
           163.7732898871104,
-          181.32304186480386
+          181.32304186480386,
+          326.15928347905475
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          397.2413293031546,
           659.90538753782,
           683.9723534266154,
           702.9955768585205,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           342.7781965255737,
           690.4651132992336,
           298.9867090543111,
-          336.1037010465349
+          336.1037010465349,
+          694.6887767155965
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3352,7 +3352,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          864,
           872,
           872,
           872,
@@ -3401,7 +3400,8 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808
+          808,
+          784
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          956.4516964594524,
           1503.5793655940465,
           1455.674855295817,
           1477.6917106628418,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           679.0924419675555,
           1524.835861714681,
           639.689951356252,
-          694.5381983121237
+          694.5381983121237,
+          1364.1833601633707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          420.7603173596518,
           779.9199893315633,
           686.5302294322422,
           705.9186899185181,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           339.6213544332064,
           703.9255782536098,
           322.19654444853467,
-          349.99290259679157
+          349.99290259679157,
+          634.9048854192098
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          393.09915994008384,
           653.0178367614747,
           694.6997187296549,
           712.9865600722177,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           325.85306007521496,
           680.1663172585623,
           293.07493488605206,
-          317.23540414174397
+          317.23540414174397,
+          666.0835699081421
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4085,7 +4085,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          912,
           920,
           920,
           920,
@@ -4134,7 +4133,8 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
-          856
+          856,
+          832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11981.575541178385,
           28045.679953438896,
           29119.16752726237,
           28597.698056902205,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           10611.078597005207,
           29451.29003252302,
           9806.512108939034,
-          10480.286251613072
+          10480.286251613072,
+          26552.7427344689
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4256,6 +4255,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          519.8414870580037,
           952.3073452631633,
           809.1234210087703,
           827.8117097218832,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           415.7761540072305,
           825.9699424743652,
           394.5781969657311,
-          443.0443371454875
+          443.0443371454875,
+          748.2636072158814
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          511.9858414967855,
           765.6373788197835,
           776.9395786285401,
           751.7218626022338,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           341.05101684423596,
           731.9995660100665,
           329.3894197146098,
-          351.9861197838417
+          351.9861197838417,
+          665.2568990071615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4820,7 +4820,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1848,
           1848,
-          1848,
           1856,
           1856,
           1856,
@@ -4867,7 +4866,8 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
-          1696
+          1696,
+          1680
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31958.795033772785,
           86892.4383219401,
           84208.5743367513,
           84969.9701944987,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           30337.048248291016,
           85772.94388020833,
           29234.881917317707,
-          28949.237184964695
+          28949.237184964695,
+          82453.56459147135
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
       {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          133.23548081715902,
           193.24924760205406,
           188.47719389597574,
           201.78900542259217,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           87.9132330318292,
           184.13523068794836,
           83.01264185564858,
-          88.71445781844002
+          88.71445781844002,
+          150.1350065867106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5460,7 +5460,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5475,7 +5474,8 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
-          488
+          488,
+          464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13757.90241800944,
           32224.892517089844,
           32860.736685616626,
           32836.915307617186,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           10768.677486713115,
           33185.6685546875,
           9152.88156636556,
-          10663.796454796424
+          10663.796454796424,
+          31451.981811523438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5561,7 +5561,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          148.93192338943481,
           262.45795218149823,
           255.68252026240032,
           259.3531918525696,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           138.99979482094446,
           260.3278019587199,
           116.53572600228446,
-          125.74929951704465
+          125.74929951704465,
+          243.6103123664856
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          246.2678359576634,
           375.8416256268819,
           360.64861358006794,
           386.1386714935303,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           175.42030254999796,
           369.9896094982441,
           163.3111227108882,
-          168.71691239674885
+          168.71691239674885,
+          334.60001604897633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6160,7 +6160,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           720,
-          720,
           744,
           744,
           744,
@@ -6208,7 +6207,8 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
-          680
+          680,
+          656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          301.7702502250671,
           396.90675279072354,
           376.1144390741984,
           421.93366057078043,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           224.31509488423666,
           387.2253023147583,
           201.81340049107868,
-          208.12784337997437
+          208.12784337997437,
+          380.2279771486918
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          270.1760391553243,
           426.20220750172933,
           403.9497693061829,
           415.692871538798,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           210.21304730268625,
           425.4159557660421,
           202.9220724105835,
-          210.7193374792735
+          210.7193374792735,
+          400.5109440939767
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          592.0035296122234,
           852.2483039220174,
           839.5557680130005,
           848.8291051864624,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           334.93609300026526,
           688.8996116002401,
           301.36155179341637,
-          321.1674878438314
+          321.1674878438314,
+          616.4769527571542
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6926,7 +6926,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6941,7 +6940,8 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
-          1448
+          1448,
+          1376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1451.777178700765,
           1990.7309013366698,
           1959.3745323181151,
           2080.954852549235,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1163.6858486175538,
           2178.0223190307615,
           943.921571118491,
-          1031.1148284031794
+          1031.1148284031794,
+          1837.1268725077312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          621.4610689603365,
           966.7443075815837,
           950.560247484843,
           1049.845222745623,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           494.18572063446044,
           1008.600541305542,
           443.5740555695125,
-          481.9709744771322
+          481.9709744771322,
+          899.8230046590169
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7079.729796091716,
           12300.737869262695,
           12418.78408930852,
           12321.265700707068,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5943.126779409556,
           11641.690082256611,
           5591.453640529087,
-          5984.411084311349
+          5984.411084311349,
+          11445.702445983887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7627,7 +7627,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1720,
           1720,
-          1720,
           1736,
           1736,
           1736,
@@ -7674,7 +7673,8 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
-          1616
+          1616,
+          1576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          22978.51051940918,
           41087.26018582858,
           41183.82026367188,
           41637.939457194014,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           18381.807141985213,
           42792.07820347377,
           17426.521166120256,
-          19139.905946858726
+          19139.905946858726,
+          39806.093994140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18608,
           18394,
           18609,
           18609,
@@ -7759,6 +7758,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          6794.341003417969,
           11474.479409437914,
           11364.65059879848,
           11377.018030019906,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5706.421149662563,
           10667.837913004558,
           5454.340957641602,
-          5770.868584187826
+          5770.868584187826,
+          10508.666722978864
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "4e4171de173de8399befd6c2d14903f05ab9637e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 16 21:37:51 2026 \u002B0200",
-        "message": "feat: apply \u0060Percent()\u0060 to ordering, range and collection expectations (#1845)"
-      },
-      {
         "sha": "f0e1ed5e46ee0858bc3c3d221423d43e578d8cf5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 16 22:14:39 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
-      "4e4171de",
       "f0e1ed5e",
       "f3aa460c",
       "e6bb38c8",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7041.386879475912,
           11663.701488201435,
           12042.929080669697,
           12015.968975947453,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5407.552336374919,
           10900.834936959403,
           5286.946806771414,
-          5634.599613189697
+          5634.599613189697,
+          10901.345772376428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8360,7 +8360,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2208,
           2208,
-          2208,
           2216,
           2216,
           2216,
@@ -8407,7 +8406,8 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
-          2096
+          2096,
+          2056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32192.377535306492,
           61600.718985421314,
           60698.27840169271,
           60178.56344095866,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           26717.786451067244,
           61726.108834402905,
           25474.280279306266,
-          27282.48709716797
+          27282.48709716797,
+          57885.68425641741
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23554,
           23553,
@@ -8531,6 +8530,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          13507.326941172281,
           22521.69926234654,
           22486.292557779947,
           22622.643391200476,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           11346.652376615084,
           21086.785744803292,
           10737.759923662457,
-          11490.09434400286
+          11490.09434400286,
+          21123.60546875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
