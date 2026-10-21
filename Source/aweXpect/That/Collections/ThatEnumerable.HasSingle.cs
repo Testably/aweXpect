@@ -23,14 +23,13 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
-		HasSingleConstraint<IEnumerable<TItem>?, TItem> constraint = null!;
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		SingleItemSource<TItem> source = new();
 		return new SingleItemResult<IEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> constraint = new HasSingleConstraint<IEnumerable<TItem>?, TItem>(it, grammars, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),
+				static (state, it, grammars) => state.Source.Use(
+					new HasSingleConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Options))),
 			options,
-			_ => constraint.SingleItem
-		);
+			source);
 	}
 
 	/// <summary>
@@ -42,13 +41,13 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable?> subject)
 	{
 		PredicateOptions<object?> options = new();
-		HasSingleConstraint<IEnumerable, object?> constraint = null!;
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		SingleItemSource<object?> source = new();
 		return new SingleItemResult<IEnumerable, object?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> constraint = new HasSingleConstraint<IEnumerable, object?>(it, grammars, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),
+				static (state, it, grammars) => state.Source.Use(
+					new HasSingleConstraint<IEnumerable, object?>(it, grammars, state.Options))),
 			options,
-			_ => constraint.SingleItem);
+			source);
 	}
 
 #if NET8_0_OR_GREATER
@@ -59,13 +58,13 @@ public static partial class ThatEnumerable
 		this IThat<ImmutableArray<TItem>> subject)
 	{
 		PredicateOptions<TItem> options = new();
-		HasSingleConstraint<ImmutableArray<TItem>, TItem> constraint = null!;
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		SingleItemSource<TItem> source = new();
 		return new SingleItemResult<ImmutableArray<TItem>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> constraint = new HasSingleConstraint<ImmutableArray<TItem>, TItem>(it, grammars, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Options: options, Source: source),
+				static (state, it, grammars) => state.Source.Use(
+					new HasSingleConstraint<ImmutableArray<TItem>, TItem>(it, grammars, state.Options))),
 			options,
-			_ => constraint.SingleItem);
+			source);
 	}
 #endif
 }

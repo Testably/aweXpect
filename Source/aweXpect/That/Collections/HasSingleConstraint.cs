@@ -13,23 +13,34 @@ using System.Collections.Generic;
 namespace aweXpect;
 
 /// <summary>
-///     The evaluation of the items and the texts of <c>HasSingle</c>, shared by the synchronous and the asynchronous
-///     collections.
+///     The constraint of a <c>HasSingle</c> expectation, from which the further expectations read the single item.
 /// </summary>
-internal abstract class HasSingleConstraintBase<TValue, TItem>(
-	string it,
-	ExpectationGrammars grammars,
-	PredicateOptions<TItem> options)
+/// <remarks>
+///     It is passed to the static builder of the constraint and to the result, so that <c>HasSingle</c> allocates
+///     neither a closure nor a delegate, unless the single item is read.
+/// </remarks>
+internal sealed class SingleItemSource<TItem>
+{
+	public HasSingleConstraintBase<TItem>? Constraint { get; private set; }
+
+	public TConstraint Use<TConstraint>(TConstraint constraint)
+		where TConstraint : HasSingleConstraintBase<TItem>
+	{
+		Constraint = constraint;
+		return constraint;
+	}
+
+	public TItem? Get<TCollection>(TCollection _) => Constraint!.SingleItem;
+
+	public Task<TItem?> GetAsync<TCollection>(TCollection _) => Task.FromResult(Constraint!.SingleItem);
+}
+
+/// <summary>
+///     The single item of <c>HasSingle</c>, whatever the type of the collection.
+/// </summary>
+internal abstract class HasSingleConstraintBase<TItem>(string it, ExpectationGrammars grammars)
 	: ConstraintResult.WithValue<TItem?>(it, grammars)
 {
-	private bool _isEmpty;
-	private bool _isNull;
-
-	/// <summary>
-	///     The number of matching items so far.
-	/// </summary>
-	protected int Count { get; private set; }
-
 	/// <summary>
 	///     The single matching item, when the expectation is met.
 	/// </summary>
@@ -38,6 +49,25 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	///     predicate a second time.
 	/// </remarks>
 	internal TItem? SingleItem => Actual;
+}
+
+/// <summary>
+///     The evaluation of the items and the texts of <c>HasSingle</c>, shared by the synchronous and the asynchronous
+///     collections.
+/// </summary>
+internal abstract class HasSingleConstraintBase<TValue, TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	PredicateOptions<TItem> options)
+	: HasSingleConstraintBase<TItem>(it, grammars)
+{
+	private bool _isEmpty;
+	private bool _isNull;
+
+	/// <summary>
+	///     The number of matching items so far.
+	/// </summary>
+	protected int Count { get; private set; }
 
 	/// <summary>
 	///     The materialized collection, which is served instead of the subject.

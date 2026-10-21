@@ -17,23 +17,23 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	: ExpectationResult<TItem, AsyncSingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly Func<TCollection, Task<TItem?>> _asyncMemberAccessor;
 	private readonly PredicateOptions<TItem> _options;
+	private readonly SingleItemSource<TItem> _source;
 
 	internal AsyncSingleItemResult(ExpectationBuilder expectationBuilder,
 		PredicateOptions<TItem> options,
-		Func<TCollection, Task<TItem?>> asyncMemberAccessor)
+		SingleItemSource<TItem> source)
 		: base(expectationBuilder)
 	{
 		_options = options;
-		_asyncMemberAccessor = asyncMemberAccessor;
+		_source = source;
 	}
 
 	/// <summary>
 	///     Further expectations on the single item.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_asyncMemberAccessor, " that "));
+		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich<TCollection, TItem>(_source.GetAsync, " that "));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
@@ -49,7 +49,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		predicate.ThrowIfNull();
 		_options.SetPredicate(predicate,
 			$" matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
-		return new AsyncSingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _asyncMemberAccessor);
+		return new AsyncSingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _source.GetAsync<TCollection>);
 	}
 
 	/// <summary>
@@ -105,5 +105,5 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	}
 
 	private AsyncSingleMatchingItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(ExpectationBuilder, async x => memberAccessor(await _asyncMemberAccessor(x)));
+		=> new(ExpectationBuilder, async x => memberAccessor(await _source.GetAsync(x)));
 }

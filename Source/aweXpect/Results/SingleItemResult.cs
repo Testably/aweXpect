@@ -16,23 +16,23 @@ public class SingleItemResult<TCollection, TItem>
 	: ExpectationResult<TItem, SingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
-	private readonly Func<TCollection, TItem?> _memberAccessor;
 	private readonly PredicateOptions<TItem> _options;
+	private readonly SingleItemSource<TItem> _source;
 
 	internal SingleItemResult(ExpectationBuilder expectationBuilder,
 		PredicateOptions<TItem> options,
-		Func<TCollection, TItem?> memberAccessor)
+		SingleItemSource<TItem> source)
 		: base(expectationBuilder)
 	{
 		_options = options;
-		_memberAccessor = memberAccessor;
+		_source = source;
 	}
 
 	/// <summary>
 	///     Further expectations on the single <typeparamref name="TItem" />.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich(_memberAccessor, " that ", "it",
+		=> new ThatSubject<TItem>(ExpectationBuilder.ForWhich<TCollection, TItem>(_source.Get, " that ", "it",
 			grammars => grammars & ~ExpectationGrammars.Plural));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
@@ -49,7 +49,7 @@ public class SingleItemResult<TCollection, TItem>
 		predicate.ThrowIfNull();
 		_options.SetPredicate(predicate,
 			$" matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
-		return new SingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _memberAccessor);
+		return new SingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _source.Get<TCollection>);
 	}
 
 	/// <summary>
@@ -105,5 +105,5 @@ public class SingleItemResult<TCollection, TItem>
 	}
 
 	private SingleMatchingItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(ExpectationBuilder, x => memberAccessor(_memberAccessor(x)));
+		=> new(ExpectationBuilder, x => memberAccessor(_source.Get(x)));
 }
