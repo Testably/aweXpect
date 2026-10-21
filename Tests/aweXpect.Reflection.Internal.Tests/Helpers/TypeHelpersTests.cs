@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using aweXpect.Customization;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
@@ -23,6 +26,47 @@ public sealed class TypeHelpersTests
 
 		await That(allFields).HasCount(2);
 		await That(result).HasCount(1);
+	}
+
+	[Test]
+	public async Task GetDeclaredMembers_ForTypeOfDynamicAssembly_ShouldNotCacheTheMembers()
+	{
+		Type type = CreateDynamicType();
+
+		await That(type.GetDeclaredFields()).IsNotSameAs(type.GetDeclaredFields())
+			.Because("the members of a type of a dynamic assembly are listed again on every call");
+		await That(type.GetDeclaredMethods()).IsNotSameAs(type.GetDeclaredMethods())
+			.Because("the members of a type of a dynamic assembly are listed again on every call");
+		await That(type.GetDeclaredFields()).HasSingle().Which.Satisfies(f => f.Name == "Track");
+		await That(type.GetDeclaredMethods()).HasSingle().Which.Satisfies(m => m.Name == "Play");
+		await That(type.GetDeclaredEvents()).IsEmpty();
+		await That(type.GetDeclaredProperties()).IsEmpty();
+	}
+
+	[Test]
+	public async Task GetDeclaredMembers_ShouldCacheTheMembersPerScopeAndCustomization()
+	{
+		Type type = typeof(CachedMembersTestClass);
+
+		FieldInfo[] declared = type.GetDeclaredFields();
+		FieldInfo[] declaredAgain = type.GetDeclaredFields();
+		FieldInfo[] includingInherited = type.GetDeclaredFields(MemberScope.IncludingInherited);
+		FieldInfo[] includingBackingFields;
+		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+			       .Set(CompilerGeneratedMembers.Fields))
+		{
+			includingBackingFields = type.GetDeclaredFields();
+		}
+
+		FieldInfo[] declaredAfterCustomization = type.GetDeclaredFields();
+
+		await That(declaredAgain).IsSameAs(declared)
+			.Because("the members of a loaded type are cached for the same scope and customization");
+		await That(declared.Select(f => f.Name)).IsEqualTo(["Track",]);
+		await That(includingInherited.Select(f => f.Name)).IsEqualTo(["Track", "Album",]).InAnyOrder();
+		await That(includingBackingFields.Select(f => f.Name))
+			.IsEqualTo(["Track", "<Duration>k__BackingField",]).InAnyOrder();
+		await That(declaredAfterCustomization.Select(f => f.Name)).IsEqualTo(["Track",]);
 	}
 
 	[Test]
@@ -432,5 +476,28 @@ public sealed class TypeHelpersTests
 	{
 		public int MyField = 1;
 		public int MyProperty { get; set; } = 2;
+	}
+
+	public class CachedMembersBaseClass
+	{
+		public string? Album;
+	}
+
+	public class CachedMembersTestClass : CachedMembersBaseClass
+	{
+		public string? Track;
+		public int Duration { get; set; }
+	}
+
+	private static Type CreateDynamicType()
+	{
+		AssemblyBuilder assembly = AssemblyBuilder.DefineDynamicAssembly(
+			new AssemblyName("aweXpect.Reflection.Dynamic"), AssemblyBuilderAccess.Run);
+		TypeBuilder type = assembly.DefineDynamicModule("Module")
+			.DefineType("Song", TypeAttributes.Public | TypeAttributes.Class);
+		type.DefineField("Track", typeof(string), FieldAttributes.Public);
+		type.DefineMethod("Play", MethodAttributes.Public, typeof(void), Type.EmptyTypes)
+			.GetILGenerator().Emit(OpCodes.Ret);
+		return type.CreateType()!;
 	}
 }

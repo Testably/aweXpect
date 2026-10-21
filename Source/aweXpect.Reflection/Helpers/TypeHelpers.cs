@@ -10,6 +10,10 @@ using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
+using MembersKey = (
+	aweXpect.Reflection.Collections.MemberScope Scope,
+	aweXpect.Customization.CompilerGeneratedMembers CompilerGenerated,
+	aweXpect.Customization.SpecialNameMembers SpecialName);
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -41,6 +45,12 @@ internal static class TypeHelpers
 	///     Caches per <see cref="Type" /> whether it is a grouping type of the C# extension block syntax.
 	/// </summary>
 	private static readonly ConditionalWeakTable<Type, object> ExtensionGroupingCache = new();
+
+	/// <summary>
+	///     Caches the members of each kind per <see cref="Type" />, as listing and filtering them is the main cost of an
+	///     expectation on the members of a type, and the members of a loaded type never change.
+	/// </summary>
+	private static readonly ConditionalWeakTable<Type, DeclaredMembers> DeclaredMembersCache = new();
 
 	/// <summary>
 	///     The cached value of a <see langword="true" /> result, so that it needs no boxing.
@@ -139,6 +149,13 @@ internal static class TypeHelpers
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
+			MembersKey key = (memberScope, included, SpecialNameMembers.None);
+			DeclaredMembers? cache = GetDeclaredMembersCache(type);
+			if (cache?.Events is { } cached && cached.Key == key)
+			{
+				return cached.Members;
+			}
+
 			IEnumerable<EventInfo> events = type
 				.GetEvents(memberScope.ToBindingFlags() |
 				           BindingFlags.NonPublic |
@@ -159,10 +176,16 @@ internal static class TypeHelpers
 				}
 			}
 
-			return events
+			EventInfo[] result = events
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Events) != 0)
 				.ToArray();
+			if (cache is not null)
+			{
+				cache.Events = new CachedMembers<EventInfo>(key, result);
+			}
+
+			return result;
 		}
 		catch (Exception exception) when (exception
 			                                  is TypeLoadException
@@ -189,6 +212,13 @@ internal static class TypeHelpers
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
+			MembersKey key = (memberScope, included, SpecialNameMembers.None);
+			DeclaredMembers? cache = GetDeclaredMembersCache(type);
+			if (cache?.Fields is { } cached && cached.Key == key)
+			{
+				return cached.Members;
+			}
+
 			IEnumerable<FieldInfo> fields = type
 				.GetFields(memberScope.ToBindingFlags() |
 				           BindingFlags.NonPublic |
@@ -208,11 +238,17 @@ internal static class TypeHelpers
 				}
 			}
 
-			return fields
+			FieldInfo[] result = fields
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Fields) != 0)
 				.ToArray();
+			if (cache is not null)
+			{
+				cache.Fields = new CachedMembers<FieldInfo>(key, result);
+			}
+
+			return result;
 		}
 		catch (Exception exception) when (exception
 			                                  is TypeLoadException
@@ -246,6 +282,13 @@ internal static class TypeHelpers
 				includedSpecialName |= SpecialNameMembers.Operators;
 			}
 
+			MembersKey key = (memberScope, includedCompilerGenerated, includedSpecialName);
+			DeclaredMembers? cache = GetDeclaredMembersCache(type);
+			if (cache?.Methods is { } cached && cached.Key == key)
+			{
+				return cached.Members;
+			}
+
 			IEnumerable<MethodInfo> methods = type
 				.GetMethods(memberScope.ToBindingFlags() |
 				            BindingFlags.NonPublic |
@@ -265,9 +308,15 @@ internal static class TypeHelpers
 				}
 			}
 
-			return methods
+			MethodInfo[] result = methods
 				.Where(m => IncludeMethod(m, includedCompilerGenerated, includedSpecialName))
 				.ToArray();
+			if (cache is not null)
+			{
+				cache.Methods = new CachedMembers<MethodInfo>(key, result);
+			}
+
+			return result;
 		}
 		catch (Exception exception) when (exception
 			                                  is TypeLoadException
@@ -294,6 +343,13 @@ internal static class TypeHelpers
 		try
 		{
 			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
+			MembersKey key = (memberScope, included, SpecialNameMembers.None);
+			DeclaredMembers? cache = GetDeclaredMembersCache(type);
+			if (cache?.Properties is { } cached && cached.Key == key)
+			{
+				return cached.Members;
+			}
+
 			IEnumerable<PropertyInfo> properties = type
 				.GetProperties(memberScope.ToBindingFlags() |
 				               BindingFlags.NonPublic |
@@ -314,12 +370,18 @@ internal static class TypeHelpers
 				}
 			}
 
-			return properties
+			PropertyInfo[] result = properties
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Properties) != 0)
 				.Concat(type.GetExtensionProperties())
 				.ToArray();
+			if (cache is not null)
+			{
+				cache.Properties = new CachedMembers<PropertyInfo>(key, result);
+			}
+
+			return result;
 		}
 		catch (Exception exception) when (exception
 			                                  is TypeLoadException
@@ -378,6 +440,36 @@ internal static class TypeHelpers
 
 	private static object ToMarker(bool value)
 		=> value ? TrueMarker : FalseMarker;
+
+	/// <summary>
+	///     Returns the cache of the members of the <paramref name="type" />, or <see langword="null" /> for a type of a
+	///     dynamic assembly, which can still change.
+	/// </summary>
+	private static DeclaredMembers? GetDeclaredMembersCache(Type type)
+		=> type.Assembly.IsDynamic ? null : DeclaredMembersCache.GetValue(type, static _ => new DeclaredMembers());
+
+	/// <summary>
+	///     The cached members of each kind of a type, each for the last scope and customization they were listed for.
+	/// </summary>
+	private sealed class DeclaredMembers
+	{
+		public CachedMembers<EventInfo>? Events { get; set; }
+		public CachedMembers<FieldInfo>? Fields { get; set; }
+		public CachedMembers<MethodInfo>? Methods { get; set; }
+		public CachedMembers<PropertyInfo>? Properties { get; set; }
+	}
+
+	/// <summary>
+	///     The <paramref name="members" /> listed for the <paramref name="key" />.
+	/// </summary>
+	/// <remarks>
+	///     The array is shared by all callers, so it must not be changed.
+	/// </remarks>
+	private sealed class CachedMembers<TMember>(MembersKey key, TMember[] members)
+	{
+		public MembersKey Key { get; } = key;
+		public TMember[] Members { get; } = members;
+	}
 
 	/// <summary>
 	///     Collects the extension properties declared with the C# extension block syntax that the
