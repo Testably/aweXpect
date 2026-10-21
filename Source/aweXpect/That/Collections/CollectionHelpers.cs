@@ -424,7 +424,7 @@ internal static class CollectionHelpers
 	/// </remarks>
 	private sealed class UntilCancelledEnumerable<TItem>(
 		IAsyncEnumerable<TItem> source,
-		CancellationToken cancellationToken)
+		CancellationToken sourceCancellationToken)
 		: IAsyncEnumerable<TItem>, IAsyncEnumerator<TItem>
 	{
 		private IAsyncEnumerator<TItem>? _enumerator;
@@ -434,13 +434,14 @@ internal static class CollectionHelpers
 
 		/// <remarks>
 		///     The enumeration is canceled by the token passed to <see cref="UntilCancelled{TItem}" />, so the
-		///     <paramref name="token" /> is not used.
+		///     <paramref name="cancellationToken" /> is not used.
 		/// </remarks>
-		public IAsyncEnumerator<TItem> GetAsyncEnumerator(CancellationToken token = default)
+		public IAsyncEnumerator<TItem> GetAsyncEnumerator(CancellationToken cancellationToken = default)
 		{
 			if (_isEnumerated)
 			{
-				return new UntilCancelledEnumerable<TItem>(source, cancellationToken).GetAsyncEnumerator(token);
+				return new UntilCancelledEnumerable<TItem>(source, sourceCancellationToken)
+					.GetAsyncEnumerator(cancellationToken);
 			}
 
 			_isEnumerated = true;
@@ -449,19 +450,19 @@ internal static class CollectionHelpers
 
 		public ValueTask<bool> MoveNextAsync()
 		{
-			_enumerator ??= source.GetAsyncEnumerator(cancellationToken);
+			_enumerator ??= source.GetAsyncEnumerator(sourceCancellationToken);
 			ValueTask<bool> moveNext;
 			try
 			{
 				moveNext = _enumerator.MoveNextAsync();
 			}
-			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			catch (OperationCanceledException) when (sourceCancellationToken.IsCancellationRequested)
 			{
 				return new ValueTask<bool>(false);
 			}
 
 			return moveNext.IsCompletedSuccessfully
-				? new ValueTask<bool>(moveNext.Result)
+				? moveNext
 				: MoveNextUntilCancelled(moveNext);
 		}
 
@@ -474,7 +475,7 @@ internal static class CollectionHelpers
 			{
 				return await moveNext;
 			}
-			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			catch (OperationCanceledException) when (sourceCancellationToken.IsCancellationRequested)
 			{
 				return false;
 			}
