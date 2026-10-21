@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13080.987020639273,
           13147.132938091572,
           13598.723541259766,
           13293.002032688686,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5464.7155136108395,
           10890.095181274413,
           10516.810688563755,
-          5565.60806110927
+          5565.60806110927,
+          10032.839408287635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -451,7 +451,6 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -467,6 +466,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          383840.941796875,
           376214.4415364583,
           364686.4015625,
           371310.4979073661,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           173229.0203125,
           367925.5975260417,
           382014.3905552455,
-          193524.22182992788
+          193524.22182992788,
+          327843.73541666666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590287,
-          590288
+          590288,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19932.613854980467,
           19449.401745605468,
           19253.25876726423,
           19835.15870259603,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           10106.86986694336,
           19173.963389078777,
           20383.85305582682,
-          10966.696462777945
+          10966.696462777945,
+          18188.214909144812
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          326.2151486714681,
           269.3584834734599,
           264.1281935373942,
           291.1105140686035,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           132.95610520044963,
           327.0365262372153,
           270.479339156832,
-          134.29815770785015
+          134.29815770785015,
+          242.85649299621582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1184,7 +1184,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1200,6 +1199,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          536.68154519399,
           493.8878744761149,
           474.7976480892726,
           511.89917073931014,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           278.85690934317455,
           488.27002703348796,
           502.7086584726969,
-          280.3892458120982
+          280.3892458120982,
+          538.0535874048869
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          413.399849096934,
           406.1844599246979,
           393.373293363131,
           386.25254176457724,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           202.26494453634535,
           377.1775811059134,
           386.9814012209574,
-          223.3083086013794
+          223.3083086013794,
+          394.9460385322571
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          162.44515345891315,
           151.5168959924153,
           141.64324133736747,
           148.05791873931884,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           69.63745698758534,
           122.70457618053143,
           130.71092019081115,
-          69.70118754704794
+          69.70118754704794,
+          131.46318513552347
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1917,7 +1917,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1933,6 +1932,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          277.98049046198526,
           244.37976859410603,
           240.3306016581399,
           257.29163605826244,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           129.76419677734376,
           255.67919741358077,
           251.06090536117554,
-          131.66076879501344
+          131.66076879501344,
+          262.4545056819916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          259.5931412378947,
           240.0195998509725,
           232.143625497818,
           249.62575272151403,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           124.04547018664223,
           237.19032276471455,
           235.86409366925557,
-          131.8313106218974
+          131.8313106218974,
+          241.21304072652543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          285.66499205430347,
           275.98561099597384,
           271.1075716018677,
           266.4064359664917,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           128.75609509150186,
           239.05454270044962,
           250.2786771138509,
-          134.7234858104161
+          134.7234858104161,
+          238.57285486857097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2650,7 +2650,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2666,6 +2665,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          585.0306126730783,
           524.1911427815755,
           502.1813769658407,
           500.3217079456036,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           280.6179686546326,
           522.4018257776896,
           503.6238045374552,
-          294.3372019131978
+          294.3372019131978,
+          530.3193781534831
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          362.4129788534982,
           356.1902251879374,
           327.125620396932,
           333.9159442901611,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           181.32304186480386,
           326.15928347905475,
           324.0084431171417,
-          198.53151828447977
+          198.53151828447977,
+          336.73750281333923
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          702.9955768585205,
           672.7664096832275,
           649.1604520161947,
           662.2252889046302,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           336.1037010465349,
           694.6887767155965,
           638.7472033500671,
-          336.51094420750934
+          336.51094420750934,
+          610.549770281865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3383,7 +3383,6 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3399,6 +3398,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1477.6917106628418,
           1384.177633013044,
           1303.84288520813,
           1353.119752747672,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           694.5381983121237,
           1364.1833601633707,
           1306.8218197141375,
-          771.0488004048665
+          771.0488004048665,
+          1473.319426981608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          705.9186899185181,
           644.3552690505982,
           622.0333005360195,
           628.4520183290754,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           349.99290259679157,
           634.9048854192098,
           645.032735824585,
-          383.0595750808716
+          383.0595750808716,
+          666.8937075932821
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          712.9865600722177,
           634.71514913014,
           619.0734684626261,
           636.2824704306466,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           317.23540414174397,
           666.0835699081421,
           621.4816630681356,
-          318.46661682128905
+          318.46661682128905,
+          619.1422570546468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4116,7 +4116,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4132,6 +4131,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28597.698056902205,
           27523.385920933313,
           27846.110729980468,
           26881.503814697266,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           10480.286251613072,
           26552.7427344689,
           28324.214085170202,
-          11110.653725760323
+          11110.653725760323,
+          20550.406850179035
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          827.8117097218832,
           779.6573479334513,
           768.9006327220371,
           783.0848929087321,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           443.0443371454875,
           748.2636072158814,
           805.3896629333497,
-          437.79312161604565
+          437.79312161604565,
+          784.8698439280192
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          751.7218626022338,
           721.9878223419189,
           713.779235294887,
           717.6700445810953,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           351.9861197838417,
           665.2568990071615,
           654.0513550213406,
-          374.3703487941197
+          374.3703487941197,
+          650.9256905237834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4842,7 +4842,6 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
-          1856,
           1760,
           1760,
           1760,
@@ -4865,6 +4864,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84969.9701944987,
           81701.1803917518,
           82598.69792683919,
           83440.01062011719,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           28949.237184964695,
           82453.56459147135,
           84169.06353759766,
-          30317.08906656901
+          30317.08906656901,
+          62032.67530168806
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4950,7 +4950,6 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252,
           5254,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
       {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          201.78900542259217,
           176.96644123395285,
           174.70611706801824,
           171.95323034695215,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           88.71445781844002,
           150.1350065867106,
           158.92731838959915,
-          91.01379098211017
+          91.01379098211017,
+          169.73957769076029
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5457,7 +5457,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5473,6 +5472,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32836.915307617186,
           30277.19969998873,
           31428.427734375,
           31346.55486188616,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           10663.796454796424,
           31451.981811523438,
           32033.89337158203,
-          10491.69473702567
+          10491.69473702567,
+          18978.51334431966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5558,7 +5558,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          259.3531918525696,
           243.56041056315104,
           234.0013231890542,
           257.14557699056775,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           125.74929951704465,
           243.6103123664856,
           240.73449042638143,
-          133.82153594493866
+          133.82153594493866,
+          241.12588799794514
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          386.1386714935303,
           356.05538924535114,
           361.50086283683777,
           363.08627436711237,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           168.71691239674885,
           334.60001604897633,
           346.09351307551066,
-          178.4351622717721
+          178.4351622717721,
+          322.7528621037801
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6190,7 +6190,6 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6206,6 +6205,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          421.93366057078043,
           379.3646048545837,
           377.5147665977478,
           388.9661487170628,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           208.12784337997437,
           380.2279771486918,
           370.74706166131153,
-          228.26306172779627
+          228.26306172779627,
+          419.54236466089884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          415.692871538798,
           406.5985387166341,
           399.0806342874254,
           416.40186166763306,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           210.7193374792735,
           400.5109440939767,
           398.76665977636975,
-          233.39736609799522
+          233.39736609799522,
+          439.96566715240476
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          848.8291051864624,
           784.5412870815823,
           831.8279237747192,
           787.7022106170655,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           321.1674878438314,
           616.4769527571542,
           615.635834757487,
-          348.6488876978556
+          348.6488876978556,
+          608.6549126942953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6923,7 +6923,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6939,6 +6938,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2080.954852549235,
           1876.5497653667744,
           1843.5725727081299,
           1917.0557583400182,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1031.1148284031794,
           1837.1268725077312,
           2048.7143463134767,
-          1099.1247670309883
+          1099.1247670309883,
+          1958.177791595459
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          1049.845222745623,
           925.6240917205811,
           875.5670867647443,
           932.1957081476847,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           481.9709744771322,
           899.8230046590169,
           919.4237275804792,
-          518.8190714518229
+          518.8190714518229,
+          946.2125942866007
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12321.265700707068,
           12389.441782633463,
           12349.681902204242,
           12239.604544321695,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5984.411084311349,
           11445.702445983887,
           11481.407565777119,
-          5834.7691895621165
+          5834.7691895621165,
+          10486.539161682129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7656,7 +7656,6 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7672,6 +7671,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41637.939457194014,
           41065.19112141927,
           41290.5967569987,
           41551.96260892428,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           19139.905946858726,
           39806.093994140625,
           40645.24767659505,
-          18604.067947387695
+          18604.067947387695,
+          34197.107291085376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7754,8 +7754,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11377.018030019906,
           11357.496549479167,
           11626.344766235352,
           11410.476727999174,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5770.868584187826,
           10508.666722978864,
           10611.692029680524,
-          5673.658806434045
+          5673.658806434045,
+          10063.809443882534
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "e6bb38c82f5e5f433a4ee3c3bdd25d4834008a0a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 17 15:24:52 2026 \u002B0200",
-        "message": "chore: reset the build scope after the Core release (#1861)"
-      },
-      {
         "sha": "b3e4bee7ff0da46cc4ab89b009859113856323f4",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 17 22:28:38 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
-      "e6bb38c8",
       "b3e4bee7",
       "be9f3188",
       "352482a0",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12015.968975947453,
           11763.05514831543,
           11949.894220205453,
           11580.283666992187,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5634.599613189697,
           10901.345772376428,
           11045.634909057617,
-          5530.587349524865
+          5530.587349524865,
+          9802.961926051548
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8389,7 +8389,6 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8405,6 +8404,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          60178.56344095866,
           58970.817065429685,
           58984.840584891186,
           59072.35305786133,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           27282.48709716797,
           57885.68425641741,
           58736.55983323317,
-          27581.644738333565
+          27581.644738333565,
+          49131.589040902945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8486,7 +8486,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23554,
@@ -8528,6 +8527,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22622.643391200476,
           22581.593056233723,
           22705.601449148995,
           22516.468935452976,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           11490.09434400286,
           21123.60546875,
           20907.663456508093,
-          11391.779818943569
+          11391.779818943569,
+          19770.943290201823
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
