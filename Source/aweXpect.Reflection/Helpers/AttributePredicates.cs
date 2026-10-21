@@ -26,16 +26,13 @@ internal static class AttributePredicates
 	public static bool OnlyChecksType([NotNullWhen(false)] Func<Attribute, bool>? predicate)
 		=> predicate is null || predicate.Target is TypeCheck;
 
-	private abstract class TypeCheck
-	{
-		public abstract bool Matches(Attribute attribute);
-	}
+	private abstract class TypeCheck;
 
 	private sealed class TypeCheck<TAttribute> : TypeCheck
 		where TAttribute : Attribute
 	{
 		public static readonly Func<Attribute, bool> Predicate = new TypeCheck<TAttribute>().Matches;
 
-		public override bool Matches(Attribute attribute) => attribute is TAttribute;
+		public bool Matches(Attribute attribute) => attribute is TAttribute;
 	}
 }

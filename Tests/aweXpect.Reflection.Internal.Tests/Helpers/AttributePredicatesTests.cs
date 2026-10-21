@@ -161,7 +161,7 @@ public sealed class AttributePredicatesTests
 	[NotInherited]
 	private class BaseClass
 	{
-		[Inherited] [NotInherited] public string? Track;
+		[Inherited] [NotInherited] public string Track = "";
 
 		[Inherited]
 		[NotInherited]
