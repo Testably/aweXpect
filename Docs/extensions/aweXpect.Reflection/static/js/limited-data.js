@@ -132,6 +132,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:32:21 2026 \u002B0200",
         "message": "refactor: read the included compiler-generated and special-name members without a customization value (#1919)"
+      },
+      {
+        "sha": "c58a0ca2b42e154b86ffe16d836f7c3a843b4367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
+        "message": "refactor: cache the nullability annotation of a member (#1918)"
       }
     ],
     "labels": [
@@ -156,7 +162,8 @@ window.BENCHMARK_DATA = {
       "b5b8319c",
       "0957a2c4",
       "b137d18f",
-      "0993f949"
+      "0993f949",
+      "c58a0ca2"
     ],
     "datasets": [
       {
@@ -184,7 +191,8 @@ window.BENCHMARK_DATA = {
           1184.4583267484393,
           1173.053017752511,
           1181.0146830422539,
-          724.8213246663412
+          724.8213246663412,
+          683.7462809426444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -209,6 +217,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          928,
           928,
           928,
           928,
@@ -253,7 +262,8 @@ window.BENCHMARK_DATA = {
           938.1969592230661,
           903.5656085332234,
           935.2144344965617,
-          525.4902449289958
+          525.4902449289958,
+          501.6211816347562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -265,6 +275,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -432,6 +443,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:32:21 2026 \u002B0200",
         "message": "refactor: read the included compiler-generated and special-name members without a customization value (#1919)"
+      },
+      {
+        "sha": "c58a0ca2b42e154b86ffe16d836f7c3a843b4367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
+        "message": "refactor: cache the nullability annotation of a member (#1918)"
       }
     ],
     "labels": [
@@ -456,7 +473,8 @@ window.BENCHMARK_DATA = {
       "b5b8319c",
       "0957a2c4",
       "b137d18f",
-      "0993f949"
+      "0993f949",
+      "c58a0ca2"
     ],
     "datasets": [
       {
@@ -484,7 +502,8 @@ window.BENCHMARK_DATA = {
           139.26542712960924,
           133.63989594777425,
           129.0539429505666,
-          63.516540203775676
+          63.516540203775676,
+          61.51752870423453
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -509,6 +528,7 @@ window.BENCHMARK_DATA = {
           384,
           384,
           384,
+          320,
           320,
           320,
           320,
@@ -553,7 +573,8 @@ window.BENCHMARK_DATA = {
           221.58871863683063,
           217.367777633667,
           197.09539655538705,
-          115.99186766147614
+          115.99186766147614,
+          116.21804138592312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -565,6 +586,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -732,6 +754,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:32:21 2026 \u002B0200",
         "message": "refactor: read the included compiler-generated and special-name members without a customization value (#1919)"
+      },
+      {
+        "sha": "c58a0ca2b42e154b86ffe16d836f7c3a843b4367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
+        "message": "refactor: cache the nullability annotation of a member (#1918)"
       }
     ],
     "labels": [
@@ -756,7 +784,8 @@ window.BENCHMARK_DATA = {
       "b5b8319c",
       "0957a2c4",
       "b137d18f",
-      "0993f949"
+      "0993f949",
+      "c58a0ca2"
     ],
     "datasets": [
       {
@@ -784,7 +813,8 @@ window.BENCHMARK_DATA = {
           2318.6031056722004,
           2282.8780813950757,
           2189.508098602295,
-          1108.8519479115805
+          1108.8519479115805,
+          1129.1361934955303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -809,6 +839,7 @@ window.BENCHMARK_DATA = {
           2560,
           2464,
           2464,
+          2400,
           2400,
           2400,
           2400,
@@ -853,7 +884,8 @@ window.BENCHMARK_DATA = {
           1485.0899000167847,
           1545.938652420044,
           1398.3417524973552,
-          802.2309616633823
+          802.2309616633823,
+          847.9416232790265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -886,6 +918,7 @@ window.BENCHMARK_DATA = {
           1985,
           1985,
           1984,
+          1985,
           1985
         ],
         "borderColor": "#FF671B",
@@ -972,6 +1005,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:32:21 2026 \u002B0200",
         "message": "refactor: read the included compiler-generated and special-name members without a customization value (#1919)"
+      },
+      {
+        "sha": "c58a0ca2b42e154b86ffe16d836f7c3a843b4367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
+        "message": "refactor: cache the nullability annotation of a member (#1918)"
       }
     ],
     "labels": [
@@ -986,7 +1025,8 @@ window.BENCHMARK_DATA = {
       "b5b8319c",
       "0957a2c4",
       "b137d18f",
-      "0993f949"
+      "0993f949",
+      "c58a0ca2"
     ],
     "datasets": [
       {
@@ -1004,7 +1044,8 @@ window.BENCHMARK_DATA = {
           5085.579892476399,
           5186.038330078125,
           5019.150308881487,
-          2957.8272567749023
+          2957.8272567749023,
+          2727.6107816060385
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1027,7 +1068,8 @@ window.BENCHMARK_DATA = {
           4803,
           4803,
           4858,
-          4859
+          4859,
+          4802
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1053,7 +1095,8 @@ window.BENCHMARK_DATA = {
           3726.338847820575,
           3819.271622467041,
           3744.3438753763835,
-          2283.0978450775146
+          2283.0978450775146,
+          2158.282511138916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1076,6 +1119,7 @@ window.BENCHMARK_DATA = {
           4011,
           4011,
           4010,
+          4011,
           4011
         ],
         "borderColor": "#FF671B",
@@ -1162,6 +1206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:32:21 2026 \u002B0200",
         "message": "refactor: read the included compiler-generated and special-name members without a customization value (#1919)"
+      },
+      {
+        "sha": "c58a0ca2b42e154b86ffe16d836f7c3a843b4367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
+        "message": "refactor: cache the nullability annotation of a member (#1918)"
       }
     ],
     "labels": [
@@ -1176,7 +1226,8 @@ window.BENCHMARK_DATA = {
       "b5b8319c",
       "0957a2c4",
       "b137d18f",
-      "0993f949"
+      "0993f949",
+      "c58a0ca2"
     ],
     "datasets": [
       {
@@ -1194,7 +1245,8 @@ window.BENCHMARK_DATA = {
           2343.6749766031903,
           2287.990525054932,
           2311.8038250849795,
-          1140.4298855463664
+          1140.4298855463664,
+          403.27256965637207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1269,8 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
-          3184
+          3184,
+          1400
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1243,7 +1296,8 @@ window.BENCHMARK_DATA = {
           2446.510565948486,
           2327.9982653299967,
           2357.9184209187824,
-          1193.0916483561198
+          1193.0916483561198,
+          1210.1142669090857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1255,6 +1309,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1352,6 +1407,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:32:21 2026 \u002B0200",
         "message": "refactor: read the included compiler-generated and special-name members without a customization value (#1919)"
+      },
+      {
+        "sha": "c58a0ca2b42e154b86ffe16d836f7c3a843b4367",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
+        "message": "refactor: cache the nullability annotation of a member (#1918)"
       }
     ],
     "labels": [
@@ -1366,7 +1427,8 @@ window.BENCHMARK_DATA = {
       "b5b8319c",
       "0957a2c4",
       "b137d18f",
-      "0993f949"
+      "0993f949",
+      "c58a0ca2"
     ],
     "datasets": [
       {
@@ -1384,7 +1446,8 @@ window.BENCHMARK_DATA = {
           3917.3159596761066,
           3977.0660999843053,
           3751.03573344304,
-          1948.5431261698404
+          1948.5431261698404,
+          2027.2414260864257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1407,6 +1470,7 @@ window.BENCHMARK_DATA = {
           3993,
           3993,
           3992,
+          3993,
           3993
         ],
         "borderColor": "#63A2AC",
@@ -1433,7 +1497,8 @@ window.BENCHMARK_DATA = {
           275740.09524739586,
           278641.1962890625,
           271504.90283203125,
-          163523.23702566963
+          163523.23702566963,
+          165671.9757080078
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1456,6 +1521,7 @@ window.BENCHMARK_DATA = {
           17620,
           17620,
           17596,
+          17618,
           17618
         ],
         "borderColor": "#FF671B",
