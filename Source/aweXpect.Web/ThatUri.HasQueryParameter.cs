@@ -22,6 +22,8 @@ public static partial class ThatUri
 	public static HasQueryParameterValueResult HasQueryParameter(this IThat<Uri?> subject, string name)
 	{
 		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
+		// The value can be continued with `WhoseValue`, whose result on the member does not stop the further
+		// processing for a relative URI, so the check stays a separate operand here.
 		return new(subject.FailIfRelative().Get().ExpectationBuilder
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasQueryParameterConstraint(it, grammars, name)),
@@ -39,35 +41,24 @@ public static partial class ThatUri
 	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveQueryParameter(this IThat<Uri?> subject, string name)
 	{
 		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
-		return new(subject.FailIfRelative().Get().ExpectationBuilder
+		return new(subject.Get().ExpectationBuilder
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasQueryParameterConstraint(it, grammars, name).Invert()),
 			subject);
 	}
 
 	private sealed class HasQueryParameterConstraint(string it, ExpectationGrammars grammars, string name)
-		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
-			IValueConstraint<Uri?>
+		: AbsoluteUriConstraint(it, grammars)
 	{
-		public ConstraintResult IsMetBy(Uri? actual)
+		protected override bool IsSatisfiedBy(Uri? actual)
 		{
-			Actual = actual;
-			if (actual is null)
+			if (actual?.HasQueryParameter(name) == true)
 			{
-				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			if (actual.HasQueryParameter(name))
-			{
-				Outcome = Outcome.Success;
-				return this;
+				return true;
 			}
 
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
-			Outcome = Outcome.Failure;
-			return this;
+			return false;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -76,19 +67,10 @@ public static partial class ThatUri
 			Formatter.Format(stringBuilder, name);
 		}
 
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("does not have a query parameter ", "do not have a query parameter "));
 			Formatter.Format(stringBuilder, name);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

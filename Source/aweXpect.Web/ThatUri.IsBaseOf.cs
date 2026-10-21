@@ -21,7 +21,7 @@ public static partial class ThatUri
 	public static AndOrResult<Uri, IThat<Uri?>> IsBaseOf(this IThat<Uri?> subject, Uri expected)
 	{
 		ThrowIfNotAbsolute(expected, nameof(expected));
-		return new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars) =>
+		return new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars) =>
 				new IsBaseOfConstraint(it, grammars, expected)),
 			subject);
 	}
@@ -46,7 +46,7 @@ public static partial class ThatUri
 	public static AndOrResult<Uri, IThat<Uri?>> IsNotBaseOf(this IThat<Uri?> subject, Uri unexpected)
 	{
 		ThrowIfNotAbsolute(unexpected, nameof(unexpected));
-		return new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars) =>
+		return new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars) =>
 				new IsBaseOfConstraint(it, grammars, unexpected).Invert()),
 			subject);
 	}
@@ -74,15 +74,10 @@ public static partial class ThatUri
 	}
 
 	private sealed class IsBaseOfConstraint(string it, ExpectationGrammars grammars, Uri expected)
-		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
-			IValueConstraint<Uri?>
+		: AbsoluteUriConstraint(it, grammars)
 	{
-		public ConstraintResult IsMetBy(Uri? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsBaseOf(expected) == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+		protected override bool IsSatisfiedBy(Uri? actual)
+			=> actual?.IsBaseOf(expected) == true;
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -90,19 +85,10 @@ public static partial class ThatUri
 			Formatter.Format(stringBuilder, expected);
 		}
 
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not a base URI of ", "are not base URIs of "));
 			Formatter.Format(stringBuilder, expected);
 		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

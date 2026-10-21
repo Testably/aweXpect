@@ -18,7 +18,7 @@ public static partial class ThatUri
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Uri, IThat<Uri?>> HasDefaultPort(this IThat<Uri?> subject)
-		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasDefaultPortConstraint(it, grammars)),
 			subject);
 
@@ -30,34 +30,20 @@ public static partial class ThatUri
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveDefaultPort(this IThat<Uri?> subject)
-		=> new(subject.FailIfRelative().Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasDefaultPortConstraint(it, grammars).Invert()),
 			subject);
 
 	private sealed class HasDefaultPortConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
-			IValueConstraint<Uri?>
+		: AbsoluteUriConstraint(it, grammars)
 	{
-		public ConstraintResult IsMetBy(Uri? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.IsDefaultPort == true ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+		protected override bool IsSatisfiedBy(Uri? actual)
+			=> actual?.IsDefaultPort == true;
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append("the default port for the used scheme");
 
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
-		}
-
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append("the default port for the used scheme");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }
