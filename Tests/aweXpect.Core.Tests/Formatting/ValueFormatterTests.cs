@@ -586,11 +586,20 @@ public class ValueFormatterTests
 		}
 	}
 
+	/// <remarks>
+	///     Registrations are process-wide, so it only formats strings in the test that created it and leaves the
+	///     tests running in parallel alone.
+	/// </remarks>
 	private sealed class WrappingStringFormatter : IValueFormatter
 	{
+		private readonly AsyncLocal<bool> _isCurrentFlow = new()
+		{
+			Value = true,
+		};
+
 		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
 		{
-			if (value is not string text)
+			if (!_isCurrentFlow.Value || value is not string text)
 			{
 				return false;
 			}
