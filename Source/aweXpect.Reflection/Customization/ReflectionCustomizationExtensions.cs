@@ -16,6 +16,8 @@ namespace aweXpect.Customization;
 public static class ReflectionCustomizationExtensions
 {
 	private const string KeyPrefix = "aweXpect.Reflection.";
+	private const string IncludedCompilerGeneratedMembersKey = KeyPrefix + nameof(IncludedCompilerGeneratedMembers);
+	private const string IncludedSpecialNameMembersKey = KeyPrefix + nameof(IncludedSpecialNameMembers);
 
 	/// <summary>
 	///     The resolver that determines which types a given type depends on.
@@ -68,7 +70,7 @@ public static class ReflectionCustomizationExtensions
 	public static ICustomizationValueSetter<CompilerGeneratedMembers> IncludedCompilerGeneratedMembers(
 		this AwexpectCustomization.ReflectionCustomization reflection)
 		=> new CustomizationValue<CompilerGeneratedMembers>(reflection,
-			KeyPrefix + nameof(IncludedCompilerGeneratedMembers), CompilerGeneratedMembers.None);
+			IncludedCompilerGeneratedMembersKey, CompilerGeneratedMembers.None);
 
 	/// <summary>
 	///     The special-name methods (operators and accessors) that are included when reflecting over methods.
@@ -79,7 +81,23 @@ public static class ReflectionCustomizationExtensions
 	public static ICustomizationValueSetter<SpecialNameMembers> IncludedSpecialNameMembers(
 		this AwexpectCustomization.ReflectionCustomization reflection)
 		=> new CustomizationValue<SpecialNameMembers>(reflection,
-			KeyPrefix + nameof(IncludedSpecialNameMembers), SpecialNameMembers.None);
+			IncludedSpecialNameMembersKey, SpecialNameMembers.None);
+
+	/// <summary>
+	///     Reads <see cref="IncludedCompilerGeneratedMembers" /> without creating a customization value, as it is read
+	///     for every type whose members are listed.
+	/// </summary>
+	internal static CompilerGeneratedMembers GetIncludedCompilerGeneratedMembers(
+		this AwexpectCustomization.ReflectionCustomization reflection)
+		=> ((IAwexpectCustomization)reflection).Get(IncludedCompilerGeneratedMembersKey, CompilerGeneratedMembers.None);
+
+	/// <summary>
+	///     Reads <see cref="IncludedSpecialNameMembers" /> without creating a customization value, as it is read for every
+	///     type whose methods are listed.
+	/// </summary>
+	internal static SpecialNameMembers GetIncludedSpecialNameMembers(
+		this AwexpectCustomization.ReflectionCustomization reflection)
+		=> ((IAwexpectCustomization)reflection).Get(IncludedSpecialNameMembersKey, SpecialNameMembers.None);
 
 	/// <summary>
 	///     Returns a copy of the stored array, so that changing it cannot bypass the scoping of the setting.
