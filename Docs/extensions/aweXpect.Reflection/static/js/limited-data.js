@@ -90,6 +90,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
         "message": "docs: show the benchmark results of the extension packages (#1905)"
+      },
+      {
+        "sha": "8d6b35614d2683a399d0dd84b70c747c44affc7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:56:19 2026 \u002B0200",
+        "message": "refactor: pair XML child nodes in any order without describing the differences of candidates (#1906)"
       }
     ],
     "labels": [
@@ -107,7 +113,8 @@ window.BENCHMARK_DATA = {
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
-      "706259ec"
+      "706259ec",
+      "8d6b3561"
     ],
     "datasets": [
       {
@@ -128,7 +135,8 @@ window.BENCHMARK_DATA = {
           1207.0783353169759,
           1232.9899127960205,
           1166.1441913604735,
-          714.809748853956
+          714.809748853956,
+          705.0147455655612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -153,6 +161,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          928,
           928,
           928
         ],
@@ -183,7 +192,8 @@ window.BENCHMARK_DATA = {
           878.7575756953313,
           932.2978339513143,
           887.3353712375348,
-          537.7388259447538
+          537.7388259447538,
+          626.2760645548502
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -195,6 +205,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -313,6 +324,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
         "message": "docs: show the benchmark results of the extension packages (#1905)"
+      },
+      {
+        "sha": "8d6b35614d2683a399d0dd84b70c747c44affc7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:56:19 2026 \u002B0200",
+        "message": "refactor: pair XML child nodes in any order without describing the differences of candidates (#1906)"
       }
     ],
     "labels": [
@@ -330,7 +347,8 @@ window.BENCHMARK_DATA = {
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
-      "706259ec"
+      "706259ec",
+      "8d6b3561"
     ],
     "datasets": [
       {
@@ -351,7 +369,8 @@ window.BENCHMARK_DATA = {
           155.72609308787756,
           139.76076733271282,
           123.02739322980246,
-          75.04443422158559
+          75.04443422158559,
+          94.72771302858989
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -376,6 +395,7 @@ window.BENCHMARK_DATA = {
           384,
           384,
           384,
+          320,
           320,
           320
         ],
@@ -406,7 +426,8 @@ window.BENCHMARK_DATA = {
           198.24876863161722,
           207.969647026062,
           205.63874741962977,
-          129.6072610616684
+          129.6072610616684,
+          194.71913395609175
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -418,6 +439,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -536,6 +558,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
         "message": "docs: show the benchmark results of the extension packages (#1905)"
+      },
+      {
+        "sha": "8d6b35614d2683a399d0dd84b70c747c44affc7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:56:19 2026 \u002B0200",
+        "message": "refactor: pair XML child nodes in any order without describing the differences of candidates (#1906)"
       }
     ],
     "labels": [
@@ -553,7 +581,8 @@ window.BENCHMARK_DATA = {
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
-      "706259ec"
+      "706259ec",
+      "8d6b3561"
     ],
     "datasets": [
       {
@@ -574,7 +603,8 @@ window.BENCHMARK_DATA = {
           2196.8258761088055,
           2267.1600270589192,
           2238.0090393066407,
-          1188.6649475097656
+          1188.6649475097656,
+          1413.4362845102946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -599,6 +629,7 @@ window.BENCHMARK_DATA = {
           2560,
           2464,
           2464,
+          2400,
           2400,
           2400
         ],
@@ -629,7 +660,8 @@ window.BENCHMARK_DATA = {
           1524.5135557810465,
           1547.005021794637,
           1502.1154323305402,
-          894.5015827178955
+          894.5015827178955,
+          1107.5879389444988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -655,7 +687,8 @@ window.BENCHMARK_DATA = {
           1985,
           1985,
           1985,
-          1985
+          1985,
+          1984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -699,6 +732,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
         "message": "docs: show the benchmark results of the extension packages (#1905)"
+      },
+      {
+        "sha": "8d6b35614d2683a399d0dd84b70c747c44affc7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:56:19 2026 \u002B0200",
+        "message": "refactor: pair XML child nodes in any order without describing the differences of candidates (#1906)"
       }
     ],
     "labels": [
@@ -706,7 +745,8 @@ window.BENCHMARK_DATA = {
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
-      "706259ec"
+      "706259ec",
+      "8d6b3561"
     ],
     "datasets": [
       {
@@ -717,7 +757,8 @@ window.BENCHMARK_DATA = {
           5139.496166483561,
           5132.073151221643,
           5123.244040897915,
-          2928.5740023295084
+          2928.5740023295084,
+          3947.5968475341797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -733,7 +774,8 @@ window.BENCHMARK_DATA = {
           4923,
           4867,
           4803,
-          4802
+          4802,
+          4857
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -752,7 +794,8 @@ window.BENCHMARK_DATA = {
           3715.010679098276,
           3904.993136479304,
           3804.1863491351787,
-          2190.5589385986327
+          2190.5589385986327,
+          2690.684895324707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -768,7 +811,8 @@ window.BENCHMARK_DATA = {
           4011,
           4011,
           4011,
-          4011
+          4011,
+          4009
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -812,6 +856,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
         "message": "docs: show the benchmark results of the extension packages (#1905)"
+      },
+      {
+        "sha": "8d6b35614d2683a399d0dd84b70c747c44affc7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:56:19 2026 \u002B0200",
+        "message": "refactor: pair XML child nodes in any order without describing the differences of candidates (#1906)"
       }
     ],
     "labels": [
@@ -819,7 +869,8 @@ window.BENCHMARK_DATA = {
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
-      "706259ec"
+      "706259ec",
+      "8d6b3561"
     ],
     "datasets": [
       {
@@ -830,7 +881,8 @@ window.BENCHMARK_DATA = {
           2241.7311589167666,
           2371.3942461649576,
           2189.7888651529947,
-          1298.1158770152501
+          1298.1158770152501,
+          1589.6757334391275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -845,6 +897,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3184,
           3184,
           3184
         ],
@@ -865,7 +918,8 @@ window.BENCHMARK_DATA = {
           2266.10031636556,
           2377.4020746866863,
           2253.6752520243326,
-          1306.6807187398274
+          1306.6807187398274,
+          1574.4379154205321
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -877,6 +931,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -925,6 +980,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
         "message": "docs: show the benchmark results of the extension packages (#1905)"
+      },
+      {
+        "sha": "8d6b35614d2683a399d0dd84b70c747c44affc7c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:56:19 2026 \u002B0200",
+        "message": "refactor: pair XML child nodes in any order without describing the differences of candidates (#1906)"
       }
     ],
     "labels": [
@@ -932,7 +993,8 @@ window.BENCHMARK_DATA = {
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
-      "706259ec"
+      "706259ec",
+      "8d6b3561"
     ],
     "datasets": [
       {
@@ -943,7 +1005,8 @@ window.BENCHMARK_DATA = {
           3726.6908449808757,
           3955.1790445963543,
           3851.0465672810874,
-          2094.610780843099
+          2094.610780843099,
+          2594.3313868386404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -959,7 +1022,8 @@ window.BENCHMARK_DATA = {
           4057,
           4057,
           3993,
-          3993
+          3993,
+          3992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -978,7 +1042,8 @@ window.BENCHMARK_DATA = {
           280279.67119140626,
           279093.7619280134,
           278348.7387532552,
-          174977.35283954328
+          174977.35283954328,
+          199590.3437875601
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -994,7 +1059,8 @@ window.BENCHMARK_DATA = {
           17620,
           17620,
           17620,
-          17618
+          17618,
+          17564
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
