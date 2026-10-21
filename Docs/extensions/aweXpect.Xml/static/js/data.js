@@ -168,6 +168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
@@ -198,7 +204,8 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
@@ -232,7 +239,8 @@ window.BENCHMARK_DATA = {
           443.9966308048793,
           411.46072441736857,
           644.7768580754598,
-          431.35081791877747
+          431.35081791877747,
+          858.5666456222534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -271,7 +279,8 @@ window.BENCHMARK_DATA = {
           1248,
           1160,
           1160,
-          1160
+          1160,
+          1120
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -313,7 +322,8 @@ window.BENCHMARK_DATA = {
           373.4973191874368,
           338.3729255994161,
           537.3758031771733,
-          454.3701658884684
+          454.3701658884684,
+          774.0886314392089
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -325,6 +335,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -534,6 +545,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
@@ -564,7 +581,8 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
@@ -598,7 +616,8 @@ window.BENCHMARK_DATA = {
           2514.8070652301494,
           2511.837604014079,
           3467.0003967285156,
-          2837.0964314778644
+          2837.0964314778644,
+          4875.748948778425
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -637,7 +656,8 @@ window.BENCHMARK_DATA = {
           24332,
           24332,
           24332,
-          24266
+          24266,
+          24306
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -679,7 +699,8 @@ window.BENCHMARK_DATA = {
           3004.3554715474447,
           2834.523755900065,
           4227.152315775554,
-          3044.250894818987
+          3044.250894818987,
+          5514.110574340821
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -691,6 +712,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -840,6 +862,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
@@ -860,7 +888,8 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
@@ -884,7 +913,8 @@ window.BENCHMARK_DATA = {
           1408.001352183024,
           1343.2241765430995,
           1942.3270909627279,
-          1649.170239130656
+          1649.170239130656,
+          2749.2245585123696
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -913,7 +943,8 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
-          12880
+          12880,
+          12856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -945,7 +976,8 @@ window.BENCHMARK_DATA = {
           1927.5555466871995,
           1902.7217619578043,
           2753.494485982259,
-          2138.180834452311
+          2138.180834452311,
+          3693.9823548453196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -957,6 +989,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -1096,6 +1129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:37:46 2026 \u002B0200",
         "message": "refactor: check for a relative URI inside the constraints of ThatUri (#1923)"
+      },
+      {
+        "sha": "97d791911888342afd484a82f270e43100d5afa6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
+        "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
       }
     ],
     "labels": [
@@ -1116,7 +1155,8 @@ window.BENCHMARK_DATA = {
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
-      "e89c6f83"
+      "e89c6f83",
+      "97d79191"
     ],
     "datasets": [
       {
@@ -1140,7 +1180,8 @@ window.BENCHMARK_DATA = {
           7804.194562639509,
           7305.137371317545,
           10166.130587064303,
-          7890.442651875814
+          7890.442651875814,
+          14545.83103281657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1169,7 +1210,8 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
-          25592
+          25592,
+          25568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1201,7 +1243,8 @@ window.BENCHMARK_DATA = {
           177235.63560384113,
           162241.34778645833,
           255869.73733956474,
-          185913.11193847656
+          185913.11193847656,
+          378895.9797014509
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1215,6 +1258,7 @@ window.BENCHMARK_DATA = {
         "data": [
           544246,
           544245,
+          544335,
           544335,
           544335,
           544335,
