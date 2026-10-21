@@ -180,7 +180,11 @@ internal static class TypeHelpers
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Events) != 0)
 				.ToArray();
-			cache?.Events = new CachedMembers<EventInfo>(key, result);
+			if (cache is not null)
+			{
+				cache.Events = new CachedMembers<EventInfo>(key, result);
+			}
+
 			return result;
 		}
 		catch (Exception exception) when (exception
@@ -239,7 +243,11 @@ internal static class TypeHelpers
 				.Where(m => !m.IsCompilerGenerated() ||
 				            (included & CompilerGeneratedMembers.Fields) != 0)
 				.ToArray();
-			cache?.Fields = new CachedMembers<FieldInfo>(key, result);
+			if (cache is not null)
+			{
+				cache.Fields = new CachedMembers<FieldInfo>(key, result);
+			}
+
 			return result;
 		}
 		catch (Exception exception) when (exception
@@ -303,7 +311,11 @@ internal static class TypeHelpers
 			MethodInfo[] result = methods
 				.Where(m => IncludeMethod(m, includedCompilerGenerated, includedSpecialName))
 				.ToArray();
-			cache?.Methods = new CachedMembers<MethodInfo>(key, result);
+			if (cache is not null)
+			{
+				cache.Methods = new CachedMembers<MethodInfo>(key, result);
+			}
+
 			return result;
 		}
 		catch (Exception exception) when (exception
@@ -364,7 +376,11 @@ internal static class TypeHelpers
 				            (included & CompilerGeneratedMembers.Properties) != 0)
 				.Concat(type.GetExtensionProperties())
 				.ToArray();
-			cache?.Properties = new CachedMembers<PropertyInfo>(key, result);
+			if (cache is not null)
+			{
+				cache.Properties = new CachedMembers<PropertyInfo>(key, result);
+			}
+
 			return result;
 		}
 		catch (Exception exception) when (exception
