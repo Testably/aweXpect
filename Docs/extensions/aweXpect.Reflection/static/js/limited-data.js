@@ -138,6 +138,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
         "message": "refactor: cache the nullability annotation of a member (#1918)"
+      },
+      {
+        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
+        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
       }
     ],
     "labels": [
@@ -163,7 +169,8 @@ window.BENCHMARK_DATA = {
       "0957a2c4",
       "b137d18f",
       "0993f949",
-      "c58a0ca2"
+      "c58a0ca2",
+      "a65978ac"
     ],
     "datasets": [
       {
@@ -192,7 +199,8 @@ window.BENCHMARK_DATA = {
           1173.053017752511,
           1181.0146830422539,
           724.8213246663412,
-          683.7462809426444
+          683.7462809426444,
+          1136.3824100494385
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -217,6 +225,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          928,
           928,
           928,
           928,
@@ -263,7 +272,8 @@ window.BENCHMARK_DATA = {
           903.5656085332234,
           935.2144344965617,
           525.4902449289958,
-          501.6211816347562
+          501.6211816347562,
+          893.9035246531168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -275,6 +285,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -449,6 +460,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
         "message": "refactor: cache the nullability annotation of a member (#1918)"
+      },
+      {
+        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
+        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
       }
     ],
     "labels": [
@@ -474,7 +491,8 @@ window.BENCHMARK_DATA = {
       "0957a2c4",
       "b137d18f",
       "0993f949",
-      "c58a0ca2"
+      "c58a0ca2",
+      "a65978ac"
     ],
     "datasets": [
       {
@@ -503,7 +521,8 @@ window.BENCHMARK_DATA = {
           133.63989594777425,
           129.0539429505666,
           63.516540203775676,
-          61.51752870423453
+          61.51752870423453,
+          120.24209690093994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -528,6 +547,7 @@ window.BENCHMARK_DATA = {
           384,
           384,
           384,
+          320,
           320,
           320,
           320,
@@ -574,7 +594,8 @@ window.BENCHMARK_DATA = {
           217.367777633667,
           197.09539655538705,
           115.99186766147614,
-          116.21804138592312
+          116.21804138592312,
+          207.8268290076937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -586,6 +607,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -760,6 +782,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
         "message": "refactor: cache the nullability annotation of a member (#1918)"
+      },
+      {
+        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
+        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
       }
     ],
     "labels": [
@@ -785,7 +813,8 @@ window.BENCHMARK_DATA = {
       "0957a2c4",
       "b137d18f",
       "0993f949",
-      "c58a0ca2"
+      "c58a0ca2",
+      "a65978ac"
     ],
     "datasets": [
       {
@@ -814,7 +843,8 @@ window.BENCHMARK_DATA = {
           2282.8780813950757,
           2189.508098602295,
           1108.8519479115805,
-          1129.1361934955303
+          1129.1361934955303,
+          1943.426895904541
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -848,7 +878,8 @@ window.BENCHMARK_DATA = {
           2400,
           2400,
           2400,
-          2400
+          2400,
+          2104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -885,7 +916,8 @@ window.BENCHMARK_DATA = {
           1545.938652420044,
           1398.3417524973552,
           802.2309616633823,
-          847.9416232790265
+          847.9416232790265,
+          1526.901095199585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -918,6 +950,7 @@ window.BENCHMARK_DATA = {
           1985,
           1985,
           1984,
+          1985,
           1985,
           1985
         ],
@@ -1011,6 +1044,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
         "message": "refactor: cache the nullability annotation of a member (#1918)"
+      },
+      {
+        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
+        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
       }
     ],
     "labels": [
@@ -1026,7 +1065,8 @@ window.BENCHMARK_DATA = {
       "0957a2c4",
       "b137d18f",
       "0993f949",
-      "c58a0ca2"
+      "c58a0ca2",
+      "a65978ac"
     ],
     "datasets": [
       {
@@ -1045,7 +1085,8 @@ window.BENCHMARK_DATA = {
           5186.038330078125,
           5019.150308881487,
           2957.8272567749023,
-          2727.6107816060385
+          2727.6107816060385,
+          4821.899570758526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1069,7 +1110,8 @@ window.BENCHMARK_DATA = {
           4803,
           4858,
           4859,
-          4802
+          4802,
+          4538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1096,7 +1138,8 @@ window.BENCHMARK_DATA = {
           3819.271622467041,
           3744.3438753763835,
           2283.0978450775146,
-          2158.282511138916
+          2158.282511138916,
+          3721.4027636210126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1119,6 +1162,7 @@ window.BENCHMARK_DATA = {
           4011,
           4011,
           4010,
+          4011,
           4011,
           4011
         ],
@@ -1212,6 +1256,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
         "message": "refactor: cache the nullability annotation of a member (#1918)"
+      },
+      {
+        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
+        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
       }
     ],
     "labels": [
@@ -1227,7 +1277,8 @@ window.BENCHMARK_DATA = {
       "0957a2c4",
       "b137d18f",
       "0993f949",
-      "c58a0ca2"
+      "c58a0ca2",
+      "a65978ac"
     ],
     "datasets": [
       {
@@ -1246,7 +1297,8 @@ window.BENCHMARK_DATA = {
           2287.990525054932,
           2311.8038250849795,
           1140.4298855463664,
-          403.27256965637207
+          403.27256965637207,
+          776.596243245261
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1270,6 +1322,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          1400,
           1400
         ],
         "borderColor": "#63A2AC",
@@ -1297,7 +1350,8 @@ window.BENCHMARK_DATA = {
           2327.9982653299967,
           2357.9184209187824,
           1193.0916483561198,
-          1210.1142669090857
+          1210.1142669090857,
+          2290.0546544392905
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1309,6 +1363,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1413,6 +1468,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 09:50:15 2026 \u002B0200",
         "message": "refactor: cache the nullability annotation of a member (#1918)"
+      },
+      {
+        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
+        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
       }
     ],
     "labels": [
@@ -1428,7 +1489,8 @@ window.BENCHMARK_DATA = {
       "0957a2c4",
       "b137d18f",
       "0993f949",
-      "c58a0ca2"
+      "c58a0ca2",
+      "a65978ac"
     ],
     "datasets": [
       {
@@ -1447,7 +1509,8 @@ window.BENCHMARK_DATA = {
           3977.0660999843053,
           3751.03573344304,
           1948.5431261698404,
-          2027.2414260864257
+          2027.2414260864257,
+          3457.5767079671223
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1471,7 +1534,8 @@ window.BENCHMARK_DATA = {
           3993,
           3992,
           3993,
-          3993
+          3993,
+          3697
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1498,7 +1562,8 @@ window.BENCHMARK_DATA = {
           278641.1962890625,
           271504.90283203125,
           163523.23702566963,
-          165671.9757080078
+          165671.9757080078,
+          279843.7556501116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1522,7 +1587,8 @@ window.BENCHMARK_DATA = {
           17620,
           17596,
           17618,
-          17618
+          17618,
+          17620
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
