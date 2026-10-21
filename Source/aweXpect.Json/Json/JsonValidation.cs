@@ -152,6 +152,11 @@ internal class JsonValidation : IJsonObjectResult,
 		string path = CurrentPath;
 		AddPendingCheck(async cancellationToken =>
 		{
+			if (_options.ExpectedSerializerOptions is null && IsEqualPrimitive(element, expectedValue))
+			{
+				return null;
+			}
+
 			ExpectationJsonConverter converter = new(_context, cancellationToken);
 			using JsonDocument expectedDocument = converter.ParseExpected(expectedValue, _options.DocumentOptions,
 				_options.ExpectedSerializerOptions);
@@ -166,6 +171,27 @@ internal class JsonValidation : IJsonObjectResult,
 			return comparisonResult.HasError ? comparisonResult.ToString() : null;
 		});
 	}
+
+	/// <summary>
+	///     Checks if the <paramref name="element" /> equals an <paramref name="expected" /> string, boolean or integer,
+	///     which then needs no expected document, as its comparison could not find a difference.
+	/// </summary>
+	/// <remarks>
+	///     Only valid without serializer options, which could write these values differently. It is checked with the
+	///     other checks, so that a string that cannot be read, e.g. with an unpaired surrogate, throws at the same time as
+	///     in the comparison.
+	/// </remarks>
+	private static bool IsEqualPrimitive(JsonElement element, object? expected)
+		=> expected switch
+		{
+			string value => element.ValueKind == JsonValueKind.String && element.ValueEquals(value),
+			bool value => element.ValueKind == (value ? JsonValueKind.True : JsonValueKind.False),
+			int value => element.ValueKind == JsonValueKind.Number && element.TryGetInt64(out long number) &&
+			             number == value,
+			long value => element.ValueKind == JsonValueKind.Number && element.TryGetInt64(out long number) &&
+			              number == value,
+			_ => false,
+		};
 
 	private void ValidateNested(JsonValidation jsonValidation)
 		=> AddPendingCheck(async cancellationToken =>
