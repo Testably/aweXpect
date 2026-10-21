@@ -180,6 +180,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
         "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
+      },
+      {
+        "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
+        "message": "refactor: cache whether a method is async (#1917)"
       }
     ],
     "labels": [
@@ -212,7 +218,8 @@ window.BENCHMARK_DATA = {
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
-      "97f51880"
+      "97f51880",
+      "f79b883b"
     ],
     "datasets": [
       {
@@ -248,7 +255,8 @@ window.BENCHMARK_DATA = {
           1216.1562284742083,
           1216.5010150909425,
           1171.9326855795723,
-          927.7941479365031
+          927.7941479365031,
+          1170.6100504738945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -288,6 +296,7 @@ window.BENCHMARK_DATA = {
           928,
           928,
           928,
+          904,
           904,
           904
         ],
@@ -333,7 +342,8 @@ window.BENCHMARK_DATA = {
           963.7004985809326,
           959.4564516703288,
           925.9170443216959,
-          696.2574555533273
+          696.2574555533273,
+          896.7279643331256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -345,6 +355,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -568,6 +579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
         "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
+      },
+      {
+        "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
+        "message": "refactor: cache whether a method is async (#1917)"
       }
     ],
     "labels": [
@@ -600,7 +617,8 @@ window.BENCHMARK_DATA = {
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
-      "97f51880"
+      "97f51880",
+      "f79b883b"
     ],
     "datasets": [
       {
@@ -636,7 +654,8 @@ window.BENCHMARK_DATA = {
           126.0808158715566,
           126.01311362584433,
           129.28269558686478,
-          91.25473288389352
+          91.25473288389352,
+          111.29013929196766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -676,6 +695,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296
         ],
@@ -721,7 +741,8 @@ window.BENCHMARK_DATA = {
           209.68607414563496,
           221.08514498074848,
           220.1575253861291,
-          184.45719017301286
+          184.45719017301286,
+          200.78480971654255
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -733,6 +754,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -956,6 +978,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
         "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
+      },
+      {
+        "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
+        "message": "refactor: cache whether a method is async (#1917)"
       }
     ],
     "labels": [
@@ -988,7 +1016,8 @@ window.BENCHMARK_DATA = {
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
-      "97f51880"
+      "97f51880",
+      "f79b883b"
     ],
     "datasets": [
       {
@@ -1024,7 +1053,8 @@ window.BENCHMARK_DATA = {
           1906.1669537680489,
           1916.7631607055664,
           1907.5948382059732,
-          1497.859589513143
+          1497.859589513143,
+          1980.9812856038411
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1064,6 +1094,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080
         ],
@@ -1109,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1519.976547241211,
           1582.8928236643474,
           1521.8061838150024,
-          1132.7560904184977
+          1132.7560904184977,
+          1552.2420616149902
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1150,7 +1182,8 @@ window.BENCHMARK_DATA = {
           1985,
           1985,
           1897,
-          1897
+          1897,
+          1985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1284,6 +1317,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
         "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
+      },
+      {
+        "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
+        "message": "refactor: cache whether a method is async (#1917)"
       }
     ],
     "labels": [
@@ -1306,7 +1345,8 @@ window.BENCHMARK_DATA = {
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
-      "97f51880"
+      "97f51880",
+      "f79b883b"
     ],
     "datasets": [
       {
@@ -1332,7 +1372,8 @@ window.BENCHMARK_DATA = {
           4057.7143919808523,
           3947.684219868978,
           4163.470495096843,
-          3109.5831504821776
+          3109.5831504821776,
+          2763.2594356536865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1363,7 +1404,8 @@ window.BENCHMARK_DATA = {
           3352,
           3296,
           3328,
-          3272
+          3272,
+          3040
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1397,7 +1439,8 @@ window.BENCHMARK_DATA = {
           3858.865682748648,
           3850.262610844203,
           3782.171580632528,
-          3021.883234841483
+          3021.883234841483,
+          3767.8979682922363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1428,6 +1471,7 @@ window.BENCHMARK_DATA = {
           4012,
           4012,
           4012,
+          4011,
           4011
         ],
         "borderColor": "#FF671B",
@@ -1562,6 +1606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
         "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
+      },
+      {
+        "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
+        "message": "refactor: cache whether a method is async (#1917)"
       }
     ],
     "labels": [
@@ -1584,7 +1634,8 @@ window.BENCHMARK_DATA = {
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
-      "97f51880"
+      "97f51880",
+      "f79b883b"
     ],
     "datasets": [
       {
@@ -1610,7 +1661,8 @@ window.BENCHMARK_DATA = {
           364.6749192873637,
           375.77118190129596,
           388.32043574651084,
-          268.514961536114
+          268.514961536114,
+          399.8128883997599
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1640,6 +1692,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552
         ],
@@ -1675,7 +1728,8 @@ window.BENCHMARK_DATA = {
           2276.278913770403,
           2483.7505516052247,
           2305.175177982875,
-          1737.9932108561197
+          1737.9932108561197,
+          2405.7865361531576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1687,6 +1741,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1840,6 +1895,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
         "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
+      },
+      {
+        "sha": "f79b883b49fa5d4a3aa3f2ebb0171a53295cf34e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
+        "message": "refactor: cache whether a method is async (#1917)"
       }
     ],
     "labels": [
@@ -1862,7 +1923,8 @@ window.BENCHMARK_DATA = {
       "bbe7c60f",
       "e89c6f83",
       "97d79191",
-      "97f51880"
+      "97f51880",
+      "f79b883b"
     ],
     "datasets": [
       {
@@ -1888,7 +1950,8 @@ window.BENCHMARK_DATA = {
           3517.0875577290853,
           3718.45770517985,
           3545.4583272298178,
-          2798.4851848895732
+          2798.4851848895732,
+          3509.375325884138
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1918,6 +1981,7 @@ window.BENCHMARK_DATA = {
           3697,
           3697,
           3697,
+          3673,
           3673,
           3673
         ],
@@ -1953,7 +2017,8 @@ window.BENCHMARK_DATA = {
           282319.0138997396,
           283004.1383626302,
           278751.01783854165,
-          239398.384765625
+          239398.384765625,
+          278520.2537184495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1984,7 +2049,8 @@ window.BENCHMARK_DATA = {
           17609,
           17609,
           17608,
-          17608
+          17608,
+          17609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
