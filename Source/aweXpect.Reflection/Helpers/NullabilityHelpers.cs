@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 
@@ -23,6 +24,9 @@ internal static class NullabilityHelpers
 	private const byte NotAnnotated = 1;
 	private const string NullableAttributeName = "System.Runtime.CompilerServices.NullableAttribute";
 	private const string NullableContextAttributeName = "System.Runtime.CompilerServices.NullableContextAttribute";
+	private static readonly ConditionalWeakTable<MemberInfo, object> NullableReferenceTypeCache = new();
+	private static readonly object NullableMarker = new();
+	private static readonly object NotNullableMarker = new();
 
 	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is nullable.
@@ -145,8 +149,15 @@ internal static class NullabilityHelpers
 	///     <para />
 	///     The metadata is decoded directly (instead of using <c>NullabilityInfoContext</c>, which is unavailable
 	///     on netstandard2.0) so that the same member yields the same result on every target framework.
+	///     <para />
+	///     The result is cached per member, as reading the attributes is the main cost of the nullability of a member,
+	///     and the attributes of a loaded member never change.
 	/// </remarks>
 	private static bool IsNullableReferenceType(MemberInfo memberInfo)
+		=> ReferenceEquals(NullableReferenceTypeCache.GetValue(memberInfo,
+			static m => ReadIsNullableReferenceType(m) ? NullableMarker : NotNullableMarker), NullableMarker);
+
+	private static bool ReadIsNullableReferenceType(MemberInfo memberInfo)
 	{
 		byte flag = GetNullableFlag(memberInfo)
 		            ?? GetNullableContextFlag(memberInfo.DeclaringType)

@@ -221,6 +221,24 @@ public sealed class NullabilityHelpersTests
 	}
 
 	[Test]
+	public async Task IsNullable_WithGenericParameterMembers_WhenDerivedTypesUseDifferentArguments_ShouldEvaluateEachOnEveryCall()
+	{
+		PropertyInfo nullableProperty = typeof(DerivedFromGenericTestClassWithNullableArgument)
+			.GetProperty(nameof(GenericTestClass<object>.UnannotatedProperty))!;
+		PropertyInfo notNullableProperty = typeof(DerivedFromGenericTestClassWithNonNullableArgument)
+			.GetProperty(nameof(GenericTestClass<object>.UnannotatedProperty))!;
+
+		bool[] results =
+		[
+			nullableProperty.IsNullable(), notNullableProperty.IsNullable(),
+			nullableProperty.IsNullable(), notNullableProperty.IsNullable(),
+		];
+
+		await That(results).IsEqualTo([true, false, true, false,])
+			.Because("the nullability is cached per member, whose reflected type decides the generic argument");
+	}
+
+	[Test]
 	[Arguments(nameof(GenericTestClass<object>.UnannotatedField), false)]
 	[Arguments(nameof(GenericTestClass<object>.AnnotatedField), true)]
 	[Arguments(nameof(GenericTestClass<object>.UnannotatedProperty), false)]
