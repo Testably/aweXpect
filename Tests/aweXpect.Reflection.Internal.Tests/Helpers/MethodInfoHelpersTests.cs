@@ -207,7 +207,7 @@ public sealed class MethodInfoHelpersTests
 
 		public static int StaticMethod() => 0;
 
-		public async Task AsyncMethod()
+		public static async Task AsyncMethod()
 			=> await Task.Yield();
 
 		public override void MethodWithAttributeInBaseClass()
