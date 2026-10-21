@@ -108,6 +108,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 07:56:50 2026 \u002B0200",
         "message": "refactor: match an equal string, boolean or integer in \u0060IsObject\u0060 and \u0060IsArray\u0060 without an expected document (#1908)"
+      },
+      {
+        "sha": "b5b8319cf434e4a8a2032b43762b3ac56fbe8feb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:57:18 2026 \u002B0200",
+        "message": "refactor: share the empty sets of an XML comparison without members to ignore (#1909)"
       }
     ],
     "labels": [
@@ -128,7 +134,8 @@ window.BENCHMARK_DATA = {
       "706259ec",
       "8d6b3561",
       "3163a4fa",
-      "66a7a545"
+      "66a7a545",
+      "b5b8319c"
     ],
     "datasets": [
       {
@@ -152,7 +159,8 @@ window.BENCHMARK_DATA = {
           2038.971815999349,
           2097.5375864664716,
           2174.311677042643,
-          1101.6544732411703
+          1101.6544732411703,
+          1585.1990526835123
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -180,6 +188,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1288,
           1288,
           1288
         ],
@@ -213,7 +222,8 @@ window.BENCHMARK_DATA = {
           13896.18678894043,
           16249.864831107003,
           15976.005877685548,
-          6865.468930380685
+          6865.468930380685,
+          10155.96916809082
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -225,6 +235,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -364,6 +375,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 07:56:50 2026 \u002B0200",
         "message": "refactor: match an equal string, boolean or integer in \u0060IsObject\u0060 and \u0060IsArray\u0060 without an expected document (#1908)"
+      },
+      {
+        "sha": "b5b8319cf434e4a8a2032b43762b3ac56fbe8feb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:57:18 2026 \u002B0200",
+        "message": "refactor: share the empty sets of an XML comparison without members to ignore (#1909)"
       }
     ],
     "labels": [
@@ -384,7 +401,8 @@ window.BENCHMARK_DATA = {
       "706259ec",
       "8d6b3561",
       "3163a4fa",
-      "66a7a545"
+      "66a7a545",
+      "b5b8319c"
     ],
     "datasets": [
       {
@@ -408,7 +426,8 @@ window.BENCHMARK_DATA = {
           1427.4123920440675,
           1513.206599299113,
           1484.3796505561243,
-          811.7359501293728
+          811.7359501293728,
+          1108.4963245391846
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -436,6 +455,7 @@ window.BENCHMARK_DATA = {
           1216,
           1216,
           1216,
+          1224,
           1224,
           1224
         ],
@@ -469,7 +489,8 @@ window.BENCHMARK_DATA = {
           13073.824860636394,
           15203.595537312825,
           14521.370029703776,
-          6444.250165666853
+          6444.250165666853,
+          9435.346967061361
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -481,6 +502,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -560,6 +582,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 07:56:50 2026 \u002B0200",
         "message": "refactor: match an equal string, boolean or integer in \u0060IsObject\u0060 and \u0060IsArray\u0060 without an expected document (#1908)"
+      },
+      {
+        "sha": "b5b8319cf434e4a8a2032b43762b3ac56fbe8feb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:57:18 2026 \u002B0200",
+        "message": "refactor: share the empty sets of an XML comparison without members to ignore (#1909)"
       }
     ],
     "labels": [
@@ -570,7 +598,8 @@ window.BENCHMARK_DATA = {
       "706259ec",
       "8d6b3561",
       "3163a4fa",
-      "66a7a545"
+      "66a7a545",
+      "b5b8319c"
     ],
     "datasets": [
       {
@@ -584,7 +613,8 @@ window.BENCHMARK_DATA = {
           4575.05014201573,
           4623.862497456868,
           4384.610429491316,
-          2707.204483540853
+          2707.204483540853,
+          3451.761081968035
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -602,6 +632,7 @@ window.BENCHMARK_DATA = {
           3496,
           3496,
           3496,
+          3520,
           3520,
           3520
         ],
@@ -625,7 +656,8 @@ window.BENCHMARK_DATA = {
           38786.2236735026,
           46973.02034912109,
           42672.511814662386,
-          19622.24956665039
+          19622.24956665039,
+          28862.221793619792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -643,6 +675,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
+          61925,
           61925,
           61925
         ],
@@ -706,6 +739,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 07:56:50 2026 \u002B0200",
         "message": "refactor: match an equal string, boolean or integer in \u0060IsObject\u0060 and \u0060IsArray\u0060 without an expected document (#1908)"
+      },
+      {
+        "sha": "b5b8319cf434e4a8a2032b43762b3ac56fbe8feb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:57:18 2026 \u002B0200",
+        "message": "refactor: share the empty sets of an XML comparison without members to ignore (#1909)"
       }
     ],
     "labels": [
@@ -716,7 +755,8 @@ window.BENCHMARK_DATA = {
       "706259ec",
       "8d6b3561",
       "3163a4fa",
-      "66a7a545"
+      "66a7a545",
+      "b5b8319c"
     ],
     "datasets": [
       {
@@ -730,7 +770,8 @@ window.BENCHMARK_DATA = {
           34420.01797688802,
           38102.160201009116,
           9949.948411207934,
-          4987.680371965681
+          4987.680371965681,
+          7146.150932820638
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -748,6 +789,7 @@ window.BENCHMARK_DATA = {
           29880,
           29880,
           29880,
+          7048,
           7048,
           7048
         ],
@@ -771,7 +813,8 @@ window.BENCHMARK_DATA = {
           270634.7539876302,
           303243.3815917969,
           281185.26057942706,
-          144514.4286934989
+          144514.4286934989,
+          200489.27436523436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -790,6 +833,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521572,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -852,6 +896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 07:56:50 2026 \u002B0200",
         "message": "refactor: match an equal string, boolean or integer in \u0060IsObject\u0060 and \u0060IsArray\u0060 without an expected document (#1908)"
+      },
+      {
+        "sha": "b5b8319cf434e4a8a2032b43762b3ac56fbe8feb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:57:18 2026 \u002B0200",
+        "message": "refactor: share the empty sets of an XML comparison without members to ignore (#1909)"
       }
     ],
     "labels": [
@@ -862,7 +912,8 @@ window.BENCHMARK_DATA = {
       "706259ec",
       "8d6b3561",
       "3163a4fa",
-      "66a7a545"
+      "66a7a545",
+      "b5b8319c"
     ],
     "datasets": [
       {
@@ -876,7 +927,8 @@ window.BENCHMARK_DATA = {
           2869.6916487557546,
           2884.807119914464,
           3206.258263996669,
-          1612.7405030386788
+          1612.7405030386788,
+          2247.1464256873496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -894,6 +946,7 @@ window.BENCHMARK_DATA = {
           1536,
           1536,
           1536,
+          1544,
           1544,
           1544
         ],
@@ -917,7 +970,8 @@ window.BENCHMARK_DATA = {
           1922.29626928057,
           2019.4286888667516,
           2132.018918100993,
-          1060.486162185669
+          1060.486162185669,
+          1478.6154039927892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -929,6 +983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -998,6 +1053,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 07:56:50 2026 \u002B0200",
         "message": "refactor: match an equal string, boolean or integer in \u0060IsObject\u0060 and \u0060IsArray\u0060 without an expected document (#1908)"
+      },
+      {
+        "sha": "b5b8319cf434e4a8a2032b43762b3ac56fbe8feb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 07:57:18 2026 \u002B0200",
+        "message": "refactor: share the empty sets of an XML comparison without members to ignore (#1909)"
       }
     ],
     "labels": [
@@ -1008,7 +1069,8 @@ window.BENCHMARK_DATA = {
       "706259ec",
       "8d6b3561",
       "3163a4fa",
-      "66a7a545"
+      "66a7a545",
+      "b5b8319c"
     ],
     "datasets": [
       {
@@ -1022,7 +1084,8 @@ window.BENCHMARK_DATA = {
           2725.1409225463867,
           2706.7455348968506,
           2998.297959391276,
-          1088.5334243774414
+          1088.5334243774414,
+          1504.4896626790364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1041,6 +1104,7 @@ window.BENCHMARK_DATA = {
           3920,
           3920,
           3928,
+          2872,
           2872
         ],
         "borderColor": "#63A2AC",
@@ -1063,7 +1127,8 @@ window.BENCHMARK_DATA = {
           1841.747869237264,
           1950.1845182691302,
           2079.934279515193,
-          949.1533430644444
+          949.1533430644444,
+          1331.3987437656947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1075,6 +1140,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
