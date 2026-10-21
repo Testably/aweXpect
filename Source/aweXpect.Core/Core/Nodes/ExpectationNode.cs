@@ -93,9 +93,12 @@ internal class ExpectationNode : Node
 		    context is not ExpectationTextEvaluationContext)
 		{
 			ValueTask<ConstraintResult> isInnerMet = IsInnerMetBy(_inner, value, null, context, cancellationToken);
-			return isInnerMet.IsCompletedSuccessfully
-				? new ValueTask<ConstraintResult>(CombineWithMapping(isInnerMet.Result))
-				: AwaitInner(isInnerMet);
+			if (!isInnerMet.IsCompletedSuccessfully)
+			{
+				return AwaitInner(isInnerMet);
+			}
+
+			return new ValueTask<ConstraintResult>(CombineWithMapping(isInnerMet.Result));
 		}
 
 		if (_inner is null && _reasons is null && context is not ExpectationTextEvaluationContext)

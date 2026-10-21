@@ -187,9 +187,14 @@ internal abstract class JunctionNode : Node
 	}
 
 	private static ValueTask<ConstraintResult> AsExpectationOnly(ValueTask<ConstraintResult> isMet)
-		=> isMet.IsCompletedSuccessfully
-			? new ValueTask<ConstraintResult>(isMet.Result.AsExpectationOnly())
-			: AsExpectationOnlyAsync(isMet);
+	{
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return AsExpectationOnlyAsync(isMet);
+		}
+
+		return new ValueTask<ConstraintResult>(isMet.Result.AsExpectationOnly());
+	}
 
 	private static async ValueTask<ConstraintResult> AsExpectationOnlyAsync(ValueTask<ConstraintResult> isMet)
 		=> (await isMet).AsExpectationOnly();
