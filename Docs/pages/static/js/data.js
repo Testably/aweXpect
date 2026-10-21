@@ -510,6 +510,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -597,7 +603,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -688,7 +695,8 @@ window.BENCHMARK_DATA = {
           10826.336772664388,
           5381.225715637207,
           5464.7155136108395,
-          10890.095181274413
+          10890.095181274413,
+          10516.810688563755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -784,6 +792,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168
         ],
         "borderColor": "#63A2AC",
@@ -883,7 +892,8 @@ window.BENCHMARK_DATA = {
           389730.56382533483,
           171276.558984375,
           173229.0203125,
-          367925.5975260417
+          367925.5975260417,
+          382014.3905552455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -979,7 +989,8 @@ window.BENCHMARK_DATA = {
           590287,
           590288,
           590288,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1078,7 +1089,8 @@ window.BENCHMARK_DATA = {
           19836.965574137368,
           9524.460566202799,
           10106.86986694336,
-          19173.963389078777
+          19173.963389078777,
+          20383.85305582682
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1090,6 +1102,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1656,6 +1669,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -1736,7 +1755,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -1820,7 +1840,8 @@ window.BENCHMARK_DATA = {
           286.1320460319519,
           121.59014929135641,
           132.95610520044963,
-          327.0365262372153
+          327.0365262372153,
+          270.479339156832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1909,6 +1930,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512
         ],
         "borderColor": "#63A2AC",
@@ -2001,7 +2023,8 @@ window.BENCHMARK_DATA = {
           580.1069484710694,
           250.36088568369547,
           278.85690934317455,
-          488.27002703348796
+          488.27002703348796,
+          502.7086584726969
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2013,6 +2036,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2182,7 +2206,8 @@ window.BENCHMARK_DATA = {
           421.1796060562134,
           189.3589603583018,
           202.26494453634535,
-          377.1775811059134
+          377.1775811059134,
+          386.9814012209574
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2194,6 +2219,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -7373,6 +7399,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -8223,7 +8255,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -9077,7 +9110,8 @@ window.BENCHMARK_DATA = {
           146.15568361282348,
           65.47874252796173,
           69.63745698758534,
-          122.70457618053143
+          122.70457618053143,
+          130.71092019081115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9936,6 +9970,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448
         ],
         "borderColor": "#63A2AC",
@@ -10798,7 +10833,8 @@ window.BENCHMARK_DATA = {
           289.5054749806722,
           125.27454794247946,
           129.76419677734376,
-          255.67919741358077
+          255.67919741358077,
+          251.06090536117554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10991,6 +11027,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -11800,7 +11837,8 @@ window.BENCHMARK_DATA = {
           265.4258304323469,
           119.78643496831258,
           124.04547018664223,
-          237.19032276471455
+          237.19032276471455,
+          235.86409366925557
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -11812,6 +11850,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -12464,6 +12503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -12551,7 +12596,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -12642,7 +12688,8 @@ window.BENCHMARK_DATA = {
           266.7761610349019,
           120.1500928912844,
           128.75609509150186,
-          239.05454270044962
+          239.05454270044962,
+          250.2786771138509
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12738,6 +12785,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488
         ],
         "borderColor": "#63A2AC",
@@ -12837,7 +12885,8 @@ window.BENCHMARK_DATA = {
           592.8681760152181,
           253.36002119382223,
           280.6179686546326,
-          522.4018257776896
+          522.4018257776896,
+          503.6238045374552
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12849,6 +12898,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -13032,7 +13082,8 @@ window.BENCHMARK_DATA = {
           361.62912280218944,
           163.7732898871104,
           181.32304186480386,
-          326.15928347905475
+          326.15928347905475,
+          324.0084431171417
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13044,6 +13095,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -18230,6 +18282,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -19080,7 +19138,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -19934,7 +19993,8 @@ window.BENCHMARK_DATA = {
           690.4651132992336,
           298.9867090543111,
           336.1037010465349,
-          694.6887767155965
+          694.6887767155965,
+          638.7472033500671
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20793,6 +20853,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784
         ],
         "borderColor": "#63A2AC",
@@ -21655,7 +21716,8 @@ window.BENCHMARK_DATA = {
           1524.835861714681,
           639.689951356252,
           694.5381983121237,
-          1364.1833601633707
+          1364.1833601633707,
+          1306.8218197141375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22514,6 +22576,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -22657,7 +22720,8 @@ window.BENCHMARK_DATA = {
           703.9255782536098,
           322.19654444853467,
           349.99290259679157,
-          634.9048854192098
+          634.9048854192098,
+          645.032735824585
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -22669,6 +22733,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -27899,6 +27964,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -28749,7 +28820,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -29603,7 +29675,8 @@ window.BENCHMARK_DATA = {
           680.1663172585623,
           293.07493488605206,
           317.23540414174397,
-          666.0835699081421
+          666.0835699081421,
+          621.4816630681356
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30462,6 +30535,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832
         ],
         "borderColor": "#63A2AC",
@@ -31324,7 +31398,8 @@ window.BENCHMARK_DATA = {
           29451.29003252302,
           9806.512108939034,
           10480.286251613072,
-          26552.7427344689
+          26552.7427344689,
+          28324.214085170202
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32183,6 +32258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -32326,7 +32402,8 @@ window.BENCHMARK_DATA = {
           825.9699424743652,
           394.5781969657311,
           443.0443371454875,
-          748.2636072158814
+          748.2636072158814,
+          805.3896629333497
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32338,6 +32415,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -33338,6 +33416,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -33483,7 +33567,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -33632,7 +33717,8 @@ window.BENCHMARK_DATA = {
           731.9995660100665,
           329.3894197146098,
           351.9861197838417,
-          665.2568990071615
+          665.2568990071615,
+          654.0513550213406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33786,6 +33872,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680
         ],
         "borderColor": "#63A2AC",
@@ -33943,7 +34030,8 @@ window.BENCHMARK_DATA = {
           85772.94388020833,
           29234.881917317707,
           28949.237184964695,
-          82453.56459147135
+          82453.56459147135,
+          84169.06353759766
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34097,6 +34185,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -34969,6 +35058,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -35114,7 +35209,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -35263,7 +35359,8 @@ window.BENCHMARK_DATA = {
           184.13523068794836,
           83.01264185564858,
           88.71445781844002,
-          150.1350065867106
+          150.1350065867106,
+          158.92731838959915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35417,6 +35514,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464
         ],
         "borderColor": "#63A2AC",
@@ -35574,7 +35672,8 @@ window.BENCHMARK_DATA = {
           33185.6685546875,
           9152.88156636556,
           10663.796454796424,
-          31451.981811523438
+          31451.981811523438,
+          32033.89337158203
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35728,6 +35827,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -35871,7 +35971,8 @@ window.BENCHMARK_DATA = {
           260.3278019587199,
           116.53572600228446,
           125.74929951704465,
-          243.6103123664856
+          243.6103123664856,
+          240.73449042638143
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35883,6 +35984,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -36535,6 +36637,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -36622,7 +36730,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -36713,7 +36822,8 @@ window.BENCHMARK_DATA = {
           369.9896094982441,
           163.3111227108882,
           168.71691239674885,
-          334.60001604897633
+          334.60001604897633,
+          346.09351307551066
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36809,6 +36919,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656
         ],
         "borderColor": "#63A2AC",
@@ -36908,7 +37019,8 @@ window.BENCHMARK_DATA = {
           387.2253023147583,
           201.81340049107868,
           208.12784337997437,
-          380.2279771486918
+          380.2279771486918,
+          370.74706166131153
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36920,6 +37032,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -37103,7 +37216,8 @@ window.BENCHMARK_DATA = {
           425.4159557660421,
           202.9220724105835,
           210.7193374792735,
-          400.5109440939767
+          400.5109440939767,
+          398.76665977636975
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37115,6 +37229,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -37723,6 +37838,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -37810,7 +37931,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -37901,7 +38023,8 @@ window.BENCHMARK_DATA = {
           688.8996116002401,
           301.36155179341637,
           321.1674878438314,
-          616.4769527571542
+          616.4769527571542,
+          615.635834757487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37997,6 +38120,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376
         ],
         "borderColor": "#63A2AC",
@@ -38096,7 +38220,8 @@ window.BENCHMARK_DATA = {
           2178.0223190307615,
           943.921571118491,
           1031.1148284031794,
-          1837.1268725077312
+          1837.1268725077312,
+          2048.7143463134767
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38108,6 +38233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -38291,7 +38417,8 @@ window.BENCHMARK_DATA = {
           1008.600541305542,
           443.5740555695125,
           481.9709744771322,
-          899.8230046590169
+          899.8230046590169,
+          919.4237275804792
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38303,6 +38430,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -38911,6 +39039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -38998,7 +39132,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -39089,7 +39224,8 @@ window.BENCHMARK_DATA = {
           11641.690082256611,
           5591.453640529087,
           5984.411084311349,
-          11445.702445983887
+          11445.702445983887,
+          11481.407565777119
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39185,6 +39321,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576
         ],
         "borderColor": "#63A2AC",
@@ -39284,7 +39421,8 @@ window.BENCHMARK_DATA = {
           42792.07820347377,
           17426.521166120256,
           19139.905946858726,
-          39806.093994140625
+          39806.093994140625,
+          40645.24767659505
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39339,6 +39477,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -39479,7 +39618,8 @@ window.BENCHMARK_DATA = {
           10667.837913004558,
           5454.340957641602,
           5770.868584187826,
-          10508.666722978864
+          10508.666722978864,
+          10611.692029680524
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39491,6 +39631,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -40099,6 +40240,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 13:26:36 2026 \u002B0200",
         "message": "refactor: keep the builder, the expectation node and the evaluation context smaller (#1910)"
+      },
+      {
+        "sha": "97f51880bf8bf89e2d5b698bd602d2e4fa7d1afb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 14:15:07 2026 \u002B0200",
+        "message": "refactor: enumerate async enumerables until cancelled without an async iterator (#1911)"
       }
     ],
     "labels": [
@@ -40186,7 +40333,8 @@ window.BENCHMARK_DATA = {
       "0bac86a9",
       "bbe7c60f",
       "e89c6f83",
-      "97d79191"
+      "97d79191",
+      "97f51880"
     ],
     "datasets": [
       {
@@ -40277,7 +40425,8 @@ window.BENCHMARK_DATA = {
           10900.834936959403,
           5286.946806771414,
           5634.599613189697,
-          10901.345772376428
+          10901.345772376428,
+          11045.634909057617
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40373,6 +40522,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056
         ],
         "borderColor": "#63A2AC",
@@ -40472,7 +40622,8 @@ window.BENCHMARK_DATA = {
           61726.108834402905,
           25474.280279306266,
           27282.48709716797,
-          57885.68425641741
+          57885.68425641741,
+          58736.55983323317
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40566,6 +40717,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -40667,7 +40819,8 @@ window.BENCHMARK_DATA = {
           21086.785744803292,
           10737.759923662457,
           11490.09434400286,
-          21123.60546875
+          21123.60546875,
+          20907.663456508093
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40679,6 +40832,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
