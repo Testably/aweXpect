@@ -186,6 +186,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
@@ -219,7 +225,8 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
@@ -256,7 +263,8 @@ window.BENCHMARK_DATA = {
           431.35081791877747,
           858.5666456222534,
           575.6648647944132,
-          482.86004045804344
+          482.86004045804344,
+          724.5003117879231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -296,6 +304,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120
@@ -343,7 +352,8 @@ window.BENCHMARK_DATA = {
           454.3701658884684,
           774.0886314392089,
           689.5208420753479,
-          360.0269486745199
+          360.0269486745199,
+          771.4773197174072
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -355,6 +365,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -585,6 +596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
@@ -618,7 +635,8 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
@@ -655,7 +673,8 @@ window.BENCHMARK_DATA = {
           2837.0964314778644,
           4875.748948778425,
           4849.1213938395185,
-          2909.987725666591
+          2909.987725666591,
+          4976.956801605224
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -697,7 +716,8 @@ window.BENCHMARK_DATA = {
           24266,
           24306,
           24306,
-          24306
+          24306,
+          24307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -742,7 +762,8 @@ window.BENCHMARK_DATA = {
           3044.250894818987,
           5514.110574340821,
           5588.088686625163,
-          2996.535129274641
+          2996.535129274641,
+          5755.74228515625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -754,6 +775,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -924,6 +946,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
@@ -947,7 +975,8 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
@@ -974,7 +1003,8 @@ window.BENCHMARK_DATA = {
           1649.170239130656,
           2749.2245585123696,
           2558.620686340332,
-          1551.6406687100728
+          1551.6406687100728,
+          2795.458450826009
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1004,6 +1034,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856
@@ -1041,7 +1072,8 @@ window.BENCHMARK_DATA = {
           2138.180834452311,
           3693.9823548453196,
           3360.895330810547,
-          2101.6106809888565
+          2101.6106809888565,
+          3463.911955969674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1053,6 +1085,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -1213,6 +1246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 14:15:36 2026 \u002B0200",
         "message": "refactor: cache whether a method is async (#1917)"
+      },
+      {
+        "sha": "a1c8667eaf13f5a4f13af3dee4abde8aea01d048",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
+        "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
       }
     ],
     "labels": [
@@ -1236,7 +1275,8 @@ window.BENCHMARK_DATA = {
       "e89c6f83",
       "97d79191",
       "97f51880",
-      "f79b883b"
+      "f79b883b",
+      "a1c8667e"
     ],
     "datasets": [
       {
@@ -1263,7 +1303,8 @@ window.BENCHMARK_DATA = {
           7890.442651875814,
           14545.83103281657,
           11772.038643391927,
-          8269.88469696045
+          8269.88469696045,
+          14048.667321341378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1293,6 +1334,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568
@@ -1330,7 +1372,8 @@ window.BENCHMARK_DATA = {
           185913.11193847656,
           378895.9797014509,
           242350.20141601562,
-          183464.35164388022
+          183464.35164388022,
+          373877.5545572917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1362,6 +1405,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
