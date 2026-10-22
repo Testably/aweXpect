@@ -198,6 +198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
         "message": "refactor: add the subject contexts of a member with its result (#1928)"
+      },
+      {
+        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
+        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
       }
     ],
     "labels": [
@@ -233,7 +239,8 @@ window.BENCHMARK_DATA = {
       "97f51880",
       "f79b883b",
       "a1c8667e",
-      "3f14b764"
+      "3f14b764",
+      "afefacb2"
     ],
     "datasets": [
       {
@@ -272,7 +279,8 @@ window.BENCHMARK_DATA = {
           2197.015807088216,
           1174.8853366851806,
           2131.5558389936173,
-          2046.8553584416707
+          2046.8553584416707,
+          2105.2324133652905
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -312,6 +320,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -363,7 +372,8 @@ window.BENCHMARK_DATA = {
           15443.832589285714,
           7778.864825112479,
           16832.94936479841,
-          14981.221607753208
+          14981.221607753208,
+          16486.62161763509
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -375,6 +385,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -619,6 +630,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
         "message": "refactor: add the subject contexts of a member with its result (#1928)"
+      },
+      {
+        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
+        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
       }
     ],
     "labels": [
@@ -654,7 +671,8 @@ window.BENCHMARK_DATA = {
       "97f51880",
       "f79b883b",
       "a1c8667e",
-      "3f14b764"
+      "3f14b764",
+      "afefacb2"
     ],
     "datasets": [
       {
@@ -693,7 +711,8 @@ window.BENCHMARK_DATA = {
           1507.6570645845854,
           878.1713756833758,
           1545.1688162939888,
-          1476.872562789917
+          1476.872562789917,
+          1526.5020877293177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -733,6 +752,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -784,7 +804,8 @@ window.BENCHMARK_DATA = {
           14127.25613948277,
           7033.082346779959,
           15707.672853597005,
-          13837.580308096749
+          13837.580308096749,
+          14938.079870370719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -796,6 +817,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -980,6 +1002,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
         "message": "refactor: add the subject contexts of a member with its result (#1928)"
+      },
+      {
+        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
+        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
       }
     ],
     "labels": [
@@ -1005,7 +1033,8 @@ window.BENCHMARK_DATA = {
       "97f51880",
       "f79b883b",
       "a1c8667e",
-      "3f14b764"
+      "3f14b764",
+      "afefacb2"
     ],
     "datasets": [
       {
@@ -1034,7 +1063,8 @@ window.BENCHMARK_DATA = {
           4485.363613673619,
           2777.8956672668455,
           4776.660699697642,
-          4606.327459208171
+          4606.327459208171,
+          4853.147451128279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1064,6 +1094,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1105,7 +1136,8 @@ window.BENCHMARK_DATA = {
           42512.71323649088,
           20516.62876180013,
           48358.50747070312,
-          45929.58799156776
+          45929.58799156776,
+          48216.02577796349
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1139,7 +1171,8 @@ window.BENCHMARK_DATA = {
           61932,
           61925,
           61925,
-          61926
+          61926,
+          61704
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1291,6 +1324,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
         "message": "refactor: add the subject contexts of a member with its result (#1928)"
+      },
+      {
+        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
+        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
       }
     ],
     "labels": [
@@ -1316,7 +1355,8 @@ window.BENCHMARK_DATA = {
       "97f51880",
       "f79b883b",
       "a1c8667e",
-      "3f14b764"
+      "3f14b764",
+      "afefacb2"
     ],
     "datasets": [
       {
@@ -1345,7 +1385,8 @@ window.BENCHMARK_DATA = {
           9771.232131958008,
           5127.596918546236,
           9587.895145961216,
-          9251.588331095378
+          9251.588331095378,
+          9391.304360961914
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1375,6 +1416,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -1416,7 +1458,8 @@ window.BENCHMARK_DATA = {
           299324.87050083705,
           152781.32890973773,
           315717.14283854165,
-          283372.5191731771
+          283372.5191731771,
+          295916.46501813614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1448,6 +1491,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521572,
+          521594,
           521594,
           521594,
           521594
@@ -1602,6 +1646,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
         "message": "refactor: add the subject contexts of a member with its result (#1928)"
+      },
+      {
+        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
+        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
       }
     ],
     "labels": [
@@ -1627,7 +1677,8 @@ window.BENCHMARK_DATA = {
       "97f51880",
       "f79b883b",
       "a1c8667e",
-      "3f14b764"
+      "3f14b764",
+      "afefacb2"
     ],
     "datasets": [
       {
@@ -1656,7 +1707,8 @@ window.BENCHMARK_DATA = {
           3205.0483155931747,
           1676.6978022711617,
           3010.336138505202,
-          2871.3744498661586
+          2871.3744498661586,
+          2953.624481201172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1690,6 +1742,7 @@ window.BENCHMARK_DATA = {
           1520,
           1520,
           1520,
+          1488,
           1488
         ],
         "borderColor": "#63A2AC",
@@ -1727,7 +1780,8 @@ window.BENCHMARK_DATA = {
           2222.953760274251,
           1158.0236474550688,
           2021.67365620931,
-          1912.8669816335043
+          1912.8669816335043,
+          2034.4213292439779
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1739,6 +1793,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -1913,6 +1968,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
         "message": "refactor: add the subject contexts of a member with its result (#1928)"
+      },
+      {
+        "sha": "afefacb2fc325c2acb0fe509b9001e658b3db753",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
+        "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
       }
     ],
     "labels": [
@@ -1938,7 +1999,8 @@ window.BENCHMARK_DATA = {
       "97f51880",
       "f79b883b",
       "a1c8667e",
-      "3f14b764"
+      "3f14b764",
+      "afefacb2"
     ],
     "datasets": [
       {
@@ -1967,7 +2029,8 @@ window.BENCHMARK_DATA = {
           2119.819747161865,
           1207.1791021982829,
           2129.4809221903483,
-          1966.383458651029
+          1966.383458651029,
+          2096.473592904898
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1997,6 +2060,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -2038,7 +2102,8 @@ window.BENCHMARK_DATA = {
           2105.7115513937815,
           1025.186627115522,
           2086.1418781280518,
-          1773.6867111206054
+          1773.6867111206054,
+          1868.0467484792073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2050,6 +2115,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
