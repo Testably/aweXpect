@@ -8,7 +8,7 @@ namespace aweXpect.Options;
 /// <summary>
 ///     Options for <see cref="Signaler" />.
 /// </summary>
-public record SignalerOptions
+public class SignalerOptions
 {
 	/// <summary>
 	///     The timeout to use for the recording.
@@ -34,7 +34,7 @@ public record SignalerOptions
 /// <summary>
 ///     Options for <see cref="Signaler{TParameter}" />.
 /// </summary>
-public record SignalerOptions<TParameter> : SignalerOptions
+public class SignalerOptions<TParameter> : SignalerOptions
 {
 	private StringBuilder? _builder;
 	private List<Func<TParameter, bool>>? _predicates;

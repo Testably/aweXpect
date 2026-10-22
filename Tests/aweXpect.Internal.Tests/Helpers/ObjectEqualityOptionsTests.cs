@@ -1,5 +1,4 @@
-﻿using aweXpect.Equivalency;
-using aweXpect.Options;
+﻿using aweXpect.Options;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
@@ -10,11 +9,9 @@ public class ObjectEqualityOptionsTests
 	[Arguments(false)]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(bool isEqual)
 	{
-		ObjectEqualityOptions<object?> sut = new ObjectEqualityOptions<object?>().Equivalent(new EquivalencyOptions());
+		ObjectEqualityOptions<object?> sut = new();
 		EqualsObject a = new(isEqual);
 		EqualsObject b = new(isEqual);
-
-		sut.Equals();
 
 		await That(sut.AreConsideredEqual(a, b)).IsEqualTo(isEqual);
 	}
