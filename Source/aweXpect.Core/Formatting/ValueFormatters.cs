@@ -379,62 +379,6 @@ public static partial class ValueFormatters
 		return true;
 	}
 
-	private static StringBuilder RentStringBuilder()
-	{
-		StringBuilder? stringBuilder = _cachedStringBuilder;
-		if (stringBuilder is null)
-		{
-			return new StringBuilder();
-		}
-
-		_cachedStringBuilder = null;
-		return stringBuilder;
-	}
-
-	private static string ToStringAndReturn(StringBuilder stringBuilder)
-	{
-		string result = stringBuilder.ToString();
-		ReturnStringBuilder(stringBuilder);
-		return result;
-	}
-
-	/// <remarks>
-	///     A large builder is dropped, so that one long message does not keep its memory for the lifetime of the thread.
-	/// </remarks>
-	private static void ReturnStringBuilder(StringBuilder stringBuilder)
-	{
-		if (stringBuilder.Capacity <= MaximumCachedStringBuilderCapacity)
-		{
-			stringBuilder.Clear();
-			_cachedStringBuilder = stringBuilder;
-		}
-	}
-
-	private static FormattingContext RentContext()
-	{
-		FormattingContext? context = _cachedContext;
-		if (context is null)
-		{
-			return new FormattingContext();
-		}
-
-		_cachedContext = null;
-		return context;
-	}
-
-	/// <remarks>
-	///     The state is reset in case an exception left it behind.
-	/// </remarks>
-	private static void ReturnContext(FormattingContext context)
-	{
-		context.FormattedObjects.Clear();
-		context.Depth = 0;
-		context.NumberOfWrittenContents = 0;
-		context.Value = null;
-		context.FormatValueException = null;
-		_cachedContext = context;
-	}
-
 	/// <remarks>
 	///     The <paramref name="value" /> is tracked and the <paramref name="context" /> is made ambient while the
 	///     registered formatters run, so that a value they format through <see cref="ValueFormatters" /> again joins
@@ -496,6 +440,62 @@ public static partial class ValueFormatters
 		}
 
 		return false;
+	}
+
+	private static StringBuilder RentStringBuilder()
+	{
+		StringBuilder? stringBuilder = _cachedStringBuilder;
+		if (stringBuilder is null)
+		{
+			return new StringBuilder();
+		}
+
+		_cachedStringBuilder = null;
+		return stringBuilder;
+	}
+
+	private static string ToStringAndReturn(StringBuilder stringBuilder)
+	{
+		string result = stringBuilder.ToString();
+		ReturnStringBuilder(stringBuilder);
+		return result;
+	}
+
+	/// <remarks>
+	///     A large builder is dropped, so that one long message does not keep its memory for the lifetime of the thread.
+	/// </remarks>
+	private static void ReturnStringBuilder(StringBuilder stringBuilder)
+	{
+		if (stringBuilder.Capacity <= MaximumCachedStringBuilderCapacity)
+		{
+			stringBuilder.Clear();
+			_cachedStringBuilder = stringBuilder;
+		}
+	}
+
+	private static FormattingContext RentContext()
+	{
+		FormattingContext? context = _cachedContext;
+		if (context is null)
+		{
+			return new FormattingContext();
+		}
+
+		_cachedContext = null;
+		return context;
+	}
+
+	/// <remarks>
+	///     The state is reset in case an exception left it behind.
+	/// </remarks>
+	private static void ReturnContext(FormattingContext context)
+	{
+		context.FormattedObjects.Clear();
+		context.Depth = 0;
+		context.NumberOfWrittenContents = 0;
+		context.Value = null;
+		context.FormatValueException = null;
+		_cachedContext = context;
 	}
 
 #if NET8_0_OR_GREATER

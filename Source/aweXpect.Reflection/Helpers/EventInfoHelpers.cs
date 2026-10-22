@@ -55,7 +55,7 @@ internal static class EventInfoHelpers
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
-			return predicate is null || UserCode.Invoke(predicate, castedAttribute, "the predicate");
+			return UserCode.Invoke(predicate, castedAttribute, "the predicate");
 		}
 
 		return false;

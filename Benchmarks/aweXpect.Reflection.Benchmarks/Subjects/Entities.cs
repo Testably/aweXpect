@@ -24,9 +24,9 @@ public sealed class Track
 
 public sealed class AlbumRepository
 {
-	public async Task SaveAsync(Album album) => await Task.Yield();
+	public static async Task SaveAsync(Album album) => await Task.Yield();
 
-	public async Task DeleteAsync(Album album) => await Task.Yield();
+	public static async Task DeleteAsync(Album album) => await Task.Yield();
 
-	public async Task AddTrackAsync(Album album, Track track) => await Task.Yield();
+	public static async Task AddTrackAsync(Album album, Track track) => await Task.Yield();
 }
