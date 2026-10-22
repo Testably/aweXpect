@@ -68,9 +68,12 @@ Verify every review finding against the code before changing anything. If you di
 These goals hold for every extension package:
 
 1. **Feels like core aweXpect.** Naming, negation, result types, argument checks and messages follow the goals above, and the layout mirrors `aweXpect`.
-2. **Core is enough.** An extension builds only on the public API of `aweXpect.Core`, like a third-party extension would. If it needs more, the gap is closed in Core, in the same pull request.
+   - Nested expectations are an `Action<…> expectations` overload of the plain verb, never a `Func` whose return value is ignored; a suffix like `HasItemThat` only disambiguates from existing lambda overloads.
+   - When `null` fails, the expectation is marked `[GuaranteesNotNull]` and its result has the non-null subject type, also for a nullable value-type subject (like `IsTrue` on `bool?`), and keeps the `IThat<…>` of the subject for chaining.
+   - A public `params IEnumerable<T>` always has a `params T[]` overload, as consumers on older language versions (C# 7.3 on net48, C# 12 on net8.0) cannot pass single values otherwise.
+2. **Core is enough.** An extension builds only on the public API of `aweXpect.Core`, like a third-party extension would. If it needs more, the gap is closed in Core, in the same pull request. A type test or other workaround against Core types, such as testing for `IOptionsProvider<ExpectationBuilder>`, is such a gap.
 3. **Unanswerable means failed both ways.** A `null` subject, a missing element or an error while reading the subject fails the expectation and its negation instead of throwing.
-4. **Options are immutable and visible.** Each option method returns a copy, and the options in effect are listed in the failure.
+4. **Options are immutable and visible.** A package has one sealed options type (one that cannot be derived from outside, if it needs a derived type) with internal state, a copy constructor and option methods that each return a copy, passed as `Func<XmlOptions, XmlOptions>? options = null` like `XmlOptions`; no public mutable state. The options in effect are listed in the failure. `IgnoringMember` in Json and Xml takes paths, like equivalency does.
 
 #### aweXpect.Json
 
@@ -99,13 +102,13 @@ This package exists to inspect types through reflection, so it replaces goal 3 (
 1. **Three layers, one vocabulary.** Sources, filters and expectations read consistently, and singular and plural forms stay in parity.
 2. **Negations mean what they say.** Every positive has its negation where it makes sense, and a plural negation means "none are", never an inverted "not all".
 3. **Filters stay lazy, immutable and chainable**, and options never break the chain.
-4. **Option words follow core.** `Ignoring…` for string options, `Excluding…` to narrow a scope.
+4. **Option words follow core.** `Ignoring…` for string options, `Excluding…` to narrow a scope. `Within` also names a namespace scope, here and in `aweXpect.Snapshots.PublicApi`, besides the tolerance or timeout of core goal 2.
 5. **Messages read naturally** for singular and plural subjects.
 
 #### aweXpect.Snapshots
 
 1. **Stable identity.** Snapshot ids and file names are the same on every machine, culture and run; changing the on-disk format is a breaking change.
-2. **Writing is explicit.** A passing or negated expectation never writes a snapshot, accepting is a deliberate choice, and an accepted change still fails the run.
+2. **Writing is explicit.** A passing or negated expectation never writes a snapshot, accepting is a deliberate choice, and an accepted change still fails the run. `Accepting(...)` is always the last option of an expectation.
 3. **A small, shared rule grammar.** Selection, filter, one action, the same for per-expectation and global rules.
 4. **Messages name the API that fixes the problem.**
 5. **AOT for the core packages.** `aweXpect.Snapshots.PublicApi` opts out, as Roslyn cannot be trimmed, but must not pull reflection into `aweXpect.Snapshots`.
