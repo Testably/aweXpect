@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Options;
 
@@ -74,7 +75,7 @@ public class AttributeFilterOptions<TMember>(Func<TMember, Type, Func<Attribute,
 			Formatter.Format(sb, typeof(TAttribute));
 		});
 
-		_predicates.Add((typeof(TAttribute), a => a is TAttribute, inherit));
+		_predicates.Add((typeof(TAttribute), AttributePredicates.IsOfType<TAttribute>(), inherit));
 	}
 
 	/// <summary>
