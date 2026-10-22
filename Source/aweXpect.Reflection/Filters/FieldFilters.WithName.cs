@@ -10,10 +10,10 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Filter for fields with the <paramref name="expected" /> name.
 	/// </summary>
-	public static Filtered.Fields.StringEqualityResultType WithName(this Filtered.Fields @this, string expected)
+	public static Filtered.Fields.StringEqualityResult WithName(this Filtered.Fields @this, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Fields.StringEqualityResultType(@this.Which(Filter.Suffix<FieldInfo>(
+		return new Filtered.Fields.StringEqualityResult(@this.Which(Filter.Suffix<FieldInfo>(
 				fieldInfo => options.AreConsideredEqual(fieldInfo.Name, expected),
 				() => $"with name {options.GetExpectation(expected, ExpectationGrammars.None)} ")),
 			options);

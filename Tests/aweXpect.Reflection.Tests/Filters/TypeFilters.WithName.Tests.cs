@@ -80,6 +80,19 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task ShouldSupportIgnoringCaseBeforeAsPrefix()
+			{
+				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
+					.Types().WithName("someclasstoverifythenameof").IgnoringCase().AsPrefix();
+
+				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNameOfIt));
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"types with name starting with \"someclasstoverifythenameof\" ignoring case in assembly")
+					.AsPrefix();
+			}
+
+			[Test]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
@@ -104,6 +117,20 @@ public sealed partial class TypeFilters
 				await That(types.GetDescription())
 					.IsEqualTo(
 						"types with name equal to \"SomeClassToVerifyTheNameOfIt\\t \" ignoring trailing whitespace in assembly")
+					.AsPrefix();
+			}
+
+			[Test]
+			public async Task ShouldSupportNormalizingWhiteSpace()
+			{
+				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
+					.Types().WithName(" \t" + nameof(SomeClassToVerifyTheNameOfIt))
+					.NormalizingWhiteSpace();
+
+				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNameOfIt));
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"types with name equal to \" \\tSomeClassToVerifyTheNameOfIt\" normalizing whitespace in assembly")
 					.AsPrefix();
 			}
 

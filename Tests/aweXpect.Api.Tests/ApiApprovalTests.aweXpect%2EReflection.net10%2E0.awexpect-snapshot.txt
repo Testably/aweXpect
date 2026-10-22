@@ -41,17 +41,17 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Which(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichAreNotStrongNamed(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichAreStrongNamed(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, params string[] allowed) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WhichTarget(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, params string[] allowed) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WhichTarget(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult WithoutName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
         public class AssembliesWith : aweXpect.Reflection.Collections.Filtered.Assemblies
         {
             public AssembliesWith(aweXpect.Reflection.Collections.Filtered.Assemblies inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.Assembly> filter) { }
@@ -169,15 +169,9 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWith OrWith<TAttribute>() where TAttribute : System.Attribute { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         }
-        public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+        public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
             public ConstructorsWithNamedParameter(aweXpect.Reflection.Collections.Filtered.Constructors inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions, aweXpect.Options.StringEqualityOptions options) { }
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsPrefix() { }
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsRegex() { }
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsSuffix() { }
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsWildcard() { }
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> IgnoringCase(bool ignoreCase = true) { }
-            public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
         }
         public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
         {
@@ -236,9 +230,9 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Events WhichOverride(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.EventFilters.EventsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.EventFilters.EventsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Events @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Events @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Events Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Events @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult WithoutName(this aweXpect.Reflection.Collections.Filtered.Events @this, string unexpected) { }
         public class EventsOfType : aweXpect.Reflection.Collections.Filtered.Events
         {
             public EventsOfType(aweXpect.Reflection.Collections.Filtered.Events inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.EventInfo> filter) { }
@@ -290,9 +284,9 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreStatic(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.FieldFilters.FieldsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this) where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.FieldFilters.FieldsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult WithoutName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string unexpected) { }
         public class FieldsOfType : aweXpect.Reflection.Collections.Filtered.Fields
         {
             public FieldsOfType(aweXpect.Reflection.Collections.Filtered.Fields inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.FieldInfo> filter) { }
@@ -382,7 +376,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithInParameterExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithInParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<object?> WithInParameterExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WithOptionalParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> WithOptionalParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithOptionalParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType, string expected) { }
@@ -434,7 +428,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<object?> WithRefParameterExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult WithoutName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string unexpected) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public class GenericMethods : aweXpect.Reflection.Collections.Filtered.Methods
         {
@@ -454,15 +448,9 @@ namespace aweXpect.Reflection
             public GenericMethodsWithArgumentAtIndex(aweXpect.Reflection.MethodFilters.GenericMethods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
             public aweXpect.Reflection.MethodFilters.GenericMethods FromEnd() { }
         }
-        public class GenericMethodsWithNamedArgument : aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+        public class GenericMethodsWithNamedArgument : aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
             public GenericMethodsWithNamedArgument(aweXpect.Reflection.MethodFilters.GenericMethods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsPrefix() { }
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsRegex() { }
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsSuffix() { }
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsWildcard() { }
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument IgnoringCase(bool ignoreCase = true) { }
-            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
         }
         public class MethodsWhichReturn : aweXpect.Reflection.Collections.Filtered.Methods
         {
@@ -478,15 +466,9 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.MethodFilters.MethodsWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
             public aweXpect.Reflection.MethodFilters.MethodsWith OrWith<TAttribute>(bool inherit = true) where TAttribute : System.Attribute { }
         }
-        public class MethodsWithNamedParameter<T> : aweXpect.Reflection.MethodFilters.MethodsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+        public class MethodsWithNamedParameter<T> : aweXpect.Reflection.MethodFilters.MethodsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
             public MethodsWithNamedParameter(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFiltersOptions, aweXpect.Options.StringEqualityOptions options) { }
-            public aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> AsPrefix() { }
-            public aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> AsRegex() { }
-            public aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> AsSuffix() { }
-            public aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> AsWildcard() { }
-            public aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> IgnoringCase(bool ignoreCase = true) { }
-            public aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
         }
         public class MethodsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
         {
@@ -597,9 +579,9 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichOverride(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult WithoutName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string unexpected) { }
         public class PropertiesOfType : aweXpect.Reflection.Collections.Filtered.Properties
         {
             public PropertiesOfType(aweXpect.Reflection.Collections.Filtered.Properties inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.PropertyInfo> filter) { }
@@ -2923,10 +2905,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichOnlyHaveNullableMembers(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.MemberScope memberScope = aweXpect.Reflection.Collections.MemberScope.DeclaredOnly) { }
         public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true) where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Types @this, string unexpected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult WithoutName(this aweXpect.Reflection.Collections.Filtered.Types @this, string unexpected) { }
         public class GenericTypes : aweXpect.Reflection.Collections.Filtered.Types
         {
             public GenericTypes(aweXpect.Reflection.Collections.Filtered.Types inner) { }
@@ -2944,15 +2926,9 @@ namespace aweXpect.Reflection
                 public GenericTypesWithArgumentAtIndex(aweXpect.Reflection.TypeFilters.GenericTypes inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
                 public aweXpect.Reflection.TypeFilters.GenericTypes FromEnd() { }
             }
-            public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+            public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
                 public GenericTypesWithNamedArgument(aweXpect.Reflection.TypeFilters.GenericTypes inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsPrefix() { }
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsRegex() { }
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsSuffix() { }
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsWildcard() { }
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
             }
         }
         public class TypesContainingMembers : aweXpect.Reflection.Collections.Filtered.Types
@@ -3029,19 +3005,8 @@ namespace aweXpect.Reflection.Collections
             public aweXpect.Reflection.Collections.Filtered.Types Records(aweXpect.Reflection.Collections.AccessModifiers accessModifier = aweXpect.Reflection.Collections.AccessModifiers.Any) { }
             public aweXpect.Reflection.Collections.Filtered.Types Structs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = aweXpect.Reflection.Collections.AccessModifiers.Any) { }
             public aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = aweXpect.Reflection.Collections.AccessModifiers.Any) { }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-            }
-            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult
-            {
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult AsPrefix() { }
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult AsRegex() { }
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult AsSuffix() { }
-                public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult AsWildcard() { }
             }
         }
         public class Constructors : aweXpect.Reflection.Collections.Filtered<System.Reflection.ConstructorInfo, aweXpect.Reflection.Collections.Filtered.Constructors>, aweXpect.Core.IDescribableSubject
@@ -3055,19 +3020,8 @@ namespace aweXpect.Reflection.Collections
             protected Events(aweXpect.Reflection.Collections.Filtered.Events inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Events
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-            }
-            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult
-            {
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult AsPrefix() { }
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult AsRegex() { }
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult AsSuffix() { }
-                public aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResult AsWildcard() { }
             }
         }
         public class Fields : aweXpect.Reflection.Collections.Filtered<System.Reflection.FieldInfo, aweXpect.Reflection.Collections.Filtered.Fields>, aweXpect.Core.IDescribableSubject
@@ -3075,19 +3029,8 @@ namespace aweXpect.Reflection.Collections
             protected Fields(aweXpect.Reflection.Collections.Filtered.Fields inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Fields
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-            }
-            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult
-            {
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult AsPrefix() { }
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult AsRegex() { }
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult AsSuffix() { }
-                public aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResult AsWildcard() { }
             }
         }
         public class Methods : aweXpect.Reflection.Collections.Filtered<System.Reflection.MethodInfo, aweXpect.Reflection.Collections.Filtered.Methods>, aweXpect.Core.IDescribableSubject
@@ -3095,19 +3038,8 @@ namespace aweXpect.Reflection.Collections
             protected Methods(aweXpect.Reflection.Collections.Filtered.Methods inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Methods
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-            }
-            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult
-            {
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult AsPrefix() { }
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult AsRegex() { }
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult AsSuffix() { }
-                public aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult AsWildcard() { }
             }
         }
         public class Properties : aweXpect.Reflection.Collections.Filtered<System.Reflection.PropertyInfo, aweXpect.Reflection.Collections.Filtered.Properties>, aweXpect.Core.IDescribableSubject
@@ -3115,19 +3047,8 @@ namespace aweXpect.Reflection.Collections
             protected Properties(aweXpect.Reflection.Collections.Filtered.Properties inner) { }
             public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Properties
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-            }
-            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult
-            {
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult AsPrefix() { }
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult AsRegex() { }
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult AsSuffix() { }
-                public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult AsWildcard() { }
             }
         }
         public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers, aweXpect.Reflection.Collections.IMemberSelectors, aweXpect.Reflection.Collections.IMembers, aweXpect.Reflection.Collections.IMembers.IPrivate, aweXpect.Reflection.Collections.IMembers.IProtected
@@ -3172,19 +3093,8 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOutsideFilterResult ExcludingSubNamespaces() { }
                 public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOutsideFilterResult OrOn(params System.Collections.Generic.IEnumerable<string> namespaces) { }
             }
-            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
-            }
-            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult
-            {
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsPrefix() { }
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsRegex() { }
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsSuffix() { }
-                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsWildcard() { }
             }
             public sealed class TypeSetDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types
             {

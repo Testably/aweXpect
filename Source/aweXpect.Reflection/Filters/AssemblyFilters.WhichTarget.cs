@@ -11,11 +11,11 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filter for assemblies that target the <paramref name="expected" /> framework (e.g. <c>net8.0</c>).
 	/// </summary>
-	public static Filtered.Assemblies.StringEqualityResultType WhichTarget(this Filtered.Assemblies @this,
+	public static Filtered.Assemblies.StringEqualityResult WhichTarget(this Filtered.Assemblies @this,
 		string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
 				assembly => options.AreConsideredEqual(assembly.GetTargetFramework(), expected),
 				() => $" targeting {options.GetExpectation(expected, ExpectationGrammars.None)}")),
 			options);
