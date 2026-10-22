@@ -50,9 +50,15 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Additional filters on assemblies with an attribute.
 	/// </summary>
-	public class AssembliesWith(Filtered.Assemblies inner, IChangeableFilter<Assembly> filter)
-		: Filtered.Assemblies(inner)
+	public class AssembliesWith : Filtered.Assemblies
 	{
+		private readonly IChangeableFilter<Assembly> _filter;
+
+		internal AssembliesWith(Filtered.Assemblies inner, IChangeableFilter<Assembly> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
@@ -63,7 +69,7 @@ public static partial class AssemblyFilters
 		public AssembliesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, assembly) => result || assembly.HasAttribute<TAttribute>(inherit: inherit),
+			_filter.UpdateFilter((result, assembly) => result || assembly.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}");
 			return this;
@@ -84,7 +90,7 @@ public static partial class AssemblyFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, assembly) => result || assembly.HasAttribute(predicate, inherit),
 				description
 					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");

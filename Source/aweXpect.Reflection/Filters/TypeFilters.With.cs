@@ -47,8 +47,15 @@ public static partial class TypeFilters
 	/// <summary>
 	///     Additional filters on types with an attribute.
 	/// </summary>
-	public class TypesWith(Filtered.Types inner, IChangeableFilter<Type> filter) : Filtered.Types(inner)
+	public class TypesWith : Filtered.Types
 	{
+		private readonly IChangeableFilter<Type> _filter;
+
+		internal TypesWith(Filtered.Types inner, IChangeableFilter<Type> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
@@ -59,7 +66,7 @@ public static partial class TypeFilters
 		public TypesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, type) => result || type.HasAttribute<TAttribute>(inherit: inherit),
+			_filter.UpdateFilter((result, type) => result || type.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
 			return this;
@@ -80,7 +87,7 @@ public static partial class TypeFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, type) => result || type.HasAttribute(predicate, inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");

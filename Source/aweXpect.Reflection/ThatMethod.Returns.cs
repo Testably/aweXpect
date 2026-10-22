@@ -39,16 +39,24 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Result that allows chaining additional return types for a single method.
 	/// </summary>
-	public sealed partial class MethodReturnResult<TValue, TResult>(
-		ExpectationBuilder expectationBuilder,
-		TResult subject,
-		TypeFilterOptions typeFilterOptions)
-		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
+	public sealed partial class MethodReturnResult<TValue, TResult>
+		: AndOrResult<TValue, TResult>,
 			IOptionsProvider<TypeFilterOptions>
 		where TResult : IThat<TValue?>
 	{
+		private readonly TypeFilterOptions _typeFilterOptions;
+
+		internal MethodReturnResult(
+			ExpectationBuilder expectationBuilder,
+			TResult subject,
+			TypeFilterOptions typeFilterOptions)
+			: base(expectationBuilder, subject)
+		{
+			_typeFilterOptions = typeFilterOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;
+		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
 
 		/// <summary>
 		///     Allow an alternative return type <typeparamref name="TReturn" />.
@@ -61,7 +69,7 @@ public static partial class ThatMethod
 		/// </summary>
 		public MethodReturnResult<TValue, TResult> OrReturns(Type returnType)
 		{
-			typeFilterOptions.RegisterType(returnType, false);
+			_typeFilterOptions.RegisterType(returnType, false);
 			return this;
 		}
 	}

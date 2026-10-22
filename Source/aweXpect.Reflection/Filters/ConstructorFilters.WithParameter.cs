@@ -174,27 +174,37 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Additional filters on constructors with a parameter of a specific type.
 	/// </summary>
-	public class ConstructorsWithParameter<T>(
-		Filtered.Constructors inner,
-		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions)
-		: Filtered.Constructors(inner),
+	public class ConstructorsWithParameter<T>
+		: Filtered.Constructors,
 			IOptionsProvider<CollectionIndexOptions>,
 			IOptionsProvider<ParameterFilterOptions>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly ParameterFilterOptions _parameterFilterOptions;
+
+		internal ConstructorsWithParameter(
+			Filtered.Constructors inner,
+			CollectionIndexOptions collectionIndexOptions,
+			ParameterFilterOptions parameterFilterOptions)
+			: base(inner)
+		{
+			_collectionIndexOptions = collectionIndexOptions;
+			_parameterFilterOptions = parameterFilterOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => parameterFilterOptions;
+		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
 
 		/// <summary>
 		///     …at the given <paramref name="index" />.
 		/// </summary>
 		public ConstructorsWithParameterAtIndex<T> AtIndex(int index)
 		{
-			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new ConstructorsWithParameterAtIndex<T>(this, collectionIndexOptions);
+			_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+			return new ConstructorsWithParameterAtIndex<T>(this, _collectionIndexOptions);
 		}
 
 		/// <summary>
@@ -202,7 +212,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithoutDefaultValue()
 		{
-			parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
+			_parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
 			return this;
 		}
 
@@ -211,7 +221,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithDefaultValue()
 		{
-			parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
+			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
 			return this;
 		}
 
@@ -221,7 +231,7 @@ public static partial class ConstructorFilters
 		public ConstructorsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
 			where TValue : T
 		{
-			parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
+			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 				() => $"with default value {Formatter.Format(expected)}");
 			return this;
 		}
@@ -231,7 +241,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithRefModifier()
 		{
-			parameterFilterOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
 			return this;
 		}
 
@@ -240,7 +250,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithOutModifier()
 		{
-			parameterFilterOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
 			return this;
 		}
 
@@ -249,7 +259,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithInModifier()
 		{
-			parameterFilterOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
 			return this;
 		}
 
@@ -258,7 +268,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithOptionalModifier()
 		{
-			parameterFilterOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
 			return this;
 		}
 
@@ -267,7 +277,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithParamsModifier()
 		{
-			parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
 			return this;
 		}
 	}
@@ -275,23 +285,31 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Additional filters on constructors with a parameter at a specific index.
 	/// </summary>
-	public class ConstructorsWithParameterAtIndex<T>(
-		Filtered.Constructors inner,
-		CollectionIndexOptions collectionIndexOptions)
-		: Filtered.Constructors(inner),
+	public class ConstructorsWithParameterAtIndex<T>
+		: Filtered.Constructors,
 			IOptionsProvider<CollectionIndexOptions>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+
+		internal ConstructorsWithParameterAtIndex(
+			Filtered.Constructors inner,
+			CollectionIndexOptions collectionIndexOptions)
+			: base(inner)
+		{
+			_collectionIndexOptions = collectionIndexOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 		/// <summary>
 		///     …from end.
 		/// </summary>
 		public ConstructorsWithParameterAtIndex<T> FromEnd()
 		{
-			if (collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
+			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 			{
-				collectionIndexOptions.SetMatch(match.FromEnd());
+				_collectionIndexOptions.SetMatch(match.FromEnd());
 			}
 
 			return this;
@@ -301,16 +319,24 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Additional filters on constructors with a named parameter of a specific type.
 	/// </summary>
-	public class ConstructorsWithNamedParameter<T>(
-		Filtered.Constructors inner,
-		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions,
-		StringEqualityOptions options)
-		: ConstructorsWithParameter<T>(inner, collectionIndexOptions, parameterFilterOptions),
+	public class ConstructorsWithNamedParameter<T>
+		: ConstructorsWithParameter<T>,
 			IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions
 	{
+		private readonly StringEqualityOptions _options;
+
+		internal ConstructorsWithNamedParameter(
+			Filtered.Constructors inner,
+			CollectionIndexOptions collectionIndexOptions,
+			ParameterFilterOptions parameterFilterOptions,
+			StringEqualityOptions options)
+			: base(inner, collectionIndexOptions, parameterFilterOptions)
+		{
+			_options = options;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
 	}
 }

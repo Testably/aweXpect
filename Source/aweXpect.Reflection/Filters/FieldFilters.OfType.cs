@@ -38,7 +38,7 @@ public static partial class FieldFilters
 		/// </summary>
 		public FieldsOfType OrOfType(Type fieldType)
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, fieldInfo)
 					=> result || fieldInfo.FieldType.IsOrInheritsFrom(fieldType),
 				description

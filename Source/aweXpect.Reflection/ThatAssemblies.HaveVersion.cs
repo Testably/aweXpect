@@ -139,46 +139,57 @@ public static partial class ThatAssemblies
 	///     Comparison of a single component of the <see cref="AssemblyName.Version" /> for all items in a collection of
 	///     <see cref="Assembly" />.
 	/// </summary>
-	public class VersionComponentResult<TCollection>(
-		HaveVersionResult<TCollection> owner,
-		string component,
-		Func<Version, int> selector)
+	public class VersionComponentResult<TCollection>
 	{
+		private readonly string _component;
+		private readonly HaveVersionResult<TCollection> _owner;
+		private readonly Func<Version, int> _selector;
+
+		internal VersionComponentResult(
+			HaveVersionResult<TCollection> owner,
+			string component,
+			Func<Version, int> selector)
+		{
+			_owner = owner;
+			_component = component;
+			_selector = selector;
+		}
+
 		/// <summary>
 		///     The component is greater than the <paramref name="expected" /> value.
 		/// </summary>
 		public HaveVersionResult<TCollection> GreaterThan(int expected)
-			=> owner.Add(component, $"greater than {expected}", selector, value => value > expected);
+			=> _owner.Add(_component, $"greater than {expected}", _selector, value => value > expected);
 
 		/// <summary>
 		///     The component is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public HaveVersionResult<TCollection> GreaterThanOrEqualTo(int expected)
-			=> owner.Add(component, $"greater than or equal to {expected}", selector, value => value >= expected);
+			=> _owner.Add(_component, $"greater than or equal to {expected}", _selector, value => value >= expected);
 
 		/// <summary>
 		///     The component is less than the <paramref name="expected" /> value.
 		/// </summary>
 		public HaveVersionResult<TCollection> LessThan(int expected)
-			=> owner.Add(component, $"less than {expected}", selector, value => value < expected);
+			=> _owner.Add(_component, $"less than {expected}", _selector, value => value < expected);
 
 		/// <summary>
 		///     The component is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public HaveVersionResult<TCollection> LessThanOrEqualTo(int expected)
-			=> owner.Add(component, $"less than or equal to {expected}", selector, value => value <= expected);
+			=> _owner.Add(_component, $"less than or equal to {expected}", _selector, value => value <= expected);
 
 		/// <summary>
 		///     The component is equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public HaveVersionResult<TCollection> EqualTo(int expected)
-			=> owner.Add(component, $"equal to {expected}", selector, value => value == expected);
+			=> _owner.Add(_component, $"equal to {expected}", _selector, value => value == expected);
 
 		/// <summary>
 		///     The component is not equal to the <paramref name="expected" /> value.
 		/// </summary>
 		public HaveVersionResult<TCollection> NotEqualTo(int expected)
-			=> owner.Add(component, $"not equal to {expected}", selector, value => value != expected);
+			=> _owner.Add(_component, $"not equal to {expected}", _selector, value => value != expected);
 	}
 
 	internal sealed class VersionComponentCheck(

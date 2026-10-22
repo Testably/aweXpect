@@ -7,16 +7,21 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a collection of generic arguments at a given index.
 /// </summary>
-public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TThat> subject,
-	GenericArgumentsFilterOptions genericArgumentsFilterOptions,
-	CollectionIndexOptions collectionIndexOptions)
-	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>>(
-			expectationBuilder, subject, genericArgumentsFilterOptions),
+public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>
+	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>>,
 		IOptionsProvider<CollectionIndexOptions>
 {
-	private readonly CollectionIndexOptions _collectionIndexOptions = collectionIndexOptions;
+	private readonly CollectionIndexOptions _collectionIndexOptions;
+
+	internal GenericArgumentCollectionWithArgumentAtIndexResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TThat> subject,
+		GenericArgumentsFilterOptions genericArgumentsFilterOptions,
+		CollectionIndexOptions collectionIndexOptions)
+		: base(expectationBuilder, subject, genericArgumentsFilterOptions)
+	{
+		_collectionIndexOptions = collectionIndexOptions;
+	}
 
 	/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
 	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;

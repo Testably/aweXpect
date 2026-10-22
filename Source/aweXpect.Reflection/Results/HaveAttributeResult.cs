@@ -10,16 +10,24 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Allows chaining of multiple attributes.
 /// </summary>
-public sealed class HaveAttributeResult<TMember, TResult>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TResult> subject,
-	AttributeFilterOptions<TMember> attributeFilterOptions)
-	: AndOrResult<TResult, IThat<TResult>, HaveAttributeResult<TMember, TResult>>(expectationBuilder, subject),
+public sealed class HaveAttributeResult<TMember, TResult>
+	: AndOrResult<TResult, IThat<TResult>, HaveAttributeResult<TMember, TResult>>,
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
+	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
+
+	internal HaveAttributeResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TResult> subject,
+		AttributeFilterOptions<TMember> attributeFilterOptions)
+		: base(expectationBuilder, subject)
+	{
+		_attributeFilterOptions = attributeFilterOptions;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />
 	AttributeFilterOptions<TMember> IOptionsProvider<AttributeFilterOptions<TMember>>.Options
-		=> attributeFilterOptions;
+		=> _attributeFilterOptions;
 
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.
@@ -31,7 +39,7 @@ public sealed class HaveAttributeResult<TMember, TResult>(
 	public HaveAttributeResult<TMember, TResult> OrHave<TAttribute>(bool inherit = true)
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		_attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
 		return this;
 	}
 
@@ -50,7 +58,7 @@ public sealed class HaveAttributeResult<TMember, TResult>(
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

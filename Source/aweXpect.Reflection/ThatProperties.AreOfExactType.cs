@@ -77,7 +77,7 @@ public static partial class ThatProperties
 		/// </summary>
 		public PropertiesOfTypeResult<TValue, TResult> OrOfExactType(Type propertyType)
 		{
-			typeFilterOptions.RegisterType(propertyType, true);
+			_typeFilterOptions.RegisterType(propertyType, true);
 			return this;
 		}
 	}

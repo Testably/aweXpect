@@ -74,6 +74,7 @@ These goals hold for every extension package:
 2. **Core is enough.** An extension builds only on the public API of `aweXpect.Core`, like a third-party extension would. If it needs more, the gap is closed in Core, in the same pull request. A type test or other workaround against Core types, such as testing for `IOptionsProvider<ExpectationBuilder>`, is such a gap.
 3. **Unanswerable means failed both ways.** A `null` subject, a missing element or an error while reading the subject fails the expectation and its negation instead of throwing.
 4. **Options are immutable and visible.** A package has one sealed options type (one that cannot be derived from outside, if it needs a derived type) with internal state, a copy constructor and option methods that each return a copy, passed as `Func<XmlOptions, XmlOptions>? options = null` like `XmlOptions`; no public mutable state. The options in effect are listed in the failure. `IgnoringMember` in Json and Xml takes paths, like equivalency does.
+5. **Plumbing constructors stay internal.** A result or filter class whose constructor takes plumbing (internal-purpose options, selector functions, the inner collection it decorates) or relies on state stored elsewhere gets an internal constructor, as nobody outside the package can build it meaningfully and every public constructor is permanent API; the results of `aweXpect.Core` stay public as extension points.
 
 #### aweXpect.Json
 

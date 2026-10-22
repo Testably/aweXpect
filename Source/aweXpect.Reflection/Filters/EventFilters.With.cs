@@ -50,8 +50,15 @@ public static partial class EventFilters
 	/// <summary>
 	///     Additional filters on events with an attribute.
 	/// </summary>
-	public class EventsWith(Filtered.Events inner, IChangeableFilter<EventInfo> filter) : Filtered.Events(inner)
+	public class EventsWith : Filtered.Events
 	{
+		private readonly IChangeableFilter<EventInfo> _filter;
+
+		internal EventsWith(Filtered.Events inner, IChangeableFilter<EventInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
@@ -62,7 +69,7 @@ public static partial class EventFilters
 		public EventsWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, eventInfo) => result || eventInfo.HasAttribute<TAttribute>(inherit: inherit),
+			_filter.UpdateFilter((result, eventInfo) => result || eventInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
 			return this;
@@ -83,7 +90,7 @@ public static partial class EventFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, eventInfo) => result || eventInfo.HasAttribute(predicate, inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");

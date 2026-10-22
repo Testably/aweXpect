@@ -38,7 +38,7 @@ public static partial class EventFilters
 		/// </summary>
 		public EventsOfType OrOfExactType(Type handlerType)
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, eventInfo)
 					=> result || eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType, true),
 				description

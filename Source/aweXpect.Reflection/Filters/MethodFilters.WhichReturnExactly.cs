@@ -38,7 +38,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWhichReturn OrReturnExactly(Type returnType)
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, methodInfo)
 					=> result || methodInfo.ReturnType.IsOrInheritsFrom(returnType, true),
 				description

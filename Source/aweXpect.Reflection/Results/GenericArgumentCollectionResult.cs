@@ -9,37 +9,51 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
-public class GenericArgumentCollectionResult<TType, TThat>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TThat> subject,
-	GenericArgumentsFilterOptions genericArgumentsFilterOptions)
-	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionResult<TType, TThat>>(
-		expectationBuilder, subject, genericArgumentsFilterOptions);
+public class GenericArgumentCollectionResult<TType, TThat>
+	: GenericArgumentCollectionResult<TType, TThat, GenericArgumentCollectionResult<TType, TThat>>
+{
+	internal GenericArgumentCollectionResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TThat> subject,
+		GenericArgumentsFilterOptions genericArgumentsFilterOptions)
+		: base(expectationBuilder, subject, genericArgumentsFilterOptions)
+	{
+	}
+}
 
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
-public class GenericArgumentCollectionResult<TType, TThat, TSelf>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TThat> subject,
-	GenericArgumentsFilterOptions genericArgumentsFilterOptions)
-	: AndOrResult<TType, IThat<TThat>, TSelf>(expectationBuilder, subject),
+public class GenericArgumentCollectionResult<TType, TThat, TSelf>
+	: AndOrResult<TType, IThat<TThat>, TSelf>,
 		IOptionsProvider<GenericArgumentsFilterOptions>
 	where TSelf : GenericArgumentCollectionResult<TType, TThat, TSelf>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
-	private readonly IThat<TThat> _subject = subject;
+	private readonly ExpectationBuilder _expectationBuilder;
+	private readonly GenericArgumentsFilterOptions _genericArgumentsFilterOptions;
+	private readonly IThat<TThat> _subject;
+
+	internal GenericArgumentCollectionResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TThat> subject,
+		GenericArgumentsFilterOptions genericArgumentsFilterOptions)
+		: base(expectationBuilder, subject)
+	{
+		_expectationBuilder = expectationBuilder;
+		_subject = subject;
+		_genericArgumentsFilterOptions = genericArgumentsFilterOptions;
+	}
 
 	/// <inheritdoc cref="IOptionsProvider{GenericArgumentsFilterOptions}.Options" />
 	GenericArgumentsFilterOptions IOptionsProvider<GenericArgumentsFilterOptions>.Options
-		=> genericArgumentsFilterOptions;
+		=> _genericArgumentsFilterOptions;
 
 	/// <summary>
 	///     …with the <paramref name="expected" /> number of generic arguments.
 	/// </summary>
 	public TSelf WithArgumentCount(int expected)
 	{
-		genericArgumentsFilterOptions.AddPredicate(arguments => arguments.Length == expected,
+		_genericArgumentsFilterOptions.AddPredicate(arguments => arguments.Length == expected,
 			() => $"with {expected} generic {(expected == 1 ? "argument" : "arguments")}");
 		return (TSelf)this;
 	}
@@ -54,9 +68,9 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>(
 			(type, name) => argumentType == (name is null ? type.BaseType : type),
 			() => $"of type {Formatter.Format(typeof(T))}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
+		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
 		return new GenericArgumentCollectionWithArgumentResult<TType, TThat>(
-			_expectationBuilder, _subject, genericArgumentsFilterOptions, collectionIndexOptions);
+			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions);
 	}
 
 	/// <summary>
@@ -73,9 +87,9 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>(
 			(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
+		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
 		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>(
-			_expectationBuilder, _subject, genericArgumentsFilterOptions, collectionIndexOptions,
+			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions,
 			stringEqualityOptions);
 	}
 
@@ -89,9 +103,9 @@ public class GenericArgumentCollectionResult<TType, TThat, TSelf>(
 			(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
+		_genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
 		return new GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>(
-			_expectationBuilder, _subject, genericArgumentsFilterOptions, collectionIndexOptions,
+			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions,
 			stringEqualityOptions);
 	}
 }

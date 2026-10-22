@@ -76,16 +76,24 @@ public static partial class ThatFields
 	/// <summary>
 	///     Result that allows chaining additional types for field collections.
 	/// </summary>
-	public sealed partial class FieldsOfTypeResult<TValue, TResult>(
-		ExpectationBuilder expectationBuilder,
-		TResult subject,
-		TypeFilterOptions typeFilterOptions)
-		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
+	public sealed partial class FieldsOfTypeResult<TValue, TResult>
+		: AndOrResult<TValue, TResult>,
 			IOptionsProvider<TypeFilterOptions>
 		where TResult : IThat<TValue>
 	{
+		private readonly TypeFilterOptions _typeFilterOptions;
+
+		internal FieldsOfTypeResult(
+			ExpectationBuilder expectationBuilder,
+			TResult subject,
+			TypeFilterOptions typeFilterOptions)
+			: base(expectationBuilder, subject)
+		{
+			_typeFilterOptions = typeFilterOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;
+		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
 
 		/// <summary>
 		///     Allow an alternative type <typeparamref name="TField" /> (or a subtype).
@@ -98,7 +106,7 @@ public static partial class ThatFields
 		/// </summary>
 		public FieldsOfTypeResult<TValue, TResult> OrOfType(Type fieldType)
 		{
-			typeFilterOptions.RegisterType(fieldType, false);
+			_typeFilterOptions.RegisterType(fieldType, false);
 			return this;
 		}
 	}

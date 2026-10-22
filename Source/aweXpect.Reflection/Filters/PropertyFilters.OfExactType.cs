@@ -38,7 +38,7 @@ public static partial class PropertyFilters
 		/// </summary>
 		public PropertiesOfType OrOfExactType(Type propertyType)
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, propertyInfo)
 					=> result || propertyInfo.PropertyType.IsOrInheritsFrom(propertyType, true),
 				description

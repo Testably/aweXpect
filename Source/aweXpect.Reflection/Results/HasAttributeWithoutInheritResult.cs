@@ -11,16 +11,24 @@ namespace aweXpect.Reflection.Results;
 ///     Allows chaining of multiple attributes for members whose attributes cannot be inherited
 ///     (fields and constructors).
 /// </summary>
-public sealed class HasAttributeWithoutInheritResult<TType, TMember>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TMember> subject,
-	AttributeFilterOptions<TMember> attributeFilterOptions)
-	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>(expectationBuilder, subject),
+public sealed class HasAttributeWithoutInheritResult<TType, TMember>
+	: AndOrResult<TType, IThat<TMember>, HasAttributeWithoutInheritResult<TType, TMember>>,
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
+	private readonly AttributeFilterOptions<TMember> _attributeFilterOptions;
+
+	internal HasAttributeWithoutInheritResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TMember> subject,
+		AttributeFilterOptions<TMember> attributeFilterOptions)
+		: base(expectationBuilder, subject)
+	{
+		_attributeFilterOptions = attributeFilterOptions;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />
 	AttributeFilterOptions<TMember> IOptionsProvider<AttributeFilterOptions<TMember>>.Options
-		=> attributeFilterOptions;
+		=> _attributeFilterOptions;
 
 	/// <summary>
 	///     Allows an alternative attribute of type <typeparamref name="TAttribute" />.
@@ -28,7 +36,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>(
 	public HasAttributeWithoutInheritResult<TType, TMember> OrHas<TAttribute>()
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		_attributeFilterOptions.RegisterAttribute<TAttribute>(true);
 		return this;
 	}
 
@@ -42,7 +50,7 @@ public sealed class HasAttributeWithoutInheritResult<TType, TMember>(
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
+		_attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimExpression());
 		return this;
 	}
 }

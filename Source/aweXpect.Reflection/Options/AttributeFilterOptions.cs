@@ -9,10 +9,16 @@ namespace aweXpect.Reflection.Options;
 /// <summary>
 ///     Options for adding additional predicates to filter the parameter list.
 /// </summary>
-public class AttributeFilterOptions<TMember>(Func<TMember, Type, Func<Attribute, bool>, bool, bool> memberHasAttribute)
+public class AttributeFilterOptions<TMember>
 {
 	private readonly List<Action<StringBuilder>> _descriptions = [];
+	private readonly Func<TMember, Type, Func<Attribute, bool>, bool, bool> _memberHasAttribute;
 	private readonly List<(Type, Func<Attribute, bool>, bool)> _predicates = [];
+
+	internal AttributeFilterOptions(Func<TMember, Type, Func<Attribute, bool>, bool, bool> memberHasAttribute)
+	{
+		_memberHasAttribute = memberHasAttribute;
+	}
 
 	/// <summary>
 	///     Verifies that the <paramref name="member" /> matches any registered attribute.
@@ -21,7 +27,7 @@ public class AttributeFilterOptions<TMember>(Func<TMember, Type, Func<Attribute,
 	{
 		foreach ((Type? attributeType, Func<Attribute, bool>? predicate, bool inherits) in _predicates)
 		{
-			if (memberHasAttribute(member, attributeType, predicate, inherits))
+			if (_memberHasAttribute(member, attributeType, predicate, inherits))
 			{
 				return true;
 			}
