@@ -35,6 +35,14 @@ public interface IStringMatchType
 			IEqualityComparer<string>? comparer);
 
 	/// <summary>
+	///     Adds the contexts that explain a failure of a comparison with this match type, e.g. its options.
+	/// </summary>
+	/// <remarks>
+	///     Only called while a failure message is created.
+	/// </remarks>
+	void AppendContexts(ResultContextCollector contexts);
+
+	/// <summary>
 	///     Get the expectations text.
 	/// </summary>
 	string GetExpectation(string? expected, ExpectationGrammars grammars);

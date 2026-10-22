@@ -3368,6 +3368,39 @@ public sealed partial class ThatEnumerable
 		public sealed class StringsTests
 		{
 			[Test]
+			public async Task AsCaseFoldedWithContext_WhenAnItemDiffers_ShouldListTheContextOfTheMatchType()
+			{
+				IEnumerable<string> subject = ["a", "b",];
+				string[] expected = ["A", "C",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsCaseFoldedWithContext();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected as case-folded in order,
+					             but it contained item "b" at index 1 instead of "C"
+
+					             Case folding:
+					             invariant culture
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
+					             ]
+
+					             Expected:
+					             [
+					               "A",
+					               "C"
+					             ]
+					             """)
+					.Because("the match type that compares the items explains the failure");
+			}
+
+			[Test]
 			public async Task AsPrefix_WhenAnExpectedItemIsMissing_ShouldNameTheMatchType()
 			{
 				IEnumerable<string> subject = ["# Title",];

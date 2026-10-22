@@ -801,27 +801,6 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Test]
-	public async Task AddEqualityOptionsContexts_WhenProvidedByAnOptionsProvider_ShouldAddTheContextsOfTheProvidedOptions()
-	{
-		ObjectEqualityOptions<int> options = new();
-		options.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
-		EqualityOptionsProvider provider = new(options);
-
-		async Task Act()
-			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(provider));
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that 1
-			             shows contexts,
-			             but it did not
-
-			             Equivalency options:
-			              - include public fields and properties
-			             """);
-	}
-
-	[Test]
 	public async Task AddEqualityOptionsContexts_WhenTheMatchTypeHasNoContexts_ShouldNotAddAContext()
 	{
 		ObjectEqualityOptions<int> options = new();
@@ -835,6 +814,27 @@ public sealed class ResultContextCollectorExtensionsTests
 			             shows contexts,
 			             but it did not
 			             """);
+	}
+
+	[Test]
+	public async Task AddEqualityOptionsContexts_WithStringEqualityOptions_ShouldAddTheContextsOfTheStringMatchType()
+	{
+		StringEqualityOptions options = new("expected");
+		options.SetMatchType(new MatchTypeWithContext(), "WithContext");
+
+		async Task Act()
+			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             shows contexts,
+			             but it did not
+
+			             Match type:
+			             with context
+			             """)
+			.Because("string options add the contexts of their match type like object options do");
 	}
 
 	[Test]
@@ -1073,15 +1073,6 @@ public sealed class ResultContextCollectorExtensionsTests
 		}
 	}
 
-	private sealed class EqualityOptionsProvider(ObjectEqualityOptions<int> options)
-		: IOptionsEquality<int>, IOptionsProvider<IOptionsEquality<int>>
-	{
-		public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
-			=> options.AreConsideredEqual(actual, expected);
-
-		public IOptionsEquality<int> Options => options;
-	}
-
 	private sealed class KeyedCollection : IEnumerable<int>, IKeyedCollection
 	{
 		public IEnumerator<int> GetEnumerator()
@@ -1093,6 +1084,40 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		public string Format(IEnumerable<int> indices, int? totalCount)
 			=> throw new InvalidOperationException("The context must list all items.");
+	}
+
+	private sealed class MatchTypeWithContext : IStringMatchType
+	{
+		public bool InspectsSubject => false;
+
+		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+			IEqualityComparer<string>? comparer)
+			=> throw new NotSupportedException();
+
+		public void AppendContexts(ResultContextCollector contexts)
+			=> contexts.Add(new ResultContext.Fixed("Match type", "with context"));
+
+		public string GetExpectation(string? expected, ExpectationGrammars grammars)
+			=> throw new NotSupportedException();
+
+		public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
+			IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
+			=> throw new NotSupportedException();
+
+		public string GetTypeString() => throw new NotSupportedException();
+
+		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+			=> throw new NotSupportedException();
+
+		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+		{
+			// Every option is accepted.
+		}
+
+		public void ValidateExpected(string? expected)
+		{
+			// Every expected value is accepted.
+		}
 	}
 
 	private sealed class MaterializedEnumerable(IReadOnlyList<int> items, int? count = null)

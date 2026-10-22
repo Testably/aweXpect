@@ -27,6 +27,11 @@ internal static class YieldingStringMatch
 			return string.Equals(actual, expected, StringComparison.Ordinal);
 		}
 
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// The comparison has no options to explain.
+		}
+
 		public string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} equal to \"{expected}\"";
 

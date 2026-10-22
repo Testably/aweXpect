@@ -111,6 +111,10 @@ public static partial class ThatHttpRequestMessage
 			return this;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a string content ", "have a string content "))
 				.Append(options.GetExpectation(expected, ExpectationGrammars.None));

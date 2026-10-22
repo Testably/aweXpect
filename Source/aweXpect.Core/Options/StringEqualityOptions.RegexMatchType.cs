@@ -206,6 +206,12 @@ public partial class StringEqualityOptions
 			return new ValueTask<StringMatchResult>(CreateRegex(expected, ignoreCase).IsMatch(actual));
 		}
 
+		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// The options are already part of the expectation.
+		}
+
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
 		public string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch

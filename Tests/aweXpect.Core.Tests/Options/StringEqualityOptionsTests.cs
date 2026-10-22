@@ -1739,6 +1739,9 @@ public sealed partial class StringEqualityOptionsTests
 				IEqualityComparer<string>? comparer)
 				=> throw new NotSupportedException();
 
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
+
 			public string GetExpectation(string? expected, ExpectationGrammars grammars)
 				=> throw new NotSupportedException();
 
@@ -1770,6 +1773,9 @@ public sealed partial class StringEqualityOptionsTests
 			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 				=> areConsideredEqual();
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
 
 			public string GetExpectation(string? expected, ExpectationGrammars grammars)
 				=> throw new NotSupportedException();
@@ -1817,6 +1823,9 @@ public sealed partial class StringEqualityOptionsTests
 				ComparedExpected.Add(expected);
 				return new ValueTask<StringMatchResult>(true);
 			}
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
 
 			public string GetExpectation(string? expected, ExpectationGrammars grammars)
 				=> throw new NotSupportedException();

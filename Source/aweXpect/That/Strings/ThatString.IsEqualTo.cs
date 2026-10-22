@@ -75,6 +75,8 @@ public static partial class ThatString
 				contexts.AddStringContext("Actual", Actual, this);
 				contexts.AddStringContext("Expected", expected, this);
 			}
+
+			options.AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

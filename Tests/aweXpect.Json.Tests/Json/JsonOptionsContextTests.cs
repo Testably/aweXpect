@@ -791,6 +791,37 @@ public sealed class JsonOptionsContextTests
 		}
 
 		[Test]
+		public async Task AsJson_ForEqualCollections_ShouldAddTheContext()
+		{
+			string[] subject = ["[1, 2]", "[1, 3]",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["[2, 1]", "[2, 1]",]).AsJson(o => o.IgnoringArrayOrder());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection ["[2, 1]", "[2, 1]",] as JSON in order,
+				             but it contained item "[1, 3]" at index 1 instead of "[2, 1]"
+
+				             Collection:
+				             [
+				               "[1, 2]",
+				               "[1, 3]"
+				             ]
+
+				             Expected:
+				             [
+				               "[2, 1]",
+				               "[2, 1]"
+				             ]
+
+				             JSON options:
+				              - ignore array order
+				             """);
+		}
+
+		[Test]
 		public async Task AsJson_InWhose_ShouldLabelTheContextWithTheMember()
 		{
 			JsonContainer subject = new("[1, 3]");
@@ -814,6 +845,23 @@ public sealed class JsonOptionsContextTests
 				             JSON options (Json):
 				              - ignore array order
 				             """);
+		}
+
+		[Test]
+		public async Task AsJson_WhenAnotherExpectationOnTheSubjectFails_ShouldNotAddTheContext()
+		{
+			string subject = "[1, 3]";
+
+			async Task Act()
+				=> await That(subject).IsEqualTo("[3, 1]").AsJson(o => o.IgnoringArrayOrder()).And.HasLength(3);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is JSON equivalent to [3, 1] and has length equal to 3,
+				             but it had length 6
+				             """)
+				.Because("the options explain only a failure of the JSON comparison");
 		}
 
 		[Test]

@@ -209,6 +209,13 @@ public static partial class ThatHttpResponseMessage
 				_ => $"a {kind}",
 			};
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			typeOptions.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("has a ProblemDetails content with ", "have a ProblemDetails content with "));

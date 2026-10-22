@@ -44,6 +44,10 @@ public static partial class ThatAssembly
 			return this;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has name ").Append(options.GetExpectation(expected, Grammars));
 

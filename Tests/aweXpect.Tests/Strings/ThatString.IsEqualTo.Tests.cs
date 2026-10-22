@@ -155,6 +155,42 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenCustomMatchTypeAddsAContext_AndAnotherExpectationFails_ShouldNotListIt()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("ABC").AsCaseFoldedWithContext().And.HasLength(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is case-folded equal to "ABC" and has length equal to 2,
+					             but it had length 3
+					             """)
+					.Because("the context explains only a failure of the comparison");
+			}
+
+			[Test]
+			public async Task WhenCustomMatchTypeAddsAContext_ShouldListItInTheFailure()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("abd").AsCaseFoldedWithContext();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is case-folded equal to "abd",
+					             but it was "abc"
+
+					             Case folding:
+					             invariant culture
+					             """);
+			}
+
+			[Test]
 			public async Task WhenCustomMatchTypeComparesByValue_AndBothAreNull_ShouldSucceed()
 			{
 				string? subject = null;

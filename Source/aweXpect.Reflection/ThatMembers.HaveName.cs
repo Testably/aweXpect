@@ -132,6 +132,13 @@ public static partial class ThatMembers
 			=> await SetValue(actual, context,
 				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected), cancellationToken);
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(expected, Grammars));
 
@@ -171,6 +178,13 @@ public static partial class ThatMembers
 			=> await SetValue(actual, context,
 				memberInfo => options.AreConsideredEqual(memberInfo?.Name,
 					UserCode.Invoke(expectedNameSelector, memberInfo, "the name selector")), cancellationToken);
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name matching ")

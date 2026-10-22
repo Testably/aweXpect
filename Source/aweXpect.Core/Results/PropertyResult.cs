@@ -1047,6 +1047,8 @@ public static class PropertyResult
 			{
 				contexts.Add(new ResultContext.Fixed(ToTitle(propertyExpression), _value));
 			}
+
+			options.AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

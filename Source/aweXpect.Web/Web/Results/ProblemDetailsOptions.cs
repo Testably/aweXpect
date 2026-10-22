@@ -156,6 +156,13 @@ public class ProblemDetailsOptions
 	internal string GetInstanceFailure(string it, ExpectationGrammars grammars, string? instance)
 		=> _instanceOptions!.GetExtendedMemberFailure(it, "instance", grammars, instance, Instance);
 
+	internal void AppendContexts(ResultContextCollector contexts)
+	{
+		_titleOptions?.AppendContexts(contexts);
+		_detailOptions?.AppendContexts(contexts);
+		_instanceOptions?.AppendContexts(contexts);
+	}
+
 	/// <inheritdoc cref="object.ToString()" />
 #if NET8_0_OR_GREATER
 	public override string ToString()

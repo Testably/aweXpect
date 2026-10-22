@@ -403,6 +403,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
+	///     Adds the contexts of the match type to the <paramref name="contexts" />, e.g. the options of a custom match
+	///     type.
+	/// </summary>
+	public void AppendContexts(ResultContextCollector contexts)
+		=> _matchType.AppendContexts(contexts);
+
+	/// <summary>
 	///     Rejects a second call of the line <paramref name="option" />, and any line option in combination with
 	///     <see cref="AsBlock()" />, which compares the lines on its own.
 	/// </summary>

@@ -133,6 +133,8 @@ public static partial class ThatString
 				contexts.AddStringContext("Actual", _actual, this);
 				contexts.AddStringContext("Expected", expected, this);
 			}
+
+			options.AppendContexts(contexts);
 		}
 
 		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />

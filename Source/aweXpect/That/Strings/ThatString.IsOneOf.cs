@@ -91,7 +91,10 @@ public static partial class ThatString
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
+		{
+			contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
+			options.AppendContexts(contexts);
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

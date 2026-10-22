@@ -120,21 +120,10 @@ public static class ResultContextCollectorExtensions
 	///     "Equivalency options".
 	/// </summary>
 	/// <param name="contexts">The collector to add the contexts to.</param>
-	/// <param name="options">
-	///     The equality options, which are an <see cref="ObjectEqualityOptions{TSubject}" /> or provide one.
-	/// </param>
+	/// <param name="options">The equality options.</param>
 	public static void AddEqualityOptionsContexts<T>(this ResultContextCollector contexts,
 		IOptionsEquality<T> options)
-	{
-		if (options is IOptionsProvider<IOptionsEquality<T>> provider)
-		{
-			contexts.AddEqualityOptionsContexts(provider.Options);
-		}
-		else if (options is ObjectEqualityOptions<T> objectEqualityOptions)
-		{
-			objectEqualityOptions.AppendContexts(contexts);
-		}
-	}
+		=> options.AppendContexts(contexts);
 
 	/// <summary>
 	///     Adds the "Equivalency options" context, which lists the <paramref name="equivalencyOptions" />.
