@@ -11,6 +11,13 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Additional filters on properties of a specific type.
 	/// </summary>
-	public partial class PropertiesOfType(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter)
-		: Filtered.Properties(inner);
+	public partial class PropertiesOfType : Filtered.Properties
+	{
+		private readonly IChangeableFilter<PropertyInfo> _filter;
+
+		internal PropertiesOfType(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+	}
 }

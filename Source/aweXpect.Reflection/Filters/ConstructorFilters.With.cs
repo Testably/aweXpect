@@ -39,16 +39,22 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Additional filters on constructors with an attribute.
 	/// </summary>
-	public class ConstructorsWith(Filtered.Constructors inner, IChangeableFilter<ConstructorInfo> filter)
-		: Filtered.Constructors(inner)
+	public class ConstructorsWith : Filtered.Constructors
 	{
+		private readonly IChangeableFilter<ConstructorInfo> _filter;
+
+		internal ConstructorsWith(Filtered.Constructors inner, IChangeableFilter<ConstructorInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
 		public ConstructorsWith OrWith<TAttribute>()
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, constructorInfo) => result || constructorInfo.HasAttribute<TAttribute>(),
+			_filter.UpdateFilter((result, constructorInfo) => result || constructorInfo.HasAttribute<TAttribute>(),
 				description
 					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} ");
 			return this;
@@ -64,7 +70,7 @@ public static partial class ConstructorFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, constructorInfo) => result || constructorInfo.HasAttribute(predicate),
 				description
 					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");

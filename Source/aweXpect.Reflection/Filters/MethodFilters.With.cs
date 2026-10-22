@@ -50,8 +50,15 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods with an attribute.
 	/// </summary>
-	public class MethodsWith(Filtered.Methods inner, IChangeableFilter<MethodInfo> filter) : Filtered.Methods(inner)
+	public class MethodsWith : Filtered.Methods
 	{
+		private readonly IChangeableFilter<MethodInfo> _filter;
+
+		internal MethodsWith(Filtered.Methods inner, IChangeableFilter<MethodInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
@@ -62,7 +69,7 @@ public static partial class MethodFilters
 		public MethodsWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, methodInfo) => result || methodInfo.HasAttribute<TAttribute>(inherit: inherit),
+			_filter.UpdateFilter((result, methodInfo) => result || methodInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
 			return this;
@@ -83,7 +90,7 @@ public static partial class MethodFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, methodInfo) => result || methodInfo.HasAttribute(predicate, inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");

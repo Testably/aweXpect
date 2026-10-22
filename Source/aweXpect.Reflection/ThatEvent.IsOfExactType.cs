@@ -46,7 +46,7 @@ public static partial class ThatEvent
 		/// </summary>
 		public EventOfTypeResult<TValue, TResult> OrOfExactType(Type handlerType)
 		{
-			typeFilterOptions.RegisterType(handlerType, true);
+			_typeFilterOptions.RegisterType(handlerType, true);
 			return this;
 		}
 	}

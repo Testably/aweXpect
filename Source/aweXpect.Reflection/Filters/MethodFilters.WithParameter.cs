@@ -174,27 +174,37 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods with a parameter of a specific type.
 	/// </summary>
-	public class MethodsWithParameter<T>(
-		Filtered.Methods inner,
-		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFiltersOptions)
-		: Filtered.Methods(inner),
+	public class MethodsWithParameter<T>
+		: Filtered.Methods,
 			IOptionsProvider<CollectionIndexOptions>,
 			IOptionsProvider<ParameterFilterOptions>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly ParameterFilterOptions _parameterFilterOptions;
+
+		internal MethodsWithParameter(
+			Filtered.Methods inner,
+			CollectionIndexOptions collectionIndexOptions,
+			ParameterFilterOptions parameterFiltersOptions)
+			: base(inner)
+		{
+			_collectionIndexOptions = collectionIndexOptions;
+			_parameterFilterOptions = parameterFiltersOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => parameterFiltersOptions;
+		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
 
 		/// <summary>
 		///     …at the given <paramref name="index" />.
 		/// </summary>
 		public MethodsWithParameterAtIndex<T> AtIndex(int index)
 		{
-			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new MethodsWithParameterAtIndex<T>(this, collectionIndexOptions);
+			_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+			return new MethodsWithParameterAtIndex<T>(this, _collectionIndexOptions);
 		}
 
 		/// <summary>
@@ -202,7 +212,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithoutDefaultValue()
 		{
-			parameterFiltersOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
+			_parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
 			return this;
 		}
 
@@ -211,7 +221,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithDefaultValue()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
+			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
 			return this;
 		}
 
@@ -221,7 +231,7 @@ public static partial class MethodFilters
 		public MethodsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
 			where TValue : T
 		{
-			parameterFiltersOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
+			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 				() => $"with default value {Formatter.Format(expected)}");
 			return this;
 		}
@@ -231,7 +241,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithRefModifier()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
 			return this;
 		}
 
@@ -240,7 +250,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithOutModifier()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
 			return this;
 		}
 
@@ -249,7 +259,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithInModifier()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
 			return this;
 		}
 
@@ -258,7 +268,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithOptionalModifier()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
 			return this;
 		}
 
@@ -267,7 +277,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameter<T> WithParamsModifier()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
+			_parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
 			return this;
 		}
 	}
@@ -275,23 +285,31 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods with a parameter at a specific index.
 	/// </summary>
-	public class MethodsWithParameterAtIndex<T>(
-		Filtered.Methods inner,
-		CollectionIndexOptions collectionIndexOptions)
-		: Filtered.Methods(inner),
+	public class MethodsWithParameterAtIndex<T>
+		: Filtered.Methods,
 			IOptionsProvider<CollectionIndexOptions>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+
+		internal MethodsWithParameterAtIndex(
+			Filtered.Methods inner,
+			CollectionIndexOptions collectionIndexOptions)
+			: base(inner)
+		{
+			_collectionIndexOptions = collectionIndexOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 		/// <summary>
 		///     …from end.
 		/// </summary>
 		public MethodsWithParameterAtIndex<T> FromEnd()
 		{
-			if (collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
+			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 			{
-				collectionIndexOptions.SetMatch(match.FromEnd());
+				_collectionIndexOptions.SetMatch(match.FromEnd());
 			}
 
 			return this;
@@ -301,16 +319,24 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods with a named parameter of a specific type.
 	/// </summary>
-	public class MethodsWithNamedParameter<T>(
-		Filtered.Methods inner,
-		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFiltersOptions,
-		StringEqualityOptions options)
-		: MethodsWithParameter<T>(inner, collectionIndexOptions, parameterFiltersOptions),
+	public class MethodsWithNamedParameter<T>
+		: MethodsWithParameter<T>,
 			IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions
 	{
+		private readonly StringEqualityOptions _options;
+
+		internal MethodsWithNamedParameter(
+			Filtered.Methods inner,
+			CollectionIndexOptions collectionIndexOptions,
+			ParameterFilterOptions parameterFiltersOptions,
+			StringEqualityOptions options)
+			: base(inner, collectionIndexOptions, parameterFiltersOptions)
+		{
+			_options = options;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
 	}
 }

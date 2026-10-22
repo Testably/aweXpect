@@ -9,13 +9,21 @@ namespace aweXpect.Reflection.Results;
 ///     members, allowing to specify a quantifier for the number of matching members via
 ///     <see cref="QuantifierExtensions" />.
 /// </summary>
-public class TypeContainingMembersResult<TType, TThat>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TThat> subject,
-	Quantifier quantifier)
-	: AndOrResult<TType, IThat<TThat>, TypeContainingMembersResult<TType, TThat>>(expectationBuilder, subject),
+public class TypeContainingMembersResult<TType, TThat>
+	: AndOrResult<TType, IThat<TThat>, TypeContainingMembersResult<TType, TThat>>,
 		IOptionsProvider<Quantifier>
 {
+	private readonly Quantifier _quantifier;
+
+	internal TypeContainingMembersResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TThat> subject,
+		Quantifier quantifier)
+		: base(expectationBuilder, subject)
+	{
+		_quantifier = quantifier;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{Quantifier}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 }

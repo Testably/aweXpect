@@ -39,16 +39,24 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Result that allows chaining additional types for a single property.
 	/// </summary>
-	public sealed partial class PropertyOfTypeResult<TValue, TResult>(
-		ExpectationBuilder expectationBuilder,
-		TResult subject,
-		TypeFilterOptions typeFilterOptions)
-		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
+	public sealed partial class PropertyOfTypeResult<TValue, TResult>
+		: AndOrResult<TValue, TResult>,
 			IOptionsProvider<TypeFilterOptions>
 		where TResult : IThat<TValue?>
 	{
+		private readonly TypeFilterOptions _typeFilterOptions;
+
+		internal PropertyOfTypeResult(
+			ExpectationBuilder expectationBuilder,
+			TResult subject,
+			TypeFilterOptions typeFilterOptions)
+			: base(expectationBuilder, subject)
+		{
+			_typeFilterOptions = typeFilterOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
-		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;
+		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => _typeFilterOptions;
 
 		/// <summary>
 		///     Allow an alternative type <typeparamref name="TProperty" /> (or a subtype).
@@ -61,7 +69,7 @@ public static partial class ThatProperty
 		/// </summary>
 		public PropertyOfTypeResult<TValue, TResult> OrOfType(Type propertyType)
 		{
-			typeFilterOptions.RegisterType(propertyType, false);
+			_typeFilterOptions.RegisterType(propertyType, false);
 			return this;
 		}
 	}

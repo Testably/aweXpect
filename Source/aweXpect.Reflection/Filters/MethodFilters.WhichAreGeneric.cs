@@ -31,9 +31,14 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on generic methods.
 	/// </summary>
-	public class GenericMethods(Filtered.Methods inner) : Filtered.Methods(inner)
+	public class GenericMethods : Filtered.Methods
 	{
-		internal Filtered.Methods FilteredMethods { get; } = inner;
+		internal GenericMethods(Filtered.Methods inner) : base(inner)
+		{
+			FilteredMethods = inner;
+		}
+
+		internal Filtered.Methods FilteredMethods { get; }
 
 		/// <summary>
 		///     …with the <paramref name="expected" /> number of generic arguments.
@@ -147,60 +152,84 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods with a generic argument of a specific type.
 	/// </summary>
-	public class GenericMethodsWithArgument(
-		GenericMethods inner,
-		CollectionIndexOptions collectionIndexOptions)
-		: GenericMethods(inner.FilteredMethods),
+	public class GenericMethodsWithArgument
+		: GenericMethods,
 			IOptionsProvider<CollectionIndexOptions>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+
+		internal GenericMethodsWithArgument(
+			GenericMethods inner,
+			CollectionIndexOptions collectionIndexOptions)
+			: base(inner.FilteredMethods)
+		{
+			_collectionIndexOptions = collectionIndexOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 		/// <summary>
 		///     …at the given <paramref name="index" />.
 		/// </summary>
 		public GenericMethodsWithArgumentAtIndex AtIndex(int index)
 		{
-			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new GenericMethodsWithArgumentAtIndex(this, collectionIndexOptions);
+			_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+			return new GenericMethodsWithArgumentAtIndex(this, _collectionIndexOptions);
 		}
 	}
 
 	/// <summary>
 	///     Additional filters on methods with a named parameter of a specific type.
 	/// </summary>
-	public class GenericMethodsWithNamedArgument(
-		GenericMethods inner,
-		CollectionIndexOptions collectionIndexOptions,
-		StringEqualityOptions options)
-		: GenericMethodsWithArgument(inner, collectionIndexOptions),
+	public class GenericMethodsWithNamedArgument
+		: GenericMethodsWithArgument,
 			IOptionsProvider<StringEqualityOptions>,
 			IStringMatchTypeOptions
 	{
+		private readonly StringEqualityOptions _options;
+
+		internal GenericMethodsWithNamedArgument(
+			GenericMethods inner,
+			CollectionIndexOptions collectionIndexOptions,
+			StringEqualityOptions options)
+			: base(inner, collectionIndexOptions)
+		{
+			_options = options;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
 	}
 
 	/// <summary>
 	///     Additional filters on methods with a generic argument at a specific index.
 	/// </summary>
-	public class GenericMethodsWithArgumentAtIndex(
-		GenericMethods inner,
-		CollectionIndexOptions collectionIndexOptions)
-		: GenericMethods(inner.FilteredMethods),
+	public class GenericMethodsWithArgumentAtIndex
+		: GenericMethods,
 			IOptionsProvider<CollectionIndexOptions>
 	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+
+		internal GenericMethodsWithArgumentAtIndex(
+			GenericMethods inner,
+			CollectionIndexOptions collectionIndexOptions)
+			: base(inner.FilteredMethods)
+		{
+			_collectionIndexOptions = collectionIndexOptions;
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 		/// <summary>
 		///     …from end.
 		/// </summary>
 		public GenericMethods FromEnd()
 		{
-			if (collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
+			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 			{
-				collectionIndexOptions.SetMatch(match.FromEnd());
+				_collectionIndexOptions.SetMatch(match.FromEnd());
 			}
 
 			return this;

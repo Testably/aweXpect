@@ -39,15 +39,22 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Additional filters on fields with an attribute.
 	/// </summary>
-	public class FieldsWith(Filtered.Fields inner, IChangeableFilter<FieldInfo> filter) : Filtered.Fields(inner)
+	public class FieldsWith : Filtered.Fields
 	{
+		private readonly IChangeableFilter<FieldInfo> _filter;
+
+		internal FieldsWith(Filtered.Fields inner, IChangeableFilter<FieldInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
 		public FieldsWith OrWith<TAttribute>()
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, fieldInfo) => result || fieldInfo.HasAttribute<TAttribute>(),
+			_filter.UpdateFilter((result, fieldInfo) => result || fieldInfo.HasAttribute<TAttribute>(),
 				description
 					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} ");
 			return this;
@@ -63,7 +70,7 @@ public static partial class FieldFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, fieldInfo) => result || fieldInfo.HasAttribute(predicate),
 				description
 					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");

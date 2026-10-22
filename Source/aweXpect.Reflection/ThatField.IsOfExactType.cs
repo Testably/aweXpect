@@ -46,7 +46,7 @@ public static partial class ThatField
 		/// </summary>
 		public FieldOfTypeResult<TValue, TResult> OrOfExactType(Type fieldType)
 		{
-			typeFilterOptions.RegisterType(fieldType, true);
+			_typeFilterOptions.RegisterType(fieldType, true);
 			return this;
 		}
 	}

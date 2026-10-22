@@ -11,6 +11,13 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Additional filters on fields of a specific type.
 	/// </summary>
-	public partial class FieldsOfType(Filtered.Fields inner, IChangeableFilter<FieldInfo> filter)
-		: Filtered.Fields(inner);
+	public partial class FieldsOfType : Filtered.Fields
+	{
+		private readonly IChangeableFilter<FieldInfo> _filter;
+
+		internal FieldsOfType(Filtered.Fields inner, IChangeableFilter<FieldInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+	}
 }

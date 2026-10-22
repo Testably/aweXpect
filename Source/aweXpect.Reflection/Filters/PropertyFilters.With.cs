@@ -50,9 +50,15 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Additional filters on properties with an attribute.
 	/// </summary>
-	public class PropertiesWith(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter)
-		: Filtered.Properties(inner)
+	public class PropertiesWith : Filtered.Properties
 	{
+		private readonly IChangeableFilter<PropertyInfo> _filter;
+
+		internal PropertiesWith(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter) : base(inner)
+		{
+			_filter = filter;
+		}
+
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
 		/// </summary>
@@ -63,7 +69,7 @@ public static partial class PropertyFilters
 		public PropertiesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, propertyInfo) => result || propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
@@ -85,7 +91,7 @@ public static partial class PropertyFilters
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter(
+			_filter.UpdateFilter(
 				(result, propertyInfo) => result || propertyInfo.HasAttribute(predicate, inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");

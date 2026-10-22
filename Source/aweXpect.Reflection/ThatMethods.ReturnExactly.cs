@@ -78,7 +78,7 @@ public static partial class ThatMethods
 		/// </summary>
 		public MethodsReturnResult<TValue, TResult> OrReturnExactly(Type returnType)
 		{
-			typeFilterOptions.RegisterType(returnType, true);
+			_typeFilterOptions.RegisterType(returnType, true);
 			return this;
 		}
 	}
