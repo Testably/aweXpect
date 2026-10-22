@@ -24,11 +24,11 @@ public class CollectionIndexOptions
 		=> Match = match;
 
 	/// <summary>
-	///     Sets the object of the given <paramref name="option" /> to verify the index match.
+	///     Sets the object of the option named <paramref name="optionName" /> to verify the index match.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
-	public void SetMatch(IMatch match, string option)
-		=> SetIndex(match, option);
+	public void SetMatch(IMatch match, string optionName)
+		=> SetIndex(match, optionName);
 
 	/// <summary>
 	///     Only matches the item at the given zero-based <paramref name="index" />.

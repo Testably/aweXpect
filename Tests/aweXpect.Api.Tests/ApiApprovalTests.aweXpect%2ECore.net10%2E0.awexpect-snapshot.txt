@@ -1394,7 +1394,7 @@ namespace aweXpect.Options
         public void AtIndex(int index) { }
         public void AtIndexFromEnd(int index) { }
         public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match) { }
-        public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match, string option) { }
+        public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match, string optionName) { }
         public interface IMatch
         {
             string GetDescription();
@@ -1444,21 +1444,13 @@ namespace aweXpect.Options
             public override string ToString() { }
         }
     }
-    public record CollectionOrderOptions<TItem> : System.IEquatable<aweXpect.Options.CollectionOrderOptions<TItem>>
+    public class CollectionOrderOptions<TItem>
     {
-        protected CollectionOrderOptions(aweXpect.Options.CollectionOrderOptions<TItem> original) { }
         public CollectionOrderOptions() { }
-        protected virtual System.Type EqualityContract { get; }
         public bool HasComparer { get; }
-        public override bool Equals(object? obj) { }
-        public virtual bool Equals(aweXpect.Options.CollectionOrderOptions<TItem>? other) { }
         public System.Collections.Generic.IComparer<TItem> GetComparer() { }
-        public override int GetHashCode() { }
-        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
         public void SetComparer(System.Collections.Generic.IComparer<TItem> comparer) { }
         public override string ToString() { }
-        public static bool operator ==(aweXpect.Options.CollectionOrderOptions<TItem>? left, aweXpect.Options.CollectionOrderOptions<TItem>? right) { }
-        public static bool operator !=(aweXpect.Options.CollectionOrderOptions<TItem>? left, aweXpect.Options.CollectionOrderOptions<TItem>? right) { }
     }
     public sealed class DayTolerance : aweXpect.Options.TimeTolerance
     {
@@ -1525,7 +1517,6 @@ namespace aweXpect.Options
         public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
         public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult> AreConsideredEqualWithExplanation<TExpected>(TSubject actual, TExpected expected) { }
-        public aweXpect.Options.ObjectEqualityOptions<TSubject> Equals() { }
         public virtual aweXpect.Options.ObjectEqualityOptions<TSubject> ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
         public string GetExpectation(string expectedExpression, aweXpect.Core.ExpectationGrammars grammars) { }
         public string GetItemExpectation(string expected, string? itemNoun = null, string? comparison = null) { }
@@ -1571,35 +1562,18 @@ namespace aweXpect.Options
         public override string ToString() { }
         public void Within(System.TimeSpan timeout) { }
     }
-    public record SignalerOptions : System.IEquatable<aweXpect.Options.SignalerOptions>
+    public class SignalerOptions
     {
-        protected SignalerOptions(aweXpect.Options.SignalerOptions original) { }
         public SignalerOptions() { }
-        protected virtual System.Type EqualityContract { get; }
         public System.TimeSpan? Timeout { get; set; }
-        public override bool Equals(object? obj) { }
-        public virtual bool Equals(aweXpect.Options.SignalerOptions? other) { }
-        public override int GetHashCode() { }
-        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
         public override string ToString() { }
-        public static bool operator ==(aweXpect.Options.SignalerOptions? left, aweXpect.Options.SignalerOptions? right) { }
-        public static bool operator !=(aweXpect.Options.SignalerOptions? left, aweXpect.Options.SignalerOptions? right) { }
     }
-    public record SignalerOptions<TParameter> : aweXpect.Options.SignalerOptions, System.IEquatable<aweXpect.Options.SignalerOptions<TParameter>>
+    public class SignalerOptions<TParameter> : aweXpect.Options.SignalerOptions
     {
-        protected SignalerOptions(aweXpect.Options.SignalerOptions<TParameter> original) { }
         public SignalerOptions() { }
-        protected override System.Type EqualityContract { get; }
-        public override bool Equals(object? obj) { }
-        public override sealed bool Equals(aweXpect.Options.SignalerOptions? other) { }
-        public virtual bool Equals(aweXpect.Options.SignalerOptions<TParameter>? other) { }
-        public override int GetHashCode() { }
         public bool Matches(TParameter parameter) { }
-        protected override bool PrintMembers(System.Text.StringBuilder builder) { }
         public override string ToString() { }
         public void WithPredicate(System.Func<TParameter, bool> predicate, string predicateExpression) { }
-        public static bool operator ==(aweXpect.Options.SignalerOptions<TParameter>? left, aweXpect.Options.SignalerOptions<TParameter>? right) { }
-        public static bool operator !=(aweXpect.Options.SignalerOptions<TParameter>? left, aweXpect.Options.SignalerOptions<TParameter>? right) { }
     }
     public class StringEqualityOptions : aweXpect.Core.IOptionsEquality<string?>
     {
