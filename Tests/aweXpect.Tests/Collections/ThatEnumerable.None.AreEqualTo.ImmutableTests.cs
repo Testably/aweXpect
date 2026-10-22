@@ -1,4 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -13,6 +14,28 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableItemsTests
 			{
+				[Test]
+				public async Task Using_WithATypedComparer_WhenAnItemIsEqual_ShouldFail()
+				{
+					ImmutableArray<char> subject = ['a', 'b',];
+
+					async Task Act()
+						=> await That(subject).None().AreEqualTo('B').Using(new IgnoringCaseCharComparer());
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 'B' using ThatEnumerable.None.AreEqualTo.ImmutableItemsTests.IgnoringCaseCharComparer for no items,
+						             but 1 of 2 were
+
+						             Matching items:
+						             ['b']
+
+						             Collection:
+						             ['a', 'b']
+						             """);
+				}
+
 				[Test]
 				public async Task WhenEnumerableContainsEqualValues_ShouldFail()
 				{
@@ -55,6 +78,13 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).None().AreEqualTo(42);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				private sealed class IgnoringCaseCharComparer : IEqualityComparer<char>
+				{
+					public bool Equals(char x, char y) => char.ToUpperInvariant(x) == char.ToUpperInvariant(y);
+
+					public int GetHashCode(char obj) => char.ToUpperInvariant(obj).GetHashCode();
 				}
 			}
 
