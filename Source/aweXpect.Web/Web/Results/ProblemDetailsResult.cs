@@ -7,14 +7,23 @@ namespace aweXpect.Web.Results;
 /// <summary>
 ///     Result for handling additional expectations on problem details.
 /// </summary>
-public class ProblemDetailsResult<TType, TThat>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue,
-	ProblemDetailsOptions options)
-	: AndOrResult<TType, TThat, ProblemDetailsResult<TType, TThat>>(expectationBuilder, returnValue)
+public class ProblemDetailsResult<TType, TThat>
+	: AndOrResult<TType, TThat, ProblemDetailsResult<TType, TThat>>
 {
-	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
-	private readonly TThat _returnValue = returnValue;
+	private readonly ExpectationBuilder _expectationBuilder;
+	private readonly ProblemDetailsOptions _options;
+	private readonly TThat _returnValue;
+
+	internal ProblemDetailsResult(
+		ExpectationBuilder expectationBuilder,
+		TThat returnValue,
+		ProblemDetailsOptions options)
+		: base(expectationBuilder, returnValue)
+	{
+		_expectationBuilder = expectationBuilder;
+		_returnValue = returnValue;
+		_options = options;
+	}
 
 	/// <summary>
 	///     Verify that the title of the problem details object matches the expected <paramref name="title" />.
@@ -26,7 +35,7 @@ public class ProblemDetailsResult<TType, TThat>(
 	///     <see href="https://datatracker.ietf.org/doc/html/rfc7231#section-3.4" />).
 	/// </remarks>
 	public String WithTitle(string title)
-		=> new(_expectationBuilder, _returnValue, options.WithTitle(title), options);
+		=> new(_expectationBuilder, _returnValue, _options.WithTitle(title), _options);
 
 	/// <summary>
 	///     Verify that the status of the problem details object matches the expected <paramref name="status" />.
@@ -38,9 +47,9 @@ public class ProblemDetailsResult<TType, TThat>(
 	/// </remarks>
 	public ProblemDetailsResult<TType, TThat> WithStatus(int status)
 	{
-		options.WithStatus(status);
+		_options.WithStatus(status);
 		return new ProblemDetailsResult<TType, TThat>(_expectationBuilder, _returnValue,
-			options);
+			_options);
 	}
 
 	/// <summary>
@@ -51,7 +60,7 @@ public class ProblemDetailsResult<TType, TThat>(
 	///     A human-readable explanation specific to this occurrence of the problem.
 	/// </remarks>
 	public String WithDetail(string detail)
-		=> new(_expectationBuilder, _returnValue, options.WithDetail(detail), options);
+		=> new(_expectationBuilder, _returnValue, _options.WithDetail(detail), _options);
 
 	/// <summary>
 	///     Verify that the instance of the problem details object matches the expected <paramref name="instance" />.
@@ -62,25 +71,36 @@ public class ProblemDetailsResult<TType, TThat>(
 	///     information if dereferenced.
 	/// </remarks>
 	public String WithInstance(string instance) => new(_expectationBuilder,
-		_returnValue, options.WithInstance(instance), options);
+		_returnValue, _options.WithInstance(instance), _options);
 
 
 	/// <summary>
 	///     In addition to a <see cref="ProblemDetailsResult{TType,TThat}" /> allows specifying string equality settings.
 	/// </summary>
-	public class String(
-		ExpectationBuilder expectationBuilder,
-		TThat returnValue,
-		StringEqualityOptions stringEqualityOptions,
-		ProblemDetailsOptions options)
-		: AndOrResult<TType, TThat, String>(expectationBuilder, returnValue),
+	public class String
+		: AndOrResult<TType, TThat, String>,
 			IOptionsProvider<StringEqualityOptions>
 	{
-		private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
-		private readonly TThat _returnValue = returnValue;
+		private readonly ExpectationBuilder _expectationBuilder;
+		private readonly ProblemDetailsOptions _options;
+		private readonly TThat _returnValue;
+		private readonly StringEqualityOptions _stringEqualityOptions;
+
+		internal String(
+			ExpectationBuilder expectationBuilder,
+			TThat returnValue,
+			StringEqualityOptions stringEqualityOptions,
+			ProblemDetailsOptions options)
+			: base(expectationBuilder, returnValue)
+		{
+			_expectationBuilder = expectationBuilder;
+			_returnValue = returnValue;
+			_stringEqualityOptions = stringEqualityOptions;
+			_options = options;
+		}
 
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => stringEqualityOptions;
+		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _stringEqualityOptions;
 
 		/// <summary>
 		///     Verify that the title of the problem details object matches the expected <paramref name="title" />.
@@ -92,7 +112,7 @@ public class ProblemDetailsResult<TType, TThat>(
 		///     <see href="https://datatracker.ietf.org/doc/html/rfc7231#section-3.4" />).
 		/// </remarks>
 		public String WithTitle(string title)
-			=> new(_expectationBuilder, _returnValue, options.WithTitle(title), options);
+			=> new(_expectationBuilder, _returnValue, _options.WithTitle(title), _options);
 
 		/// <summary>
 		///     Verify that the status of the problem details object matches the expected <paramref name="status" />.
@@ -104,8 +124,8 @@ public class ProblemDetailsResult<TType, TThat>(
 		/// </remarks>
 		public ProblemDetailsResult<TType, TThat> WithStatus(int status)
 		{
-			options.WithStatus(status);
-			return new ProblemDetailsResult<TType, TThat>(_expectationBuilder, _returnValue, options);
+			_options.WithStatus(status);
+			return new ProblemDetailsResult<TType, TThat>(_expectationBuilder, _returnValue, _options);
 		}
 
 		/// <summary>
@@ -116,7 +136,7 @@ public class ProblemDetailsResult<TType, TThat>(
 		///     A human-readable explanation specific to this occurrence of the problem.
 		/// </remarks>
 		public String WithDetail(string detail)
-			=> new(_expectationBuilder, _returnValue, options.WithDetail(detail), options);
+			=> new(_expectationBuilder, _returnValue, _options.WithDetail(detail), _options);
 
 		/// <summary>
 		///     Verify that the instance of the problem details object matches the expected <paramref name="instance" />.
@@ -127,6 +147,6 @@ public class ProblemDetailsResult<TType, TThat>(
 		///     information if dereferenced.
 		/// </remarks>
 		public String WithInstance(string instance) => new(_expectationBuilder,
-			_returnValue, options.WithInstance(instance), options);
+			_returnValue, _options.WithInstance(instance), _options);
 	}
 }
