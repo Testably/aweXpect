@@ -76,6 +76,7 @@ These goals hold for every extension package:
 3. **Unanswerable means failed both ways.** A `null` subject, a missing element or an error while reading the subject fails the expectation and its negation instead of throwing.
 4. **Options are immutable and visible.** A package has one sealed options type (one that cannot be derived from outside, if it needs a derived type) with internal state, a copy constructor and option methods that each return a copy, passed as `Func<XmlOptions, XmlOptions>? options = null` like `XmlOptions`; no public mutable state. The options in effect are listed in the failure. `IgnoringMember` in Json and Xml takes paths, like equivalency does.
 5. **Plumbing constructors stay internal.** A result or filter class whose constructor takes plumbing (internal-purpose options, selector functions, the inner collection it decorates) or relies on state stored elsewhere gets an internal constructor, as nobody outside the package can build it meaningfully and every public constructor is permanent API; the results of `aweXpect.Core` stay public as extension points.
+6. **Entry points in `aweXpect`, everything else in `aweXpect.<Package>`.** The `That<Subject>` classes and entry extensions such as `AsJson()` need no extra `using`; results go into `aweXpect.<Package>.Results`, all other public types into `aweXpect.<Package>` or below, so that they cannot clash with Core or another package.
 
 #### aweXpect.Json
 

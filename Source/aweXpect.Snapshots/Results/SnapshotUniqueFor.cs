@@ -1,6 +1,4 @@
-using aweXpect.Snapshots;
-
-namespace aweXpect.Results;
+namespace aweXpect.Snapshots.Results;
 
 /// <summary>
 ///     The environments that a snapshot expectation can keep a snapshot of its own for, when the subject legitimately

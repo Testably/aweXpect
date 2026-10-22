@@ -5,7 +5,7 @@ using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Results;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatTypes
 {

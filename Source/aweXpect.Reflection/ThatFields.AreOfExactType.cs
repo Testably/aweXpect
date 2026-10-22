@@ -5,7 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Options;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatFields
 {

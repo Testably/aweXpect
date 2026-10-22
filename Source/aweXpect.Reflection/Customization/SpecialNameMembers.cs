@@ -1,6 +1,6 @@
 using System;
 
-namespace aweXpect.Customization;
+namespace aweXpect.Reflection;
 
 /// <summary>
 ///     The kinds of special-name methods that are included when reflecting over methods.

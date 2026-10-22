@@ -4,9 +4,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using aweXpect.Customization;
-using aweXpect.Json;
 
-namespace aweXpect.Formatting;
+namespace aweXpect.Json;
 
 /// <summary>
 ///     Formatting extensions for <see cref="JsonElement" />.

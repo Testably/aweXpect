@@ -5,13 +5,11 @@ public API of an assembly against a reviewed snapshot, so that every change of t
 request:
 
 ```csharp
-using aweXpect.Snapshots.PublicApi;
-
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
 ```
 
-The expectation and `PublicApiDeclarations.GenerateFrom(…)`, which generates the public API without an expectation, are
-in the namespace `aweXpect.Snapshots.PublicApi`.
+The expectation is in the namespace `aweXpect`, like `MatchesSnapshot()`. `PublicApiDeclarations.GenerateFrom(…)`, which
+generates the public API without an expectation, and the options are in the namespace `aweXpect.Snapshots.PublicApi`.
 
 The public API is written as C# declarations, e.g.
 

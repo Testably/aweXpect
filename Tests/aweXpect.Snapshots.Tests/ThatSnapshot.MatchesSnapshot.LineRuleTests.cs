@@ -4,6 +4,7 @@ using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.Snapshots.Results;
 using aweXpect.Snapshots.Tests.TestHelpers;
 
 namespace aweXpect.Snapshots.Tests;

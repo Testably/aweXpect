@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Reflection.Helpers;
 
-namespace aweXpect.Customization;
+namespace aweXpect.Reflection;
 
 /// <summary>
 ///     Extensions for <see cref="AwexpectCustomization.ReflectionCustomization" /> to customize aweXpect.Reflection.

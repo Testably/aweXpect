@@ -10,7 +10,7 @@ using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatMethod
 {

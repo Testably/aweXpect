@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatTypes
 {

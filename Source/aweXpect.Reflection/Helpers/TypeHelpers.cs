@@ -12,8 +12,8 @@ using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
 using MembersKey = (
 	aweXpect.Reflection.Collections.MemberScope Scope,
-	aweXpect.Customization.CompilerGeneratedMembers CompilerGenerated,
-	aweXpect.Customization.SpecialNameMembers SpecialName);
+	aweXpect.Reflection.CompilerGeneratedMembers CompilerGenerated,
+	aweXpect.Reflection.SpecialNameMembers SpecialName);
 
 namespace aweXpect.Reflection.Helpers;
 

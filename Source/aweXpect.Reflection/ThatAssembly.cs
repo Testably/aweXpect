@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 /// <summary>
 ///     Expectations on <see cref="Assembly" />.

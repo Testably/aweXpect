@@ -9,6 +9,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Results;
 
 namespace aweXpect;

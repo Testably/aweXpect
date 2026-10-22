@@ -5,6 +5,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Results;
+using aweXpect.Snapshots.Results;
 using aweXpect.Snapshots.Tests.TestHelpers;
 
 namespace aweXpect.Snapshots.Tests;

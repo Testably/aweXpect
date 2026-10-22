@@ -7,6 +7,7 @@ using aweXpect.Core.Extending;
 using aweXpect.Formatting;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.Xml.Results;
 using static aweXpect.Formatting.Format;
 
 namespace aweXpect;

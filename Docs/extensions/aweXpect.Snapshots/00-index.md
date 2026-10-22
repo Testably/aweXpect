@@ -37,7 +37,7 @@ await Expect.That(json).MatchesSnapshot().WithExtension("json");
 await Expect.That(exception.Message).MatchesSnapshot().UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
 
 // verify the public API of an assembly, written as C# declarations
-// (package and namespace aweXpect.Snapshots.PublicApi)
+// (package aweXpect.Snapshots.PublicApi)
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
 ```
 

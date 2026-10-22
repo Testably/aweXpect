@@ -64,10 +64,14 @@ logo is the one of aweXpect.
 
 ## Extension packages
 
-All extension packages put their public expectations into the namespace `aweXpect`, so that they show up next to the
-built-in ones, with the same layout as `aweXpect`: one partial class `That<Subject>` per subject, one file
-`That<Subject>.<Expectation>.cs` per expectation that also holds its negation and its constraint classes, and results
-and options in their own namespaces. `Helpers/ThrowHelper` validates arguments with `Tracing.WriteException` from
+All extension packages put their entry points into the namespace `aweXpect`, so that they show up next to the
+built-in ones without an extra `using`: the `That<Subject>` classes with the expectations and entry extensions such as
+`JsonExtensions.AsJson()` and `XmlExtensions.AsXml()`. Every other public type lives in `aweXpect.<Package>` or below,
+so that it cannot clash with Core or another package: results in `aweXpect.<Package>.Results`, the customization group
+and its types, options and formatting in `aweXpect.<Package>` (or a sub-namespace such as
+`aweXpect.Web.ContentProcessors`). The layout is the same as in `aweXpect`: one partial class `That<Subject>` per
+subject, one file `That<Subject>.<Expectation>.cs` per expectation that also holds its negation and its constraint
+classes. `Helpers/ThrowHelper` validates arguments with `Tracing.WriteException` from
 `aweXpect.Core`; `Helpers/Polyfills` (or `Polyfills/`) holds what `netstandard2.0` lacks. A new expectation touches the
 source file, its tests, an AOT check, the API snapshots, and in `Docs/extensions/<Package>` its page and the overview
 table of `00-index.md`.
@@ -131,8 +135,10 @@ User code picks a source, navigates to a member kind, filters and expects:
 - `Filters/<Kind>Filters.<Name>.cs`: filters such as `TypeFilters.WhichAreSealed`, usually with the negated twin in
   the same file.
 - `That<Kind>.<Name>.cs` for a single subject (`ThatType`, ...) and `That<Kinds>.<Name>.cs` for collections
-  (`ThatTypes`, ...); `ThatMember`/`ThatMembers` hold what all member kinds share.
-- `Customization/`: `Customize.aweXpect.Reflection()` (`DependencyResolver()`, `ExcludedAttributeTypes()`, ...);
+  (`ThatTypes`, ...), in the namespace `aweXpect` unlike the rest of the package; `ThatMember`/`ThatMembers` hold what
+  all member kinds share.
+- `Customization/` (namespace `aweXpect.Reflection`): `Customize.aweXpect.Reflection()` (`DependencyResolver()`,
+  `ExcludedAttributeTypes()`, ...);
   `ExcludedAssemblyPrefixes` comes from `aweXpect.Core`.
 - `Formatting/`: members are formatted through the wrapper `FormattableMember`, registered by a module initializer,
   so that the registration survives trimming.

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Results;
 using aweXpect.Snapshots;
-using aweXpect.Snapshots.PublicApi;
+using aweXpect.Snapshots.Results;
 using TUnit.Core;
 using static aweXpect.Expect;
 

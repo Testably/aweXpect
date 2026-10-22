@@ -3,11 +3,12 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Reflection;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatMethod
 {

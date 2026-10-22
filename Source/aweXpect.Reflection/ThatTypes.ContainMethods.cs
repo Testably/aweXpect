@@ -9,13 +9,14 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
+using aweXpect.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatTypes
 {

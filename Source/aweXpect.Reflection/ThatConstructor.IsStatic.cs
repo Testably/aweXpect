@@ -6,7 +6,7 @@ using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Results;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatConstructor
 {

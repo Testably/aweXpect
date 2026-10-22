@@ -2,8 +2,9 @@ using System;
 using System.Xml.Linq;
 using aweXpect.Core;
 using aweXpect.Helpers;
+using aweXpect.Results;
 
-namespace aweXpect.Results;
+namespace aweXpect.Xml.Results;
 
 /// <summary>
 ///     An <see cref="AndOrResult{TType,TThat}" /> for XML strings.
