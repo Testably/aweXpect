@@ -20,9 +20,9 @@ public interface IJsonPropertyResult<out TReturn>
 	public TReturn AnArray();
 
 	/// <summary>
-	///     Add an expectation that the property value is an array which satisfies the <paramref name="expectation" />.
+	///     Add an expectation that the property value is an array which satisfies the <paramref name="expectations" />.
 	/// </summary>
-	public TReturn AnArray(Action<IJsonArrayResult> expectation);
+	public TReturn AnArray(Action<IJsonArrayResult> expectations);
 
 	/// <summary>
 	///     Add an expectation that the property value is an object.
@@ -30,9 +30,9 @@ public interface IJsonPropertyResult<out TReturn>
 	public TReturn AnObject();
 
 	/// <summary>
-	///     Add an expectation that the property value is an object which satisfies the <paramref name="expectation" />.
+	///     Add an expectation that the property value is an object which satisfies the <paramref name="expectations" />.
 	/// </summary>
-	public TReturn AnObject(Action<IJsonObjectResult> expectation);
+	public TReturn AnObject(Action<IJsonObjectResult> expectations);
 
 	/// <summary>
 	///     Add an expectation that the property value is a string.

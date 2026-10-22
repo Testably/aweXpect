@@ -29,15 +29,15 @@ public static partial class ThatNullableJsonElement
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />
-	///     whose value satisfies the <paramref name="expectation" />.
+	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static IsArrayResult<JsonElement?> IsArray(
 		this IThat<JsonElement?> subject,
-		Func<IJsonArrayResult, IJsonArrayResult> expectation,
+		Action<IJsonArrayResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
-		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonOptions jsonOptions = new()
 		{
 			IgnoreAdditionalProperties = true,
@@ -48,8 +48,8 @@ public static partial class ThatNullableJsonElement
 		}
 
 		return new IsArrayResult<JsonElement?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
-				static (s, it, grammar) => new IsArrayConstraint(it, grammar, s.Expectation, s.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
+				static (s, it, grammar) => new IsArrayConstraint(it, grammar, s.Expectations, s.Options)),
 			subject,
 			static element => element.GetValueOrDefault());
 	}
@@ -57,7 +57,7 @@ public static partial class ThatNullableJsonElement
 	private sealed class IsArrayConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Func<IJsonArrayResult, IJsonArrayResult> expectation,
+		Action<IJsonArrayResult> expectations,
 		JsonOptions options)
 		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
 			IAsyncContextConstraint<JsonElement?>
@@ -69,7 +69,7 @@ public static partial class ThatNullableJsonElement
 		{
 			Actual = actual;
 			_jsonValidation = new JsonValidation(actual, JsonValueKind.Array, options, context);
-			_jsonValidation.Invoke(expectation);
+			_jsonValidation.Invoke(expectations);
 			await _jsonValidation.ValidateAsync(cancellationToken);
 
 			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;

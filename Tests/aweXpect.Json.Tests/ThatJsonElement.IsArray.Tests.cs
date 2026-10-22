@@ -406,8 +406,8 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsArray(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expectation").And
-					.WithMessage("The 'expectation' cannot be null.").AsPrefix();
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
 			[Test]
