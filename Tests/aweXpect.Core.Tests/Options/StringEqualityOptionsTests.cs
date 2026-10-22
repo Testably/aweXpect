@@ -49,10 +49,10 @@ public sealed partial class StringEqualityOptionsTests
 				? async () =>
 				{
 					await Task.Yield();
-					return StringMatchResult.NotComparable("it is not comparable", cause);
+					return StringMatchResult.FailureBothWays("is not comparable", cause);
 				}
 				: () => new ValueTask<StringMatchResult>(
-					StringMatchResult.NotComparable("it is not comparable", cause))), "AsCustom");
+					StringMatchResult.FailureBothWays("is not comparable", cause))), "AsCustom");
 
 			async Task Act() => await sut.AreConsideredEqual("foo", expected);
 
@@ -60,7 +60,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
 				.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
 				.WithInner<NotComparableException>(inner => inner
-					.HasMessage("it is not comparable").And
+					.HasMessage("is not comparable").And
 					.Whose(e => e.InnerException, innerCause => innerCause.IsSameAs(cause)))
 				.Because("the evaluation fails both ways for a subject that the match type cannot compare, in every consumer");
 		}
@@ -457,14 +457,14 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<StringMatchResult>(
-				StringMatchResult.NotComparable("it is not comparable"))), "AsCustom");
+				StringMatchResult.FailureBothWays("is not comparable"))), "AsCustom");
 
 			async Task Act() => await sut.CountOccurrences("foo", "f");
 
 			await That(Act).Throws<UserCodeException>()
 				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
 				.WithInner<NotComparableException>(inner => inner
-					.HasMessage("it is not comparable").And
+					.HasMessage("is not comparable").And
 					.Whose(e => e.InnerException, cause => cause.IsNull()))
 				.Because("every comparison by the match type fails both ways when it cannot compare its subject");
 		}

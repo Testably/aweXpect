@@ -1146,7 +1146,7 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await That(subject).Whose(x => x.Second, second => second.Get().ExpectationBuilder
 				.AddConstraint((_, _) => new DescribingConstraint<int>("the second",
-					new UserCodeException(new NotComparableException("it was no number", null)))));
+					new UserCodeException(new NotComparableException("was no number", null)))));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -1154,7 +1154,7 @@ public class ExpectationBuilderTests
 			             whose Second is described,
 			             but Second was no number
 			             """)
-			.Because("the leading \"it\" of the reason stands for the member that could not be compared");
+			.Because("the reason follows the member that could not be compared");
 	}
 
 	[Test]
@@ -1189,7 +1189,7 @@ public class ExpectationBuilderTests
 		{
 			"not answered" => new UnansweredItemException(
 				new DummyConstraintResult(Outcome.FailureBothWays, "is valid", "it was broken"), "foo"),
-			"not comparable" => new UserCodeException(new NotComparableException("it was no number", null)),
+			"not comparable" => new UserCodeException(new NotComparableException("was no number", null)),
 			"throws" => new UserCodeException(new InvalidOperationException("boom"), "the predicate"),
 			"throws for an item" => new UserCodeException(new InvalidOperationException("boom"), "the predicate", 2),
 			_ => null,

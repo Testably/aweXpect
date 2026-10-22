@@ -164,10 +164,11 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   expected value that it cannot use: the first throws at the call that specifies the conflict, the second for every
   subject, also when nothing is compared with the expected value, e.g. for an empty collection. Its
   `AreConsideredEqual` returns whether the strings are equal as a `StringMatchResult`, to which a `bool` converts, or
-  `StringMatchResult.NotComparable(reason)` for a subject that it cannot compare at all, e.g. a string that is no valid
-  JSON: the expectation and its negation then both fail, with the reason as the result, e.g. "it could not be parsed
-  as JSON". Start the reason with "it": aweXpect replaces it with the member name inside `Whose`, or with "an item" in
-  a collection, so name the value in the reason as well.
+  `StringMatchResult.FailureBothWays(reason)` for a subject that it cannot compare at all, e.g. a string that is no
+  valid JSON: the expectation and its negation then both fail, with the reason as the result. Like
+  [`PredicateResult.FailureBothWays`](./01-generated-expectations.md#questions-that-cannot-be-answered), the reason
+  follows "it", e.g. "could not be parsed as JSON" in "but it could not be parsed as JSON". Inside `Whose` it follows
+  the member name instead, and in a collection "an item", so name the value in the reason as well.
 
 <details>
 <summary>Match results, multi-line texts and equivalency</summary>

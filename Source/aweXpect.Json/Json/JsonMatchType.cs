@@ -67,8 +67,8 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 		}
 		catch (JsonException e)
 		{
-			return StringMatchResult.NotComparable(
-				$"it was {Formatter.Format(actual)}, which could not be parsed as JSON: {e.Message}", e);
+			return StringMatchResult.FailureBothWays(
+				$"was {Formatter.Format(actual)}, which could not be parsed as JSON: {e.Message}", e);
 		}
 
 		using (actualJson)

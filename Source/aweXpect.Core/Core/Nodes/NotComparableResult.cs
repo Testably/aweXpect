@@ -7,14 +7,14 @@ namespace aweXpect.Core.Nodes;
 
 /// <summary>
 ///     The result of a node whose constraint could not compare the subject, because a match type answered
-///     <see cref="StringMatchResult.NotComparable(string, Exception)" />.
+///     <see cref="StringMatchResult.FailureBothWays(string, Exception)" />.
 /// </summary>
 /// <remarks>
 ///     Like <see cref="MemberExceptionResult" />, it fails the expectation and its negation alike, with the reason of the
 ///     match type as the result.
 ///     <para />
-///     A leading "it" of the reason is replaced with the compared string as the constraint calls it, e.g. the member
-///     name inside <c>Whose</c>, or with "an item" (a dictionary: "a value") when the constraint verifies a collection.
+///     The reason follows the compared string as the constraint calls it, e.g. "it", the member name inside
+///     <c>Whose</c>, or "an item" (a dictionary: "a value") when the constraint verifies a collection.
 /// </remarks>
 internal sealed class NotComparableResult<T> : ConstraintResult
 {
@@ -27,13 +27,7 @@ internal sealed class NotComparableResult<T> : ConstraintResult
 		: base(inner.FurtherProcessingStrategy)
 	{
 		_inner = inner;
-		_reason = reason.StartsWith(It + " ", StringComparison.Ordinal)
-#if NET8_0_OR_GREATER
-			? string.Concat(GetSubject(it, value), reason.AsSpan(It.Length))
-#else
-			? GetSubject(it, value) + reason.Substring(It.Length)
-#endif
-			: reason;
+		_reason = $"{GetSubject(it, value)} {reason}";
 		_value = value;
 		FailureCause = cause;
 		Outcome = Outcome.FailureBothWays;

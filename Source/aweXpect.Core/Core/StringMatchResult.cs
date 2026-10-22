@@ -41,18 +41,18 @@ public readonly struct StringMatchResult
 	///     succeeding.
 	/// </summary>
 	/// <param name="reason">
-	///     The result text of the failure, which starts with "it" for the compared string, e.g.
-	///     <c>it was "foo", which could not be parsed as JSON: …</c>.
+	///     Why the subject could not be compared, which follows "it" in the failure message, e.g.
+	///     <c>was "foo", which could not be parsed as JSON: …</c> in
+	///     <c>but it was "foo", which could not be parsed as JSON: …</c>.
 	/// </param>
 	/// <param name="cause">The exception that explains the <paramref name="reason" />, reported as the failure cause.</param>
 	/// <remarks>
-	///     The leading "it" of the <paramref name="reason" /> is replaced with the name of the compared string in the
-	///     failure message, e.g. with the member name inside <c>Whose</c>, or with "an item" (in a dictionary
-	///     "a value") when the expectation is on a collection. A reason that does not start with "it" followed by a
-	///     space is shown unchanged. Name the compared value in the reason, as "an item" does not say which one.
+	///     Instead of "it", the <paramref name="reason" /> follows the name of the compared string in the failure
+	///     message, e.g. the member name inside <c>Whose</c>, or "an item" (in a dictionary "a value") when the
+	///     expectation is on a collection. Name the compared value in the reason, as "an item" does not say which one.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="reason" /> is <see langword="null" />.</exception>
-	public static StringMatchResult NotComparable(string reason, Exception? cause = null)
+	public static StringMatchResult FailureBothWays(string reason, Exception? cause = null)
 	{
 		reason.ThrowIfNull();
 		return new StringMatchResult(false, reason, cause);

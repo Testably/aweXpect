@@ -3,7 +3,7 @@
 namespace aweXpect.Core.Helpers;
 
 /// <summary>
-///     Carries a <see cref="StringMatchResult.NotComparable(string, Exception)" /> answer of a match type inside a
+///     Carries a <see cref="StringMatchResult.FailureBothWays(string, Exception)" /> answer of a match type inside a
 ///     <see cref="UserCodeException" />, so that every expectation and every collection treats it like code of the caller
 ///     that answered nothing, and fails in both polarities.
 /// </summary>

@@ -524,7 +524,7 @@ namespace aweXpect.Core
     public readonly struct StringMatchResult
     {
         public bool IsEqual { get; }
-        public static aweXpect.Core.StringMatchResult NotComparable(string reason, System.Exception? cause = null) { }
+        public static aweXpect.Core.StringMatchResult FailureBothWays(string reason, System.Exception? cause = null) { }
         public static implicit operator aweXpect.Core.StringMatchResult(bool isEqual) { }
     }
     [System.Diagnostics.DebuggerDisplay("ThatBoolSubject: {ExpectationBuilder}")]

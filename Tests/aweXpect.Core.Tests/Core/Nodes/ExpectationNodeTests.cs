@@ -882,7 +882,7 @@ public class ExpectationNodeTests
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new ThrowingConstraint<Dictionary<int, string>>(
-			new UserCodeException(new NotComparableException("it was \"foo\"", null))), it);
+			new UserCodeException(new NotComparableException("was \"foo\"", null))), it);
 
 		ConstraintResult result = await node.IsMetBy(new Dictionary<int, string> { [1] = "foo", }, null!,
 			CancellationToken.None);
@@ -899,7 +899,7 @@ public class ExpectationNodeTests
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new ThrowingConstraint<string[]>(
-			new UserCodeException(new NotComparableException("it was \"foo\"", null))), it);
+			new UserCodeException(new NotComparableException("was \"foo\"", null))), it);
 
 		ConstraintResult result = await node.IsMetBy(new[] { "foo", }, null!, CancellationToken.None);
 
@@ -915,7 +915,7 @@ public class ExpectationNodeTests
 		FormatException? cause = hasCause ? new FormatException("no number") : null;
 		ExpectationNode node = new();
 		node.AddConstraint(new ThrowingConstraint<int>(
-			new UserCodeException(new NotComparableException("it was \"foo\",\nwhich is no number", cause))));
+			new UserCodeException(new NotComparableException("was \"foo\",\nwhich is no number", cause))));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
@@ -931,34 +931,16 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
-	[Arguments("item \"foo\" is no number")]
-	[Arguments("its value \"foo\" is no number")]
-	[Arguments("It was \"foo\", which is no number")]
-	[Arguments("\"foo\" is no number")]
-	public async Task IsMetBy_WhenConstraintCannotCompareTheSubject_ShouldKeepAReasonThatDoesNotStartWithIt(
-		string reason)
-	{
-		ExpectationNode node = new();
-		node.AddConstraint(new ThrowingConstraint<string>(
-			new UserCodeException(new NotComparableException(reason, null))), "Json");
-
-		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
-
-		await That(result.GetResultText()).IsEqualTo(reason)
-			.Because("only a leading \"it\" stands for the compared string");
-	}
-
-	[Test]
 	public async Task IsMetBy_WhenConstraintCannotCompareTheSubject_ShouldNameTheMemberInTheReason()
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new ThrowingConstraint<string>(
-			new UserCodeException(new NotComparableException("it was \"foo\", which is no number", null))), "Json");
+			new UserCodeException(new NotComparableException("was \"foo\", which is no number", null))), "Json");
 
 		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
 
 		await That(result.GetResultText()).IsEqualTo("Json was \"foo\", which is no number")
-			.Because("the reason names the compared string like the constraint does");
+			.Because("the reason follows the compared string as the constraint calls it");
 	}
 
 	[Test]
