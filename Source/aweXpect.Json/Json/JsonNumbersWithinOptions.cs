@@ -9,7 +9,7 @@ namespace aweXpect.Json;
 ///     The <see cref="JsonOptions" /> directly after <see cref="JsonOptionsExtensions.ComparingNumbersWithin" />, whose
 ///     tolerance can still be made relative to the expected value, e.g. via <c>Percent()</c>.
 /// </summary>
-public sealed record JsonNumbersWithinOptions
+public sealed class JsonNumbersWithinOptions
 	: JsonOptions, IWithinToleranceResult<JsonOptions, double>, IRelativeToleranceOptions<double>
 {
 	private readonly double _tolerance;

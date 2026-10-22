@@ -79,8 +79,9 @@ table of `00-index.md`.
 - `ThatJsonElement.*`, `ThatNullableJsonElement.*`, `ThatJsonNode.*`: the same expectations for `JsonElement`,
   `JsonElement?` and `JsonNode` (`Matches`, `MatchesExactly`, `IsObject`, `IsArray`, ...); the file without a suffix
   holds the shared constraints. `ThatJsonObject.*`: `IsJsonSerializable`, `IsJsonSerializedAs` on any object.
-- `Json/` (namespace `aweXpect.Json`): `JsonOptions` and its extensions, listed in the "JSON options" context of a
-  failure; `JsonElementValidator` reports each difference by its JSON path; `ExpectationJsonConverter` serializes
+- `Json/` (namespace `aweXpect.Json`): `JsonOptions` and its extensions; a new option must be copied in the internal
+  copy constructor and listed in the "JSON options" context of a failure; `JsonElementValidator` reports each
+  difference by its JSON path; `ExpectationJsonConverter` serializes
   expected values and the `It.Is...` expectations inside them, anything but JSON values by reflection behind
   `ReflectionFallback.IsSupported`; `Customize.aweXpect.Json()` with the default document and serializer options.
 - On `netstandard2.0` the `System.Text.Json` package is used, on `net8.0`/`net10.0` the framework, so behaviour can
