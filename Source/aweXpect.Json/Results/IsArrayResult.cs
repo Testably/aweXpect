@@ -13,13 +13,13 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     <seealso cref="AndOrResult{TType,TThat}" />
 /// </remarks>
-public class IsArrayResult<TType> : AndOrResult<TType, IThat<TType>>
+public class IsArrayResult<TType, TThat> : AndOrResult<TType, TThat>
 {
 	private readonly Func<TType, JsonElement> _arrayAccessor;
 
 	internal IsArrayResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TType> returnValue,
+		TThat returnValue,
 		Func<TType, JsonElement> arrayAccessor)
 		: base(expectationBuilder, returnValue)
 	{

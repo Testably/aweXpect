@@ -18,7 +18,7 @@ public static partial class ThatJsonElement
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />.
 	/// </summary>
-	public static IsArrayResult<JsonElement> IsArray(this IThat<JsonElement> subject)
+	public static IsArrayResult<JsonElement, IThat<JsonElement>> IsArray(this IThat<JsonElement> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Array)),
@@ -29,7 +29,7 @@ public static partial class ThatJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />
 	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
-	public static IsArrayResult<JsonElement> IsArray(this IThat<JsonElement> subject,
+	public static IsArrayResult<JsonElement, IThat<JsonElement>> IsArray(this IThat<JsonElement> subject,
 		Action<IJsonArrayResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
@@ -43,7 +43,7 @@ public static partial class ThatJsonElement
 			jsonOptions = options(jsonOptions);
 		}
 
-		return new IsArrayResult<JsonElement>(
+		return new IsArrayResult<JsonElement, IThat<JsonElement>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
 				static (s, it, grammar) => new IsArrayConstraint(it, grammar, s.Expectations, s.Options)),
 			subject,

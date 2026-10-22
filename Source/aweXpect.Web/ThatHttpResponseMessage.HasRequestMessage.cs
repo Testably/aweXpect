@@ -12,6 +12,7 @@ public static partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Verifies that the response has a request message which satisfies the <paramref name="expectations" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasRequestMessage(this IThat<HttpResponseMessage?> subject, Action<IThat<HttpRequestMessage>> expectations)
 	{

@@ -11,7 +11,7 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> is a <see cref="JsonValueKind.String" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsString(this IThat<JsonElement?> subject)
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsString(this IThat<JsonElement?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.String)),

@@ -12,7 +12,7 @@ public static partial class ThatNullableJsonElement
 	///     <see cref="JsonValueKind.False" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsBoolean(this IThat<JsonElement?> subject)
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsBoolean(this IThat<JsonElement?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.True)),

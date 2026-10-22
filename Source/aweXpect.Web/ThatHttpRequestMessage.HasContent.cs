@@ -35,6 +35,7 @@ public static partial class ThatHttpRequestMessage
 	/// <summary>
 	///     Verifies that the string content satisfies the <paramref name="expectations" />
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasContent(this IThat<HttpRequestMessage?> subject, Action<IThat<string?>> expectations)
 	{

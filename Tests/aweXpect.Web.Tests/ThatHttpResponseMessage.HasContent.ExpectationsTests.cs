@@ -64,6 +64,23 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenSubjectIsNull_Negated_ShouldFail()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasContent(which => which.IsEmpty()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content which is not empty,
+					             but it was <null>
+					             """)
+					.Because("a null subject has no content, so the negated expectation fails as well");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;

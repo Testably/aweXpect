@@ -15,7 +15,7 @@ public static partial class ThatJsonNode
 	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Array" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static IsArrayResult<TNode?> IsArray<TNode>(
+	public static IsArrayResult<TNode?, IThat<TNode?>> IsArray<TNode>(
 		this IThat<TNode?> subject)
 		where TNode : JsonNode
 		=> new(
@@ -30,7 +30,7 @@ public static partial class ThatJsonNode
 	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static IsArrayResult<TNode?> IsArray<TNode>(
+	public static IsArrayResult<TNode?, IThat<TNode?>> IsArray<TNode>(
 		this IThat<TNode?> subject,
 		Action<IJsonArrayResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
@@ -46,7 +46,7 @@ public static partial class ThatJsonNode
 			jsonOptions = options(jsonOptions);
 		}
 
-		return new IsArrayResult<TNode?>(
+		return new IsArrayResult<TNode?, IThat<TNode?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
 				static (s, it, grammar) => new JsonNodeConstraint<TNode>(
 					new ThatJsonElement.IsArrayConstraint(it, grammar, s.Expectations, s.Options))),

@@ -10,6 +10,16 @@ public sealed partial class ThatNullableJsonElement
 		public sealed class Tests
 		{
 			[Test]
+			public async Task ShouldReturnTheSubject()
+			{
+				JsonElement? subject = FromString("[1, 2]");
+
+				JsonElement result = await That(subject).IsArray();
+
+				await That(result.GetRawText()).IsEqualTo("[1, 2]");
+			}
+
+			[Test]
 			[Arguments("[]")]
 			[Arguments("[1, 2]")]
 			public async Task WhenJsonIsAnArray_ShouldSucceed(string json)
