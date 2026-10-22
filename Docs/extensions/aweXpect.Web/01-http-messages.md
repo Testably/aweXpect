@@ -15,7 +15,7 @@ Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 
 | Expectation                                    | Negated                       | Summary                                         |
 |------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
+| [`HasStatusCode`](#status-code)                | `HasStatusCode().NotEqualTo`  | has the expected status code or status category |
 | [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
 | [`HasContentType`](#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
 | [`HasContent`](#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |
@@ -150,7 +150,7 @@ HttpResponseMessage response = await httpClient.GetAsync("https://music.example.
 
 await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
 await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
-await Expect.That(response).HasStatusCode().DifferentTo(HttpStatusCode.NotFound);
+await Expect.That(response).HasStatusCode().NotEqualTo(HttpStatusCode.NotFound);
 await Expect.That(response).HasStatusCode().Success();
 ```
 
