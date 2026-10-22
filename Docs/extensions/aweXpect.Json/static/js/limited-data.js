@@ -192,6 +192,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
         "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
+      },
+      {
+        "sha": "3f14b764acef36ea8d2763d49ef1cd98ed2ac735",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
+        "message": "refactor: add the subject contexts of a member with its result (#1928)"
       }
     ],
     "labels": [
@@ -226,7 +232,8 @@ window.BENCHMARK_DATA = {
       "97d79191",
       "97f51880",
       "f79b883b",
-      "a1c8667e"
+      "a1c8667e",
+      "3f14b764"
     ],
     "datasets": [
       {
@@ -264,7 +271,8 @@ window.BENCHMARK_DATA = {
           1601.9165273393903,
           2197.015807088216,
           1174.8853366851806,
-          2131.5558389936173
+          2131.5558389936173,
+          2046.8553584416707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -304,6 +312,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -353,7 +362,8 @@ window.BENCHMARK_DATA = {
           10721.465897878012,
           15443.832589285714,
           7778.864825112479,
-          16832.94936479841
+          16832.94936479841,
+          14981.221607753208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -365,6 +375,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -602,6 +613,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
         "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
+      },
+      {
+        "sha": "3f14b764acef36ea8d2763d49ef1cd98ed2ac735",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
+        "message": "refactor: add the subject contexts of a member with its result (#1928)"
       }
     ],
     "labels": [
@@ -636,7 +653,8 @@ window.BENCHMARK_DATA = {
       "97d79191",
       "97f51880",
       "f79b883b",
-      "a1c8667e"
+      "a1c8667e",
+      "3f14b764"
     ],
     "datasets": [
       {
@@ -674,7 +692,8 @@ window.BENCHMARK_DATA = {
           1114.5266417185464,
           1507.6570645845854,
           878.1713756833758,
-          1545.1688162939888
+          1545.1688162939888,
+          1476.872562789917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -714,6 +733,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -763,7 +783,8 @@ window.BENCHMARK_DATA = {
           10066.734174455914,
           14127.25613948277,
           7033.082346779959,
-          15707.672853597005
+          15707.672853597005,
+          13837.580308096749
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -775,6 +796,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -952,6 +974,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
         "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
+      },
+      {
+        "sha": "3f14b764acef36ea8d2763d49ef1cd98ed2ac735",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
+        "message": "refactor: add the subject contexts of a member with its result (#1928)"
       }
     ],
     "labels": [
@@ -976,7 +1004,8 @@ window.BENCHMARK_DATA = {
       "97d79191",
       "97f51880",
       "f79b883b",
-      "a1c8667e"
+      "a1c8667e",
+      "3f14b764"
     ],
     "datasets": [
       {
@@ -1004,7 +1033,8 @@ window.BENCHMARK_DATA = {
           3501.7272371927897,
           4485.363613673619,
           2777.8956672668455,
-          4776.660699697642
+          4776.660699697642,
+          4606.327459208171
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1034,6 +1064,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1073,7 +1104,8 @@ window.BENCHMARK_DATA = {
           29030.70849609375,
           42512.71323649088,
           20516.62876180013,
-          48358.50747070312
+          48358.50747070312,
+          45929.58799156776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1106,7 +1138,8 @@ window.BENCHMARK_DATA = {
           61925,
           61932,
           61925,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1252,6 +1285,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
         "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
+      },
+      {
+        "sha": "3f14b764acef36ea8d2763d49ef1cd98ed2ac735",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
+        "message": "refactor: add the subject contexts of a member with its result (#1928)"
       }
     ],
     "labels": [
@@ -1276,7 +1315,8 @@ window.BENCHMARK_DATA = {
       "97d79191",
       "97f51880",
       "f79b883b",
-      "a1c8667e"
+      "a1c8667e",
+      "3f14b764"
     ],
     "datasets": [
       {
@@ -1304,7 +1344,8 @@ window.BENCHMARK_DATA = {
           7407.413481140136,
           9771.232131958008,
           5127.596918546236,
-          9587.895145961216
+          9587.895145961216,
+          9251.588331095378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1334,6 +1375,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -1373,7 +1415,8 @@ window.BENCHMARK_DATA = {
           202532.80174153644,
           299324.87050083705,
           152781.32890973773,
-          315717.14283854165
+          315717.14283854165,
+          283372.5191731771
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1405,6 +1448,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521572,
+          521594,
           521594,
           521594
         ],
@@ -1552,6 +1596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
         "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
+      },
+      {
+        "sha": "3f14b764acef36ea8d2763d49ef1cd98ed2ac735",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
+        "message": "refactor: add the subject contexts of a member with its result (#1928)"
       }
     ],
     "labels": [
@@ -1576,7 +1626,8 @@ window.BENCHMARK_DATA = {
       "97d79191",
       "97f51880",
       "f79b883b",
-      "a1c8667e"
+      "a1c8667e",
+      "3f14b764"
     ],
     "datasets": [
       {
@@ -1604,7 +1655,8 @@ window.BENCHMARK_DATA = {
           2245.8750046321325,
           3205.0483155931747,
           1676.6978022711617,
-          3010.336138505202
+          3010.336138505202,
+          2871.3744498661586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1637,7 +1689,8 @@ window.BENCHMARK_DATA = {
           1520,
           1520,
           1520,
-          1520
+          1520,
+          1488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1673,7 +1726,8 @@ window.BENCHMARK_DATA = {
           1516.0781600134712,
           2222.953760274251,
           1158.0236474550688,
-          2021.67365620931
+          2021.67365620931,
+          1912.8669816335043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1685,6 +1739,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -1852,6 +1907,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 16:16:03 2026 \u002B0200",
         "message": "refactor: evaluate junctions and members without a state machine when they complete synchronously (#1925)"
+      },
+      {
+        "sha": "3f14b764acef36ea8d2763d49ef1cd98ed2ac735",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 13:17:03 2026 \u002B0200",
+        "message": "refactor: add the subject contexts of a member with its result (#1928)"
       }
     ],
     "labels": [
@@ -1876,7 +1937,8 @@ window.BENCHMARK_DATA = {
       "97d79191",
       "97f51880",
       "f79b883b",
-      "a1c8667e"
+      "a1c8667e",
+      "3f14b764"
     ],
     "datasets": [
       {
@@ -1904,7 +1966,8 @@ window.BENCHMARK_DATA = {
           1585.805462019784,
           2119.819747161865,
           1207.1791021982829,
-          2129.4809221903483
+          2129.4809221903483,
+          1966.383458651029
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1934,6 +1997,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -1973,7 +2037,8 @@ window.BENCHMARK_DATA = {
           1425.9610136667886,
           2105.7115513937815,
           1025.186627115522,
-          2086.1418781280518
+          2086.1418781280518,
+          1773.6867111206054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1985,6 +2050,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
