@@ -204,6 +204,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -240,7 +246,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -280,7 +287,8 @@ window.BENCHMARK_DATA = {
           1170.6100504738945,
           1154.5706361134846,
           711.2317175547282,
-          719.7157611846924
+          719.7157611846924,
+          736.1542265074594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -325,6 +333,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680
         ],
         "borderColor": "#63A2AC",
@@ -373,7 +382,8 @@ window.BENCHMARK_DATA = {
           896.7279643331256,
           901.9242165247599,
           528.7200314658029,
-          893.1676001915565
+          893.1676001915565,
+          954.3429508209229
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -385,6 +395,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -636,6 +647,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -672,7 +689,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -712,7 +730,8 @@ window.BENCHMARK_DATA = {
           111.29013929196766,
           132.50144868237632,
           66.64448984180179,
-          130.69004251162212
+          130.69004251162212,
+          124.49925249417623
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -752,6 +771,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -805,7 +825,8 @@ window.BENCHMARK_DATA = {
           200.78480971654255,
           205.1376645054136,
           124.35755094460079,
-          209.21175316969553
+          209.21175316969553,
+          240.19428202311198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -817,6 +838,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1068,6 +1090,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -1104,7 +1132,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -1144,7 +1173,8 @@ window.BENCHMARK_DATA = {
           1980.9812856038411,
           1977.289096069336,
           1049.5766428538732,
-          1966.9107182820637
+          1966.9107182820637,
+          2039.2559642791748
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1184,6 +1214,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -1237,7 +1268,8 @@ window.BENCHMARK_DATA = {
           1552.2420616149902,
           1512.7539837176982,
           908.0721103123257,
-          1540.6329128265381
+          1540.6329128265381,
+          1586.3671766916912
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1282,7 +1314,8 @@ window.BENCHMARK_DATA = {
           1985,
           1985,
           1985,
-          1897
+          1897,
+          1985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1440,6 +1473,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -1466,7 +1505,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -1496,7 +1536,8 @@ window.BENCHMARK_DATA = {
           2763.2594356536865,
           2919.7231847127277,
           1490.4613763264247,
-          2834.640362372765
+          2834.640362372765,
+          2831.4446551005044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1530,6 +1571,7 @@ window.BENCHMARK_DATA = {
           3272,
           3040,
           3040,
+          2984,
           2984,
           2984
         ],
@@ -1569,7 +1611,8 @@ window.BENCHMARK_DATA = {
           3767.8979682922363,
           3834.396863301595,
           2232.48811176845,
-          3852.878252301897
+          3852.878252301897,
+          3938.911771921011
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1604,6 +1647,7 @@ window.BENCHMARK_DATA = {
           4011,
           4012,
           4011,
+          4012,
           4012
         ],
         "borderColor": "#FF671B",
@@ -1762,6 +1806,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -1788,7 +1838,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -1818,7 +1869,8 @@ window.BENCHMARK_DATA = {
           399.8128883997599,
           387.8020243985312,
           198.4645882203029,
-          388.4617517153422
+          388.4617517153422,
+          399.31869277954104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1848,6 +1900,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -1891,7 +1944,8 @@ window.BENCHMARK_DATA = {
           2405.7865361531576,
           2231.002249791072,
           1374.5994678224836,
-          2374.433030264718
+          2374.433030264718,
+          2382.8250244140627
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1903,6 +1957,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2084,6 +2139,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -2110,7 +2171,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -2140,7 +2202,8 @@ window.BENCHMARK_DATA = {
           3509.375325884138,
           3592.7428144727432,
           1896.9206330435616,
-          3620.302424294608
+          3620.302424294608,
+          3734.808134812575
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2170,6 +2233,7 @@ window.BENCHMARK_DATA = {
           3697,
           3697,
           3697,
+          3673,
           3673,
           3673,
           3673,
@@ -2213,7 +2277,8 @@ window.BENCHMARK_DATA = {
           278520.2537184495,
           275167.0759765625,
           167699.294921875,
-          279844.88548177085
+          279844.88548177085,
+          284153.57158203126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2245,6 +2310,7 @@ window.BENCHMARK_DATA = {
           17609,
           17608,
           17608,
+          17609,
           17609,
           17609,
           17609,
