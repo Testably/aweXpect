@@ -231,9 +231,12 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 			}
 
 			ValueTask<bool> moveNext = source.MoveNext();
-			return moveNext.IsCompletedSuccessfully
-				? new ValueTask<bool>(Continue(moveNext.Result, index))
-				: AwaitMoveNext(moveNext, index);
+			if (!moveNext.IsCompletedSuccessfully)
+			{
+				return AwaitMoveNext(moveNext, index);
+			}
+
+			return new ValueTask<bool>(Continue(moveNext.Result, index));
 		}
 
 		/// <inheritdoc />

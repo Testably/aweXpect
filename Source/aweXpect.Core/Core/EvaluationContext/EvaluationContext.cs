@@ -162,27 +162,7 @@ internal class EvaluationContext : IEvaluationContext
 
 	private async Task ReleaseAll()
 	{
-		foreach (string key in EvaluationContextExtensions.MaterializationKeys)
-		{
-			if (!TryReceive(key, out MaterializationCache? cache))
-			{
-				continue;
-			}
-
-			for (int i = 0; i < cache.Count; i++)
-			{
-				if (cache.GetMaterialized(i) is not IMaterialization materialization)
-				{
-					continue;
-				}
-
-				Task release = materialization.ReleaseSource();
-				if (!release.IsCompleted)
-				{
-					await AwaitOrAbandon(release);
-				}
-			}
-		}
+		await ReleaseMaterializedSources();
 
 		if (_extras is null)
 		{
@@ -209,6 +189,31 @@ internal class EvaluationContext : IEvaluationContext
 			foreach (EvaluationContext check in checks)
 			{
 				await check.ReleaseMaterializations();
+			}
+		}
+	}
+
+	private async Task ReleaseMaterializedSources()
+	{
+		foreach (string key in EvaluationContextExtensions.MaterializationKeys)
+		{
+			if (!TryReceive(key, out MaterializationCache? cache))
+			{
+				continue;
+			}
+
+			for (int i = 0; i < cache.Count; i++)
+			{
+				if (cache.GetMaterialized(i) is not IMaterialization materialization)
+				{
+					continue;
+				}
+
+				Task release = materialization.ReleaseSource();
+				if (!release.IsCompleted)
+				{
+					await AwaitOrAbandon(release);
+				}
 			}
 		}
 	}
