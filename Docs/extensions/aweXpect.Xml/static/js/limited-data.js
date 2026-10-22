@@ -210,6 +210,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -247,7 +253,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -288,7 +295,8 @@ window.BENCHMARK_DATA = {
           724.5003117879231,
           559.4218476613363,
           688.871600151062,
-          689.144854765672
+          689.144854765672,
+          461.6032927195231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -328,6 +336,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -383,7 +392,8 @@ window.BENCHMARK_DATA = {
           771.4773197174072,
           557.7056849797567,
           721.1655401229858,
-          700.0534820556641
+          700.0534820556641,
+          519.4800776754107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -395,6 +405,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -653,6 +664,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -690,7 +707,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -731,7 +749,8 @@ window.BENCHMARK_DATA = {
           4976.956801605224,
           3627.520595041911,
           4745.038444519043,
-          4505.529690551758
+          4505.529690551758,
+          3368.750720977783
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -775,6 +794,7 @@ window.BENCHMARK_DATA = {
           24306,
           24306,
           24307,
+          24276,
           24276,
           24276,
           24276
@@ -826,7 +846,8 @@ window.BENCHMARK_DATA = {
           5755.74228515625,
           4269.939312235514,
           5288.010634358724,
-          5168.3868326459615
+          5168.3868326459615,
+          4209.841989898681
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -838,6 +859,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1036,6 +1058,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -1063,7 +1091,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -1094,7 +1123,8 @@ window.BENCHMARK_DATA = {
           2795.458450826009,
           2047.5009866078694,
           2604.359392674764,
-          2539.0659070332845
+          2539.0659070332845,
+          1765.821253712972
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1124,6 +1154,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1169,7 +1200,8 @@ window.BENCHMARK_DATA = {
           3463.911955969674,
           2830.048848215739,
           3682.93826751709,
-          3333.295943705241
+          3333.295943705241,
+          2542.8334930419924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1181,6 +1213,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -1369,6 +1402,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -1396,7 +1435,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -1427,7 +1467,8 @@ window.BENCHMARK_DATA = {
           14048.667321341378,
           10376.427237374442,
           14361.160401916504,
-          13975.433365958077
+          13975.433365958077,
+          10125.802240224984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1457,6 +1498,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -1502,7 +1544,8 @@ window.BENCHMARK_DATA = {
           373877.5545572917,
           245197.90949358259,
           363182.51481119794,
-          353419.3955829327
+          353419.3955829327,
+          221415.20205078126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1538,7 +1581,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
