@@ -159,6 +159,13 @@ internal class ExpectationNode : Node
 		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(null, innerResult) : innerResult;
 
 	/// <summary>
+	///     The <paramref name="innerResult" /> combined with the <paramref name="result" /> of the constraint by the
+	///     mapping, when the node maps to a member.
+	/// </summary>
+	private ConstraintResult CombineWithMapping(ConstraintResult? result, ConstraintResult innerResult)
+		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(result, innerResult) : innerResult;
+
+	/// <summary>
 	///     Awaits the inner node of the fast path in <see cref="IsMetBy{TValue}" />, which did not complete synchronously.
 	/// </summary>
 	private async ValueTask<ConstraintResult> AwaitInner(ValueTask<ConstraintResult> isInnerMet)
@@ -268,13 +275,6 @@ internal class ExpectationNode : Node
 
 		return await ApplyReasons(result, context, cancellationToken);
 	}
-
-	/// <summary>
-	///     The <paramref name="innerResult" /> combined with the <paramref name="result" /> of the constraint by the
-	///     mapping, when the node maps to a member.
-	/// </summary>
-	private ConstraintResult CombineWithMapping(ConstraintResult? result, ConstraintResult innerResult)
-		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(result, innerResult) : innerResult;
 
 	/// <summary>
 	///     Verifies the <paramref name="inner" /> node, whose members continue from the value that the
