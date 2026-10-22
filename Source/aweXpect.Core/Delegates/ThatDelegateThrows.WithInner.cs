@@ -39,7 +39,7 @@ public partial class ThatDelegateThrows<TException>
 	public AndOrResult<TException, IThatDelegateThrows<TException>>
 		WithInner<TInnerException>(
 			Action<IThatSubject<TInnerException?>> expectations)
-		where TInnerException : Exception
+		where TInnerException : Exception?
 	{
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder

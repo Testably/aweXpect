@@ -86,7 +86,7 @@ public interface IThatDelegateThrows<TException> : IExpectThat<TException>
 	/// </summary>
 	AndOrResult<TException, IThatDelegateThrows<TException>> WithInner<TInnerException>(
 		Action<IThatSubject<TInnerException?>> expectations)
-		where TInnerException : Exception;
+		where TInnerException : Exception?;
 
 	/// <summary>
 	///     Verifies that the thrown exception has an inner exception of type <typeparamref name="TInnerException" />.

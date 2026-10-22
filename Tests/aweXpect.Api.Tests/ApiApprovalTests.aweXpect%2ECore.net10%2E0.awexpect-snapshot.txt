@@ -384,7 +384,7 @@ namespace aweXpect.Core
         aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type);
         aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations);
         aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>() where TInnerException : System.Exception?;
-        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations) where TInnerException : System.Exception;
+        aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations) where TInnerException : System.Exception?;
         aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner();
         aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner(System.Type type);
         aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner<TInnerException>() where TInnerException : System.Exception?;
@@ -1059,7 +1059,7 @@ namespace aweXpect.Delegates
         public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type) { }
         public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner(System.Type type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations) { }
         public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>() where TInnerException : System.Exception? { }
-        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations) where TInnerException : System.Exception { }
+        public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations) where TInnerException : System.Exception? { }
         public aweXpect.Delegates.ThatDelegateThrows<TException> Within(System.TimeSpan timeout) { }
         public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner() { }
         public aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>> WithoutInner(System.Type type) { }
