@@ -80,6 +80,11 @@ internal class ExpectationNode : Node
 	/// </summary>
 	protected void SetInnerNode(Node node) => _inner = node;
 
+	/// <summary>
+	///     The node which contains the nested expectations, if any.
+	/// </summary>
+	protected Node? InnerNode => _inner;
+
 	/// <inheritdoc />
 	/// <remarks>
 	///     A node with a single constraint, or with only the expectations on a member, returns its result without
@@ -152,6 +157,13 @@ internal class ExpectationNode : Node
 	/// </summary>
 	private ConstraintResult CombineWithMapping(ConstraintResult innerResult)
 		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(null, innerResult) : innerResult;
+
+	/// <summary>
+	///     The <paramref name="innerResult" /> combined with the <paramref name="result" /> of the constraint by the
+	///     mapping, when the node maps to a member.
+	/// </summary>
+	private ConstraintResult CombineWithMapping(ConstraintResult? result, ConstraintResult innerResult)
+		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(result, innerResult) : innerResult;
 
 	/// <summary>
 	///     Awaits the inner node of the fast path in <see cref="IsMetBy{TValue}" />, which did not complete synchronously.
@@ -263,13 +275,6 @@ internal class ExpectationNode : Node
 
 		return await ApplyReasons(result, context, cancellationToken);
 	}
-
-	/// <summary>
-	///     The <paramref name="innerResult" /> combined with the <paramref name="result" /> of the constraint by the
-	///     mapping, when the node maps to a member.
-	/// </summary>
-	private ConstraintResult CombineWithMapping(ConstraintResult? result, ConstraintResult innerResult)
-		=> _isInnerMapping ? ((MappingNode)_inner!).CombineResults(result, innerResult) : innerResult;
 
 	/// <summary>
 	///     Verifies the <paramref name="inner" /> node, whose members continue from the value that the
