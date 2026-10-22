@@ -11,7 +11,7 @@ namespace aweXpect.Web.Results;
 /// <summary>
 ///     Options for <see cref="ProblemDetailsResult{TType,TThat}" />.
 /// </summary>
-public class ProblemDetailsOptions
+internal class ProblemDetailsOptions
 {
 	private readonly List<Func<string>> _parts = new();
 
