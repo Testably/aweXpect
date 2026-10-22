@@ -16,12 +16,12 @@ public static class JsonOptionsExtensions
 	/// <summary>
 	///     Specify the <see cref="JsonDocumentOptions" /> to use when interpreting a <see langword="string" /> as JSON.
 	/// </summary>
-	public static JsonOptions WithJsonOptions(
+	public static JsonOptions WithDocumentOptions(
 		this JsonOptions @this,
-		Func<JsonDocumentOptions, JsonDocumentOptions> jsonDocumentOptions)
+		Func<JsonDocumentOptions, JsonDocumentOptions> documentOptions)
 	{
-		ThrowHelper.ThrowIfNull(jsonDocumentOptions, nameof(jsonDocumentOptions));
-		JsonDocumentOptions options = jsonDocumentOptions(@this.DocumentOptions);
+		ThrowHelper.ThrowIfNull(documentOptions, nameof(documentOptions));
+		JsonDocumentOptions options = documentOptions(@this.DocumentOptions);
 		return new JsonOptions(@this)
 		{
 			DocumentOptions = options,

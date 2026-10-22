@@ -173,7 +173,7 @@ namespace aweXpect.Json
         public static aweXpect.Json.JsonOptions IgnoringArrayOrder(this aweXpect.Json.JsonOptions @this, bool ignoreArrayOrder = true) { }
         public static aweXpect.Json.JsonOptions IgnoringMember(this aweXpect.Json.JsonOptions @this, string memberToIgnore) { }
         public static aweXpect.Json.JsonOptions TreatingNullAsAbsent(this aweXpect.Json.JsonOptions @this, bool treatNullAsAbsent = true) { }
-        public static aweXpect.Json.JsonOptions WithJsonOptions(this aweXpect.Json.JsonOptions @this, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> jsonDocumentOptions) { }
+        public static aweXpect.Json.JsonOptions WithDocumentOptions(this aweXpect.Json.JsonOptions @this, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> documentOptions) { }
         public static aweXpect.Json.JsonOptions WithSerializerOptions(this aweXpect.Json.JsonOptions @this, System.Text.Json.JsonSerializerOptions serializerOptions) { }
     }
 }

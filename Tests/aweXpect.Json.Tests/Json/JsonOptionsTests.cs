@@ -17,54 +17,6 @@ public class JsonOptionsTests
 	}
 
 	[Test]
-	public async Task WithJsonOptions_WhenCallbackIsNull_ShouldThrowArgumentNullException()
-	{
-		JsonOptions sut = new();
-
-		void Act()
-			=> sut.WithJsonOptions(null!);
-
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("jsonDocumentOptions").And
-			.WithMessage("The 'jsonDocumentOptions' cannot be null.").AsPrefix();
-	}
-
-	[Test]
-	public async Task WithJsonOptions_ShouldSetDocumentOptions()
-	{
-		string subject = "[1, /* two */ 2]";
-		JsonOptions sut = new();
-
-		JsonOptions result = sut.WithJsonOptions(o => o with
-		{
-			CommentHandling = JsonCommentHandling.Skip,
-		});
-
-		async Task Act()
-			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
-
-		await That(Act).DoesNotThrow();
-	}
-
-	[Test]
-	public async Task WithJsonOptions_ShouldSupportProvidingFixedOptions()
-	{
-		string subject = "[1, /* two */ 2]";
-		JsonOptions sut = new();
-		JsonDocumentOptions documentOptions = new()
-		{
-			CommentHandling = JsonCommentHandling.Skip,
-		};
-
-		JsonOptions result = sut.WithJsonOptions(_ => documentOptions);
-
-		async Task Act()
-			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
-
-		await That(Act).DoesNotThrow();
-	}
-
-	[Test]
 	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
 	{
 		JsonOptions sut = new();
@@ -262,5 +214,53 @@ public class JsonOptionsTests
 			              - ignore members: [path*\n=> path.EndsWith(".etag")]
 			             """).AsWildcard()
 			.Because("the line break of the predicate is escaped and depends on the line endings of the source");
+	}
+
+	[Test]
+	public async Task WithDocumentOptions_ShouldSetDocumentOptions()
+	{
+		string subject = "[1, /* two */ 2]";
+		JsonOptions sut = new();
+
+		JsonOptions result = sut.WithDocumentOptions(o => o with
+		{
+			CommentHandling = JsonCommentHandling.Skip,
+		});
+
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WithDocumentOptions_ShouldSupportProvidingFixedOptions()
+	{
+		string subject = "[1, /* two */ 2]";
+		JsonOptions sut = new();
+		JsonDocumentOptions documentOptions = new()
+		{
+			CommentHandling = JsonCommentHandling.Skip,
+		};
+
+		JsonOptions result = sut.WithDocumentOptions(_ => documentOptions);
+
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WithDocumentOptions_WhenCallbackIsNull_ShouldThrowArgumentNullException()
+	{
+		JsonOptions sut = new();
+
+		void Act()
+			=> sut.WithDocumentOptions(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("documentOptions").And
+			.WithMessage("The 'documentOptions' cannot be null.").AsPrefix();
 	}
 }
