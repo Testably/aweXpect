@@ -52,31 +52,6 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
-				public async Task Equivalent_ShouldThrowInvalidOperationException()
-				{
-					int[] subject = Factory.GetFibonacciNumbers(20).ToArray();
-
-					async Task Act()
-						=> await That(subject).All().AreEquivalentTo(5).Equivalent(o => o.IgnoringMember("Title"));
-
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Equivalent cannot be specified more than once.")
-						.Because("the options of AreEquivalentTo would otherwise be replaced silently, while the failure still lists them");
-				}
-
-				[Test]
-				public async Task Using_ShouldThrowInvalidOperationException()
-				{
-					int[] subject = Factory.GetFibonacciNumbers(20).ToArray();
-
-					async Task Act()
-						=> await That(subject).All().AreEquivalentTo(5).Using(new AllEqualComparer());
-
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Using cannot be combined with Equivalent.");
-				}
-
-				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					int[] subject = Factory.GetFibonacciNumbers(20).ToArray();

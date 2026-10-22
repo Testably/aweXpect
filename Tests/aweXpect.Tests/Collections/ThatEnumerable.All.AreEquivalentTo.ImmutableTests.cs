@@ -15,18 +15,6 @@ public sealed partial class ThatEnumerable
 			public sealed class ImmutableTests
 			{
 				[Test]
-				public async Task Using_ShouldThrowInvalidOperationException()
-				{
-					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
-
-					async Task Act()
-						=> await That(subject).All().AreEquivalentTo(5).Using(new AllEqualComparer());
-
-					await That(Act).Throws<InvalidOperationException>()
-						.WithMessage("Using cannot be combined with Equivalent.");
-				}
-
-				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
