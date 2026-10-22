@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
+using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
@@ -175,66 +174,11 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions,
 		StringEqualityOptions options)
 		: GenericMethodsWithArgument(inner, collectionIndexOptions),
-			IOptionsProvider<StringEqualityOptions>
+			IOptionsProvider<StringEqualityOptions>,
+			IStringMatchTypeOptions
 	{
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
-
-		/// <summary>
-		///     Ignores casing when comparing the generic argument name,
-		///     according to the <paramref name="ignoreCase" /> parameter.
-		/// </summary>
-		public GenericMethodsWithNamedArgument IgnoringCase(bool ignoreCase = true)
-		{
-			options.IgnoringCase(ignoreCase);
-			return this;
-		}
-
-		/// <summary>
-		///     Uses the provided <paramref name="comparer" /> for comparing generic argument names.
-		/// </summary>
-		public GenericMethodsWithNamedArgument Using(IEqualityComparer<string> comparer)
-		{
-			options.Using(comparer);
-			return this;
-		}
-
-		/// <summary>
-		///     Interprets the expected generic argument name as a prefix, so that the actual value starts with it.
-		/// </summary>
-		public GenericMethodsWithNamedArgument AsPrefix()
-		{
-			options.AsPrefix();
-			return this;
-		}
-
-		/// <summary>
-		///     Interprets the expected generic argument name as a <see cref="Regex" /> pattern.
-		/// </summary>
-		public GenericMethodsWithNamedArgument AsRegex()
-		{
-			options.AsRegex();
-			return this;
-		}
-
-		/// <summary>
-		///     Interprets the expected generic argument name as a suffix, so that the actual value ends with it.
-		/// </summary>
-		public GenericMethodsWithNamedArgument AsSuffix()
-		{
-			options.AsSuffix();
-			return this;
-		}
-
-		/// <summary>
-		///     Interprets the expected generic argument name as wildcard pattern.<br />
-		///     Supports * to match zero or more characters and ? to match exactly one character.
-		/// </summary>
-		public GenericMethodsWithNamedArgument AsWildcard()
-		{
-			options.AsWildcard();
-			return this;
-		}
 	}
 
 	/// <summary>

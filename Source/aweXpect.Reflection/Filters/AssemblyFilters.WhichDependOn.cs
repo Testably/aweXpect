@@ -12,11 +12,11 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filter for assemblies which have a dependency on the <paramref name="expected" /> assembly.
 	/// </summary>
-	public static Filtered.Assemblies.StringEqualityResultType WhichDependOn(
+	public static Filtered.Assemblies.StringEqualityResult WhichDependOn(
 		this Filtered.Assemblies @this, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
 				assembly => assembly.GetReferencedAssemblyNames()
 					.AnyAsync(dependency => options.AreConsideredEqual(dependency.Name, expected)),
 				() => $" which have a dependency on assembly {options.GetExpectation(expected, ExpectationGrammars.None)}")),

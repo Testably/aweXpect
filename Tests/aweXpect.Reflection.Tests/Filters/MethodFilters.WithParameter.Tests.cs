@@ -386,6 +386,23 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
+			public async Task WithParameterName_ShouldSupportIgnoringLeadingWhiteSpace()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter("\t name").IgnoringLeadingWhiteSpace();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter with name equal to \"\\t name\" ignoring leading whitespace in")
+					.AsPrefix();
+			}
+
+			[Test]
 			public async Task WithParameterName_ShouldSupportRegex()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()

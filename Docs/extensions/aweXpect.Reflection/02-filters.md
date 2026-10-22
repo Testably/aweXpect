@@ -623,8 +623,10 @@ In.AllLoadedAssemblies().Properties()
 
 ## String matching options
 
-Every name and namespace filter/expectation uses the same string matching options as the core aweXpect
-library (see [the docs](https://docs.testably.org/aweXpect/values/string#equality)):
+Every filter and expectation that compares a name, a namespace, a target framework or a dependency, including
+the parameter and generic argument names, uses the string matching options of the core aweXpect library (see
+[the docs](https://docs.testably.org/aweXpect/values/string#equality)). The options chain in any order, and each
+option can be specified only once:
 
 | Option                                                           | Effect                                            |
 |------------------------------------------------------------------|---------------------------------------------------|
@@ -632,9 +634,10 @@ library (see [the docs](https://docs.testably.org/aweXpect/values/string#equalit
 | `.AsPrefix()`                                                    | the value must start with the expected string     |
 | `.AsSuffix()`                                                    | the value must end with the expected string       |
 | `.AsWildcard()`                                                  | match using `*` and `?` wildcards                 |
-| `.AsRegex()`                                                     | match using a regular expression                  |
+| `.AsRegex()` / `.AsRegex(regexOptions)`                          | match using a regular expression                  |
 | `.IgnoringCase()`                                                | case-insensitive comparison                       |
 | `.IgnoringLeadingWhiteSpace()` / `.IgnoringTrailingWhiteSpace()` | trim before comparing                             |
+| `.NormalizingWhiteSpace()`                                       | collapse runs of whitespace before comparing      |
 | `.Using(comparer)`                                               | compare with a custom `IEqualityComparer<string>` |
 
 ```csharp
@@ -642,6 +645,10 @@ await Expect.That(types).HaveName("Service").AsSuffix();
 await Expect.That(types).HaveName("*Test*").AsWildcard();
 await Expect.That(types).HaveName(@"^Test\w+$").AsRegex();
 await Expect.That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
+
+Filtered.Types services = In.AssemblyContaining<MyClass>().Types()
+    .WithName("service").IgnoringCase().AsSuffix()
+    .WhichAreClasses();
 ```
 
 ## Collections and quantifiers

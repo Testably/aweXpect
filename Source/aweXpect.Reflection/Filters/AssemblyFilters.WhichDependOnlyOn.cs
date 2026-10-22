@@ -20,11 +20,11 @@ public static partial class AssemblyFilters
 	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
-	public static Filtered.Assemblies.StringEqualityResultType WhichDependOnlyOn(
+	public static Filtered.Assemblies.StringEqualityResult WhichDependOnlyOn(
 		this Filtered.Assemblies @this, params string[] allowed)
 	{
 		StringEqualityOptions options = new(nameof(allowed));
-		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
 				async assembly
 					=> (await assembly.GetDisallowedAssemblyDependencies(allowed, options)).Length == 0,
 				() => allowed.Length == 0

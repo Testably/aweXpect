@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
+using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
@@ -173,66 +172,11 @@ public static partial class TypeFilters
 			CollectionIndexOptions collectionIndexOptions,
 			StringEqualityOptions options)
 			: GenericTypesWithArgument(inner, collectionIndexOptions),
-				IOptionsProvider<StringEqualityOptions>
+				IOptionsProvider<StringEqualityOptions>,
+				IStringMatchTypeOptions
 		{
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
-
-			/// <summary>
-			///     Ignores casing when comparing the parameter name,
-			///     according to the <paramref name="ignoreCase" /> parameter.
-			/// </summary>
-			public GenericTypesWithNamedArgument IgnoringCase(bool ignoreCase = true)
-			{
-				options.IgnoringCase(ignoreCase);
-				return this;
-			}
-
-			/// <summary>
-			///     Uses the provided <paramref name="comparer" /> for comparing parameter names.
-			/// </summary>
-			public GenericTypesWithNamedArgument Using(IEqualityComparer<string> comparer)
-			{
-				options.Using(comparer);
-				return this;
-			}
-
-			/// <summary>
-			///     Interprets the expected parameter name as a prefix, so that the actual value starts with it.
-			/// </summary>
-			public GenericTypesWithNamedArgument AsPrefix()
-			{
-				options.AsPrefix();
-				return this;
-			}
-
-			/// <summary>
-			///     Interprets the expected parameter name as a <see cref="Regex" /> pattern.
-			/// </summary>
-			public GenericTypesWithNamedArgument AsRegex()
-			{
-				options.AsRegex();
-				return this;
-			}
-
-			/// <summary>
-			///     Interprets the expected parameter name as a suffix, so that the actual value ends with it.
-			/// </summary>
-			public GenericTypesWithNamedArgument AsSuffix()
-			{
-				options.AsSuffix();
-				return this;
-			}
-
-			/// <summary>
-			///     Interprets the expected parameter name as wildcard pattern.<br />
-			///     Supports * to match zero or more characters and ? to match exactly one character.
-			/// </summary>
-			public GenericTypesWithNamedArgument AsWildcard()
-			{
-				options.AsWildcard();
-				return this;
-			}
 		}
 
 		/// <summary>

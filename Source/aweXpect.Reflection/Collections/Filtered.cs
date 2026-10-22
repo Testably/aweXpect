@@ -25,8 +25,8 @@ public static partial class Filtered;
 ///     <c>CloneWith</c>, so deriving multiple filtered views from the same base collection cannot corrupt each other.
 ///     <para />
 ///     Scope boundary: the immutability guarantee covers the collection/filter level. The nested
-///     <c>StringEqualityResult</c> / <c>StringEqualityResultType</c> refinement classes still refine their
-///     <c>StringEqualityOptions</c> via in-place mutation; that options object originates from the aweXpect core library
+///     <c>StringEqualityResult</c> refinement classes still refine their <c>StringEqualityOptions</c> via in-place
+///     mutation; that options object originates from the aweXpect core library
 ///     (<c>aweXpect.Options</c>), is mutable by design, and is intentionally left as-is.
 /// </remarks>
 #if NET8_0_OR_GREATER

@@ -12,11 +12,11 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filter for assemblies which have no dependency on the <paramref name="unexpected" /> assembly.
 	/// </summary>
-	public static Filtered.Assemblies.StringEqualityResultType WhichDoNotDependOn(
+	public static Filtered.Assemblies.StringEqualityResult WhichDoNotDependOn(
 		this Filtered.Assemblies @this, string unexpected)
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
 				async assembly => !await assembly.GetReferencedAssemblyNames()
 					.AnyAsync(dependency => options.AreConsideredEqual(dependency.Name, unexpected)),
 				() => $" which have no dependency on assembly {options.GetExpectation(unexpected, ExpectationGrammars.None)}")),

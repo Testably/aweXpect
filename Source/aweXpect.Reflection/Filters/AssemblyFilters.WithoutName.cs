@@ -10,11 +10,11 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filter for assemblies without the <paramref name="unexpected" /> name.
 	/// </summary>
-	public static Filtered.Assemblies.StringEqualityResultType WithoutName(this Filtered.Assemblies @this,
+	public static Filtered.Assemblies.StringEqualityResult WithoutName(this Filtered.Assemblies @this,
 		string unexpected)
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new Filtered.Assemblies.StringEqualityResultType(@this.Which(Filter.Suffix<Assembly>(
+		return new Filtered.Assemblies.StringEqualityResult(@this.Which(Filter.Suffix<Assembly>(
 				async assembly => !await options.AreConsideredEqual(assembly.GetName().Name, unexpected),
 				() => $" without name {options.GetExpectation(unexpected, ExpectationGrammars.None)}")),
 			options);
