@@ -1,4 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -88,6 +89,51 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task Using_WithATypedComparer_ShouldUseIt()
+				{
+					ImmutableArray<char> subject = ['a', 'A',];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo('a').Using(new IgnoringCaseCharComparer());
+
+					await That(Act).DoesNotThrow()
+						.Because("a comparer of the item type is accepted like for an IEnumerable<char>");
+				}
+
+				[Test]
+				public async Task Using_WithATypedComparer_WhenItemsDiffer_ShouldNameTheComparer()
+				{
+					ImmutableArray<char> subject = ['a', 'b',];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo('A').Using(new IgnoringCaseCharComparer());
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 'A' using ThatEnumerable.All.AreEqualTo.ImmutableItemTests.IgnoringCaseCharComparer for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             ['b']
+
+						             Collection:
+						             ['a', 'b']
+						             """);
+				}
+
+				[Test]
+				public async Task WhenExpectedIsNullForAReferenceType_ShouldCompareWithNull()
+				{
+					ImmutableArray<Uri?> subject = [null, null,];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo(null);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20).ToArray(),];
@@ -155,6 +201,13 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).DoesNotThrow()
 						.Because("items without a tolerance use the general overload");
+				}
+
+				private sealed class IgnoringCaseCharComparer : IEqualityComparer<char>
+				{
+					public bool Equals(char x, char y) => char.ToUpperInvariant(x) == char.ToUpperInvariant(y);
+
+					public int GetHashCode(char obj) => char.ToUpperInvariant(obj).GetHashCode();
 				}
 			}
 

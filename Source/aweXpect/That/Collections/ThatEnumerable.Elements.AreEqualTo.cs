@@ -88,22 +88,22 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo)]
-	internal static ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>
+	internal static ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
 		AreEqualToForStructCore<TEnumerable, TItem>(
 			ElementsForStructEnumerable<TEnumerable, TItem> elements,
-			object? expected)
+			TItem expected)
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
 		IStructEnumerableElements<TEnumerable, TItem> iElements = elements;
-		Options.ObjectEqualityOptions<object?> options = new();
+		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>(
+		return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
-						new ElementEqualTo<object?, object?>(state.Options, state.Expected, state.Options),
+						new ElementEqualTo<object?, TItem>(state.Options, state.Expected, state.Options),
 						"were")),
 			iElements.Subject,
 			options);
