@@ -546,6 +546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -639,7 +645,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -736,7 +743,8 @@ window.BENCHMARK_DATA = {
           10032.839408287635,
           7998.385415884165,
           10944.142281668526,
-          10760.731419489934
+          10760.731419489934,
+          10878.934569295247
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -832,6 +840,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -943,7 +952,8 @@ window.BENCHMARK_DATA = {
           327843.73541666666,
           305672.903515625,
           385470.81419270835,
-          380312.1171875
+          380312.1171875,
+          360770.4884114583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1044,6 +1054,7 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590225,
+          590292,
           590292,
           590292
         ],
@@ -1150,7 +1161,8 @@ window.BENCHMARK_DATA = {
           18188.214909144812,
           19103.406650797526,
           20056.790034702844,
-          19700.400490315755
+          19700.400490315755,
+          19388.047072190504
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1162,6 +1174,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1770,6 +1783,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -1856,7 +1875,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -1946,7 +1966,8 @@ window.BENCHMARK_DATA = {
           242.85649299621582,
           294.68755640302385,
           267.69245897928874,
-          257.3317601839701
+          257.3317601839701,
+          253.46592041651408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2035,6 +2056,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -2139,7 +2161,8 @@ window.BENCHMARK_DATA = {
           538.0535874048869,
           617.9251672744751,
           516.7261919021606,
-          539.5546939849853
+          539.5546939849853,
+          469.92834091186523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2151,6 +2174,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2332,7 +2356,8 @@ window.BENCHMARK_DATA = {
           394.9460385322571,
           431.14446315765383,
           402.13787139256794,
-          392.65889695712497
+          392.65889695712497,
+          381.3150689418499
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2344,6 +2369,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -7565,6 +7591,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -8421,7 +8453,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -9281,7 +9314,8 @@ window.BENCHMARK_DATA = {
           131.46318513552347,
           159.2056476434072,
           131.98040280342101,
-          135.91663063489474
+          135.91663063489474,
+          126.24566105433873
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10140,6 +10174,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -11014,7 +11049,8 @@ window.BENCHMARK_DATA = {
           262.4545056819916,
           339.6135336802556,
           249.75643161137899,
-          264.92547636032106
+          264.92547636032106,
+          236.63229066984994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11207,6 +11243,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -12028,7 +12065,8 @@ window.BENCHMARK_DATA = {
           241.21304072652543,
           246.65541149775189,
           252.15019715627034,
-          246.79765192667642
+          246.79765192667642,
+          232.91293862660726
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12040,6 +12078,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -12734,6 +12773,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -12827,7 +12872,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -12924,7 +12970,8 @@ window.BENCHMARK_DATA = {
           238.57285486857097,
           254.17224890845162,
           251.72302686251126,
-          256.4369226137797
+          256.4369226137797,
+          249.05706218310766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13020,6 +13067,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -13131,7 +13179,8 @@ window.BENCHMARK_DATA = {
           530.3193781534831,
           682.5105393091837,
           554.6350804011028,
-          540.8360172271729
+          540.8360172271729,
+          500.4933693749564
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13143,6 +13192,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -13338,7 +13388,8 @@ window.BENCHMARK_DATA = {
           336.73750281333923,
           358.38173716408863,
           348.74584808349607,
-          351.15548575719197
+          351.15548575719197,
+          342.5249245325724
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13350,6 +13401,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -18578,6 +18630,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -19434,7 +19492,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -20294,7 +20353,8 @@ window.BENCHMARK_DATA = {
           610.549770281865,
           592.595131942204,
           653.2699198356041,
-          655.825459543864
+          655.825459543864,
+          641.9405632019043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21153,6 +21213,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -22027,7 +22088,8 @@ window.BENCHMARK_DATA = {
           1473.319426981608,
           1565.3053265980311,
           1423.655188369751,
-          1448.326835123698
+          1448.326835123698,
+          1366.0103533608574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22892,6 +22954,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -23041,7 +23104,8 @@ window.BENCHMARK_DATA = {
           666.8937075932821,
           665.7546242986407,
           671.0557886532375,
-          684.5625539507184
+          684.5625539507184,
+          654.7875469647921
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23053,6 +23117,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -28325,6 +28390,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -29181,7 +29252,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -30041,7 +30113,8 @@ window.BENCHMARK_DATA = {
           619.1422570546468,
           595.3261630875724,
           642.0163898468018,
-          641.9881595611572
+          641.9881595611572,
+          624.8891443888347
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30900,6 +30973,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -31774,7 +31848,8 @@ window.BENCHMARK_DATA = {
           20550.406850179035,
           18596.247584751673,
           28383.339314778645,
-          29067.851220703124
+          29067.851220703124,
+          27846.395044962566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32639,6 +32714,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -32788,7 +32864,8 @@ window.BENCHMARK_DATA = {
           784.8698439280192,
           772.2460144587925,
           820.6623495101928,
-          842.6368266423543
+          842.6368266423543,
+          778.9101071724525
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32800,6 +32877,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -33842,6 +33920,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -33993,7 +34077,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -34148,7 +34233,8 @@ window.BENCHMARK_DATA = {
           650.9256905237834,
           713.1207670211792,
           664.0812473932903,
-          707.8108282089233
+          707.8108282089233,
+          677.132239137377
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34302,6 +34388,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -34471,7 +34558,8 @@ window.BENCHMARK_DATA = {
           62032.67530168806,
           34334.53500976563,
           84001.56927020733,
-          85165.77744547527
+          85165.77744547527,
+          82046.29443359375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34630,6 +34718,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252,
           5252
         ],
@@ -35539,6 +35628,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -35690,7 +35785,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -35845,7 +35941,8 @@ window.BENCHMARK_DATA = {
           169.73957769076029,
           204.64493896280015,
           166.78824191093446,
-          167.65295827388763
+          167.65295827388763,
+          155.46120498975117
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35999,6 +36096,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -36168,7 +36266,8 @@ window.BENCHMARK_DATA = {
           18978.51334431966,
           17825.74970296224,
           33878.59994506836,
-          34141.49647521973
+          34141.49647521973,
+          31712.331085205078
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36328,6 +36427,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -36477,7 +36577,8 @@ window.BENCHMARK_DATA = {
           241.12588799794514,
           253.87563813527424,
           264.9701431910197,
-          251.49211479822796
+          251.49211479822796,
+          233.38425465992518
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36489,6 +36590,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -37183,6 +37285,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -37276,7 +37384,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -37373,7 +37482,8 @@ window.BENCHMARK_DATA = {
           322.7528621037801,
           347.9046195575169,
           353.0484624590193,
-          345.55462626048495
+          345.55462626048495,
+          327.68283055623374
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37469,6 +37579,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -37580,7 +37691,8 @@ window.BENCHMARK_DATA = {
           419.54236466089884,
           493.0133429209391,
           388.3064630826314,
-          414.52817408243817
+          414.52817408243817,
+          355.1375172478812
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37592,6 +37704,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -37787,7 +37900,8 @@ window.BENCHMARK_DATA = {
           439.96566715240476,
           410.8257861455282,
           412.9992091996329,
-          424.7446902990341
+          424.7446902990341,
+          421.7204269996056
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37799,6 +37913,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -38449,6 +38564,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -38542,7 +38663,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -38639,7 +38761,8 @@ window.BENCHMARK_DATA = {
           608.6549126942953,
           650.0405130386353,
           644.4234722137451,
-          653.3019157137189
+          653.3019157137189,
+          618.6557116826375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38735,6 +38858,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376,
@@ -38846,7 +38970,8 @@ window.BENCHMARK_DATA = {
           1958.177791595459,
           2289.6676272074383,
           1948.8980489458356,
-          1997.774172269381
+          1997.774172269381,
+          1837.4576030144324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38858,6 +38983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -39053,7 +39179,8 @@ window.BENCHMARK_DATA = {
           946.2125942866007,
           955.6744725363595,
           971.0213287898472,
-          939.3319878896077
+          939.3319878896077,
+          907.7526652262761
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39065,6 +39192,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -39715,6 +39843,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -39808,7 +39942,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -39905,7 +40040,8 @@ window.BENCHMARK_DATA = {
           10486.539161682129,
           9414.28011372884,
           11491.285598754883,
-          11496.980570866512
+          11496.980570866512,
+          11478.552010672433
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40001,6 +40137,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -40112,7 +40249,8 @@ window.BENCHMARK_DATA = {
           34197.107291085376,
           31628.6806640625,
           42789.705350435695,
-          40164.798993791854
+          40164.798993791854,
+          40245.214038085935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40214,7 +40352,8 @@ window.BENCHMARK_DATA = {
           18609,
           18393,
           18609,
-          18394
+          18394,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40319,7 +40458,8 @@ window.BENCHMARK_DATA = {
           10063.809443882534,
           9614.946305411202,
           10854.464302649865,
-          10521.790701059195
+          10521.790701059195,
+          10596.49831172398
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40331,6 +40471,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -40981,6 +41122,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
         "message": "refactor: fix the reported Sonar issues (#1931)"
+      },
+      {
+        "sha": "dc36798f1dc3e911dbd35fd43342fe69f8b1cd25",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 21:50:11 2026 \u002B0200",
+        "message": "fix!: drop the comparer options from the result of AreEquivalentTo on collection items (#1932)"
       }
     ],
     "labels": [
@@ -41074,7 +41221,8 @@ window.BENCHMARK_DATA = {
       "a1c8667e",
       "3f14b764",
       "afefacb2",
-      "5d6c3e4a"
+      "5d6c3e4a",
+      "dc36798f"
     ],
     "datasets": [
       {
@@ -41171,7 +41319,8 @@ window.BENCHMARK_DATA = {
           9802.961926051548,
           8899.073635864257,
           10946.768569946289,
-          10785.548622131348
+          10785.548622131348,
+          10807.108089991978
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41267,6 +41416,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -41378,7 +41528,8 @@ window.BENCHMARK_DATA = {
           49131.589040902945,
           47054.94351632254,
           60477.393446702226,
-          60009.41159057617
+          60009.41159057617,
+          58961.40998128255
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41472,6 +41623,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -41585,7 +41737,8 @@ window.BENCHMARK_DATA = {
           19770.943290201823,
           18356.89740193685,
           21517.030972798664,
-          20732.668483189173
+          20732.668483189173,
+          20780.307187398274
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41597,6 +41750,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
