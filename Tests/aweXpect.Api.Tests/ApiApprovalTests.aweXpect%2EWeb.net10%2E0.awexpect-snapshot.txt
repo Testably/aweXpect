@@ -208,9 +208,9 @@ namespace aweXpect.Web.Results
     {
         public StatusCodeResult(aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Func<System.Net.Http.HttpResponseMessage, System.Net.HttpStatusCode> mapper) { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ClientError() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DifferentTo(System.Net.HttpStatusCode? unexpected) { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> EqualTo(System.Net.HttpStatusCode? expected) { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Error() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> NotEqualTo(System.Net.HttpStatusCode? unexpected) { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Redirection() { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
         public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }

@@ -35,9 +35,9 @@ public class StatusCodeResult(
 			source);
 
 	/// <summary>
-	///     …is different to the <paramref name="unexpected" /> value.
+	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
+	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> NotEqualTo(
 		HttpStatusCode? unexpected)
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
@@ -47,9 +47,9 @@ public class StatusCodeResult(
 						state.unexpected,
 						state.mapper,
 						(a, u) => a != u,
-						"status code different to ",
+						"status code ",
 						true,
-						"status code ")),
+						true)),
 			source);
 
 	/// <summary>
@@ -135,7 +135,7 @@ public class StatusCodeResult(
 		Func<HttpStatusCode, HttpStatusCode?, bool> condition,
 		string expectation,
 		bool appendExpected = false,
-		string? hasExpectationWhenNegated = null)
+		bool isNegative = false)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage?>(it, grammars),
 			IValueConstraint<HttpResponseMessage?>
 	{
@@ -162,10 +162,7 @@ public class StatusCodeResult(
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(expectation);
-			AppendExpected(stringBuilder);
-		}
+			=> AppendExpectation(stringBuilder, isNegative);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -174,24 +171,17 @@ public class StatusCodeResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (hasExpectationWhenNegated is null)
-			{
-				stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(expectation);
-			}
-			else
-			{
-				stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(hasExpectationWhenNegated);
-			}
-
-			AppendExpected(stringBuilder);
-		}
+			=> AppendExpectation(stringBuilder, !isNegative);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
 
-		private void AppendExpected(StringBuilder stringBuilder)
+		private void AppendExpectation(StringBuilder stringBuilder, bool doesNotHave)
 		{
+			stringBuilder.Append(doesNotHave
+					? Grammars.Verb("does not have ", "do not have ")
+					: Grammars.Verb("has ", "have "))
+				.Append(expectation);
 			if (appendExpected)
 			{
 				Formatter.Format(stringBuilder, expected);

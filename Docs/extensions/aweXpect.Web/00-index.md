@@ -59,7 +59,7 @@ Expectations for [`HttpResponseMessage`](./01-http-messages.md#httpresponsemessa
 
 | Expectation                                                                  | Negated                       | Summary                                         |
 |------------------------------------------------------------------------------|-------------------------------|-------------------------------------------------|
-| [`HasStatusCode`](./01-http-messages.md#status-code)                | `HasStatusCode().DifferentTo` | has the expected status code or status category |
+| [`HasStatusCode`](./01-http-messages.md#status-code)                | `HasStatusCode().NotEqualTo`  | has the expected status code or status category |
 | [`HasHeader`](./01-http-messages.md#response-headers)               | `DoesNotHaveHeader`           | has a header, optionally with a value           |
 | [`HasContentType`](./01-http-messages.md#content-type)              | `DoesNotHaveContentType`      | has the expected media type                     |
 | [`HasContent`](./01-http-messages.md#response-content)              | `DoesNotHaveContent`          | has the expected string content                 |

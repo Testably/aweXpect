@@ -32,42 +32,6 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
-			public async Task DifferentTo_WhenStatusCodeIsDifferent_ShouldFail()
-			{
-				HttpResponseMessage subject = ResponseBuilder
-					.WithStatusCode(HttpStatusCode.OK);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.HasStatusCode().DifferentTo(HttpStatusCode.NotFound));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             has status code 404 NotFound,
-					             but it had status code 200 OK
-
-					             HTTP-Response:
-					               200 OK HTTP/1.1
-					                 Content-Type: text/plain; charset=utf-8
-					                 Content-Length: 0
-					             """);
-			}
-
-			[Test]
-			public async Task DifferentTo_WhenStatusCodeIsEqual_ShouldSucceed()
-			{
-				HttpResponseMessage subject = ResponseBuilder
-					.WithStatusCode(HttpStatusCode.NotFound);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
-						=> it.HasStatusCode().DifferentTo(HttpStatusCode.NotFound));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
 			public async Task EqualTo_WhenStatusCodeIsDifferent_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
@@ -157,6 +121,42 @@ public sealed partial class ThatHttpResponseMessage
 					                 Content-Type: text/plain; charset=utf-8
 					                 Content-Length: 0
 					             """);
+			}
+
+			[Test]
+			public async Task NotEqualTo_WhenStatusCodeIsDifferent_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(HttpStatusCode.OK);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.HasStatusCode().NotEqualTo(HttpStatusCode.NotFound));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has status code 404 NotFound,
+					             but it had status code 200 OK
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 0
+					             """);
+			}
+
+			[Test]
+			public async Task NotEqualTo_WhenStatusCodeIsEqual_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(HttpStatusCode.NotFound);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.HasStatusCode().NotEqualTo(HttpStatusCode.NotFound));
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
