@@ -28,15 +28,15 @@ public static partial class ThatNullableJsonElement
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Object" />
-	///     whose value satisfies the <paramref name="expectation" />.
+	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsObject(
 		this IThat<JsonElement?> subject,
-		Func<IJsonObjectResult, IJsonObjectResult> expectation,
+		Action<IJsonObjectResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
-		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonOptions jsonOptions = new()
 		{
 			IgnoreAdditionalProperties = true,
@@ -47,15 +47,15 @@ public static partial class ThatNullableJsonElement
 		}
 
 		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
-				static (s, it, grammar) => new IsObjectConstraint(it, grammar, s.Expectation, s.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
+				static (s, it, grammar) => new IsObjectConstraint(it, grammar, s.Expectations, s.Options)),
 			subject);
 	}
 
 	private sealed class IsObjectConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Func<IJsonObjectResult, IJsonObjectResult> expectation,
+		Action<IJsonObjectResult> expectations,
 		JsonOptions options)
 		: ConstraintResult.WithNotNullValue<JsonElement?>(it, grammars),
 			IAsyncContextConstraint<JsonElement?>
@@ -67,7 +67,7 @@ public static partial class ThatNullableJsonElement
 		{
 			Actual = actual;
 			_jsonValidation = new JsonValidation(actual, JsonValueKind.Object, options, context);
-			_jsonValidation.Invoke(expectation);
+			_jsonValidation.Invoke(expectations);
 			await _jsonValidation.ValidateAsync(cancellationToken);
 
 			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;

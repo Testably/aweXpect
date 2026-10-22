@@ -27,16 +27,16 @@ public static partial class ThatJsonNode
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Array" />
-	///     whose value satisfies the <paramref name="expectation" />.
+	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static IsArrayResult<TNode?> IsArray<TNode>(
 		this IThat<TNode?> subject,
-		Func<IJsonArrayResult, IJsonArrayResult> expectation,
+		Action<IJsonArrayResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
 		where TNode : JsonNode
 	{
-		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonOptions jsonOptions = new()
 		{
 			IgnoreAdditionalProperties = true,
@@ -47,9 +47,9 @@ public static partial class ThatJsonNode
 		}
 
 		return new IsArrayResult<TNode?>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
 				static (s, it, grammar) => new JsonNodeConstraint<TNode>(
-					new ThatJsonElement.IsArrayConstraint(it, grammar, s.Expectation, s.Options))),
+					new ThatJsonElement.IsArrayConstraint(it, grammar, s.Expectations, s.Options))),
 			subject,
 			ToJsonElement);
 	}

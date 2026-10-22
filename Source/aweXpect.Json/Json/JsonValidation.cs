@@ -506,14 +506,14 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnArray()
 		=> An(JsonValueKind.Array);
 
-	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnArray(Action<IJsonArrayResult> expectation)
-		=> An(JsonValueKind.Array, expectation);
+	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnArray(Action<IJsonArrayResult> expectations)
+		=> An(JsonValueKind.Array, expectations);
 
 	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnObject()
 		=> An(JsonValueKind.Object);
 
-	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnObject(Action<IJsonObjectResult> expectation)
-		=> An(JsonValueKind.Object, expectation);
+	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AnObject(Action<IJsonObjectResult> expectations)
+		=> An(JsonValueKind.Object, expectations);
 
 	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.AString()
 		=> An(JsonValueKind.String);
@@ -530,14 +530,14 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnArray()
 		=> An(JsonValueKind.Array);
 
-	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnArray(Action<IJsonArrayResult> expectation)
-		=> An(JsonValueKind.Array, expectation);
+	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnArray(Action<IJsonArrayResult> expectations)
+		=> An(JsonValueKind.Array, expectations);
 
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnObject()
 		=> An(JsonValueKind.Object);
 
-	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnObject(Action<IJsonObjectResult> expectation)
-		=> An(JsonValueKind.Object, expectation);
+	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AnObject(Action<IJsonObjectResult> expectations)
+		=> An(JsonValueKind.Object, expectations);
 
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.AString()
 		=> An(JsonValueKind.String);
@@ -656,26 +656,21 @@ internal class JsonValidation : IJsonObjectResult,
 	}
 
 	/// <summary>
-	///     Calls the <paramref name="expectation" /> of the caller on this array.
+	///     Calls the <paramref name="expectations" /> of the caller on this array or object.
 	/// </summary>
-	public void Invoke(Func<IJsonArrayResult, IJsonArrayResult> expectation)
-		=> Invoke(expectation, this);
-
-	/// <summary>
-	///     Calls the <paramref name="expectation" /> of the caller on this object.
-	/// </summary>
-	public void Invoke(Func<IJsonObjectResult, IJsonObjectResult> expectation)
-		=> Invoke(expectation, this);
-
 	/// <remarks>
-	///     An exception of the <paramref name="expectation" /> fails the expectation and its negation alike, but an
+	///     An exception of the <paramref name="expectations" /> fails the expectation and its negation alike, but an
 	///     exception that the validation throws itself, e.g. for an invalid argument, is thrown as it is.
 	/// </remarks>
-	private void Invoke<TResult>(Func<TResult, TResult> expectation, TResult result)
+	public void Invoke(Action<JsonValidation> expectations)
 	{
 		try
 		{
-			UserCode.Invoke(expectation, result, "the expectation");
+			UserCode.Invoke(static s =>
+			{
+				s.Expectations(s.Validation);
+				return true;
+			}, (Expectations: expectations, Validation: this), "the expectation");
 		}
 		catch (Exception) when (_ownException is not null)
 		{

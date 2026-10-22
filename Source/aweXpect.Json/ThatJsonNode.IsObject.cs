@@ -26,16 +26,16 @@ public static partial class ThatJsonNode
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonNode" /> is an <see cref="JsonValueKind.Object" />
-	///     whose value satisfies the <paramref name="expectation" />.
+	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNode?, IThat<TNode?>> IsObject<TNode>(
 		this IThat<TNode?> subject,
-		Func<IJsonObjectResult, IJsonObjectResult> expectation,
+		Action<IJsonObjectResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
 		where TNode : JsonNode
 	{
-		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		JsonOptions jsonOptions = new()
 		{
 			IgnoreAdditionalProperties = true,
@@ -46,9 +46,9 @@ public static partial class ThatJsonNode
 		}
 
 		return new AndOrResult<TNode?, IThat<TNode?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expectation: expectation, Options: jsonOptions),
+			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
 				static (s, it, grammar) => new JsonNodeConstraint<TNode>(
-					new ThatJsonElement.IsObjectConstraint(it, grammar, s.Expectation, s.Options))),
+					new ThatJsonElement.IsObjectConstraint(it, grammar, s.Expectations, s.Options))),
 			subject);
 	}
 }
