@@ -229,6 +229,10 @@ internal sealed class ElementEqualToString<TItem>(
 	/// <inheritdoc />
 	public override void UseComparerOf(object subject)
 		=> subjectOptions?.UseComparerOf(subject);
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> options.AppendContexts(contexts);
 }
 
 /// <summary>

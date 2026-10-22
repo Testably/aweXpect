@@ -65,6 +65,10 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 			? Options.AreConsideredEqual(actual, expected)
 			: new ValueTask<bool>(Comparer.AreEqual(actual, expected));
 
+	/// <inheritdoc cref="IOptionsEquality{TSubject}.AppendContexts(ResultContextCollector)" />
+	public void AppendContexts(ResultContextCollector contexts)
+		=> Options.AppendContexts(contexts);
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	/// <remarks>
 	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the

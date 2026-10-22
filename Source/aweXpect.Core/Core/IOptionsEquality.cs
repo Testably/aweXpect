@@ -13,4 +13,12 @@ public interface IOptionsEquality<in TSubject>
 	/// </summary>
 	ValueTask<bool>
 		AreConsideredEqual<TExpected>(TSubject actual, TExpected expected);
+
+	/// <summary>
+	///     Adds the contexts that explain a failure of a comparison with these options, e.g. the equivalency options.
+	/// </summary>
+	/// <remarks>
+	///     Only called while a failure message is created.
+	/// </remarks>
+	void AppendContexts(ResultContextCollector contexts);
 }

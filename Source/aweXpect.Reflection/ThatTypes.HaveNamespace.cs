@@ -76,6 +76,13 @@ public static partial class ThatTypes
 			=> await SetValue(actual, context,
 				type => options.AreConsideredEqual(type?.Namespace, expected), cancellationToken);
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have namespace ").Append(options.GetExpectation(expected, Grammars));
 

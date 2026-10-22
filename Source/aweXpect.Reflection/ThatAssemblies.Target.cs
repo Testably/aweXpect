@@ -77,6 +77,13 @@ public static partial class ThatAssemblies
 			=> await SetValue(actual, context,
 				assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all target ").Append(options.GetExpectation(expected, Grammars));
 

@@ -80,6 +80,13 @@ public static partial class ThatMembers
 			=> await SetValue(actual, context,
 				async memberInfo => !await options.AreConsideredEqual(memberInfo?.Name, unexpected), cancellationToken);
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
 

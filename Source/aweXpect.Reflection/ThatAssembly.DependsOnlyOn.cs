@@ -83,6 +83,8 @@ public static partial class ThatAssembly
 			{
 				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
 			}
+
+			options.AppendContexts(contexts);
 		}
 
 		private string DescribeAllowed()

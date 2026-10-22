@@ -16,10 +16,9 @@ namespace aweXpect;
 ///     The comparison of the items of <c>AreUnique</c>, shared by the synchronous and the asynchronous collections.
 /// </summary>
 /// <remarks>
-///     The members are compared by the <paramref name="options" />, which only add their contexts when they are
-///     <see cref="ObjectEqualityOptions{TSubject}" />. The expectation names the <paramref name="displayedOptions" />,
-///     e.g. to name the comparer of a set subject, and the <paramref name="memberAccessorExpression" />, unless the items
-///     themselves are compared.
+///     The members are compared by the <paramref name="options" />, which also add the contexts. The expectation
+///     names the <paramref name="displayedOptions" />, e.g. to name the comparer of a set subject, and the
+///     <paramref name="memberAccessorExpression" />, unless the items themselves are compared.
 /// </remarks>
 internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	string it,
@@ -57,7 +56,7 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		base.AppendContexts(contexts);
-		((_evaluationOptions ?? options) as ObjectEqualityOptions<TMember>)?.AppendContexts(contexts);
+		(_evaluationOptions ?? options).AppendContexts(contexts);
 	}
 
 	/// <summary>

@@ -199,6 +199,37 @@ public sealed partial class ThatEnumerable
 			public sealed class StringItemTests
 			{
 				[Test]
+				public async Task AsCaseFoldedWithContext_WhenAnItemDiffers_ShouldListTheContextOfTheMatchType()
+				{
+					string[] subject = ["a", "b",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("A").AsCaseFoldedWithContext();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to "A" as case-folded for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [
+						               "b"
+						             ]
+
+						             Case folding:
+						             invariant culture
+
+						             Collection:
+						             [
+						               "a",
+						               "b"
+						             ]
+						             """)
+						.Because("the match type that compares the items explains the failure");
+				}
+
+				[Test]
 				public async Task AsPrefix_WhenAnItemDoesNotMatchThePattern_ShouldFail()
 				{
 					string[] subject = ["# Title", "## Intro", "text",];

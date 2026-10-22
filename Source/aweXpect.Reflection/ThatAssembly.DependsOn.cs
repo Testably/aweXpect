@@ -71,6 +71,8 @@ public static partial class ThatAssembly
 				contexts.AddDependenciesContext("Dependencies",
 					Actual.GetReferencedAssemblyNames().Select(dep => dep.Name).ToArray());
 			}
+
+			options.AppendContexts(contexts);
 		}
 	}
 }

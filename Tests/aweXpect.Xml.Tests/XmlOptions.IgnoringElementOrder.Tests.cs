@@ -162,6 +162,86 @@ public sealed partial class XmlOptionsTests
 		}
 
 		[Test]
+		public async Task WhenAnotherExpectationOnTheSubjectFails_ShouldNotListTheOptions()
+		{
+			string subject = "<a><c/><b/></a>";
+
+			async Task Act()
+				=> await That(subject).IsEqualTo("<a><b/><c/></a>").AsXml(o => o.IgnoringElementOrder())
+					.And.HasLength(3);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is XML equivalent to <a><b/><c/></a> and has length equal to 3,
+				             but it had length 15
+				             """)
+				.Because("the options explain only a failure of the XML comparison");
+		}
+
+		[Test]
+		public async Task WhenComparisonOfACollectionItemFails_ShouldListTheOptions()
+		{
+			string[] subject = ["<a><c/><b/></a>", "<a><b/></a>",];
+
+			async Task Act()
+				=> await That(subject).All().AreEqualTo("<a><b/><c/></a>").AsXml(o => o.IgnoringElementOrder());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is XML equivalent to <a><b/><c/></a> for all items,
+				             but only 1 of 2 were
+
+				             Not matching items:
+				             [
+				               "<a><b/></a>"
+				             ]
+
+				             Collection:
+				             [
+				               "<a><c/><b/></a>",
+				               "<a><b/></a>"
+				             ]
+
+				             XML options:
+				              - ignore element order
+				             """);
+		}
+
+		[Test]
+		public async Task WhenComparisonOfEqualCollectionsFails_ShouldListTheOptions()
+		{
+			string[] subject = ["<a><c/><b/></a>", "<a><b/></a>",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["<a><b/><c/></a>", "<a><b/><c/></a>",])
+					.AsXml(o => o.IgnoringElementOrder());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection ["<a><b/><c/></a>", "<a><b/><c/></a>",] as XML in order,
+				             but it contained item "<a><b/></a>" at index 1 instead of "<a><b/><c/></a>"
+
+				             Collection:
+				             [
+				               "<a><c/><b/></a>",
+				               "<a><b/></a>"
+				             ]
+
+				             Expected:
+				             [
+				               "<a><b/><c/></a>",
+				               "<a><b/><c/></a>"
+				             ]
+
+				             XML options:
+				              - ignore element order
+				             """);
+		}
+
+		[Test]
 		public async Task WithMatches_ShouldIgnoreTheOrderAndAdditionalElements()
 		{
 			XElement element = XElement.Parse("<order><note/><item sku=\"B2\"/><item sku=\"A1\"/></order>");

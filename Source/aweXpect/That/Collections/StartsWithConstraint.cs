@@ -41,7 +41,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddOptionsContexts(_evaluationOptions ?? options);
+		=> contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
 
 	/// <summary>
 	///     Starts a new evaluation in the <paramref name="context" />.

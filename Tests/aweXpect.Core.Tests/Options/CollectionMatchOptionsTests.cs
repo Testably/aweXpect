@@ -238,6 +238,9 @@ public class CollectionMatchOptionsTests
 				await Task.Yield();
 				return _equality.IsEqual(actual, expected);
 			}
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
 		}
 	}
 
@@ -388,6 +391,9 @@ public class CollectionMatchOptionsTests
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(T actual, TExpected expected)
 				=> options.AreConsideredEqual(actual, expected);
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> options.AppendContexts(contexts);
 		}
 	}
 
@@ -2755,6 +2761,9 @@ public class CollectionMatchOptionsTests
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(IsEqual(actual, expected));
 
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
+
 			public bool IsEqual<TExpected>(int actual, TExpected expected)
 				=> expected is int value && kind switch
 				{
@@ -2777,6 +2786,9 @@ public class CollectionMatchOptionsTests
 				bool isEqual = _equality.IsEqual(actual, expected);
 				return _comparisons++ % 2 == 0 ? new ValueTask<bool>(isEqual) : Yield(isEqual);
 			}
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
 
 			private static async ValueTask<bool> Yield(bool isEqual)
 			{
@@ -3045,12 +3057,18 @@ public class CollectionMatchOptionsTests
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> new(false);
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
 		}
 
 		private sealed class ThrowingEquality(Exception exception) : IOptionsEquality<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 				=> throw exception;
+
+			public void AppendContexts(ResultContextCollector contexts)
+				=> throw new NotSupportedException();
 		}
 	}
 

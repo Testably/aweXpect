@@ -89,7 +89,7 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 	///     The items of a collection are compared one after the other with the same match type, so the members to ignore
 	///     of every failed comparison are kept, and a suggestion found for an item is not lost to a later item.
 	/// </remarks>
-	public void AddContext(ResultContextCollector contexts)
+	public void AppendContexts(ResultContextCollector contexts)
 		=> options.AddContext(contexts, _unmatchedMembersToIgnore);
 
 	/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

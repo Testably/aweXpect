@@ -21,8 +21,7 @@ public static class XmlExtensions
 	///     sections are compared as text. Like <see cref="ThatXmlString.IsValidXml" />, a document type definition (DTD)
 	///     is prohibited.
 	///     <para />
-	///     The active <paramref name="options" /> are listed in the "XML options" context of every failure on the
-	///     subject, as the string comparison offers no way to add a context only to its own failure.
+	///     The active <paramref name="options" /> are listed in the "XML options" context of a failed comparison.
 	/// </remarks>
 	public static TResult AsXml<TResult>(
 		this TResult result,
@@ -30,13 +29,7 @@ public static class XmlExtensions
 		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
-		XmlMatchType matchType = new(xmlOptions);
-		result.Options.SetMatchType(matchType, nameof(AsXml));
-		if (result is IOptionsProvider<ExpectationBuilder> expectationBuilder)
-		{
-			expectationBuilder.Options.AddSubjectContexts<object>((_, contexts) => matchType.AddContext(contexts));
-		}
-
+		result.Options.SetMatchType(new XmlMatchType(xmlOptions), nameof(AsXml));
 		return result;
 	}
 }

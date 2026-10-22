@@ -83,6 +83,13 @@ public static partial class ThatAssemblies
 				!await assembly.GetReferencedAssemblyNames().AnyAsync(dep =>
 					options.AreConsideredEqual(dep.Name, unexpected)), cancellationToken);
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have no dependency on assembly ")
 				.Append(options.GetExpectation(unexpected, Grammars));

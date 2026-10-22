@@ -29,6 +29,17 @@ public static class StringEqualityResultExtensions
 	}
 
 	/// <remarks>
+	///     Like <see cref="AsCaseFolded{TResult}(TResult)" />, but explains a failure with a "Case folding" context, as an
+	///     extension would list its options.
+	/// </remarks>
+	public static TResult AsCaseFoldedWithContext<TResult>(this TResult result)
+		where TResult : IOptionsProvider<StringEqualityOptions>
+	{
+		result.Options.SetMatchType(new CaseFoldedMatchType("invariant culture"), nameof(AsCaseFoldedWithContext));
+		return result;
+	}
+
+	/// <remarks>
 	///     A custom match type that can neither use every expected value, nor honour every option, nor compare every
 	///     subject, as an extension would set it.
 	/// </remarks>
@@ -39,13 +50,21 @@ public static class StringEqualityResultExtensions
 		return result;
 	}
 
-	private sealed class CaseFoldedMatchType : IStringMatchType
+	private sealed class CaseFoldedMatchType(string? context = null) : IStringMatchType
 	{
 		public bool InspectsSubject => false;
 
 		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 			IEqualityComparer<string>? comparer)
 			=> new(string.Equals(actual?.ToUpperInvariant(), expected?.ToUpperInvariant(), StringComparison.Ordinal));
+
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			if (context is not null)
+			{
+				contexts.Add(new ResultContext.Fixed("Case folding", context));
+			}
+		}
 
 		public string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} case-folded equal to {Formatter.Format(expected)}";
@@ -89,6 +108,11 @@ public static class StringEqualityResultExtensions
 
 			return new ValueTask<StringMatchResult>(TryParse(expected, out int expectedNumber) &&
 			                                        actualNumber == expectedNumber);
+		}
+
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// The expectation already explains the comparison.
 		}
 
 		public string GetExpectation(string? expected, ExpectationGrammars grammars)

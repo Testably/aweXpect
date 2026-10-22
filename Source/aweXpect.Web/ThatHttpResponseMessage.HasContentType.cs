@@ -96,6 +96,10 @@ public static partial class ThatHttpResponseMessage
 			return this;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a `Content-Type` header ", "have a `Content-Type` header "))
 				.Append(options.GetExpectation(expected, Grammars));

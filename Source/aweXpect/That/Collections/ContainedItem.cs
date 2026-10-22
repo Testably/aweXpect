@@ -341,6 +341,10 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
 		=> options.GetExpectation(Expected, grammars);
 
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> options.AppendContexts(contexts);
+
 	/// <summary>
 	///     The <paramref name="equalItem" /> compared ordinally, like the options compare it without an option.
 	/// </summary>

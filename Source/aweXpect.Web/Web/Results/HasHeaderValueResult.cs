@@ -143,6 +143,10 @@ public class HasHeaderValueResult<TType, TThat>
 			return this;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		/// <remarks>
 		///     The text continues the one of the header, which carries the negation and the number of the subject, like
 		///     the member expectations of <c>Whose</c> do.
@@ -209,6 +213,10 @@ public class HasHeaderValueResult<TType, TThat>
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the header, which carries the negation, like <c>WithValue</c> does.

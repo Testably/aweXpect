@@ -147,6 +147,10 @@ public class HasQueryParameterValueResult
 			return this;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		/// <remarks>
 		///     The text continues the one of the query parameter, which carries the negation and the number of the
 		///     subject, like the member expectations of <c>Whose</c> do.
@@ -208,6 +212,10 @@ public class HasQueryParameterValueResult
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the query parameter, which carries the negation and the number of the

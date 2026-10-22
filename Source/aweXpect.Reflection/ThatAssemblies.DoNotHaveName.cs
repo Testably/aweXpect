@@ -78,6 +78,13 @@ public static partial class ThatAssemblies
 			=> await SetValue(actual, context,
 				async assembly => !await options.AreConsideredEqual(assembly?.GetName().Name, unexpected), cancellationToken);
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
 

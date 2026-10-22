@@ -356,6 +356,11 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 
 		public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
 			=> new(Equals(actual, expected));
+
+		public void AppendContexts(ResultContextCollector contexts)
+		{
+			// A comparison by equality has no options to explain.
+		}
 	}
 }
 
@@ -449,7 +454,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 			AppendExpectedItemsContext(contexts, expected, _expectedItems);
 		}
 
-		contexts.AddOptionsContexts(_evaluationOptions ?? options);
+		contexts.AddEqualityOptionsContexts(_evaluationOptions ?? options);
 	}
 
 	/// <summary>
@@ -611,6 +616,9 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 		public async ValueTask<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
 			=> CollectionItems<object?>.TryCast(actual, out TMatch typedActual)
 			   && await options.AreConsideredEqual(typedActual, (TItem)(object?)expected!);
+
+		public void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
 	}
 }
 

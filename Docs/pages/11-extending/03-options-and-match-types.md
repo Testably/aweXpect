@@ -170,6 +170,18 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   follows "it", e.g. "could not be parsed as JSON" in "but it could not be parsed as JSON". Inside `Whose` it follows
   the member name instead, and in a collection "an item", so name the value in the reason as well.
 
+A string match type adds its contexts in `AppendContexts` too. They are only added to a failure of the string
+comparison, also for an item of a collection or a member inside `Whose`, and not to a failure of another expectation on
+the same subject. Leave the method empty when the expectation text already explains the comparison:
+
+```csharp no-compile
+public void AppendContexts(ResultContextCollector contexts)
+    => contexts.Add(new ResultContext.Fixed("Title options", " - ignore leading articles"));
+```
+
+A constraint of your own that compares strings with `StringEqualityOptions` forwards these contexts from its
+`AppendContexts` with `options.AppendContexts(contexts)`.
+
 <details>
 <summary>Match results, multi-line texts and equivalency</summary>
 

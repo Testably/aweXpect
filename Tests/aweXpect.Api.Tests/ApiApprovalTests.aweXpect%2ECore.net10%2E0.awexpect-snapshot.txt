@@ -343,6 +343,7 @@ namespace aweXpect.Core
     }
     public interface IOptionsEquality<in TSubject>
     {
+        void AppendContexts(aweXpect.Core.ResultContextCollector contexts);
         System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected);
     }
     public interface IOptionsProvider<out TOptions>
@@ -352,6 +353,7 @@ namespace aweXpect.Core
     public interface IStringMatchType
     {
         bool InspectsSubject { get; }
+        void AppendContexts(aweXpect.Core.ResultContextCollector contexts);
         System.Threading.Tasks.ValueTask<aweXpect.Core.StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string>? comparer);
         string GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars);
         string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string> comparer, aweXpect.Core.StringDifferenceSettings? settings);
@@ -1580,6 +1582,7 @@ namespace aweXpect.Options
         public StringEqualityOptions(string parameterName) { }
         public bool ComparesByOrdinalEquality { get; }
         public bool InspectsSubject { get; }
+        public void AppendContexts(aweXpect.Core.ResultContextCollector contexts) { }
         public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected) { }
         public aweXpect.Options.StringEqualityOptions AsBlock() { }
         public aweXpect.Options.StringEqualityOptions AsPrefix() { }

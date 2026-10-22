@@ -109,6 +109,10 @@ public static partial class ThatHttpRequestMessage
 			return this;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a request URI ", "have a request URI "))
 				.Append(options.GetExpectation(expected, ExpectationGrammars.None));

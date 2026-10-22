@@ -111,6 +111,13 @@ public static partial class ThatAssemblies
 			return violations.Length == 0;
 		}
 
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			options.AppendContexts(contexts);
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have dependencies only on ").Append(DescribeAllowed());
 
