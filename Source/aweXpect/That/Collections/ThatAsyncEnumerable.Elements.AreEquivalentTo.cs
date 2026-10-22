@@ -18,7 +18,7 @@ public static partial class ThatAsyncEnumerable
 		/// <summary>
 		///     …are equivalent to the <paramref name="expected" /> value.
 		/// </summary>
-		public ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 			AreEquivalentTo<TExpected>([RequiresMemberMetadata] TExpected expected,
 				Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -32,7 +32,7 @@ public static partial class ThatAsyncEnumerable
 
 			Options.ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
-			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint(
 					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
 						EqualityOptions: equalityOptions),
@@ -43,8 +43,7 @@ public static partial class ThatAsyncEnumerable
 							new ElementEquivalentTo<TItem, TItem, TExpected>(state.EqualityOptions, state.Expected,
 								state.DoNotPopulateThisValue),
 							"were")),
-				_subject,
-				equalityOptions);
+				_subject);
 		}
 
 		/// <summary>
@@ -53,7 +52,7 @@ public static partial class ThatAsyncEnumerable
 		/// <remarks>
 		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
 		/// </remarks>
-		public ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 			AreEquivalentTo([RequiresMemberMetadata] object? expected,
 				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")

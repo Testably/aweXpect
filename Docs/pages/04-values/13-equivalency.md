@@ -44,8 +44,8 @@ await Expect.That(tracks).All().AreEquivalentTo(expected);
 await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
 ```
 
-The options are passed to `AreEquivalentTo` itself: appending `.Equivalent(...)` or `.Using(comparer)` throws an
-`InvalidOperationException`. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
+The equivalency options go into `AreEquivalentTo` itself, which offers no `.Equivalent(...)` or `.Using(comparer)`
+afterwards. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
 
 ### As a modifier of equality
 

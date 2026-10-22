@@ -17,7 +17,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are equivalent to the <paramref name="expected" /> value.
 		/// </summary>
-		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 			AreEquivalentTo<TExpected>([RequiresMemberMetadata] TExpected expected,
 				Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -31,7 +31,7 @@ public static partial class ThatEnumerable
 
 			Options.ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
-			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint(
 					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
 						EqualityOptions: equalityOptions),
@@ -42,8 +42,7 @@ public static partial class ThatEnumerable
 							new ElementEquivalentTo<TItem, TItem, TExpected>(state.EqualityOptions, state.Expected,
 								state.DoNotPopulateThisValue),
 							"were")),
-				_subject,
-				equalityOptions);
+				_subject);
 		}
 
 		/// <summary>
@@ -52,7 +51,7 @@ public static partial class ThatEnumerable
 		/// <remarks>
 		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
 		/// </remarks>
-		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 			AreEquivalentTo([RequiresMemberMetadata] object? expected,
 				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -64,7 +63,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are equivalent to the <paramref name="expected" /> value.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			AreEquivalentTo<TExpected>([RequiresMemberMetadata] TExpected expected,
 				Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -78,7 +77,7 @@ public static partial class ThatEnumerable
 
 			Options.ObjectEqualityOptions<object?> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint(
 					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
 						EqualityOptions: equalityOptions),
@@ -89,8 +88,7 @@ public static partial class ThatEnumerable
 							new ElementEquivalentTo<object?, object?, TExpected>(state.EqualityOptions, state.Expected,
 								state.DoNotPopulateThisValue),
 							"were")),
-				_subject,
-				equalityOptions);
+				_subject);
 		}
 
 		/// <summary>
@@ -99,7 +97,7 @@ public static partial class ThatEnumerable
 		/// <remarks>
 		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
 		/// </remarks>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>
+		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
 			AreEquivalentTo([RequiresMemberMetadata] object? expected,
 				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -111,7 +109,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are equivalent to the <paramref name="expected" /> value.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			AreEquivalentTo<TExpected>([RequiresMemberMetadata] TExpected expected,
 				Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -125,7 +123,7 @@ public static partial class ThatEnumerable
 
 			Options.ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint(
 					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
 						EqualityOptions: equalityOptions),
@@ -136,8 +134,7 @@ public static partial class ThatEnumerable
 							new ElementEquivalentTo<object?, TItem, TExpected>(state.EqualityOptions, state.Expected,
 								state.DoNotPopulateThisValue),
 							"were")),
-				_subject,
-				equalityOptions);
+				_subject);
 		}
 
 		/// <summary>
@@ -146,7 +143,7 @@ public static partial class ThatEnumerable
 		/// <remarks>
 		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
 		/// </remarks>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			AreEquivalentTo([RequiresMemberMetadata] object? expected,
 				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
 				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
