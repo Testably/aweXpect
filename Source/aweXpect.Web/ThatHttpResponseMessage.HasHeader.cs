@@ -14,35 +14,36 @@ namespace aweXpect;
 public static partial class ThatHttpResponseMessage
 {
 	/// <summary>
-	///     Verifies that the <see cref="HttpResponseMessage" /> has the <paramref name="expected" /> header.
+	///     Verifies that the <see cref="HttpResponseMessage" /> has the header with the given <paramref name="name" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HasHeaderValueResult<HttpResponseMessage, IThat<HttpResponseMessage?>> HasHeader(
 		this IThat<HttpResponseMessage?> subject,
-		string expected)
+		string name)
 	{
-		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		ThrowHelper.ThrowIfNull(name, nameof(name));
 		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(expected, static (expected, it, grammars) =>
-					new HasHeaderConstraint(it, grammars, expected)),
+				.AddConstraint(name, static (name, it, grammars) =>
+					new HasHeaderConstraint(it, grammars, name)),
 			subject,
-			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
+			a => a.Headers.TryGetValues(name, out IEnumerable<string>? values) ? values.ToArray() : null);
 	}
 
 	/// <summary>
-	///     Verifies that the <see cref="HttpResponseMessage" /> does not have the <paramref name="unexpected" /> header.
+	///     Verifies that the <see cref="HttpResponseMessage" /> does not have the header with the given
+	///     <paramref name="name" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> DoesNotHaveHeader(
 		this IThat<HttpResponseMessage?> subject,
-		string unexpected)
+		string name)
 	{
-		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+		ThrowHelper.ThrowIfNull(name, nameof(name));
 		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
-					new HasHeaderConstraint(it, grammars, unexpected).Invert()),
+				.AddConstraint(name, static (name, it, grammars) =>
+					new HasHeaderConstraint(it, grammars, name).Invert()),
 			subject);
 	}
 

@@ -129,8 +129,8 @@ namespace aweXpect.Json
         aweXpect.Json.IJsonObjectResult And { get; }
         aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> At(string path);
         aweXpect.Json.IJsonObjectResult.IJsonObjectLengthResult With(int amount);
-        aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> With(string propertyName);
-        aweXpect.Json.IJsonObjectResult Without(string propertyName);
+        aweXpect.Json.IJsonPropertyResult<aweXpect.Json.IJsonObjectResult> With(string name);
+        aweXpect.Json.IJsonObjectResult Without(string name);
         public interface IJsonObjectLengthResult
         {
             aweXpect.Json.IJsonObjectResult Properties();

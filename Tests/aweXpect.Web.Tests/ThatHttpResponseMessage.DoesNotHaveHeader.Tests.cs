@@ -24,7 +24,7 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
-			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpResponseMessage? subject = null;
 
@@ -32,8 +32,8 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).DoesNotHaveHeader(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("unexpected").And
-					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be null.").AsPrefix();
 			}
 
 			[Test]

@@ -365,16 +365,16 @@ internal class JsonValidation : IJsonObjectResult,
 		return this;
 	}
 
-	IJsonPropertyResult<IJsonObjectResult> IJsonObjectResult.With(string propertyName)
+	IJsonPropertyResult<IJsonObjectResult> IJsonObjectResult.With(string name)
 	{
-		if (propertyName is null)
+		if (name is null)
 		{
 			throw Own(Tracing.WriteException(
-				new ArgumentNullException(nameof(propertyName), "The 'propertyName' cannot be null.")));
+				new ArgumentNullException(nameof(name), "The 'name' cannot be null.")));
 		}
 
-		PushPath($".{propertyName}");
-		_currentElements.Push(GetProperty(_currentElements.Peek(), propertyName, CurrentPath));
+		PushPath($".{name}");
+		_currentElements.Push(GetProperty(_currentElements.Peek(), name, CurrentPath));
 		return this;
 	}
 
@@ -461,20 +461,20 @@ internal class JsonValidation : IJsonObjectResult,
 		return element;
 	}
 
-	IJsonObjectResult IJsonObjectResult.Without(string propertyName)
+	IJsonObjectResult IJsonObjectResult.Without(string name)
 	{
-		if (propertyName is null)
+		if (name is null)
 		{
 			throw Own(Tracing.WriteException(
-				new ArgumentNullException(nameof(propertyName), "The 'propertyName' cannot be null.")));
+				new ArgumentNullException(nameof(name), "The 'name' cannot be null.")));
 		}
 
-		string currentPath = $"{CurrentPath}.{propertyName}";
+		string currentPath = $"{CurrentPath}.{name}";
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
 			.Append(grammars.IsNegated() ? " exists" : " does not exist"));
 		JsonElement? currentElement = _currentElements.Peek();
 		if (currentElement is { ValueKind: JsonValueKind.Object, } &&
-		    currentElement.Value.TryGetProperty(propertyName, out JsonElement propertyValue) &&
+		    currentElement.Value.TryGetProperty(name, out JsonElement propertyValue) &&
 		    !IsAbsent(propertyValue))
 		{
 			_failures.Add($" {currentPath} was {JsonElementValidator.Format(propertyValue)}");
