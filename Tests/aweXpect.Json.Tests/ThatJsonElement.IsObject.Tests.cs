@@ -1088,8 +1088,8 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsObject(o => o.With(null!).Matching(1));
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("propertyName").And
-					.WithMessage("The 'propertyName' cannot be null.*").AsWildcard()
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be null.*").AsWildcard()
 					.Because("an invalid argument is thrown as it is instead of failing the expectation");
 			}
 
@@ -2323,8 +2323,8 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsObject(o => o.Without(null!));
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("propertyName").And
-					.WithMessage("The 'propertyName' cannot be null.*").AsWildcard()
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be null.*").AsWildcard()
 					.Because("an invalid argument is thrown as it is instead of failing the expectation");
 			}
 		}

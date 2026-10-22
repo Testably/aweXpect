@@ -18,9 +18,9 @@ public interface IJsonObjectResult
 	public IJsonObjectLengthResult With(int amount);
 
 	/// <summary>
-	///     Add an expectation on the property with the given <paramref name="propertyName" />.
+	///     Add an expectation on the property with the given <paramref name="name" />.
 	/// </summary>
-	public IJsonPropertyResult<IJsonObjectResult> With(string propertyName);
+	public IJsonPropertyResult<IJsonObjectResult> With(string name);
 
 	/// <summary>
 	///     Add an expectation on the value at the given <paramref name="path" />, relative to this object.
@@ -38,13 +38,13 @@ public interface IJsonObjectResult
 
 	/// <summary>
 	///     Add an expectation that the object does not contain the property with the given
-	///     <paramref name="propertyName" />.
+	///     <paramref name="name" />.
 	/// </summary>
 	/// <remarks>
 	///     A property with the value <see langword="null" /> exists and therefore fails the expectation, unless
 	///     <see cref="JsonOptionsExtensions.TreatingNullAsAbsent(JsonOptions, bool)" /> is set.
 	/// </remarks>
-	public IJsonObjectResult Without(string propertyName);
+	public IJsonObjectResult Without(string name);
 
 	/// <summary>
 	///     Result for the number of properties in a JSON <see cref="JsonValueKind.Object" />.
