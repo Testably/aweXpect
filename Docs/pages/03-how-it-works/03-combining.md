@@ -154,6 +154,9 @@ but
          ↑ (expected)
 ```
 
+Where awaiting is impossible, a combination can be [verified synchronously](./index.md#when-you-cannot-await) like a
+single expectation.
+
 ## Using the result
 
 Awaiting an expectation returns the value it verified, e.g. the single item of a collection, so you can use it

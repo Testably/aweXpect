@@ -1,4 +1,5 @@
-﻿using aweXpect.Results;
+﻿using aweXpect.Core;
+using aweXpect.Results;
 
 namespace aweXpect.Synchronous;
 
@@ -7,7 +8,8 @@ namespace aweXpect.Synchronous;
 /// </summary>
 /// <remarks>
 ///     <b>WARNING!</b><br />
-///     The only intended use case is to support synchronous evaluation for <c>ref struct</c>.
+///     It blocks the thread until the expectation is evaluated, so only use it where awaiting is impossible, e.g.
+///     for a <c>ref struct</c> such as <c>Span&lt;T&gt;</c>, inside a <c>lock</c> or in a synchronous callback.
 /// </remarks>
 public static class SynchronouslyExtensions
 {
@@ -16,7 +18,8 @@ public static class SynchronouslyExtensions
 	/// </summary>
 	/// <remarks>
 	///     <b>WARNING!</b><br />
-	///     The only intended use case is to support synchronous evaluation for <c>ref struct</c>.
+	///     It blocks the thread until the expectation is evaluated, so only use it where awaiting is impossible, e.g.
+///     for a <c>ref struct</c> such as <c>Span&lt;T&gt;</c>, inside a <c>lock</c> or in a synchronous callback.
 	/// </remarks>
 	public static void VerifySynchronously(this ExpectationResult result)
 		=> Synchronously.Verify(result);
@@ -26,9 +29,21 @@ public static class SynchronouslyExtensions
 	/// </summary>
 	/// <remarks>
 	///     <b>WARNING!</b><br />
-	///     The only intended use case is to support synchronous evaluation for <c>ref struct</c>.
+	///     It blocks the thread until the expectation is evaluated, so only use it where awaiting is impossible, e.g.
+///     for a <c>ref struct</c> such as <c>Span&lt;T&gt;</c>, inside a <c>lock</c> or in a synchronous callback.
 	/// </remarks>
 	public static TType VerifySynchronously<TType, TSelf>(this ExpectationResult<TType, TSelf> result)
 		where TSelf : ExpectationResult<TType, TSelf>
 		=> Synchronously.Verify(result);
+
+	/// <summary>
+	///     Verifies synchronously that the <paramref name="combination" /> of expectations is satisfied.
+	/// </summary>
+	/// <remarks>
+	///     <b>WARNING!</b><br />
+	///     It blocks the thread until the expectation is evaluated, so only use it where awaiting is impossible, e.g.
+///     for a <c>ref struct</c> such as <c>Span&lt;T&gt;</c>, inside a <c>lock</c> or in a synchronous callback.
+	/// </remarks>
+	public static void VerifySynchronously(this Expectation.Combination combination)
+		=> Synchronously.Verify(combination);
 }

@@ -10,6 +10,84 @@ namespace aweXpect.Core.Tests.Synchronous;
 public class SynchronouslyTests
 {
 	[Test]
+	public void ThatAll_WhenAllExpectationsAreMet_ShouldSucceed()
+	{
+		int value = 3;
+
+		Verify(ThatAll(That(value).IsEqualTo(3), That(value).IsGreaterThan(2)));
+	}
+
+	[Test]
+	public void ThatAll_WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
+	{
+		bool completed = BlockedSynchronizationContext.Run(()
+			=> Verify(ThatAll(That(async () => await Task.Yield()).DoesNotThrow())));
+
+		Verify(That(completed).IsTrue()
+			.Because("the continuation must not wait for the thread that is blocked by the synchronous verification"));
+	}
+
+	[Test]
+	public void ThatAll_WhenOneExpectationFails_ShouldFail()
+	{
+		int value = 3;
+		void Act() => Verify(ThatAll(That(value).IsEqualTo(3), That(value).IsEqualTo(4)));
+
+		Verify(That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that value is equal to 3
+			              [02] Expected that value is equal to 4
+			             but
+			              [02] it was 3, which differs by -1
+			             """));
+	}
+
+	[Test]
+	public async Task ThatAll_WhenOneExpectationFails_ShouldThrowTheSameExceptionTypeAsWhenAwaited()
+	{
+		int value = 3;
+		void Act() => Verify(ThatAll(That(value).IsEqualTo(2)));
+		async Task ActAsync() => await ThatAll(That(value).IsEqualTo(2));
+		string expectedMessage = """
+		                         Expected all of the following to succeed:
+		                          [01] Expected that value is equal to 2
+		                         but
+		                          [01] it was 3, which differs by 1
+		                         """;
+
+		Exception awaited = await That(ActAsync).Throws().WithMessage(expectedMessage);
+
+		await That(Act).ThrowsExactly(awaited.GetType()).WithMessage(expectedMessage)
+			.Because("the synchronous verification fails the test like the awaited one");
+	}
+
+	[Test]
+	public void ThatAny_WhenNoExpectationIsMet_ShouldFail()
+	{
+		int value = 3;
+		void Act() => Verify(ThatAny(That(value).IsEqualTo(2), That(value).IsEqualTo(4)));
+
+		Verify(That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected any of the following to succeed:
+			              [01] Expected that value is equal to 2
+			              [02] Expected that value is equal to 4
+			             but
+			              [01] it was 3, which differs by 1
+			              [02] it was 3, which differs by -1
+			             """));
+	}
+
+	[Test]
+	public void ThatAny_WhenOneExpectationIsMet_ShouldSucceed()
+	{
+		int value = 3;
+
+		Verify(ThatAny(That(value).IsEqualTo(2), That(value).IsEqualTo(3)));
+	}
+
+	[Test]
 	public void WhenActionDoesNotThrow_ShouldSucceed()
 	{
 		Foo subject = new()

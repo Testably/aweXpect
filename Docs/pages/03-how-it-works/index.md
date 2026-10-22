@@ -73,6 +73,20 @@ Expect.That(title.Length).IsEqualTo(9).VerifySynchronously();
 Synchronously.Verify(Expect.That(title.Length).IsEqualTo(9));
 ```
 
+The same works for a [combination](./03-combining.md#on-different-subjects) from `Expect.ThatAll` or
+`Expect.ThatAny`:
+
+```csharp
+using aweXpect.Synchronous;
+
+ReadOnlySpan<char> title = "Let It Be".AsSpan();
+
+Expect.ThatAll(
+  Expect.That(title.Length).IsEqualTo(9),
+  Expect.That(title.IsEmpty).IsFalse()).VerifySynchronously();
+```
+
 :::warning
-Only use this where awaiting is impossible: it blocks the thread until the expectation is evaluated.
+It blocks the thread until the expectation is evaluated, so only use it where awaiting is impossible, e.g. for a
+`ref struct` such as `Span<T>`, inside a `lock` or in a synchronous callback.
 :::
