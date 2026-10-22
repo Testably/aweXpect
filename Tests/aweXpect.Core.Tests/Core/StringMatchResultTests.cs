@@ -13,6 +13,29 @@ public sealed class StringMatchResultTests
 	}
 
 	[Test]
+	public async Task FailureBothWays_ShouldKeepTheReasonAndTheCause()
+	{
+		FormatException cause = new("no number");
+
+		StringMatchResult result = StringMatchResult.FailureBothWays("was no number", cause);
+
+		await That(result.IsEqual).IsFalse();
+		await That(result.NotComparableReason).IsEqualTo("was no number");
+		await That(result.Cause).IsSameAs(cause);
+	}
+
+	[Test]
+	public async Task FailureBothWays_WhenReasonIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act() => StringMatchResult.FailureBothWays(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithMessage("The 'reason' cannot be null.").AsPrefix().And
+			.WithParamName("reason")
+			.Because("without a reason the result would silently count as a compared difference");
+	}
+
+	[Test]
 	[Arguments(false)]
 	[Arguments(true)]
 	public async Task ImplicitConversion_ShouldKeepTheValueAndBeComparable(bool isEqual)
@@ -22,28 +45,5 @@ public sealed class StringMatchResultTests
 		await That(result.IsEqual).IsEqualTo(isEqual);
 		await That(result.NotComparableReason).IsNull();
 		await That(result.Cause).IsNull();
-	}
-
-	[Test]
-	public async Task NotComparable_ShouldKeepTheReasonAndTheCause()
-	{
-		FormatException cause = new("no number");
-
-		StringMatchResult result = StringMatchResult.NotComparable("it was no number", cause);
-
-		await That(result.IsEqual).IsFalse();
-		await That(result.NotComparableReason).IsEqualTo("it was no number");
-		await That(result.Cause).IsSameAs(cause);
-	}
-
-	[Test]
-	public async Task NotComparable_WhenReasonIsNull_ShouldThrowArgumentNullException()
-	{
-		void Act() => StringMatchResult.NotComparable(null!);
-
-		await That(Act).Throws<ArgumentNullException>()
-			.WithMessage("The 'reason' cannot be null.").AsPrefix().And
-			.WithParamName("reason")
-			.Because("without a reason the result would silently count as a compared difference");
 	}
 }

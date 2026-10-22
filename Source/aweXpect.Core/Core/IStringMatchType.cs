@@ -24,10 +24,10 @@ public interface IStringMatchType
 	///     considered equal; otherwise <see langword="false" />.
 	/// </summary>
 	/// <remarks>
-	///     Return <see cref="StringMatchResult.NotComparable(string, System.Exception)" /> when the
+	///     Return <see cref="StringMatchResult.FailureBothWays(string, System.Exception)" /> when the
 	///     <paramref name="actual" /> value cannot be compared at all, e.g. a string that is no valid JSON, so that the
-	///     expectation fails in both polarities, instead of the negated expectation succeeding. Start its reason with
-	///     "it", which the failure message replaces with the name of the compared string, e.g. a member name.
+	///     expectation fails in both polarities, instead of the negated expectation succeeding. Its reason follows "it"
+	///     or the name of the compared string, e.g. a member name, in the failure message.
 	/// </remarks>
 	ValueTask<StringMatchResult>
 		AreConsideredEqual(string? actual, string? expected,

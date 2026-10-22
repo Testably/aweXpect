@@ -71,8 +71,8 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 		}
 		catch (XmlException e)
 		{
-			return new ValueTask<StringMatchResult>(StringMatchResult.NotComparable(
-				$"it was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
+			return new ValueTask<StringMatchResult>(StringMatchResult.FailureBothWays(
+				$"was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
 		}
 
 		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options, false);

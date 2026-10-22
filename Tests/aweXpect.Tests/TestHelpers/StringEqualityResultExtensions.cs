@@ -84,7 +84,7 @@ public static class StringEqualityResultExtensions
 			if (!TryParse(actual, out int actualNumber))
 			{
 				return new ValueTask<StringMatchResult>(
-					StringMatchResult.NotComparable($"it was {Formatter.Format(actual)}, which is no number"));
+					StringMatchResult.FailureBothWays($"was {Formatter.Format(actual)}, which is no number"));
 			}
 
 			return new ValueTask<StringMatchResult>(TryParse(expected, out int expectedNumber) &&
