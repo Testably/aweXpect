@@ -13,7 +13,7 @@ namespace aweXpect.Reflection.Options;
 ///     The instance is shared between the chainable result and the underlying constraint/filter, so that
 ///     <c>OrOn(…)</c> and <c>ExcludingSubNamespaces(…)</c> widen or refine the (lazily evaluated) expression.
 /// </remarks>
-internal sealed class NamespaceDependencyOptions
+internal sealed class NamespaceDependencyOptions : IDependencyTarget
 {
 	private readonly List<string> _namespaces = [];
 	private bool _excludeOwnSubNamespaces;

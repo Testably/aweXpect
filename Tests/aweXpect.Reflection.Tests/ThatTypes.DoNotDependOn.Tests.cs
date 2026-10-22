@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -165,6 +170,188 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws<FailException>();
+			}
+		}
+
+		public sealed class SpecificTypeTests
+		{
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenAsyncEnumerableContainsTypeWithTheDependency_ShouldFail()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(OnlyLayer1), typeof(Layer1AndLayer2),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               Layer1AndLayer2
+					             ]
+					             """);
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenAsyncEnumerableTypesDoNotDependOnType_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(ViaField), typeof(OnlyLayer1),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
+			[Test]
+			public async Task WhenCollectionContainsNull_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
+					             """)
+					.Because("a null item's dependencies cannot be verified, so it must not slip through as \"does not depend\"");
+			}
+
+			[Test]
+			public async Task WhenCollectionIsEmpty_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = [];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNoTypeDependsOnType_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(OnlyLayer1),
+					typeof(FrameworkConsumer),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenOnlySomeTypesDependOnType_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(OnlyLayer2),
+					typeof(Layer1AndLayer2),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer2,
+					               Layer1AndLayer2
+					             ]
+					             """)
+					.Because("a plural negation means that none of the types depends on the type, not that not all do");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				IEnumerable<Type?>? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task WhenWidenedWithOrOn_ShouldFailIfAnyMatches()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn<TargetB>().OrOn<TargetA>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all do not depend on type TargetB or TargetA,
+					             but it contained types with the dependency
+
+					             Not matching items:
+					             [
+					               OnlyLayer1
+					             ]
+					             """);
 			}
 		}
 	}

@@ -75,6 +75,11 @@ internal static class Checks
 				=> await That(InfrastructureTypes()).DoNotDependOn(DomainTypes()), "Order")),
 		new("a type depends on the type in its signature",
 			() => ShouldPassOrFailLoudly(async () => await That(typeof(Repository)).DependsOn(typeof(Order)))),
+		new("the infrastructure depends on the order type",
+			() => ShouldPassOrFailLoudly(async () => await That(InfrastructureTypes()).DependOn<Order>())),
+		new("the domain fails to not depend on the customer type",
+			() => ShouldFailOrFailLoudly(async ()
+				=> await That(DomainTypes()).DoNotDependOn<Customer>(), "Order")),
 	];
 
 	private static Filtered.Types DomainTypes()

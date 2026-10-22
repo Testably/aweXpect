@@ -56,6 +56,42 @@ public static partial class ThatTypes
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) the type <typeparamref name="T" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn<T>(
+		this IThat<IEnumerable<Type?>?> subject)
+	{
+		TypeDependencyOptions options = new(typeof(T));
+		return new TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<TypeDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DependOnConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
+	///     signature) the type <typeparamref name="T" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn<T>(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
+	{
+		TypeDependencyOptions options = new(typeof(T));
+		return new TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<TypeDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DependOnConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+#endif
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
 	///     signature) at least one type in the filtered collections of types <paramref name="target" /> or
 	///     <paramref name="additional" />.
 	/// </summary>
@@ -139,6 +175,42 @@ public static partial class ThatTypes
 #endif
 
 	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not reference
+	///     in their signature) the type <typeparamref name="T" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn<T>(
+		this IThat<IEnumerable<Type?>?> subject)
+	{
+		TypeDependencyOptions options = new(typeof(T));
+		return new TypeDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<TypeDependencyOptions, IEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DoNotDependOnConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not reference
+	///     in their signature) the type <typeparamref name="T" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn<T>(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
+	{
+		TypeDependencyOptions options = new(typeof(T));
+		return new TypeDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+				.AddConstraint<TypeDependencyOptions, IAsyncEnumerable<Type?>>(options,
+					static (options, it, grammars)
+					=> new DoNotDependOnConstraint(it, grammars, options)),
+			subject,
+			options);
+	}
+#endif
+
+	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not
 	///     reference in their signature) any type in the filtered collections of types <paramref name="target" /> or
 	///     <paramref name="additional" />.
@@ -186,12 +258,12 @@ public static partial class ThatTypes
 	}
 #endif
 
-	private static bool DependsOnNamespace(Type? type, NamespaceDependencyOptions options)
+	private static bool DependsOnTarget(Type? type, IDependencyTarget options)
 		=> type is not null && options.IsMatchedBy(type);
 
 	// A null item's dependencies cannot be verified, so it fails the negative assertion just like the
 	// positive one (and like DependOnlyOn), instead of slipping through as "does not depend".
-	private static bool DoesNotDependOnNamespace(Type? type, NamespaceDependencyOptions options)
+	private static bool DoesNotDependOnTarget(Type? type, IDependencyTarget options)
 		=> type is not null && !options.IsMatchedBy(type);
 
 	private static bool DependsOnTypeSet(Type? type, ResolvedTypeSet targetSet)
@@ -205,7 +277,7 @@ public static partial class ThatTypes
 	private sealed class DependOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		NamespaceDependencyOptions options)
+		IDependencyTarget options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -215,11 +287,11 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => DependsOnNamespace(type, options), cancellationToken);
+			=> await SetAsyncValue(actual, context, type => DependsOnTarget(type, options), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => DependsOnNamespace(type, options));
+			=> SetValue(actual, context, type => DependsOnTarget(type, options));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all depend on ").Append(options.Describe());
@@ -237,7 +309,7 @@ public static partial class ThatTypes
 	private sealed class DoNotDependOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		NamespaceDependencyOptions options)
+		IDependencyTarget options)
 		: CollectionConstraintResult<Type?>(it, grammars),
 			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
@@ -247,11 +319,11 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => DoesNotDependOnNamespace(type, options), cancellationToken);
+			=> await SetAsyncValue(actual, context, type => DoesNotDependOnTarget(type, options), cancellationToken);
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => DoesNotDependOnNamespace(type, options));
+			=> SetValue(actual, context, type => DoesNotDependOnTarget(type, options));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all do not depend on ").Append(options.Describe());

@@ -12,7 +12,7 @@ namespace aweXpect.Reflection.Options;
 ///     The instance is shared between the chainable result and the underlying constraint, so that
 ///     <c>OrOn&lt;T&gt;()</c> / <c>OrOn(Type)</c> widen the (lazily evaluated) expression.
 /// </remarks>
-internal sealed class TypeDependencyOptions
+internal sealed class TypeDependencyOptions : IDependencyTarget
 {
 	private readonly List<Type> _types = [];
 
@@ -40,6 +40,12 @@ internal sealed class TypeDependencyOptions
 	/// </summary>
 	public bool Matches(Type dependency)
 		=> _types.Any(type => TypeHelpers.MatchesType(dependency, type));
+
+	/// <summary>
+	///     Checks whether the <paramref name="type" /> references any of the configured types.
+	/// </summary>
+	public bool IsMatchedBy(Type type)
+		=> type.ResolveDependencies().Any(Matches);
 
 	/// <summary>
 	///     Describes the configured types for an expectation message.
