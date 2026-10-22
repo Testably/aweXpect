@@ -60,29 +60,6 @@ public sealed partial class ThatTypes
 					             ]
 					             """);
 			}
-
-			[Test]
-			public async Task WhenSomeTypeImplementsIndirectly_WithForceDirect_ShouldFail()
-			{
-				Filtered.Types subject = In.Types(typeof(DerivedFromClassWithInterface1));
-
-				async Task Act()
-				{
-					await That(subject).Implement<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that in types [ThatTypes.DerivedFromClassWithInterface1]
-					             all directly implement ThatTypes.ITestInterface,
-					             but it contained types that do not directly implement ThatTypes.ITestInterface
-
-					             Not matching items:
-					             [
-					               ThatTypes.DerivedFromClassWithInterface1
-					             ]
-					             """);
-			}
 		}
 
 		public sealed class TypeTests

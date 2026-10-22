@@ -17,8 +17,8 @@ public static partial class ThatType
 	///     This covers base classes and interfaces in one step and considers the type itself as assignable, mirroring
 	///     the inverse of <see cref="Type.IsAssignableFrom(Type)" />. Closed generic variance is honored, but open generic
 	///     type definitions are not supported.<br />
-	///     For base-class inheritance use <see cref="InheritsFrom{TBaseType}(IThat{Type}, bool)" />, for interfaces use
-	///     <see cref="Implements{TInterface}(IThat{Type}, bool)" />.
+	///     For base-class inheritance use <see cref="InheritsFrom{TBaseType}(IThat{Type})" />, for interfaces use
+	///     <see cref="Implements{TInterface}(IThat{Type})" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	[GuaranteesNotNull]
@@ -33,8 +33,8 @@ public static partial class ThatType
 	///     This covers base classes and interfaces in one step and considers the type itself as assignable, mirroring
 	///     the inverse of <see cref="Type.IsAssignableFrom(Type)" />. Closed generic variance is honored, but open generic
 	///     type definitions are not supported.<br />
-	///     For base-class inheritance use <see cref="InheritsFrom(IThat{Type}, Type, bool)" />, for interfaces use
-	///     <see cref="Implements(IThat{Type}, Type, bool)" />.
+	///     For base-class inheritance use <see cref="InheritsFrom(IThat{Type}, Type)" />, for interfaces use
+	///     <see cref="Implements(IThat{Type}, Type)" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="type">The type the subject should be assignable to.</param>
@@ -58,8 +58,8 @@ public static partial class ThatType
 	///     This covers base classes and interfaces in one step and considers the type itself as assignable, mirroring
 	///     the inverse of <see cref="Type.IsAssignableFrom(Type)" />. Closed generic variance is honored, but open generic
 	///     type definitions are not supported.<br />
-	///     For base-class inheritance use <see cref="DoesNotInheritFrom{TBaseType}(IThat{Type}, bool)" />, for interfaces
-	///     use <see cref="DoesNotImplement{TInterface}(IThat{Type}, bool)" />.
+	///     For base-class inheritance use <see cref="DoesNotInheritFrom{TBaseType}(IThat{Type})" />, for interfaces
+	///     use <see cref="DoesNotImplement{TInterface}(IThat{Type})" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	[GuaranteesNotNull]
@@ -74,8 +74,8 @@ public static partial class ThatType
 	///     This covers base classes and interfaces in one step and considers the type itself as assignable, mirroring
 	///     the inverse of <see cref="Type.IsAssignableFrom(Type)" />. Closed generic variance is honored, but open generic
 	///     type definitions are not supported.<br />
-	///     For base-class inheritance use <see cref="DoesNotInheritFrom(IThat{Type}, Type, bool)" />, for interfaces
-	///     use <see cref="DoesNotImplement(IThat{Type}, Type, bool)" />.
+	///     For base-class inheritance use <see cref="DoesNotInheritFrom(IThat{Type}, Type)" />, for interfaces
+	///     use <see cref="DoesNotImplement(IThat{Type}, Type)" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
 	/// <param name="type">The type the subject should not be assignable to.</param>

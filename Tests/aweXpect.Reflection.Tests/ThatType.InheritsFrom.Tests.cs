@@ -43,40 +43,6 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenTypeDoesNotInherit_WithForceDirect_ShouldReportNotInherited()
-			{
-				Type subject = typeof(UnrelatedClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritsFrom<BaseClass>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             inherits directly from ThatType.BaseClass,
-					             but it did not
-
-					             Actual:
-					             ThatType.UnrelatedClass
-					             """);
-			}
-
-			[Test]
-			public async Task WhenTypeInheritsDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritsFrom<BaseClass>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
 			public async Task WhenTypeInheritsFromBaseClass_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClass);
@@ -100,27 +66,6 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeInheritsIndirectly_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(GrandChildClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritsFrom<BaseClass>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             inherits directly from ThatType.BaseClass,
-					             but it did only indirectly
-
-					             Actual:
-					             ThatType.GrandChildClass
-					             """);
 			}
 
 			[Test]
@@ -201,20 +146,6 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenTypeInheritsDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedClass);
-				Type baseType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritsFrom(baseType, true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
 			public async Task WhenTypeInheritsFromBaseClass_ShouldSucceed()
 			{
 				Type subject = typeof(DerivedClass);
@@ -226,28 +157,6 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeInheritsIndirectly_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(GrandChildClass);
-				Type baseType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritsFrom(baseType, true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             inherits directly from ThatType.BaseClass,
-					             but it did only indirectly
-
-					             Actual:
-					             ThatType.GrandChildClass
-					             """);
 			}
 		}
 

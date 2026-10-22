@@ -67,21 +67,6 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenTypesInheritDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Filtered.Types subject = In.AssemblyContaining<GenericTests>()
-					.Types()
-					.Which(type => type == typeof(DerivedClass1) || type == typeof(DerivedClass2));
-
-				async Task Act()
-				{
-					await That(subject).InheritFrom<BaseClass>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
 			public async Task WhenTypesInheritIndirectly_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<GenericTests>()
@@ -94,31 +79,6 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypesInheritIndirectly_WithForceDirect_ShouldFail()
-			{
-				Filtered.Types subject = In.AssemblyContaining<GenericTests>()
-					.Types()
-					.Which(type => type == typeof(GrandChildClass));
-
-				async Task Act()
-				{
-					await That(subject).InheritFrom<BaseClass>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that types matching type => type == typeof(GrandChildClass) in assembly containing type ThatTypes.InheritFrom.GenericTests
-					             all inherit directly from ThatTypes.BaseClass,
-					             but it contained types that do not inherit directly from ThatTypes.BaseClass
-
-					             Not matching items:
-					             [
-					               ThatTypes.GrandChildClass
-					             ]
-					             """);
 			}
 		}
 
@@ -183,50 +143,6 @@ public sealed partial class ThatTypes
 					             Not matching items:
 					             [
 					               ThatTypes.UnrelatedClass
-					             ]
-					             """);
-			}
-
-			[Test]
-			public async Task WhenTypesInheritDirectly_WithForceDirect_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(DerivedClass1), typeof(DerivedClass2),
-				};
-				Type baseType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritFrom(baseType, true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypesInheritIndirectly_WithForceDirect_ShouldFail()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(GrandChildClass),
-				};
-				Type baseType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).InheritFrom(baseType, true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             all inherit directly from ThatTypes.BaseClass,
-					             but it contained types that do not inherit directly from ThatTypes.BaseClass
-
-					             Not matching items:
-					             [
-					               ThatTypes.GrandChildClass
 					             ]
 					             """);
 			}

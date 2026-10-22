@@ -224,33 +224,6 @@ public sealed partial class ThatTypes
 
 				await That(Act).DoesNotThrow();
 			}
-
-			[Test]
-			public async Task WhenTypesInheritDirectly_WithForceDirect_ShouldFail()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(DerivedClass1),
-				};
-				Type baseType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).DoNotInheritFrom(baseType, true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             all do not inherit directly from ThatTypes.BaseClass,
-					             but it contained types that inherit directly from ThatTypes.BaseClass
-
-					             Not matching items:
-					             [
-					               ThatTypes.DerivedClass1
-					             ]
-					             """);
-			}
 		}
 
 		public sealed class NegatedTests
