@@ -36,8 +36,8 @@ Correctness is a must. The other goals are strong defaults and win in this order
   member of `Expect`, `Fail`, `Skip` or `Signaler` is not mentioned in `Docs/pages`, and every `csharp` block there
   must compile (or be marked `csharp no-compile`).
 - **Extension packages build on `aweXpect.Core` only**, never on `aweXpect`, and add no new runtime dependencies. When
-  an extension needs more from Core, extend Core in the same change. Each package has its own goals in
-  [design-goals](Docs/agents/design-goals.md#extension-packages) and its architecture in
+  an extension needs more from Core, extend Core in the same change. The API conventions of all extensions and the
+  goals of each package are in [design-goals](Docs/agents/design-goals.md#extension-packages), its architecture in
   [project-structure](Docs/agents/project-structure.md#extension-packages). The rules that are easy to break:
   - `aweXpect.Xml` parses XML only through `Helpers/SecureXml` (no DTDs, no external resolution).
   - `aweXpect.Reflection` checks `ReflectionFallback.IsSupported` in every method that reflects over a subject, as the
