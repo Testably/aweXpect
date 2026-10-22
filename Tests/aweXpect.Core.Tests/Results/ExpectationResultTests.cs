@@ -15,7 +15,7 @@ public class ExpectationResultTests
 	{
 		ExpectationResult sut = new(new MyExpectationBuilder("my-subject"));
 
-		Expectation.Result result = await sut.GetResult(3);
+		Expectation.Result result = await sut.GetResult(3, null, null);
 
 		await That(result.Index).IsEqualTo(4);
 		await That(result.SubjectLine).IsEqualTo(" [04] Expected that my-subject");

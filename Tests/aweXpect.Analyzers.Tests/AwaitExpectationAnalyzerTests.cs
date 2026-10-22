@@ -967,6 +967,48 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenThatAllWithOptionsIsAwaited_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Expect.ThatAll(Expect.That(subject).IsTrue(), Expect.That(subject).IsTrue())
+			            .Because("both must hold").WithTimeout(TimeSpan.FromSeconds(1));
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenThatAllWithOptionsIsNotAwaited_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        {|#0:Expect.ThatAll(Expect.That(subject).IsTrue(), Expect.That(subject).IsTrue())|}
+			            .Because("both must hold").WithTimeout(TimeSpan.FromSeconds(1));
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0)
+		);
+
+	[Test]
 	public async Task WhenThatAnyIsNotAwaited_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

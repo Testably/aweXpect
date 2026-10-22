@@ -11,6 +11,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Internal;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core;
 
@@ -71,7 +72,20 @@ public abstract class Expectation
 	public override string? ToString()
 		=> base.ToString();
 
-	internal abstract ValueTask<Result> GetResult(int index);
+	/// <summary>
+	///     Evaluates the expectation as the member of a combination, after the <paramref name="index" /> of the previous
+	///     member.
+	/// </summary>
+	/// <param name="index">The number of the previous member.</param>
+	/// <param name="limit">
+	///     The time that the combination has left, which tightens the timeout of this evaluation only, or
+	///     <see langword="null" /> without a limit.
+	/// </param>
+	/// <param name="cancellationToken">
+	///     The cancellation token of the combination, which this evaluation observes together with its own one, or
+	///     <see langword="null" /> when the combination has none.
+	/// </param>
+	internal abstract ValueTask<Result> GetResult(int index, TimeSpan? limit, CancellationToken? cancellationToken);
 
 	/// <summary>
 	///     Ends the evaluation, once the failure message no longer reads the collections it materialized.
@@ -141,6 +155,14 @@ public abstract class Expectation
 		private readonly Expectation[] _expectations;
 
 		/// <summary>
+		///     The options of the combination, or <see langword="null" /> when none was set.
+		/// </summary>
+		/// <remarks>
+		///     Only allocated when an option is set, so that a combination without options stays small.
+		/// </remarks>
+		private CombinationOptions? _options;
+
+		/// <summary>
 		///     Combination of multiple expectations.
 		/// </summary>
 		protected Combination(Expectation[] expectations)
@@ -179,7 +201,7 @@ public abstract class Expectation
 			ValueTask<Result> result;
 			try
 			{
-				result = GetResult(0);
+				result = GetResult(0, null, null);
 			}
 			catch (Exception exception)
 			{
@@ -203,26 +225,115 @@ public abstract class Expectation
 		protected abstract string GetSubjectLine();
 
 		/// <summary>
+		///     Adds the <paramref name="reason" /> to the header of the failure message.
+		/// </summary>
+		private protected void AddReason(IBecauseReason reason)
+			=> (GetOptions().Reasons ??= []).Add(reason);
+
+		/// <summary>
+		///     Sets the <paramref name="cancellationToken" /> that every member observes.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
+		private protected void SetCancellation(CancellationToken cancellationToken)
+		{
+			ThrowHelper.ThrowIfOptionIsAlreadySpecified(_options?.CancellationToken is not null,
+				nameof(Combination<All>.WithCancellation));
+			GetOptions().CancellationToken = cancellationToken;
+		}
+
+		/// <summary>
+		///     Limits the whole combination to the <paramref name="timeout" />, unless a tighter one is already set.
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+		private protected void LimitTimeout(TimeSpan timeout)
+		{
+			ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+			CombinationOptions options = GetOptions();
+			options.Timeout = TimerHelpers.Tighter(options.Timeout, timeout) ?? timeout;
+		}
+
+		private CombinationOptions GetOptions() => _options ??= new CombinationOptions();
+
+		/// <summary>
+		///     The subject line with the reasons of the combination, which are read when the failure message is written,
+		///     so that a reason that must be awaited is resolved by then.
+		/// </summary>
+		private string GetHeader()
+		{
+			string subjectLine = GetSubjectLine();
+			if (_options?.Reasons is not { } reasons)
+			{
+				return subjectLine;
+			}
+
+			bool endsWithColon = subjectLine.EndsWith(":", StringComparison.Ordinal);
+			StringBuilder header = new(subjectLine, 0,
+				endsWithColon ? subjectLine.Length - 1 : subjectLine.Length, subjectLine.Length + 32);
+			foreach (IBecauseReason reason in reasons)
+			{
+				header.Append(reason.ToString());
+			}
+
+			return endsWithColon ? header.Append(':').ToString() : header.ToString();
+		}
+
+		/// <summary>
 		///     Specifies if the combination should be treated as
 		///     <see cref="Outcome.Success" />, <see cref="Outcome.Failure" /> or <see cref="Outcome.Undecided" />.
 		/// </summary>
 		protected abstract Outcome CheckOutcome(Outcome? previous, Outcome current);
 
+		/// <summary>
+		///     Combines the <paramref name="own" /> cancellation token with the one of an outer
+		///     <paramref name="combination" />, so that both cancel the evaluation.
+		/// </summary>
+		/// <remarks>
+		///     Only when both can be canceled, a <paramref name="linked" /> source is created, which the caller releases at
+		///     the end of the evaluation.
+		/// </remarks>
+		internal static CancellationToken? CombineCancellation(CancellationToken? own, CancellationToken? combination,
+			out CancellationTokenSource? linked)
+		{
+			linked = null;
+			if (own is not { } ownToken)
+			{
+				return combination;
+			}
+
+			if (combination is not { CanBeCanceled: true, } combinationToken || combinationToken == ownToken)
+			{
+				return ownToken;
+			}
+
+			if (!ownToken.CanBeCanceled)
+			{
+				return combinationToken;
+			}
+
+			linked = CancellationTokenSource.CreateLinkedTokenSource(ownToken, combinationToken);
+			return linked.Token;
+		}
+
 		/// <inheritdoc />
 		/// <remarks>
 		///     The members are only awaited from the first one that does not complete right away.
+		///     <para />
+		///     The members are evaluated one after another, so the timeout of the combination is one deadline for all of
+		///     them: each member only gets the time that is left.
 		/// </remarks>
-		internal override ValueTask<Result> GetResult(int index)
+		internal override ValueTask<Result> GetResult(int index, TimeSpan? limit, CancellationToken? cancellationToken)
 		{
+			MemberLimits limits = StartEvaluation(limit, cancellationToken);
 			(Expectation Expectation, Result Result)[] results = new (Expectation, Result)[_expectations.Length];
 			Exception? failureCause = null;
 			Outcome? outcome = null;
 			for (int i = 0; i < _expectations.Length; i++)
 			{
-				ValueTask<Result> result = _expectations[i].GetResult(index);
+				ValueTask<Result> result =
+					_expectations[i].GetResult(index, limits.GetRemainingTime(), limits.CancellationToken);
 				if (!result.IsCompletedSuccessfully)
 				{
-					return GetResultAsync(result, i, results, failureCause, outcome);
+					return GetResultAsync(result, i, results, failureCause, outcome, limits);
 				}
 
 				index = AddResult(i, result.Result, results, ref failureCause, ref outcome);
@@ -232,17 +343,41 @@ public abstract class Expectation
 		}
 
 		private async ValueTask<Result> GetResultAsync(ValueTask<Result> pending, int position,
-			(Expectation Expectation, Result Result)[] results, Exception? failureCause, Outcome? outcome)
+			(Expectation Expectation, Result Result)[] results, Exception? failureCause, Outcome? outcome,
+			MemberLimits limits)
 		{
 			Result result = await pending;
 			int index = AddResult(position, result, results, ref failureCause, ref outcome);
 			for (int i = position + 1; i < _expectations.Length; i++)
 			{
-				result = await _expectations[i].GetResult(index);
+				result = await _expectations[i].GetResult(index, limits.GetRemainingTime(), limits.CancellationToken);
 				index = AddResult(i, result, results, ref failureCause, ref outcome);
 			}
 
 			return CreateResult(index, results, failureCause, outcome);
+		}
+
+		/// <summary>
+		///     Starts the deadline of the combination, from the tighter of its own timeout and the
+		///     <paramref name="limit" /> of an outer combination, and combines the cancellation tokens.
+		/// </summary>
+		private MemberLimits StartEvaluation(TimeSpan? limit, CancellationToken? cancellationToken)
+		{
+			CombinationOptions? options = _options;
+			if (options is null)
+			{
+				return limit is null && cancellationToken is null
+					? default
+					: new MemberLimits(limit, RealTimeSystem.Instance, cancellationToken);
+			}
+
+			options.ReleaseLinkedCancellation();
+			CancellationToken? token = CombineCancellation(options.CancellationToken, cancellationToken,
+				out CancellationTokenSource? linked);
+			options.LinkedCancellation = linked;
+			TimeSpan? timeout = TimerHelpers.Tighter(limit, options.Timeout);
+			return new MemberLimits(timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
+				options.TimeSystem ?? RealTimeSystem.Instance, token);
 		}
 
 		private int AddResult(int position, Result result, (Expectation Expectation, Result Result)[] results,
@@ -271,6 +406,7 @@ public abstract class Expectation
 		/// <inheritdoc />
 		internal override Task EndEvaluation()
 		{
+			_options?.ReleaseLinkedCancellation();
 			for (int i = 0; i < _expectations.Length; i++)
 			{
 				Task endEvaluation = _expectations[i].EndEvaluation();
@@ -293,11 +429,29 @@ public abstract class Expectation
 		}
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     The own reasons of the combination are awaited until the first timeout of the expectations elapses or one
+		///     of them is canceled, like its contexts.
+		/// </remarks>
 		internal override async Task ResolvePendingReasons()
 		{
 			foreach (Expectation expectation in _expectations)
 			{
 				await expectation.ResolvePendingReasons();
+			}
+
+			if (_options?.Reasons is { } reasons && reasons.Exists(reason => reason is AsyncBecauseReason))
+			{
+				await WithRemainingCancellation(async token =>
+				{
+					foreach (IBecauseReason reason in reasons)
+					{
+						if (reason is AsyncBecauseReason asyncReason)
+						{
+							await asyncReason.Resolve(token);
+						}
+					}
+				});
 			}
 		}
 
@@ -342,6 +496,8 @@ public abstract class Expectation
 			{
 				expectation.UseTimeSystem(timeSystem);
 			}
+
+			GetOptions().TimeSystem = timeSystem;
 		}
 
 		/// <inheritdoc />
@@ -380,7 +536,7 @@ public abstract class Expectation
 
 			await ResolvePendingReasons();
 			StringBuilder sb = new();
-			sb.AppendLine(GetSubjectLine());
+			sb.AppendLine(GetHeader());
 			result.ConstraintResult.AppendExpectation(sb);
 			sb.AppendLine();
 			sb.AppendLine("but");
@@ -399,7 +555,18 @@ public abstract class Expectation
 		///     A context is awaited until the first timeout of the expectations elapses or one of them is canceled, as
 		///     the contexts of all expectations are rendered together.
 		/// </remarks>
-		private async Task AppendContexts(StringBuilder stringBuilder, ConstraintResult failure)
+		private Task AppendContexts(StringBuilder stringBuilder, ConstraintResult failure)
+			=> WithRemainingCancellation(token => ResultContextRenderer.AppendContexts(stringBuilder, failure, token));
+
+		/// <summary>
+		///     Runs the <paramref name="action" /> with a token that is canceled when the first timeout of the
+		///     expectations elapses or one of them is canceled.
+		/// </summary>
+		/// <remarks>
+		///     The members only get the time that is left of the timeout of the combination and observe its cancellation
+		///     token, so their remaining cancellations also cover those of the combination.
+		/// </remarks>
+		private async Task WithRemainingCancellation(Func<CancellationToken, Task> action)
 		{
 			List<EvaluationCancellation> cancellations = [];
 			AddRemainingCancellations(cancellations);
@@ -409,8 +576,7 @@ public abstract class Expectation
 				tokens.Length > 0 ? CancellationTokenSource.CreateLinkedTokenSource(tokens) : null;
 			try
 			{
-				await ResultContextRenderer.AppendContexts(stringBuilder, failure,
-					cancellation?.Token ?? CancellationToken.None);
+				await action(cancellation?.Token ?? CancellationToken.None);
 			}
 			finally
 			{
@@ -462,9 +628,9 @@ public abstract class Expectation
 						expectationTexts.AppendLine();
 					}
 
-					if (expectation is Combination)
+					if (expectation is Combination combination)
 					{
-						expectationTexts.Append("  ").Append(result.SubjectLine).AppendLine().Append("  ");
+						expectationTexts.Append("  ").Append(combination.GetHeader()).AppendLine().Append("  ");
 						result.ConstraintResult.AppendExpectation(expectationTexts, "  ");
 					}
 					else
@@ -543,9 +709,70 @@ public abstract class Expectation
 		}
 
 		/// <summary>
+		///     The options of a combination that only few combinations use.
+		/// </summary>
+		private sealed class CombinationOptions
+		{
+			public CancellationToken? CancellationToken { get; set; }
+
+			/// <summary>
+			///     The source that links the <see cref="CancellationToken" /> with the one of an outer combination during
+			///     the current evaluation.
+			/// </summary>
+			public CancellationTokenSource? LinkedCancellation { get; set; }
+
+			public List<IBecauseReason>? Reasons { get; set; }
+			public TimeSpan? Timeout { get; set; }
+			public ITimeSystem? TimeSystem { get; set; }
+
+			public void ReleaseLinkedCancellation()
+			{
+				LinkedCancellation?.Dispose();
+				LinkedCancellation = null;
+			}
+		}
+
+		/// <summary>
+		///     The deadline and the cancellation token of one evaluation of a combination, which its members observe.
+		/// </summary>
+		private readonly struct MemberLimits
+		{
+			private readonly long _start;
+			private readonly TimeSpan? _timeout;
+			private readonly ITimeSystem? _timeSystem;
+
+			public MemberLimits(TimeSpan? timeout, ITimeSystem timeSystem, CancellationToken? cancellationToken)
+			{
+				_timeout = timeout;
+				CancellationToken = cancellationToken;
+				if (timeout is not null)
+				{
+					_timeSystem = timeSystem;
+					_start = timeSystem.GetTimestamp();
+				}
+			}
+
+			public CancellationToken? CancellationToken { get; }
+
+			/// <summary>
+			///     The time until the deadline, which is zero once it passed, or <see langword="null" /> without one.
+			/// </summary>
+			public TimeSpan? GetRemainingTime()
+			{
+				if (_timeout is not { } timeout)
+				{
+					return null;
+				}
+
+				TimeSpan remaining = timeout - _timeSystem!.GetElapsedTime(_start);
+				return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
+			}
+		}
+
+		/// <summary>
 		///     All <paramref name="expectations" /> must be met.
 		/// </summary>
-		public class All(Expectation[] expectations) : Combination(expectations)
+		public class All(Expectation[] expectations) : Combination<All>(expectations)
 		{
 			/// <inheritdoc />
 			protected override string GetSubjectLine()
@@ -566,7 +793,7 @@ public abstract class Expectation
 		/// <summary>
 		///     Any of the <paramref name="expectations" /> must be met.
 		/// </summary>
-		public class Any(Expectation[] expectations) : Combination(expectations)
+		public class Any(Expectation[] expectations) : Combination<Any>(expectations)
 		{
 			/// <inheritdoc />
 			protected override string GetSubjectLine()
@@ -582,6 +809,106 @@ public abstract class Expectation
 					(_, Outcome.Undecided) => Outcome.Undecided,
 					(_, _) => Outcome.Failure,
 				};
+		}
+	}
+
+	/// <summary>
+	///     Combination of multiple expectations, whose options return the <typeparamref name="TSelf" />, so that they can
+	///     be chained.
+	/// </summary>
+	public abstract class Combination<TSelf> : Combination
+		where TSelf : Combination<TSelf>
+	{
+		/// <summary>
+		///     Combination of multiple expectations.
+		/// </summary>
+		protected Combination(Expectation[] expectations) : base(expectations)
+		{
+		}
+
+		/// <summary>
+		///     Provide a <paramref name="reason" /> explaining why the combination is needed.<br />
+		///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+		/// </summary>
+		/// <remarks>
+		///     When the <paramref name="reason" /> is <see langword="null" />, empty or only whitespace, it is ignored.
+		///     <para />
+		///     The reason is shown in the first line of the failure message, e.g.
+		///     <c>Expected all of the following to succeed, because …:</c>, and not on the combined expectations, which
+		///     keep their own reasons.
+		/// </remarks>
+		public TSelf Because(string? reason)
+		{
+			if (!string.IsNullOrWhiteSpace(reason))
+			{
+				AddReason(new BecauseReason(reason!));
+			}
+
+			return (TSelf)this;
+		}
+
+		/// <summary>
+		///     Provide an <see langword="async" /> <paramref name="reason" /> explaining why the combination is needed.<br />
+		///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+		/// </summary>
+		/// <remarks>
+		///     When the <paramref name="reason" /> resolves to <see langword="null" />, empty or only whitespace, it is ignored.
+		///     A <paramref name="reason" /> that is still pending when the timeout elapses or the evaluation is canceled is
+		///     not awaited any longer, and the failure message states that the reason was not available in time.
+		///     <para />
+		///     The reason is shown in the first line of the failure message, e.g.
+		///     <c>Expected all of the following to succeed, because …:</c>, and not on the combined expectations, which
+		///     keep their own reasons. It is only awaited when the combination fails.
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">The <paramref name="reason" /> is <see langword="null" />.</exception>
+		public TSelf Because(Task<string?> reason)
+		{
+			reason.ThrowIfNull();
+			AsyncBecauseReason asyncReason = new(reason);
+			asyncReason.ObserveExceptions();
+			AddReason(asyncReason);
+			return (TSelf)this;
+		}
+
+		/// <summary>
+		///     Sets the <paramref name="cancellationToken" /> to be passed to every combined expectation.
+		/// </summary>
+		/// <remarks>
+		///     An awaited task, such as a <see cref="Task{TResult}" /> subject or the task of an asynchronous delegate, is
+		///     abandoned when the <paramref name="cancellationToken" /> is canceled before it completes. An expectation that
+		///     is interrupted by the cancellation is inconclusive: it could not be verified, because the evaluation was
+		///     already canceled.
+		///     <para />
+		///     A combined expectation with a cancellation token of its own observes both tokens. The
+		///     <paramref name="cancellationToken" /> replaces the token of
+		///     <c>Customize.aweXpect.Global.Settings().TestCancellation</c> for the combined expectations, like the one of
+		///     a single expectation.
+		/// </remarks>
+		/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
+		public TSelf WithCancellation(CancellationToken cancellationToken)
+		{
+			SetCancellation(cancellationToken);
+			return (TSelf)this;
+		}
+
+		/// <summary>
+		///     Sets the <paramref name="timeout" /> for the whole combination.
+		/// </summary>
+		/// <remarks>
+		///     The combined expectations are evaluated one after another, so the <paramref name="timeout" /> is one
+		///     deadline for all of them, measured from the start of the evaluation: each expectation only gets the time
+		///     that is left. Once it elapsed, an expectation that is met or fails without waiting is still verified, while
+		///     one that would wait fails with <c>did not finish within …</c>, like with <c>WithTimeout(TimeSpan.Zero)</c>.
+		///     <para />
+		///     The tightest limit wins: a longer <paramref name="timeout" /> does not loosen an earlier one, the timeout of
+		///     a combined expectation, the timeout of an outer combination or the global timeout.
+		///     <see cref="Timeout.InfiniteTimeSpan" /> imposes no limit.
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
+		public TSelf WithTimeout(TimeSpan timeout)
+		{
+			LimitTimeout(timeout);
+			return (TSelf)this;
 		}
 	}
 }

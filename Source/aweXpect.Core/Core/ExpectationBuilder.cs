@@ -989,18 +989,26 @@ public abstract class ExpectationBuilder
 	///     Whether a met expectation ends its evaluation. The member of a combination leaves that to the combination,
 	///     so that the resources it shares with the other members, like an event recording, stay usable for them.
 	/// </param>
-	internal ValueTask<ConstraintResult> IsMet(bool endsWhenMet = true)
+	/// <param name="limit">
+	///     The time that the combination this expectation is a member of has left, which only tightens the timeout.
+	/// </param>
+	/// <param name="combinationToken">
+	///     The cancellation token of the combination this expectation is a member of, which is observed together with
+	///     the own one.
+	/// </param>
+	internal ValueTask<ConstraintResult> IsMet(bool endsWhenMet = true, TimeSpan? limit = null,
+		CancellationToken? combinationToken = null)
 	{
 		Task previousEvaluation = EndEvaluation();
 		if (previousEvaluation.Status != TaskStatus.RanToCompletion)
 		{
-			return IsMetAfter(previousEvaluation, endsWhenMet);
+			return IsMetAfter(previousEvaluation, endsWhenMet, limit, combinationToken);
 		}
 
 		ResetOtherExceptions();
 		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
-		ValueTask<ConstraintResult> isMet = StartEvaluation(context);
+		ValueTask<ConstraintResult> isMet = StartEvaluation(context, limit, combinationToken);
 		if (!isMet.IsCompletedSuccessfully)
 		{
 			return CompleteEvaluation(isMet, endsWhenMet);
@@ -1028,9 +1036,14 @@ public abstract class ExpectationBuilder
 	///     Evaluates the expectation as the member of a combination, after the <paramref name="index" /> of the
 	///     previous member, and traces it when it is met.
 	/// </summary>
-	internal ValueTask<Expectation.Result> GetResult(int index)
+	/// <remarks>
+	///     The <paramref name="limit" /> and the <paramref name="cancellationToken" /> of the combination only apply to
+	///     this evaluation, so that awaiting the expectation again starts with its own settings.
+	/// </remarks>
+	internal ValueTask<Expectation.Result> GetResult(int index, TimeSpan? limit,
+		CancellationToken? cancellationToken)
 	{
-		ValueTask<ConstraintResult> isMet = IsMet(false);
+		ValueTask<ConstraintResult> isMet = IsMet(false, limit, cancellationToken);
 		if (!isMet.IsCompletedSuccessfully || IsTracing)
 		{
 			return GetResultAsync(isMet, index);
@@ -1075,10 +1088,11 @@ public abstract class ExpectationBuilder
 		return true;
 	}
 
-	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation, bool endsWhenMet)
+	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation, bool endsWhenMet,
+		TimeSpan? limit, CancellationToken? combinationToken)
 	{
 		await previousEvaluation;
-		return await IsMet(endsWhenMet);
+		return await IsMet(endsWhenMet, limit, combinationToken);
 	}
 
 	private static async ValueTask<ConstraintResult> ReturnAfter(Task endEvaluation, ConstraintResult result)
@@ -1087,7 +1101,8 @@ public abstract class ExpectationBuilder
 		return result;
 	}
 
-	private ValueTask<ConstraintResult> StartEvaluation(EvaluationContext.EvaluationContext context)
+	private ValueTask<ConstraintResult> StartEvaluation(EvaluationContext.EvaluationContext context,
+		TimeSpan? limit, CancellationToken? combinationToken)
 	{
 		try
 		{
@@ -1096,10 +1111,10 @@ public abstract class ExpectationBuilder
 			(TestCancellation? testCancellation, ITraceWriter? traceWriter) =
 				Customize.aweXpect.GetEvaluationSettings();
 			IsTracing = traceWriter is not null;
-			CancellationToken cancellationToken = CancellationToken ??
+			CancellationToken cancellationToken = CombineCancellation(CancellationToken, combinationToken, context) ??
 			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 			                                      System.Threading.CancellationToken.None;
-			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
+			TimeSpan? timeout = TimerHelpers.Tighter(TimerHelpers.Tighter(Timeout, testCancellation?.Timeout), limit);
 			// Nothing negates the result of the whole expectation, and a combination only reads the contexts of a
 			// failed member.
 			Node rootNode = GetRootNode(false);
@@ -1116,6 +1131,24 @@ public abstract class ExpectationBuilder
 		{
 			return new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
 		}
+	}
+
+	/// <summary>
+	///     Combines the <paramref name="own" /> cancellation token with the one of the <paramref name="combination" />
+	///     this expectation is a member of, and releases a linked source together with the evaluation in the
+	///     <paramref name="context" />.
+	/// </summary>
+	private static CancellationToken? CombineCancellation(CancellationToken? own, CancellationToken? combination,
+		EvaluationContext.EvaluationContext context)
+	{
+		CancellationToken? token =
+			Expectation.Combination.CombineCancellation(own, combination, out CancellationTokenSource? linked);
+		if (linked is not null)
+		{
+			context.ReleaseWithEvaluation(linked.Dispose);
+		}
+
+		return token;
 	}
 
 	private async ValueTask<ConstraintResult> CompleteEvaluation(ValueTask<ConstraintResult> isMet,
