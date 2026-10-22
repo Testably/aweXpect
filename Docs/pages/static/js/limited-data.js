@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13293.002032688686,
           13028.998110257662,
           12862.62845502581,
           13078.860998300406,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5565.60806110927,
           10032.839408287635,
           7998.385415884165,
-          10944.142281668526
+          10944.142281668526,
+          10760.731419489934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -448,7 +448,6 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -464,6 +463,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          371310.4979073661,
           384593.88033854164,
           365759.53229166666,
           378726.658203125,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           193524.22182992788,
           327843.73541666666,
           305672.903515625,
-          385470.81419270835
+          385470.81419270835,
+          380312.1171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590292,
@@ -594,6 +593,7 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590225,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19835.15870259603,
           18673.556202479773,
           19867.741934640067,
           19476.343237740653,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           10966.696462777945,
           18188.214909144812,
           19103.406650797526,
-          20056.790034702844
+          20056.790034702844,
+          19700.400490315755
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          291.1105140686035,
           279.0935493151347,
           355.5725875582014,
           322.74195261001586,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           134.29815770785015,
           242.85649299621582,
           294.68755640302385,
-          267.69245897928874
+          267.69245897928874,
+          257.3317601839701
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1181,7 +1181,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1197,6 +1196,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          511.89917073931014,
           505.37972558339436,
           497.0958563940866,
           529.9933479944865,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           280.3892458120982,
           538.0535874048869,
           617.9251672744751,
-          516.7261919021606
+          516.7261919021606,
+          539.5546939849853
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          386.25254176457724,
           391.07301743825275,
           385.5124645551046,
           406.87674010594685,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           223.3083086013794,
           394.9460385322571,
           431.14446315765383,
-          402.13787139256794
+          402.13787139256794,
+          392.65889695712497
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          148.05791873931884,
           149.93918204307556,
           140.2068783726011,
           161.60591311454772,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           69.70118754704794,
           131.46318513552347,
           159.2056476434072,
-          131.98040280342101
+          131.98040280342101,
+          135.91663063489474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1914,7 +1914,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1930,6 +1929,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.29163605826244,
           264.8336030755724,
           243.76245431900026,
           286.6294759114583,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           131.66076879501344,
           262.4545056819916,
           339.6135336802556,
-          249.75643161137899
+          249.75643161137899,
+          264.92547636032106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          249.62575272151403,
           260.77045140947615,
           235.39764664854323,
           258.0334241549174,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           131.8313106218974,
           241.21304072652543,
           246.65541149775189,
-          252.15019715627034
+          252.15019715627034,
+          246.79765192667642
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.4064359664917,
           279.3268327372415,
           272.4847080890949,
           278.28946362222945,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           134.7234858104161,
           238.57285486857097,
           254.17224890845162,
-          251.72302686251126
+          251.72302686251126,
+          256.4369226137797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2647,7 +2647,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2663,6 +2662,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          500.3217079456036,
           547.2152682622274,
           508.1154750415257,
           574.1820855458577,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           294.3372019131978,
           530.3193781534831,
           682.5105393091837,
-          554.6350804011028
+          554.6350804011028,
+          540.8360172271729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          333.9159442901611,
           335.30863270392786,
           321.5823990821838,
           361.7181162516276,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           198.53151828447977,
           336.73750281333923,
           358.38173716408863,
-          348.74584808349607
+          348.74584808349607,
+          351.15548575719197
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          662.2252889046302,
           660.4853057861328,
           622.7298948923747,
           652.8914207730975,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           336.51094420750934,
           610.549770281865,
           592.595131942204,
-          653.2699198356041
+          653.2699198356041,
+          655.825459543864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3380,7 +3380,6 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3396,6 +3395,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1353.119752747672,
           1376.7663205010551,
           1347.4229647318523,
           1445.2597924550375,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           771.0488004048665,
           1473.319426981608,
           1565.3053265980311,
-          1423.655188369751
+          1423.655188369751,
+          1448.326835123698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          628.4520183290754,
           670.4638763427735,
           639.2498232977731,
           712.5726316315787,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           383.0595750808716,
           666.8937075932821,
           665.7546242986407,
-          671.0557886532375
+          671.0557886532375,
+          684.5625539507184
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          636.2824704306466,
           657.7209793499538,
           631.057880946568,
           677.5070477167766,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           318.46661682128905,
           619.1422570546468,
           595.3261630875724,
-          642.0163898468018
+          642.0163898468018,
+          641.9881595611572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4113,7 +4113,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4129,6 +4128,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26881.503814697266,
           28057.280844116212,
           27349.810815429686,
           28016.518092854818,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           11110.653725760323,
           20550.406850179035,
           18596.247584751673,
-          28383.339314778645
+          28383.339314778645,
+          29067.851220703124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4214,7 +4214,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          783.0848929087321,
           806.8213864008586,
           779.9427339113676,
           842.2364781061808,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           437.79312161604565,
           784.8698439280192,
           772.2460144587925,
-          820.6623495101928
+          820.6623495101928,
+          842.6368266423543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          717.6700445810953,
           741.8510872295925,
           718.6065295083182,
           743.359841855367,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           374.3703487941197,
           650.9256905237834,
           713.1207670211792,
-          664.0812473932903
+          664.0812473932903,
+          707.8108282089233
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4839,7 +4839,6 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
-          1856,
           1760,
           1760,
           1760,
@@ -4862,6 +4861,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          83440.01062011719,
           83792.33763020833,
           83819.09399414062,
           84165.29250895182,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           30317.08906656901,
           62032.67530168806,
           34334.53500976563,
-          84001.56927020733
+          84001.56927020733,
+          85165.77744547527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4947,7 +4947,6 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252,
           5254,
           5252,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
       {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          171.95323034695215,
           198.55873828274864,
           170.23206879411424,
           190.90183219909667,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           91.01379098211017,
           169.73957769076029,
           204.64493896280015,
-          166.78824191093446
+          166.78824191093446,
+          167.65295827388763
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5454,7 +5454,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5470,6 +5469,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31346.55486188616,
           32983.70612880162,
           31628.678564453126,
           31701.20968424479,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           10491.69473702567,
           18978.51334431966,
           17825.74970296224,
-          33878.59994506836
+          33878.59994506836,
+          34141.49647521973
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5555,7 +5555,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5598,6 +5597,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          257.14557699056775,
           257.1986229760306,
           238.066664321082,
           262.90732596715293,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           133.82153594493866,
           241.12588799794514,
           253.87563813527424,
-          264.9701431910197
+          264.9701431910197,
+          251.49211479822796
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          363.08627436711237,
           422.8749184926351,
           368.0601483491751,
           377.8559081395467,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           178.4351622717721,
           322.7528621037801,
           347.9046195575169,
-          353.0484624590193
+          353.0484624590193,
+          345.55462626048495
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6187,7 +6187,6 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6203,6 +6202,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          388.9661487170628,
           391.9173193613688,
           368.90851317133223,
           405.7214304924011,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           228.26306172779627,
           419.54236466089884,
           493.0133429209391,
-          388.3064630826314
+          388.3064630826314,
+          414.52817408243817
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          416.40186166763306,
           423.628520933787,
           399.5876019341605,
           416.40824693044027,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           233.39736609799522,
           439.96566715240476,
           410.8257861455282,
-          412.9992091996329
+          412.9992091996329,
+          424.7446902990341
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          787.7022106170655,
           831.9412786620004,
           782.0208505221775,
           807.9117559432983,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           348.6488876978556,
           608.6549126942953,
           650.0405130386353,
-          644.4234722137451
+          644.4234722137451,
+          653.3019157137189
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6920,7 +6920,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6936,6 +6935,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1917.0557583400182,
           2005.0719724019368,
           1893.819598642985,
           1981.1486592610677,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1099.1247670309883,
           1958.177791595459,
           2289.6676272074383,
-          1948.8980489458356
+          1948.8980489458356,
+          1997.774172269381
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          932.1957081476847,
           957.545662244161,
           887.590407885038,
           936.0568481445313,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           518.8190714518229,
           946.2125942866007,
           955.6744725363595,
-          971.0213287898472
+          971.0213287898472,
+          939.3319878896077
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12239.604544321695,
           12242.142596905049,
           12191.947011675153,
           12271.033635066105,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5834.7691895621165,
           10486.539161682129,
           9414.28011372884,
-          11491.285598754883
+          11491.285598754883,
+          11496.980570866512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7653,7 +7653,6 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7669,6 +7668,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41551.96260892428,
           41068.647775503305,
           39515.10843767439,
           41797.747265625,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           18604.067947387695,
           34197.107291085376,
           31628.6806640625,
-          42789.705350435695
+          42789.705350435695,
+          40164.798993791854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18394,
           18609,
@@ -7799,7 +7798,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
-          18609
+          18609,
+          18394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11410.476727999174,
           11501.51890345982,
           11307.039880605844,
           11489.254425048828,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5673.658806434045,
           10063.809443882534,
           9614.946305411202,
-          10854.464302649865
+          10854.464302649865,
+          10521.790701059195
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "352482a08b7b2f9028417ba53fb3114b9c404b28",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 09:09:32 2026 \u002B0200",
-        "message": "ci: gate the push on the test jobs directly (#1867)"
-      },
-      {
         "sha": "08682ffa94d99f0de66ce8f78b54a855bfdd8aa8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 18 10:43:14 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
-      "352482a0",
       "08682ffa",
       "8dcfa555",
       "ec987cbf",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11580.283666992187,
           11809.492108154296,
           11690.446694510323,
           11621.889549255371,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5530.587349524865,
           9802.961926051548,
           8899.073635864257,
-          10946.768569946289
+          10946.768569946289,
+          10785.548622131348
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8386,7 +8386,6 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8402,6 +8401,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59072.35305786133,
           61230.2866398738,
           59364.334444173175,
           60618.20586286272,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           27581.644738333565,
           49131.589040902945,
           47054.94351632254,
-          60477.393446702226
+          60477.393446702226,
+          60009.41159057617
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23553,
           23554,
@@ -8525,6 +8524,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22516.468935452976,
           22593.27073786809,
           22153.303575788224,
           22513.073026216945,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           11391.779818943569,
           19770.943290201823,
           18356.89740193685,
-          21517.030972798664
+          21517.030972798664,
+          20732.668483189173
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
