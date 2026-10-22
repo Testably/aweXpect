@@ -540,6 +540,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -632,7 +638,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -728,7 +735,8 @@ window.BENCHMARK_DATA = {
           5565.60806110927,
           10032.839408287635,
           7998.385415884165,
-          10944.142281668526
+          10944.142281668526,
+          10760.731419489934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -824,6 +832,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -933,7 +942,8 @@ window.BENCHMARK_DATA = {
           193524.22182992788,
           327843.73541666666,
           305672.903515625,
-          385470.81419270835
+          385470.81419270835,
+          380312.1171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1034,6 +1044,7 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590225,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -1138,7 +1149,8 @@ window.BENCHMARK_DATA = {
           10966.696462777945,
           18188.214909144812,
           19103.406650797526,
-          20056.790034702844
+          20056.790034702844,
+          19700.400490315755
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1150,6 +1162,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1751,6 +1764,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -1836,7 +1855,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -1925,7 +1945,8 @@ window.BENCHMARK_DATA = {
           134.29815770785015,
           242.85649299621582,
           294.68755640302385,
-          267.69245897928874
+          267.69245897928874,
+          257.3317601839701
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2014,6 +2035,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -2116,7 +2138,8 @@ window.BENCHMARK_DATA = {
           280.3892458120982,
           538.0535874048869,
           617.9251672744751,
-          516.7261919021606
+          516.7261919021606,
+          539.5546939849853
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2128,6 +2151,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2307,7 +2331,8 @@ window.BENCHMARK_DATA = {
           223.3083086013794,
           394.9460385322571,
           431.14446315765383,
-          402.13787139256794
+          402.13787139256794,
+          392.65889695712497
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2319,6 +2344,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -7533,6 +7559,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -8388,7 +8420,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -9247,7 +9280,8 @@ window.BENCHMARK_DATA = {
           69.70118754704794,
           131.46318513552347,
           159.2056476434072,
-          131.98040280342101
+          131.98040280342101,
+          135.91663063489474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10106,6 +10140,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -10978,7 +11013,8 @@ window.BENCHMARK_DATA = {
           131.66076879501344,
           262.4545056819916,
           339.6135336802556,
-          249.75643161137899
+          249.75643161137899,
+          264.92547636032106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11171,6 +11207,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -11990,7 +12027,8 @@ window.BENCHMARK_DATA = {
           131.8313106218974,
           241.21304072652543,
           246.65541149775189,
-          252.15019715627034
+          252.15019715627034,
+          246.79765192667642
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12002,6 +12040,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -12689,6 +12728,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -12781,7 +12826,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -12877,7 +12923,8 @@ window.BENCHMARK_DATA = {
           134.7234858104161,
           238.57285486857097,
           254.17224890845162,
-          251.72302686251126
+          251.72302686251126,
+          256.4369226137797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12973,6 +13020,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -13082,7 +13130,8 @@ window.BENCHMARK_DATA = {
           294.3372019131978,
           530.3193781534831,
           682.5105393091837,
-          554.6350804011028
+          554.6350804011028,
+          540.8360172271729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13094,6 +13143,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -13287,7 +13337,8 @@ window.BENCHMARK_DATA = {
           198.53151828447977,
           336.73750281333923,
           358.38173716408863,
-          348.74584808349607
+          348.74584808349607,
+          351.15548575719197
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13299,6 +13350,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -18520,6 +18572,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -19375,7 +19433,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -20234,7 +20293,8 @@ window.BENCHMARK_DATA = {
           336.51094420750934,
           610.549770281865,
           592.595131942204,
-          653.2699198356041
+          653.2699198356041,
+          655.825459543864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21093,6 +21153,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -21965,7 +22026,8 @@ window.BENCHMARK_DATA = {
           771.0488004048665,
           1473.319426981608,
           1565.3053265980311,
-          1423.655188369751
+          1423.655188369751,
+          1448.326835123698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22829,6 +22891,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -22977,7 +23040,8 @@ window.BENCHMARK_DATA = {
           383.0595750808716,
           666.8937075932821,
           665.7546242986407,
-          671.0557886532375
+          671.0557886532375,
+          684.5625539507184
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -22989,6 +23053,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -28254,6 +28319,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -29109,7 +29180,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -29968,7 +30040,8 @@ window.BENCHMARK_DATA = {
           318.46661682128905,
           619.1422570546468,
           595.3261630875724,
-          642.0163898468018
+          642.0163898468018,
+          641.9881595611572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30827,6 +30900,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -31699,7 +31773,8 @@ window.BENCHMARK_DATA = {
           11110.653725760323,
           20550.406850179035,
           18596.247584751673,
-          28383.339314778645
+          28383.339314778645,
+          29067.851220703124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32563,6 +32638,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -32711,7 +32787,8 @@ window.BENCHMARK_DATA = {
           437.79312161604565,
           784.8698439280192,
           772.2460144587925,
-          820.6623495101928
+          820.6623495101928,
+          842.6368266423543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32723,6 +32800,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -33758,6 +33836,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -33908,7 +33992,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -34062,7 +34147,8 @@ window.BENCHMARK_DATA = {
           374.3703487941197,
           650.9256905237834,
           713.1207670211792,
-          664.0812473932903
+          664.0812473932903,
+          707.8108282089233
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34216,6 +34302,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -34383,7 +34470,8 @@ window.BENCHMARK_DATA = {
           30317.08906656901,
           62032.67530168806,
           34334.53500976563,
-          84001.56927020733
+          84001.56927020733,
+          85165.77744547527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34542,6 +34630,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -35444,6 +35533,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -35594,7 +35689,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -35748,7 +35844,8 @@ window.BENCHMARK_DATA = {
           91.01379098211017,
           169.73957769076029,
           204.64493896280015,
-          166.78824191093446
+          166.78824191093446,
+          167.65295827388763
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35902,6 +35999,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -36069,7 +36167,8 @@ window.BENCHMARK_DATA = {
           10491.69473702567,
           18978.51334431966,
           17825.74970296224,
-          33878.59994506836
+          33878.59994506836,
+          34141.49647521973
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36228,6 +36327,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -36376,7 +36476,8 @@ window.BENCHMARK_DATA = {
           133.82153594493866,
           241.12588799794514,
           253.87563813527424,
-          264.9701431910197
+          264.9701431910197,
+          251.49211479822796
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36388,6 +36489,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -37075,6 +37177,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -37167,7 +37275,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -37263,7 +37372,8 @@ window.BENCHMARK_DATA = {
           178.4351622717721,
           322.7528621037801,
           347.9046195575169,
-          353.0484624590193
+          353.0484624590193,
+          345.55462626048495
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37359,6 +37469,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -37468,7 +37579,8 @@ window.BENCHMARK_DATA = {
           228.26306172779627,
           419.54236466089884,
           493.0133429209391,
-          388.3064630826314
+          388.3064630826314,
+          414.52817408243817
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37480,6 +37592,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -37673,7 +37786,8 @@ window.BENCHMARK_DATA = {
           233.39736609799522,
           439.96566715240476,
           410.8257861455282,
-          412.9992091996329
+          412.9992091996329,
+          424.7446902990341
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37685,6 +37799,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -38328,6 +38443,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -38420,7 +38541,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -38516,7 +38638,8 @@ window.BENCHMARK_DATA = {
           348.6488876978556,
           608.6549126942953,
           650.0405130386353,
-          644.4234722137451
+          644.4234722137451,
+          653.3019157137189
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38612,6 +38735,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376,
@@ -38721,7 +38845,8 @@ window.BENCHMARK_DATA = {
           1099.1247670309883,
           1958.177791595459,
           2289.6676272074383,
-          1948.8980489458356
+          1948.8980489458356,
+          1997.774172269381
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38733,6 +38858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -38926,7 +39052,8 @@ window.BENCHMARK_DATA = {
           518.8190714518229,
           946.2125942866007,
           955.6744725363595,
-          971.0213287898472
+          971.0213287898472,
+          939.3319878896077
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38938,6 +39065,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -39581,6 +39709,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -39673,7 +39807,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -39769,7 +39904,8 @@ window.BENCHMARK_DATA = {
           5834.7691895621165,
           10486.539161682129,
           9414.28011372884,
-          11491.285598754883
+          11491.285598754883,
+          11496.980570866512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39865,6 +40001,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -39974,7 +40111,8 @@ window.BENCHMARK_DATA = {
           18604.067947387695,
           34197.107291085376,
           31628.6806640625,
-          42789.705350435695
+          42789.705350435695,
+          40164.798993791854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40075,7 +40213,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
-          18609
+          18609,
+          18394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40179,7 +40318,8 @@ window.BENCHMARK_DATA = {
           5673.658806434045,
           10063.809443882534,
           9614.946305411202,
-          10854.464302649865
+          10854.464302649865,
+          10521.790701059195
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40191,6 +40331,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -40834,6 +40975,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 13:17:28 2026 \u002B0200",
         "message": "refactor: check attribute expectations without a predicate with \u0060IsDefined\u0060 (#1920)"
+      },
+      {
+        "sha": "5d6c3e4afaae2eb0e36dc3a0e43e958277ddc5c9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 19:43:38 2026 \u002B0200",
+        "message": "refactor: fix the reported Sonar issues (#1931)"
       }
     ],
     "labels": [
@@ -40926,7 +41073,8 @@ window.BENCHMARK_DATA = {
       "f79b883b",
       "a1c8667e",
       "3f14b764",
-      "afefacb2"
+      "afefacb2",
+      "5d6c3e4a"
     ],
     "datasets": [
       {
@@ -41022,7 +41170,8 @@ window.BENCHMARK_DATA = {
           5530.587349524865,
           9802.961926051548,
           8899.073635864257,
-          10946.768569946289
+          10946.768569946289,
+          10785.548622131348
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41118,6 +41267,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -41227,7 +41377,8 @@ window.BENCHMARK_DATA = {
           27581.644738333565,
           49131.589040902945,
           47054.94351632254,
-          60477.393446702226
+          60477.393446702226,
+          60009.41159057617
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41321,6 +41472,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -41432,7 +41584,8 @@ window.BENCHMARK_DATA = {
           11391.779818943569,
           19770.943290201823,
           18356.89740193685,
-          21517.030972798664
+          21517.030972798664,
+          20732.668483189173
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41444,6 +41597,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
