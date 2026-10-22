@@ -172,6 +172,81 @@ public static partial class MethodFilters
 
 
 	/// <summary>
+	///     Filter for methods without a parameter of type <typeparamref name="T" />.
+	/// </summary>
+	public static MethodsWithParameter<T> WithoutParameter<T>(this Filtered.Methods @this)
+		=> WithoutParameterOfType<T>(@this, typeof(T));
+
+	/// <summary>
+	///     Filter for methods without a parameter of type <typeparamref name="T" /> with the <paramref name="unexpected" />
+	///     name.
+	/// </summary>
+	public static MethodsWithNamedParameter<T> WithoutParameter<T>(this Filtered.Methods @this, string unexpected)
+		=> WithoutNamedParameter<T>(@this, typeof(T), unexpected);
+
+	/// <summary>
+	///     Filter for methods without a parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static MethodsWithParameter<object?> WithoutParameter(this Filtered.Methods @this, Type parameterType)
+		=> WithoutParameterOfType<object?>(@this, parameterType);
+
+	/// <summary>
+	///     Filter for methods without a parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="unexpected" /> name.
+	/// </summary>
+	public static MethodsWithNamedParameter<object?> WithoutParameter(this Filtered.Methods @this, Type parameterType,
+		string unexpected)
+		=> WithoutNamedParameter<object?>(@this, parameterType, unexpected);
+
+	/// <summary>
+	///     Filter for methods without a parameter with the <paramref name="unexpected" /> name.
+	/// </summary>
+	public static MethodsWithNamedParameter<object?> WithoutParameter(this Filtered.Methods @this,
+		string unexpected)
+		=> WithoutNamedParameter<object?>(@this, null, unexpected);
+
+	private static MethodsWithParameter<T> WithoutParameterOfType<T>(Filtered.Methods @this, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		return new MethodsWithParameter<T>(
+			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
+			collectionIndexOptions, parameterFilterOptions);
+	}
+
+	private static MethodsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Methods @this, Type? parameterType,
+		string unexpected)
+	{
+		StringEqualityOptions stringEqualityOptions = new(nameof(unexpected));
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions;
+		if (parameterType is null)
+		{
+			parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected),
+				() => $"with name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+		}
+		else
+		{
+			parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+				() => $"of type {Formatter.Format(parameterType)}");
+			parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected),
+				() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+		}
+
+		return new MethodsWithNamedParameter<T>(
+			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
+			collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+	}
+
+	private static IAsyncChangeableFilter<MethodInfo> WithoutParameterFilter(
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+		=> Filter.Suffix<MethodInfo>(
+			async methodInfo => !await methodInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
+			()
+				=> $"without parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+
+	/// <summary>
 	///     Additional filters on methods with a parameter of a specific type.
 	/// </summary>
 	public class MethodsWithParameter<T>

@@ -37,6 +37,30 @@ public static partial class ThatProperty
 	}
 
 	/// <summary>
+	///     Verifies that the <see cref="PropertyInfo" /> is not of type <typeparamref name="TProperty" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotOfType<TProperty>(
+		this IThat<PropertyInfo?> subject)
+		=> IsNotOfType(subject, typeof(TProperty));
+
+	/// <summary>
+	///     Verifies that the <see cref="PropertyInfo" /> is not of type <paramref name="propertyType" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotOfType(
+		this IThat<PropertyInfo?> subject, Type propertyType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(propertyType, false);
+		return new AndOrResult<PropertyInfo, IThat<PropertyInfo?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
+			subject);
+	}
+
+	/// <summary>
 	///     Result that allows chaining additional types for a single property.
 	/// </summary>
 	public sealed partial class PropertyOfTypeResult<TValue, TResult>
@@ -103,6 +127,6 @@ public static partial class ThatProperty
 			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it did");
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

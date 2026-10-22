@@ -54,6 +54,43 @@ public static partial class ThatAssemblies
 	}
 #endif
 
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="Assembly" /> target
+	///     the <paramref name="unexpected" /> framework (e.g. <c>net8.0</c>).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotTarget(
+		this IThat<IEnumerable<Assembly?>?> subject, string unexpected)
+	{
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
+				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IEnumerable<Assembly?>>((unexpected, options),
+					static (s, it, grammars)
+					=> new DoNotTargetConstraint(it, grammars, s.Unexpected, s.Options)),
+			subject,
+			options);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="Assembly" /> target
+	///     the <paramref name="unexpected" /> framework (e.g. <c>net8.0</c>).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> DoNotTarget(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject, string unexpected)
+	{
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
+				.Get()
+				.ExpectationBuilder.AddConstraint<(string Unexpected, StringEqualityOptions Options), IAsyncEnumerable<Assembly?>>((unexpected, options),
+					static (s, it, grammars)
+					=> new DoNotTargetConstraint(it, grammars, s.Unexpected, s.Options)),
+			subject,
+			options);
+	}
+#endif
+
 	private sealed class TargetConstraint(
 		string it,
 		ExpectationGrammars grammars,
@@ -92,6 +129,43 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all target ").Append(options.GetExpectation(expected, Grammars));
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
+	}
+
+	private sealed class DoNotTargetConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		string unexpected,
+		StringEqualityOptions options)
+		: CollectionConstraintResult<Assembly?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Assembly?>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
+#endif
+	{
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, DoesNotTarget, cancellationToken);
+#endif
+
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context, DoesNotTarget, cancellationToken);
+
+		private async ValueTask<bool> DoesNotTarget(Assembly? assembly)
+			=> assembly is not null && !await options.AreConsideredEqual(assembly.GetTargetFramework(), unexpected);
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("all target ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("not all target ").Append(options.GetExpectation(unexpected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching assemblies");

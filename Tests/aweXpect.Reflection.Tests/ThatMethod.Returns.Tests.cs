@@ -282,7 +282,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return int,
-						             but it did
+						             but it returned int
 						             """)
 						.AsWildcard();
 				}
@@ -302,7 +302,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return ThatMethod.BaseClass,
-						             but it did
+						             but it returned ThatMethod.DerivedClass
 						             """)
 						.AsWildcard();
 				}
@@ -356,7 +356,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return int,
-						             but it did
+						             but it returned int
 						             """)
 						.AsWildcard();
 				}
@@ -376,7 +376,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return ThatMethod.BaseClass,
-						             but it did
+						             but it returned ThatMethod.DerivedClass
 						             """)
 						.AsWildcard();
 				}
@@ -425,7 +425,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return string or int,
-						             but it did
+						             but it returned int
 						             """)
 						.AsWildcard();
 				}

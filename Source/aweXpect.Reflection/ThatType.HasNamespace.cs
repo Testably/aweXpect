@@ -29,6 +29,26 @@ public static partial class ThatType
 			options);
 	}
 
+	/// <summary>
+	///     Verifies that the <see cref="Type" /> does not have the <paramref name="unexpected" /> namespace.
+	/// </summary>
+	/// <remarks>
+	///     Unlike <see cref="IsNotWithinNamespace(IThat{Type}, string)" />, this compares the whole namespace as a string
+	///     with the string options (e.g. <c>AsPrefix()</c> or <c>IgnoringCase()</c>), instead of excluding a namespace
+	///     and its sub-namespaces.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<Type, IThat<Type?>> DoesNotHaveNamespace(
+		this IThat<Type?> subject, string unexpected)
+	{
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new StringEqualityTypeResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (s, it, grammars)
+				=> new HasNamespaceConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
+			subject,
+			options);
+	}
+
 	private sealed class HasNamespaceConstraint(
 		string it,
 		ExpectationGrammars grammars,

@@ -134,7 +134,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             is not of type int,
-					             but it did
+					             but it was of type int
 					             """);
 			}
 		}

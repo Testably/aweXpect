@@ -74,7 +74,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             is not of exact type *DummyBase,
-					             but it did
+					             but it was of type *DummyBase
 					             """).AsWildcard();
 			}
 

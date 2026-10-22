@@ -315,7 +315,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return exactly int,
-						             but it did
+						             but it returned int
 						             """);
 				}
 
@@ -379,7 +379,7 @@ public sealed partial class ThatMethod
 						.WithMessage("""
 						             Expected that subject
 						             does not return exactly string or int,
-						             but it did
+						             but it returned int
 						             """);
 				}
 			}

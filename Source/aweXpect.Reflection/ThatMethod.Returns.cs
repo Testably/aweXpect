@@ -37,6 +37,30 @@ public static partial class ThatMethod
 	}
 
 	/// <summary>
+	///     Verifies that the method does not return type <typeparamref name="TReturn" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> DoesNotReturn<TReturn>(
+		this IThat<MethodInfo?> subject)
+		=> DoesNotReturn(subject, typeof(TReturn));
+
+	/// <summary>
+	///     Verifies that the method does not return type <paramref name="returnType" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> DoesNotReturn(
+		this IThat<MethodInfo?> subject, Type returnType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(returnType, false);
+		return new AndOrResult<MethodInfo, IThat<MethodInfo?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new ReturnsConstraint(it, grammars, typeFilterOptions).Invert()),
+			subject);
+	}
+
+	/// <summary>
 	///     Result that allows chaining additional return types for a single method.
 	/// </summary>
 	public sealed partial class MethodReturnResult<TValue, TResult>
@@ -100,6 +124,6 @@ public static partial class ThatMethod
 			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it did");
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

@@ -93,6 +93,12 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 | [Constructors](./02-filters.md#constructors)                 | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
 | [Assemblies](./02-filters.md#assemblies)                     | assemblies                    | `WhichTarget` / `Targets`, `WithVersion` / `HasVersion`, `WhichDependOn` / `DependsOn`                               |
 
+Each filter and expectation has its negation where it makes sense, e.g. `WithoutName` / `DoesNotHaveName`,
+`WithoutNamespace` / `DoesNotHaveNamespace`, `NotOfType<T>` / `IsNotOfType<T>`, `WhichDoNotReturn<T>` /
+`DoesNotReturn<T>`, `WithoutParameter<T>` / `DoesNotHaveParameter<T>` or `WhichDoNotTarget` / `DoesNotTarget`.
+On a collection, a negated expectation (`DoNotReturn<T>`, `AreNotOfType<T>`, …) verifies that *none* of the items
+match.
+
 The name filters and expectations accept the
 [string matching options](./02-filters.md#string-matching-options) like `AsPrefix()`, `AsSuffix()` or
 `AsWildcard()`. [Filters and expectations](./02-filters.md) documents the complete vocabulary.

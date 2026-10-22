@@ -136,7 +136,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             is not of type EventHandler,
-					             but it did
+					             but it was of type EventHandler
 					             """);
 			}
 		}

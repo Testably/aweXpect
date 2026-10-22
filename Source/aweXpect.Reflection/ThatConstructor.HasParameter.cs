@@ -135,6 +135,88 @@ public static partial class ThatConstructor
 			stringEqualityOptions);
 	}
 
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has no parameter of type <typeparamref name="TParameter" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> DoesNotHaveParameter<TParameter>(
+		this IThat<ConstructorInfo?> subject)
+		=> DoesNotHaveParameterOfType<TParameter>(subject, typeof(TParameter));
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has no parameter of type <typeparamref name="TParameter" /> with
+	///     the <paramref name="unexpected" /> name.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> DoesNotHaveParameter<TParameter>(
+		this IThat<ConstructorInfo?> subject, string unexpected)
+		=> DoesNotHaveNamedParameter<TParameter>(subject, typeof(TParameter), unexpected);
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has no parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> DoesNotHaveParameter(
+		this IThat<ConstructorInfo?> subject, Type parameterType)
+		=> DoesNotHaveParameterOfType<object?>(subject, parameterType);
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has no parameter of type <paramref name="parameterType" /> with
+	///     the <paramref name="unexpected" /> name.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> DoesNotHaveParameter(
+		this IThat<ConstructorInfo?> subject, Type parameterType, string unexpected)
+		=> DoesNotHaveNamedParameter<object?>(subject, parameterType, unexpected);
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has no parameter with the <paramref name="unexpected" /> name.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> DoesNotHaveParameter(
+		this IThat<ConstructorInfo?> subject, string unexpected)
+		=> DoesNotHaveNamedParameter<object?>(subject, null, unexpected);
+
+	private static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> DoesNotHaveParameterOfType<TParameter>(
+		IThat<ConstructorInfo?> subject, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
+				.AddConstraint((ParameterType: parameterType, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, s.ParameterType, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions).Invert()),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+	private static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> DoesNotHaveNamedParameter<TParameter>(
+		IThat<ConstructorInfo?> subject, Type? parameterType, string unexpected)
+	{
+		StringEqualityOptions stringEqualityOptions = new(nameof(unexpected));
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected));
+		if (parameterType is not null)
+		{
+			parameterFilterOptions.AddPredicate(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		}
+
+		return new NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
+				.AddConstraint((ParameterType: parameterType, Unexpected: unexpected, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, s.ParameterType, s.Unexpected,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions).Invert()),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+
 	private sealed class HasParameterConstraint(
 		string it,
 		ExpectationGrammars grammars,

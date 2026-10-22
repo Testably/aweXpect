@@ -136,7 +136,7 @@ await Expect.That(In.AllLoadedAssemblies()
 ## Method
 
 - **FluentAssertions** (`MethodInfoAssertions`): `BeVirtual`/`NotBeVirtual`, `BeAsync`/`NotBeAsync`, `ReturnVoid`/`NotReturnVoid`, `Return<T>`/`NotReturn<T>`, `HaveAccessModifier(CSharpAccessModifier)`, `BeDecoratedWith<T>`. No assertions for `static`/`abstract`/`sealed`/`generic`/extension/operator/override, no parameter assertions, and no name assertion (use the string API on `method.Name`).
-- **aweXpect.Reflection**: the above plus `IsStatic`/`IsAbstract`/`IsSealed`/`IsGeneric`/`IsAnExtensionMethod`/`IsAnOperator` (incl. a specific `Operator`, e.g. `IsAnOperator(Operator.Equality)`), `Overrides<T>`, `ReturnsExactly<T>`, `HasName`, and a parameter family: `HasParameter<T>`/`HasParameterCount`/`HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter` (with `AtIndex`/`FromEnd`/default-value refinements).
+- **aweXpect.Reflection**: the above plus `IsStatic`/`IsAbstract`/`IsSealed`/`IsGeneric`/`IsAnExtensionMethod`/`IsAnOperator` (incl. a specific `Operator`, e.g. `IsAnOperator(Operator.Equality)`), `Overrides<T>`, `ReturnsExactly<T>`/`DoesNotReturnExactly<T>`, `HasName`, and a parameter family: `HasParameter<T>`/`DoesNotHaveParameter<T>`/`HasParameterCount`/`HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter` (with `AtIndex`/`FromEnd`/default-value refinements).
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -172,7 +172,7 @@ await Expect.That(In.AssemblyContaining<MyClass>()
 ## Property
 
 - **FluentAssertions** (`PropertyInfoAssertions`): `BeVirtual`/`NotBeVirtual`, `BeReadable`/`BeWritable` (each with an optional `CSharpAccessModifier`), `NotBeReadable`/`NotBeWritable`, `Return<T>`/`NotReturn<T>`, `BeDecoratedWith<T>`. No assertions for `static`/`abstract`/`sealed`/`required`/indexer/init-setter/override, and no name assertion.
-- **aweXpect.Reflection**: `IsReadable`/`IsWritable`/`IsReadOnly`/`IsWriteOnly`/`IsReadWrite`, `HasAGetter`/`HasASetter`/`HasAnInitSetter`, `IsStatic`/`IsAbstract`/`IsSealed`/`IsVirtual`, `IsRequired`, `IsNullable`, `IsAnIndexer`, `IsAnExtensionProperty`, `Overrides<T>`, `IsOfType<T>`/`IsOfExactType<T>`, `HasName`, `Has<TAttribute>`.
+- **aweXpect.Reflection**: `IsReadable`/`IsWritable`/`IsReadOnly`/`IsWriteOnly`/`IsReadWrite`, `HasAGetter`/`HasASetter`/`HasAnInitSetter`, `IsStatic`/`IsAbstract`/`IsSealed`/`IsVirtual`, `IsRequired`, `IsNullable`, `IsAnIndexer`, `IsAnExtensionProperty`, `Overrides<T>`, `IsOfType<T>`/`IsOfExactType<T>` (and `IsNotOfType<T>`/`IsNotOfExactType<T>`), `HasName`, `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -205,7 +205,7 @@ await Expect.That(In.AssemblyContaining<MyClass>()
 ## Constructor
 
 - **FluentAssertions**: no dedicated constructor selector. A constructor is reached through `Type.HaveConstructor(parameterTypes)` / `HaveDefaultConstructor()`, after which `.Which` exposes the `ConstructorInfo` for `HaveAccessModifier` / `BeDecoratedWith`.
-- **aweXpect.Reflection**: dedicated expectations on a single `ConstructorInfo` and on collections of constructors, and an `In.*…Constructors()` filter: `IsStatic`, the full parameter family (`HasParameter<T>`, `HasParameterCount`, `HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter`), `Has<TAttribute>`.
+- **aweXpect.Reflection**: dedicated expectations on a single `ConstructorInfo` and on collections of constructors, and an `In.*…Constructors()` filter: `IsStatic`, the full parameter family (`HasParameter<T>`/`DoesNotHaveParameter<T>`, `HasParameterCount`, `HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter`), `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -231,7 +231,7 @@ await Expect.That(typeof(MyClass)).HasADefaultConstructor();
 ## Field
 
 - **FluentAssertions**: no `FieldInfo` assertions.
-- **aweXpect.Reflection**: expectations on a single `FieldInfo` and on collections of fields, and an `In.*…Fields()` filter: `IsStatic`, `IsReadOnly`, `IsConstant`, `IsRequired`, `IsNullable`, `IsOfType<T>`/`IsOfExactType<T>`, access modifiers (`IsPublic`, …), `HasName`, `Has<TAttribute>`.
+- **aweXpect.Reflection**: expectations on a single `FieldInfo` and on collections of fields, and an `In.*…Fields()` filter: `IsStatic`, `IsReadOnly`, `IsConstant`, `IsRequired`, `IsNullable`, `IsOfType<T>`/`IsOfExactType<T>` (and `IsNotOfType<T>`/`IsNotOfExactType<T>`), access modifiers (`IsPublic`, …), `HasName`, `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
@@ -261,7 +261,7 @@ await Expect.That(In.AssemblyContaining<MyClass>().Fields().WhichAreConstant())
 ## Event
 
 - **FluentAssertions**: no `EventInfo` assertions.
-- **aweXpect.Reflection**: expectations on a single `EventInfo` and on collections of events, and an `In.*…Events()` filter: `IsStatic`, `IsAbstract`, `IsSealed`, `IsOfType<T>`/`IsOfExactType<T>`, access modifiers, `HasName`, `Has<TAttribute>`.
+- **aweXpect.Reflection**: expectations on a single `EventInfo` and on collections of events, and an `In.*…Events()` filter: `IsStatic`, `IsAbstract`, `IsSealed`, `IsOfType<T>`/`IsOfExactType<T>` (and `IsNotOfType<T>`/`IsNotOfExactType<T>`), access modifiers, `HasName`, `Has<TAttribute>`.
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>

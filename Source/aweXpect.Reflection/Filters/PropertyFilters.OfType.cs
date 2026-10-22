@@ -25,6 +25,21 @@ public static partial class PropertyFilters
 		return new PropertiesOfType(@this.Which(filter), filter);
 	}
 
+	/// <summary>
+	///     Filter for properties not of type <typeparamref name="TProperty" />.
+	/// </summary>
+	public static Filtered.Properties NotOfType<TProperty>(this Filtered.Properties @this)
+		=> NotOfType(@this, typeof(TProperty));
+
+	/// <summary>
+	///     Filter for properties not of type <paramref name="propertyType" />.
+	/// </summary>
+	public static Filtered.Properties NotOfType(this Filtered.Properties @this,
+		Type propertyType)
+		=> @this.Which(Filter.Suffix<PropertyInfo>(
+			propertyInfo => !propertyInfo.PropertyType.IsOrInheritsFrom(propertyType),
+			() => $"not of type {Formatter.Format(propertyType)} "));
+
 	public partial class PropertiesOfType
 	{
 		/// <summary>
