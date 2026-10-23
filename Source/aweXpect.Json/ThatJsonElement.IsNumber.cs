@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Results;
 
@@ -12,7 +13,7 @@ public static partial class ThatJsonElement
 	/// </summary>
 	public static AndOrResult<JsonElement, IThat<JsonElement>> IsNumber(this IThat<JsonElement> subject)
 		=> new(
-			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
+			subject.Get().ExpectationBuilder.AddConstraint(static IValueConstraint<JsonElement> (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Number)),
 			subject);
 }

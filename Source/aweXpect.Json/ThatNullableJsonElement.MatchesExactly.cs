@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Json;
 using aweXpect.Results;
@@ -30,7 +31,8 @@ public static partial class ThatNullableJsonElement
 		return new AndOrResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
-				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
+				static IAsyncContextConstraint<JsonElement?> (s, it, grammar) =>
+					new ThatJsonElement.MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
 			subject);
 	}
 
@@ -53,7 +55,8 @@ public static partial class ThatNullableJsonElement
 		return new AndOrResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
-				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
+				static IAsyncContextConstraint<JsonElement?> (s, it, grammar) =>
+					new ThatJsonElement.MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
 			subject);
 	}
 }
