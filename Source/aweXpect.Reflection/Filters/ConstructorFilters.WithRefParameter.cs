@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -11,13 +10,8 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Filter for constructors with a <see langword="ref" /> parameter.
 	/// </summary>
-	public static Filtered.Constructors WithRefParameter(this Filtered.Constructors @this)
-	{
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo => constructorInfo.GetParameters().Any(p => p.IsRefParameter()),
-			"with ref parameter ");
-		return @this.Which(filter);
-	}
+	public static ConstructorsWithParameter<object?> WithRefParameter(this Filtered.Constructors @this)
+		=> WithParameterOfKind(@this, p => p.IsRefParameter(), "ref");
 
 	/// <summary>
 	///     Filter for constructors with a <see langword="ref" /> parameter of type <typeparamref name="T" />.

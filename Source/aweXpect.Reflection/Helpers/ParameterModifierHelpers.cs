@@ -23,4 +23,17 @@ internal static class ParameterModifierHelpers
 		result.Options.AddModifier(predicate, () => description);
 		return result;
 	}
+
+	/// <summary>
+	///     Adds the custom <paramref name="predicate" /> to the <paramref name="options" />, described by its caller
+	///     argument <paramref name="expression" />.
+	/// </summary>
+	public static void AddMatching(
+		this ParameterFilterOptions options,
+		Func<ParameterInfo, bool> predicate,
+		string expression)
+	{
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+		options.AddModifier(predicate, () => $"matching {expression.TrimExpression()}");
+	}
 }

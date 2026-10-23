@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
@@ -239,6 +240,21 @@ public static partial class MethodFilters
 			collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
+	private static MethodsWithParameter<object?> WithParameterOfKind(Filtered.Methods @this,
+		Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+			methodInfo => methodInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
+			() =>
+			{
+				string description = parameterFilterOptions.GetDescription();
+				return $"with {kind} parameter{(description.Length == 0 ? "" : " ")}{description}{collectionIndexOptions.Match.GetDescription()} ";
+			});
+		return new MethodsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+	}
+
 	private static IAsyncChangeableFilter<MethodInfo> WithoutParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
 		=> Filter.Suffix<MethodInfo>(
@@ -353,6 +369,17 @@ public static partial class MethodFilters
 		public MethodsWithParameter<T> WithParamsModifier()
 		{
 			_parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
+			return this;
+		}
+
+		/// <summary>
+		///     …matching the <paramref name="predicate" />.
+		/// </summary>
+		public MethodsWithParameter<T> Matching(Func<ParameterInfo, bool> predicate,
+			[CallerArgumentExpression("predicate")]
+			string doNotPopulateThisValue = "")
+		{
+			_parameterFilterOptions.AddMatching(predicate, doNotPopulateThisValue);
 			return this;
 		}
 	}

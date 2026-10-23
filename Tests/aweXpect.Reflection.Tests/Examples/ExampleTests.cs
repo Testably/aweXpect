@@ -26,4 +26,11 @@ public sealed class ExampleTests
 				.Methods().With<TestAttribute>()
 				.DeclaringTypes())
 			.HaveName("Tests").AsSuffix();
+
+	[Test]
+	public async Task NoPublicMethodTakesAParamsCollection()
+		=> await That(In.AssemblyContaining(typeof(In)).Public.Methods()
+				.WithParamsParameter().Matching(p => !p.ParameterType.IsArray))
+			.IsEmpty()
+			.Because("consumers below C# 13 (C# 7.3 on net48, C# 12 on net8.0) cannot pass single values to a params collection");
 }

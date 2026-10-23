@@ -367,6 +367,42 @@ public static partial class ThatMethods
 		=> DoNotHaveNamedParameter<object?>(subject, null, unexpected);
 #endif
 
+	private static ParameterCollectionResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?, object?> HaveParameterOfKind(
+		IThat<IEnumerable<MethodInfo?>?> subject, Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		return new ParameterCollectionResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint<(string Kind, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<MethodInfo?>>((kind, collectionIndexOptions, parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HaveParameterConstraint(it, grammars, null, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
+						kind: s.Kind)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+#if NET8_0_OR_GREATER
+	private static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?, object?> HaveParameterOfKind(
+		IThat<IAsyncEnumerable<MethodInfo?>?> subject, Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		return new ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint<(string Kind, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<MethodInfo?>>((kind, collectionIndexOptions, parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HaveParameterConstraint(it, grammars, null, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
+						kind: s.Kind)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+#endif
+
 	private static ParameterCollectionResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?, TParameter> DoNotHaveParameterOfType<TParameter>(
 		IThat<IEnumerable<MethodInfo?>?> subject, Type parameterType)
 	{
@@ -460,7 +496,8 @@ public static partial class ThatMethods
 		string? expectedName,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
-		bool exactType = false)
+		bool exactType = false,
+		string? kind = null)
 		: CollectionConstraintResult<MethodInfo?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<MethodInfo?>>
 #if NET8_0_OR_GREATER
@@ -515,7 +552,7 @@ public static partial class ThatMethods
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("all have parameter");
+			stringBuilder.Append(kind is null ? "all have parameter" : $"all have {kind} parameter");
 			if (parameterType != null)
 			{
 				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
@@ -536,11 +573,11 @@ public static partial class ThatMethods
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained methods without a matching parameter");
+			=> stringBuilder.Append(It).Append(" contained methods without ").Append(kind ?? "a matching").Append(" parameter");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("not all have parameter");
+			stringBuilder.Append(kind is null ? "not all have parameter" : $"not all have {kind} parameter");
 			if (parameterType != null)
 			{
 				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
@@ -561,7 +598,7 @@ public static partial class ThatMethods
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained methods with a matching parameter");
+			=> stringBuilder.Append(It).Append(" only contained methods with ").Append(kind ?? "a matching").Append(" parameter");
 	}
 
 	private sealed class DoNotHaveParameterConstraint(

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -11,13 +10,8 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Filter for methods with an optional parameter.
 	/// </summary>
-	public static Filtered.Methods WithOptionalParameter(this Filtered.Methods @this)
-	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo => methodInfo.GetParameters().Any(p => p.IsOptionalParameter()),
-			"with optional parameter ");
-		return @this.Which(filter);
-	}
+	public static MethodsWithParameter<object?> WithOptionalParameter(this Filtered.Methods @this)
+		=> WithParameterOfKind(@this, p => p.IsOptionalParameter(), "optional");
 
 	/// <summary>
 	///     Filter for methods with an optional parameter of type <typeparamref name="T" />.

@@ -367,6 +367,42 @@ public static partial class ThatConstructors
 		=> DoNotHaveNamedParameter<object?>(subject, null, unexpected);
 #endif
 
+	private static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveParameterOfKind(
+		IThat<IEnumerable<ConstructorInfo?>?> subject, Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint<(string Kind, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((kind, collectionIndexOptions, parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HaveParameterConstraint(it, grammars, null, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
+						kind: s.Kind)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+#if NET8_0_OR_GREATER
+	private static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveParameterOfKind(
+		IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint<(string Kind, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IAsyncEnumerable<ConstructorInfo?>>((kind, collectionIndexOptions, parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HaveParameterConstraint(it, grammars, null, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
+						kind: s.Kind)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+#endif
+
 	private static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveParameterOfType<TParameter>(
 		IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 	{
@@ -460,7 +496,8 @@ public static partial class ThatConstructors
 		string? expectedName,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
-		bool exactType = false)
+		bool exactType = false,
+		string? kind = null)
 		: CollectionConstraintResult<ConstructorInfo?>(it, grammars),
 			IAsyncContextConstraint<IEnumerable<ConstructorInfo?>>
 #if NET8_0_OR_GREATER
@@ -517,7 +554,7 @@ public static partial class ThatConstructors
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("all have parameter");
+			stringBuilder.Append(kind is null ? "all have parameter" : $"all have {kind} parameter");
 			if (parameterType != null)
 			{
 				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
@@ -538,11 +575,11 @@ public static partial class ThatConstructors
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained constructors without a matching parameter");
+			=> stringBuilder.Append(It).Append(" contained constructors without ").Append(kind ?? "a matching").Append(" parameter");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("not all have parameter");
+			stringBuilder.Append(kind is null ? "not all have parameter" : $"not all have {kind} parameter");
 			if (parameterType != null)
 			{
 				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
@@ -563,7 +600,7 @@ public static partial class ThatConstructors
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained constructors with a matching parameter");
+			=> stringBuilder.Append(It).Append(" only contained constructors with ").Append(kind ?? "a matching").Append(" parameter");
 	}
 
 	private sealed class DoNotHaveParameterConstraint(

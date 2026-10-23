@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -11,13 +10,8 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Filter for constructors with an <see langword="in" /> parameter.
 	/// </summary>
-	public static Filtered.Constructors WithInParameter(this Filtered.Constructors @this)
-	{
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo => constructorInfo.GetParameters().Any(p => p.IsInParameter()),
-			"with in parameter ");
-		return @this.Which(filter);
-	}
+	public static ConstructorsWithParameter<object?> WithInParameter(this Filtered.Constructors @this)
+		=> WithParameterOfKind(@this, p => p.IsInParameter(), "in");
 
 	/// <summary>
 	///     Filter for constructors with an <see langword="in" /> parameter of type <typeparamref name="T" />.

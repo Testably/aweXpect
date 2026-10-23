@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -11,13 +10,8 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Filter for methods with an <see langword="in" /> parameter.
 	/// </summary>
-	public static Filtered.Methods WithInParameter(this Filtered.Methods @this)
-	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo => methodInfo.GetParameters().Any(p => p.IsInParameter()),
-			"with in parameter ");
-		return @this.Which(filter);
-	}
+	public static MethodsWithParameter<object?> WithInParameter(this Filtered.Methods @this)
+		=> WithParameterOfKind(@this, p => p.IsInParameter(), "in");
 
 	/// <summary>
 	///     Filter for methods with an <see langword="in" /> parameter of type <typeparamref name="T" />.
