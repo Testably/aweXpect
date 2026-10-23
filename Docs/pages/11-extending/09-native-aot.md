@@ -61,7 +61,7 @@ that it should compare. The other methods cover the other kinds of metadata:
 
 - `RegisterField` registers a public field, like `RegisterProperty` does for a property.
 - `RegisterExplicitProperty` registers a property that the type implements explicitly for an interface, under its
-  name qualified by the interface, e.g. `MyNamespace.IHasTitle.Title`.
+  name qualified by the interface, e.g. `MusicStore.IHasTitle.Title`.
 - `RegisterEvent` registers an event, so that it can be recorded. It receives a factory for a handler of the event
   type and the delegates that add and remove it.
 - `RegisterCollection` registers a collection type, so that a comparison with another collection also compares the

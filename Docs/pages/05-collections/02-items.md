@@ -134,8 +134,8 @@ You can verify that the items are of a given type, or exactly of that type:
 IEnumerable<INotification> notifications = //...
 
 await Expect.That(notifications).All().Are<INotification>();
-await Expect.That(notifications).AtLeast(1).AreExactly<UserCreatedNotification>();
-await Expect.That(notifications).None().Are(typeof(UserDeletedNotification));
+await Expect.That(notifications).AtLeast(1).AreExactly<TrackAddedNotification>();
+await Expect.That(notifications).None().Are(typeof(TrackRemovedNotification));
 ```
 
 ### Unique
@@ -185,18 +185,18 @@ IEnumerable<int> values = [1, 2, 3];
 await Expect.That(values).HasSingle().Matching(it => it > 2);
 
 // Or with generic type:
-IEnumerable<Person> persons = //...
+IEnumerable<Artist> artists = //...
 
-await Expect.That(persons).HasSingle().Matching<Student>();
-await Expect.That(persons).HasSingle().Matching<Student>(student => student.Courses.Count == 0);
+await Expect.That(artists).HasSingle().Matching<Band>();
+await Expect.That(artists).HasSingle().Matching<Band>(band => band.Members.Count == 4);
 
 // Similar to the expectations above, but verify the type exactly:
-await Expect.That(persons).HasSingle().MatchingExactly<Student>();
-await Expect.That(persons).HasSingle().MatchingExactly<Student>(student => student.Courses.Count == 0);
+await Expect.That(artists).HasSingle().MatchingExactly<Band>();
+await Expect.That(artists).HasSingle().MatchingExactly<Band>(band => band.Members.Count == 4);
 ```
 
 Only one filter can be applied, so restrict the type and add a condition in the same call, e.g.
-`Matching<Student>(student => …)`.
+`Matching<Band>(band => …)`.
 
 The awaited result is the single item:
 
@@ -223,14 +223,14 @@ You can also check that the item matches a specific type:
 ```csharp
 IEnumerable<INotification> values = //...
 
-// Verify that the item at index 1 is of type `UserCreatedNotification`
-await Expect.That(values).HasItem().Matching<UserCreatedNotification>().AtIndex(1);
-// Verify that an item of type `UserDeletedNotification` for user with ID 3 exists
-await Expect.That(values).HasItem().Matching<UserDeletedNotification>(x => x.UserId == 3);
+// Verify that the item at index 1 is of type `TrackAddedNotification`
+await Expect.That(values).HasItem().Matching<TrackAddedNotification>().AtIndex(1);
+// Verify that an item of type `TrackRemovedNotification` for the track with ID 3 exists
+await Expect.That(values).HasItem().Matching<TrackRemovedNotification>(x => x.TrackId == 3);
 
 // Similar to the expectations above, but verify the type exactly:
-await Expect.That(values).HasItem().MatchingExactly<UserCreatedNotification>().AtIndex(1);
-await Expect.That(values).HasItem().MatchingExactly<UserDeletedNotification>(x => x.UserId == 3);
+await Expect.That(values).HasItem().MatchingExactly<TrackAddedNotification>().AtIndex(1);
+await Expect.That(values).HasItem().MatchingExactly<TrackRemovedNotification>(x => x.TrackId == 3);
 ```
 
 You can also use expectations on the individual items:

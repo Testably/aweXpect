@@ -66,16 +66,16 @@ parallel `…Async()` API to remember.
 await Expect.That(result).IsEqualTo(42);
 
 // Task<T>
-await Expect.That(_users.GetAsync(id))
-    .Satisfies(u => u.IsActive);
+await Expect.That(_artists.GetAsync(id))
+    .Satisfies(a => a.IsActive);
 
 // IAsyncEnumerable<T> - the cancellation token flows through the stream
-await Expect.That(_orders.StreamAsync())
-    .Contains(o => o.IsPriority)
+await Expect.That(_radio.StreamAsync())
+    .Contains(s => s.IsLive)
     .WithCancellation(cancellationToken);
 
 // Delegate that throws
-await Expect.That(() => _payments.ChargeAsync(-1m))
+await Expect.That(() => _player.SetVolumeAsync(-1))
     .ThrowsExactly<ArgumentOutOfRangeException>();
 ```
 
@@ -101,7 +101,7 @@ See the [benchmarks](./12-benchmarks.mdx) for the full set.
 [Test]        // NUnit / TUnit
 [TestMethod]  // MSTest
 public async Task IsActive()
-    => await Expect.That(user.IsActive).IsTrue();
+    => await Expect.That(artist.IsActive).IsTrue();
 ```
 
 xUnit (v2 and v3), NUnit (v3, v4 and v5), MSTest and TUnit are detected automatically: a failure usually throws the

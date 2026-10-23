@@ -40,10 +40,10 @@ await Expect.That(log).IsWriteOnly()
 You can verify the length of the `Stream`:
 
 ```csharp
-using Stream playlist = new MemoryStream("foo"u8.ToArray());
+using Stream playlist = new MemoryStream("Help"u8.ToArray());
 
-await Expect.That(playlist).HasLength(3);
-await Expect.That(playlist).HasLength().Between(2).And(4);
+await Expect.That(playlist).HasLength(4);
+await Expect.That(playlist).HasLength().Between(3).And(5);
 ```
 
 ## Position
@@ -51,7 +51,7 @@ await Expect.That(playlist).HasLength().Between(2).And(4);
 You can verify the position of the `Stream`:
 
 ```csharp
-using Stream playlist = new MemoryStream("foo"u8.ToArray());
+using Stream playlist = new MemoryStream("Help"u8.ToArray());
 playlist.Seek(2, SeekOrigin.Current);
 
 await Expect.That(playlist).HasPosition(2);
@@ -67,7 +67,7 @@ The buffer size expectations are only available on .NET 8 or later.
 You can verify the buffer size of the `BufferedStream`:
 
 ```csharp
-using BufferedStream playlist = new(new MemoryStream("foo"u8.ToArray()), 2);
+using BufferedStream playlist = new(new MemoryStream("Help"u8.ToArray()), 2);
 
 await Expect.That(playlist).HasBufferSize(2);
 await Expect.That(playlist).HasBufferSize().NotEqualTo(3);

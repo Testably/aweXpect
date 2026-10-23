@@ -11,10 +11,10 @@ or members you care about with `In` or `Types`, then **expect** a rule on them w
 
 ```csharp
 // "Every async method must end in 'Async'"
-await Expect.That(In.AssemblyContaining<MyClass>()    // ① pick a source
-        .Methods()                                    // ② navigate to a member kind
-        .WhichAreAsync())                             // ③ filter it down
-    .HaveName("Async").AsSuffix();                    // ④ expect
+await Expect.That(In.AssemblyContaining<PlaylistService>()    // ① pick a source
+        .Methods()                                            // ② navigate to a member kind
+        .WhichAreAsync())                                     // ③ filter it down
+    .HaveName("Async").AsSuffix();                            // ④ expect
 ```
 
 Every expectation follows the same four-part shape:
@@ -49,12 +49,12 @@ await Expect.That(In.AllLoadedAssemblies()
     .HaveName("Tests").AsSuffix();
 
 // Verify all async methods have an "Async" suffix
-await Expect.That(In.AssemblyContaining<MyClass>()
+await Expect.That(In.AssemblyContaining<PlaylistService>()
         .Methods().WhichAreAsync())
     .HaveName("Async").AsSuffix();
 
 // Verify all methods with an "Async" suffix return Task or ValueTask
-await Expect.That(In.AssemblyContaining<MyClass>()
+await Expect.That(In.AssemblyContaining<PlaylistService>()
         .Methods().WithName("Async").AsSuffix())
     .Return<Task>().OrReturn<ValueTask>();
 
@@ -63,8 +63,8 @@ await Expect.That(In.AllLoadedAssemblies()
         .Types().WhichInheritFrom<ControllerBase>())
     .HaveName("Controller").AsSuffix();
 
-// Verify each event handler is named after the event it handles (e.g. "OnOrderPlaced")
-await Expect.That(In.AssemblyContaining<MyAggregate>()
+// Verify each event handler is named after the event it handles (e.g. "OnTrackAdded")
+await Expect.That(In.AssemblyContaining<Playlist>()
         .Methods().Which(m => m.GetParameters().Length == 1))
     .HaveName(method => "On" + method.GetParameters()[0].ParameterType.Name);
 

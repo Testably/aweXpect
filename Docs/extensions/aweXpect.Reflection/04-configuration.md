@@ -36,7 +36,7 @@ By default, assemblies whose name matches one of the following prefixes are excl
 Both the assembly scanning and the dependency expectations (`DependsOnlyOn` / `DependOnlyOn` /
 `WhichDependOnlyOn`, on both assemblies and types) use the same prefixes with the same matching: a prefix
 matches at a name-segment boundary, so `System` covers `System` and `System.Text.Json`, but not an assembly
-named `SystemsBiology`. A prefix written with a trailing dot (e.g. `MyCompany.`) is boundary-safe by
+named `SystemsBiology`. A prefix written with a trailing dot (e.g. `MusicStore.`) is boundary-safe by
 construction and covers everything starting with it. Empty prefixes are ignored.
 
 Customize this via `Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
@@ -44,7 +44,7 @@ list and returns a scope that restores the previous value when disposed:
 
 ```csharp
 using (Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
-    .Set(new[] { "mscorlib", "System", "Microsoft", "MyCompany.Generated" }))
+    .Set(new[] { "mscorlib", "System", "Microsoft", "MusicStore.Generated" }))
 {
     // In.AllLoadedAssemblies() applies the custom prefixes within this scope
 }

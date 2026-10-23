@@ -130,11 +130,11 @@ For `double`, `float`, `decimal` and `Half`, `Percent()` directly after `Within`
 percentage of the expected value, or of each bound:
 
 ```csharp
-double price = 1040.0;
+double durationSeconds = 1040.0;
 
-await Expect.That(price).IsEqualTo(1000).Within(5).Percent()
+await Expect.That(durationSeconds).IsEqualTo(1000).Within(5).Percent()
   .Because("we accept values between 950 and 1050 (1000 ± 5%)");
-await Expect.That(price).IsBetween(1000).And(2000).Within(5).Percent()
+await Expect.That(durationSeconds).IsBetween(1000).And(2000).Within(5).Percent()
   .Because("we accept values between 950 and 2100");
 ```
 

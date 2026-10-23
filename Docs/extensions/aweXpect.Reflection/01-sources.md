@@ -35,10 +35,10 @@ after it to clarify the assembly source (it can only be specified once, before a
 
 ```csharp
 // Defaults to all loaded assemblies
-await Expect.That(Types.InNamespace("MyApp.Domain")).AreSealed();
+await Expect.That(Types.InNamespace("MusicStore.Domain")).AreSealed();
 
 // Clarify the assembly source
-await Expect.That(Types.InNamespace("MyApp.Domain").InAssemblyContaining<MyApp.Startup>())
+await Expect.That(Types.InNamespace("MusicStore.Domain").InAssemblyContaining<MusicStore.Startup>())
     .AreSealed();
 ```
 

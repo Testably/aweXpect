@@ -13,40 +13,39 @@ internal static class Prelude
 	public static CancellationToken cancellationToken;
 	public static string message = "";
 	public static int result;
-	public static User user = new();
 	public static Guid id;
-	public static Users _users = new();
-	public static Orders _orders = new();
-	public static Payments _payments = new();
+	public static Artists _artists = new();
+	public static Radio _radio = new();
+	public static Player _player = new();
 	public static Track track = new();
 
-	public class User
+	public class Artist
 	{
 		public bool IsActive { get; set; }
 	}
 
-	public class Users
+	public class Artists
 	{
-		public Task<User> GetAsync(Guid id) => Task.FromResult(new User());
+		public Task<Artist> GetAsync(Guid id) => Task.FromResult(new Artist());
 	}
 
-	public class Order
+	public class Song
 	{
-		public bool IsPriority { get; set; }
+		public bool IsLive { get; set; }
 	}
 
-	public class Orders
+	public class Radio
 	{
-		public async IAsyncEnumerable<Order> StreamAsync()
+		public async IAsyncEnumerable<Song> StreamAsync()
 		{
 			await Task.Yield();
-			yield return new Order();
+			yield return new Song();
 		}
 	}
 
-	public class Payments
+	public class Player
 	{
-		public Task ChargeAsync(decimal amount) => Task.CompletedTask;
+		public Task SetVolumeAsync(int volume) => Task.CompletedTask;
 	}
 }
 

@@ -72,14 +72,14 @@ The sections below detail each target with side-by-side examples.
 assembly.Should().Reference(typeof(string).Assembly);
 assembly.Should().NotReference(unwantedAssembly);
 assembly.Should().BeSignedWithPublicKey("0024000004800000...");
-assembly.GetName().Name.Should().Be("MyAssembly");          // name via string API
+assembly.GetName().Name.Should().Be("MusicStore");          // name via string API
 ```
 
 </TabItem>
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-await Expect.That(assembly).HasName("MyAssembly");
+await Expect.That(assembly).HasName("MusicStore");
 await Expect.That(assembly).DependsOn("System.Core");
 await Expect.That(assembly).DoesNotDependOn("UnwantedDependency");
 await Expect.That(assembly).IsStrongNamed();
@@ -101,33 +101,33 @@ await Expect.That(In.AllLoadedAssemblies()).HaveName("System").AsPrefix();
 <TabItem value="fluentassertions" label="FluentAssertions" default>
 
 ```csharp
-typeof(MyClass).Should().BeAssignableTo<IMyInterface>();
-typeof(MyClass).Should().BeDerivedFrom<BaseClass>();
-typeof(AbstractClass).Should().BeAbstract();
-typeof(MyClass).Should().HaveAccessModifier(CSharpAccessModifier.Public);
-typeof(MyClass).Should().BeDecoratedWith<MyAttribute>(a => a.Value == 3);
-typeof(MyClass).Namespace.Should().Be("MyNamespace");       // namespace via string API
+typeof(Playlist).Should().BeAssignableTo<IPlaylist>();
+typeof(Playlist).Should().BeDerivedFrom<PlaylistBase>();
+typeof(PlaylistBase).Should().BeAbstract();
+typeof(Playlist).Should().HaveAccessModifier(CSharpAccessModifier.Public);
+typeof(Playlist).Should().BeDecoratedWith<GenreAttribute>(a => a.Name == "Rock");
+typeof(Playlist).Namespace.Should().Be("MusicStore");       // namespace via string API
 
 // type kind only as a selector filter:
-AllTypes.From(assembly).ThatAreClasses().Should().BeInNamespace("MyNamespace");
+AllTypes.From(assembly).ThatAreClasses().Should().BeInNamespace("MusicStore");
 ```
 
 </TabItem>
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-await Expect.That(typeof(MyClass)).IsAClass();
-await Expect.That(typeof(IMyInterface)).IsAnInterface();
-await Expect.That(typeof(MyEnum)).IsAnEnum();
-await Expect.That(typeof(AbstractClass)).IsAbstract();
-await Expect.That(typeof(MyClass)).HasNamespace("MyNamespace");
-await Expect.That(typeof(MyClass)).Has<MyAttribute>(a => a.Value == 3);
-await Expect.That(typeof(Money)).HasOperator(Operator.Addition);
-await Expect.That(typeof(Money)).HasImplicitConversionOperator<Money, decimal>();
+await Expect.That(typeof(Playlist)).IsAClass();
+await Expect.That(typeof(IPlaylist)).IsAnInterface();
+await Expect.That(typeof(Genre)).IsAnEnum();
+await Expect.That(typeof(PlaylistBase)).IsAbstract();
+await Expect.That(typeof(Playlist)).HasNamespace("MusicStore");
+await Expect.That(typeof(Playlist)).Has<GenreAttribute>(a => a.Name == "Rock");
+await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition);
+await Expect.That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDuration, TimeSpan>();
 
 await Expect.That(In.AllLoadedAssemblies()
         .Types().WhichAreClasses().WhichArePublic())
-    .HaveNamespace("MyNamespace").AsPrefix();
+    .HaveNamespace("MusicStore").AsPrefix();
 ```
 
 </TabItem>
@@ -142,26 +142,26 @@ await Expect.That(In.AllLoadedAssemblies()
 <TabItem value="fluentassertions" label="FluentAssertions" default>
 
 ```csharp
-MethodInfo method = typeof(MyClass).GetMethod("MyMethod");
+MethodInfo method = typeof(Playlist).GetMethod("PlayAsync");
 method.Should().BeVirtual();
 method.Should().Return<Task>();
 method.Should().HaveAccessModifier(CSharpAccessModifier.Public);
 method.Should().BeDecoratedWith<ObsoleteAttribute>();
-method.Name.Should().StartWith("My");                       // name via string API
+method.Name.Should().StartWith("Play");                     // name via string API
 ```
 
 </TabItem>
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-MethodInfo method = typeof(MyClass).GetMethod("MyMethod");
+MethodInfo method = typeof(Playlist).GetMethod("PlayAsync");
 await Expect.That(method).IsPublic();
 await Expect.That(method).IsAsync();
 await Expect.That(method).Returns<Task>();
-await Expect.That(method).HasName("My").AsPrefix();
+await Expect.That(method).HasName("Play").AsPrefix();
 await Expect.That(method).Has<ObsoleteAttribute>();
 
-await Expect.That(In.AssemblyContaining<MyClass>()
+await Expect.That(In.AssemblyContaining<Playlist>()
         .Methods().WhichArePublic().With<TestAttribute>())
     .HaveName("Test").AsPrefix();
 ```
@@ -178,7 +178,7 @@ await Expect.That(In.AssemblyContaining<MyClass>()
 <TabItem value="fluentassertions" label="FluentAssertions" default>
 
 ```csharp
-PropertyInfo property = typeof(MyClass).GetProperty("MyProperty");
+PropertyInfo property = typeof(Playlist).GetProperty("Rating");
 property.Should().BeReadable(CSharpAccessModifier.Public);
 property.Should().BeWritable();
 property.Should().Return<int>();
@@ -188,13 +188,13 @@ property.Should().Return<int>();
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-PropertyInfo property = typeof(MyClass).GetProperty("MyProperty");
+PropertyInfo property = typeof(Playlist).GetProperty("Rating");
 await Expect.That(property).HasAGetter();
 await Expect.That(property).IsWritable();
 await Expect.That(property).IsOfType<int>();
-await Expect.That(property).HasName("MyProperty");
+await Expect.That(property).HasName("Rating");
 
-await Expect.That(In.AssemblyContaining<MyClass>()
+await Expect.That(In.AssemblyContaining<Playlist>()
         .Properties().WhichArePublic())
     .HaveName("Id").AsSuffix();
 ```
@@ -211,18 +211,18 @@ await Expect.That(In.AssemblyContaining<MyClass>()
 <TabItem value="fluentassertions" label="FluentAssertions" default>
 
 ```csharp
-typeof(MyClass).Should().HaveConstructor(new[] { typeof(int) })
+typeof(Playlist).Should().HaveConstructor(new[] { typeof(int) })
     .Which.Should().HaveAccessModifier(CSharpAccessModifier.Public);
-typeof(MyClass).Should().HaveDefaultConstructor();
+typeof(Playlist).Should().HaveDefaultConstructor();
 ```
 
 </TabItem>
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-await Expect.That(In.Type<MyClass>().Constructors().WhichArePublic())
+await Expect.That(In.Type<Playlist>().Constructors().WhichArePublic())
     .HaveParameterCount(1);
-await Expect.That(typeof(MyClass)).HasADefaultConstructor();
+await Expect.That(typeof(Playlist)).HasADefaultConstructor();
 ```
 
 </TabItem>
@@ -238,7 +238,7 @@ await Expect.That(typeof(MyClass)).HasADefaultConstructor();
 
 ```csharp
 // No dedicated FieldInfo assertions; fall back to raw reflection + LINQ/string assertions:
-typeof(MyClass).GetField("_counter", BindingFlags.Instance | BindingFlags.NonPublic)
+typeof(Playlist).GetField("_tracks", BindingFlags.Instance | BindingFlags.NonPublic)
     .IsInitOnly.Should().BeTrue();
 ```
 
@@ -246,12 +246,12 @@ typeof(MyClass).GetField("_counter", BindingFlags.Instance | BindingFlags.NonPub
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-FieldInfo field = typeof(MyClass).GetField("_counter",
+FieldInfo field = typeof(Playlist).GetField("_tracks",
     BindingFlags.Instance | BindingFlags.NonPublic);
 await Expect.That(field).IsReadOnly();
 await Expect.That(field).IsPrivate();
 
-await Expect.That(In.AssemblyContaining<MyClass>().Fields().WhichAreConstant())
+await Expect.That(In.AssemblyContaining<Playlist>().Fields().WhichAreConstant())
     .ArePublic();
 ```
 
@@ -268,18 +268,18 @@ await Expect.That(In.AssemblyContaining<MyClass>().Fields().WhichAreConstant())
 
 ```csharp
 // No dedicated EventInfo assertions; fall back to raw reflection:
-typeof(MyClass).GetEvent("Changed").Should().NotBeNull();
+typeof(Playlist).GetEvent("Changed").Should().NotBeNull();
 ```
 
 </TabItem>
 <TabItem value="awexpect" label="aweXpect.Reflection">
 
 ```csharp
-EventInfo @event = typeof(MyClass).GetEvent("Changed");
+EventInfo @event = typeof(Playlist).GetEvent("Changed");
 await Expect.That(@event).IsStatic();
 await Expect.That(@event).Has<ObsoleteAttribute>();
 
-await Expect.That(In.AssemblyContaining<MyClass>().Events().WhichArePublic())
+await Expect.That(In.AssemblyContaining<Playlist>().Events().WhichArePublic())
     .HaveName("Changed");
 ```
 
@@ -298,7 +298,7 @@ await Expect.That(In.AssemblyContaining<MyClass>().Events().WhichArePublic())
 AllTypes.From(assembly)
     .ThatAreClasses()
     .ThatAreDecoratedWith<TestFixtureAttribute>()
-    .Should().BeInNamespace("MyProject.Tests");
+    .Should().BeInNamespace("MusicStore.Tests");
 ```
 
 </TabItem>

@@ -110,7 +110,7 @@ The most important technical difference is **where dependencies are read from**:
 
 :::warning[Signature-level vs. IL-level]
 NetArchTest and ArchUnitNET parse assemblies with **Mono.Cecil** and walk **method bodies**: an
-instantiation (`new Foo()`), a static call or a cast inside a method counts as a dependency.
+instantiation (`new AlbumRepository()`), a static call or a cast inside a method counts as a dependency.
 aweXpect.Reflection's default resolver works on **reflection metadata** and sees only the **declared
 signatures** (base type, interfaces, member/parameter/return types, attributes; see
 [type dependencies](../03-architecture-rules.md#type-dependencies)). Body-only references are invisible to
@@ -223,12 +223,12 @@ Convention tests over *member details* are where aweXpect.Reflection's
 
 ```csharp
 // All async methods end in "Async"
-await Expect.That(In.AssemblyContaining<MyClass>()
+await Expect.That(In.AssemblyContaining<PlaylistService>()
         .Methods().WhichAreAsync())
     .HaveName("Async").AsSuffix();
 
 // Every public method with an [HttpGet] or [HttpPost] attribute accepts a CancellationToken
-await Expect.That(In.AssemblyContaining<MyController>()
+await Expect.That(In.AssemblyContaining<AlbumController>()
         .Public.Methods().With<HttpGetAttribute>().OrWith<HttpPostAttribute>())
     .HaveParameter<CancellationToken>();
 

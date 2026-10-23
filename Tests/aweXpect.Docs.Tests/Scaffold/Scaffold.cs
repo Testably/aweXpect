@@ -40,18 +40,18 @@ public class CustomException : Exception
 	}
 }
 
-public class Person;
+public class Artist;
 
-public class Student : Person
+public class Band : Artist
 {
-	public List<string> Courses { get; } = [];
+	public List<string> Members { get; } = [];
 }
 
 public interface INotification;
 
-public class UserCreatedNotification : INotification;
+public class TrackAddedNotification : INotification;
 
-public class UserDeletedNotification : INotification
+public class TrackRemovedNotification : INotification
 {
-	public int UserId { get; set; }
+	public int TrackId { get; set; }
 }
