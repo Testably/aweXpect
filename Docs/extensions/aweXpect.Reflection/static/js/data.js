@@ -408,6 +408,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
         "message": "test: expect the params modifier in the Matching failure messages (#1976)"
+      },
+      {
+        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
+        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
       }
     ],
     "labels": [
@@ -478,7 +484,8 @@ window.BENCHMARK_DATA = {
       "3aaf6f00",
       "01684f30",
       "eeb6f10c",
-      "d795bb44"
+      "d795bb44",
+      "9077e206"
     ],
     "datasets": [
       {
@@ -552,7 +559,8 @@ window.BENCHMARK_DATA = {
           381.48705662999834,
           404.5717393068167,
           713.972689969199,
-          373.37957595189414
+          373.37957595189414,
+          519.98370885849
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -597,6 +605,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -713,7 +722,8 @@ window.BENCHMARK_DATA = {
           459.27633282343544,
           532.7023837749774,
           862.7739003254817,
-          518.321795463562
+          518.321795463562,
+          677.3438504536947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -725,6 +735,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1214,6 +1225,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
         "message": "test: expect the params modifier in the Matching failure messages (#1976)"
+      },
+      {
+        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
+        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
       }
     ],
     "labels": [
@@ -1284,7 +1301,8 @@ window.BENCHMARK_DATA = {
       "3aaf6f00",
       "01684f30",
       "eeb6f10c",
-      "d795bb44"
+      "d795bb44",
+      "9077e206"
     ],
     "datasets": [
       {
@@ -1358,7 +1376,8 @@ window.BENCHMARK_DATA = {
           66.24985903104147,
           75.95262475013733,
           125.11533050537109,
-          70.55915972590446
+          70.55915972590446,
+          96.3436443010966
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1398,6 +1417,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1519,7 +1539,8 @@ window.BENCHMARK_DATA = {
           114.2459699000631,
           139.42729212687567,
           198.4091228802999,
-          134.97759432059067
+          134.97759432059067,
+          164.39642926624842
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1531,6 +1552,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -2020,6 +2042,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
         "message": "test: expect the params modifier in the Matching failure messages (#1976)"
+      },
+      {
+        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
+        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
       }
     ],
     "labels": [
@@ -2090,7 +2118,8 @@ window.BENCHMARK_DATA = {
       "3aaf6f00",
       "01684f30",
       "eeb6f10c",
-      "d795bb44"
+      "d795bb44",
+      "9077e206"
     ],
     "datasets": [
       {
@@ -2164,7 +2193,8 @@ window.BENCHMARK_DATA = {
           925.779819424947,
           1124.5583415985107,
           1929.366125869751,
-          1061.21697362264
+          1061.21697362264,
+          1465.8649541219077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2204,6 +2234,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2325,7 +2356,8 @@ window.BENCHMARK_DATA = {
           747.2022263663156,
           907.0648664065769,
           1411.3959779103598,
-          814.2052747181484
+          814.2052747181484,
+          1065.3885481698173
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2404,7 +2436,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2766,6 +2799,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
         "message": "test: expect the params modifier in the Matching failure messages (#1976)"
+      },
+      {
+        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
+        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
       }
     ],
     "labels": [
@@ -2826,7 +2865,8 @@ window.BENCHMARK_DATA = {
       "3aaf6f00",
       "01684f30",
       "eeb6f10c",
-      "d795bb44"
+      "d795bb44",
+      "9077e206"
     ],
     "datasets": [
       {
@@ -2890,7 +2930,8 @@ window.BENCHMARK_DATA = {
           1321.880958693368,
           1603.5351232801165,
           2698.5197888887847,
-          1461.8658738454183
+          1461.8658738454183,
+          2135.136705545279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2957,6 +2998,7 @@ window.BENCHMARK_DATA = {
           3040,
           2984,
           3040,
+          2984,
           2984,
           2984,
           2984
@@ -3031,7 +3073,8 @@ window.BENCHMARK_DATA = {
           1980.2551272465632,
           2277.7916843707744,
           3620.311572265625,
-          2274.3472307840984
+          2274.3472307840984,
+          2890.839219156901
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3100,7 +3143,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3980,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3462,6 +3506,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
         "message": "test: expect the params modifier in the Matching failure messages (#1976)"
+      },
+      {
+        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
+        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
       }
     ],
     "labels": [
@@ -3522,7 +3572,8 @@ window.BENCHMARK_DATA = {
       "3aaf6f00",
       "01684f30",
       "eeb6f10c",
-      "d795bb44"
+      "d795bb44",
+      "9077e206"
     ],
     "datasets": [
       {
@@ -3586,7 +3637,8 @@ window.BENCHMARK_DATA = {
           177.1781394481659,
           203.6781988143921,
           380.95371413230896,
-          210.35015804951007
+          210.35015804951007,
+          262.95163736343386
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3616,6 +3668,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3727,7 +3780,8 @@ window.BENCHMARK_DATA = {
           1131.0002739770073,
           1406.1510941432073,
           2181.787484032767,
-          1339.084741083781
+          1339.084741083781,
+          1693.4538735707602
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3739,6 +3793,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4158,6 +4213,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
         "message": "test: expect the params modifier in the Matching failure messages (#1976)"
+      },
+      {
+        "sha": "9077e206565ce542aa9212fd403656e3d8374a29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:53:11 2026 \u002B0200",
+        "message": "fix: pass JSON numbers to It.Is\u003CT\u003E() as the expected numeric type (#1967)"
       }
     ],
     "labels": [
@@ -4218,7 +4279,8 @@ window.BENCHMARK_DATA = {
       "3aaf6f00",
       "01684f30",
       "eeb6f10c",
-      "d795bb44"
+      "d795bb44",
+      "9077e206"
     ],
     "datasets": [
       {
@@ -4282,7 +4344,8 @@ window.BENCHMARK_DATA = {
           1717.6265123912267,
           2049.2623252868652,
           3594.35844039917,
-          1988.6779221126012
+          1988.6779221126012,
+          2726.059359995524
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4341,6 +4404,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -4423,7 +4487,8 @@ window.BENCHMARK_DATA = {
           158624.46012995794,
           171310.73217773438,
           278547.35139973956,
-          172086.34882061297
+          172086.34882061297,
+          239361.2310267857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4492,7 +4557,8 @@ window.BENCHMARK_DATA = {
           17574,
           17573,
           17719,
-          17574
+          17574,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
