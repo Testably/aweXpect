@@ -258,6 +258,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
         "message": "refactor!: tidy up core option types for extension authors (#1936)"
+      },
+      {
+        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
+        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
       }
     ],
     "labels": [
@@ -303,7 +309,8 @@ window.BENCHMARK_DATA = {
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
-      "41520e7b"
+      "41520e7b",
+      "3804f6c8"
     ],
     "datasets": [
       {
@@ -352,7 +359,8 @@ window.BENCHMARK_DATA = {
           364.4932472229004,
           709.4984261439397,
           712.4593811035156,
-          413.84195699010576
+          413.84195699010576,
+          764.4701401165554
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -397,6 +405,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -463,7 +472,8 @@ window.BENCHMARK_DATA = {
           504.5965037663778,
           885.6188193003337,
           899.1088951110839,
-          563.1298767725626
+          563.1298767725626,
+          928.6164199829102
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -475,6 +485,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -789,6 +800,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
         "message": "refactor!: tidy up core option types for extension authors (#1936)"
+      },
+      {
+        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
+        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
       }
     ],
     "labels": [
@@ -834,7 +851,8 @@ window.BENCHMARK_DATA = {
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
-      "41520e7b"
+      "41520e7b",
+      "3804f6c8"
     ],
     "datasets": [
       {
@@ -883,7 +901,8 @@ window.BENCHMARK_DATA = {
           60.07044177850087,
           121.40318101247152,
           123.30812808672587,
-          71.893810292085
+          71.893810292085,
+          142.84947752952576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -923,6 +942,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -994,7 +1014,8 @@ window.BENCHMARK_DATA = {
           116.78994107246399,
           195.86891186237335,
           211.83564372062682,
-          139.74082769666398
+          139.74082769666398,
+          213.41635026931763
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1006,6 +1027,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1320,6 +1342,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
         "message": "refactor!: tidy up core option types for extension authors (#1936)"
+      },
+      {
+        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
+        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
       }
     ],
     "labels": [
@@ -1365,7 +1393,8 @@ window.BENCHMARK_DATA = {
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
-      "41520e7b"
+      "41520e7b",
+      "3804f6c8"
     ],
     "datasets": [
       {
@@ -1414,7 +1443,8 @@ window.BENCHMARK_DATA = {
           1016.181319173177,
           1991.2805603027343,
           1989.0674397786458,
-          1057.9688414255777
+          1057.9688414255777,
+          2111.6932860783168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1454,6 +1484,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -1525,7 +1556,8 @@ window.BENCHMARK_DATA = {
           935.9064225514729,
           1479.2349433898926,
           1518.6269055775233,
-          935.7436493464878
+          935.7436493464878,
+          1557.508850778852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1579,6 +1611,7 @@ window.BENCHMARK_DATA = {
           1985,
           1897,
           1897,
+          1985,
           1985
         ],
         "borderColor": "#FF671B",
@@ -1791,6 +1824,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
         "message": "refactor!: tidy up core option types for extension authors (#1936)"
+      },
+      {
+        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
+        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
       }
     ],
     "labels": [
@@ -1826,7 +1865,8 @@ window.BENCHMARK_DATA = {
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
-      "41520e7b"
+      "41520e7b",
+      "3804f6c8"
     ],
     "datasets": [
       {
@@ -1865,7 +1905,8 @@ window.BENCHMARK_DATA = {
           1370.8455539067586,
           2847.4351821899413,
           2704.5054546991983,
-          1500.0109330690825
+          1500.0109330690825,
+          2985.921454620361
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1909,6 +1950,7 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           3040,
+          2984,
           2984
         ],
         "borderColor": "#63A2AC",
@@ -1956,7 +1998,8 @@ window.BENCHMARK_DATA = {
           2089.1836670466832,
           3885.742154802595,
           3841.3821187700546,
-          2407.3168144226074
+          2407.3168144226074,
+          3876.402209355281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2000,7 +2043,8 @@ window.BENCHMARK_DATA = {
           4011,
           4012,
           4012,
-          4011
+          4011,
+          4012
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2212,6 +2256,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
         "message": "refactor!: tidy up core option types for extension authors (#1936)"
+      },
+      {
+        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
+        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
       }
     ],
     "labels": [
@@ -2247,7 +2297,8 @@ window.BENCHMARK_DATA = {
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
-      "41520e7b"
+      "41520e7b",
+      "3804f6c8"
     ],
     "datasets": [
       {
@@ -2286,7 +2337,8 @@ window.BENCHMARK_DATA = {
           185.58334198364844,
           361.5782157580058,
           391.7545042037964,
-          199.92884837786357
+          199.92884837786357,
+          369.9827445575169
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2316,6 +2368,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -2377,7 +2430,8 @@ window.BENCHMARK_DATA = {
           1319.0333035786946,
           2248.6266461885893,
           2336.7420885721845,
-          1374.6877195040386
+          1374.6877195040386,
+          2358.0819844563803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2389,6 +2443,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2633,6 +2688,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
         "message": "refactor!: tidy up core option types for extension authors (#1936)"
+      },
+      {
+        "sha": "3804f6c8e1b40cc5441e10d5db26947ee1755bde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
+        "message": "feat!: let string match types add the contexts of their own failure (#1938)"
       }
     ],
     "labels": [
@@ -2668,7 +2729,8 @@ window.BENCHMARK_DATA = {
       "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
-      "41520e7b"
+      "41520e7b",
+      "3804f6c8"
     ],
     "datasets": [
       {
@@ -2707,7 +2769,8 @@ window.BENCHMARK_DATA = {
           1982.2974724402795,
           3655.495449066162,
           3590.0820574442546,
-          1986.4806144714355
+          1986.4806144714355,
+          3730.8515721638996
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2737,6 +2800,7 @@ window.BENCHMARK_DATA = {
           3697,
           3697,
           3697,
+          3673,
           3673,
           3673,
           3673,
@@ -2798,7 +2862,8 @@ window.BENCHMARK_DATA = {
           172192.001953125,
           280905.63349609374,
           285696.83232421876,
-          177185.6905436198
+          177185.6905436198,
+          280900.4276297433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2842,6 +2907,7 @@ window.BENCHMARK_DATA = {
           17609,
           17609,
           17608,
+          17609,
           17609
         ],
         "borderColor": "#FF671B",
