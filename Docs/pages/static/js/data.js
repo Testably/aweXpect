@@ -696,6 +696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -814,7 +820,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -936,7 +943,8 @@ window.BENCHMARK_DATA = {
           10697.089312039889,
           7999.5514048258465,
           7742.476958211263,
-          5210.969314575195
+          5210.969314575195,
+          7859.419778090257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1032,6 +1040,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1193,7 +1202,8 @@ window.BENCHMARK_DATA = {
           384140.58841145836,
           302087.4689592634,
           300924.51510416664,
-          162883.67442103795
+          162883.67442103795,
+          245292.0140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1320,7 +1330,8 @@ window.BENCHMARK_DATA = {
           590292,
           590225,
           590226,
-          590287
+          590287,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1450,7 +1461,8 @@ window.BENCHMARK_DATA = {
           20074.98917061942,
           18065.067188807898,
           17909.513950602213,
-          9323.177334376744
+          9323.177334376744,
+          14524.337534586588
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1462,6 +1474,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2245,6 +2258,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -2356,7 +2375,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -2471,7 +2491,8 @@ window.BENCHMARK_DATA = {
           322.6525573730469,
           273.9837770802634,
           268.5749477999551,
-          123.02076901708331
+          123.02076901708331,
+          184.8512527209062
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2560,6 +2581,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -2714,7 +2736,8 @@ window.BENCHMARK_DATA = {
           515.0361580530803,
           608.8601038614909,
           590.109141476949,
-          250.56537062327067
+          250.56537062327067,
+          389.19339542388917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2726,6 +2749,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2957,7 +2981,8 @@ window.BENCHMARK_DATA = {
           401.1061988194784,
           416.59318628311155,
           415.7524501596178,
-          202.06207796732585
+          202.06207796732585,
+          287.22703234354657
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2969,6 +2994,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -8365,6 +8391,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -9246,7 +9278,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -10131,7 +10164,8 @@ window.BENCHMARK_DATA = {
           144.55811697642008,
           151.66829425948006,
           151.41221645673116,
-          65.51748577753703
+          65.51748577753703,
+          114.15108967622122
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10990,6 +11024,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -11914,7 +11949,8 @@ window.BENCHMARK_DATA = {
           259.9817698918856,
           326.9361922899882,
           313.2394310406276,
-          127.82158738772074
+          127.82158738772074,
+          196.89206547396523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12107,6 +12143,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -12978,7 +13015,8 @@ window.BENCHMARK_DATA = {
           253.5283507347107,
           243.30304209391275,
           237.49920315742492,
-          115.09965844154358
+          115.09965844154358,
+          178.72848569552104
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12990,6 +13028,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -13859,6 +13898,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -13977,7 +14022,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -14099,7 +14145,8 @@ window.BENCHMARK_DATA = {
           257.9934313774109,
           252.03252874101912,
           241.04713221958704,
-          125.37886052131653
+          125.37886052131653,
+          186.92283264795938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14195,6 +14242,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -14356,7 +14404,8 @@ window.BENCHMARK_DATA = {
           537.7937030156453,
           662.1523787634713,
           640.4373806544712,
-          258.99104475975037
+          258.99104475975037,
+          403.77657002669116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14368,6 +14417,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -14613,7 +14663,8 @@ window.BENCHMARK_DATA = {
           339.82704010009763,
           351.3542137512794,
           351.05339755330766,
-          173.34568036397297
+          173.34568036397297,
+          267.30244868596395
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14625,6 +14676,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -20028,6 +20080,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -20909,7 +20967,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -21794,7 +21853,8 @@ window.BENCHMARK_DATA = {
           666.2331348146711,
           573.9394465764364,
           560.1261488369533,
-          328.97456585566204
+          328.97456585566204,
+          487.86827557881674
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22653,6 +22713,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -23577,7 +23638,8 @@ window.BENCHMARK_DATA = {
           1437.4247745513917,
           1552.5757722218832,
           1528.468043899536,
-          682.2448314666748
+          682.2448314666748,
+          1098.706383895874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24467,6 +24529,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -24641,7 +24704,8 @@ window.BENCHMARK_DATA = {
           693.8161659240723,
           643.9477735928127,
           641.3820680777231,
-          355.27583128611246
+          355.27583128611246,
+          491.83470923105875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24653,6 +24717,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -30100,6 +30165,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -30981,7 +31052,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -31866,7 +31938,8 @@ window.BENCHMARK_DATA = {
           641.4998718897501,
           580.2161086627415,
           582.0692969640096,
-          331.4084296544393
+          331.4084296544393,
+          486.7118255175077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32725,6 +32798,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -33649,7 +33723,8 @@ window.BENCHMARK_DATA = {
           28001.67866734096,
           18253.817936488562,
           18028.941225324357,
-          10521.541318766276
+          10521.541318766276,
+          16749.660932268416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34539,6 +34614,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -34713,7 +34789,8 @@ window.BENCHMARK_DATA = {
           830.5997231801351,
           757.1983052571615,
           777.056998693026,
-          412.2517735799154
+          412.2517735799154,
+          602.6832408905029
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34725,6 +34802,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -35942,6 +36020,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -36118,7 +36202,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -36298,7 +36383,8 @@ window.BENCHMARK_DATA = {
           733.3101908365885,
           706.4060881296793,
           691.7548534393311,
-          323.0181734085083
+          323.0181734085083,
+          532.6910418192546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36452,6 +36538,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -36671,7 +36758,8 @@ window.BENCHMARK_DATA = {
           83982.65583683894,
           34963.166076660156,
           34370.29956490653,
-          27610.4389058431
+          27610.4389058431,
+          52063.303475516186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36854,6 +36942,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256,
           5256,
           5256
@@ -37914,6 +38003,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -38090,7 +38185,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -38270,7 +38366,8 @@ window.BENCHMARK_DATA = {
           197.68659586172836,
           187.8523447880378,
           192.3838214079539,
-          85.46598759064308
+          85.46598759064308,
+          129.52384902749742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38424,6 +38521,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -38643,7 +38741,8 @@ window.BENCHMARK_DATA = {
           32326.37315586635,
           17580.579520670573,
           16781.729989188058,
-          8980.615689958844
+          8980.615689958844,
+          14427.648673502605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38828,6 +38927,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -39002,7 +39102,8 @@ window.BENCHMARK_DATA = {
           250.5384820620219,
           241.94896602630615,
           240.8125906308492,
-          119.37625473340353
+          119.37625473340353,
+          174.8215048313141
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39014,6 +39115,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -39883,6 +39985,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -40001,7 +40109,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -40123,7 +40232,8 @@ window.BENCHMARK_DATA = {
           406.6041113308498,
           342.5799726486206,
           339.8047703229464,
-          175.07092701594036
+          175.07092701594036,
+          275.69444805781046
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40219,6 +40329,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -40380,7 +40491,8 @@ window.BENCHMARK_DATA = {
           397.38704807417736,
           484.6903467859541,
           468.92224655832564,
-          198.35163577397665
+          198.35163577397665,
+          314.1503064815815
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40392,6 +40504,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -40637,7 +40750,8 @@ window.BENCHMARK_DATA = {
           417.41266069412234,
           401.1071700731913,
           405.95541184743246,
-          198.3134943962097
+          198.3134943962097,
+          338.59074878692627
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40649,6 +40763,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -41474,6 +41589,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -41592,7 +41713,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -41714,7 +41836,8 @@ window.BENCHMARK_DATA = {
           684.3803238187518,
           663.1652751650129,
           657.6112369696299,
-          331.48690201441445
+          331.48690201441445,
+          507.0891325632731
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41834,6 +41957,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -41971,7 +42095,8 @@ window.BENCHMARK_DATA = {
           1948.3768693483794,
           2210.3121805826822,
           2136.0983006795245,
-          1006.7325293223063
+          1006.7325293223063,
+          1486.65680809021
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41983,6 +42108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -42228,7 +42354,8 @@ window.BENCHMARK_DATA = {
           949.1311612810407,
           930.5131092071533,
           914.684546025594,
-          438.1396519220792
+          438.1396519220792,
+          695.0208110173543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42240,6 +42367,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -43065,6 +43193,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -43183,7 +43317,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -43305,7 +43440,8 @@ window.BENCHMARK_DATA = {
           11393.8872657189,
           9329.90028146597,
           9115.95382792155,
-          5772.556676424467
+          5772.556676424467,
+          8187.035876464844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43401,6 +43537,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -43562,7 +43699,8 @@ window.BENCHMARK_DATA = {
           41440.198856898714,
           32441.060227614184,
           31469.59187098912,
-          18713.19337158203
+          18713.19337158203,
+          27064.1409362793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43684,6 +43822,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -43819,7 +43958,8 @@ window.BENCHMARK_DATA = {
           10748.008057730538,
           9121.985211885893,
           8871.124907430012,
-          5739.221201760428
+          5739.221201760428,
+          7921.800521850586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -43831,6 +43971,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -44656,6 +44797,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
@@ -44774,7 +44921,8 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
@@ -44896,7 +45044,8 @@ window.BENCHMARK_DATA = {
           10953.876988002232,
           8855.295495169503,
           8578.56080862192,
-          5391.211570152869
+          5391.211570152869,
+          7764.073996910682
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44992,6 +45141,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -45153,7 +45303,8 @@ window.BENCHMARK_DATA = {
           59159.49271647135,
           45861.9401198167,
           44937.93971470424,
-          25838.5528717041
+          25838.5528717041,
+          38403.32942082332
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45278,6 +45429,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -45410,7 +45562,8 @@ window.BENCHMARK_DATA = {
           21121.498502291164,
           17923.596638997395,
           17332.538838704426,
-          10699.183555094402
+          10699.183555094402,
+          15377.496789114815
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45422,6 +45575,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
