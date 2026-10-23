@@ -123,6 +123,26 @@ public sealed partial class MethodFilters
 						"methods which return Task or return Action in type")
 					.AsPrefix();
 			}
+
+			[Test]
+			public async Task ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.MethodFilters.MethodsWhichReturn returnTask = In.Type<TestClass>()
+					.Methods().WhichReturn<Task>();
+
+				Filtered.Methods returnTaskOrAction = returnTask.OrReturn<Action>();
+
+				await That(returnTask).IsEqualTo([
+						typeof(TestClass).GetMethod(nameof(TestClass.AsyncMethod))!,
+					])
+					.Because("OrReturn must return a new filter instead of changing the one it was called on");
+				await That(returnTask.GetDescription())
+					.IsEqualTo("methods which return Task in type").AsPrefix();
+				await That(returnTaskOrAction).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.AsyncMethod))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.GetAction))!,
+				]).InAnyOrder();
+			}
 		}
 
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads

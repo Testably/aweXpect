@@ -13,10 +13,13 @@ public static partial class EventFilters
 	/// </summary>
 	public partial class EventsOfType : Filtered.Events
 	{
-		private readonly IChangeableFilter<EventInfo> _filter;
+		private readonly Filter.GenericFilter<EventInfo> _filter;
+		private readonly Filtered.Events _source;
 
-		internal EventsOfType(Filtered.Events inner, IChangeableFilter<EventInfo> filter) : base(inner)
+		internal EventsOfType(Filtered.Events source, Filter.GenericFilter<EventInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 	}

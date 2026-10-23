@@ -272,6 +272,31 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
+			public async Task WithParameterAtIndex_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<int> withInt = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter<int>();
+
+				Filtered.Methods atIndex1 = withInt.AtIndex(1);
+
+				await That(withInt).IsEqualTo([
+						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+							[typeof(int), typeof(string),])!,
+						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+							[typeof(int),])!,
+						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+							[typeof(string), typeof(int),])!,
+					]).InAnyOrder()
+					.Because("AtIndex must return a new filter instead of changing the one it was called on");
+				await That(withInt.GetDescription())
+					.IsEqualTo("methods with parameter of type int in").AsPrefix();
+				await That(atIndex1).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+						[typeof(string), typeof(int),])!,
+				]);
+			}
+
+			[Test]
 			public async Task WithParameterAtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				void Act()
@@ -299,6 +324,31 @@ public sealed partial class MethodFilters
 				]).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with parameter of type int at index 0 from end in").AsPrefix();
+			}
+
+			[Test]
+			public async Task WithParameterAtIndexFromEnd_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.MethodFilters.MethodsWithParameterAtIndex<int> atIndex0 =
+					In.Type<TestClassWithMethodParameters>().Methods().WithParameter<int>().AtIndex(0);
+
+				Filtered.Methods fromEnd = atIndex0.FromEnd();
+
+				await That(atIndex0).IsEqualTo([
+						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+							[typeof(int), typeof(string),])!,
+						typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+							[typeof(int),])!,
+					]).InAnyOrder()
+					.Because("FromEnd must return a new filter instead of changing the one it was called on");
+				await That(atIndex0.GetDescription())
+					.IsEqualTo("methods with parameter of type int at index 0 in").AsPrefix();
+				await That(fromEnd).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+						[typeof(int),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+						[typeof(string), typeof(int),])!,
+				]).InAnyOrder();
 			}
 
 			[Test]

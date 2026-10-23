@@ -19,10 +19,10 @@ public static partial class FieldFilters
 	public static FieldsOfType OfType(this Filtered.Fields @this,
 		Type fieldType)
 	{
-		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
+		Filter.GenericFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.FieldType.IsOrInheritsFrom(fieldType),
 			() => $"of type {Formatter.Format(fieldType)} ");
-		return new FieldsOfType(@this.Which(filter), filter);
+		return new FieldsOfType(@this, filter);
 	}
 
 	/// <summary>
@@ -52,13 +52,10 @@ public static partial class FieldFilters
 		///     Allow an alternative type <paramref name="fieldType" />.
 		/// </summary>
 		public FieldsOfType OrOfType(Type fieldType)
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, fieldInfo)
 					=> result || fieldInfo.FieldType.IsOrInheritsFrom(fieldType),
 				description
-					=> $"{description}or of type {Formatter.Format(fieldType)} ");
-			return this;
-		}
+					=> $"{description}or of type {Formatter.Format(fieldType)} "));
 	}
 }

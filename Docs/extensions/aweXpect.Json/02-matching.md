@@ -64,6 +64,11 @@ await Expect.That(JsonDocument.Parse("true").RootElement).Matches(true);
 await Expect.That(JsonDocument.Parse("null").RootElement).Matches(null);
 ```
 
+Any expected value, also a nested one, can be an `It.Is<T>()` expectation instead, e.g.
+`Matches(new { duration = It.Is<long>().That.IsGreaterThan(200) })`. A JSON number meets it as a `T` when
+System.Text.Json can read it as that numeric type, so `It.Is<long>()`, `It.Is<double>()` and `It.Is<decimal>()` all
+accept `243`, while an integer type does not accept a number with a fraction or an exponent, e.g. `2.5` or `1e3`.
+
 ## Expected JSON
 
 The expected value can also be a `JsonElement`, a `JsonDocument` or a `JsonNode`, whose JSON is used as it is, e.g. to

@@ -20,10 +20,10 @@ public static partial class EventFilters
 	public static EventsWith With<TAttribute>(this Filtered.Events @this, bool inherit = true)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
+		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
 			eventInfo => eventInfo.HasAttribute<TAttribute>(inherit: inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-		return new EventsWith(@this.Which(filter), filter);
+		return new EventsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -41,10 +41,10 @@ public static partial class EventFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
+		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
 			eventInfo => eventInfo.HasAttribute(predicate, inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new EventsWith(@this.Which(filter), filter);
+		return new EventsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -52,10 +52,13 @@ public static partial class EventFilters
 	/// </summary>
 	public class EventsWith : Filtered.Events
 	{
-		private readonly IChangeableFilter<EventInfo> _filter;
+		private readonly Filter.GenericFilter<EventInfo> _filter;
+		private readonly Filtered.Events _source;
 
-		internal EventsWith(Filtered.Events inner, IChangeableFilter<EventInfo> filter) : base(inner)
+		internal EventsWith(Filtered.Events source, Filter.GenericFilter<EventInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -68,12 +71,9 @@ public static partial class EventFilters
 		/// </remarks>
 		public EventsWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter((result, eventInfo) => result || eventInfo.HasAttribute<TAttribute>(inherit: inherit),
+			=> new(_source, _filter.Extend((result, eventInfo) => result || eventInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -89,12 +89,9 @@ public static partial class EventFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, eventInfo) => result || eventInfo.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 	}
 }
