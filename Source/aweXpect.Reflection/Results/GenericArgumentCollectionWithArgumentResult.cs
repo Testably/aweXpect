@@ -1,6 +1,5 @@
 ﻿using aweXpect.Core;
 using aweXpect.Options;
-using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 
 namespace aweXpect.Reflection.Results;
@@ -24,15 +23,15 @@ public class GenericArgumentCollectionWithArgumentResult<TType, TThat>
 /// <summary>
 ///     Additional constraints on a collection of generic arguments with a specific type.
 /// </summary>
+/// <remarks>
+///     The index of the generic argument is specified via <see cref="CollectionIndexOptionsExtensions" />.
+/// </remarks>
 public class GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
 	: GenericArgumentCollectionResult<TType, TThat, TSelf>,
 		IOptionsProvider<CollectionIndexOptions>
 	where TSelf : GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
 {
 	private readonly CollectionIndexOptions _collectionIndexOptions;
-	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly GenericArgumentsFilterOptions _genericArgumentsFilterOptions;
-	private readonly IThat<TThat> _subject;
 
 	internal GenericArgumentCollectionWithArgumentResult(
 		ExpectationBuilder expectationBuilder,
@@ -41,22 +40,9 @@ public class GenericArgumentCollectionWithArgumentResult<TType, TThat, TSelf>
 		CollectionIndexOptions collectionIndexOptions)
 		: base(expectationBuilder, subject, genericArgumentsFilterOptions)
 	{
-		_expectationBuilder = expectationBuilder;
-		_genericArgumentsFilterOptions = genericArgumentsFilterOptions;
-		_subject = subject;
 		_collectionIndexOptions = collectionIndexOptions;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
 	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
-
-	/// <summary>
-	///     …at the given <paramref name="index" />.
-	/// </summary>
-	public GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> AtIndex(int index)
-	{
-		_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-		return new GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>(
-			_expectationBuilder, _subject, _genericArgumentsFilterOptions, _collectionIndexOptions);
-	}
 }

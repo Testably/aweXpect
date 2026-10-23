@@ -108,9 +108,7 @@ public static partial class TypeFilters
 		/// <summary>
 		///     Additional filters on types with a generic argument of a specific type.
 		/// </summary>
-		public class GenericTypesWithArgument
-			: GenericTypes,
-				IOptionsProvider<CollectionIndexOptions>
+		public class GenericTypesWithArgument : GenericTypes
 		{
 			private readonly CollectionIndexOptions _collectionIndexOptions;
 			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
@@ -127,18 +125,24 @@ public static partial class TypeFilters
 				_collectionIndexOptions = collectionIndexOptions;
 			}
 
-			/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-			CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
+			/// <summary>
+			///     …at the given zero-based <paramref name="index" />.
+			/// </summary>
+			/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+			/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+			public GenericTypesWithArgument AtIndex(int index)
+				=> WithIndex(o => o.AtIndex(index));
 
 			/// <summary>
-			///     …at the given <paramref name="index" />.
+			///     …at the given zero-based <paramref name="index" />, counted from the end of the generic arguments.
 			/// </summary>
-			public GenericTypesWithArgumentAtIndex AtIndex(int index)
-			{
-				CollectionIndexOptions collectionIndexOptions = new();
-				collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-				return new GenericTypesWithArgumentAtIndex(_source, _createFilter, collectionIndexOptions);
-			}
+			/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+			/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+			public GenericTypesWithArgument AtIndexFromEnd(int index)
+				=> WithIndex(o => o.AtIndexFromEnd(index));
+
+			private GenericTypesWithArgument WithIndex(Action<CollectionIndexOptions> setIndex)
+				=> new(_source, _createFilter, FilterIndexOptions.With(_collectionIndexOptions, setIndex));
 		}
 
 		/// <summary>
@@ -163,47 +167,6 @@ public static partial class TypeFilters
 
 			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
 			StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
-		}
-
-		/// <summary>
-		///     Additional filters on types with a generic argument at a specific index.
-		/// </summary>
-		public class GenericTypesWithArgumentAtIndex
-			: GenericTypes,
-				IOptionsProvider<CollectionIndexOptions>
-		{
-			private readonly CollectionIndexOptions _collectionIndexOptions;
-			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
-			private readonly Filtered.Types _source;
-
-			internal GenericTypesWithArgumentAtIndex(
-				Filtered.Types source,
-				Func<CollectionIndexOptions, IFilter<Type>> createFilter,
-				CollectionIndexOptions collectionIndexOptions)
-				: base(source.Which(createFilter(collectionIndexOptions)))
-			{
-				_source = source;
-				_createFilter = createFilter;
-				_collectionIndexOptions = collectionIndexOptions;
-			}
-
-			/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-			CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
-
-			/// <summary>
-			///     …from end.
-			/// </summary>
-			public GenericTypes FromEnd()
-			{
-				if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
-				{
-					CollectionIndexOptions collectionIndexOptions = new();
-					collectionIndexOptions.SetMatch(match.FromEnd());
-					return new GenericTypesWithArgumentAtIndex(_source, _createFilter, collectionIndexOptions);
-				}
-
-				return this;
-			}
 		}
 	}
 }

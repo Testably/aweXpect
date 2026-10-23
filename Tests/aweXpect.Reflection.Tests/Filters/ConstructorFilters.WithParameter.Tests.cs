@@ -47,7 +47,7 @@ public sealed partial class ConstructorFilters
 			public async Task UsingType_WithParameterAtIndexFromEnd_ShouldFilterForConstructorsWithParameterAtSpecificIndex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
-					.Constructors().WithParameter(typeof(int)).AtIndex(0).FromEnd();
+					.Constructors().WithParameter(typeof(int)).AtIndexFromEnd(0);
 
 				await That(constructors).IsEqualTo([
 					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int),])!,
@@ -200,6 +200,34 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Test]
+			public async Task WithParameterAtIndex_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.ConstructorFilters.ConstructorsWithParameter<int> withInt =
+					In.Type<TestClassWithConstructorParameters>().Constructors().WithParameter<int>();
+
+				Filtered.Constructors atIndex0 = withInt.AtIndex(0);
+
+				await That(withInt.GetDescription())
+					.IsEqualTo("constructors with parameter of type int in").AsPrefix()
+					.Because("AtIndex must return a new filter instead of changing the one it was called on");
+				await That(atIndex0.GetDescription())
+					.IsEqualTo("constructors with parameter of type int at index 0 in").AsPrefix();
+			}
+
+			[Test]
+			public async Task WithParameterAtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			{
+				void Act()
+				{
+					In.Type<TestClassWithConstructorParameters>()
+						.Constructors().WithParameter<int>().AtIndex(0).AtIndex(1);
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtIndex cannot be specified more than once.");
+			}
+
+			[Test]
 			public async Task WithParameterAtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				void Act()
@@ -210,14 +238,14 @@ public sealed partial class ConstructorFilters
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
-					.WithMessage("The index must be greater than or equal to 0.").AsPrefix();
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Test]
 			public async Task WithParameterAtIndexFromEnd_ShouldFilterForConstructorsWithParameterAtSpecificIndex()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
-					.Constructors().WithParameter<int>().AtIndex(0).FromEnd();
+					.Constructors().WithParameter<int>().AtIndexFromEnd(0);
 
 				await That(constructors).IsEqualTo([
 					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int),])!,
@@ -225,6 +253,48 @@ public sealed partial class ConstructorFilters
 				]).InAnyOrder();
 				await That(constructors.GetDescription())
 					.IsEqualTo("constructors with parameter of type int at index 0 from end in").AsPrefix();
+			}
+
+			[Test]
+			public async Task WithParameterAtIndexFromEnd_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.ConstructorFilters.ConstructorsWithParameter<int> withInt =
+					In.Type<TestClassWithConstructorParameters>().Constructors().WithParameter<int>();
+
+				Filtered.Constructors fromEnd = withInt.AtIndexFromEnd(0);
+
+				await That(withInt.GetDescription())
+					.IsEqualTo("constructors with parameter of type int in").AsPrefix()
+					.Because("AtIndexFromEnd must return a new filter instead of changing the one it was called on");
+				await That(fromEnd.GetDescription())
+					.IsEqualTo("constructors with parameter of type int at index 0 from end in").AsPrefix();
+			}
+
+			[Test]
+			public async Task WithParameterAtIndexFromEnd_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			{
+				void Act()
+				{
+					In.Type<TestClassWithConstructorParameters>()
+						.Constructors().WithParameter<int>().AtIndexFromEnd(0).AtIndex(1);
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtIndex cannot be combined with AtIndexFromEnd.");
+			}
+
+			[Test]
+			public async Task WithParameterAtIndexFromEnd_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				void Act()
+				{
+					In.Type<TestClassWithConstructorParameters>()
+						.Constructors().WithParameter<int>().AtIndexFromEnd(-1);
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("index").And
+					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
 			[Test]

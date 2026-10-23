@@ -45,7 +45,7 @@ public sealed partial class ThatType
 
 					async Task Act()
 					{
-						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndex(index).FromEnd();
+						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()
@@ -55,6 +55,35 @@ public sealed partial class ThatType
 						               is generic with argument of type ThatType.BaseClass at index {{index}} from end,
 						               but it was generic ThatType.GenericClassWithTwoArguments<int, ThatType.BaseClass>
 						               """);
+				}
+
+				[Test]
+				public async Task AtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+				{
+					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
+
+					async Task Act()
+					{
+						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndex(1).AtIndex(1);
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("AtIndex cannot be specified more than once.");
+				}
+
+				[Test]
+				public async Task AtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+				{
+					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
+
+					async Task Act()
+					{
+						await That(subject).IsGeneric().WithArgument<BaseClass>().AtIndexFromEnd(-1);
+					}
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("index").And
+						.WithMessage("The index must not be negative.").AsPrefix();
 				}
 
 				[Test]
@@ -143,7 +172,7 @@ public sealed partial class ThatType
 
 					async Task Act()
 					{
-						await That(subject).IsGeneric().WithArgument<BaseClass>("TBar").AtIndex(index).FromEnd();
+						await That(subject).IsGeneric().WithArgument<BaseClass>("TBar").AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()
@@ -401,7 +430,7 @@ public sealed partial class ThatType
 
 					async Task Act()
 					{
-						await That(subject).IsGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
+						await That(subject).IsGeneric().WithArgument("TBar").AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()

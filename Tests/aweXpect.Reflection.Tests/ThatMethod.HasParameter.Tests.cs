@@ -30,6 +30,49 @@ public sealed partial class ThatMethod
 			}
 
 			[Test]
+			public async Task AtIndex_WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>().AtIndex(0).AtIndexFromEnd(1);
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.");
+			}
+
+			[Test]
+			public async Task AtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>().AtIndex(-1);
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("index").And
+					.WithMessage("The index must not be negative.").AsPrefix();
+			}
+
+			[Test]
+			public async Task AtIndex_WhenNameDiffersInCase_ShouldSupportIgnoringCase()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>("VALUE").AtIndex(0).IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the string match options must still be available after the index");
+			}
+
+			[Test]
 			public async Task AtIndex_WhenParameterDoesNotExistAtSpecificIndex_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
@@ -80,13 +123,32 @@ public sealed partial class ThatMethod
 			}
 
 			[Test]
+			public async Task AtIndexFromEnd_WhenParameterDoesNotExistAtSpecificIndexFromEnd_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>().AtIndexFromEnd(0);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int at index 0 from end,
+					             but it did not
+					             """)
+					.Because("the int parameter is at index 1 from end");
+			}
+
+			[Test]
 			public async Task AtIndexFromEnd_WhenParameterExistsAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
 				{
-					await That(methodInfo).HasParameter<string>().AtIndex(0).FromEnd();
+					await That(methodInfo).HasParameter<string>().AtIndexFromEnd(0);
 				}
 
 				await That(Act).DoesNotThrow();
@@ -370,7 +432,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).HasParameter(typeof(string)).AtIndex(0).FromEnd();
+					await That(methodInfo).HasParameter(typeof(string)).AtIndexFromEnd(0);
 				}
 
 				await That(Act).DoesNotThrow();

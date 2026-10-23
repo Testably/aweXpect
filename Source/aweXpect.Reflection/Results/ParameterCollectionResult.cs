@@ -28,6 +28,9 @@ public class ParameterCollectionResult<TType, TThat, TParameter>
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter of a specific type.
 /// </summary>
+/// <remarks>
+///     The index of the parameter is specified via <see cref="CollectionIndexOptionsExtensions" />.
+/// </remarks>
 public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 	: AndOrResult<TType, IThat<TThat>, TSelf>,
 		IOptionsProvider<CollectionIndexOptions>,
@@ -35,9 +38,7 @@ public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 	where TSelf : ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 {
 	private readonly CollectionIndexOptions _collectionIndexOptions;
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly ParameterFilterOptions _parameterFilterOptions;
-	private readonly IThat<TThat> _subject;
 
 	internal ParameterCollectionResult(
 		ExpectationBuilder expectationBuilder,
@@ -46,8 +47,6 @@ public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 		ParameterFilterOptions parameterFilterOptions)
 		: base(expectationBuilder, subject)
 	{
-		_expectationBuilder = expectationBuilder;
-		_subject = subject;
 		_collectionIndexOptions = collectionIndexOptions;
 		_parameterFilterOptions = parameterFilterOptions;
 	}
@@ -57,16 +56,6 @@ public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 
 	/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
 	ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
-
-	/// <summary>
-	///     …at the given <paramref name="index" />.
-	/// </summary>
-	public ParameterCollectionAtIndexResult<TType, TThat, TParameter> AtIndex(int index)
-	{
-		_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-		return new ParameterCollectionAtIndexResult<TType, TThat, TParameter>(_expectationBuilder, _subject,
-			_collectionIndexOptions);
-	}
 
 	/// <summary>
 	///     …without a default value.

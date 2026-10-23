@@ -292,16 +292,16 @@ await Expect.That(types)
 After `.WhichAreGeneric()` you can drill into the generic arguments themselves. The same filters are
 available on generic **methods** (`.Methods().WhichAreGeneric()`).
 
-| Filter                       | Selects generic types/methods…                                                        |
-|------------------------------|---------------------------------------------------------------------------------------|
-| `.WithArgumentCount(n)`      | with exactly `n` generic arguments                                                    |
-| `.WithArgument<T>()`         | with a generic argument constrained to `T`                                            |
-| `.WithArgument<T>("name")`   | with a generic argument constrained to `T` and named `"name"`                         |
-| `.WithArgument("name")`      | with a generic argument named `"name"`                                                |
-| `.AtIndex(n)` / `.FromEnd()` | restrict the preceding `WithArgument` to a position (optionally counted from the end) |
+| Filter                               | Selects generic types/methods…                                                        |
+|--------------------------------------|---------------------------------------------------------------------------------------|
+| `.WithArgumentCount(n)`              | with exactly `n` generic arguments                                                    |
+| `.WithArgument<T>()`                 | with a generic argument constrained to `T`                                            |
+| `.WithArgument<T>("name")`           | with a generic argument constrained to `T` and named `"name"`                         |
+| `.WithArgument("name")`              | with a generic argument named `"name"`                                                |
+| `.AtIndex(n)` / `.AtIndexFromEnd(n)` | restrict the preceding `WithArgument` to a position (optionally counted from the end) |
 
 The `"name"` overloads accept the [string matching options](#string-matching-options), and
-`.AtIndex(n)` is chained after a `WithArgument` to pin it to a specific position.
+`.AtIndex(n)` or `.AtIndexFromEnd(n)` is chained after a `WithArgument` to pin it to a specific position.
 
 ```csharp
 // Generic types with a single argument constrained to IEntity
@@ -369,7 +369,7 @@ and name (e.g. `.WithRefParameter<int>("count")`, `.HasOutParameterExactly<strin
 
 `WithoutParameter` / `DoesNotHaveParameter` / `DoNotHaveParameter` are the negations of `WithParameter` /
 `HasParameter` / `HaveParameter`, with the `<T>()`, `(Type)`, `<T>("name")`, `(Type, "name")` and `("name")`
-overloads and the same options (`AtIndex(…)`, `FromEnd()`, `WithDefaultValue(…)`, the string matching options for
+overloads and the same options (`AtIndex(…)`, `AtIndexFromEnd(…)`, `WithDefaultValue(…)`, the string matching options for
 the name and, on the filter, the modifiers like `WithRefModifier()`). They match when *no* parameter satisfies all
 of them, and `DoNotHaveParameter` verifies that for every item of a collection. The `…Exactly` and the `ref` /
 `out` / `in` / `params` / optional variants have no negation; on filters use e.g.

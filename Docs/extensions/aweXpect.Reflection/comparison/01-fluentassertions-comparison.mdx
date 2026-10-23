@@ -136,7 +136,7 @@ await Expect.That(In.AllLoadedAssemblies()
 ## Method
 
 - **FluentAssertions** (`MethodInfoAssertions`): `BeVirtual`/`NotBeVirtual`, `BeAsync`/`NotBeAsync`, `ReturnVoid`/`NotReturnVoid`, `Return<T>`/`NotReturn<T>`, `HaveAccessModifier(CSharpAccessModifier)`, `BeDecoratedWith<T>`. No assertions for `static`/`abstract`/`sealed`/`generic`/extension/operator/override, no parameter assertions, and no name assertion (use the string API on `method.Name`).
-- **aweXpect.Reflection**: the above plus `IsStatic`/`IsAbstract`/`IsSealed`/`IsGeneric`/`IsAnExtensionMethod`/`IsAnOperator` (incl. a specific `Operator`, e.g. `IsAnOperator(Operator.Equality)`), `Overrides<T>`, `ReturnsExactly<T>`/`DoesNotReturnExactly<T>`, `HasName`, and a parameter family: `HasParameter<T>`/`DoesNotHaveParameter<T>`/`HasParameterCount`/`HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter` (with `AtIndex`/`FromEnd`/default-value refinements).
+- **aweXpect.Reflection**: the above plus `IsStatic`/`IsAbstract`/`IsSealed`/`IsGeneric`/`IsAnExtensionMethod`/`IsAnOperator` (incl. a specific `Operator`, e.g. `IsAnOperator(Operator.Equality)`), `Overrides<T>`, `ReturnsExactly<T>`/`DoesNotReturnExactly<T>`, `HasName`, and a parameter family: `HasParameter<T>`/`DoesNotHaveParameter<T>`/`HasParameterCount`/`HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter` (with `AtIndex`/`AtIndexFromEnd`/default-value refinements).
 
 <Tabs groupId="assertion-library">
 <TabItem value="fluentassertions" label="FluentAssertions" default>
