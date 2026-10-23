@@ -1199,6 +1199,7 @@ namespace aweXpect.Equivalency
         public class ByName : aweXpect.Equivalency.MemberToIgnore
         {
             public ByName(string memberName) { }
+            public string MemberName { get; }
             public override bool IgnoreMember(string memberPath, System.Type memberType) { }
             public override string ToString() { }
         }

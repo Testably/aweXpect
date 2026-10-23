@@ -5,6 +5,17 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class MemberToIgnoreTests
 {
 	[Test]
+	public async Task ByName_MemberName_ShouldReturnTheNameAsProvided()
+	{
+		MemberToIgnore.ByName sut = new("Child.nAmE");
+
+		string result = sut.MemberName;
+
+		await That(result).IsEqualTo("Child.nAmE")
+			.Because("an extension names a member to ignore that matched nothing exactly as the user wrote it");
+	}
+
+	[Test]
 	[Arguments("Name", "Name")]
 	[Arguments("Name", "Child.Name")]
 	[Arguments("Name", "Items[3].Name")]
