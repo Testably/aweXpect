@@ -168,6 +168,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)
 		=> cancellations.Add(ExpectationBuilder.GetRemainingCancellation());
 
+	/// <inheritdoc />
+	internal override void AddFormatters(List<IValueFormatter> formatters)
+		=> ExpectationBuilder.AddFormattersTo(formatters);
+
 	private async Task GetResultOrThrow(ValueTask<ConstraintResult> isMet)
 	{
 		ConstraintResult result = await isMet;
@@ -176,7 +180,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 		{
 			if (ExpectationBuilder.IsTracing)
 			{
-				Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
+				ExpectationBuilder.TraceSuccess(result);
 			}
 
 			return;
@@ -395,6 +399,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)
 		=> cancellations.Add(ExpectationBuilder.GetRemainingCancellation());
 
+	/// <inheritdoc />
+	internal override void AddFormatters(List<IValueFormatter> formatters)
+		=> ExpectationBuilder.AddFormattersTo(formatters);
+
 	/// <inheritdoc cref="ExpectationResult.FromFailure(ConstraintResult)" />
 	private async Task<string> FromFailure(ConstraintResult failure)
 	{
@@ -418,7 +426,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 			case Outcome.Success:
 				if (ExpectationBuilder.IsTracing)
 				{
-					Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
+					ExpectationBuilder.TraceSuccess(result);
 				}
 
 				return GetStoredValueOrDefault(result);

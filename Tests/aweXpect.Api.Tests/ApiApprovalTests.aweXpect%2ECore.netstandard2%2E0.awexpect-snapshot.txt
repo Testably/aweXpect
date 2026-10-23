@@ -248,6 +248,7 @@ namespace aweXpect.Core
         public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>> constraintBuilder) { }
         public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>> constraintBuilder) { }
         public aweXpect.Core.ExpectationBuilder AddConstraint<TValue>(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>> constraintBuilder) { }
+        public aweXpect.Core.ExpectationBuilder AddFormatter(aweXpect.Formatting.IValueFormatter formatter) { }
         public aweXpect.Core.ExpectationBuilder AddSubjectContexts<TValue>(System.Action<TValue, aweXpect.Core.ResultContextCollector> appendContexts) { }
         public aweXpect.Core.ExpectationBuilder And(string textSeparator = " and ") { }
         public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget> ForAsyncMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, System.Threading.Tasks.Task<TTarget>> memberAccessor, System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder>? expectationTextGenerator = null, bool replaceIt = true) { }

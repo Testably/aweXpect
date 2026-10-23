@@ -111,6 +111,60 @@ internal class EvaluationContext : IEvaluationContext
 	}
 
 	/// <summary>
+	///     Adds the <paramref name="formatters" /> of a nested expectation to the evaluation in the
+	///     <paramref name="context" />, so that its failure message, which renders the nested expectation, uses them.
+	/// </summary>
+	/// <remarks>
+	///     A context of another implementation, or the text context of no evaluation, keeps nothing.
+	/// </remarks>
+	public static void AddFormatters(IEvaluationContext context, IValueFormatter[] formatters)
+	{
+		EvaluationContext? evaluation = context as EvaluationContext ??
+		                                (context as ExpectationTextEvaluationContext)?.Evaluation;
+		evaluation?.AddFormatters(formatters);
+	}
+
+	private void AddFormatters(IValueFormatter[] formatters)
+	{
+		if (_extras?.RepeatedBy is { } repeatedBy)
+		{
+			repeatedBy.AddFormatters(formatters);
+			return;
+		}
+
+		List<IValueFormatter> ownFormatters = GetExtras().Formatters ??= [];
+		foreach (IValueFormatter formatter in formatters)
+		{
+			if (!ownFormatters.Contains(formatter))
+			{
+				ownFormatters.Add(formatter);
+			}
+		}
+	}
+
+	/// <summary>
+	///     Adds the formatters that nested expectations added in this context and in its current attempt to the
+	///     <paramref name="formatters" />.
+	/// </summary>
+	public void CollectFormatters(List<IValueFormatter> formatters)
+	{
+		if (_extras is null)
+		{
+			return;
+		}
+
+		foreach (IValueFormatter formatter in _extras.Formatters ?? [])
+		{
+			if (!formatters.Contains(formatter))
+			{
+				formatters.Add(formatter);
+			}
+		}
+
+		_extras.Attempt?.CollectFormatters(formatters);
+	}
+
+	/// <summary>
 	///     Registers the <paramref name="reason" /> of a met expectation, which the failure message still shows when an
 	///     outer negation or combination fails the evaluation, so that <see cref="ResolvePendingReasons" /> resolves it.
 	/// </summary>
@@ -522,7 +576,8 @@ internal class EvaluationContext : IEvaluationContext
 
 	/// <summary>
 	///     The state of the repeated checks, the attempts, the reasons to await, the resources to release, the
-	///     values stored during nested evaluations and the callbacks to run when the evaluation completes.
+	///     values stored during nested evaluations, the formatters of nested expectations and the callbacks to run when
+	///     the evaluation completes.
 	/// </summary>
 	/// <remarks>
 	///     A context is created for every expectation, while most expectations need none of it, so it is only created
@@ -533,6 +588,7 @@ internal class EvaluationContext : IEvaluationContext
 		public EvaluationContext? Attempt { get; set; }
 		public List<EvaluationContext>? Checks { get; set; }
 		public List<Func<CompletedEvaluation, CancellationToken, ValueTask>>? CompletionCallbacks { get; set; }
+		public List<IValueFormatter>? Formatters { get; set; }
 		public List<Dictionary<string, object?>?>? NestedStores { get; set; }
 		public List<AsyncBecauseReason>? PendingReasons { get; set; }
 		public List<Action>? Releases { get; set; }
