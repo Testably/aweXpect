@@ -306,6 +306,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
         "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
+      },
+      {
+        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
+        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
       }
     ],
     "labels": [
@@ -359,7 +365,8 @@ window.BENCHMARK_DATA = {
       "257e5c03",
       "423a7284",
       "9c75ee02",
-      "ae43e1f2"
+      "ae43e1f2",
+      "22416e11"
     ],
     "datasets": [
       {
@@ -416,7 +423,8 @@ window.BENCHMARK_DATA = {
           535.0076903661092,
           540.7934614817301,
           545.9210633550372,
-          412.256509744204
+          412.256509744204,
+          724.9107354482015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -461,6 +469,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -543,7 +552,8 @@ window.BENCHMARK_DATA = {
           687.3577011744181,
           583.0937784194946,
           690.1978113810221,
-          546.8167120860173
+          546.8167120860173,
+          925.4893353780111
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -555,6 +565,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -925,6 +936,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
         "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
+      },
+      {
+        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
+        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
       }
     ],
     "labels": [
@@ -978,7 +995,8 @@ window.BENCHMARK_DATA = {
       "257e5c03",
       "423a7284",
       "9c75ee02",
-      "ae43e1f2"
+      "ae43e1f2",
+      "22416e11"
     ],
     "datasets": [
       {
@@ -1035,7 +1053,8 @@ window.BENCHMARK_DATA = {
           93.93753085136413,
           81.49574088198798,
           101.06654013120212,
-          65.39785539252418
+          65.39785539252418,
+          140.68159465789796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1075,6 +1094,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1162,7 +1182,8 @@ window.BENCHMARK_DATA = {
           185.95242338180543,
           166.91700008710225,
           180.54400530228247,
-          125.03223059858594
+          125.03223059858594,
+          214.22257521947225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1174,6 +1195,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1544,6 +1566,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
         "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
+      },
+      {
+        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
+        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
       }
     ],
     "labels": [
@@ -1597,7 +1625,8 @@ window.BENCHMARK_DATA = {
       "257e5c03",
       "423a7284",
       "9c75ee02",
-      "ae43e1f2"
+      "ae43e1f2",
+      "22416e11"
     ],
     "datasets": [
       {
@@ -1654,7 +1683,8 @@ window.BENCHMARK_DATA = {
           1470.7148427963257,
           1146.0574797312418,
           1460.2642394474574,
-          1097.6360457102458
+          1097.6360457102458,
+          2164.511978694371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1694,6 +1724,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -1781,7 +1812,8 @@ window.BENCHMARK_DATA = {
           1115.072860445295,
           956.5749175207956,
           1114.4001684824625,
-          922.9177323659261
+          922.9177323659261,
+          1591.289589881897
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1843,7 +1875,8 @@ window.BENCHMARK_DATA = {
           1897,
           1896,
           1897,
-          1897
+          1897,
+          1985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2103,6 +2136,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
         "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
+      },
+      {
+        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
+        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
       }
     ],
     "labels": [
@@ -2146,7 +2185,8 @@ window.BENCHMARK_DATA = {
       "257e5c03",
       "423a7284",
       "9c75ee02",
-      "ae43e1f2"
+      "ae43e1f2",
+      "22416e11"
     ],
     "datasets": [
       {
@@ -2193,7 +2233,8 @@ window.BENCHMARK_DATA = {
           2274.7762438456216,
           1752.7858229319254,
           2148.273969014486,
-          1493.810746056693
+          1493.810746056693,
+          2752.4326885768346
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2245,6 +2286,7 @@ window.BENCHMARK_DATA = {
           3040,
           3040,
           2984,
+          3040,
           3040
         ],
         "borderColor": "#63A2AC",
@@ -2300,7 +2342,8 @@ window.BENCHMARK_DATA = {
           3030.5637751988,
           2481.7630847050596,
           2995.4287437438966,
-          2305.3181785583497
+          2305.3181785583497,
+          3882.8476697481597
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2352,7 +2395,8 @@ window.BENCHMARK_DATA = {
           4011,
           4009,
           4011,
-          4011
+          4011,
+          4012
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2612,6 +2656,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
         "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
+      },
+      {
+        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
+        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
       }
     ],
     "labels": [
@@ -2655,7 +2705,8 @@ window.BENCHMARK_DATA = {
       "257e5c03",
       "423a7284",
       "9c75ee02",
-      "ae43e1f2"
+      "ae43e1f2",
+      "22416e11"
     ],
     "datasets": [
       {
@@ -2702,7 +2753,8 @@ window.BENCHMARK_DATA = {
           271.46518449783326,
           246.29438553537642,
           265.10539229710895,
-          196.4368517949031
+          196.4368517949031,
+          389.34011707987105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2732,6 +2784,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -2809,7 +2862,8 @@ window.BENCHMARK_DATA = {
           1713.2036180496216,
           1472.0768181727483,
           1669.878544807434,
-          1361.2392132098857
+          1361.2392132098857,
+          2600.64382989066
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2821,6 +2875,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3121,6 +3176,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
         "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
+      },
+      {
+        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
+        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
       }
     ],
     "labels": [
@@ -3164,7 +3225,8 @@ window.BENCHMARK_DATA = {
       "257e5c03",
       "423a7284",
       "9c75ee02",
-      "ae43e1f2"
+      "ae43e1f2",
+      "22416e11"
     ],
     "datasets": [
       {
@@ -3211,7 +3273,8 @@ window.BENCHMARK_DATA = {
           2687.2751810709638,
           2198.837486521403,
           2621.463785171509,
-          2139.520981343587
+          2139.520981343587,
+          3588.475953510829
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3262,6 +3325,7 @@ window.BENCHMARK_DATA = {
           3673,
           3673,
           3672,
+          3673,
           3673,
           3673
         ],
@@ -3318,7 +3382,8 @@ window.BENCHMARK_DATA = {
           239689.16235351562,
           180258.36725260416,
           239427.77475210337,
-          182064.14771321614
+          182064.14771321614,
+          280600.33082932694
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3369,6 +3434,7 @@ window.BENCHMARK_DATA = {
           17913,
           17608,
           17560,
+          17609,
           17609,
           17609
         ],
