@@ -294,6 +294,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
@@ -345,7 +351,8 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
@@ -400,7 +407,8 @@ window.BENCHMARK_DATA = {
           422.4501633984702,
           410.0004870414734,
           189.50878801345826,
-          324.9958686147417
+          324.9958686147417,
+          195.09144490105766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -444,6 +452,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -523,7 +532,8 @@ window.BENCHMARK_DATA = {
           1019.8714075724284,
           1043.6446748097737,
           493.922678565979,
-          838.0689027786254
+          838.0689027786254,
+          498.8093914985657
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -535,6 +545,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -891,6 +902,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
@@ -942,7 +959,8 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
@@ -997,7 +1015,8 @@ window.BENCHMARK_DATA = {
           185.25359462102253,
           190.8640308380127,
           99.11159710884094,
-          152.82014422416688
+          152.82014422416688,
+          91.08745771249136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1045,6 +1064,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1120,7 +1140,8 @@ window.BENCHMARK_DATA = {
           269.1292947989244,
           264.3026425997416,
           134.37880018552144,
-          216.40649590492248
+          216.40649590492248,
+          127.22298000540052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1132,6 +1153,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -1428,6 +1450,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
@@ -1469,7 +1497,8 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
@@ -1514,7 +1543,8 @@ window.BENCHMARK_DATA = {
           638.4084940751394,
           655.6481914520264,
           328.46068207422894,
-          463.2880737440927
+          463.2880737440927,
+          302.1042386054993
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1548,6 +1578,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -1617,7 +1648,8 @@ window.BENCHMARK_DATA = {
           990.9662404378255,
           972.856969833374,
           503.52263434727985,
-          789.4189385005405
+          789.4189385005405,
+          466.97169624964397
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1629,6 +1661,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -1915,6 +1948,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
@@ -1956,7 +1995,8 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
@@ -2001,7 +2041,8 @@ window.BENCHMARK_DATA = {
           1720.175451006208,
           1714.1262002672468,
           1030.3996943155923,
-          1368.8054904937744
+          1368.8054904937744,
+          971.1090962727865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2035,6 +2076,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -2104,7 +2146,8 @@ window.BENCHMARK_DATA = {
           21488.67304280599,
           22162.763529459637,
           9896.366842142741,
-          14663.225665501186
+          14663.225665501186,
+          9961.013203938803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2149,6 +2192,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2402,6 +2446,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
@@ -2443,7 +2493,8 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
@@ -2488,7 +2539,8 @@ window.BENCHMARK_DATA = {
           638.68865331014,
           666.7544368597178,
           334.1197281905583,
-          506.6561196009318
+          506.6561196009318,
+          334.55013479505266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2518,6 +2570,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -2591,7 +2644,8 @@ window.BENCHMARK_DATA = {
           1387.226598103841,
           1326.5644826155442,
           625.2605964660645,
-          1047.4920206803542
+          1047.4920206803542,
+          648.5940008799236
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2603,6 +2657,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -2889,6 +2944,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
@@ -2930,7 +2991,8 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
@@ -2975,7 +3037,8 @@ window.BENCHMARK_DATA = {
           1108.765048299517,
           1121.9055377960206,
           626.2447295983633,
-          817.6388407389323
+          817.6388407389323,
+          599.3016998427255
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3009,6 +3072,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -3078,7 +3142,8 @@ window.BENCHMARK_DATA = {
           770.7377811159406,
           839.2735227176121,
           382.8987954579867,
-          644.8928941090902
+          644.8928941090902,
+          378.869820356369
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3090,6 +3155,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
