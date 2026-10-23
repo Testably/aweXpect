@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 
@@ -540,10 +541,7 @@ public static partial class EquivalencyComparison
 			EquivalencyContext context)
 	{
 		if (expected is Expectation &&
-		    expected is IOptionsProvider<ExpectationBuilder>
-		    {
-			    Options: EquivalencyExpectationBuilder equivalencyExpectationBuilder,
-		    })
+		    EquivalencyExpectations.TryGetBuilder(expected, out EquivalencyExpectationBuilder? equivalencyExpectationBuilder))
 		{
 			return CompareWithExpectationOrValues(actual, expected, equivalencyExpectationBuilder,
 				equivalencyOptions, parentTypeOptions, failureBuilder, memberPath, memberType, context);

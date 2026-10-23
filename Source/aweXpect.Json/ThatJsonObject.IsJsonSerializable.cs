@@ -10,6 +10,7 @@ using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
+using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -86,6 +87,11 @@ public static partial class ThatJsonObject
 			? Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get()
 			: callback(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get());
 
+	/// <remarks>
+	///     Compares through <see cref="ObjectEqualityOptions{TSubject}" /> with an <see cref="EquivalencyMatchType" />
+	///     like <c>IsEquivalentTo</c>, so that the comparison is part of the evaluation and the failure lists the
+	///     equivalency options with a hint for every member to ignore that matched no member.
+	/// </remarks>
 	private sealed class IsJsonSerializableConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
@@ -94,8 +100,11 @@ public static partial class ThatJsonObject
 		: ConstraintResult.WithNotNullValue<object?>(it, grammars),
 			IAsyncContextConstraint<object?>
 	{
+		private readonly ObjectEqualityOptions<object?> _equalityOptions = CreateEqualityOptions(options);
 		private string? _deserializationError;
-		private StringBuilder? _failureBuilder;
+		private object? _deserializedObject;
+		private ObjectEqualityOptions<object?>? _evaluationOptions;
+		private IObjectMatchResult? _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(object? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -126,17 +135,22 @@ public static partial class ThatJsonObject
 				return this;
 			}
 
-			_failureBuilder = new StringBuilder();
-			if (await EquivalencyComparison.Compare(deserializedObject, actual, options, _failureBuilder, context,
-				    cancellationToken))
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			Outcome = Outcome.Failure;
+			_deserializedObject = deserializedObject;
+			_evaluationOptions = _equalityOptions.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(deserializedObject, actual);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
+
+		private static ObjectEqualityOptions<object?> CreateEqualityOptions(EquivalencyOptions options)
+		{
+			ObjectEqualityOptions<object?> equalityOptions = new();
+			equalityOptions.SetMatchType(new EquivalencyMatchType(options));
+			return equalityOptions;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> _evaluationOptions?.AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -162,10 +176,10 @@ public static partial class ThatJsonObject
 			{
 				stringBuilder.Append(It).Append(" could not be deserialized: ").Append(_deserializationError);
 			}
-			else if (_failureBuilder is not null)
+			else if (_matchResult is not null)
 			{
-				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was not:", " were not:"))
-					.Append(_failureBuilder.ToString().Indent(indentation, false));
+				stringBuilder.Append(_matchResult.GetExtendedFailure(It, Grammars, _deserializedObject, Actual,
+					indentation));
 			}
 		}
 
@@ -183,7 +197,7 @@ public static partial class ThatJsonObject
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_failureBuilder is not null)
+			if (_matchResult is not null)
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 			}
