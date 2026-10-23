@@ -114,7 +114,7 @@ public partial class CollectionMatchOptions
 		///     An item that is found among the counted expected items is not matched, as long as all items before it
 		///     were found as well.
 		/// </remarks>
-		public ValueTask<(bool, string?)>
+		public ValueTask<(bool IsFailure, string? Failure)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (GetExpectedCounts(options) is not { } expectedCounts)
@@ -131,7 +131,7 @@ public partial class CollectionMatchOptions
 		///     When every item was found among the counted expected items and none of them is left, the expectation is
 		///     met.
 		/// </remarks>
-		public ValueTask<(bool, string?)>
+		public ValueTask<(bool IsFailure, string? Failure)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (GetExpectedCounts(options) is not { } expectedCounts)

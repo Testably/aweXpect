@@ -44,7 +44,13 @@ but it was not:
   Property PlayCount differed:
       Actual: 0
     Expected: 1
+
+Equivalency options:
+ - include public fields and properties
 ```
+
+As with `IsEquivalentTo`, the failure lists the equivalency options, and a member to ignore that matched no member,
+e.g. a misspelled `IgnoringMember("PlayCont")`, gets a hint with the closest member.
 
 You can specify both the
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) and the

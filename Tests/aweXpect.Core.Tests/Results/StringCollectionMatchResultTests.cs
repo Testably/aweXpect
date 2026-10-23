@@ -1,9 +1,8 @@
-﻿using aweXpect.Core;
-using aweXpect.Helpers;
+﻿using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Results;
 
-namespace aweXpect.Internal.Tests.Results;
+namespace aweXpect.Core.Tests.Results;
 
 public sealed class StringCollectionMatchResultTests
 {
@@ -12,8 +11,8 @@ public sealed class StringCollectionMatchResultTests
 	{
 		StringEqualityOptions options = new("expected");
 		CollectionMatchOptions collectionMatchOptions = new();
-		StringCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>>
-			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
+		StringCollectionMatchResult<string[], IThat<string[]>> sut =
+			CreateSut(Array.Empty<string>(), options, collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<CollectionMatchOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(collectionMatchOptions));
@@ -24,8 +23,8 @@ public sealed class StringCollectionMatchResultTests
 	{
 		StringEqualityOptions options = new("expected");
 		CollectionMatchOptions collectionMatchOptions = new();
-		StringCollectionMatchResult<ObjectCollectionMatchResultTests, IThat<ObjectCollectionMatchResultTests>>
-			sut = CreateSut(new ObjectCollectionMatchResultTests(), options, collectionMatchOptions);
+		StringCollectionMatchResult<string[], IThat<string[]>> sut =
+			CreateSut(Array.Empty<string>(), options, collectionMatchOptions);
 
 		await That(sut).Is<IOptionsProvider<StringEqualityOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));

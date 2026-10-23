@@ -18,9 +18,7 @@ internal static class CollectionMatchOptionsExtensions
 		ICollectionMatcher<string?, string?> matcher = matchOptions.GetCollectionMatcher<string?, string?>(expected);
 		foreach (string? value in actual)
 		{
-			// The matcher returns true when it found a mismatch.
-			(bool isMismatch, _) = await matcher.Verify(it, value, options, maximumNumber);
-			if (isMismatch)
+			if ((await matcher.Verify(it, value, options, maximumNumber)).IsFailure)
 			{
 				return false;
 			}
@@ -31,7 +29,6 @@ internal static class CollectionMatchOptionsExtensions
 			}
 		}
 
-		(bool isIncomplete, _) = await matcher.VerifyComplete(it, options, maximumNumber);
-		return !isIncomplete;
+		return !(await matcher.VerifyComplete(it, options, maximumNumber)).IsFailure;
 	}
 }

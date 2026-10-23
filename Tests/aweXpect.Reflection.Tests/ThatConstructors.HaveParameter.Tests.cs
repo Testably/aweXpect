@@ -974,7 +974,7 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).HaveParameter<string>().AtIndex(0).FromEnd();
+					await That(constructors).HaveParameter<string>().AtIndexFromEnd(0);
 				}
 
 				await That(Act).DoesNotThrow();
@@ -1122,7 +1122,7 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).HaveParameter(typeof(string)).AtIndex(0).FromEnd();
+					await That(constructors).HaveParameter(typeof(string)).AtIndexFromEnd(0);
 				}
 
 				await That(Act).DoesNotThrow();

@@ -131,7 +131,7 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		public bool IsDetermined { get; private set; }
 
-		public async ValueTask<(bool, string?)>
+		public async ValueTask<(bool IsFailure, string? Failure)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			bool mergesEqualItems = MergesEqualItems(options);
@@ -167,7 +167,7 @@ public partial class CollectionMatchOptions
 				: (false, null);
 		}
 
-		public async ValueTask<(bool, string?)>
+		public async ValueTask<(bool IsFailure, string? Failure)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);

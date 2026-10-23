@@ -55,12 +55,51 @@ registered formatters can format a value, the most recently registered one is us
 
 Register a formatter only for the types that your extension declares. The module initializer runs before any of them
 is used, so their messages never depend on the order of the tests. A formatter for a type that your extension does not
-own, e.g. `System.Version`, would only apply to the tests that run after the first test that used your extension.
+own, e.g. `System.Version`, would only apply to the tests that run after the first test that used your extension, and
+would change how other tests format it. Add such a formatter to your expectations instead.
 
 :::note[Older target frameworks]
 `ModuleInitializerAttribute` is a compiler feature requiring C# 9, not a specific target framework. Where it is missing
 (e.g. `netstandard2.0` or `net48`), declare it as an `internal` type in your own package.
 :::
+
+### Formatters of an expectation
+
+`ExpectationBuilder.AddFormatter` formats the values of one expectation with a formatter, before the registered ones.
+It applies while the expectation is evaluated and while its failure message is created, also to the expectations
+chained to it, e.g. collection expectations on the items of a member, but never outside of the expectation:
+
+```csharp
+using System.Text;
+using aweXpect.Core;
+using aweXpect.Formatting;
+
+internal static class MyExtensionFormatting
+{
+    private static readonly IValueFormatter VersionFormatter = new MyVersionFormatter();
+
+    internal static ExpectationBuilder WithVersionFormatter(this ExpectationBuilder expectationBuilder)
+        => expectationBuilder.AddFormatter(VersionFormatter);
+
+    private sealed class MyVersionFormatter : IValueFormatter
+    {
+        public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+        {
+            if (value is not Version version)
+            {
+                return false;
+            }
+
+            stringBuilder.Append('v').Append(version.ToString(3));
+            return true;
+        }
+    }
+}
+```
+
+When the expectation is nested in another one, e.g. with `ComplyWith`, or combined with others in `Expect.ThatAll` or
+`Expect.ThatAny`, the whole failure message uses the formatter. Pass a cached instance, as adding the same formatter
+again has no effect.
 
 ## Test framework adapter
 

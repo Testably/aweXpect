@@ -139,7 +139,7 @@ public static partial class ValueFormatters
 
 		if (value is IDictionary dictionary)
 		{
-			if (ValueFormatter.Registrations.Length > 0)
+			if (ValueFormatter.Registrations.Length > 0 || ValueFormatter.ScopedFormatters is not null)
 			{
 				FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
 					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem, TryGetDictionaryItemEntry));

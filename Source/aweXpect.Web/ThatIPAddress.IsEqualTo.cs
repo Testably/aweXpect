@@ -84,20 +84,21 @@ public static partial class ThatIPAddress
 		: ConstraintResult.WithEqualToValue<IPAddress?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IPAddress?>
 	{
+		private ObjectEqualityOptions<IPAddress?>? _evaluationOptions;
 		private IObjectMatchResult? _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IPAddress? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.ForEvaluation(context, cancellationToken)
-				.AreConsideredEqualWithExplanation(actual, expected);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(

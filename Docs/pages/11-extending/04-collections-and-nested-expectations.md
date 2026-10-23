@@ -214,11 +214,13 @@ Track track = new("Let It Be", new TimeSpan(0, 4, 3));
 await Expect.That(track).MatchesTrack(new { Title = It.Is<string>().That.StartsWith("Let") });
 ```
 
-When your constraint evaluates such an expectation itself, e.g. because it compares a format of its own, take the
-`EquivalencyExpectationBuilder` from the expectation and evaluate it with the context and the token of your constraint:
+When your constraint evaluates such an expectation itself, e.g. because it compares a format of its own, get its
+`EquivalencyExpectationBuilder` with `EquivalencyExpectations.TryGetBuilder` from `aweXpect.Core.Extending` and evaluate
+it with the context and the token of your constraint. The expected value is the result of the whole chain, e.g.
+`It.Is<string>().That.StartsWith("Let")`, so test for the builder rather than for the type `It.IsEquivalent<T>`:
 
 ```csharp no-compile
-if (expectedValue is IOptionsProvider<ExpectationBuilder> { Options: EquivalencyExpectationBuilder expectation, })
+if (EquivalencyExpectations.TryGetBuilder(expectedValue, out EquivalencyExpectationBuilder? expectation))
 {
     ConstraintResult result = await expectation.IsMetBy(actualValue, context, cancellationToken);
     if (result.Outcome != Outcome.Success)

@@ -948,6 +948,11 @@ public class ExpectTests
 		{
 			// Nothing limits how long the contexts are awaited.
 		}
+
+		internal override void AddFormatters(List<IValueFormatter> formatters)
+		{
+			// The expectation formats with the default formatters.
+		}
 	}
 
 	/// <summary>

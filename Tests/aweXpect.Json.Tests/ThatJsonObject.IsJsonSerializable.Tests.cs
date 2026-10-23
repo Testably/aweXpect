@@ -15,6 +15,38 @@ public sealed partial class ThatJsonObject
 		public sealed class ObjectTests
 		{
 			[Test]
+			public async Task WhenIgnoredMemberMatchesNoMember_ShouldHintAtTheClosestMember()
+			{
+				PocoWithIgnoredProperty subject = new()
+				{
+					Id = 2,
+					Name = "foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsJsonSerializable(o => o with
+					{
+						MembersToIgnore = [new MemberToIgnore.ByName("Nme"),],
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is serializable as JSON,
+					             but it was not:
+					               Property Name differed:
+					                   Actual: <null>
+					                 Expected: "foo"
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["Nme"]
+					                "Nme" matched no member (did you mean "Name"?)
+					             """)
+					.Because("a misspelled member to ignore explains why the difference was not ignored");
+			}
+
+			[Test]
 			public async Task WhenItemsArePlural_ShouldUsePluralForm()
 			{
 				object?[] items = [new PocoWithIgnoredProperty { Id = 1, Name = "foo", },];
@@ -44,6 +76,9 @@ public sealed partial class ThatJsonObject
 					                 Name = "foo"
 					               }
 					             ]
+
+					             Equivalency options (Items[0]):
+					              - include public fields and properties
 					             """)
 					.Because("the items are the plural subject of the expectation");
 			}
@@ -69,6 +104,9 @@ public sealed partial class ThatJsonObject
 					                     Property Name differed:
 					                         Actual: <null>
 					                       Expected: "foo"
+
+					             [01] Equivalency options:
+					              - include public fields and properties
 					             """)
 					.Because("every line of the differences belongs to the nested result");
 			}
@@ -93,6 +131,9 @@ public sealed partial class ThatJsonObject
 					               Property Name differed:
 					                   Actual: <null>
 					                 Expected: "foo"
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
@@ -242,6 +283,9 @@ public sealed partial class ThatJsonObject
 					               Property Name differed:
 					                   Actual: <null>
 					                 Expected: "foo"
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
@@ -435,6 +479,10 @@ public sealed partial class ThatJsonObject
 					             Expected that subject
 					             is not serializable as JSON,
 					             but it was
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["Name"]
 					             """);
 			}
 
@@ -463,6 +511,9 @@ public sealed partial class ThatJsonObject
 					             Expected that subject
 					             is not serializable as JSON,
 					             but it was
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
@@ -535,6 +586,9 @@ public sealed partial class ThatJsonObject
 					             Expected that subject
 					             is not serializable as JSON,
 					             but it was
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
@@ -587,6 +641,9 @@ public sealed partial class ThatJsonObject
 					             Expected that subject
 					             is not serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,
 					             but it was
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 		}
