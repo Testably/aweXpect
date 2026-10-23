@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
-        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
-      },
-      {
         "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
         "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
+      },
+      {
+        "sha": "77ca8a7f9951b7845770f590d1ebe3d35e2e0143",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
+        "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
       }
     ],
     "labels": [
-      "c0e60219",
       "706259ec",
       "8d6b3561",
       "3163a4fa",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "81744dc6",
       "87616222",
       "8e844194",
-      "f61481d2"
+      "f61481d2",
+      "77ca8a7f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2181.164323953482,
           2038.971815999349,
           2097.5375864664716,
           2174.311677042643,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1213.206046471229,
           1593.5830990717961,
           2077.603181566511,
-          2039.3656331575835
+          2039.3656331575835,
+          2165.0590455191477
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1280,
           1280,
-          1280,
           1288,
           1288,
           1288,
@@ -435,6 +434,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16871.784567025992,
           13896.18678894043,
           16249.864831107003,
           15976.005877685548,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           8128.291469319662,
           11570.992222377232,
           16017.925997416178,
-          15738.082231648763
+          15738.082231648763,
+          15289.454618326823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
-        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
-      },
-      {
         "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
         "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
+      },
+      {
+        "sha": "77ca8a7f9951b7845770f590d1ebe3d35e2e0143",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
+        "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
       }
     ],
     "labels": [
-      "c0e60219",
       "706259ec",
       "8d6b3561",
       "3163a4fa",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "81744dc6",
       "87616222",
       "8e844194",
-      "f61481d2"
+      "f61481d2",
+      "77ca8a7f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1597.4349617276873,
           1427.4123920440675,
           1513.206599299113,
           1484.3796505561243,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           940.1867751394,
           1127.2758695284526,
           1566.3607370058696,
-          1462.9934795379638
+          1462.9934795379638,
+          1493.257575580052
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,7 +1030,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1216,
           1216,
-          1216,
           1224,
           1224,
           1224,
@@ -1043,6 +1042,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15366.04953438895,
           13073.824860636394,
           15203.595537312825,
           14521.370029703776,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           7463.600049700056,
           10769.191807047526,
           14656.462735857282,
-          14300.41145477295
+          14300.41145477295,
+          13887.94413648333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
-        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
-      },
-      {
         "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
         "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
+      },
+      {
+        "sha": "77ca8a7f9951b7845770f590d1ebe3d35e2e0143",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
+        "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
       }
     ],
     "labels": [
-      "c0e60219",
       "706259ec",
       "8d6b3561",
       "3163a4fa",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "81744dc6",
       "87616222",
       "8e844194",
-      "f61481d2"
+      "f61481d2",
+      "77ca8a7f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4764.760596720377,
           4575.05014201573,
           4623.862497456868,
           4384.610429491316,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2826.5698550088064,
           3598.553531940167,
           4909.62357228597,
-          4820.523702893938
+          4820.523702893938,
+          4486.99596786499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           3496,
           3496,
-          3496,
           3520,
           3520,
           3520,
@@ -1651,6 +1650,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          49542.37854817708,
           38786.2236735026,
           46973.02034912109,
           42672.511814662386,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           21168.517379760742,
           31850.76883951823,
           45522.04259314904,
-          47174.26316731771
+          47174.26316731771,
+          42134.56201171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61925,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
-          61926
+          61926,
+          61932
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
-        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
-      },
       {
         "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
         "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
+      },
+      {
+        "sha": "77ca8a7f9951b7845770f590d1ebe3d35e2e0143",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
+        "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
       }
     ],
     "labels": [
-      "c0e60219",
       "706259ec",
       "8d6b3561",
       "3163a4fa",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "81744dc6",
       "87616222",
       "8e844194",
-      "f61481d2"
+      "f61481d2",
+      "77ca8a7f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          36885.91805013021,
           34420.01797688802,
           38102.160201009116,
           9949.948411207934,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5222.865115483602,
           7507.235627237956,
           9177.86523764474,
-          9412.23250020345
+          9412.23250020345,
+          9670.249108450753
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           29880,
           29880,
-          29880,
           7048,
           7048,
           7048,
@@ -2259,6 +2258,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          314781.4907877604,
           270634.7539876302,
           303243.3815917969,
           281185.26057942706,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           154741.7110514323,
           233399.78896484376,
           300773.4687825521,
-          291617.3537434896
+          291617.3537434896,
+          278709.22119140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521572,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521594
+          521594,
+          521572
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
-        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
-      },
       {
         "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
         "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
+      },
+      {
+        "sha": "77ca8a7f9951b7845770f590d1ebe3d35e2e0143",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
+        "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
       }
     ],
     "labels": [
-      "c0e60219",
       "706259ec",
       "8d6b3561",
       "3163a4fa",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "81744dc6",
       "87616222",
       "8e844194",
-      "f61481d2"
+      "f61481d2",
+      "77ca8a7f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2959.5253445761546,
           2869.6916487557546,
           2884.807119914464,
           3206.258263996669,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1630.4627155576434,
           2194.5427692958287,
           2795.26175226484,
-          2885.8718714032852
+          2885.8718714032852,
+          3149.712384087699
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2854,7 +2854,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1536,
           1536,
-          1536,
           1544,
           1544,
           1544,
@@ -2882,6 +2881,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1981.295989481608,
           1922.29626928057,
           2019.4286888667516,
           2132.018918100993,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1145.754662513733,
           1598.2716153951792,
           1968.7519668579102,
-          1954.3391848972865
+          1954.3391848972865,
+          2100.52568259606
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "c0e6021947a1ec7c816474575ea4451a4e36c0b7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 21:21:42 2026 \u002B0200",
-        "message": "refactor: allocate less for every expectation, equivalency and combined expectations (#1900)"
-      },
-      {
         "sha": "706259ecd2142378bb9c8136fb0712d8354d41fa",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 22:25:16 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
         "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
+      },
+      {
+        "sha": "77ca8a7f9951b7845770f590d1ebe3d35e2e0143",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
+        "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
       }
     ],
     "labels": [
-      "c0e60219",
       "706259ec",
       "8d6b3561",
       "3163a4fa",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "81744dc6",
       "87616222",
       "8e844194",
-      "f61481d2"
+      "f61481d2",
+      "77ca8a7f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2844.7281143188475,
           2725.1409225463867,
           2706.7455348968506,
           2998.297959391276,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1297.4702531178793,
           1673.2644626072474,
           2051.816668955485,
-          2062.389780171712
+          2062.389780171712,
+          2139.7418698628744
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3920,
           3920,
           3920,
           3928,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2856,
           2856
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1970.8826200045073,
           1841.747869237264,
           1950.1845182691302,
           2079.934279515193,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1164.137812247643,
           1591.866280110677,
           1845.8240673882622,
-          1744.1527445656914
+          1744.1527445656914,
+          1968.4720213753837
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
