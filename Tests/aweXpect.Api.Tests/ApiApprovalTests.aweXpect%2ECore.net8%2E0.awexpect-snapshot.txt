@@ -768,6 +768,10 @@ namespace aweXpect.Core.Extending
         public static void AppendHint(System.Text.StringBuilder stringBuilder, string value, System.Collections.Generic.IEnumerable<string> candidates) { }
         public static string? Find(string value, System.Collections.Generic.IEnumerable<string> candidates) { }
     }
+    public static class EquivalencyExpectations
+    {
+        public static bool TryGetBuilder(object? value, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out aweXpect.Equivalency.EquivalencyExpectationBuilder? expectationBuilder) { }
+    }
     [System.AttributeUsage(System.AttributeTargets.Parameter)]
     public sealed class EvaluationCancellationTokenAttribute : System.Attribute
     {

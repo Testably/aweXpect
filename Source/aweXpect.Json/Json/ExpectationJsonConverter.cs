@@ -11,6 +11,7 @@ using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
 using aweXpect.Results;
@@ -341,12 +342,8 @@ internal class ExpectationJsonConverter(IEvaluationContext context, Cancellation
 			    Guid.TryParse(value.Substring(Prefix.Length), out Guid guid) &&
 #endif
 			    _expectations.TryGetValue(guid, out Expectation? expectation) &&
-			    expectation is IOptionsProvider<ExpectationBuilder>
-			    {
-				    Options: EquivalencyExpectationBuilder builder,
-			    })
+			    EquivalencyExpectations.TryGetBuilder(expectation, out equivalencyExpectationBuilder))
 			{
-				equivalencyExpectationBuilder = builder;
 				return true;
 			}
 		}
