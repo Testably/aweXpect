@@ -28,11 +28,11 @@ To change a value for all tests, set it on `Customize.aweXpect.Global.Json()` in
 
 To use other `JsonDocumentOptions` for a single expectation, pass them to
 [`IsValidJson(o => …)`](./01-strings.md#validation) or, wherever [`JsonOptions`](./02-matching.md#options) are
-accepted, with `WithJsonOptions(…)`:
+accepted, with `WithDocumentOptions(…)`:
 
 ```csharp
 string track = """{"title": "Let It Be", /* 1970 */ "artist": "The Beatles"}""";
 
 await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" },
-    o => o.WithJsonOptions(d => d with { CommentHandling = JsonCommentHandling.Skip }));
+    o => o.WithDocumentOptions(d => d with { CommentHandling = JsonCommentHandling.Skip }));
 ```

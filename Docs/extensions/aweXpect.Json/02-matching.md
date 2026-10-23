@@ -80,7 +80,7 @@ something on takes an optional `bool`:
 | [`IgnoringArrayOrder()`](#array-order)                             | the elements of arrays can be in any order             |
 | [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
 | [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance) | numbers match within an absolute or relative tolerance |
-| [`WithJsonOptions(…)`](./05-customization.md)                      | the `JsonDocumentOptions` used to parse JSON strings   |
+| [`WithDocumentOptions(…)`](./05-customization.md)                  | the `JsonDocumentOptions` used to parse JSON strings   |
 | [`WithSerializerOptions(…)`](#serializer-options)                  | the `JsonSerializerOptions` for the expected value     |
 
 ### Treating `null` as absent
@@ -258,6 +258,6 @@ otherwise a `NotSupportedException` names the missing `[JsonSerializable(typeof(
 ### Options in failure messages
 
 The failure message lists the active options in a "JSON options" context, like in the examples above, and omits it
-when no option is active. The options of `WithJsonOptions(…)` and `WithSerializerOptions(…)` are not listed. As `Matches`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject) and
+when no option is active. The options of `WithDocumentOptions(…)` and `WithSerializerOptions(…)` are not listed. As `Matches`, `IsValidJsonMatching`, [`IsObject`](./03-objects-and-arrays.md#isobject) and
 [`IsArray`](./03-objects-and-arrays.md#isarray) ignore additional properties by default, their failures list
 `ignore additional properties`.

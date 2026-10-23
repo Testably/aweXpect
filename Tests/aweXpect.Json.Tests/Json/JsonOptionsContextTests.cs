@@ -214,7 +214,7 @@ public sealed class JsonOptionsContextTests
 
 			async Task Act()
 				=> await That(subject).MatchesExactly([1, 2,],
-					o => o.WithJsonOptions(d => d with
+					o => o.WithDocumentOptions(d => d with
 					{
 						MaxDepth = 10,
 					}));
