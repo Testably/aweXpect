@@ -312,6 +312,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -366,7 +372,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -424,7 +431,8 @@ window.BENCHMARK_DATA = {
           738.6285243715558,
           330.88183975219727,
           694.67991065979,
-          380.37860101064047
+          380.37860101064047,
+          744.4790108362834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -464,6 +472,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -553,7 +562,8 @@ window.BENCHMARK_DATA = {
           808.7878755841937,
           318.47776185549225,
           688.7243235661433,
-          375.42850259145104
+          375.42850259145104,
+          734.0773932774862
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -565,6 +575,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -942,6 +953,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -996,7 +1013,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -1054,7 +1072,8 @@ window.BENCHMARK_DATA = {
           5139.5212971613955,
           2280.620339457194,
           4543.97388305664,
-          2466.465458733695
+          2466.465458733695,
+          4631.3232564290365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1117,7 +1136,8 @@ window.BENCHMARK_DATA = {
           24114,
           24047,
           24114,
-          24047
+          24047,
+          24114
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1183,7 +1203,8 @@ window.BENCHMARK_DATA = {
           5867.148874409993,
           2566.8928554241475,
           5541.519615681967,
-          2977.0737581888834
+          2977.0737581888834,
+          5362.702480570475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1195,6 +1216,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1512,6 +1534,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -1556,7 +1584,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -1604,7 +1633,8 @@ window.BENCHMARK_DATA = {
           2874.251587677002,
           1279.0757214682442,
           2583.80635655721,
-          1440.060157394409
+          1440.060157394409,
+          2709.2063933781214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1634,6 +1664,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1713,7 +1744,8 @@ window.BENCHMARK_DATA = {
           3795.782775061471,
           1745.7664502950815,
           3629.447216796875,
-          1835.030376140888
+          1835.030376140888,
+          3622.437141418457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1725,6 +1757,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -2032,6 +2065,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -2076,7 +2115,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -2124,7 +2164,8 @@ window.BENCHMARK_DATA = {
           15625.557423182896,
           6797.641730626424,
           14528.064571634928,
-          7359.608285013835
+          7359.608285013835,
+          14013.3724512736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2154,6 +2195,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -2233,7 +2275,8 @@ window.BENCHMARK_DATA = {
           376585.5458658854,
           150781.93868314303,
           361523.4904622396,
-          175527.31158916766
+          175527.31158916766,
+          358560.3517903646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2283,6 +2326,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544299,
+          544335,
           544335,
           544335,
           544335,
