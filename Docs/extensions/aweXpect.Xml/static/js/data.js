@@ -318,6 +318,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -373,7 +379,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -432,7 +439,8 @@ window.BENCHMARK_DATA = {
           330.88183975219727,
           694.67991065979,
           380.37860101064047,
-          744.4790108362834
+          744.4790108362834,
+          727.4398652590238
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -472,6 +480,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -563,7 +572,8 @@ window.BENCHMARK_DATA = {
           318.47776185549225,
           688.7243235661433,
           375.42850259145104,
-          734.0773932774862
+          734.0773932774862,
+          787.2371487935384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -575,6 +585,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -959,6 +970,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -1014,7 +1031,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -1073,7 +1091,8 @@ window.BENCHMARK_DATA = {
           2280.620339457194,
           4543.97388305664,
           2466.465458733695,
-          4631.3232564290365
+          4631.3232564290365,
+          4671.674237823487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1137,6 +1156,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24047,
+          24114,
           24114
         ],
         "borderColor": "#63A2AC",
@@ -1204,7 +1224,8 @@ window.BENCHMARK_DATA = {
           2566.8928554241475,
           5541.519615681967,
           2977.0737581888834,
-          5362.702480570475
+          5362.702480570475,
+          5237.3856796264645
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1216,6 +1237,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1540,6 +1562,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -1585,7 +1613,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -1634,7 +1663,8 @@ window.BENCHMARK_DATA = {
           1279.0757214682442,
           2583.80635655721,
           1440.060157394409,
-          2709.2063933781214
+          2709.2063933781214,
+          2897.2843472798663
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1664,6 +1694,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1745,7 +1776,8 @@ window.BENCHMARK_DATA = {
           1745.7664502950815,
           3629.447216796875,
           1835.030376140888,
-          3622.437141418457
+          3622.437141418457,
+          3555.610352834066
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1757,6 +1789,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -2071,6 +2104,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -2116,7 +2155,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -2165,7 +2205,8 @@ window.BENCHMARK_DATA = {
           6797.641730626424,
           14528.064571634928,
           7359.608285013835,
-          14013.3724512736
+          14013.3724512736,
+          14520.745642344156
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2195,6 +2236,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -2276,7 +2318,8 @@ window.BENCHMARK_DATA = {
           150781.93868314303,
           361523.4904622396,
           175527.31158916766,
-          358560.3517903646
+          358560.3517903646,
+          373734.6132486979
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2326,6 +2369,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544299,
+          544335,
           544335,
           544335,
           544335,
