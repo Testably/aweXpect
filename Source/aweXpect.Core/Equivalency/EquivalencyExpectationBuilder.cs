@@ -20,6 +20,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
 	{
+		using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(Formatters);
 		StringBuilder sb = new();
 		sb.Append("is ");
 		Formatter.Format(sb, typeof(T));
@@ -162,7 +163,10 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 	///     Appends the expectation of the root node to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> GetRootNode().AppendExpectation(stringBuilder, indentation);
+	{
+		using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(Formatters);
+		GetRootNode().AppendExpectation(stringBuilder, indentation);
+	}
 
 	/// <summary>
 	///     Evaluate if the expectations are met by the <paramref name="value" /> as part of the evaluation in the
@@ -192,6 +196,12 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		IEvaluationContext? evaluation,
 		CancellationToken cancellationToken)
 	{
+		if (evaluation is not null && Formatters is { } formatters)
+		{
+			EvaluationContext.AddFormatters(evaluation, formatters);
+		}
+
+		using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(Formatters);
 		EvaluationContext context = EvaluationContext.ForNestedExpectation(evaluation);
 		try
 		{

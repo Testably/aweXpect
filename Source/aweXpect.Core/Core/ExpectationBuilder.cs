@@ -611,6 +611,79 @@ public abstract class ExpectationBuilder
 		GetRareSettings().Timeout = TimerHelpers.Tighter(Timeout, timeout) ?? timeout;
 	}
 
+	/// <summary>
+	///     Formats the values of this expectation with the <paramref name="formatter" />, before the formatters
+	///     registered with <see cref="ValueFormatter.Register(IValueFormatter)" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="formatter" /> applies while the expectation is evaluated and while its failure message is
+	///     created, never to other expectations or to formatting outside of them. Use it to format a type that the
+	///     extension does not own, without changing how it is formatted elsewhere.
+	///     <para />
+	///     The failure message of an expectation that this one is nested in, e.g. with <c>ComplyWith</c>, and of a
+	///     combination like <c>Expect.ThatAll</c> uses it as a whole.
+	///     <para />
+	///     When several formatters can format a value, the one added last is used. Adding the same formatter again has no
+	///     effect, so pass a cached instance.
+	/// </remarks>
+	public ExpectationBuilder AddFormatter(IValueFormatter formatter)
+	{
+		formatter.ThrowIfNull();
+		RareSettings rareSettings = GetRareSettings();
+		if (rareSettings.Formatters is not { } formatters)
+		{
+			rareSettings.Formatters = [formatter,];
+		}
+		else if (Array.IndexOf(formatters, formatter) < 0)
+		{
+			rareSettings.Formatters = [..formatters, formatter,];
+		}
+
+		return this;
+	}
+
+	/// <summary>
+	///     The formatters added with <see cref="AddFormatter" />, or <see langword="null" /> when none was added.
+	/// </summary>
+	private protected IValueFormatter[]? Formatters => _rareSettings?.Formatters;
+
+	/// <summary>
+	///     Adds the formatters of this expectation and of the expectations nested in its current evaluation to the
+	///     <paramref name="formatters" />.
+	/// </summary>
+	internal void AddFormattersTo(List<IValueFormatter> formatters)
+	{
+		foreach (IValueFormatter formatter in Formatters ?? [])
+		{
+			if (!formatters.Contains(formatter))
+			{
+				formatters.Add(formatter);
+			}
+		}
+
+		_evaluationContext?.CollectFormatters(formatters);
+	}
+
+	/// <summary>
+	///     Formats the values with the formatters of this expectation and of the expectations nested in its current
+	///     evaluation, see <see cref="AddFormattersTo" />, until the returned scope is disposed.
+	/// </summary>
+	private ValueFormatter.FormatterScope UseAllFormatters()
+	{
+		List<IValueFormatter> formatters = [];
+		AddFormattersTo(formatters);
+		return ValueFormatter.UseScopedFormatters(formatters.Count > 0 ? formatters.ToArray() : null);
+	}
+
+	/// <summary>
+	///     Writes the met <paramref name="result" /> to the trace.
+	/// </summary>
+	internal void TraceSuccess(ConstraintResult result)
+	{
+		using ValueFormatter.FormatterScope _ = UseAllFormatters();
+		Tracing.WriteSuccess(Subject, result);
+	}
+
 	private RareSettings GetRareSettings() => _rareSettings ??= new RareSettings();
 
 #if NET8_0_OR_GREATER
@@ -911,6 +984,7 @@ public abstract class ExpectationBuilder
 	{
 		EvaluationCancellation cancellation = GetRemainingCancellation();
 		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
+		using ValueFormatter.FormatterScope __ = UseAllFormatters();
 		return await FromFailure(Subject, failure, cancellation.Token);
 	}
 
@@ -999,6 +1073,24 @@ public abstract class ExpectationBuilder
 	internal ValueTask<ConstraintResult> IsMet(bool endsWhenMet = true, TimeSpan? limit = null,
 		CancellationToken? combinationToken = null)
 	{
+		if (_rareSettings?.Formatters is not { } formatters)
+		{
+			return Evaluate(endsWhenMet, limit, combinationToken);
+		}
+
+		using ValueFormatter.FormatterScope _ = ValueFormatter.UseScopedFormatters(formatters);
+		return Evaluate(endsWhenMet, limit, combinationToken);
+	}
+
+	/// <summary>
+	///     Evaluates the expectation, see <see cref="IsMet(bool, TimeSpan?, CancellationToken?)" />.
+	/// </summary>
+	/// <remarks>
+	///     An evaluation that continues asynchronously keeps the formatters that were in use when it started.
+	/// </remarks>
+	private ValueTask<ConstraintResult> Evaluate(bool endsWhenMet, TimeSpan? limit,
+		CancellationToken? combinationToken)
+	{
 		Task previousEvaluation = EndEvaluation();
 		if (previousEvaluation.Status != TaskStatus.RanToCompletion)
 		{
@@ -1057,7 +1149,7 @@ public abstract class ExpectationBuilder
 		ConstraintResult result = await isMet;
 		if (result.Outcome == Outcome.Success && IsTracing)
 		{
-			Tracing.WriteSuccess(Subject, result);
+			TraceSuccess(result);
 		}
 
 		return new Expectation.Result(index + 1, Subject, result, true);
@@ -1092,7 +1184,7 @@ public abstract class ExpectationBuilder
 		TimeSpan? limit, CancellationToken? combinationToken)
 	{
 		await previousEvaluation;
-		return await IsMet(endsWhenMet, limit, combinationToken);
+		return await Evaluate(endsWhenMet, limit, combinationToken);
 	}
 
 	private static async ValueTask<ConstraintResult> ReturnAfter(Task endEvaluation, ConstraintResult result)
@@ -1277,6 +1369,7 @@ public abstract class ExpectationBuilder
 		/// </summary>
 		public Exception[]? OtherExceptions { get; set; }
 
+		public IValueFormatter[]? Formatters { get; set; }
 		public TimeSpan? Timeout { get; set; }
 		public ITimeSystem? TimeSystem { get; set; }
 	}

@@ -125,6 +125,12 @@ public abstract class Expectation
 	/// </summary>
 	internal abstract void AddRemainingCancellations(List<EvaluationCancellation> cancellations);
 
+	/// <summary>
+	///     Adds the formatters of each expectation and of the expectations nested in its current evaluation, see
+	///     <see cref="ExpectationBuilder.AddFormatter" />, to the <paramref name="formatters" />.
+	/// </summary>
+	internal abstract void AddFormatters(List<IValueFormatter> formatters);
+
 	/// <param name="index">The number of the last expectation in the result.</param>
 	/// <param name="subject">The subject line, or with <paramref name="isNumbered" /> the subject it names.</param>
 	/// <param name="result">The result of the expectation.</param>
@@ -509,6 +515,15 @@ public abstract class Expectation
 			}
 		}
 
+		/// <inheritdoc />
+		internal override void AddFormatters(List<IValueFormatter> formatters)
+		{
+			foreach (Expectation expectation in _expectations)
+			{
+				expectation.AddFormatters(formatters);
+			}
+		}
+
 		private async Task GetResultOrThrow(ValueTask<Result> isMet)
 		{
 			try
@@ -535,6 +550,10 @@ public abstract class Expectation
 			}
 
 			await ResolvePendingReasons();
+			List<IValueFormatter> formatters = [];
+			AddFormatters(formatters);
+			using ValueFormatter.FormatterScope _ =
+				ValueFormatter.UseScopedFormatters(formatters.Count > 0 ? formatters.ToArray() : null);
 			StringBuilder sb = new();
 			sb.AppendLine(GetHeader());
 			result.ConstraintResult.AppendExpectation(sb);

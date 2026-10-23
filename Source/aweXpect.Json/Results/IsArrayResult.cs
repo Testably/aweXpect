@@ -38,7 +38,7 @@ public class IsArrayResult<TType, TThat> : AndOrResult<TType, TThat>
 	{
 		get
 		{
-			JsonFormatting.RegisterValueFormatter();
+			JsonFormatting.AddValueFormatters(ExpectationBuilder);
 			return new ThatSubject<IEnumerable<JsonElement>>(ExpectationBuilder.ForWhich<TType, IEnumerable<JsonElement>>(
 				subject => _arrayAccessor(subject).EnumerateArray().ToArray(),
 				" whose elements ",

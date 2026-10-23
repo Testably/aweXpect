@@ -348,8 +348,9 @@ public static partial class ValueFormatters
 		where T : notnull
 	{
 		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
-		return registrations.Length > 0 &&
-		       TryFormatWithRegistrations(stringBuilder, value, options, registrations, context);
+		IValueFormatter[]? scopedFormatters = ValueFormatter.ScopedFormatters;
+		return (registrations.Length > 0 || scopedFormatters is not null) &&
+		       TryFormatWithRegistrations(stringBuilder, value, options, scopedFormatters, registrations, context);
 	}
 
 	/// <summary>
@@ -363,13 +364,14 @@ public static partial class ValueFormatters
 	{
 		formattedValue = null;
 		ValueFormatter.Registration[] registrations = ValueFormatter.Registrations;
-		if (registrations.Length == 0)
+		IValueFormatter[]? scopedFormatters = ValueFormatter.ScopedFormatters;
+		if (registrations.Length == 0 && scopedFormatters is null)
 		{
 			return false;
 		}
 
 		StringBuilder stringBuilder = RentStringBuilder();
-		if (!TryFormatWithRegistrations(stringBuilder, value, options, registrations, null))
+		if (!TryFormatWithRegistrations(stringBuilder, value, options, scopedFormatters, registrations, null))
 		{
 			ReturnStringBuilder(stringBuilder);
 			return false;
@@ -384,11 +386,15 @@ public static partial class ValueFormatters
 	///     registered formatters run, so that a value they format through <see cref="ValueFormatters" /> again joins
 	///     the recursion guard instead of overflowing the stack. A value that is already being formatted is left to the
 	///     built-in formatting, so that the recursion is written the same way whether any formatter is registered.
+	///     <para />
+	///     The <paramref name="scopedFormatters" /> of the current expectations are consulted before the
+	///     <paramref name="registrations" />.
 	/// </remarks>
 	private static bool TryFormatWithRegistrations(
 		StringBuilder stringBuilder,
 		object value,
 		FormattingOptions? options,
+		IValueFormatter[]? scopedFormatters,
 		ValueFormatter.Registration[] registrations,
 		FormattingContext? context)
 	{
@@ -415,6 +421,14 @@ public static partial class ValueFormatters
 		int length = stringBuilder.Length;
 		try
 		{
+			for (int i = (scopedFormatters?.Length ?? 0) - 1; i >= 0; i--)
+			{
+				if (scopedFormatters![i].TryFormat(stringBuilder, value, options))
+				{
+					return true;
+				}
+			}
+
 			for (int i = registrations.Length - 1; i >= 0; i--)
 			{
 				if (registrations[i].Formatter.TryFormat(stringBuilder, value, options))
