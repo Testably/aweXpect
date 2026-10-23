@@ -63,13 +63,7 @@ public static partial class TypeFilters
 					Type[] arguments = type.GetGenericArguments();
 					return arguments.AnyAsync(async (p, i) =>
 					{
-						bool? isIndexInRange = collectionIndexOptions.Match switch
-						{
-							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
-							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false,
-						};
-						return isIndexInRange == true &&
+						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
 						       await genericArgumentFilterOptions.Matches(p);
 					});
 				},
@@ -99,13 +93,7 @@ public static partial class TypeFilters
 					Type[] arguments = type.GetGenericArguments();
 					return arguments.AnyAsync(async (p, i) =>
 					{
-						bool? isIndexInRange = collectionIndexOptions.Match switch
-						{
-							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
-							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false,
-						};
-						return isIndexInRange == true &&
+						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
 						       await genericArgumentFilterOptions.Matches(p);
 					});
 				},
@@ -131,13 +119,7 @@ public static partial class TypeFilters
 					Type[] arguments = type.GetGenericArguments();
 					return arguments.AnyAsync(async (p, i) =>
 					{
-						bool? isIndexInRange = collectionIndexOptions.Match switch
-						{
-							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
-							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false,
-						};
-						return isIndexInRange == true &&
+						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
 						       await genericArgumentFilterOptions.Matches(p);
 					});
 				},

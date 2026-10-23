@@ -69,13 +69,7 @@ internal static class ParameterInfoHelpers
 		ParameterInfo[] parameters = method.GetParameters();
 		return parameters.AnyAsync(async (p, i) =>
 		{
-			bool? isIndexInRange = collectionIndexOptions.Match switch
-			{
-				CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
-				CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
-				_ => true,
-			};
-			return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+			return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true && await parameterFilterOptions.Matches(p);
 		});
 	}
 }

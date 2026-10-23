@@ -47,6 +47,31 @@ public class CollectionIndexOptions
 	public void AtIndexFromEnd(int index)
 		=> SetIndex(new AtIndexMatch(index).FromEnd(), nameof(AtIndexFromEnd));
 
+	/// <summary>
+	///     Checks if the item at the zero-based <paramref name="index" /> of a collection with <paramref name="count" />
+	///     items is a match of the <see cref="Match" />.
+	/// </summary>
+	/// <param name="index">The zero-based index of the item.</param>
+	/// <param name="count">
+	///     The number of items in the collection, or <see langword="null" />, if it is not known yet.
+	/// </param>
+	/// <returns>
+	///     <see langword="true" />, if the <paramref name="index" /> is in range, <see langword="null" />,
+	///     if the <paramref name="index" /> is not in range, but could be in range for a larger index,
+	///     otherwise <see langword="false" /> when the <paramref name="index" /> is not in range
+	///     and will also not be in range for larger values.
+	/// </returns>
+	/// <remarks>
+	///     Only <see langword="true" /> means that the item is in range.
+	/// </remarks>
+	public bool? MatchesIndex(int index, int? count)
+		=> Match switch
+		{
+			IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
+			IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
+			_ => false,
+		};
+
 	private void SetIndex(IMatch match, string option)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_indexOption, option);

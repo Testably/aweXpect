@@ -110,6 +110,69 @@ public class CollectionIndexOptionsTests
 	}
 
 	[Test]
+	[Arguments(0, null)]
+	[Arguments(1, true)]
+	[Arguments(2, false)]
+	public async Task MatchesIndex_WhenAtIndex_ShouldOnlyMatchTheIndex(int index, bool? expected)
+	{
+		CollectionIndexOptions sut = new();
+		sut.AtIndex(1);
+
+		bool? result = sut.MatchesIndex(index, 3);
+
+		await That(result).IsEqualTo(expected)
+			.Because("an earlier index could still be followed by the expected one, a later index cannot");
+	}
+
+	[Test]
+	[Arguments(0, null)]
+	[Arguments(1, true)]
+	[Arguments(2, false)]
+	public async Task MatchesIndex_WhenAtIndexFromEnd_ShouldCountFromTheEnd(int index, bool? expected)
+	{
+		CollectionIndexOptions sut = new();
+		sut.AtIndexFromEnd(1);
+
+		bool? result = sut.MatchesIndex(index, 3);
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	public async Task MatchesIndex_WhenAtIndexFromEndAndCountIsUnknown_ShouldReturnNull()
+	{
+		CollectionIndexOptions sut = new();
+		sut.AtIndexFromEnd(1);
+
+		bool? result = sut.MatchesIndex(1, null);
+
+		await That(result).IsNull();
+	}
+
+	[Test]
+	public async Task MatchesIndex_WhenMatchIsNeitherFromBeginningNorFromEnd_ShouldReturnFalse()
+	{
+		CollectionIndexOptions sut = new();
+		sut.SetMatch(new MyMatch());
+
+		bool? result = sut.MatchesIndex(0, 1);
+
+		await That(result).IsEqualTo(false);
+	}
+
+	[Test]
+	[Arguments(0)]
+	[Arguments(5)]
+	public async Task MatchesIndex_WithDefaultMatch_ShouldMatchAllIndices(int index)
+	{
+		CollectionIndexOptions sut = new();
+
+		bool? result = sut.MatchesIndex(index, null);
+
+		await That(result).IsEqualTo(true);
+	}
+
+	[Test]
 	public async Task SetMatch_ShouldReplaceASpecifiedIndex()
 	{
 		CollectionIndexOptions sut = new();

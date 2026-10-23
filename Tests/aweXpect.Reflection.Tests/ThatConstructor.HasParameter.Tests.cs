@@ -58,6 +58,25 @@ public sealed partial class ThatConstructor
 			}
 
 			[Test]
+			public async Task AtIndex_WhenParameterOnlyExistsBeforeSpecificIndex_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasParameter<int>().AtIndex(1);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of type int at index 1,
+					             but it did not
+					             """)
+					.Because("the int parameter is at index 0, not at index 1");
+			}
+
+			[Test]
 			public async Task AtIndexFromEnd_WhenParameterExistsAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;

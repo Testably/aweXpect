@@ -350,16 +350,4 @@ public static partial class ThatEnumerable
 		count = CollectionItems<TItem>.CountOf(actual) ?? items.CountUnlessCanceled(cancellationToken);
 		return count is not null;
 	}
-
-	/// <summary>
-	///     Returns <see langword="true" /> when the item at the <paramref name="index" /> is in range,
-	///     <see langword="false" /> when no later item can be in range and <see langword="null" /> otherwise.
-	/// </summary>
-	internal static bool? IsIndexInRange(CollectionIndexOptions options, int index, int? count)
-		=> options.Match switch
-		{
-			CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(index),
-			CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(index, count),
-			_ => false,
-		};
 }

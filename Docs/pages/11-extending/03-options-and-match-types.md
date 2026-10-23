@@ -66,6 +66,10 @@ grammars)` the expectation and `GetExtendedFailure(it, grammars, actual, expecte
 which differs …". When the string is a member of the subject, `GetExtendedMemberFailure(it, "title", grammars, actual,
 expected)` names it like the built-in expectations do, e.g. "it had title "Yesterday", which differs …".
 
+For the index options, call `MatchesIndex(index, count)` on the `CollectionIndexOptions` for each item, with the number
+of items or `null` while it is not known yet. Only `true` means that the item is at the expected index: `null` means
+that a later item could still be, and `false` that no later item can be, so you can stop there.
+
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you

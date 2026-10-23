@@ -920,6 +920,34 @@ public sealed partial class ThatMethods
 			}
 
 			[Test]
+			public async Task AtIndex_WhenOneHasParameterOnlyBeforeSpecificIndex_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter<int>().AtIndex(1);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int at index 1,
+					             but it contained methods without a matching parameter
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithIntAndString(int value, string name)
+					             ]
+					             """)
+					.Because("the int parameter of MethodWithIntAndString is at index 0, not at index 1");
+			}
+
+			[Test]
 			public async Task AtIndexFromEnd_WhenAllHaveParameterAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]

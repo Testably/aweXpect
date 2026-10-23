@@ -89,7 +89,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	///     later item can be.
 	/// </summary>
 	protected bool? IsAtIndex(int index, int? count)
-		=> ThatEnumerable.IsIndexInRange(Options, index, count);
+		=> Options.MatchesIndex(index, count);
 
 	/// <summary>
 	///     Records whether the <paramref name="item" /> at the expected index matches and returns
