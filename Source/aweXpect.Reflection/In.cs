@@ -39,7 +39,13 @@ public static class In
 	/// <summary>
 	///     Defines expectations on the given <paramref name="assemblies" />.
 	/// </summary>
-	public static Filtered.Assemblies Assemblies(params IEnumerable<Assembly?> assemblies)
+	public static Filtered.Assemblies Assemblies(params Assembly?[] assemblies)
+		=> Assemblies(assemblies.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="assemblies" />.
+	/// </summary>
+	public static Filtered.Assemblies Assemblies(IEnumerable<Assembly?> assemblies)
 		=> new(assemblies, $"in the assemblies {Formatter.Format(assemblies)}");
 
 	/// <summary>
@@ -84,36 +90,72 @@ public static class In
 	/// <summary>
 	///     Defines expectations on the types <paramref name="types" />
 	/// </summary>
-	public static Filtered.Types Types(params IEnumerable<Type> types)
+	public static Filtered.Types Types(params Type[] types)
+		=> Types(types.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the types <paramref name="types" />
+	/// </summary>
+	public static Filtered.Types Types(IEnumerable<Type> types)
 		=> new(types, $"in types {Formatter.Format(types)}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="constructors" />.
 	/// </summary>
-	public static Filtered.Constructors Constructors(params IEnumerable<ConstructorInfo> constructors)
+	public static Filtered.Constructors Constructors(params ConstructorInfo[] constructors)
+		=> Constructors(constructors.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="constructors" />.
+	/// </summary>
+	public static Filtered.Constructors Constructors(IEnumerable<ConstructorInfo> constructors)
 		=> new(constructors, $"in the constructors {Formatter.Format(FormattableMember.FromAll(constructors))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="events" />.
 	/// </summary>
-	public static Filtered.Events Events(params IEnumerable<EventInfo> events)
+	public static Filtered.Events Events(params EventInfo[] events)
+		=> Events(events.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="events" />.
+	/// </summary>
+	public static Filtered.Events Events(IEnumerable<EventInfo> events)
 		=> new(events, $"in the events {Formatter.Format(FormattableMember.FromAll(events))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="fields" />.
 	/// </summary>
-	public static Filtered.Fields Fields(params IEnumerable<FieldInfo> fields)
+	public static Filtered.Fields Fields(params FieldInfo[] fields)
+		=> Fields(fields.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="fields" />.
+	/// </summary>
+	public static Filtered.Fields Fields(IEnumerable<FieldInfo> fields)
 		=> new(fields, $"in the fields {Formatter.Format(FormattableMember.FromAll(fields))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="methods" />.
 	/// </summary>
-	public static Filtered.Methods Methods(params IEnumerable<MethodInfo> methods)
+	public static Filtered.Methods Methods(params MethodInfo[] methods)
+		=> Methods(methods.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="methods" />.
+	/// </summary>
+	public static Filtered.Methods Methods(IEnumerable<MethodInfo> methods)
 		=> new(methods, $"in the methods {Formatter.Format(FormattableMember.FromAll(methods))}");
 
 	/// <summary>
 	///     Defines expectations on the given <paramref name="properties" />.
 	/// </summary>
-	public static Filtered.Properties Properties(params IEnumerable<PropertyInfo> properties)
+	public static Filtered.Properties Properties(params PropertyInfo[] properties)
+		=> Properties(properties.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="properties" />.
+	/// </summary>
+	public static Filtered.Properties Properties(IEnumerable<PropertyInfo> properties)
 		=> new(properties, $"in the properties {Formatter.Format(FormattableMember.FromAll(properties))}");
 }

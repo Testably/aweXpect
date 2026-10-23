@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
 
@@ -12,7 +13,12 @@ public static partial class TypeFilters
 	///     <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
 	public static Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(
-		this Filtered.Types @this, params IEnumerable<string> namespaces)
+		this Filtered.Types @this, params string[] namespaces)
+		=> @this.WhichDependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="WhichDependOn(Filtered.Types, string[])" />
+	public static Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(
+		this Filtered.Types @this, IEnumerable<string> namespaces)
 		=> new(new NamespaceDependencyOptions(namespaces),
 			options => @this.Which(Filter.Suffix<Type>(
 				type => options.IsMatchedBy(type),
@@ -45,7 +51,12 @@ public static partial class TypeFilters
 	///     <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
 	public static Filtered.Types.NamespaceDependencyFilterResult WhichDoNotDependOn(
-		this Filtered.Types @this, params IEnumerable<string> namespaces)
+		this Filtered.Types @this, params string[] namespaces)
+		=> @this.WhichDoNotDependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="WhichDoNotDependOn(Filtered.Types, string[])" />
+	public static Filtered.Types.NamespaceDependencyFilterResult WhichDoNotDependOn(
+		this Filtered.Types @this, IEnumerable<string> namespaces)
 		=> new(new NamespaceDependencyOptions(namespaces),
 			options => @this.Which(Filter.Suffix<Type>(
 				type => !options.IsMatchedBy(type),

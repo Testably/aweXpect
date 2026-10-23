@@ -25,6 +25,9 @@ internal static class Helper
 			CombinedPaths("Source", assemblyName, "bin", configuration, framework, $"{assemblyName}.dll"));
 	}
 
+	public static IEnumerable<FileInfo> GetApiSnapshotFiles()
+		=> new DirectoryInfo(CombinedPaths("Tests", "aweXpect.Api.Tests")).GetFiles("*.awexpect-snapshot.txt");
+
 	public static IEnumerable<string> GetTargetFrameworks()
 	{
 		string props = CombinedPaths("Source", "Directory.Build.props");
