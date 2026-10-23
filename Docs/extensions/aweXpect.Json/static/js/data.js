@@ -324,6 +324,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
         "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
+      },
+      {
+        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
+        "message": "feat!: add WhoseProperties to IsObject (#1951)"
       }
     ],
     "labels": [
@@ -380,7 +386,8 @@ window.BENCHMARK_DATA = {
       "ae43e1f2",
       "22416e11",
       "e6ee3749",
-      "d5baef73"
+      "d5baef73",
+      "16d46b22"
     ],
     "datasets": [
       {
@@ -440,7 +447,8 @@ window.BENCHMARK_DATA = {
           2159.383176950308,
           2129.560279028756,
           2042.1801124572753,
-          2077.001663716634
+          2077.001663716634,
+          1578.9626701899938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -480,6 +488,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -573,7 +582,8 @@ window.BENCHMARK_DATA = {
           15133.340985979352,
           16761.890055338543,
           15391.861755371094,
-          15718.753243001302
+          15718.753243001302,
+          11173.423699951172
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -585,6 +595,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -976,6 +987,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
         "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
+      },
+      {
+        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
+        "message": "feat!: add WhoseProperties to IsObject (#1951)"
       }
     ],
     "labels": [
@@ -1032,7 +1049,8 @@ window.BENCHMARK_DATA = {
       "ae43e1f2",
       "22416e11",
       "e6ee3749",
-      "d5baef73"
+      "d5baef73",
+      "16d46b22"
     ],
     "datasets": [
       {
@@ -1092,7 +1110,8 @@ window.BENCHMARK_DATA = {
           1496.4778762230505,
           1497.093700849093,
           1498.1973813374836,
-          1486.3478076934814
+          1486.3478076934814,
+          1128.5401138578143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1132,6 +1151,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1225,7 +1245,8 @@ window.BENCHMARK_DATA = {
           13988.049116007487,
           15476.73989868164,
           14812.17020525251,
-          14565.10988180978
+          14565.10988180978,
+          10421.98610534668
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1237,6 +1258,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -1568,6 +1590,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
         "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
+      },
+      {
+        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
+        "message": "feat!: add WhoseProperties to IsObject (#1951)"
       }
     ],
     "labels": [
@@ -1614,7 +1642,8 @@ window.BENCHMARK_DATA = {
       "ae43e1f2",
       "22416e11",
       "e6ee3749",
-      "d5baef73"
+      "d5baef73",
+      "16d46b22"
     ],
     "datasets": [
       {
@@ -1664,7 +1693,8 @@ window.BENCHMARK_DATA = {
           4486.050827026367,
           4823.465909140451,
           4861.015960184733,
-          4692.944160461426
+          4692.944160461426,
+          3622.1291872660317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1694,6 +1724,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1777,7 +1808,8 @@ window.BENCHMARK_DATA = {
           42998.29046223958,
           48279.15001502404,
           48144.07750651042,
-          50823.221697126115
+          50823.221697126115,
+          31321.70557454427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1831,6 +1863,7 @@ window.BENCHMARK_DATA = {
           61926,
           61932,
           61925,
+          61926,
           61926,
           61926
         ],
@@ -2110,6 +2143,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
         "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
+      },
+      {
+        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
+        "message": "feat!: add WhoseProperties to IsObject (#1951)"
       }
     ],
     "labels": [
@@ -2156,7 +2195,8 @@ window.BENCHMARK_DATA = {
       "ae43e1f2",
       "22416e11",
       "e6ee3749",
-      "d5baef73"
+      "d5baef73",
+      "16d46b22"
     ],
     "datasets": [
       {
@@ -2206,7 +2246,8 @@ window.BENCHMARK_DATA = {
           9787.619030292217,
           9957.347856374887,
           9324.525813802084,
-          9356.952390034994
+          9356.952390034994,
+          7529.41606257512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2236,6 +2277,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2319,7 +2361,8 @@ window.BENCHMARK_DATA = {
           288987.43701171875,
           307115.0388183594,
           298102.9944661458,
-          307790.766671317
+          307790.766671317,
+          229010.78647460937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2372,6 +2415,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521573,
+          521594,
           521594,
           521594,
           521594
@@ -2652,6 +2696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
         "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
+      },
+      {
+        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
+        "message": "feat!: add WhoseProperties to IsObject (#1951)"
       }
     ],
     "labels": [
@@ -2698,7 +2748,8 @@ window.BENCHMARK_DATA = {
       "ae43e1f2",
       "22416e11",
       "e6ee3749",
-      "d5baef73"
+      "d5baef73",
+      "16d46b22"
     ],
     "datasets": [
       {
@@ -2748,7 +2799,8 @@ window.BENCHMARK_DATA = {
           3005.791082235483,
           2846.8184577396937,
           2834.0015637324404,
-          2814.846851348877
+          2814.846851348877,
+          2218.777467580942
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2793,6 +2845,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2861,7 +2914,8 @@ window.BENCHMARK_DATA = {
           2134.299333844866,
           2006.2863346980168,
           1934.3893112769495,
-          1928.3281036376952
+          1928.3281036376952,
+          1608.089585240682
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2873,6 +2927,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -3194,6 +3249,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
         "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
+      },
+      {
+        "sha": "16d46b226e57f21b7bde1b6e05a0b91058d53353",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
+        "message": "feat!: add WhoseProperties to IsObject (#1951)"
       }
     ],
     "labels": [
@@ -3240,7 +3301,8 @@ window.BENCHMARK_DATA = {
       "ae43e1f2",
       "22416e11",
       "e6ee3749",
-      "d5baef73"
+      "d5baef73",
+      "16d46b22"
     ],
     "datasets": [
       {
@@ -3290,7 +3352,8 @@ window.BENCHMARK_DATA = {
           2215.4041298457555,
           2111.455764452616,
           2011.4980986458916,
-          2050.1515513102213
+          2050.1515513102213,
+          1664.0862977164131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3345,7 +3408,8 @@ window.BENCHMARK_DATA = {
           2848,
           2848,
           2848,
-          2848
+          2848,
+          2856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3403,7 +3467,8 @@ window.BENCHMARK_DATA = {
           2296.3830004374186,
           1936.6367230733235,
           1753.6066614786785,
-          1757.868075643267
+          1757.868075643267,
+          1514.8275981267293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3415,6 +3480,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
