@@ -222,6 +222,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
         "message": "refactor!: rename DifferentTo to NotEqualTo on the status code result (#1939)"
+      },
+      {
+        "sha": "3484beb947b5a6b83946754559f749b59b6552b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
+        "message": "feat!: use the core string options on reflection name filters (#1933)"
       }
     ],
     "labels": [
@@ -261,7 +267,8 @@ window.BENCHMARK_DATA = {
       "afefacb2",
       "5d6c3e4a",
       "dc36798f",
-      "7bc1d2a8"
+      "7bc1d2a8",
+      "3484beb9"
     ],
     "datasets": [
       {
@@ -304,7 +311,8 @@ window.BENCHMARK_DATA = {
           688.871600151062,
           689.144854765672,
           461.6032927195231,
-          549.2897597040449
+          549.2897597040449,
+          719.8362387975056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -344,6 +352,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -403,7 +412,8 @@ window.BENCHMARK_DATA = {
           721.1655401229858,
           700.0534820556641,
           519.4800776754107,
-          548.1114939176119
+          548.1114939176119,
+          766.5263762156169
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -415,6 +425,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -687,6 +698,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
         "message": "refactor!: rename DifferentTo to NotEqualTo on the status code result (#1939)"
+      },
+      {
+        "sha": "3484beb947b5a6b83946754559f749b59b6552b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
+        "message": "feat!: use the core string options on reflection name filters (#1933)"
       }
     ],
     "labels": [
@@ -726,7 +743,8 @@ window.BENCHMARK_DATA = {
       "afefacb2",
       "5d6c3e4a",
       "dc36798f",
-      "7bc1d2a8"
+      "7bc1d2a8",
+      "3484beb9"
     ],
     "datasets": [
       {
@@ -769,7 +787,8 @@ window.BENCHMARK_DATA = {
           4745.038444519043,
           4505.529690551758,
           3368.750720977783,
-          4311.383964538574
+          4311.383964538574,
+          4767.6935475667315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -813,6 +832,7 @@ window.BENCHMARK_DATA = {
           24306,
           24306,
           24307,
+          24276,
           24276,
           24276,
           24276,
@@ -868,7 +888,8 @@ window.BENCHMARK_DATA = {
           5288.010634358724,
           5168.3868326459615,
           4209.841989898681,
-          4589.769191996256
+          4589.769191996256,
+          5323.127604166667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -880,6 +901,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1092,6 +1114,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
         "message": "refactor!: rename DifferentTo to NotEqualTo on the status code result (#1939)"
+      },
+      {
+        "sha": "3484beb947b5a6b83946754559f749b59b6552b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
+        "message": "feat!: use the core string options on reflection name filters (#1933)"
       }
     ],
     "labels": [
@@ -1121,7 +1149,8 @@ window.BENCHMARK_DATA = {
       "afefacb2",
       "5d6c3e4a",
       "dc36798f",
-      "7bc1d2a8"
+      "7bc1d2a8",
+      "3484beb9"
     ],
     "datasets": [
       {
@@ -1154,7 +1183,8 @@ window.BENCHMARK_DATA = {
           2604.359392674764,
           2539.0659070332845,
           1765.821253712972,
-          2081.376038869222
+          2081.376038869222,
+          2607.6258257548016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1184,6 +1214,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1233,7 +1264,8 @@ window.BENCHMARK_DATA = {
           3682.93826751709,
           3333.295943705241,
           2542.8334930419924,
-          2881.8859361921036
+          2881.8859361921036,
+          3449.836916097005
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1245,6 +1277,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -1447,6 +1480,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:00:56 2026 \u002B0200",
         "message": "refactor!: rename DifferentTo to NotEqualTo on the status code result (#1939)"
+      },
+      {
+        "sha": "3484beb947b5a6b83946754559f749b59b6552b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
+        "message": "feat!: use the core string options on reflection name filters (#1933)"
       }
     ],
     "labels": [
@@ -1476,7 +1515,8 @@ window.BENCHMARK_DATA = {
       "afefacb2",
       "5d6c3e4a",
       "dc36798f",
-      "7bc1d2a8"
+      "7bc1d2a8",
+      "3484beb9"
     ],
     "datasets": [
       {
@@ -1509,7 +1549,8 @@ window.BENCHMARK_DATA = {
           14361.160401916504,
           13975.433365958077,
           10125.802240224984,
-          10461.290688650948
+          10461.290688650948,
+          14538.600813293457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1539,6 +1580,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -1588,7 +1630,8 @@ window.BENCHMARK_DATA = {
           363182.51481119794,
           353419.3955829327,
           221415.20205078126,
-          251876.168359375
+          251876.168359375,
+          352132.356633113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1626,6 +1669,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
