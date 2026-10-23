@@ -85,9 +85,9 @@ for `MatchesExactly`, `IsValidXmlMatchingExactly` and [`AsXml()`](./01-strings.m
 `Matches` and `IsValidXmlMatching` use it by default:
 
 ```csharp
-string order = """<order id="42" status="open"><item sku="A1" /></order>""";
+string album = """<album id="42" year="1969"><track title="Come Together" /></album>""";
 
-await Expect.That(order).IsEqualTo("""<order id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await Expect.That(album).IsEqualTo("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 The additional nodes are ignored on every level, and the expected nodes are still compared, so that missing nodes,
@@ -109,20 +109,20 @@ for `Matches`, `MatchesExactly`, `IsValidXmlMatching`, `IsValidXmlMatchingExactl
 [`AsXml()`](./01-strings.md#string-comparison-as-xml):
 
 ```csharp
-string order = """<order id="42" createdAt="2026-10-17"><item sku="A1" etag="x1" /></order>""";
+string album = """<album id="42" createdAt="2026-10-17"><track title="Come Together" etag="x1" /></album>""";
 
-await Expect.That(order).IsEqualTo("""<order id="1"><item sku="A1" /></order>""")
+await Expect.That(album).IsEqualTo("""<album id="1"><track title="Come Together" /></album>""")
     .AsXml(o => o
-        .IgnoringMember("/order/@id")
+        .IgnoringMember("/album/@id")
         .IgnoringMember("@createdAt")
         .Ignoring(path => path.EndsWith("/@etag")));
 ```
 
 `IgnoringMember` matches whole trailing segments of the [path](./01-strings.md#string-comparison-as-xml):
-`"@createdAt"` ignores the attribute on every element and `"item/@id"` the attribute of every `item`, while a path
-starting with `/`, e.g. `"/order/@id"`, only ignores this member. A segment without a position, e.g. `item`, matches
-every element of the name, and `item[2]` only the second. The names are compared case-sensitively, as in XML. Like
-the paths, they are local names, so that `"item"` ignores an `item` in every namespace, unlike
+`"@createdAt"` ignores the attribute on every element and `"track/@id"` the attribute of every `track`, while a path
+starting with `/`, e.g. `"/album/@id"`, only ignores this member. A segment without a position, e.g. `track`, matches
+every element of the name, and `track[2]` only the second. The names are compared case-sensitively, as in XML. Like
+the paths, they are local names, so that `"track"` ignores a `track` in every namespace, unlike
 [`HasElement`](./03-navigation.md#names-and-namespaces), which looks up the name with its namespace. `Ignoring`
 receives the path of every compared member instead.
 
@@ -132,7 +132,7 @@ when the expectation fails:
 
 ```text title="Failure message"
 XML options:
- - ignore members: ["/order/@id", "@createdAt", path => path.EndsWith("/@etag")]
+ - ignore members: ["/album/@id", "@createdAt", path => path.EndsWith("/@etag")]
 ```
 
 A member to ignore that matched no compared path is named in a failure, with the path it most likely meant, as a
@@ -153,20 +153,21 @@ is not needed.
 By default, the order of the child elements and texts is significant. You can ignore it for all compared elements:
 
 ```csharp
-XElement order = XElement.Parse("""<order><item sku="B2" /><item sku="A1" /></order>""");
+XElement album = XElement.Parse("""<album><track title="Something" /><track title="Come Together" /></album>""");
 
-await Expect.That(order).MatchesExactly("""<order><item sku="A1" /><item sku="B2" /></order>""",
+await Expect.That(album).MatchesExactly("""<album><track title="Come Together" /><track title="Something" /></album>""",
     o => o.IgnoringElementOrder());
 ```
 
 Each expected child is paired with the first unpaired child of the subject with the same name that matches it. The
 remaining children of the same name are paired in their order, so that their differences are reported, e.g.
-`/order/item[1]/@sku was "C3" instead of "A1"`, and the children that are still unpaired are reported as missing or
-unexpected. This greedy pairing can fail when [additional nodes](#additional-nodes) are ignored, e.g. by `Matches`,
-and an expected child matches several children of the subject, even if another pairing would succeed.
+`/album/track[1]/@title was "Here Comes the Sun" instead of "Come Together"`, and the children that are still
+unpaired are reported as missing or unexpected. This greedy pairing can fail when [additional nodes](#additional-nodes)
+are ignored, e.g. by `Matches`, and an expected child matches several children of the subject, even if another pairing
+would succeed.
 
 The texts are paired like the elements, so that the order of the texts in mixed content, e.g. `<p>a<b/>c</p>`, is
 ignored as well.
 
 As the children are no longer paired by their position, a position in a [member to ignore](#ignoring-members), e.g.
-`item[2]`, refers to the child at this position in each document.
+`track[2]`, refers to the child at this position in each document.

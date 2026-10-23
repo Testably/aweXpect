@@ -14,32 +14,32 @@ Describes the possible expectations for strings that contain XML.
 You can verify that a string is equal to the expected XML, compared by its content instead of its formatting:
 
 ```csharp
-string order = """<order id="42"><item sku="A1" price="1.0"/></order>""";
+string album = """<album id="42"><track title="Come Together" durationSeconds="259.0"/></album>""";
 string expected = """
-                  <order id="42">
-                    <item price="1.00" sku="A1" />
-                  </order>
+                  <album id="42">
+                    <track durationSeconds="259" title="Come Together" />
+                  </album>
                   """;
 
-await Expect.That(order).IsEqualTo(expected).AsXml();
+await Expect.That(album).IsEqualTo(expected).AsXml();
 ```
 
-As the price differs, the expectation fails with:
+As the duration differs, the expectation fails with:
 
 ```text title="Failure message"
-Expected that order
-is XML equivalent to <order id="42">
-  <item price="1.00" sku="A1" />
-</order>,
-but it differed as /order/item/@price was "1.0" instead of "1.00"
+Expected that album
+is XML equivalent to <album id="42">
+  <track durationSeconds="259" title="Come Together" />
+</album>,
+but it differed as /album/track/@durationSeconds was "259.0" instead of "259"
 
 Actual:
-<order id="42"><item sku="A1" price="1.0"/></order>
+<album id="42"><track title="Come Together" durationSeconds="259.0"/></album>
 
 Expected:
-<order id="42">
-  <item price="1.00" sku="A1" />
-</order>
+<album id="42">
+  <track durationSeconds="259" title="Come Together" />
+</album>
 ```
 
 The documents are equivalent, when they only differ in
@@ -54,7 +54,7 @@ Texts and attribute values are compared exactly, including leading and trailing 
 child elements is significant, unless you [ignore the element order](./02-matching.md#element-order).
 
 Each difference names the path of the node: every element by its local name, followed by its position among the
-siblings of the same name, if there are several, e.g. `/order/item[2]/@price`, and every text as `text()`. The child
+siblings of the same name, if there are several, e.g. `/album/track[2]/@title`, and every text as `text()`. The child
 elements are paired by this path, so an additional element is reported as unexpected instead of shifting the elements
 after it, and a different order is reported once for their parent.
 
@@ -65,15 +65,15 @@ the subject to compare it with a part of the XML, e.g. `AsXml(o => o.IgnoringAdd
 If the subject is not valid XML, the expectation fails with the reason:
 
 ```text title="Failure message"
-Expected that order
-is XML equivalent to <order id="42" />,
-but it was "<order id=\"42\">", which could not be parsed as XML: Unexpected end of file has occurred. The following elements are not closed: order. Line 1, position 16.
+Expected that album
+is XML equivalent to <album id="42" />,
+but it was "<album id=\"42\">", which could not be parsed as XML: Unexpected end of file has occurred. The following elements are not closed: album. Line 1, position 16.
 
 Actual:
-<order id="42">
+<album id="42">
 
 Expected:
-<order id="42" />
+<album id="42" />
 ```
 
 The expected string must be valid XML, otherwise an `ArgumentException` is thrown. Like for [validation](#validation),
@@ -85,15 +85,15 @@ on `Contains` or `DoesNotContain` for a string subject.
 exception:
 
 ```csharp
-await Expect.That(orders).All().AreEqualTo("""<order id="42" />""").AsXml();
-await Expect.That(orders).Contains("""<order id="42" />""").AsXml();
+await Expect.That(albums).All().AreEqualTo("""<album id="42" />""").AsXml();
+await Expect.That(albums).Contains("""<album id="42" />""").AsXml();
 await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("""<error code="42" />""").AsXml();
 ```
 
 The options are available there as well, e.g. to find an item that contains the expected XML:
 
 ```csharp
-await Expect.That(orders).Contains("""<order id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await Expect.That(albums).Contains("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 ## Validation

@@ -15,23 +15,23 @@ You can verify that an [`XElement`](https://learn.microsoft.com/en-us/dotnet/api
 attribute, and add expectations on its value with all string expectations of aweXpect:
 
 ```csharp
-XElement item = XElement.Parse("""<item sku="A1" price="1.00" />""");
+XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles" />""");
 
-await Expect.That(item)
-    .HasAttribute("sku").And
-    .HasAttribute("price", price => price.StartsWith("1.")).And
-    .DoesNotHaveAttribute("discount");
+await Expect.That(track)
+    .HasAttribute("title").And
+    .HasAttribute("artist", artist => artist.StartsWith("The")).And
+    .DoesNotHaveAttribute("explicit");
 ```
 
-If the price was "2.00" instead, the expectation would fail with:
+If the artist was "Paul McCartney" instead, the expectation would fail with:
 
 ```text title="Failure message"
-Expected that item
-has attribute "sku" and has attribute "price" whose value starts with "1." and does not have attribute "discount",
-but value of attribute "price" was "2.00", which differs at index 0:
+Expected that track
+has attribute "title" and has attribute "artist" whose value starts with "The" and does not have attribute "explicit",
+but value of attribute "artist" was "Paul McCartney", which differs at index 0:
    ↓ (actual)
-  "2.00"
-  "1."
+  "Paul McCartney"
+  "The"
    ↑ (expected prefix)
 ```
 
@@ -43,12 +43,12 @@ element did not have the attribute.
 You can verify that an element has a child element, and add expectations on it:
 
 ```csharp
-XElement order = XElement.Parse("""<order><customer><address city="Liverpool" /></customer></order>""");
+XElement album = XElement.Parse("""<album><artist><origin city="Liverpool" /></artist></album>""");
 
-await Expect.That(order).HasElement("customer", customer => customer
-    .HasElement("address", address => address
+await Expect.That(album).HasElement("artist", artist => artist
+    .HasElement("origin", origin => origin
         .HasAttribute("city", city => city.IsEqualTo("Liverpool"))));
-await Expect.That(order).DoesNotHaveElement("note");
+await Expect.That(album).DoesNotHaveElement("bonusTrack");
 ```
 
 Only the direct child elements are looked up, and the expectations are verified on the first child element with the
@@ -56,7 +56,7 @@ name, like by [`XElement.Element(name)`](https://learn.microsoft.com/en-us/dotne
 To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 
 ```csharp
-await Expect.That(order).HasElement("customer", customer => customer.Matches("""<customer><address /></customer>"""));
+await Expect.That(album).HasElement("artist", artist => artist.Matches("""<artist><origin /></artist>"""));
 ```
 
 To verify all child elements with a name, select them with
@@ -65,26 +65,27 @@ To verify all child elements with a name, select them with
 [quantifiers](https://docs.testably.org/aweXpect/collections/items#quantifiers) with `ComplyWith(…)`:
 
 ```csharp
-XElement order = XElement.Parse("""<order><item sku="A1" /><item sku="B2" /><note /></order>""");
+XElement album = XElement.Parse(
+    """<album title="Abbey Road"><track title="Come Together" /><track title="Something" /><artist name="The Beatles" /></album>""");
 
-await Expect.That(order).Whose(o => o.Elements("item"), items => items.HasCount(2));
-await Expect.That(order).Whose(o => o.Elements("item"), items => items
-    .All().ComplyWith(item => item.HasAttribute("sku")));
+await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks.HasCount(2));
+await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks
+    .All().ComplyWith(track => track.HasAttribute("title")));
 ```
 
-With a third `<item sku="C3" />`, the first expectation would fail with the following message. As `Elements(…)` is
-only enumerated as far as needed, it states a lower bound:
+With a third `<track title="Here Comes the Sun" />`, the first expectation would fail with the following message. As
+`Elements(…)` is only enumerated as far as needed, it states a lower bound:
 
 ```text title="Failure message"
-Expected that order
-whose Elements("item") have exactly 2 items,
-but Elements("item") had at least 3 items
+Expected that album
+whose Elements("track") have exactly 2 items,
+but Elements("track") had at least 3 items
 
-Collection (Elements("item")):
+Collection (Elements("track")):
 [
-  <item sku="A1" />,
-  <item sku="B2" />,
-  <item sku="C3" />,
+  <track title="Come Together" />,
+  <track title="Something" />,
+  <track title="Here Comes the Sun" />,
   (… and maybe more)
 ]
 ```
@@ -121,14 +122,14 @@ All these expectations are also available for an
 [`XDocument`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xdocument) and apply to its root element:
 
 ```csharp
-XDocument document = XDocument.Parse("""<order id="42"><customer /></order>""");
+XDocument document = XDocument.Parse("""<album id="42"><artist /></album>""");
 
 await Expect.That(document).HasAttribute("id");
-await Expect.That(document).HasElement("customer", customer => customer.Matches("<customer />"));
-await Expect.That(document).DoesNotHaveElement("note");
+await Expect.That(document).HasElement("artist", artist => artist.Matches("<artist />"));
+await Expect.That(document).DoesNotHaveElement("bonusTrack");
 ```
 
-`HasElement` looks up a child element of the root element, so `HasElement("order")` fails for this document, unlike
+`HasElement` looks up a child element of the root element, so `HasElement("album")` fails for this document, unlike
 [`XDocument.Element(name)`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xcontainer.element), which
 returns the root element itself. A document without a root element fails, also when the expectation is negated:
 
@@ -146,10 +147,10 @@ but not by their prefix. A child element inherits the default namespace of its p
 namespace:
 
 ```csharp
-XNamespace shop = "urn:shop";
-XElement order = XElement.Parse("""<order xmlns="urn:shop"><item sku="A1" /></order>""");
+XNamespace music = "urn:music";
+XElement album = XElement.Parse("""<album xmlns="urn:music"><track title="Come Together" /></album>""");
 
-await Expect.That(order).HasElement(shop + "item", item => item.HasAttribute("sku"));
+await Expect.That(album).HasElement(music + "track", track => track.HasAttribute("title"));
 ```
 
-A name in a namespace is shown as `{urn:shop}item` in the failure message.
+A name in a namespace is shown as `{urn:music}track` in the failure message.

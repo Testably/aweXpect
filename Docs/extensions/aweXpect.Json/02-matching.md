@@ -226,24 +226,25 @@ when it differs from the expected number by at most the tolerance, and with `Com
 by at most the percentage of the expected number. The option can be combined with the other options:
 
 ```csharp
-JsonElement invoice = JsonDocument.Parse("""{"total": 0.30000000000000004, "tax": 0.0575}""").RootElement;
+JsonElement album = JsonDocument.Parse("""{"durationMinutes": 47.050000000000004, "rating": 4.6005}""").RootElement;
 
-await Expect.That(invoice).MatchesExactly(new { total = 0.3, tax = 0.057m },
+await Expect.That(album).MatchesExactly(new { durationMinutes = 47.05, rating = 4.6m },
     o => o.ComparingNumbersWithin(0.001));
-await Expect.That(invoice).MatchesExactly(new { tax = 0.057m },
+await Expect.That(album).MatchesExactly(new { rating = 4.6m },
     o => o.ComparingNumbersWithin(1).Percent().IgnoringAdditionalProperties());
 ```
 
 The tolerance applies to every number in the compared JSON, also to integers such as ids or counts. Like the
 [tolerance in aweXpect](https://docs.testably.org/aweXpect/values/number#tolerance), a relative tolerance only matches
 an equal number when the expected number is `0`. The numbers are compared as `double`, so numbers outside its range are
-compared by their text. For a product `{"name": "Guitar", "price": 110}`,
-`MatchesExactly(new { name = "Guitar", price = 100 }, o => o.ComparingNumbersWithin(5).Percent())` would fail with:
+compared by their text. For a track `{"title": "Hey Jude", "durationSeconds": 431}`,
+`MatchesExactly(new { title = "Hey Jude", durationSeconds = 400 }, o => o.ComparingNumbersWithin(5).Percent())` would
+fail with:
 
 ```text title="Failure message"
-Expected that product
-matches new { name = "Guitar", price = 100 } exactly,
-but it differed as $.price was 110 instead of 100 ± 5%
+Expected that track
+matches new { title = "Hey Jude", durationSeconds = 400 } exactly,
+but it differed as $.durationSeconds was 431 instead of 400 ± 5%
 
 JSON options:
  - compare numbers within ± 5%

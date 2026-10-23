@@ -167,21 +167,20 @@ With `TreatingNullAsAbsent()`, a property with the value `null` counts as absent
 property fails as if it did not exist, and `With(…).Properties()` does not count it:
 
 ```csharp
-JsonElement user = JsonDocument.Parse("""{"name": "John", "passwordHash": null}""").RootElement;
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "label": null}""").RootElement;
 
-await Expect.That(user).IsObject(o => o
-    .With("name").Matching("John").And
-    .Without("passwordHash"),
+await Expect.That(track).IsObject(o => o
+    .With("title").Matching("Let It Be").And
+    .Without("label"),
     o => o.TreatingNullAsAbsent());
 ```
 
-With `.With("passwordHash").Matching("8f14e4")` instead of `.Without("passwordHash")`, the expectation would fail
-with:
+With `.With("label").Matching("Apple")` instead of `.Without("label")`, the expectation would fail with:
 
 ```text title="Failure message"
-Expected that user
-is an object and $.name matches "John" and $.passwordHash matches "8f14e4",
-but it differed as property $.passwordHash did not exist
+Expected that track
+is an object and $.title matches "Let It Be" and $.label matches "Apple",
+but it differed as property $.label did not exist
 
 JSON options:
  - ignore additional properties
