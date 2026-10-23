@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "fe413769d7b2d5c371fae9dae4e8394586b5c644",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
-        "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
-      },
-      {
         "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
         "message": "feat!: add WhoseProperties to IsObject (#1951)"
+      },
+      {
+        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
+        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
       }
     ],
     "labels": [
-      "fe413769",
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "22416e11",
       "e6ee3749",
       "d5baef73",
-      "16d46b22"
+      "16d46b22",
+      "3009dddd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1153.9634455362955,
           1014.881681060791,
           900.8595012937274,
           900.7302189509074,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           380.37860101064047,
           744.4790108362834,
           727.4398652590238,
-          687.6225208135752
+          687.6225208135752,
+          669.846203327179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1816,
           1488,
           1312,
           1312,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
+          1120,
           1120
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          781.9141397476196,
           727.8090354283651,
           751.0237486179059,
           682.8371315638225,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           375.42850259145104,
           734.0773932774862,
           787.2371487935384,
-          653.1366762161255
+          653.1366762161255,
+          833.1058286031088
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "fe413769d7b2d5c371fae9dae4e8394586b5c644",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:04:53 2026 \u002B0200",
-        "message": "refactor: speed up architecture rules on the types of an assembly (#1893)"
-      },
-      {
         "sha": "3514e5d3bfab44d5333713f720a8f883c8e4bdab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:09:35 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
         "message": "feat!: add WhoseProperties to IsObject (#1951)"
+      },
+      {
+        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
+        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
       }
     ],
     "labels": [
-      "fe413769",
       "3514e5d3",
       "dd7508bd",
       "39b404f7",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "22416e11",
       "e6ee3749",
       "d5baef73",
-      "16d46b22"
+      "16d46b22",
+      "3009dddd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13387.325060163226,
           11934.761827741351,
           5255.899936676025,
           4890.580227661133,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           2466.465458733695,
           4631.3232564290365,
           4671.674237823487,
-          4253.485717479999
+          4253.485717479999,
+          5281.6227289835615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          34885,
           34661,
           24487,
           24487,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24047,
           24114,
           24114,
+          24114,
           24114
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          6425.82346089681,
           5026.074538094656,
           5954.222114562988,
           5368.210540262858,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2977.0737581888834,
           5362.702480570475,
           5237.3856796264645,
-          4968.687184470041
+          4968.687184470041,
+          6220.015347290039
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1486,6 +1486,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
         "message": "feat!: add WhoseProperties to IsObject (#1951)"
+      },
+      {
+        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
+        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
       }
     ],
     "labels": [
@@ -1533,7 +1539,8 @@ window.BENCHMARK_DATA = {
       "22416e11",
       "e6ee3749",
       "d5baef73",
-      "16d46b22"
+      "16d46b22",
+      "3009dddd"
     ],
     "datasets": [
       {
@@ -1584,7 +1591,8 @@ window.BENCHMARK_DATA = {
           1440.060157394409,
           2709.2063933781214,
           2897.2843472798663,
-          2536.6368111830493
+          2536.6368111830493,
+          2955.6037590026854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1614,6 +1622,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1699,7 +1708,8 @@ window.BENCHMARK_DATA = {
           1835.030376140888,
           3622.437141418457,
           3555.610352834066,
-          3468.5069301311787
+          3468.5069301311787,
+          3932.7633855183917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1711,6 +1721,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -2039,6 +2050,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:23:40 2026 \u002B0200",
         "message": "feat!: add WhoseProperties to IsObject (#1951)"
+      },
+      {
+        "sha": "3009ddddf859f50e49a24b6bc9fbac7a8314b1cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
+        "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
       }
     ],
     "labels": [
@@ -2086,7 +2103,8 @@ window.BENCHMARK_DATA = {
       "22416e11",
       "e6ee3749",
       "d5baef73",
-      "16d46b22"
+      "16d46b22",
+      "3009dddd"
     ],
     "datasets": [
       {
@@ -2137,7 +2155,8 @@ window.BENCHMARK_DATA = {
           7359.608285013835,
           14013.3724512736,
           14520.745642344156,
-          13777.0287012736
+          13777.0287012736,
+          14251.028913370768
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2167,6 +2186,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -2252,7 +2272,8 @@ window.BENCHMARK_DATA = {
           175527.31158916766,
           358560.3517903646,
           373734.6132486979,
-          337475.0770089286
+          337475.0770089286,
+          288561.75743689906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2308,7 +2329,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
