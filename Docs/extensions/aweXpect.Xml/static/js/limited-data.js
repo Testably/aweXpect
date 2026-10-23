@@ -240,6 +240,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
         "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
+      },
+      {
+        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
+        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
       }
     ],
     "labels": [
@@ -282,7 +288,8 @@ window.BENCHMARK_DATA = {
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
-      "e0f2a99b"
+      "e0f2a99b",
+      "fc3af334"
     ],
     "datasets": [
       {
@@ -328,7 +335,8 @@ window.BENCHMARK_DATA = {
           549.2897597040449,
           719.8362387975056,
           708.4235638890948,
-          536.8505692799886
+          536.8505692799886,
+          735.9491341454642
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -368,6 +376,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -433,7 +442,8 @@ window.BENCHMARK_DATA = {
           548.1114939176119,
           766.5263762156169,
           689.4215946878705,
-          547.9274965694973
+          547.9274965694973,
+          740.7163291931153
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -445,6 +455,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -738,6 +749,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
         "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
+      },
+      {
+        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
+        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
       }
     ],
     "labels": [
@@ -780,7 +797,8 @@ window.BENCHMARK_DATA = {
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
-      "e0f2a99b"
+      "e0f2a99b",
+      "fc3af334"
     ],
     "datasets": [
       {
@@ -826,7 +844,8 @@ window.BENCHMARK_DATA = {
           4311.383964538574,
           4767.6935475667315,
           4387.53095703125,
-          3525.887078603109
+          3525.887078603109,
+          4624.279370117188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -877,7 +896,8 @@ window.BENCHMARK_DATA = {
           24276,
           24276,
           24276,
-          24207
+          24207,
+          24276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -931,7 +951,8 @@ window.BENCHMARK_DATA = {
           4589.769191996256,
           5323.127604166667,
           4897.998097991944,
-          4003.3511912027993
+          4003.3511912027993,
+          5212.6344126383465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -943,6 +964,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1176,6 +1198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
         "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
+      },
+      {
+        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
+        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
       }
     ],
     "labels": [
@@ -1208,7 +1236,8 @@ window.BENCHMARK_DATA = {
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
-      "e0f2a99b"
+      "e0f2a99b",
+      "fc3af334"
     ],
     "datasets": [
       {
@@ -1244,7 +1273,8 @@ window.BENCHMARK_DATA = {
           2081.376038869222,
           2607.6258257548016,
           2450.902168273926,
-          1966.589892754188
+          1966.589892754188,
+          2674.897450256348
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1274,6 +1304,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1329,7 +1360,8 @@ window.BENCHMARK_DATA = {
           2881.8859361921036,
           3449.836916097005,
           3406.03165957133,
-          2652.700845173427
+          2652.700845173427,
+          3546.3580406188967
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1341,6 +1373,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -1564,6 +1597,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
         "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
+      },
+      {
+        "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
+        "message": "refactor!: take nested JSON expectations as an Action (#1937)"
       }
     ],
     "labels": [
@@ -1596,7 +1635,8 @@ window.BENCHMARK_DATA = {
       "7bc1d2a8",
       "3484beb9",
       "ff85110d",
-      "e0f2a99b"
+      "e0f2a99b",
+      "fc3af334"
     ],
     "datasets": [
       {
@@ -1632,7 +1672,8 @@ window.BENCHMARK_DATA = {
           10461.290688650948,
           14538.600813293457,
           12979.850832257953,
-          10247.159865315754
+          10247.159865315754,
+          14160.4780960083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1662,6 +1703,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -1717,7 +1759,8 @@ window.BENCHMARK_DATA = {
           251876.168359375,
           352132.356633113,
           307299.84892578126,
-          251041.4080078125
+          251041.4080078125,
+          359860.0840657552
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1758,7 +1801,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544267
+          544267,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
