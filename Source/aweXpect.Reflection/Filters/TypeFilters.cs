@@ -178,7 +178,7 @@ public static partial class TypeFilters
 		/// <summary>
 		///     Returns a copy of this filter that uses the given <paramref name="quantifier" />.
 		/// </summary>
-		public IFilter<Type> WithQuantifier(Quantifier quantifier)
+		public ContainedMembersFilter<TMember, TFiltered> WithQuantifier(Quantifier quantifier)
 			=> new ContainedMembersFilter<TMember, TFiltered>(this, quantifier);
 
 #if NET8_0_OR_GREATER
