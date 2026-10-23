@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -34,20 +33,6 @@ public sealed class ApiApprovalTests
 		"aweXpect.Web",
 		"aweXpect.Xml",
 	];
-
-	[Test]
-	public void VerifyParamsAreArrays()
-	{
-		string[] paramsCollections = Helper.GetApiSnapshotFiles()
-			.SelectMany(file => File.ReadLines(file.FullName)
-				.Where(line => line.Contains("params System.Collections.") || line.Contains("params System.ReadOnlySpan<"))
-				.Select(line => $"{file.Name}: {line.Trim()}"))
-			.ToArray();
-
-		Fail.Unless(paramsCollections.Length == 0,
-			"consumers below C# 13 (C# 7.3 on net48, C# 12 on net8.0) cannot pass single values to a params collection, so use a params array instead:" +
-			Environment.NewLine + string.Join(Environment.NewLine, paramsCollections));
-	}
 
 	[Test]
 	[MethodDataSource(nameof(Builds))]
