@@ -234,6 +234,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
         "message": "docs: write down the API conventions of extension packages (#1954)"
+      },
+      {
+        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
+        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
       }
     ],
     "labels": [
@@ -275,7 +281,8 @@ window.BENCHMARK_DATA = {
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
-      "ff85110d"
+      "ff85110d",
+      "e0f2a99b"
     ],
     "datasets": [
       {
@@ -320,7 +327,8 @@ window.BENCHMARK_DATA = {
           735.0336608250935,
           695.2478783471244,
           392.02585176626843,
-          726.2985399246215
+          726.2985399246215,
+          364.4932472229004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -365,6 +373,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -423,7 +432,8 @@ window.BENCHMARK_DATA = {
           924.2706160227458,
           881.9908828735352,
           498.7891509873526,
-          903.5236897835365
+          903.5236897835365,
+          504.5965037663778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -435,6 +445,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -721,6 +732,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
         "message": "docs: write down the API conventions of extension packages (#1954)"
+      },
+      {
+        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
+        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
       }
     ],
     "labels": [
@@ -762,7 +779,8 @@ window.BENCHMARK_DATA = {
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
-      "ff85110d"
+      "ff85110d",
+      "e0f2a99b"
     ],
     "datasets": [
       {
@@ -807,7 +825,8 @@ window.BENCHMARK_DATA = {
           123.26587247848511,
           118.36903059482574,
           64.64869279066721,
-          115.73385956654182
+          115.73385956654182,
+          60.07044177850087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -847,6 +866,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -910,7 +930,8 @@ window.BENCHMARK_DATA = {
           227.35853638648987,
           199.3209557703563,
           118.20192326818194,
-          203.39102465311686
+          203.39102465311686,
+          116.78994107246399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -922,6 +943,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1208,6 +1230,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
         "message": "docs: write down the API conventions of extension packages (#1954)"
+      },
+      {
+        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
+        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
       }
     ],
     "labels": [
@@ -1249,7 +1277,8 @@ window.BENCHMARK_DATA = {
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
-      "ff85110d"
+      "ff85110d",
+      "e0f2a99b"
     ],
     "datasets": [
       {
@@ -1294,7 +1323,8 @@ window.BENCHMARK_DATA = {
           1978.5029833657402,
           1886.3592425755091,
           960.8839093526204,
-          1916.668439047677
+          1916.668439047677,
+          1016.181319173177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1334,6 +1364,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -1397,7 +1428,8 @@ window.BENCHMARK_DATA = {
           1556.2892356872558,
           1495.4124948183696,
           816.4834636279514,
-          1474.6396399180094
+          1474.6396399180094,
+          935.9064225514729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1447,7 +1479,8 @@ window.BENCHMARK_DATA = {
           1985,
           1985,
           1897,
-          1897
+          1897,
+          1985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1635,6 +1668,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
         "message": "docs: write down the API conventions of extension packages (#1954)"
+      },
+      {
+        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
+        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
       }
     ],
     "labels": [
@@ -1666,7 +1705,8 @@ window.BENCHMARK_DATA = {
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
-      "ff85110d"
+      "ff85110d",
+      "e0f2a99b"
     ],
     "datasets": [
       {
@@ -1701,7 +1741,8 @@ window.BENCHMARK_DATA = {
           2792.1621082850866,
           2743.764070892334,
           1348.7520407358804,
-          2770.872496678279
+          2770.872496678279,
+          1370.8455539067586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1740,6 +1781,7 @@ window.BENCHMARK_DATA = {
           2984,
           2984,
           2984,
+          3040,
           3040,
           3040
         ],
@@ -1784,7 +1826,8 @@ window.BENCHMARK_DATA = {
           4020.1825877598353,
           3717.8656707176797,
           2114.974601491292,
-          3824.6407351175944
+          3824.6407351175944,
+          2089.1836670466832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1822,6 +1865,7 @@ window.BENCHMARK_DATA = {
           4012,
           4012,
           4012,
+          4011,
           4011,
           4011,
           4011
@@ -2012,6 +2056,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
         "message": "docs: write down the API conventions of extension packages (#1954)"
+      },
+      {
+        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
+        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
       }
     ],
     "labels": [
@@ -2043,7 +2093,8 @@ window.BENCHMARK_DATA = {
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
-      "ff85110d"
+      "ff85110d",
+      "e0f2a99b"
     ],
     "datasets": [
       {
@@ -2078,7 +2129,8 @@ window.BENCHMARK_DATA = {
           380.3215257644653,
           377.2456592779893,
           179.27168081356928,
-          396.58689578374225
+          396.58689578374225,
+          185.58334198364844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2108,6 +2160,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -2161,7 +2214,8 @@ window.BENCHMARK_DATA = {
           2356.0719648507925,
           2184.9355634961807,
           1266.1127784435566,
-          2290.9949471609934
+          2290.9949471609934,
+          1319.0333035786946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2173,6 +2227,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2389,6 +2444,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
         "message": "docs: write down the API conventions of extension packages (#1954)"
+      },
+      {
+        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
+        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
       }
     ],
     "labels": [
@@ -2420,7 +2481,8 @@ window.BENCHMARK_DATA = {
       "dc36798f",
       "7bc1d2a8",
       "3484beb9",
-      "ff85110d"
+      "ff85110d",
+      "e0f2a99b"
     ],
     "datasets": [
       {
@@ -2455,7 +2517,8 @@ window.BENCHMARK_DATA = {
           3631.4875133220967,
           3422.695751953125,
           1871.756382533482,
-          3504.784599939982
+          3504.784599939982,
+          1982.2974724402795
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2485,6 +2548,7 @@ window.BENCHMARK_DATA = {
           3697,
           3697,
           3697,
+          3673,
           3673,
           3673,
           3673,
@@ -2538,7 +2602,8 @@ window.BENCHMARK_DATA = {
           281182.06504603795,
           278862.54150390625,
           166251.1407470703,
-          278197.02315848216
+          278197.02315848216,
+          172192.001953125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2570,6 +2635,7 @@ window.BENCHMARK_DATA = {
           17609,
           17608,
           17608,
+          17609,
           17609,
           17609,
           17609,
