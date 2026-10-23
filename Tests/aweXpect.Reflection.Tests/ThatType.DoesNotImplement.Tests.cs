@@ -35,40 +35,6 @@ public sealed partial class ThatType
 			}
 
 			[Test]
-			public async Task WhenTypeImplementsDirectly_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(ClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotImplement<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not directly implement ThatType.ITestInterface,
-					             but it did
-
-					             Actual:
-					             ThatType.ClassWithInterface
-					             """);
-			}
-
-			[Test]
-			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedFromClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotImplement<ITestInterface>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
 			public async Task WhenTypeImplementsInterface_ShouldFail()
 			{
 				Type subject = typeof(ClassWithInterface);

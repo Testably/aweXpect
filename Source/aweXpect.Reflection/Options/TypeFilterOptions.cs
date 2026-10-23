@@ -75,5 +75,5 @@ public class TypeFilterOptions
 	/// <summary>
 	///     Registers a <paramref name="type" />.
 	/// </summary>
-	public void RegisterType(Type type, bool forceDirect) => _types.Add((type, forceDirect));
+	public void RegisterType(Type type, bool exactly) => _types.Add((type, exactly));
 }

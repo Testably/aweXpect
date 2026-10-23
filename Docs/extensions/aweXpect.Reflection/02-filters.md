@@ -156,7 +156,9 @@ outside the namespace.
 | generic                   | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`                 | `.AreGeneric()`                 |
 | nested                    | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`                  | `.AreNested()`                  |
 | inherits from             | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`           | `.InheritFrom<T>()`             |
+| inherits directly from    | `.WhichInheritDirectlyFrom<T>()`                | `.InheritsDirectlyFrom<T>()`   | `.InheritDirectlyFrom<T>()`     |
 | implements                | `.WhichImplement<T>()`                          | `.Implements<T>()`             | `.Implement<T>()`               |
+| implements directly       | `.WhichImplementDirectly<T>()`                  | `.ImplementsDirectly<T>()`     | `.ImplementDirectly<T>()`       |
 | assignable to             | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`         | `.AreAssignableTo<T>()`         |
 | assignable from           | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`       | `.AreAssignableFrom<T>()`       |
 | instantiable              | `.WhichAreInstantiable()`                       | `.IsInstantiable()`            | `.AreInstantiable()`            |
@@ -167,12 +169,17 @@ outside the namespace.
 | custom predicate          | `.Which(t => …)`                                | `.Satisfies(t => …)`           | `.All().Satisfy(t => …)`        |
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
-accept a generic argument or a `Type`, plus an optional `forceDirect` flag to require *direct* inheritance.
-Passing an interface throws; use `Implements` for that.
+accept a generic argument or a `Type`. The `…DirectlyFrom` variants require the base class to be the *direct*
+parent. Passing an interface throws; use `Implements` for that.
 
-`WhichImplement` / `Implements` consider only implemented **interfaces** (also with an optional `forceDirect`
-flag); passing a non-interface throws. With `forceDirect`, an interface reached only through a base class or
-through another implemented interface does not count as *directly* implemented.
+`WhichImplement` / `Implements` consider only implemented **interfaces**; passing a non-interface throws. For
+the `…Directly` variants, an interface reached only through a base class or through another implemented
+interface does not count as *directly* implemented.
+
+```csharp
+await Expect.That(typeof(OrderController)).InheritsDirectlyFrom<ControllerBase>();
+await Expect.That(typeof(OrderRepository)).ImplementsDirectly<IRepository>();
+```
 
 `IsAssignableTo` / `IsAssignableFrom` (and their `WhichAre…` / `Are…` forms) use runtime assignability, which
 covers base classes *and* interfaces in one step, treats a type as assignable to itself, and honors closed
@@ -211,7 +218,9 @@ await Expect.That(In.AssemblyContaining<MyRequest>()
 Every kind/modifier row above has a negated form. Most use `WhichAreNot…` on filters and
 `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
 `IsNotInstantiable()`). The *default constructor* row uses `WhichDoNotHaveADefaultConstructor()`,
-`DoesNotHaveADefaultConstructor()` and `DoNotHaveADefaultConstructor()`.
+`DoesNotHaveADefaultConstructor()` and `DoNotHaveADefaultConstructor()`. The *inherits* and *implements* rows
+use `WhichDoNot…`, `DoesNot…` and `DoNot…` (e.g. `WhichDoNotInheritDirectlyFrom<T>()`,
+`DoesNotImplementDirectly<T>()`, `DoNotImplement<T>()`).
 :::
 
 ### Types containing specific members

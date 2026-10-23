@@ -634,14 +634,14 @@ internal static class TypeHelpers
 	///     Determines whether the current <see cref="Type" /> implements the <paramref name="interfaceType" />.
 	/// </summary>
 	/// <remarks>
-	///     With <paramref name="forceDirect" /> a <paramref name="interfaceType" /> reached only through a base class or
+	///     With <paramref name="directly" /> a <paramref name="interfaceType" /> reached only through a base class or
 	///     through another implemented interface is excluded. Because the compiler emits the full transitive interface set
 	///     into the metadata, a redundantly declared interface (e.g. <c>class C : IDerived, IBase</c> where
 	///     <c>IDerived : IBase</c>) cannot be distinguished from an inherited one and is therefore treated as not direct.
 	/// </remarks>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <param name="interfaceType">The interface <see cref="Type" />.</param>
-	/// <param name="forceDirect">
+	/// <param name="directly">
 	///     If set to <see langword="false" /> (default value), the <paramref name="interfaceType" />
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <paramref name="interfaceType" /> to be implemented directly on the <paramref name="type" /> itself and not
@@ -650,7 +650,7 @@ internal static class TypeHelpers
 	public static bool Implements(
 		this Type type,
 		Type interfaceType,
-		bool forceDirect = false)
+		bool directly = false)
 	{
 		if (!interfaceType.IsInterface)
 		{
@@ -663,7 +663,7 @@ internal static class TypeHelpers
 		}
 
 		Type[] interfaces = type.GetInterfaces();
-		if (forceDirect)
+		if (directly)
 		{
 			List<Type> inherited = [];
 			foreach (Type @interface in interfaces)
@@ -746,7 +746,7 @@ internal static class TypeHelpers
 	/// </remarks>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <param name="baseClass">The base class to check inheritance from.</param>
-	/// <param name="forceDirect">
+	/// <param name="directly">
 	///     If set to <see langword="false" /> (default value), the <paramref name="baseClass" />
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <paramref name="baseClass" /> to be the direct parent.
@@ -754,7 +754,7 @@ internal static class TypeHelpers
 	public static bool InheritsFromClass(
 		this Type type,
 		Type baseClass,
-		bool forceDirect = false)
+		bool directly = false)
 	{
 		if (type == baseClass)
 		{
@@ -771,7 +771,7 @@ internal static class TypeHelpers
 				return true;
 			}
 
-			if (forceDirect && level++ > 0)
+			if (directly && level++ > 0)
 			{
 				return false;
 			}
@@ -865,22 +865,22 @@ internal static class TypeHelpers
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <param name="parentType">The parent <see cref="Type" />.</param>
-	/// <param name="forceDirect">
+	/// <param name="exactly">
 	///     If set to <see langword="false" /> (default value), the <paramref name="parentType" />
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
-	///     <paramref name="parentType" /> to be the direct parent.
+	///     <paramref name="type" /> to be the <paramref name="parentType" /> itself.
 	/// </param>
 	public static bool IsOrInheritsFrom(
 		this Type type,
 		Type parentType,
-		bool forceDirect = false)
+		bool exactly = false)
 	{
 		if (type.IsEqualTo(parentType))
 		{
 			return true;
 		}
 
-		return !forceDirect && type.InheritsFrom(parentType);
+		return !exactly && type.InheritsFrom(parentType);
 	}
 
 	/// <summary>

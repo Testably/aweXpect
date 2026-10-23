@@ -61,19 +61,6 @@ public sealed partial class ThatTypes
 
 				await That(Act).DoesNotThrow();
 			}
-
-			[Test]
-			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldSucceed()
-			{
-				Filtered.Types subject = In.Types(typeof(DerivedFromClassWithInterface1));
-
-				async Task Act()
-				{
-					await That(subject).DoNotImplement<ITestInterface>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class TypeTests

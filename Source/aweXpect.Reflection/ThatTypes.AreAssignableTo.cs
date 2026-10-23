@@ -24,8 +24,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}}, bool)" />,
-	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
+	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
@@ -39,8 +39,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type, bool)" />,
-	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
+	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should be assignable to.</param>
@@ -63,8 +63,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}}, bool)" />,
-	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
+	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
@@ -78,8 +78,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type, bool)" />,
-	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
+	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should be assignable to.</param>
@@ -102,8 +102,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}}, bool)" />,
-	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
+	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
@@ -117,8 +117,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type, bool)" />,
-	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
+	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should not be assignable to.</param>
@@ -141,8 +141,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}}, bool)" />,
-	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />,
+	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
@@ -156,8 +156,8 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type, bool)" />,
-	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type, bool)" />.
+	///     For base-class inheritance use <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />,
+	///     for interfaces use <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should not be assignable to.</param>

@@ -11,8 +11,8 @@ public static partial class TypeFilters
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     To filter for base-class inheritance use <see cref="WhichInheritFrom{TBaseType}(Filtered.Types, bool)" />,
-	///     for interfaces use <see cref="WhichImplement{TInterface}(Filtered.Types, bool)" />.
+	///     To filter for base-class inheritance use <see cref="WhichInheritFrom{TBaseType}(Filtered.Types)" />,
+	///     for interfaces use <see cref="WhichImplement{TInterface}(Filtered.Types)" />.
 	/// </remarks>
 	public static Filtered.Types WhichAreAssignableTo<TType>(this Filtered.Types @this)
 		=> @this.WhichAreAssignableTo(typeof(TType));
@@ -22,8 +22,8 @@ public static partial class TypeFilters
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     To filter for base-class inheritance use <see cref="WhichInheritFrom(Filtered.Types, Type, bool)" />,
-	///     for interfaces use <see cref="WhichImplement(Filtered.Types, Type, bool)" />.
+	///     To filter for base-class inheritance use <see cref="WhichInheritFrom(Filtered.Types, Type)" />,
+	///     for interfaces use <see cref="WhichImplement(Filtered.Types, Type)" />.
 	/// </remarks>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	public static Filtered.Types WhichAreAssignableTo(this Filtered.Types @this, Type type)
@@ -38,8 +38,8 @@ public static partial class TypeFilters
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     To filter for base-class inheritance use <see cref="WhichInheritFrom{TBaseType}(Filtered.Types, bool)" />,
-	///     for interfaces use <see cref="WhichImplement{TInterface}(Filtered.Types, bool)" />.
+	///     To filter for base-class inheritance use <see cref="WhichInheritFrom{TBaseType}(Filtered.Types)" />,
+	///     for interfaces use <see cref="WhichImplement{TInterface}(Filtered.Types)" />.
 	/// </remarks>
 	public static Filtered.Types WhichAreNotAssignableTo<TType>(this Filtered.Types @this)
 		=> @this.WhichAreNotAssignableTo(typeof(TType));
@@ -49,8 +49,8 @@ public static partial class TypeFilters
 	/// </summary>
 	/// <remarks>
 	///     This covers base classes and interfaces in one step and considers a type itself as assignable.<br />
-	///     To filter for base-class inheritance use <see cref="WhichInheritFrom(Filtered.Types, Type, bool)" />,
-	///     for interfaces use <see cref="WhichImplement(Filtered.Types, Type, bool)" />.
+	///     To filter for base-class inheritance use <see cref="WhichInheritFrom(Filtered.Types, Type)" />,
+	///     for interfaces use <see cref="WhichImplement(Filtered.Types, Type)" />.
 	/// </remarks>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	public static Filtered.Types WhichAreNotAssignableTo(this Filtered.Types @this, Type type)

@@ -206,7 +206,7 @@ public sealed class TypeHelpersTests
 	}
 
 	[Test]
-	public async Task Implements_DirectInterface_ForceDirect_ShouldReturnTrue()
+	public async Task Implements_DirectInterface_Directly_ShouldReturnTrue()
 	{
 		Type sut = typeof(BaseImplementingFoo);
 
@@ -214,7 +214,7 @@ public sealed class TypeHelpersTests
 	}
 
 	[Test]
-	public async Task Implements_InheritedInterface_ForceDirect_ShouldReturnFalse()
+	public async Task Implements_InheritedInterface_Directly_ShouldReturnFalse()
 	{
 		Type sut = typeof(DerivedImplementingFoo);
 
@@ -225,11 +225,11 @@ public sealed class TypeHelpersTests
 	[Test]
 	[Arguments(false)]
 	[Arguments(true)]
-	public async Task Implements_Object_ShouldReturnFalse(bool forceDirect)
+	public async Task Implements_Object_ShouldReturnFalse(bool directly)
 	{
 		Type sut = typeof(object);
 
-		bool result = sut.Implements(typeof(IFooInterface), forceDirect);
+		bool result = sut.Implements(typeof(IFooInterface), directly);
 
 		await That(result).IsFalse();
 	}

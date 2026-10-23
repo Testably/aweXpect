@@ -7,40 +7,6 @@ public sealed partial class ThatType
 		public sealed class GenericTests
 		{
 			[Test]
-			public async Task WhenInterfaceIsInheritedViaAnotherInterface_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(ClassWithDerivedInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             directly implements ThatType.ITestInterface,
-					             but it did only indirectly
-
-					             Actual:
-					             ThatType.ClassWithDerivedInterface
-					             """);
-			}
-
-			[Test]
-			public async Task WhenInterfaceIsInheritedViaAnotherInterface_WithoutForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithDerivedInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
 			public async Task WhenImplementsSucceedsInACombination_ShouldNotAddTheActualContext()
 			{
 				Type subject = typeof(ClassWithInterface);
@@ -57,6 +23,19 @@ public sealed partial class ThatType
 					             but it was non-sealed ThatType.ClassWithInterface
 					             """)
 					.Because("only the failing operand explains the failure");
+			}
+
+			[Test]
+			public async Task WhenInterfaceIsInheritedViaAnotherInterface_ShouldSucceed()
+			{
+				Type subject = typeof(ClassWithDerivedInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<ITestInterface>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -92,74 +71,6 @@ public sealed partial class ThatType
 
 					             Actual:
 					             ThatType.UnrelatedClass
-					             """);
-			}
-
-			[Test]
-			public async Task WhenTypeDoesNotImplementInterface_WithForceDirect_ShouldReportNotImplemented()
-			{
-				Type subject = typeof(UnrelatedClass);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             directly implements ThatType.ITestInterface,
-					             but it did not
-
-					             Actual:
-					             ThatType.UnrelatedClass
-					             """);
-			}
-
-			[Test]
-			public async Task WhenTypeImplementsDerivedInterfaceDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithDerivedInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<IDerivedTestInterface>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeImplementsDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(DerivedFromClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             directly implements ThatType.ITestInterface,
-					             but it did only indirectly
-
-					             Actual:
-					             ThatType.DerivedFromClassWithInterface
 					             """);
 			}
 
