@@ -39,6 +39,39 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
+			[Test]
+			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatEvent.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.DerivedClass.InheritedEvent
+					             """)
+					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
+			}
+
+			[Test]
+			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(false);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with inherit: false only the attributes declared on the overriding event count");
+			}
+
 			[AttributeUsage(AttributeTargets.Event)]
 			private class FooAttribute : Attribute
 			{
@@ -50,6 +83,16 @@ public sealed partial class ThatEvent
 				[Foo] public event Action? TestEvent;
 
 				public event Action? NoAttributeEvent;
+			}
+
+			private class BaseClass
+			{
+				[Foo] public virtual event Action? InheritedEvent;
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override event Action? InheritedEvent;
 			}
 #pragma warning restore CS0067
 		}
