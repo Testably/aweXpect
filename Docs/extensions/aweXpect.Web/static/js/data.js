@@ -342,6 +342,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -401,7 +407,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -464,7 +471,8 @@ window.BENCHMARK_DATA = {
           220.82711656276996,
           430.81787967681885,
           221.3502781867981,
-          411.662540435791
+          411.662540435791,
+          389.4524598462241
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -508,6 +516,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -603,7 +612,8 @@ window.BENCHMARK_DATA = {
           532.504556451525,
           1065.7974627358574,
           569.0365942637126,
-          985.923715863909
+          985.923715863909,
+          1014.1015038808187
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -615,6 +625,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1027,6 +1038,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -1086,7 +1103,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -1149,7 +1167,8 @@ window.BENCHMARK_DATA = {
           104.44174856344858,
           198.55748879909515,
           109.40543224811555,
-          191.94714919158392
+          191.94714919158392,
+          187.65501046180725
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1197,6 +1216,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1288,7 +1308,8 @@ window.BENCHMARK_DATA = {
           138.22732299168905,
           271.96093962987266,
           144.79904074668883,
-          256.3782408396403
+          256.3782408396403,
+          263.1457499821981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1300,6 +1321,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -1652,6 +1674,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -1701,7 +1729,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -1754,7 +1783,8 @@ window.BENCHMARK_DATA = {
           335.11864512761434,
           679.8346147537231,
           384.2662794431051,
-          617.8469524383545
+          617.8469524383545,
+          567.0373705546061
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1788,6 +1818,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -1873,7 +1904,8 @@ window.BENCHMARK_DATA = {
           529.6272283281598,
           1030.1807304382323,
           524.5225045204163,
-          969.294460550944
+          969.294460550944,
+          933.0490661621094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1885,6 +1917,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -2227,6 +2260,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -2276,7 +2315,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -2329,7 +2369,8 @@ window.BENCHMARK_DATA = {
           1071.747357527415,
           1707.3424866016094,
           1104.1733019692558,
-          1652.1555884043375
+          1652.1555884043375,
+          1698.112604268392
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2363,6 +2404,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -2448,7 +2490,8 @@ window.BENCHMARK_DATA = {
           10508.362106323242,
           21798.38200887044,
           10991.520938110352,
-          19977.38608194987
+          19977.38608194987,
+          17844.25439453125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2506,7 +2549,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2802,6 +2846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -2851,7 +2901,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -2904,7 +2955,8 @@ window.BENCHMARK_DATA = {
           361.62575483322144,
           685.4858589172363,
           392.0938828672682,
-          671.4894803365072
+          671.4894803365072,
+          608.383053779602
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2934,6 +2986,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -3023,7 +3076,8 @@ window.BENCHMARK_DATA = {
           685.7402991514939,
           1426.9920914513725,
           770.873316637675,
-          1404.9655776977538
+          1404.9655776977538,
+          1281.5939244588217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3035,6 +3089,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -3377,6 +3432,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -3426,7 +3487,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -3479,7 +3541,8 @@ window.BENCHMARK_DATA = {
           618.7436105864389,
           1106.9834560394288,
           656.3885489781698,
-          1048.7291406903948
+          1048.7291406903948,
+          1070.99138768514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3513,6 +3576,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -3598,7 +3662,8 @@ window.BENCHMARK_DATA = {
           415.31584453582764,
           837.5989790598552,
           431.8528224468231,
-          801.9000450134278
+          801.9000450134278,
+          766.6750658035278
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3610,6 +3675,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
