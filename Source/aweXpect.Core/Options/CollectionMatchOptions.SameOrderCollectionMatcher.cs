@@ -153,7 +153,7 @@ public partial class CollectionMatchOptions
 			   (!EquivalenceRelation.Includes(EquivalenceRelations.ContainsProperly) ||
 			    _values.Count > ExpectedItems.Length);
 
-		public ValueTask<(bool, string?)>
+		public ValueTask<(bool IsFailure, string? Failure)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
@@ -173,7 +173,7 @@ public partial class CollectionMatchOptions
 		///     The matcher that checks the items in any order for the hint is only created for a failure. Equality
 		///     without a deviation and with as many items as expected is met, which returns without a state machine.
 		/// </remarks>
-		public ValueTask<(bool, string?)>
+		public ValueTask<(bool IsFailure, string? Failure)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_positionalDeviations == 0 && _values.Count == ExpectedItems.Length &&

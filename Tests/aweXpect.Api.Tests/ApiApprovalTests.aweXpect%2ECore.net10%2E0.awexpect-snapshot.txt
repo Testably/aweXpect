@@ -324,8 +324,8 @@ namespace aweXpect.Core
     public interface ICollectionMatcher<in T, out T2> where T : out T2
     {
         bool IsDetermined { get; }
-        System.Threading.Tasks.ValueTask<(bool, string?)> Verify(string it, T value, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
-        System.Threading.Tasks.ValueTask<(bool, string?)> VerifyComplete(string it, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
+        System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> Verify(string it, T value, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
+        System.Threading.Tasks.ValueTask<(bool IsFailure, string? Failure)> VerifyComplete(string it, aweXpect.Core.IOptionsEquality<out T2> options, int maximumNumber);
     }
     public interface IDescribableSubject
     {
@@ -2001,6 +2001,10 @@ namespace aweXpect.Results
         public StringBlockResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options) { }
         public aweXpect.Results.StringBlockResult<TType, TThat> IgnoringCase(bool ignoreCase = true) { }
         public aweXpect.Results.StringBlockResult<TType, TThat> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
+    public class StringCollectionMatchResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringCollectionMatchResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+    {
+        public StringCollectionMatchResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options, aweXpect.Options.CollectionMatchOptions collectionMatchOptions) { }
     }
     public class StringCountResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Results.StringCountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
     {
