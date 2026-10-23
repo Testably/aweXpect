@@ -228,6 +228,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
         "message": "feat!: use the core string options on reflection name filters (#1933)"
+      },
+      {
+        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
+        "message": "docs: write down the API conventions of extension packages (#1954)"
       }
     ],
     "labels": [
@@ -268,7 +274,8 @@ window.BENCHMARK_DATA = {
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
-      "3484beb9"
+      "3484beb9",
+      "ff85110d"
     ],
     "datasets": [
       {
@@ -312,7 +319,8 @@ window.BENCHMARK_DATA = {
           1984.659385363261,
           1431.3940241677421,
           1249.4844794954572,
-          2065.858069229126
+          2065.858069229126,
+          1153.6005626405988
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -352,6 +360,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -413,7 +422,8 @@ window.BENCHMARK_DATA = {
           15277.07785542806,
           10210.1189066569,
           8252.308104451497,
-          15957.480784098307
+          15957.480784098307,
+          7228.537023925781
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -425,6 +435,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -704,6 +715,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
         "message": "feat!: use the core string options on reflection name filters (#1933)"
+      },
+      {
+        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
+        "message": "docs: write down the API conventions of extension packages (#1954)"
       }
     ],
     "labels": [
@@ -744,7 +761,8 @@ window.BENCHMARK_DATA = {
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
-      "3484beb9"
+      "3484beb9",
+      "ff85110d"
     ],
     "datasets": [
       {
@@ -788,7 +806,8 @@ window.BENCHMARK_DATA = {
           1478.6373125712078,
           1025.5536061604819,
           900.7445910771688,
-          1540.5861223765783
+          1540.5861223765783,
+          846.3012029647828
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -828,6 +847,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -889,7 +909,8 @@ window.BENCHMARK_DATA = {
           13830.511112467448,
           9391.973905123197,
           7806.685015164889,
-          14631.122076416015
+          14631.122076416015,
+          6572.16890335083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -901,6 +922,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -1120,6 +1142,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
         "message": "feat!: use the core string options on reflection name filters (#1933)"
+      },
+      {
+        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
+        "message": "docs: write down the API conventions of extension packages (#1954)"
       }
     ],
     "labels": [
@@ -1150,7 +1178,8 @@ window.BENCHMARK_DATA = {
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
-      "3484beb9"
+      "3484beb9",
+      "ff85110d"
     ],
     "datasets": [
       {
@@ -1184,7 +1213,8 @@ window.BENCHMARK_DATA = {
           4759.584871019636,
           3072.96626663208,
           2902.5175687154133,
-          4709.604464394705
+          4709.604464394705,
+          2675.1682684762136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1214,6 +1244,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1265,7 +1296,8 @@ window.BENCHMARK_DATA = {
           45011.3003117488,
           29327.638776506697,
           22506.082680838448,
-          48079.60309244792
+          48079.60309244792,
+          18646.04360961914
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1303,6 +1335,7 @@ window.BENCHMARK_DATA = {
           61704,
           61926,
           61925,
+          61926,
           61926,
           61926
         ],
@@ -1486,6 +1519,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
         "message": "feat!: use the core string options on reflection name filters (#1933)"
+      },
+      {
+        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
+        "message": "docs: write down the API conventions of extension packages (#1954)"
       }
     ],
     "labels": [
@@ -1516,7 +1555,8 @@ window.BENCHMARK_DATA = {
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
-      "3484beb9"
+      "3484beb9",
+      "ff85110d"
     ],
     "datasets": [
       {
@@ -1550,7 +1590,8 @@ window.BENCHMARK_DATA = {
           9462.262128557477,
           6728.984664916992,
           5480.509010859898,
-          9339.971302912785
+          9339.971302912785,
+          4882.370091364934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1580,6 +1621,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -1631,7 +1673,8 @@ window.BENCHMARK_DATA = {
           298399.308984375,
           205539.02377929687,
           164844.00840541295,
-          294120.6883789062
+          294120.6883789062,
+          139457.57260742187
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1669,6 +1712,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594
         ],
@@ -1852,6 +1896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
         "message": "feat!: use the core string options on reflection name filters (#1933)"
+      },
+      {
+        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
+        "message": "docs: write down the API conventions of extension packages (#1954)"
       }
     ],
     "labels": [
@@ -1882,7 +1932,8 @@ window.BENCHMARK_DATA = {
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
-      "3484beb9"
+      "3484beb9",
+      "ff85110d"
     ],
     "datasets": [
       {
@@ -1916,7 +1967,8 @@ window.BENCHMARK_DATA = {
           2876.9924479166666,
           2211.5413665771484,
           1725.6016470102163,
-          2953.399879201253
+          2953.399879201253,
+          1628.141726175944
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,6 +2002,7 @@ window.BENCHMARK_DATA = {
           1520,
           1520,
           1520,
+          1488,
           1488,
           1488,
           1488,
@@ -1997,7 +2050,8 @@ window.BENCHMARK_DATA = {
           1869.3532698313395,
           1550.7379444122314,
           1226.9447020121984,
-          1977.697856648763
+          1977.697856648763,
+          1027.2105717976888
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2009,6 +2063,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -2218,6 +2273,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:12:39 2026 \u002B0200",
         "message": "feat!: use the core string options on reflection name filters (#1933)"
+      },
+      {
+        "sha": "ff85110db67927a962c2aa7f03ec78a37a984deb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:24:27 2026 \u002B0200",
+        "message": "docs: write down the API conventions of extension packages (#1954)"
       }
     ],
     "labels": [
@@ -2248,7 +2309,8 @@ window.BENCHMARK_DATA = {
       "5d6c3e4a",
       "dc36798f",
       "7bc1d2a8",
-      "3484beb9"
+      "3484beb9",
+      "ff85110d"
     ],
     "datasets": [
       {
@@ -2282,7 +2344,8 @@ window.BENCHMARK_DATA = {
           2007.084948026217,
           1453.7638974870954,
           1335.0950919560023,
-          2084.9743426005048
+          2084.9743426005048,
+          1118.559287071228
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2312,6 +2375,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -2363,7 +2427,8 @@ window.BENCHMARK_DATA = {
           1771.690381113688,
           1499.4957834879558,
           1141.4915926615397,
-          1858.15857035319
+          1858.15857035319,
+          934.8839259465535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2375,6 +2440,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
