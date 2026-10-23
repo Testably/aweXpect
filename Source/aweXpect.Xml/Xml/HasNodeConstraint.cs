@@ -201,7 +201,7 @@ internal sealed class HasNodeConstraint<TSubject, TNode>(
 }
 
 /// <summary>
-///     A node found by <see cref="HasNodeConstraint{TSubject,TNode}" />.
+///     A node found by <see cref="HasNodeConstraint{TSubject,TNode}" /> or <see cref="HasValueConstraint{TSubject}" />.
 /// </summary>
 /// <remarks>
 ///     The node is wrapped, so that a found child element is not taken for the subject element itself.

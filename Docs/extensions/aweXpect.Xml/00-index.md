@@ -38,6 +38,7 @@ but it could not be parsed: Unexpected end of file has occurred. The following e
 | [`DoesNotHaveAttribute`](./03-navigation.md#attributes)                  | `XElement`, `XDocument` | does not have the attribute                                   |
 | [`HasElement`](./03-navigation.md#child-elements)                        | `XElement`, `XDocument` | has the child element, optionally which satisfies …           |
 | [`DoesNotHaveElement`](./03-navigation.md#child-elements)                | `XElement`, `XDocument` | does not have the child element                               |
+| [`HasValue`](./03-navigation.md#values)                                  | `XElement`, `XDocument` | has a value that satisfies …                                  |
 
 ## Documentation
 
@@ -46,4 +47,4 @@ The full documentation is available at
 
 - [XML strings](./01-strings.md): comparing and validating strings as XML
 - [Matching XML](./02-matching.md): matching `XElement` and `XDocument` against an expected XML
-- [Attributes and child elements](./03-navigation.md): verifying single attributes and child elements
+- [Attributes and child elements](./03-navigation.md): verifying single attributes, child elements and values

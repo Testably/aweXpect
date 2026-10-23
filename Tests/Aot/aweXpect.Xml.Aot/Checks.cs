@@ -46,6 +46,12 @@ internal static class Checks
 			() => ShouldPass(async () => await That(XDocument.Parse("<a x=\"1\"><b/></a>"))
 				.HasAttribute("x", x => x.IsEqualTo("1")).And.HasElement("b", b => b.Matches("<b/>")).And
 				.DoesNotHaveElement("a"))),
+		new("a document whose root element has the expected value passes",
+			() => ShouldPass(async () => await That(XDocument.Parse("<a>x<b>y</b></a>")).HasValue(v => v.IsEqualTo("xy")))),
+		new("a child element whose value differs fails and names the value",
+			() => ShouldFail(async () => await That(XElement.Parse("<a><b>2</b></a>"))
+					.HasElement("b", b => b.HasValue(v => v.IsEqualTo("1"))),
+				"has element \"b\" which has a value which is equal to \"1\"", "value of the element was \"2\"")),
 		new("a document without a root element fails also when negated",
 			() => ShouldFail(async () => await That(new XDocument()).DoesNotHaveAttribute("x"),
 				"does not have attribute \"x\"", "had no root element")),
