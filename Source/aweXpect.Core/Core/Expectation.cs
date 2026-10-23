@@ -266,7 +266,7 @@ public abstract class Expectation
 				return subjectLine;
 			}
 
-			bool endsWithColon = subjectLine.EndsWith(":", StringComparison.Ordinal);
+			bool endsWithColon = subjectLine.EndsWith(':');
 			StringBuilder header = new(subjectLine, 0,
 				endsWithColon ? subjectLine.Length - 1 : subjectLine.Length, subjectLine.Length + 32);
 			foreach (IBecauseReason reason in reasons)
