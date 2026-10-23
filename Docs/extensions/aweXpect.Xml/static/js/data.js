@@ -264,6 +264,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
         "message": "feat!: let string match types add the contexts of their own failure (#1938)"
+      },
+      {
+        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
+        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
       }
     ],
     "labels": [
@@ -310,7 +316,8 @@ window.BENCHMARK_DATA = {
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
-      "3804f6c8"
+      "3804f6c8",
+      "8dcdaffe"
     ],
     "datasets": [
       {
@@ -360,7 +367,8 @@ window.BENCHMARK_DATA = {
           735.9491341454642,
           538.8217232043927,
           389.78603083292643,
-          407.48797688117395
+          407.48797688117395,
+          763.2313607533773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -400,6 +408,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -473,7 +482,8 @@ window.BENCHMARK_DATA = {
           740.7163291931153,
           527.3701492718288,
           347.39538662250226,
-          411.8085243151738
+          411.8085243151738,
+          707.4805875142415
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -485,6 +495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -806,6 +817,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
         "message": "feat!: let string match types add the contexts of their own failure (#1938)"
+      },
+      {
+        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
+        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
       }
     ],
     "labels": [
@@ -852,7 +869,8 @@ window.BENCHMARK_DATA = {
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
-      "3804f6c8"
+      "3804f6c8",
+      "8dcdaffe"
     ],
     "datasets": [
       {
@@ -902,7 +920,8 @@ window.BENCHMARK_DATA = {
           4624.279370117188,
           3228.510995718149,
           2762.8077014042783,
-          3272.19241632734
+          3272.19241632734,
+          4686.171871439616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -957,7 +976,8 @@ window.BENCHMARK_DATA = {
           24276,
           24276,
           24276,
-          24114
+          24114,
+          24047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1015,7 +1035,8 @@ window.BENCHMARK_DATA = {
           5212.6344126383465,
           3836.524383544922,
           3111.628623453776,
-          3523.8924476623533
+          3523.8924476623533,
+          5408.619949849447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1027,6 +1048,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1288,6 +1310,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
         "message": "feat!: let string match types add the contexts of their own failure (#1938)"
+      },
+      {
+        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
+        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
       }
     ],
     "labels": [
@@ -1324,7 +1352,8 @@ window.BENCHMARK_DATA = {
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
-      "3804f6c8"
+      "3804f6c8",
+      "8dcdaffe"
     ],
     "datasets": [
       {
@@ -1364,7 +1393,8 @@ window.BENCHMARK_DATA = {
           2674.897450256348,
           1838.229270054744,
           1463.9351108551025,
-          1883.5369534125696
+          1883.5369534125696,
+          2784.0185748508998
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1394,6 +1424,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1457,7 +1488,8 @@ window.BENCHMARK_DATA = {
           3546.3580406188967,
           2554.2349221547443,
           1970.8272138323102,
-          2291.3090694134053
+          2291.3090694134053,
+          3624.4518163045245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1469,6 +1501,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -1720,6 +1753,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:41:27 2026 \u002B0200",
         "message": "feat!: let string match types add the contexts of their own failure (#1938)"
+      },
+      {
+        "sha": "8dcdaffe4762f806f28ac23b03430799889362aa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
+        "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
       }
     ],
     "labels": [
@@ -1756,7 +1795,8 @@ window.BENCHMARK_DATA = {
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
-      "3804f6c8"
+      "3804f6c8",
+      "8dcdaffe"
     ],
     "datasets": [
       {
@@ -1796,7 +1836,8 @@ window.BENCHMARK_DATA = {
           14160.4780960083,
           10003.31691792806,
           7903.254301217886,
-          8736.177742004395
+          8736.177742004395,
+          14483.74091884068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1826,6 +1867,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -1889,7 +1931,8 @@ window.BENCHMARK_DATA = {
           359860.0840657552,
           241999.55224609375,
           175760.42744140624,
-          192950.8249308268
+          192950.8249308268,
+          374541.91106770834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1931,6 +1974,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544267,
+          544335,
           544335,
           544335,
           544335,
