@@ -342,6 +342,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -401,7 +407,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -464,7 +471,8 @@ window.BENCHMARK_DATA = {
           727.4398652590238,
           687.6225208135752,
           669.846203327179,
-          547.4867346627371
+          547.4867346627371,
+          685.8207074678861
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -504,6 +512,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -603,7 +612,8 @@ window.BENCHMARK_DATA = {
           787.2371487935384,
           653.1366762161255,
           833.1058286031088,
-          551.0317855676016
+          551.0317855676016,
+          663.4473208699908
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -615,6 +625,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1027,6 +1038,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -1086,7 +1103,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -1149,7 +1167,8 @@ window.BENCHMARK_DATA = {
           4671.674237823487,
           4253.485717479999,
           5281.6227289835615,
-          3302.619764328003
+          3302.619764328003,
+          4182.170234680176
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1236,8 @@ window.BENCHMARK_DATA = {
           24114,
           24114,
           24114,
-          24114
+          24114,
+          24047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1288,7 +1308,8 @@ window.BENCHMARK_DATA = {
           5237.3856796264645,
           4968.687184470041,
           6220.015347290039,
-          3886.1146008627757
+          3886.1146008627757,
+          5080.0025283813475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1300,6 +1321,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1652,6 +1674,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -1701,7 +1729,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -1754,7 +1783,8 @@ window.BENCHMARK_DATA = {
           2897.2843472798663,
           2536.6368111830493,
           2955.6037590026854,
-          1871.041808128357
+          1871.041808128357,
+          2444.735868326823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1784,6 +1814,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1873,7 +1904,8 @@ window.BENCHMARK_DATA = {
           3555.610352834066,
           3468.5069301311787,
           3932.7633855183917,
-          2605.159786987305
+          2605.159786987305,
+          3452.756422189566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1885,6 +1917,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -2227,6 +2260,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
@@ -2276,7 +2315,8 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
@@ -2329,7 +2369,8 @@ window.BENCHMARK_DATA = {
           14520.745642344156,
           13777.0287012736,
           14251.028913370768,
-          10157.779718017578
+          10157.779718017578,
+          13537.329347882953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2359,6 +2400,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -2448,7 +2490,8 @@ window.BENCHMARK_DATA = {
           373734.6132486979,
           337475.0770089286,
           288561.75743689906,
-          242252.0932128906
+          242252.0932128906,
+          349109.6136067708
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2506,6 +2549,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
