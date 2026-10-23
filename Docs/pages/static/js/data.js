@@ -672,6 +672,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -786,7 +792,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -904,7 +911,8 @@ window.BENCHMARK_DATA = {
           5400.608945210774,
           11000.793195452008,
           11035.918569946289,
-          5145.994079589844
+          5145.994079589844,
+          10697.089312039889
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1000,6 +1008,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1153,7 +1162,8 @@ window.BENCHMARK_DATA = {
           170158.6887394832,
           394994.18777901784,
           374524.65652901784,
-          161290.56471354168
+          161290.56471354168,
+          384140.58841145836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1276,7 +1286,8 @@ window.BENCHMARK_DATA = {
           590287,
           590292,
           590292,
-          590287
+          590287,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1402,7 +1413,8 @@ window.BENCHMARK_DATA = {
           9581.275565011161,
           20335.475594656808,
           20285.122494506835,
-          10095.689301045735
+          10095.689301045735,
+          20074.98917061942
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1414,6 +1426,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2169,6 +2182,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -2276,7 +2295,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -2387,7 +2407,8 @@ window.BENCHMARK_DATA = {
           123.11643706049237,
           301.3293744967534,
           313.4784437928881,
-          132.47893340247018
+          132.47893340247018,
+          322.6525573730469
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2476,6 +2497,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -2622,7 +2644,8 @@ window.BENCHMARK_DATA = {
           250.0093619187673,
           547.9582899093627,
           539.6706928888957,
-          260.43213081359863
+          260.43213081359863,
+          515.0361580530803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2634,6 +2657,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2857,7 +2881,8 @@ window.BENCHMARK_DATA = {
           196.22040678773607,
           408.9720551627023,
           387.9510932604472,
-          186.86871829399695
+          186.86871829399695,
+          401.1061988194784
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2869,6 +2894,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -8237,6 +8263,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -9114,7 +9146,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -9995,7 +10028,8 @@ window.BENCHMARK_DATA = {
           67.22933446509498,
           145.69859178249652,
           148.68989426294962,
-          64.55654364426931
+          64.55654364426931,
+          144.55811697642008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10854,6 +10888,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -11770,7 +11805,8 @@ window.BENCHMARK_DATA = {
           127.63511827786763,
           278.9406660886911,
           276.0284797350566,
-          121.46104904810588
+          121.46104904810588,
+          259.9817698918856
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11963,6 +11999,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -12826,7 +12863,8 @@ window.BENCHMARK_DATA = {
           119.77442303498586,
           261.3472133416396,
           250.200190671285,
-          115.60350522824696
+          115.60350522824696,
+          253.5283507347107
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12838,6 +12876,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -13679,6 +13718,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -13793,7 +13838,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -13911,7 +13957,8 @@ window.BENCHMARK_DATA = {
           128.639973623412,
           271.39230556488036,
           263.0757025082906,
-          126.15319045384724
+          126.15319045384724,
+          257.9934313774109
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14007,6 +14054,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -14160,7 +14208,8 @@ window.BENCHMARK_DATA = {
           269.34060049057007,
           599.9043617884319,
           540.0748545573308,
-          251.28869821230572
+          251.28869821230572,
+          537.7937030156453
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14172,6 +14221,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -14409,7 +14459,8 @@ window.BENCHMARK_DATA = {
           177.5032828092575,
           360.99014946392606,
           334.47567488352456,
-          165.87069220542907
+          165.87069220542907,
+          339.82704010009763
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14421,6 +14472,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -19796,6 +19848,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -20673,7 +20731,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -21554,7 +21613,8 @@ window.BENCHMARK_DATA = {
           324.41010771478926,
           712.2639809335981,
           662.5475570042928,
-          323.66008571216037
+          323.66008571216037,
+          666.2331348146711
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22413,6 +22473,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -23329,7 +23390,8 @@ window.BENCHMARK_DATA = {
           703.9579772215623,
           1550.2128809611002,
           1473.0074490865072,
-          640.5755175862994
+          640.5755175862994,
+          1437.4247745513917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24215,6 +24277,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -24385,7 +24448,8 @@ window.BENCHMARK_DATA = {
           342.60260009765625,
           715.3743420380813,
           644.9033665974935,
-          331.0907334940774
+          331.0907334940774,
+          693.8161659240723
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24397,6 +24461,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -29816,6 +29881,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -30693,7 +30764,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -31574,7 +31646,8 @@ window.BENCHMARK_DATA = {
           341.97174770491466,
           654.6825386683146,
           654.0846815109253,
-          294.8128121239798
+          294.8128121239798,
+          641.4998718897501
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32433,6 +32506,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -33349,7 +33423,8 @@ window.BENCHMARK_DATA = {
           9780.914921351841,
           28620.160689290366,
           28633.31409708659,
-          9816.010982806865
+          9816.010982806865,
+          28001.67866734096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34235,6 +34310,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -34405,7 +34481,8 @@ window.BENCHMARK_DATA = {
           406.2164990718548,
           814.254658290318,
           827.2581593195597,
-          391.12323812338025
+          391.12323812338025,
+          830.5997231801351
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34417,6 +34494,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -35606,6 +35684,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -35778,7 +35862,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -35954,7 +36039,8 @@ window.BENCHMARK_DATA = {
           361.75716539223987,
           737.6013310114542,
           706.2803685506185,
-          342.0495410283407
+          342.0495410283407,
+          733.3101908365885
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36108,6 +36194,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -36319,7 +36406,8 @@ window.BENCHMARK_DATA = {
           28108.937866210938,
           84259.90938313802,
           83882.04572753907,
-          27421.826108492336
+          27421.826108492336,
+          83982.65583683894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36500,7 +36588,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37534,6 +37623,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -37706,7 +37801,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -37882,7 +37978,8 @@ window.BENCHMARK_DATA = {
           88.0090849717458,
           187.07066957155862,
           180.41693486486162,
-          84.86785351313077
+          84.86785351313077,
+          197.68659586172836
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38036,6 +38133,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -38247,7 +38345,8 @@ window.BENCHMARK_DATA = {
           9581.95962117513,
           32923.75720621745,
           33069.13197835287,
-          9418.380696614584
+          9418.380696614584,
+          32326.37315586635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38428,7 +38527,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38598,7 +38698,8 @@ window.BENCHMARK_DATA = {
           121.36933832902174,
           258.45064566930137,
           236.83989099661508,
-          116.01052769025166
+          116.01052769025166,
+          250.5384820620219
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38610,6 +38711,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -39451,6 +39553,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -39565,7 +39673,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -39683,7 +39792,8 @@ window.BENCHMARK_DATA = {
           193.43693833351136,
           366.75934525898526,
           362.8493113517761,
-          164.99766865798406
+          164.99766865798406,
+          406.6041113308498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39779,6 +39889,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -39932,7 +40043,8 @@ window.BENCHMARK_DATA = {
           194.1953224182129,
           413.8394460360209,
           422.2229034900665,
-          190.17301377228327
+          190.17301377228327,
+          397.38704807417736
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39944,6 +40056,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -40181,7 +40294,8 @@ window.BENCHMARK_DATA = {
           202.4171911239624,
           432.4113624890645,
           417.66544618606565,
-          195.42194975217183
+          195.42194975217183,
+          417.41266069412234
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40193,6 +40307,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -40990,6 +41105,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -41104,7 +41225,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -41222,7 +41344,8 @@ window.BENCHMARK_DATA = {
           324.3589371681213,
           723.6676161629813,
           700.2702398981367,
-          323.26542986356293
+          323.26542986356293,
+          684.3803238187518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41342,6 +41465,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -41471,7 +41595,8 @@ window.BENCHMARK_DATA = {
           1020.3494524274554,
           2045.596595509847,
           1990.8591883523125,
-          978.0236087526594
+          978.0236087526594,
+          1948.3768693483794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41483,6 +41608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -41720,7 +41846,8 @@ window.BENCHMARK_DATA = {
           442.5047735214233,
           970.5110425313313,
           926.5604732513427,
-          448.36756478037154
+          448.36756478037154,
+          949.1311612810407
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41732,6 +41859,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -42529,6 +42657,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -42643,7 +42777,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -42761,7 +42896,8 @@ window.BENCHMARK_DATA = {
           5628.697000356821,
           11473.480842003455,
           11292.1032816569,
-          5556.290245056152
+          5556.290245056152,
+          11393.8872657189
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42857,6 +42993,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -43010,7 +43147,8 @@ window.BENCHMARK_DATA = {
           17858.19163077218,
           40424.68985493978,
           41353.638083321704,
-          17806.672297159832
+          17806.672297159832,
+          41440.198856898714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43132,6 +43270,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609
         ],
@@ -43259,7 +43398,8 @@ window.BENCHMARK_DATA = {
           5505.860894266764,
           10528.551496233258,
           10809.885394795736,
-          5504.403658185686
+          5504.403658185686,
+          10748.008057730538
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -43271,6 +43411,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -44068,6 +44209,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 09:26:47 2026 \u002B0200",
         "message": "refactor!: move the public types of extension packages into their own namespaces (#1943)"
+      },
+      {
+        "sha": "ce12e858d9b01737a5ad3ab7f7ac4d27628aff46",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
+        "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
       }
     ],
     "labels": [
@@ -44182,7 +44329,8 @@ window.BENCHMARK_DATA = {
       "e6ee3749",
       "d5baef73",
       "16d46b22",
-      "3009dddd"
+      "3009dddd",
+      "ce12e858"
     ],
     "datasets": [
       {
@@ -44300,7 +44448,8 @@ window.BENCHMARK_DATA = {
           5308.279452732631,
           10932.972702026367,
           10952.841056315105,
-          5351.609930772048
+          5351.609930772048,
+          10953.876988002232
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44396,6 +44545,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -44549,7 +44699,8 @@ window.BENCHMARK_DATA = {
           26070.184802246094,
           60205.94738769531,
           59633.41945800781,
-          25856.064980643136
+          25856.064980643136,
+          59159.49271647135
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44672,7 +44823,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44798,7 +44950,8 @@ window.BENCHMARK_DATA = {
           11009.43418766902,
           21079.71027483259,
           21036.080520629883,
-          10806.609595743816
+          10806.609595743816,
+          21121.498502291164
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44810,6 +44963,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
