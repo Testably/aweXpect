@@ -22,7 +22,7 @@ public static class JsonOptionsExtensions
 	{
 		ThrowHelper.ThrowIfNull(jsonDocumentOptions, nameof(jsonDocumentOptions));
 		JsonDocumentOptions options = jsonDocumentOptions(@this.DocumentOptions);
-		return @this with
+		return new JsonOptions(@this)
 		{
 			DocumentOptions = options,
 		};
@@ -42,7 +42,7 @@ public static class JsonOptionsExtensions
 		JsonSerializerOptions serializerOptions)
 	{
 		ThrowHelper.ThrowIfNull(serializerOptions, nameof(serializerOptions));
-		return @this with
+		return new JsonOptions(@this)
 		{
 			SerializerOptions = serializerOptions,
 		};
@@ -58,7 +58,7 @@ public static class JsonOptionsExtensions
 	public static JsonOptions IgnoringAdditionalProperties(
 		this JsonOptions @this,
 		bool ignoreAdditionalProperties = true)
-		=> @this with
+		=> new JsonOptions(@this)
 		{
 			IgnoreAdditionalProperties = ignoreAdditionalProperties,
 		};
@@ -74,7 +74,7 @@ public static class JsonOptionsExtensions
 	public static JsonOptions IgnoringAdditionalArrayElements(
 		this JsonOptions @this,
 		bool ignoreAdditionalArrayElements = true)
-		=> @this with
+		=> new JsonOptions(@this)
 		{
 			IgnoreAdditionalArrayElements = ignoreAdditionalArrayElements,
 		};
@@ -93,7 +93,7 @@ public static class JsonOptionsExtensions
 	public static JsonOptions IgnoringArrayOrder(
 		this JsonOptions @this,
 		bool ignoreArrayOrder = true)
-		=> @this with
+		=> new JsonOptions(@this)
 		{
 			IgnoreArrayOrder = ignoreArrayOrder,
 		};
@@ -108,7 +108,7 @@ public static class JsonOptionsExtensions
 	public static JsonOptions TreatingNullAsAbsent(
 		this JsonOptions @this,
 		bool treatNullAsAbsent = true)
-		=> @this with
+		=> new JsonOptions(@this)
 		{
 			TreatNullAsAbsent = treatNullAsAbsent,
 		};
@@ -153,7 +153,7 @@ public static class JsonOptionsExtensions
 				"The 'memberToIgnore' cannot be empty.", nameof(memberToIgnore)));
 		}
 
-		return @this with
+		return new JsonOptions(@this)
 		{
 			MembersToIgnore = [..@this.MembersToIgnore, new NamedMemberToIgnore(memberToIgnore),],
 		};
@@ -176,7 +176,7 @@ public static class JsonOptionsExtensions
 		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return @this with
+		return new JsonOptions(@this)
 		{
 			MembersToIgnore =
 			[

@@ -7,9 +7,13 @@ public class JsonOptionsTests
 	[Test]
 	public async Task DocumentOptions_ShouldDefaultToAllowTrailingCommas()
 	{
+		string subject = "[1, 2,]";
 		JsonOptions sut = new();
 
-		await That(sut.DocumentOptions.AllowTrailingCommas).IsTrue();
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => sut);
+
+		await That(Act).DoesNotThrow();
 	}
 
 	[Test]
@@ -28,38 +32,36 @@ public class JsonOptionsTests
 	[Test]
 	public async Task WithJsonOptions_ShouldSetDocumentOptions()
 	{
-		int maxDepth = new Random().Next(1, 10);
+		string subject = "[1, /* two */ 2]";
 		JsonOptions sut = new();
 
 		JsonOptions result = sut.WithJsonOptions(o => o with
 		{
-			MaxDepth = maxDepth,
+			CommentHandling = JsonCommentHandling.Skip,
 		});
 
-		await That(result.DocumentOptions.MaxDepth).IsEqualTo(maxDepth);
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
+
+		await That(Act).DoesNotThrow();
 	}
 
 	[Test]
 	public async Task WithJsonOptions_ShouldSupportProvidingFixedOptions()
 	{
-		int maxDepth = new Random().Next(1, 10);
+		string subject = "[1, /* two */ 2]";
 		JsonOptions sut = new();
 		JsonDocumentOptions documentOptions = new()
 		{
-			MaxDepth = maxDepth,
+			CommentHandling = JsonCommentHandling.Skip,
 		};
 
 		JsonOptions result = sut.WithJsonOptions(_ => documentOptions);
 
-		await That(result.DocumentOptions.MaxDepth).IsEqualTo(maxDepth);
-	}
+		async Task Act()
+			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => result);
 
-	[Test]
-	public async Task MembersToIgnore_ShouldDefaultToEmpty()
-	{
-		JsonOptions sut = new();
-
-		await That(sut.MembersToIgnore).IsEmpty();
+		await That(Act).DoesNotThrow();
 	}
 
 	[Test]
@@ -104,14 +106,34 @@ public class JsonOptionsTests
 	[Test]
 	public async Task IgnoringMember_ShouldAccumulateTheMembersWithoutChangingTheOriginalOptions()
 	{
+		JsonElement subject = JsonDocument.Parse("{\"id\": 1, \"etag\": \"a\", \"name\": \"x\"}").RootElement;
+		object expected = new
+		{
+			id = 2,
+			etag = "b",
+			name = "x",
+		};
 		JsonOptions sut = new();
 
 		JsonOptions result = sut.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag"));
 
-		await That(result.MembersToIgnore).HasCount(2);
-		await That(result.MembersToIgnore[0].IgnoreMember("$.items[0].id", typeof(JsonElement))).IsTrue();
-		await That(result.MembersToIgnore[1].IgnoreMember("$.items[0].etag", typeof(JsonElement))).IsTrue();
-		await That(sut.MembersToIgnore).IsEmpty();
+		async Task ActWithResult()
+			=> await That(subject).MatchesExactly(expected, _ => result);
+
+		async Task ActWithOriginal()
+			=> await That(subject).MatchesExactly(expected, _ => sut);
+
+		await That(ActWithResult).DoesNotThrow()
+			.Because("both members to ignore are kept");
+		await That(ActWithOriginal).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches expected exactly,
+			             but it differed as
+			               $.id was 1 instead of 2 and
+			               $.etag was "a" instead of "b"
+			             """)
+			.Because("IgnoringMember and Ignoring return new options instead of changing the original ones");
 	}
 
 	[Test]
@@ -215,14 +237,30 @@ public class JsonOptionsTests
 	[Test]
 	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
 	{
+		JsonElement subject = JsonDocument.Parse("{\"name\": \"x\"}").RootElement;
 		JsonOptions sut = new();
 
 		JsonOptions result = sut.Ignoring(path
 			=> path.EndsWith(".etag"));
 
-		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
-		                                                          path
-		                                                          => path.EndsWith(".etag")
-		                                                          """);
+		async Task Act()
+			=> await That(subject).MatchesExactly(new
+			{
+				name = "y",
+			}, _ => result);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             matches new
+			             {
+			             	name = "y",
+			             } exactly,
+			             but it differed as $.name was "x" instead of "y"
+
+			             JSON options:
+			              - ignore members: [path*\n=> path.EndsWith(".etag")]
+			             """).AsWildcard()
+			.Because("the line break of the predicate is escaped and depends on the line endings of the source");
 	}
 }

@@ -11,14 +11,42 @@ namespace aweXpect.Json;
 /// <summary>
 ///     Options for strings as JSON.
 /// </summary>
-public record JsonOptions
+/// <remarks>
+///     The options are immutable: each extension method in <see cref="JsonOptionsExtensions" /> returns a modified copy.
+/// </remarks>
+public class JsonOptions
 {
 	private readonly JsonDocumentOptions? _options;
 
 	/// <summary>
+	///     Creates options without any active option.
+	/// </summary>
+	public JsonOptions()
+	{
+	}
+
+	/// <summary>
+	///     Copies the <paramref name="options" />, so that an extension method only has to set what it changes.
+	/// </summary>
+	/// <remarks>
+	///     Every option must be copied here.
+	/// </remarks>
+	internal JsonOptions(JsonOptions options)
+	{
+		_options = options._options;
+		SerializerOptions = options.SerializerOptions;
+		IgnoreAdditionalProperties = options.IgnoreAdditionalProperties;
+		IgnoreAdditionalArrayElements = options.IgnoreAdditionalArrayElements;
+		IgnoreArrayOrder = options.IgnoreArrayOrder;
+		TreatNullAsAbsent = options.TreatNullAsAbsent;
+		MembersToIgnore = options.MembersToIgnore;
+		NumberTolerance = options.NumberTolerance;
+	}
+
+	/// <summary>
 	///     The current <see cref="JsonDocumentOptions" /> to use when interpreting a <see langword="string" /> as JSON.
 	/// </summary>
-	public JsonDocumentOptions DocumentOptions
+	internal JsonDocumentOptions DocumentOptions
 	{
 		get => _options ?? Customize.aweXpect.Json().DefaultJsonDocumentOptions.Get();
 		init => _options = value;
@@ -28,7 +56,7 @@ public record JsonOptions
 	///     The <see cref="JsonSerializerOptions" /> to serialize the expected value with, or <see langword="null" /> to use
 	///     the customizable default.
 	/// </summary>
-	public JsonSerializerOptions? SerializerOptions { get; init; }
+	internal JsonSerializerOptions? SerializerOptions { get; init; }
 
 	/// <summary>
 	///     The <see cref="SerializerOptions" />, else the customized default, or <see langword="null" /> when neither is set.
@@ -39,28 +67,31 @@ public record JsonOptions
 	/// <summary>
 	///     Flag indicating, if the additional properties of objects in the subject should be ignored.
 	/// </summary>
-	public bool IgnoreAdditionalProperties { get; init; }
+	internal bool IgnoreAdditionalProperties { get; init; }
 
 	/// <summary>
 	///     Flag indicating, if the additional elements of arrays in the subject should be ignored.
 	/// </summary>
-	public bool IgnoreAdditionalArrayElements { get; init; }
+	internal bool IgnoreAdditionalArrayElements { get; init; }
 
 	/// <summary>
 	///     Flag indicating, if the order of the elements in arrays should be ignored.
 	/// </summary>
-	public bool IgnoreArrayOrder { get; init; }
+	internal bool IgnoreArrayOrder { get; init; }
 
 	/// <summary>
 	///     Flag indicating, if a property with the value <see langword="null" /> should be treated as if it was absent.
 	/// </summary>
-	public bool TreatNullAsAbsent { get; init; }
+	internal bool TreatNullAsAbsent { get; init; }
 
 	/// <summary>
 	///     The members that are ignored in the comparison, matched against their JSON path, e.g.
 	///     <c>$.items[0].etag</c>.
 	/// </summary>
-	public MemberToIgnore[] MembersToIgnore { get; init; } = [];
+	/// <remarks>
+	///     The array is shared between copies, so it is replaced instead of changed.
+	/// </remarks>
+	internal MemberToIgnore[] MembersToIgnore { get; init; } = [];
 
 	/// <summary>
 	///     The tolerance to apply when comparing numbers, or <see langword="null" /> to compare them exactly.

@@ -157,37 +157,12 @@ namespace aweXpect.Json
             public aweXpect.Customization.ICustomizationValueSetter<System.Text.Json.JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
         }
     }
-    public sealed record JsonNumbersWithinOptions : aweXpect.Json.JsonOptions, System.IEquatable<aweXpect.Json.JsonNumbersWithinOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<double>>, aweXpect.Options.IRelativeToleranceOptions<double>, aweXpect.Results.IWithinToleranceResult<aweXpect.Json.JsonOptions, double>
+    public sealed class JsonNumbersWithinOptions : aweXpect.Json.JsonOptions, aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<double>>, aweXpect.Options.IRelativeToleranceOptions<double>, aweXpect.Results.IWithinToleranceResult<aweXpect.Json.JsonOptions, double>
     {
-        protected override System.Type EqualityContract { get; }
-        public bool Equals(aweXpect.Json.JsonNumbersWithinOptions? other) { }
-        public override bool Equals(object? obj) { }
-        public override sealed bool Equals(aweXpect.Json.JsonOptions? other) { }
-        public override int GetHashCode() { }
-        protected override bool PrintMembers(System.Text.StringBuilder builder) { }
-        public override string ToString() { }
-        public static bool operator ==(aweXpect.Json.JsonNumbersWithinOptions? left, aweXpect.Json.JsonNumbersWithinOptions? right) { }
-        public static bool operator !=(aweXpect.Json.JsonNumbersWithinOptions? left, aweXpect.Json.JsonNumbersWithinOptions? right) { }
     }
-    public record JsonOptions : System.IEquatable<aweXpect.Json.JsonOptions>
+    public class JsonOptions
     {
-        protected JsonOptions(aweXpect.Json.JsonOptions original) { }
         public JsonOptions() { }
-        public System.Text.Json.JsonDocumentOptions DocumentOptions { get; init; }
-        protected virtual System.Type EqualityContract { get; }
-        public bool IgnoreAdditionalArrayElements { get; init; }
-        public bool IgnoreAdditionalProperties { get; init; }
-        public bool IgnoreArrayOrder { get; init; }
-        public aweXpect.Equivalency.MemberToIgnore[] MembersToIgnore { get; init; }
-        public System.Text.Json.JsonSerializerOptions? SerializerOptions { get; init; }
-        public bool TreatNullAsAbsent { get; init; }
-        public override bool Equals(object? obj) { }
-        public virtual bool Equals(aweXpect.Json.JsonOptions? other) { }
-        public override int GetHashCode() { }
-        protected virtual bool PrintMembers(System.Text.StringBuilder builder) { }
-        public override string ToString() { }
-        public static bool operator ==(aweXpect.Json.JsonOptions? left, aweXpect.Json.JsonOptions? right) { }
-        public static bool operator !=(aweXpect.Json.JsonOptions? left, aweXpect.Json.JsonOptions? right) { }
     }
     public static class JsonOptionsExtensions
     {

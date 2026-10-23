@@ -664,10 +664,7 @@ public sealed partial class ThatJsonElement
 					=> await That(subject).IsArray(o => o.At(0).Matching(new
 					{
 						foo = 1,
-					}), o => o with
-					{
-						IgnoreAdditionalProperties = ignoreAdditionalProperties,
-					});
+					}), o => o.IgnoringAdditionalProperties(ignoreAdditionalProperties));
 
 				await That(Act).Throws<FailException>().OnlyIf(!ignoreAdditionalProperties)
 					.WithMessage("""
