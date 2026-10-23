@@ -354,6 +354,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
         "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
+      },
+      {
+        "sha": "81744dc65fe9def8debefb839f81bbe68ef11de8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
+        "message": "feat: add HasValue for XML elements (#1963)"
       }
     ],
     "labels": [
@@ -415,7 +421,8 @@ window.BENCHMARK_DATA = {
       "3009dddd",
       "ce12e858",
       "25ca35b1",
-      "012afc61"
+      "012afc61",
+      "81744dc6"
     ],
     "datasets": [
       {
@@ -480,7 +487,8 @@ window.BENCHMARK_DATA = {
           669.846203327179,
           547.4867346627371,
           685.8207074678861,
-          785.1266954966953
+          785.1266954966953,
+          659.879118347168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -520,6 +528,7 @@ window.BENCHMARK_DATA = {
           1160,
           1160,
           1160,
+          1120,
           1120,
           1120,
           1120,
@@ -623,7 +632,8 @@ window.BENCHMARK_DATA = {
           833.1058286031088,
           551.0317855676016,
           663.4473208699908,
-          796.909823735555
+          796.909823735555,
+          669.4861149421105
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -635,6 +645,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -1061,6 +1072,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
         "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
+      },
+      {
+        "sha": "81744dc65fe9def8debefb839f81bbe68ef11de8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
+        "message": "feat: add HasValue for XML elements (#1963)"
       }
     ],
     "labels": [
@@ -1122,7 +1139,8 @@ window.BENCHMARK_DATA = {
       "3009dddd",
       "ce12e858",
       "25ca35b1",
-      "012afc61"
+      "012afc61",
+      "81744dc6"
     ],
     "datasets": [
       {
@@ -1187,7 +1205,8 @@ window.BENCHMARK_DATA = {
           5281.6227289835615,
           3302.619764328003,
           4182.170234680176,
-          4890.787358420236
+          4890.787358420236,
+          4296.982101949056
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1257,7 +1276,8 @@ window.BENCHMARK_DATA = {
           24114,
           24114,
           24047,
-          24114
+          24114,
+          24047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1330,7 +1350,8 @@ window.BENCHMARK_DATA = {
           6220.015347290039,
           3886.1146008627757,
           5080.0025283813475,
-          5657.572980753581
+          5657.572980753581,
+          4992.002876281738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,6 +1363,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -1708,6 +1730,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
         "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
+      },
+      {
+        "sha": "81744dc65fe9def8debefb839f81bbe68ef11de8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
+        "message": "feat: add HasValue for XML elements (#1963)"
       }
     ],
     "labels": [
@@ -1759,7 +1787,8 @@ window.BENCHMARK_DATA = {
       "3009dddd",
       "ce12e858",
       "25ca35b1",
-      "012afc61"
+      "012afc61",
+      "81744dc6"
     ],
     "datasets": [
       {
@@ -1814,7 +1843,8 @@ window.BENCHMARK_DATA = {
           2955.6037590026854,
           1871.041808128357,
           2444.735868326823,
-          2922.3999499003094
+          2922.3999499003094,
+          2584.8950770451474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1844,6 +1874,7 @@ window.BENCHMARK_DATA = {
           12880,
           12880,
           12880,
+          12856,
           12856,
           12856,
           12856,
@@ -1937,7 +1968,8 @@ window.BENCHMARK_DATA = {
           3932.7633855183917,
           2605.159786987305,
           3452.756422189566,
-          3884.333874511719
+          3884.333874511719,
+          3438.4703668866837
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1949,6 +1981,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -2305,6 +2338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
         "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
+      },
+      {
+        "sha": "81744dc65fe9def8debefb839f81bbe68ef11de8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
+        "message": "feat: add HasValue for XML elements (#1963)"
       }
     ],
     "labels": [
@@ -2356,7 +2395,8 @@ window.BENCHMARK_DATA = {
       "3009dddd",
       "ce12e858",
       "25ca35b1",
-      "012afc61"
+      "012afc61",
+      "81744dc6"
     ],
     "datasets": [
       {
@@ -2411,7 +2451,8 @@ window.BENCHMARK_DATA = {
           14251.028913370768,
           10157.779718017578,
           13537.329347882953,
-          14539.298747136043
+          14539.298747136043,
+          14618.606377234826
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2441,6 +2482,7 @@ window.BENCHMARK_DATA = {
           25592,
           25592,
           25592,
+          25568,
           25568,
           25568,
           25568,
@@ -2534,7 +2576,8 @@ window.BENCHMARK_DATA = {
           288561.75743689906,
           242252.0932128906,
           349109.6136067708,
-          370418.12158203125
+          370418.12158203125,
+          350420.12548828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2594,7 +2637,8 @@ window.BENCHMARK_DATA = {
           544246,
           544335,
           544335,
-          544335
+          544335,
+          544252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
