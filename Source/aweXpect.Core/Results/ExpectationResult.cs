@@ -141,8 +141,8 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <remarks>
 	///     The combination does not trace its members, so a met expectation is traced here.
 	/// </remarks>
-	internal override ValueTask<Result> GetResult(int index)
-		=> ExpectationBuilder.GetResult(index);
+	internal override ValueTask<Result> GetResult(int index, TimeSpan? limit, CancellationToken? cancellationToken)
+		=> ExpectationBuilder.GetResult(index, limit, cancellationToken);
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
@@ -368,8 +368,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <remarks>
 	///     The combination does not trace its members, so a met expectation is traced here.
 	/// </remarks>
-	internal override ValueTask<Result> GetResult(int index)
-		=> ExpectationBuilder.GetResult(index);
+	internal override ValueTask<Result> GetResult(int index, TimeSpan? limit, CancellationToken? cancellationToken)
+		=> ExpectationBuilder.GetResult(index, limit, cancellationToken);
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()

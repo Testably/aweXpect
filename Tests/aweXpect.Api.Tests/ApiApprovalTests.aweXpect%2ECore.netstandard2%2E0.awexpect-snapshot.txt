@@ -205,18 +205,26 @@ namespace aweXpect.Core
             protected abstract aweXpect.Core.Constraints.Outcome CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current);
             public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
             protected abstract string GetSubjectLine();
-            public class All : aweXpect.Core.Expectation.Combination
+            public class All : aweXpect.Core.Expectation.Combination<aweXpect.Core.Expectation.Combination.All>
             {
                 public All(aweXpect.Core.Expectation[] expectations) { }
                 protected override aweXpect.Core.Constraints.Outcome CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) { }
                 protected override string GetSubjectLine() { }
             }
-            public class Any : aweXpect.Core.Expectation.Combination
+            public class Any : aweXpect.Core.Expectation.Combination<aweXpect.Core.Expectation.Combination.Any>
             {
                 public Any(aweXpect.Core.Expectation[] expectations) { }
                 protected override aweXpect.Core.Constraints.Outcome CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) { }
                 protected override string GetSubjectLine() { }
             }
+        }
+        public abstract class Combination<TSelf> : aweXpect.Core.Expectation.Combination where TSelf : aweXpect.Core.Expectation.Combination<TSelf>
+        {
+            protected Combination(aweXpect.Core.Expectation[] expectations) { }
+            public TSelf Because(System.Threading.Tasks.Task<string?> reason) { }
+            public TSelf Because(string? reason) { }
+            public TSelf WithCancellation(System.Threading.CancellationToken cancellationToken) { }
+            public TSelf WithTimeout(System.TimeSpan timeout) { }
         }
     }
     public abstract class ExpectationBuilder

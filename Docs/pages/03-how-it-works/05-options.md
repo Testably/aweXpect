@@ -25,6 +25,9 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("Let It Be").Because("it is the title of the last album");
 ```
 
+On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, the reason is
+added to the first line of the failure message.
+
 ## String options
 
 The expectations that compare strings, e.g. `IsEqualTo`, `StartsWith` or `Contains`, but also the items of a

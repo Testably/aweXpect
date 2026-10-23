@@ -299,7 +299,7 @@ public class ExpectTests
 	{
 		Expectation.Combination sut = ThatAll(new MyExpectation(new Expectation.Result(1, "foo",
 			new DummyConstraintResult(Outcome.Failure, "expectation", "result"))));
-		ConstraintResult result = (await sut.GetResult(0)).ConstraintResult;
+		ConstraintResult result = (await sut.GetResult(0, null, null)).ConstraintResult;
 
 		ConstraintResult negated = result.Negate();
 
@@ -313,7 +313,7 @@ public class ExpectTests
 	{
 		Expectation.Combination sut = ThatAll(new MyExpectation(new Expectation.Result(1, "foo",
 			new DummyConstraintResult(42, Outcome.Success, "expectation"))));
-		ConstraintResult result = (await sut.GetResult(0)).ConstraintResult;
+		ConstraintResult result = (await sut.GetResult(0, null, null)).ConstraintResult;
 
 		bool hasValue = result.TryGetStoredValue(out int value);
 
@@ -925,7 +925,7 @@ public class ExpectTests
 
 	private sealed class MyExpectation(Expectation.Result result, params ResultContext[] contexts) : Expectation
 	{
-		internal override ValueTask<Result> GetResult(int index)
+		internal override ValueTask<Result> GetResult(int index, TimeSpan? limit, CancellationToken? cancellationToken)
 			=> new(new Result(result.Index, result.SubjectLine,
 				new WithContexts(result.ConstraintResult, contexts)));
 

@@ -74,6 +74,11 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	}
 
 	/// <summary>
+	///     Marks the reason as observed, when it faults, for a combination that only awaits it when it fails.
+	/// </summary>
+	public void ObserveExceptions() => ObserveExceptions(reason);
+
+	/// <summary>
 	///     Marks a faulted <paramref name="task" /> as observed, so that a reason that is never awaited cannot surface
 	///     later as an <see cref="TaskScheduler.UnobservedTaskException" />.
 	/// </summary>

@@ -35,6 +35,10 @@ than once applies the shortest timeout. `Timeout.InfiniteTimeSpan` imposes no li
 rejected when the expectation is built.
 :::
 
+On a [combination](./03-combining.md#on-different-subjects) of `Expect.ThatAll` or `Expect.ThatAny`, `WithTimeout`
+limits the whole combination: its expectations are evaluated one after another and each one only gets the time that is
+left.
+
 ## `CancellationToken`
 
 You can set a global provider for getting a `CancellationToken` that is applied for all expectations:
@@ -76,6 +80,9 @@ await Expect.That(playlist).All().Satisfy(track => track.PlayCount > 0)
 A local `CancellationToken` replaces the global one instead of being applied additionally. If you need both, pass a
 [linked cancellation token](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource.createlinkedtokensource).
 :::
+
+On a [combination](./03-combining.md#on-different-subjects), `WithCancellation` passes the `CancellationToken` to every
+combined expectation; one with a `CancellationToken` of its own observes both.
 
 The timeout and the `CancellationToken` are also forwarded to a [delegate](../06-behaviour/01-delegates.md) that
 accepts a `CancellationToken` parameter.
