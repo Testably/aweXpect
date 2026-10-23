@@ -118,7 +118,7 @@ public sealed partial class ThatMethods
 
 					             Not matching items:
 					             [
-					               void ThatMethods.Matching.TestClass.ParamsArray(int[] values)
+					               void ThatMethods.Matching.TestClass.ParamsArray(params int[] values)
 					             ]
 					             """);
 			}

@@ -48,7 +48,7 @@ public sealed partial class ThatConstructors
 
 					             Not matching items:
 					             [
-					               ThatConstructors.Matching.ClassWithParamsArray(int[] values)
+					               ThatConstructors.Matching.ClassWithParamsArray(params int[] values)
 					             ]
 					             """);
 			}
