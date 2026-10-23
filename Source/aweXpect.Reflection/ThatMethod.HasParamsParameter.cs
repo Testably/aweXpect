@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
-using aweXpect.Results;
 
 namespace aweXpect;
 
@@ -17,11 +12,9 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has a <see langword="params" /> parameter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> HasParamsParameter(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameter(
 		this IThat<MethodInfo?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint(static (it, grammars)
-				=> new HasParamsParameterConstraint(it, grammars)),
-			subject);
+		=> HasParameterOfKind(subject, p => p.IsParamsParameter(), "a params");
 
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has a <see langword="params" /> parameter of type
@@ -103,30 +96,4 @@ public static partial class ThatMethod
 	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
-
-	private sealed class HasParamsParameterConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
-			IValueConstraint<MethodInfo?>
-	{
-		public ConstraintResult IsMetBy(MethodInfo? actual)
-		{
-			Actual = actual;
-			Outcome = actual?.GetParameters().Any(p => p.IsParamsParameter()) == true
-				? Outcome.Success
-				: Outcome.Failure;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a params parameter");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did not");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have a params parameter");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did");
-	}
 }

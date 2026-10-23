@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
@@ -212,6 +213,21 @@ public static partial class ConstructorFilters
 			collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
+	private static ConstructorsWithParameter<object?> WithParameterOfKind(Filtered.Constructors @this,
+		Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+			constructorInfo => constructorInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
+			() =>
+			{
+				string description = parameterFilterOptions.GetDescription();
+				return $"with {kind} parameter{(description.Length == 0 ? "" : " ")}{description}{collectionIndexOptions.Match.GetDescription()} ";
+			});
+		return new ConstructorsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+	}
+
 	private static IAsyncChangeableFilter<ConstructorInfo> WithoutParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
 		=> Filter.Suffix<ConstructorInfo>(
@@ -327,6 +343,17 @@ public static partial class ConstructorFilters
 		public ConstructorsWithParameter<T> WithParamsModifier()
 		{
 			_parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
+			return this;
+		}
+
+		/// <summary>
+		///     …matching the <paramref name="predicate" />.
+		/// </summary>
+		public ConstructorsWithParameter<T> Matching(Func<ParameterInfo, bool> predicate,
+			[CallerArgumentExpression("predicate")]
+			string doNotPopulateThisValue = "")
+		{
+			_parameterFilterOptions.AddMatching(predicate, doNotPopulateThisValue);
 			return this;
 		}
 	}

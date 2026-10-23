@@ -177,6 +177,23 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, string unexpected)
 		=> DoesNotHaveNamedParameter<object?>(subject, null, unexpected);
 
+	private static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParameterOfKind(
+		IThat<MethodInfo?> subject, Func<ParameterInfo, bool> predicate, string kind)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(predicate);
+		return new ParameterCollectionResult<MethodInfo, MethodInfo?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint((Kind: kind, CollectionIndexOptions: collectionIndexOptions, ParameterFilterOptions: parameterFilterOptions),
+					static (s, it, grammars)
+					=> new HasParameterConstraint(it, grammars, null, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions,
+						kind: s.Kind)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
 	private static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> DoesNotHaveParameterOfType<TParameter>(
 		IThat<MethodInfo?> subject, Type parameterType)
 	{
@@ -224,7 +241,8 @@ public static partial class ThatMethod
 		string? expectedName,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions,
-		bool exactType = false)
+		bool exactType = false,
+		string? kind = null)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IAsyncConstraint<MethodInfo?>
 	{
@@ -249,7 +267,7 @@ public static partial class ThatMethod
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has parameter");
+			stringBuilder.Append(kind is null ? "has parameter" : $"has {kind} parameter");
 			if (parameterType != null)
 			{
 				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
@@ -274,7 +292,7 @@ public static partial class ThatMethod
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not have parameter");
+			stringBuilder.Append(kind is null ? "does not have parameter" : $"does not have {kind} parameter");
 			if (parameterType != null)
 			{
 				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));

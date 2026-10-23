@@ -343,6 +343,7 @@ In addition to [access modifiers](#access-modifiers),
 | `in` parameter                       | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`         |
 | `params` parameter                   | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
 | optional parameter                   | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
+| parameter matching a predicate       | `.WithParameter<T>().Matching(p => …)`              | `.HasParameter<T>().Matching(p => …)`                           | `.HaveParameter<T>().Matching(p => …)` |
 | custom predicate                     | `.Which(m => …)`                                    | `.Satisfies(m => …)`                                            | `.All().Satisfy(m => …)`     |
 
 `WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
@@ -378,6 +379,19 @@ of them, and `DoNotHaveParameter` verifies that for every item of a collection. 
 // Public methods take no bool flag
 await Expect.That(In.AssemblyContaining<PlaylistService>().Public.Methods())
     .DoNotHaveParameter<bool>();
+```
+
+`Matching(p => …)` narrows down the parameter with a predicate on its `ParameterInfo`, for anything the other
+options do not cover (attributes, position, type details, …). It is available on every parameter filter and
+expectation, including the negations and the parameterless `ref` / `out` / `in` / `params` / optional variants, and
+combines with the other options. `WithParamsParameter()` matches `params` arrays and C# 13 `params` collections alike;
+`Matching` tells them apart:
+
+```csharp
+// Consumers below C# 13 cannot pass single values to a params collection
+await Expect.That(In.AssemblyContaining<PlaylistService>().Public.Methods()
+        .WithParamsParameter().Matching(p => !p.ParameterType.IsArray))
+    .IsEmpty();
 ```
 
 `WhichAreExtensionMethods()`, `IsAnExtensionMethod()` and `AreExtensionMethods()` match both classic `this`-parameter
@@ -591,9 +605,11 @@ In addition to [access modifiers](#access-modifiers) and
 | `in` parameter                 | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`         |
 | `params` parameter             | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
 | optional parameter             | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
+| parameter matching a predicate | `.WithParameter<T>().Matching(p => …)`              | `.HasParameter<T>().Matching(p => …)`                           | `.HaveParameter<T>().Matching(p => …)` |
 
 The `ref` / `out` / `in` / `params` / optional parameter filters and expectations accept the same
-`<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads as `WithParameter` (see [Methods](#methods)).
+`<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads as `WithParameter`, and all parameter filters and
+expectations accept `Matching(p => …)` (see [Methods](#methods)).
 
 ```csharp
 In.AllLoadedAssemblies().Public.Constructors()

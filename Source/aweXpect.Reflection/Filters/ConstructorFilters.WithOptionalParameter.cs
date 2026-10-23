@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -11,13 +10,8 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Filter for constructors with an optional parameter.
 	/// </summary>
-	public static Filtered.Constructors WithOptionalParameter(this Filtered.Constructors @this)
-	{
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo => constructorInfo.GetParameters().Any(p => p.IsOptionalParameter()),
-			"with optional parameter ");
-		return @this.Which(filter);
-	}
+	public static ConstructorsWithParameter<object?> WithOptionalParameter(this Filtered.Constructors @this)
+		=> WithParameterOfKind(@this, p => p.IsOptionalParameter(), "optional");
 
 	/// <summary>
 	///     Filter for constructors with an optional parameter of type <typeparamref name="T" />.

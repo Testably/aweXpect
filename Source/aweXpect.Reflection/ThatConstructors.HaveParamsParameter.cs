@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -26,11 +16,9 @@ public static partial class ThatConstructors
 	///     a <see langword="params" /> parameter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> HaveParamsParameter(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveParamsParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>(static (it, grammars)
-				=> new HaveParamsParameterConstraint(it, grammars)),
-			subject);
+		=> HaveParameterOfKind(subject, p => p.IsParamsParameter(), "a params");
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -38,11 +26,9 @@ public static partial class ThatConstructors
 	///     a <see langword="params" /> parameter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>> HaveParamsParameter(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveParamsParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>(static (it, grammars)
-				=> new HaveParamsParameterConstraint(it, grammars)),
-			subject);
+		=> HaveParameterOfKind(subject, p => p.IsParamsParameter(), "a params");
 #endif
 
 	/// <summary>
@@ -218,35 +204,4 @@ public static partial class ThatConstructors
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 #endif
-
-	private sealed class HaveParamsParameterConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<ConstructorInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<ConstructorInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<ConstructorInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				constructor => constructor?.GetParameters().Any(p => p.IsParamsParameter()) == true, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<ConstructorInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context,
-				constructor => constructor?.GetParameters().Any(p => p.IsParamsParameter()) == true);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have a params parameter");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained constructors without a params parameter");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have a params parameter");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained constructors with a params parameter");
-	}
 }

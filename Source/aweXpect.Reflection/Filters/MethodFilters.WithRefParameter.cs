@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -11,13 +10,8 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Filter for methods with a <see langword="ref" /> parameter.
 	/// </summary>
-	public static Filtered.Methods WithRefParameter(this Filtered.Methods @this)
-	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo => methodInfo.GetParameters().Any(p => p.IsRefParameter()),
-			"with ref parameter ");
-		return @this.Which(filter);
-	}
+	public static MethodsWithParameter<object?> WithRefParameter(this Filtered.Methods @this)
+		=> WithParameterOfKind(@this, p => p.IsRefParameter(), "ref");
 
 	/// <summary>
 	///     Filter for methods with a <see langword="ref" /> parameter of type <typeparamref name="T" />.

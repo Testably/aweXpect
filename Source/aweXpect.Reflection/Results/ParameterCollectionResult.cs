@@ -1,4 +1,7 @@
-﻿using aweXpect.Core;
+﻿using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
@@ -91,6 +94,17 @@ public class ParameterCollectionResult<TType, TThat, TParameter, TSelf>
 	{
 		_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 			() => $"with default value {Formatter.Format(expected)}");
+		return (TSelf)this;
+	}
+
+	/// <summary>
+	///     …matching the <paramref name="predicate" />.
+	/// </summary>
+	public TSelf Matching(Func<ParameterInfo, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+	{
+		_parameterFilterOptions.AddMatching(predicate, doNotPopulateThisValue);
 		return (TSelf)this;
 	}
 }
