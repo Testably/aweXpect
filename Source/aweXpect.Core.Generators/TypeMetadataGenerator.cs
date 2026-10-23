@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace aweXpect.Generators;
+namespace aweXpect.Core.Generators;
 
 /// <summary>
 ///     The <see cref="IIncrementalGenerator" /> that registers the members of every type reaching an equivalency
@@ -29,6 +29,11 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	private const string Registry = "global::aweXpect.Core.Metadata.TypeMetadataRegistry";
 	private const string CoreAssembly = "aweXpect.Core";
 	private const string ExperimentalAttribute = "System.Diagnostics.CodeAnalysis.ExperimentalAttribute";
+
+	/// <summary>
+	///     The key of the <c>AssemblyMetadataAttribute</c> with which aweXpect leaves this generator to aweXpect.Core.
+	/// </summary>
+	private const string MetadataGeneratorMarker = "aweXpect.TypeMetadataGenerator";
 
 	private static readonly string[] MarkerNames =
 	[
@@ -72,7 +77,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		IncrementalValueProvider<bool> isSupported = context.CompilationProvider
-			.Select(static (c, _) => SupportsRegistration(c) && HasModuleInitializer(c) && HasLanguageVersion(c));
+			.Select(static (c, _) => SupportsRegistration(c) && HasModuleInitializer(c) && HasLanguageVersion(c) &&
+			                         !IsGeneratedByAweXpect(c));
 
 		IncrementalValueProvider<bool> supportsBatch = context.CompilationProvider
 			.Select(static (c, _) => SupportsBatch(c));
@@ -419,6 +425,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// </remarks>
 	private static bool HasLanguageVersion(Compilation compilation)
 		=> compilation is CSharpCompilation { LanguageVersion: >= LanguageVersion.CSharp9, };
+
+	/// <remarks>
+	///     An aweXpect without the marker ships its own copy of this generator, which emits the same type, so this copy
+	///     stays silent next to it instead of failing the build with a duplicate definition.
+	/// </remarks>
+	private static bool IsGeneratedByAweXpect(Compilation compilation)
+		=> compilation.SourceModule.ReferencedAssemblySymbols.Any(assembly
+			=> assembly.Name == "aweXpect" &&
+			   !assembly.GetAttributes().Any(x
+				   => x.AttributeClass?.ToDisplayString() == "System.Reflection.AssemblyMetadataAttribute" &&
+				      x.ConstructorArguments.Length == 2 &&
+				      x.ConstructorArguments[0].Value as string == MetadataGeneratorMarker));
 
 	/// <remarks>
 	///     Without <c>ModuleInitializerAttribute</c> the target framework cannot be trimmed or AOT-published anyway.

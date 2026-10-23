@@ -43,6 +43,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="$(MSBuildThisFileDirectory)../../Source/aweXpect.Core.Generators/aweXpect.Core.Generators.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="$(MSBuildThisFileDirectory)../../Source/aweXpect.Generators/aweXpect.Generators.csproj"
 						  OutputItemType="Analyzer"
 						  ReferenceOutputAssembly="false"/>

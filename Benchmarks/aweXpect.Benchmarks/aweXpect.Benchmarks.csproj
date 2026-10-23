@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 	</ItemGroup>
 

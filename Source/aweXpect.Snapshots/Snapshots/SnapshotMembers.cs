@@ -192,8 +192,8 @@ public class SnapshotMembers<TReturn, TValue>
 	///     text rules do; a converted <see langword="null" /> is written as <c>&lt;null&gt;</c>. A
 	///     <see langword="null" /> value, or one that is no <typeparamref name="TValue" />, is not converted. An exception
 	///     of <paramref name="convert" /> is thrown. The first masking or converter that matches a value wins.<br />
-	///     The source generator of aweXpect registers the members of <typeparamref name="TResult" />, so that it is also
-	///     written member-wise in a trimmed or Native AOT build.
+	///     The source generator of aweXpect.Core registers the members of <typeparamref name="TResult" />, so that it is
+	///     also written member-wise in a trimmed or Native AOT build.
 	/// </remarks>
 	public TReturn Convert<[RequiresMemberMetadata] TResult>(Func<TValue, TResult> convert)
 	{
