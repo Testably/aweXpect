@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Tests;
@@ -24,6 +25,36 @@ public sealed partial class ThatMethods
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenMoreMethodsDoNotMatchSelectorThanTheMaximumNumberOfCollectionItems_ShouldLimitTheList()
+			{
+				using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(1);
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod2))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName(method => method.Name + "X");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have name matching method => method.Name + "X",
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
+					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
+					               (… and 1 more)
+					             ]
+					             """)
+					.Because("the not matching members are limited like any other collection in a failure message");
 			}
 
 			[Test]

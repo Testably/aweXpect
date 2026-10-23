@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
@@ -10,6 +11,32 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class Tests
 		{
+			[Test]
+			public async Task WhenMoreAssembliesDoNotMatchSelectorThanTheMaximumNumberOfCollectionItems_ShouldLimitTheList()
+			{
+				using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(1);
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly, typeof(ThatAssemblies).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).HaveName(_ => "WrongName");
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that in the assemblies *
+					             all have name matching _ => "WrongName",
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
+					               (… and 1 more)
+					             ]
+					             """).AsWildcard()
+					.Because("the not matching assemblies are limited like any other collection in a failure message");
+			}
+
 			[Test]
 			public async Task WhenMultipleAssembliesDoNotMatchSelector_ShouldSeparateWithComma()
 			{

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using aweXpect.Core;
 using aweXpect.Reflection.Formatting;
 
@@ -43,26 +42,12 @@ internal static class MemberViolationRenderer
 		IReadOnlyList<Type?> types,
 		IReadOnlyDictionary<Type, MemberInfo[]> violations,
 		string memberHeader)
-	{
-		StringBuilder stringBuilder = new();
-		stringBuilder.Append('[');
-		for (int index = 0; index < types.Count; index++)
+		=> ItemListRenderer.Format(types, (stringBuilder, type) =>
 		{
-			Type? type = types[index];
-			stringBuilder.Append(Environment.NewLine).Append("  ")
-				.Append(Formatter.Format(type));
-
+			stringBuilder.Append(Formatter.Format(type));
 			if (type is not null && violations.TryGetValue(type, out MemberInfo[]? members))
 			{
 				stringBuilder.Append(memberHeader).Append(Formatter.Format(FormattableMember.FromAll(members)));
 			}
-
-			if (index < types.Count - 1)
-			{
-				stringBuilder.Append(',');
-			}
-		}
-
-		return stringBuilder.Append(Environment.NewLine).Append(']').ToString();
-	}
+		});
 }

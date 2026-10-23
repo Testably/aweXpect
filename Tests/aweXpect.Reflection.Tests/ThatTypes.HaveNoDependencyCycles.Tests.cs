@@ -94,6 +94,37 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenMoreCyclesExistThanTheMaximumNumberOfCollectionItems_ShouldLimitTheList()
+			{
+				using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(1);
+				IEnumerable<Type?> subject =
+				[
+					typeof(ThreeA.TypeA),
+					typeof(ThreeB.TypeB),
+					typeof(ThreeC.TypeC),
+					typeof(TwoOrders.Order),
+					typeof(TwoBilling.Invoice),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              have no dependency cycles,
+					              but it had 2 dependency cycles
+
+					              Dependency cycles:
+					              {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
+					              (… and 1 more)
+					              """)
+					.Because("the dependency cycles are limited like any other collection in a failure message");
+			}
+
+			[Test]
 			public async Task WhenMultipleCyclesExist_ShouldListAllOfThem()
 			{
 				IEnumerable<Type?> subject =

@@ -190,26 +190,10 @@ public static partial class ThatAssemblies
 			=> IsNegated ? base.FormatItems(items) : () => FormatMismatches(items);
 
 		private string FormatMismatches(Assembly?[] items)
-		{
-			StringBuilder stringBuilder = new();
-			stringBuilder.Append('[');
-			bool isFirst = true;
-			foreach (Assembly? assembly in items)
-			{
-				if (!isFirst)
-				{
-					stringBuilder.Append(',');
-				}
-
-				isFirst = false;
-				stringBuilder.AppendLine().Append("  ")
-					.Append(Formatter.Format(assembly))
-					.Append(" with name ").Append(Formatter.Format(assembly?.GetName().Name))
-					.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, assembly, "the name selector")));
-			}
-
-			return stringBuilder.AppendLine().Append(']').ToString();
-		}
+			=> ItemListRenderer.Format(items, (stringBuilder, assembly) => stringBuilder
+				.Append(Formatter.Format(assembly))
+				.Append(" with name ").Append(Formatter.Format(assembly?.GetName().Name))
+				.Append(" instead of ").Append(Formatter.Format(UserCode.Invoke(expectedNameSelector, assembly, "the name selector"))));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have name matching ")
