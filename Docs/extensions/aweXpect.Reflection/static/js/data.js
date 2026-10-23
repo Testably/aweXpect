@@ -366,6 +366,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
@@ -429,7 +435,8 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
@@ -496,7 +503,8 @@ window.BENCHMARK_DATA = {
           554.524722303663,
           733.1091297013419,
           540.599494116647,
-          729.1559373310635
+          729.1559373310635,
+          746.0287245432536
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -541,6 +549,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -643,7 +652,8 @@ window.BENCHMARK_DATA = {
           730.0223516736712,
           916.6795333715586,
           682.278204202652,
-          937.3580079396565
+          937.3580079396565,
+          935.801241238912
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -655,6 +665,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1095,6 +1106,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
@@ -1158,7 +1175,8 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
@@ -1225,7 +1243,8 @@ window.BENCHMARK_DATA = {
           101.25333801110585,
           141.04191894190652,
           95.10027017763683,
-          134.5251111984253
+          134.5251111984253,
+          132.3493261973063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1265,6 +1284,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1372,7 +1392,8 @@ window.BENCHMARK_DATA = {
           188.33656789461773,
           202.7538287003835,
           163.79742351600103,
-          216.17308212916058
+          216.17308212916058,
+          226.68383900324503
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1384,6 +1405,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1824,6 +1846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
@@ -1887,7 +1915,8 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
@@ -1954,7 +1983,8 @@ window.BENCHMARK_DATA = {
           1475.5675882192759,
           1983.5617647806803,
           1465.920994313558,
-          1981.854712677002
+          1981.854712677002,
+          1995.2253605978829
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1994,6 +2024,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2101,7 +2132,8 @@ window.BENCHMARK_DATA = {
           1135.7484572092692,
           1455.5706194468908,
           1245.6852585719182,
-          1546.312598500933
+          1546.312598500933,
+          1471.2968467712403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2172,6 +2204,7 @@ window.BENCHMARK_DATA = {
           1985,
           1953,
           1864,
+          1953,
           1953,
           1953
         ],
@@ -2493,6 +2526,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
@@ -2546,7 +2585,8 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
@@ -2603,7 +2643,8 @@ window.BENCHMARK_DATA = {
           2150.525868007115,
           2872.623115793864,
           2098.2556749979653,
-          2801.1938046046666
+          2801.1938046046666,
+          2913.4129531860353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2665,7 +2706,8 @@ window.BENCHMARK_DATA = {
           3040,
           2984,
           3040,
-          3040
+          3040,
+          2984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2730,7 +2772,8 @@ window.BENCHMARK_DATA = {
           3072.6050409589493,
           3881.450845990862,
           3050.5146051134384,
-          3914.533017985026
+          3914.533017985026,
+          3851.410376993815
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2792,6 +2835,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -3112,6 +3156,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
@@ -3165,7 +3215,8 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
@@ -3222,7 +3273,8 @@ window.BENCHMARK_DATA = {
           282.3061068534851,
           417.27713199762195,
           266.9882144194383,
-          403.73561617533363
+          403.73561617533363,
+          379.90855176108226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3252,6 +3304,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3349,7 +3402,8 @@ window.BENCHMARK_DATA = {
           1807.2084239959718,
           2287.9637486775714,
           1756.864614339975,
-          2311.7525332132977
+          2311.7525332132977,
+          2403.7770568847654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3361,6 +3415,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3731,6 +3786,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
@@ -3784,7 +3845,8 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
@@ -3841,7 +3903,8 @@ window.BENCHMARK_DATA = {
           2845.298851267497,
           3629.25562210083,
           2670.7475618634903,
-          3631.342981719971
+          3631.342981719971,
+          3606.5318046569823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3900,6 +3963,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -3968,7 +4032,8 @@ window.BENCHMARK_DATA = {
           242390.7084263393,
           278802.257047526,
           239105.79702524038,
-          283999.76318359375
+          283999.76318359375,
+          283437.116398738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4027,6 +4092,7 @@ window.BENCHMARK_DATA = {
           17818,
           17560,
           17609,
+          17577,
           17577,
           17577,
           17577,
