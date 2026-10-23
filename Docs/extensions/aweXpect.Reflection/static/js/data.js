@@ -396,6 +396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
         "message": "docs: use the music theme in the remaining examples (#1970)"
+      },
+      {
+        "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
+        "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
       }
     ],
     "labels": [
@@ -464,7 +470,8 @@ window.BENCHMARK_DATA = {
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
-      "01684f30"
+      "01684f30",
+      "eeb6f10c"
     ],
     "datasets": [
       {
@@ -536,7 +543,8 @@ window.BENCHMARK_DATA = {
           682.6208861214774,
           385.53902740478514,
           381.48705662999834,
-          404.5717393068167
+          404.5717393068167,
+          713.972689969199
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -581,6 +589,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -693,7 +702,8 @@ window.BENCHMARK_DATA = {
           848.7192447026571,
           493.92227150843695,
           459.27633282343544,
-          532.7023837749774
+          532.7023837749774,
+          862.7739003254817
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -705,6 +715,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1180,6 +1191,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
         "message": "docs: use the music theme in the remaining examples (#1970)"
+      },
+      {
+        "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
+        "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
       }
     ],
     "labels": [
@@ -1248,7 +1265,8 @@ window.BENCHMARK_DATA = {
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
-      "01684f30"
+      "01684f30",
+      "eeb6f10c"
     ],
     "datasets": [
       {
@@ -1320,7 +1338,8 @@ window.BENCHMARK_DATA = {
           127.16299282709757,
           71.2067626396815,
           66.24985903104147,
-          75.95262475013733
+          75.95262475013733,
+          125.11533050537109
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1360,6 +1379,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1477,7 +1497,8 @@ window.BENCHMARK_DATA = {
           212.34665722846984,
           145.98810529708862,
           114.2459699000631,
-          139.42729212687567
+          139.42729212687567,
+          198.4091228802999
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1489,6 +1510,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1964,6 +1986,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
         "message": "docs: use the music theme in the remaining examples (#1970)"
+      },
+      {
+        "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
+        "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
       }
     ],
     "labels": [
@@ -2032,7 +2060,8 @@ window.BENCHMARK_DATA = {
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
-      "01684f30"
+      "01684f30",
+      "eeb6f10c"
     ],
     "datasets": [
       {
@@ -2104,7 +2133,8 @@ window.BENCHMARK_DATA = {
           1811.4357714335124,
           1058.8527389526366,
           925.779819424947,
-          1124.5583415985107
+          1124.5583415985107,
+          1929.366125869751
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2144,6 +2174,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2261,7 +2292,8 @@ window.BENCHMARK_DATA = {
           1372.7388380595617,
           846.1342365264893,
           747.2022263663156,
-          907.0648664065769
+          907.0648664065769,
+          1411.3959779103598
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2338,7 +2370,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2688,6 +2721,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
         "message": "docs: use the music theme in the remaining examples (#1970)"
+      },
+      {
+        "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
+        "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
       }
     ],
     "labels": [
@@ -2746,7 +2785,8 @@ window.BENCHMARK_DATA = {
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
-      "01684f30"
+      "01684f30",
+      "eeb6f10c"
     ],
     "datasets": [
       {
@@ -2808,7 +2848,8 @@ window.BENCHMARK_DATA = {
           2661.371395656041,
           1391.216616121928,
           1321.880958693368,
-          1603.5351232801165
+          1603.5351232801165,
+          2698.5197888887847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2875,6 +2916,7 @@ window.BENCHMARK_DATA = {
           3040,
           2984,
           3040,
+          2984,
           2984
         ],
         "borderColor": "#63A2AC",
@@ -2945,7 +2987,8 @@ window.BENCHMARK_DATA = {
           3721.2723083496094,
           2159.7801091330393,
           1980.2551272465632,
-          2277.7916843707744
+          2277.7916843707744,
+          3620.311572265625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3010,6 +3053,7 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3981,
+          3980,
           3980,
           3980,
           3980
@@ -3362,6 +3406,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
         "message": "docs: use the music theme in the remaining examples (#1970)"
+      },
+      {
+        "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
+        "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
       }
     ],
     "labels": [
@@ -3420,7 +3470,8 @@ window.BENCHMARK_DATA = {
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
-      "01684f30"
+      "01684f30",
+      "eeb6f10c"
     ],
     "datasets": [
       {
@@ -3482,7 +3533,8 @@ window.BENCHMARK_DATA = {
           370.58754532677784,
           193.50392508506775,
           177.1781394481659,
-          203.6781988143921
+          203.6781988143921,
+          380.95371413230896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3512,6 +3564,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3619,7 +3672,8 @@ window.BENCHMARK_DATA = {
           2143.895212173462,
           1314.763245173863,
           1131.0002739770073,
-          1406.1510941432073
+          1406.1510941432073,
+          2181.787484032767
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3631,6 +3685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4036,6 +4091,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
         "message": "docs: use the music theme in the remaining examples (#1970)"
+      },
+      {
+        "sha": "eeb6f10c026022c032e9ee11f8c5389660918afd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
+        "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
       }
     ],
     "labels": [
@@ -4094,7 +4155,8 @@ window.BENCHMARK_DATA = {
       "f61481d2",
       "77ca8a7f",
       "3aaf6f00",
-      "01684f30"
+      "01684f30",
+      "eeb6f10c"
     ],
     "datasets": [
       {
@@ -4156,7 +4218,8 @@ window.BENCHMARK_DATA = {
           3395.820640836443,
           1977.5680291493734,
           1717.6265123912267,
-          2049.2623252868652
+          2049.2623252868652,
+          3594.35844039917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4215,6 +4278,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -4293,7 +4357,8 @@ window.BENCHMARK_DATA = {
           300407.2831333705,
           172952.72459309894,
           158624.46012995794,
-          171310.73217773438
+          171310.73217773438,
+          278547.35139973956
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4360,7 +4425,8 @@ window.BENCHMARK_DATA = {
           17727,
           17574,
           17574,
-          17573
+          17573,
+          17719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
