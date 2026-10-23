@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
-        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
-      },
-      {
         "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
-      "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
       "706259ec",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          310.4744209766388,
           194.59093516213554,
           397.7752680097307,
           413.761456934611,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           389.4524598462241,
           395.4438961346944,
           399.7388539632162,
-          400.99758071899413
+          400.99758071899413,
+          385.2232416016715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -421,7 +421,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           728,
-          728,
           664,
           664,
           664,
@@ -441,6 +440,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          768.0385799407959,
           488.63950770696005,
           950.0418487548828,
           949.0095469156901,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1014.1015038808187,
           980.8689745585124,
           969.325060780843,
-          959.1408219019572
+          959.1408219019572,
+          924.8450303395589
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
-        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
-      },
-      {
         "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
-      "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
       "706259ec",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          172.49066912210904,
           106.72830493633563,
           188.33495831489563,
           185.9222469329834,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           187.65501046180725,
           194.22012855325426,
           185.40234345656174,
-          194.02887625353677
+          194.02887625353677,
+          187.44728185580328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           568,
-          568,
           504,
           504,
           504,
@@ -1053,6 +1052,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          227.57875340779623,
           132.7498309135437,
           239.14522199630738,
           248.61020447413128,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           263.1457499821981,
           259.1206597328186,
           263.74250187192644,
-          242.76017599105836
+          242.76017599105836,
+          247.34392620722454
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
-        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
-      },
-      {
         "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
-      "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
       "706259ec",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          508.6798000971476,
           354.9212050437927,
           628.3123481114706,
           694.9000593821207,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           567.0373705546061,
           598.2086354769193,
           581.1118606839862,
-          599.7900969187418
+          599.7900969187418,
+          602.1934854067289
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1637,7 +1637,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1208,
-          1208,
           1040,
           1040,
           1040,
@@ -1657,6 +1656,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          742.6188469568889,
           459.5191803659712,
           927.7227094014486,
           936.2941907735972,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           933.0490661621094,
           958.2739139284406,
           921.5366964975993,
-          947.0174641291301
+          947.0174641291301,
+          956.0332482655843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
-        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
-      },
-      {
         "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
-      "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
       "706259ec",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1068.9163294474283,
           990.9442194620768,
           1661.2446229117256,
           1658.5810256958007,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1698.112604268392,
           1698.9020612080892,
           1674.3693121501378,
-          1668.7563257217407
+          1668.7563257217407,
+          1622.5042104085287
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2245,7 +2245,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1792,
-          1792,
           1728,
           1728,
           1728,
@@ -2265,6 +2264,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12062.250297546387,
           9783.402879842122,
           20622.016970120945,
           20800.499821589543,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           17844.25439453125,
           21377.20654296875,
           17777.68940617488,
-          21331.699829101562
+          21331.699829101562,
+          20726.420553354117
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
-        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
-      },
       {
         "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
-      "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
       "706259ec",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          634.8672311782836,
           446.43845116297405,
           887.9110375813076,
           858.903605052403,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           608.383053779602,
           742.139929498945,
           617.0147316614787,
-          746.2055660247803
+          746.2055660247803,
+          663.7999758720398
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1456,
           1456,
           1408,
           1408,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          1080,
           1080
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          990.8289800371442,
           678.8305410385132,
           1266.8902228037516,
           1316.8672934214273,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1281.5939244588217,
           1309.284345372518,
           1275.6255930582681,
-          1277.677527364095
+          1277.677527364095,
+          1261.8099765777588
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
-        "message": "refactor: make JSON, HTTP and reflection expectations cheaper on the happy path (#1902)"
-      },
-      {
         "sha": "f8bfa2a95dcd676c83965667eb45d8760cd3714f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 21:21:04 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
         "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
+      },
+      {
+        "sha": "8e844194ae01cb1c4a0108a3de3571b60db16052",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
+        "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
       }
     ],
     "labels": [
-      "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
       "706259ec",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "25ca35b1",
       "012afc61",
       "81744dc6",
-      "87616222"
+      "87616222",
+      "8e844194"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          894.9806112925212,
           861.3152570724487,
           1351.3349540710449,
           1378.839906946818,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1070.99138768514,
           1122.2905945096697,
           1026.5412157603673,
-          1049.9375457763672
+          1049.9375457763672,
+          1013.8914910829984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3461,7 +3461,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1832,
-          1832,
           1664,
           1664,
           1664,
@@ -3481,6 +3480,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          617.3273561341422,
           426.7081581865038,
           729.8756811278207,
           734.6849997202555,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           766.6750658035278,
           778.2799015045166,
           763.046348953247,
-          744.7693740208944
+          744.7693740208944,
+          717.8653307596843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
