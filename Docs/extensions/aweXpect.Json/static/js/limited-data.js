@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          42254.887282151445,
           2442.302179609026,
           1307.5368900299072,
           1929.9819597516741,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2059.1950304848806,
           2085.250993875357,
           2159.383176950308,
-          2129.560279028756
+          2129.560279028756,
+          2042.1801124572753
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          14530,
           2520,
           2520,
           2520,
@@ -446,6 +445,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14543.159549419697,
           14057.160717303936,
           6657.376680227427,
           10324.007733858549,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           16086.041713169643,
           16396.79063851493,
           15133.340985979352,
-          16761.890055338543
+          16761.890055338543,
+          15391.861755371094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          40511.48933628627,
           1803.8105926513672,
           1007.3367557525635,
           1453.7463124593098,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1556.5610603604998,
           1526.08910891215,
           1496.4778762230505,
-          1497.093700849093
+          1497.093700849093,
+          1498.1973813374836
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          14342,
           2328,
           2328,
           2328,
@@ -1054,6 +1053,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13392.435609944661,
           12604.763811747232,
           6120.470632825579,
           9715.201798072228,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           14817.808522542318,
           15387.121994018555,
           13988.049116007487,
-          15476.73989868164
+          15476.73989868164,
+          14812.17020525251
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1468,6 +1468,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -1512,7 +1518,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -1560,7 +1567,8 @@ window.BENCHMARK_DATA = {
           4785.261942727225,
           4769.114517798791,
           4486.050827026367,
-          4823.465909140451
+          4823.465909140451,
+          4861.015960184733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1590,6 +1598,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1669,7 +1678,8 @@ window.BENCHMARK_DATA = {
           47942.62646484375,
           49307.38684082031,
           42998.29046223958,
-          48279.15001502404
+          48279.15001502404,
+          48144.07750651042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1722,7 +1732,8 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61932,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1988,6 +1999,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -2032,7 +2049,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -2080,7 +2098,8 @@ window.BENCHMARK_DATA = {
           9390.99150303432,
           9300.453679765973,
           9787.619030292217,
-          9957.347856374887
+          9957.347856374887,
+          9324.525813802084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2110,6 +2129,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2189,7 +2209,8 @@ window.BENCHMARK_DATA = {
           307906.261328125,
           308304.42333984375,
           288987.43701171875,
-          307115.0388183594
+          307115.0388183594,
+          298102.9944661458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2242,6 +2263,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521573,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2508,6 +2530,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -2552,7 +2580,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -2600,7 +2629,8 @@ window.BENCHMARK_DATA = {
           2825.1707444872177,
           2824.2265191759384,
           3005.791082235483,
-          2846.8184577396937
+          2846.8184577396937,
+          2834.0015637324404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2645,6 +2675,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2709,7 +2740,8 @@ window.BENCHMARK_DATA = {
           1993.5016416822161,
           1941.9585215250652,
           2134.299333844866,
-          2006.2863346980168
+          2006.2863346980168,
+          1934.3893112769495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2721,6 +2753,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -3028,6 +3061,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
@@ -3072,7 +3111,8 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
@@ -3120,7 +3160,8 @@ window.BENCHMARK_DATA = {
           2074.568491128775,
           2080.7716435750326,
           2215.4041298457555,
-          2111.455764452616
+          2111.455764452616,
+          2011.4980986458916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3150,6 +3191,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -3229,7 +3271,8 @@ window.BENCHMARK_DATA = {
           1987.09263865153,
           1815.4059623718263,
           2296.3830004374186,
-          1936.6367230733235
+          1936.6367230733235,
+          1753.6066614786785
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3241,6 +3284,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
