@@ -1,9 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using aweXpect.Snapshots;
 
-namespace aweXpect.Results;
+namespace aweXpect.Snapshots.Results;
 
 /// <summary>
 ///     A snapshot expectation of binary data that still needs its file extension, e.g.

@@ -7,10 +7,11 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
+using aweXpect.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Results;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatType
 {

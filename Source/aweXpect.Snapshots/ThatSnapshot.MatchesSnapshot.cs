@@ -17,6 +17,7 @@ using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.Snapshots;
+using aweXpect.Snapshots.Results;
 using static aweXpect.Formatting.Format;
 
 namespace aweXpect;

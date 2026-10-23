@@ -1,6 +1,6 @@
 using System;
 
-namespace aweXpect.Customization;
+namespace aweXpect.Reflection;
 
 /// <summary>
 ///     The kinds of compiler-generated members that are included when reflecting over types and members.

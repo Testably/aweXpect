@@ -1,8 +1,9 @@
 # Configuration
 
 All customizations live under `Customize.aweXpect.Reflection()`: the assembly exclusions are provided by
-aweXpect.Core, the others by this library. Every `Set(…)` returns a scope that restores the previous value when
-disposed.
+aweXpect.Core, the others by this library as extension methods in the namespace `aweXpect.Reflection`, together with
+the enums `CompilerGeneratedMembers` and `SpecialNameMembers`. Every `Set(…)` returns a scope that restores the previous
+value when disposed.
 
 | Customization                                                              | Default                           | Summary                                                                                      |
 |----------------------------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
@@ -17,6 +18,9 @@ customization to all tests, set it on `Customize.aweXpect.Global`, e.g. once in 
 in the current async flow takes precedence over the global one:
 
 ```csharp
+using aweXpect.Customization;
+using aweXpect.Reflection;
+
 Customize.aweXpect.Global.Reflection().IncludedSpecialNameMembers()
     .Set(SpecialNameMembers.Operators);
 ```

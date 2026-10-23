@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Snapshots;
+using aweXpect.Results;
 
-namespace aweXpect.Results;
+namespace aweXpect.Snapshots.Results;
 
 /// <summary>
 ///     The result of a snapshot expectation, which allows setting its options.

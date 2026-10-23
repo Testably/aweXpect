@@ -14,7 +14,7 @@ using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatMethods
 {

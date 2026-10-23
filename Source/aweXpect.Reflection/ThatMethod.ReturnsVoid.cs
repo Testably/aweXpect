@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using aweXpect.Core;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatMethod
 {

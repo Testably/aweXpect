@@ -1,7 +1,7 @@
 ﻿using System;
 using aweXpect.Reflection.Helpers;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 /// <summary>
 ///     Expectations on <see cref="Type" />.

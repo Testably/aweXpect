@@ -6,52 +6,18 @@ namespace aweXpect
     public static class ThatSnapshot
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Snapshots.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.FileInfo?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.BinarySnapshotWithoutExtension<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.Stream?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Snapshots.Results.BinarySnapshotWithoutExtension<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> MatchesSnapshot(this aweXpect.Core.IThat<System.IO.Stream?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.BinarySnapshotWithoutExtension<byte[]?, aweXpect.Core.IThat<byte[]?>> MatchesSnapshot(this aweXpect.Core.IThat<byte[]?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Snapshots.Results.BinarySnapshotWithoutExtension<byte[]?, aweXpect.Core.IThat<byte[]?>> MatchesSnapshot(this aweXpect.Core.IThat<byte[]?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SnapshotResult<T, aweXpect.Core.IThat<T>> MatchesSnapshot<[aweXpect.Core.Metadata.RequiresMemberMetadata] T>(this aweXpect.Core.IThat<T> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Snapshots.Results.SnapshotResult<T, aweXpect.Core.IThat<T>> MatchesSnapshot<[aweXpect.Core.Metadata.RequiresMemberMetadata] T>(this aweXpect.Core.IThat<T> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
-        public static aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> WithExtension(this aweXpect.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> result, string extension) { }
-        public static aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> WithExtension(this aweXpect.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> result, string extension) { }
-    }
-}
-namespace aweXpect.Results
-{
-    public class BinarySnapshotResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat, aweXpect.Results.BinarySnapshotResult<TType, TThat>>
-    {
-    }
-    public sealed class BinarySnapshotWithoutExtension<TType, TThat>
-    {
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [System.Obsolete("A snapshot of binary data needs a file extension, e.g. .MatchesSnapshot().WithExtension(\"png\").", true)]
-        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
-        public aweXpect.Results.BinarySnapshotResult<TType, TThat> WithExtension(string extension) { }
-    }
-    public class SnapshotResult<TType, TThat> : aweXpect.Results.SnapshotResult<TType, TThat, aweXpect.Results.SnapshotResult<TType, TThat>>
-    {
-        public aweXpect.Snapshots.SnapshotFor<aweXpect.Results.SnapshotResult<TType, TThat>> For { get; }
-    }
-    public class SnapshotResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, TThat, TSelf> where TSelf : aweXpect.Results.SnapshotResult<TType, TThat, TSelf>
-    {
-        public aweXpect.Results.SnapshotUniqueFor<TSelf> UniqueFor { get; }
-        public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
-        public TSelf ComparedWith(aweXpect.Snapshots.SnapshotComparer comparer) { }
-        public TSelf Named(string name) { }
-        public TSelf NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
-        public TSelf NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
-        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
-        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
-    }
-    public sealed class SnapshotUniqueFor<TResult>
-    {
-        public TResult Architecture() { }
-        public TResult OperatingSystem() { }
-        public TResult TargetFramework() { }
+        public static aweXpect.Snapshots.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> MatchesSnapshot(this aweXpect.Core.IThat<string?> subject, [System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "", [System.Runtime.CompilerServices.CallerMemberName] string callerMemberName = "") { }
+        public static aweXpect.Snapshots.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> WithExtension(this aweXpect.Snapshots.Results.BinarySnapshotResult<System.IO.FileInfo?, aweXpect.Core.IThat<System.IO.FileInfo?>> result, string extension) { }
+        public static aweXpect.Snapshots.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> WithExtension(this aweXpect.Snapshots.Results.SnapshotResult<string?, aweXpect.Core.IThat<string?>> result, string extension) { }
     }
 }
 namespace aweXpect.Snapshots
@@ -263,6 +229,40 @@ namespace aweXpect.Snapshots
             public aweXpect.Customization.ICustomizationValueSetter<System.Collections.Generic.IReadOnlyList<aweXpect.Snapshots.SnapshotRule>> Rules { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Snapshots.SnapshotStore> Store { get; }
         }
+    }
+}
+namespace aweXpect.Snapshots.Results
+{
+    public class BinarySnapshotResult<TType, TThat> : aweXpect.Snapshots.Results.SnapshotResult<TType, TThat, aweXpect.Snapshots.Results.BinarySnapshotResult<TType, TThat>>
+    {
+    }
+    public sealed class BinarySnapshotWithoutExtension<TType, TThat>
+    {
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.Obsolete("A snapshot of binary data needs a file extension, e.g. .MatchesSnapshot().WithExtension(\"png\").", true)]
+        public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
+        public aweXpect.Snapshots.Results.BinarySnapshotResult<TType, TThat> WithExtension(string extension) { }
+    }
+    public class SnapshotResult<TType, TThat> : aweXpect.Snapshots.Results.SnapshotResult<TType, TThat, aweXpect.Snapshots.Results.SnapshotResult<TType, TThat>>
+    {
+        public aweXpect.Snapshots.SnapshotFor<aweXpect.Snapshots.Results.SnapshotResult<TType, TThat>> For { get; }
+    }
+    public class SnapshotResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, TThat, TSelf> where TSelf : aweXpect.Snapshots.Results.SnapshotResult<TType, TThat, TSelf>
+    {
+        public aweXpect.Snapshots.Results.SnapshotUniqueFor<TSelf> UniqueFor { get; }
+        public aweXpect.Results.AndOrResult<TType, TThat> Accepting(aweXpect.Snapshots.SnapshotAcceptance mode) { }
+        public TSelf ComparedWith(aweXpect.Snapshots.SnapshotComparer comparer) { }
+        public TSelf Named(string name) { }
+        public TSelf NamedAfter(object? argument1, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "") { }
+        public TSelf NamedAfter(object? argument1, object? argument2, object? argument3, object? argument4, aweXpect.Snapshots.EndOfArguments endOfArguments = default(aweXpect.Snapshots.EndOfArguments), [System.Runtime.CompilerServices.CallerArgumentExpression("argument1")] string doNotPopulateThisValue1 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument2")] string doNotPopulateThisValue2 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument3")] string doNotPopulateThisValue3 = "", [System.Runtime.CompilerServices.CallerArgumentExpression("argument4")] string doNotPopulateThisValue4 = "") { }
+    }
+    public sealed class SnapshotUniqueFor<TResult>
+    {
+        public TResult Architecture() { }
+        public TResult OperatingSystem() { }
+        public TResult TargetFramework() { }
     }
 }
 

@@ -2,7 +2,7 @@
 using aweXpect.Core;
 using aweXpect.Results;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 public static partial class ThatMethod
 {

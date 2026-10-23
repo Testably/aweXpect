@@ -6,6 +6,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Json;
+using aweXpect.Json.Results;
 using aweXpect.Results;
 
 namespace aweXpect;

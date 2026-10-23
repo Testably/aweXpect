@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace aweXpect.Reflection;
+namespace aweXpect;
 
 /// <summary>
 ///     Expectations on a collection of <see cref="Type" />.

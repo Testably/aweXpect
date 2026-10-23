@@ -2,8 +2,9 @@
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Helpers;
+using aweXpect.Results;
 
-namespace aweXpect.Results;
+namespace aweXpect.Json.Results;
 
 /// <summary>
 ///     An <see cref="AndOrResult{TType,TThat}" /> for JSON strings.
