@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Formatting;
 using aweXpect.Reflection.Internal.Tests.TestHelpers;
 
@@ -21,6 +22,18 @@ public class MethodFormatterTests
 	}
 
 	[Test]
+	public async Task GenericMethodWithRefParameter_ShouldFormatRefModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyGenericMethodWithRefParameter));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result)
+			.IsEqualTo("void MethodFormatterTests.MyTestClass.MyGenericMethodWithRefParameter<T>(ref T value)");
+	}
+
+	[Test]
 	public async Task GenericMethodWithReturnValue_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyGenericMethodWithReturnValue));
@@ -34,6 +47,28 @@ public class MethodFormatterTests
 	}
 
 	[Test]
+	public async Task WithByRefReturnValue_ShouldFormatRefModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithRefReturnValue));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result).IsEqualTo("ref int MethodFormatterTests.MyTestClass.MyMethodWithRefReturnValue()");
+	}
+
+	[Test]
+	public async Task WithInParameter_ShouldFormatInModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithInParameter));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result).IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithInParameter(in int value)");
+	}
+
+	[Test]
 	public async Task WithOneParameter_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithOneParameter));
@@ -42,6 +77,17 @@ public class MethodFormatterTests
 		string result = formatter.GetString(methodInfo);
 
 		await That(result).IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithOneParameter(int parameter1)");
+	}
+
+	[Test]
+	public async Task WithOutParameter_ShouldFormatOutModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithOutParameter));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result).IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithOutParameter(out int value)");
 	}
 
 	[Test]
@@ -95,6 +141,65 @@ public class MethodFormatterTests
 	}
 
 	[Test]
+	public async Task WithParamsArray_ShouldFormatParamsModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithParamsArray));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result)
+			.IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithParamsArray(int first, params int[] values)");
+	}
+
+	[Test]
+	public async Task WithParamsCollection_ShouldFormatParamsModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithParamsCollection));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result)
+			.IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithParamsCollection(params List<int> values)");
+	}
+
+	[Test]
+	public async Task WithReadOnlyRefReturnValue_ShouldFormatRefReadonlyModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithRefReadonlyReturnValue));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result)
+			.IsEqualTo("ref readonly int MethodFormatterTests.MyTestClass.MyMethodWithRefReadonlyReturnValue()");
+	}
+
+	[Test]
+	public async Task WithRefParameter_ShouldFormatRefModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithRefParameter));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result).IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithRefParameter(ref int value)");
+	}
+
+	[Test]
+	public async Task WithRefReadonlyParameter_ShouldFormatModifier()
+	{
+		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithRefReadonlyParameter));
+		MethodFormatter formatter = new();
+
+		string result = formatter.GetString(methodInfo);
+
+		await That(result)
+			.IsEqualTo("void MethodFormatterTests.MyTestClass.MyMethodWithRefReadonlyParameter(ref readonly int value)");
+	}
+
+	[Test]
 	public async Task WithTwoParameters_ShouldFormatCorrectly()
 	{
 		MethodInfo? methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.MyMethodWithTwoParameters));
@@ -136,6 +241,24 @@ public class MethodFormatterTests
 
 		public string MyMethodWithParametersAndReturnValue(string p1, int p2 = 42)
 			=> p1 + p2;
+
+		public abstract void MyGenericMethodWithRefParameter<T>(ref T value);
+
+		public abstract void MyMethodWithRefParameter(ref int value);
+
+		public abstract void MyMethodWithRefReadonlyParameter(ref readonly int value);
+
+		public abstract void MyMethodWithOutParameter(out int value);
+
+		public abstract void MyMethodWithInParameter(in int value);
+
+		public abstract void MyMethodWithParamsArray(int first, params int[] values);
+
+		public abstract void MyMethodWithParamsCollection(params List<int> values);
+
+		public abstract ref int MyMethodWithRefReturnValue();
+
+		public abstract ref readonly int MyMethodWithRefReadonlyReturnValue();
 	}
 	// ReSharper restore UnusedParameter.Global
 #pragma warning restore CA1822

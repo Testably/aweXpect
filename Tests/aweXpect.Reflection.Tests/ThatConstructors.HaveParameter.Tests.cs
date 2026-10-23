@@ -795,7 +795,7 @@ public sealed partial class ThatConstructors
 
 					             Collection:
 					             [
-					               ThatConstructors.HaveParameter.NegatedTests.ModifierClass(Int32& value)
+					               ThatConstructors.HaveParameter.NegatedTests.ModifierClass(in int value)
 					             ]
 					             """);
 			}

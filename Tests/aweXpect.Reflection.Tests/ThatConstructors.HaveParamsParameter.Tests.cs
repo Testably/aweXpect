@@ -758,8 +758,8 @@ public sealed partial class ThatConstructors
 
 					             Collection:
 					             [
-					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(int[] values),
-					               ThatConstructors.HaveParamsParameter.AnotherClassWithParamsParameter(string[] texts)
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
+					               ThatConstructors.HaveParamsParameter.AnotherClassWithParamsParameter(params string[] texts)
 					             ]
 					             """);
 			}

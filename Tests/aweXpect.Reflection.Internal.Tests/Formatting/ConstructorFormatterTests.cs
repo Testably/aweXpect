@@ -40,6 +40,19 @@ public class ConstructorFormatterTests
 	}
 
 	[Test]
+	public async Task WithRefAndParamsParameters_ShouldFormatModifiers()
+	{
+		ConstructorInfo? constructorInfo =
+			typeof(MyTestClass).GetConstructor([typeof(int).MakeByRefType(), typeof(int[]),]);
+		ConstructorFormatter formatter = new();
+
+		string result = formatter.GetString(constructorInfo);
+
+		await That(result)
+			.IsEqualTo("ConstructorFormatterTests.MyTestClass(ref int value, params int[] values)");
+	}
+
+	[Test]
 	public async Task WithTwoParameters_ShouldFormatCorrectly()
 	{
 		ConstructorInfo? constructorInfo = typeof(MyTestClass).GetConstructor([typeof(int), typeof(string),]);
@@ -67,6 +80,10 @@ public class ConstructorFormatterTests
 		}
 
 		public MyTestClass(string p1 = "foo", int p2 = 42)
+		{
+		}
+
+		public MyTestClass(ref int value, params int[] values)
 		{
 		}
 	}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -11,15 +10,7 @@ internal class MethodFormatter : IValueFormatter
 	{
 		if (value is MethodInfo methodInfo)
 		{
-			if (methodInfo.ReturnType == typeof(void))
-			{
-				stringBuilder.Append("void");
-			}
-			else
-			{
-				AppendType(stringBuilder, methodInfo.ReturnType);
-			}
-
+			ParameterFormatter.AppendReturnType(stringBuilder, methodInfo);
 			stringBuilder.Append(' ');
 			Formatter.Format(stringBuilder, methodInfo.DeclaringType);
 			stringBuilder.Append('.');
@@ -32,44 +23,11 @@ internal class MethodFormatter : IValueFormatter
 			}
 
 			stringBuilder.Append('(');
-			AppendParameters(stringBuilder, methodInfo.GetParameters());
+			ParameterFormatter.AppendParameters(stringBuilder, methodInfo.GetParameters());
 			stringBuilder.Append(')');
 			return true;
 		}
 
 		return false;
-	}
-
-	private static void AppendParameters(StringBuilder stringBuilder, ParameterInfo[] parameters)
-	{
-		int index = 0;
-		foreach (ParameterInfo? parameter in parameters)
-		{
-			if (index++ > 0)
-			{
-				stringBuilder.Append(", ");
-			}
-
-			AppendType(stringBuilder, parameter.ParameterType);
-			stringBuilder.Append(' ');
-			stringBuilder.Append(parameter.Name);
-			if (parameter.HasDefaultValue)
-			{
-				stringBuilder.Append(" = ");
-				Formatter.Format(stringBuilder, parameter.DefaultValue);
-			}
-		}
-	}
-
-	private static void AppendType(StringBuilder stringBuilder, Type type)
-	{
-		if (type.IsGenericParameter)
-		{
-			stringBuilder.Append(type.Name);
-		}
-		else
-		{
-			Formatter.Format(stringBuilder, type);
-		}
 	}
 }
