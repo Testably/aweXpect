@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14381.650234767369,
           6290.744794718425,
           13431.071209716796,
           12424.916563767652,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10600.113392421177,
           5611.7572277614045,
           5223.813594273159,
-          5465.63491657802
+          5465.63491657802,
+          10661.615686035157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -433,7 +433,6 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -449,6 +448,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          386189.5509314904,
           164726.92766462054,
           383894.373828125,
           374467.87669270835,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           380122.095703125,
           174890.89327566963,
           163243.5662434896,
-          178263.90457589287
+          178263.90457589287,
+          366967.68484933034
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590287,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590287,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19215.74513898577,
           9687.401100745568,
           19379.468263753257,
           19723.56197466169,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19462.27752787272,
           10729.002490703877,
           9787.167607625326,
-          9735.35759226481
+          9735.35759226481,
+          19052.053908284506
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          288.87488724390664,
           133.83350161143713,
           321.3382097244263,
           284.3743395487467,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           266.7043742815653,
           133.89082288742065,
           131.33907724221547,
-          127.2423220872879
+          127.2423220872879,
+          279.5492787996928
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1166,7 +1166,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1182,6 +1181,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          554.4303117116292,
           245.48654237160315,
           585.8575134913127,
           545.8857168833415,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           568.34365456899,
           280.9512236913045,
           246.1287984114427,
-          264.1580552101135
+          264.1580552101135,
+          479.27789274851483
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          415.90519326527914,
           201.15392077886142,
           423.61332578659056,
           414.86068773269653,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           425.49170913696287,
           216.6282517058509,
           194.2293615659078,
-          217.47377688544137
+          217.47377688544137,
+          377.77023349489485
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          161.91783633232117,
           71.98160390342984,
           159.558003060023,
           159.92800674438476,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           133.24426571528116,
           67.90177349249522,
           63.38349374702999,
-          68.17021545569102
+          68.17021545569102,
+          121.85269018809001
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1899,7 +1899,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1915,6 +1914,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          282.20928891499835,
           124.0122208254678,
           282.2658065795898,
           287.0499791463216,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           262.0612068494161,
           133.29255460103352,
           123.71422147750854,
-          137.85823701222736
+          137.85823701222736,
+          246.62521035330636
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          262.03795232772825,
           117.29486432442299,
           260.21722440719606,
           265.300892499777,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           254.21816228230793,
           130.03598194122316,
           121.63686752319336,
-          124.88962190491813
+          124.88962190491813,
+          233.39074051380157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          286.83811818636383,
           158.95665551821392,
           290.03494990666707,
           290.4190535545349,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           265.0771895090739,
           128.0361693075725,
           121.32613081198473,
-          128.26875443458556
+          128.26875443458556,
+          236.90531883239746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2632,7 +2632,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2648,6 +2647,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          578.0748713175456,
           274.1330770810445,
           558.4174865722656,
           587.2065956115723,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           547.8430905342102,
           264.00694867542813,
           254.4943242256458,
-          306.8110350095309
+          306.8110350095309,
+          504.17037957055226
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          356.6350205739339,
           167.49061036109924,
           355.74284947713215,
           354.8124809946333,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           351.88121871948243,
           174.95741046269734,
           164.99382952054341,
-          179.17931116422017
+          179.17931116422017,
+          326.126665694373
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          677.4312150319417,
           326.325720173972,
           676.0812699635824,
           679.669674873352,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           649.0789494514465,
           344.9019155820211,
           294.9846014022827,
-          339.0800229390462
+          339.0800229390462,
+          634.9449087551662
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3365,7 +3365,6 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3381,6 +3380,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1511.5495142618815,
           653.0351298877171,
           1548.958098856608,
           1486.8155450820923,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1449.1000511462871,
           686.5049073355539,
           679.0856095631917,
-          790.2118460337321
+          790.2118460337321,
+          1358.3830726623535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          679.0160875956218,
           324.8136201540629,
           688.8696273394993,
           677.3187940597534,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           671.8581862767537,
           354.73200324376427,
           333.95617664777313,
-          350.9397131919861
+          350.9397131919861,
+          664.9636610031127
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          666.5183174769084,
           322.32280286153156,
           665.4261503953201,
           660.7158184051514,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           653.3047718320574,
           315.10556679505567,
           336.2944679260254,
-          320.24254007339476
+          320.24254007339476,
+          627.1959044592721
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4098,7 +4098,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4114,6 +4113,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27809.289346313475,
           9898.959427897136,
           28042.715085856118,
           28682.911216227214,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           27856.558186848957,
           10983.080326334635,
           10408.745903523763,
-          10878.940256391254
+          10878.940256391254,
+          26854.12964957101
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4224,7 +4224,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4244,6 +4243,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          817.8249410220554,
           413.0651320139567,
           803.446176801409,
           826.0765203067234,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           802.7990395228068,
           438.1306131998698,
           397.54558340708417,
-          446.4941630999247
+          446.4941630999247,
+          793.2429605484009
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          775.7946770191193,
           352.61233282089233,
           835.8362019220988,
           794.5244412104289,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           707.5691544850667,
           344.59458916982015,
           343.53782351811725,
-          335.6985916455587
+          335.6985916455587,
+          666.9227337837219
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4824,7 +4824,6 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
-          1856,
           1760,
           1760,
           1760,
@@ -4847,6 +4846,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          86439.80888671875,
           27904.526094563804,
           84306.2785970052,
           84374.98778827373,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           85411.41490827288,
           28447.221173095702,
           28455.10207519531,
-          29777.029740397134
+          29777.029740397134,
+          83702.01136067709
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
       {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          189.88281548817952,
           103.88230061531067,
           189.71347365379333,
           195.00022001266478,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           174.6523332754771,
           85.43329909869603,
           86.23314623037975,
-          88.31335223572594
+          88.31335223572594,
+          154.01466266314188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5439,7 +5439,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5455,6 +5454,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          33640.369152832034,
           10583.883628336589,
           33131.544795735674,
           32748.927028111048,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           34173.76583658854,
           9641.11449432373,
           9014.528935023716,
-          10300.98420715332
+          10300.98420715332,
+          31555.70805476262
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          262.76921288172406,
           121.74509482724326,
           259.55491431554157,
           269.2464275677999,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           265.2736421585083,
           122.1820381624358,
           119.52791158358256,
-          128.00200797716778
+          128.00200797716778,
+          232.04578261375428
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          374.35020939509076,
           185.4253969703402,
           373.67607855796814,
           361.2869338671366,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           360.1711370027982,
           176.68148152644818,
           168.4571042696635,
-          163.42488276958466
+          163.42488276958466,
+          335.09430303573606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6172,7 +6172,6 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6188,6 +6187,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          429.19574999809265,
           201.283979956309,
           421.0189789258517,
           395.88827346165976,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           401.8323447887714,
           200.4055175270353,
           199.20620191891987,
-          198.19016366345542
+          198.19016366345542,
+          382.61274099349976
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          421.6277090390523,
           195.17111146450043,
           428.7466734568278,
           416.4393012864249,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           416.9427511010851,
           207.33071955612726,
           201.22986057599385,
-          209.2567301273346
+          209.2567301273346,
+          404.52534980773925
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          822.7165323893229,
           398.11624749501544,
           815.643183026995,
           834.7785130182903,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           667.0184326171875,
           367.593067296346,
           298.49275755882263,
-          333.0829246520996
+          333.0829246520996,
+          598.0839064915975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6905,7 +6905,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6921,6 +6920,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2046.8121988932292,
           1001.4748270670573,
           2101.1886351449148,
           2045.080423082624,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2100.2480204264325,
           1027.464500172933,
           962.7186749322074,
-          1069.699947865804
+          1069.699947865804,
+          1891.2691440582275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          1001.8998962402344,
           457.94817669051037,
           951.0506235758463,
           968.4909497578939,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           989.3694017955235,
           466.05334908621654,
           454.1504553159078,
-          511.6533489227295
+          511.6533489227295,
+          897.9568466459002
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12201.915075937906,
           6186.8094482421875,
           12294.065668378558,
           12412.906634990986,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11395.240723830004,
           5961.960826619466,
           5940.123154776437,
-          5937.429060254778
+          5937.429060254778,
+          11421.311758422851
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7638,7 +7638,6 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7654,6 +7653,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41700.580928548174,
           18247.640270996093,
           41551.82961331881,
           41864.14045817057,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           40385.8912882487,
           19401.18181152344,
           19259.82927347819,
-          19132.62122599284
+          19132.62122599284,
+          40266.15532038762
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11353.587936401367,
           6037.893575032552,
           11379.745162963867,
           11381.553640093121,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10547.019277300153,
           5785.5634073893225,
           5685.906796264649,
-          5778.0363476093
+          5778.0363476093,
+          10558.842607770648
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "2ae068a34b5ed993068a6701dec279011e0f6766",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 19 08:49:12 2026 \u002B0000",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.12 to 10.0.13 (#1885)"
-      },
-      {
         "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 06:17:32 2026 \u002B0200",
         "message": "refactor!: rename WithJsonOptions to WithDocumentOptions (#1946)"
+      },
+      {
+        "sha": "9c75ee02032eaade1eee028683c528c3a9c9d85a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
+        "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
       }
     ],
     "labels": [
-      "2ae068a3",
       "68feb62f",
       "66de07e4",
       "391462ba",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "1c027d4b",
       "8f08376f",
       "257e5c03",
-      "423a7284"
+      "423a7284",
+      "9c75ee02"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11900.612076895577,
           5779.480037943522,
           11643.378771100726,
           11762.522556011494,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           10878.802782694498,
           5582.993469746908,
           5717.4403473990305,
-          5632.911038534982
+          5632.911038534982,
+          10652.082068223219
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8371,7 +8371,6 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8387,6 +8386,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          60121.76591609074,
           27257.15004788912,
           59424.55138724191,
           60382.052001953125,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           58987.58564046224,
           28313.735685221352,
           28261.88783162435,
-          27721.19256184896
+          27721.19256184896,
+          57672.02178519113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8486,7 +8486,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23554,
           23553,
@@ -8510,6 +8509,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22450.989362444197,
           12171.45713297526,
           22322.189472743445,
           22550.113385881697,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           20896.163779703777,
           11551.14811706543,
           11114.461702473958,
-          11683.99429626465
+          11683.99429626465,
+          21099.93816731771
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
