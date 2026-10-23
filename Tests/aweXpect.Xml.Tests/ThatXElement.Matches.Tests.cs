@@ -50,6 +50,9 @@ public sealed partial class ThatXElement
 					              Expected that element
 					              matches {expected},
 					              but it differed as {difference}
+
+					              XML options:
+					               - ignore additional nodes
 					              """);
 			}
 
@@ -68,6 +71,9 @@ public sealed partial class ThatXElement
 					             but it differed as
 					               /order/@id was "42" instead of "43" and
 					               /order/item/@sku was "B2" instead of "A1"
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 
@@ -84,6 +90,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             matches <item sku="A1"/>,
 					             but it differed as /item/@sku was "B2" instead of "A1"
+
+					             XML options:
+					              - ignore additional nodes
 					             """)
 					.Because("the subject is compared without its ancestors");
 			}
@@ -101,6 +110,9 @@ public sealed partial class ThatXElement
 					             Expected that subject
 					             matches <a/>,
 					             but it was <null>
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 
@@ -161,6 +173,9 @@ public sealed partial class ThatXElement
 
 					             Actual:
 					             <a x="1" y="2" />
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 
@@ -188,6 +203,9 @@ public sealed partial class ThatXElement
 					             Expected that subject
 					             does not match <a/>,
 					             but it was <null>
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 		}

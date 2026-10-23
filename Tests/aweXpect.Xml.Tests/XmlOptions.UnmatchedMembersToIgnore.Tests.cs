@@ -114,6 +114,7 @@ public sealed partial class XmlOptionsTests
 				             but it differed as /order/@etag was "x1" instead of "x2"
 
 				             XML options:
+				              - ignore additional nodes
 				              - ignore members: ["@eTag"]
 				                "@eTag" matched no member (did you mean "@etag"?)
 				             """);

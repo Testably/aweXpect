@@ -31,9 +31,16 @@ public sealed class XmlOptions
 	/// </remarks>
 	internal XmlOptions(XmlOptions options)
 	{
+		IgnoreAdditionalNodes = options.IgnoreAdditionalNodes;
 		IgnoreElementOrder = options.IgnoreElementOrder;
 		MembersToIgnore = options.MembersToIgnore;
 	}
+
+	/// <summary>
+	///     Flag indicating, if the attributes and child nodes of the subject that are not paired with an expected one
+	///     should be ignored.
+	/// </summary>
+	internal bool IgnoreAdditionalNodes { get; init; }
 
 	internal bool IgnoreElementOrder { get; init; }
 
@@ -52,6 +59,11 @@ public sealed class XmlOptions
 		IReadOnlyDictionary<string, string?>? unmatchedMembersToIgnore)
 	{
 		StringBuilder sb = new();
+		if (IgnoreAdditionalNodes)
+		{
+			sb.AppendLine(" - ignore additional nodes");
+		}
+
 		if (IgnoreElementOrder)
 		{
 			sb.AppendLine(" - ignore element order");

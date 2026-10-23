@@ -20,5 +20,5 @@ public static partial class ThatXElement
 		this IThat<XElement?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> MatchesXmlConstraint<XElement>.Add(subject, expected, true, element => element, options);
+		=> MatchesXmlConstraint<XElement>.Add(subject, expected, false, element => element, options);
 }

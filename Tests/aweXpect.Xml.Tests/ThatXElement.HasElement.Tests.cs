@@ -106,6 +106,9 @@ public sealed partial class ThatXElement
 					             Expected that element
 					             has element "item" which matches <item sku="B2"/>,
 					             but element "item" differed as /item/@sku was "A1" instead of "B2"
+
+					             XML options (element "item"):
+					              - ignore additional nodes
 					             """)
 					.Because("the first child element with the name is verified, like by XElement.Element");
 			}

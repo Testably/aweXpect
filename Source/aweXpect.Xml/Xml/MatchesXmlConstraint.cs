@@ -18,7 +18,6 @@ namespace aweXpect.Xml;
 /// <param name="grammars">The grammars of the expectation.</param>
 /// <param name="expected">The expected XML.</param>
 /// <param name="expectedElement">The root element of the <paramref name="expected" /> XML.</param>
-/// <param name="exactly">Whether the additional attributes and child nodes of the subject fail the expectation.</param>
 /// <param name="getElement">Selects the compared element of the node, e.g. the root element of a document.</param>
 /// <param name="options">The options of the comparison.</param>
 internal sealed class MatchesXmlConstraint<TNode>(
@@ -26,7 +25,6 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	ExpectationGrammars grammars,
 	string expected,
 	XElement expectedElement,
-	bool exactly,
 	Func<TNode, XElement?> getElement,
 	XmlOptions options)
 	: ConstraintResult.WithNotNullValue<TNode?>(it, grammars),
@@ -47,16 +45,23 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid XML.</exception>
-	public static AndOrResult<TNode?, IThat<TNode?>> Add(IThat<TNode?> source, string expected, bool exactly,
-		Func<TNode, XElement?> getElement, Func<XmlOptions, XmlOptions>? options)
+	public static AndOrResult<TNode?, IThat<TNode?>> Add(IThat<TNode?> source, string expected,
+		bool ignoreAdditionalNodes, Func<TNode, XElement?> getElement, Func<XmlOptions, XmlOptions>? options)
 	{
 		XElement expectedElement = SecureXml.LoadExpected(expected).Root!;
-		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
+		XmlOptions xmlOptions = new()
+		{
+			IgnoreAdditionalNodes = ignoreAdditionalNodes,
+		};
+		if (options is not null)
+		{
+			xmlOptions = options(xmlOptions);
+		}
+
 		return new AndOrResult<TNode?, IThat<TNode?>>(source.Get().ExpectationBuilder.AddConstraint(
-				(Expected: expected, ExpectedElement: expectedElement, Exactly: exactly, GetElement: getElement,
-					Options: xmlOptions),
+				(Expected: expected, ExpectedElement: expectedElement, GetElement: getElement, Options: xmlOptions),
 				static (state, it, grammars) => new MatchesXmlConstraint<TNode>(it, grammars, state.Expected,
-					state.ExpectedElement, state.Exactly, state.GetElement, state.Options)),
+					state.ExpectedElement, state.GetElement, state.Options)),
 			source);
 	}
 
@@ -78,7 +83,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 			return this;
 		}
 
-		_comparisonResult = XmlComparer.Compare(element, expectedElement, options, !exactly);
+		_comparisonResult = XmlComparer.Compare(element, expectedElement, options);
 		Outcome = _comparisonResult.HasError ? Outcome.Failure : Outcome.Success;
 		return this;
 	}
@@ -120,7 +125,7 @@ internal sealed class MatchesXmlConstraint<TNode>(
 	private void AppendMatchExpectation(StringBuilder stringBuilder, string verb)
 	{
 		stringBuilder.Append(verb).Append(expected);
-		if (exactly)
+		if (!options.IgnoreAdditionalNodes)
 		{
 			stringBuilder.Append(" exactly");
 		}

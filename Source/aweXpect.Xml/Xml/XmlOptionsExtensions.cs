@@ -12,6 +12,25 @@ namespace aweXpect.Xml;
 public static class XmlOptionsExtensions
 {
 	/// <summary>
+	///     Ignores the attributes and child nodes of the subject that are not in the expected XML
+	///     when <paramref name="ignoreAdditionalNodes" /> is <see langword="true" />.
+	/// </summary>
+	/// <remarks>
+	///     <c>Matches</c> and <c>IsValidXmlMatching</c> preset this option, so that
+	///     <c>IgnoringAdditionalNodes(false)</c> makes them compare exactly.
+	///     <para />
+	///     A member to ignore that only occurs in the additional nodes of the subject is not compared, so it is named in a
+	///     failure as a member to ignore that matched no member.
+	/// </remarks>
+	public static XmlOptions IgnoringAdditionalNodes(
+		this XmlOptions @this,
+		bool ignoreAdditionalNodes = true)
+		=> new XmlOptions(@this)
+		{
+			IgnoreAdditionalNodes = ignoreAdditionalNodes,
+		};
+
+	/// <summary>
 	///     Ignores the order of the child elements and texts of all compared elements
 	///     when <paramref name="ignoreElementOrder" /> is <see langword="true" />.
 	/// </summary>
@@ -20,8 +39,8 @@ public static class XmlOptionsExtensions
 	///     <para />
 	///     Each expected child is paired with the first unpaired child of the subject with the same name that matches it,
 	///     and the remaining children of the same name are paired in their order, so that their differences are
-	///     reported. This greedy pairing can fail for <c>Matches</c>, which ignores additional nodes, when an expected
-	///     child matches several children of the subject, even when another pairing would succeed.
+	///     reported. This greedy pairing can fail when additional nodes are ignored, e.g. by <c>Matches</c>, and an
+	///     expected child matches several children of the subject, even when another pairing would succeed.
 	///     <para />
 	///     A position in a member to ignore, e.g. <c>item[2]</c>, refers to the child in each document by its own
 	///     position.

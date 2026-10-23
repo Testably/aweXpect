@@ -30,13 +30,9 @@ internal static class XmlComparer
 	/// <param name="actual">The element of the subject.</param>
 	/// <param name="expected">The expected element.</param>
 	/// <param name="options">The options of the comparison.</param>
-	/// <param name="ignoreAdditionalNodes">
-	///     Whether the attributes and child nodes of the subject that are not paired with an expected one are ignored.
-	/// </param>
-	public static XmlComparisonResult Compare(XElement actual, XElement expected, XmlOptions options,
-		bool ignoreAdditionalNodes)
+	public static XmlComparisonResult Compare(XElement actual, XElement expected, XmlOptions options)
 	{
-		Comparison comparison = new(options, ignoreAdditionalNodes, new MembersToIgnoreTracker(options));
+		Comparison comparison = new(options, new MembersToIgnoreTracker(options));
 		string path = PathSeparator + expected.Name.LocalName;
 		if (comparison.IsIgnored(path))
 		{
@@ -478,12 +474,11 @@ internal static class XmlComparer
 	/// </remarks>
 	private sealed class Comparison(
 		XmlOptions options,
-		bool ignoreAdditionalNodes,
 		MembersToIgnoreTracker tracker,
 		bool stopsAtFirstDifference = false)
 	{
 		public XmlOptions Options { get; } = options;
-		public bool IgnoreAdditionalNodes { get; } = ignoreAdditionalNodes;
+		public bool IgnoreAdditionalNodes => Options.IgnoreAdditionalNodes;
 		public MembersToIgnoreTracker Tracker { get; } = tracker;
 		public XmlComparisonResult Result { get; } = new(tracker);
 		public bool HasMembersToIgnore => Options.MembersToIgnore.Count > 0;
@@ -506,7 +501,7 @@ internal static class XmlComparer
 		///     it, unless members are ignored, whose tracking has to see every path.
 		/// </remarks>
 		public Comparison ForCandidate()
-			=> new(Options, IgnoreAdditionalNodes, Tracker, !HasMembersToIgnore);
+			=> new(Options, Tracker, !HasMembersToIgnore);
 
 		public bool IsIgnored(string path)
 			=> Tracker.IsIgnored(path);

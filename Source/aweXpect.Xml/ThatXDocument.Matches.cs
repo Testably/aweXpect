@@ -24,5 +24,5 @@ public static partial class ThatXDocument
 		this IThat<XDocument?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> MatchesXmlConstraint<XDocument>.Add(subject, expected, false, document => document.Root, options);
+		=> MatchesXmlConstraint<XDocument>.Add(subject, expected, true, document => document.Root, options);
 }

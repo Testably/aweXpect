@@ -33,6 +33,9 @@ public sealed partial class ThatXmlString
 					             Expected that subject
 					             is valid XML which matches <a x="1"/>,
 					             but it differed as /a/@x was "2" instead of "1"
+
+					             XML options (it):
+					              - ignore additional nodes
 					             """);
 			}
 
