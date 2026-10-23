@@ -63,21 +63,21 @@ number of the value. Every value masked with the same template shares one counte
 keeps the same number, so relations stay visible in the snapshot:
 
 ```csharp
-await Expect.That(order).MatchesSnapshot()
-    .For.Members().WithName("CustomerId").Mask("{Customer_{0}}");   // CustomerId = {Customer_1}
+await Expect.That(album).MatchesSnapshot()
+    .For.Members().WithName("ArtistId").Mask("{Artist_{0}}");   // ArtistId = {Artist_1}
 ```
 
 `Mask()` is the shorthand for the template named after the selection: `Mask("{Id_{0}}")` for a member named `Id`,
 `Mask("{Guid_{0}}")` for `.For.Guids()` and `.For.Values().OfType<Guid>()`, `Mask("{Item_{0}}")` for an item of a
 collection. That is why a `Guid` member masked by its type and the same `Guid` in a string get the same number.
 
-`{0}` is replaced as plain text, not with `string.Format`, so braces need no escaping: `Mask("{{Customer_{0}}}")` writes
-`{{Customer_1}}`, not `{Customer_1}`.
+`{0}` is replaced as plain text, not with `string.Format`, so braces need no escaping: `Mask("{{Artist_{0}}}")` writes
+`{{Artist_1}}`, not `{Artist_1}`.
 
 For members and values, the template can also depend on the value, e.g. to link ids that belong together:
 
 ```csharp
-await Expect.That(shop).MatchesSnapshot()
+await Expect.That(label).MatchesSnapshot()
     .For.Members().OfType<int>().WithName("Id").AsSuffix()
     .Mask(value => "{" + (value.Name == "Id"
         ? value.DeclaringType.Name
@@ -85,17 +85,17 @@ await Expect.That(shop).MatchesSnapshot()
 ```
 
 ```text title="Snapshot"
-Shop {
-  Customers = [
-    Customer {
-      Id = {Customer_1},
-      Name = "Ringo"
+Label {
+  Albums = [
+    Album {
+      ArtistId = {Artist_1},
+      Id = {Album_1}
     }
   ],
-  Orders = [
-    Order {
-      CustomerId = {Customer_1},
-      Id = {Order_1}
+  Artists = [
+    Artist {
+      Id = {Artist_1},
+      Name = "The Beatles"
     }
   ]
 }
@@ -123,14 +123,15 @@ too, and also the items of tuples, collections and dictionaries:
   Directly after them, `OrOfType<T>()` and `OrOfExactType<T>()` allow alternative types, see
   [alternative types](#alternative-types).
 - `DeclaredIn<T>()` matches the values in an object of the type `T` or of a derived type, e.g.
-  `.For.Members().DeclaredIn<Album>().WithName(nameof(Album.Price))` for the price of each album, but not of its tracks.
+  `.For.Members().DeclaredIn<Album>().WithName(nameof(Album.Duration))` for the duration of each album, but not of its
+  tracks.
 - `Which(predicate)` and `Except(predicate)` decide for each value, which they get as a `FormattedValue` with its
   `Kind`, `Name`, `Path`, declared `Type` and `DeclaringType`; the value itself is only read when the predicate calls
   `GetValue()`. An exception of the predicate is thrown.
 
 ```csharp
 await Expect.That(album).MatchesSnapshot()
-    .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Price)).Ignore()
+    .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Duration)).Ignore()
     .For.Members().WithName("Url").AsSuffix().IgnoringCase().Ignore()
     .For.Members().DeclaredIn<Track>().WithName(nameof(Track.Id)).Mask()
     .For.Values().Which(value => value.Path.StartsWith("Artist.", StringComparison.Ordinal)).Mask("<artist>");
@@ -152,7 +153,7 @@ Values of related types, such as numeric ids of `int` and `long`, are selected t
 `OrOfExactType<T>()` directly after `OfType<T>()` or `OfExactType<T>()`:
 
 ```csharp
-await Expect.That(shop).MatchesSnapshot()
+await Expect.That(label).MatchesSnapshot()
     .For.Members().OfType<int>().OrOfType<long>().WithName("Id").AsSuffix()
     .Mask(value => "{" + (value.Name == "Id"
         ? value.DeclaringType.Name
@@ -160,18 +161,18 @@ await Expect.That(shop).MatchesSnapshot()
 ```
 
 ```text title="Snapshot"
-Shop {
-  Customers = [
-    Customer {
-      Id = {Customer_1},
-      Name = "Ringo"
+Label {
+  Albums = [
+    Album {
+      ArtistId = {Artist_1},
+      CatalogId = "PCS 7088",
+      Id = {Album_1}
     }
   ],
-  Orders = [
-    Order {
-      CustomerId = {Customer_1},
-      Id = {Order_1},
-      TrackingId = "1Z999"
+  Artists = [
+    Artist {
+      Id = {Artist_1},
+      Name = "The Beatles"
     }
   ]
 }

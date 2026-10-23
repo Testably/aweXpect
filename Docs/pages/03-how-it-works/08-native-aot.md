@@ -114,7 +114,7 @@ The generator works from the declared type, so the same limits apply as for
   by the reflective path either, and keeps its type on reflection,
 - a `struct` subject is never registered, because a handler added to a boxed copy never sees the caller's value.
 
-A type the generator did not see can be named explicitly with `[assembly: GenerateMetadata(typeof(MyClass))]`, which
+A type the generator did not see can be named explicitly with `[assembly: GenerateMetadata(typeof(Track))]`, which
 registers its members and its events.
 
 Reflection over a subject without a registration is switched off in a project that enables trimming or Native AOT, also

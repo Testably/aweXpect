@@ -60,10 +60,10 @@ code fixes are available: switch to the `With…` twin, or insert `.Which`.
 :::
 
 ```csharp
-void Act() => throw new InvalidOperationException("foo");
+void Act() => throw new InvalidOperationException("Yesterday");
 
-await Expect.That(Act).Throws<InvalidOperationException>().HasMessage("foo");    // reported
-await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("foo");   // fixed
+await Expect.That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");    // reported
+await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");   // fixed
 ```
 
 The `Has…` vocabulary belongs after `.Which`. See

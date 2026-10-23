@@ -14,9 +14,9 @@ generates the public API without an expectation, and the options are in the name
 The public API is written as C# declarations, e.g.
 
 ```csharp
-namespace MyLibrary
+namespace MusicStore
 {
-    public abstract class Album : System.IComparable<MyLibrary.Album>
+    public abstract class Album : System.IComparable<MusicStore.Album>
     {
         protected Album(string title) { }
         public string Title { get; }
@@ -59,7 +59,7 @@ tests cannot reference it, by its full name like `Type.FullName`:
 ```csharp
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
     .Ignoring.Attribute<EditorBrowsableAttribute>()
-    .Ignoring.Attribute("MyLibrary.Internal.MarkerAttribute"));
+    .Ignoring.Attribute("MusicStore.Internal.MarkerAttribute"));
 ```
 
 `[Serializable]`, `[DllImport(…)]` and `[Optional]` are written, although the compiler stores them as flags in the
@@ -75,13 +75,13 @@ await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignori
 ```
 
 The public API can be restricted to namespaces, including their sub-namespaces, or to types, including their nested
-types, and namespaces and types can be ignored. A namespace matches whole segments, so `MyLibrary.Generated` neither
-includes nor ignores `MyLibrary.GeneratedTools`, and ignoring wins over a restriction:
+types, and namespaces and types can be ignored. A namespace matches whole segments, so `MusicStore.Generated` neither
+includes nor ignores `MusicStore.GeneratedTools`, and ignoring wins over a restriction:
 
 ```csharp
 await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
-    .Within.Namespace("MyLibrary")
-    .Ignoring.Namespace("MyLibrary.Generated")
+    .Within.Namespace("MusicStore")
+    .Ignoring.Namespace("MusicStore.Generated")
     .Ignoring.Type<LegacyAdapter>());
 ```
 

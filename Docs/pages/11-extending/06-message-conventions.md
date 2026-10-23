@@ -55,7 +55,7 @@ but ASide was 7:11 long
 - For something that happened during the test, like the built-in `Triggered`/`DidNotTrigger` and
   `Signaled`/`DidNotSignal`, name the method in the past tense and its negation `DidNot…`, and write the text in the
   present perfect: `has recorded the callback at least once`, `has never recorded the PropertyChanged event`.
-- Append the options after the expectation, e.g. ` ignoring case`, ` using MyComparer` or ` in any order`.
+- Append the options after the expectation, e.g. ` ignoring case`, ` using AlbumComparer` or ` in any order`.
 - Describe the expected value, not the check: `is radio friendly` instead of `Duration <= 3:00 returns true`.
 
 ### Code of the caller in the expectation text
@@ -93,7 +93,7 @@ in `netstandard2.0` and `net48`. Declare it as an `internal` type in your own pa
 - Put longer information, such as the items of a collection, in a context below the message instead (see
   [contexts](#contexts)).
 - When a name was not found, suggest the one that was most likely meant with `ClosestMatch.AppendHint` from
-  `aweXpect.Core.Extending`. It appends ` (did you mean "Username"?)` only when a single candidate is close enough:
+  `aweXpect.Core.Extending`. It appends ` (did you mean "PlayCount"?)` only when a single candidate is close enough:
 
   ```csharp
   private static void AppendMissingKey(StringBuilder stringBuilder, string it, string expected, string[] keys)
@@ -151,7 +151,7 @@ Register an `IValueFormatter` to format your own types, see [value formatters](.
 place (`ValueFormatting.Replace(value)`), e.g. to leave out values that change from run to run in a snapshot. It is
 offered the members of objects that are written member-wise, the items of tuples and collections, and the values of
 dictionary entries, as a `FormattedValue` with its `Kind`, `Name`, `Type`, `DeclaringType` and `Path`. The path has the
-format of an equivalency comparison (`Customer.Name`, `Lines[0].Id`, `Prices[1.5]`, `Grid[0,1]`), with `[*]` as the
+format of an equivalency comparison (`Artist.Name`, `Tracks[0].Id`, `Ratings[4.5]`, `Seats[0,1]`), with `[*]` as the
 index of an item of a collection whose order depends on hash codes or threads, like a `HashSet<T>`, so that the rules
 to ignore members in an equivalency comparison can be reused:
 
@@ -225,12 +225,12 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 | `Negated`    | the expectation is negated; the helper classes then call `AppendNegatedExpectation` and `AppendNegatedResult` |
 | `Plural`     | the subject of the sentence is plural, e.g. `whose Tracks are radio friendly for all items`                   |
 | `Nested`     | the expectation continues the sentence of another one, e.g. for a member or an item                           |
-| `Active`     | the expectation continues a `With…` clause, which drops the verb, e.g. `with message equal to "bar"`          |
+| `Active`     | the expectation continues a `With…` clause, which drops the verb, e.g. `with message equal to "Yesterday"`    |
 | `Introduced` | the subject was already introduced by a connector like the `that` of `has item that`                          |
 
 `Active` has the opposite meaning for the expectation text of a string match type (`IStringMatchType.GetExpectation`):
-there it asks for the text with the verb (`is equal to "bar"`), and without it the text starts with the comparison
-(`equal to "bar"`).
+there it asks for the text with the verb (`is equal to "Yesterday"`), and without it the text starts with the
+comparison (`equal to "Yesterday"`).
 
 `ExpectationGrammarsExtensions` checks them with `IsNegated()`, `IsNested()`, `IsPlural()` or
 `HasAnyFlag(…)`, and toggles the negation with `Negate()`. Use the plural form of the verb in the expectation text

@@ -91,7 +91,7 @@ Shared by all types and members: a self-documenting shorthand for the `ObsoleteA
 
 ```csharp
 // Verify that nothing public is marked [Obsolete]
-await Expect.That(In.AssemblyContaining<MyClass>().Types().WhichArePublic())
+await Expect.That(In.AssemblyContaining<PlaylistService>().Types().WhichArePublic())
     .AreNotObsolete();
 ```
 
@@ -116,7 +116,7 @@ counterparts:
 
 ```csharp
 // Verify that no type in the production assembly is named with a "Test" suffix
-await Expect.That(In.AssemblyContaining<MyClass>().Types())
+await Expect.That(In.AssemblyContaining<PlaylistService>().Types())
     .DoNotHaveName("Test").AsSuffix();
 ```
 
@@ -132,10 +132,10 @@ await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterTy
 ```
 
 The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all
-its sub-namespaces (so `Foo.Bar` includes `Foo.Bar.Baz` but not `Foo.BarBaz`). They compare the namespace
-exactly and case-sensitively and do not support any of the string matching options. Each has a negated
-form (`WhichAreNotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches types
-outside the namespace. Unlike `DoesNotHaveNamespace`, which compares the whole namespace as a string with the
+its sub-namespaces (so `MusicStore.Data` includes `MusicStore.Data.Sql` but not `MusicStore.DataImport`). They
+compare the namespace exactly and case-sensitively and do not support any of the string matching options. Each
+has a negated form (`WhichAreNotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches
+types outside the namespace. Unlike `DoesNotHaveNamespace`, which compares the whole namespace as a string with the
 string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces.
 
 ## Types
@@ -180,13 +180,13 @@ the `…Directly` variants, an interface reached only through a base class or th
 interface does not count as *directly* implemented.
 
 ```csharp
-await Expect.That(typeof(OrderController)).InheritsDirectlyFrom<ControllerBase>();
-await Expect.That(typeof(OrderRepository)).ImplementsDirectly<IRepository>();
+await Expect.That(typeof(AlbumController)).InheritsDirectlyFrom<ControllerBase>();
+await Expect.That(typeof(AlbumRepository)).ImplementsDirectly<IRepository>();
 ```
 
 `IsAssignableTo` / `IsAssignableFrom` (and their `WhichAre…` / `Are…` forms) use runtime assignability, which
 covers base classes *and* interfaces in one step, treats a type as assignable to itself, and honors closed
-generic variance. Open generic type definitions (e.g. `typeof(IFoo<>)`) are not supported and throw.
+generic variance. Open generic type definitions (e.g. `typeof(IRepository<>)`) are not supported and throw.
 
 ```csharp
 In.AllLoadedAssemblies().Types()
@@ -212,7 +212,7 @@ immutability. Failure messages list the offending mutable members for actionable
 lists the non-compliant members per type:
 
 ```csharp
-await Expect.That(In.AssemblyContaining<MyRequest>()
+await Expect.That(In.AssemblyContaining<AddTrackRequest>()
         .Types().WithName("Request").AsSuffix())
     .OnlyHaveNullableMembers();
 ```
@@ -275,11 +275,11 @@ _at least one_ matching member):
 
 ```csharp
 // A single type contains at least one [Fact] or [Theory] method
-await Expect.That(typeof(MyTests))
+await Expect.That(typeof(PlaylistServiceTests))
     .ContainsMethods(methods => methods.With<FactAttribute>().OrWith<TheoryAttribute>());
 
 // …with exactly one parameterless constructor
-await Expect.That(typeof(MyService))
+await Expect.That(typeof(PlaylistService))
     .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(1.Times());
 
 // Every type in a collection contains a matching property
@@ -430,15 +430,15 @@ variants and `>>>` (`UnsignedRightShift`).
 await Expect.That(methodInfo).IsAnOperator(Operator.Equality);
 
 // Type-level presence (op_* lookup); inherit: true also considers base-type operators
-await Expect.That(typeof(MyMoney)).HasOperator(Operator.Addition);
-await Expect.That(typeof(MyMoney)).DoesNotHaveOperator(Operator.Modulus);
+await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition);
+await Expect.That(typeof(TrackDuration)).DoesNotHaveOperator(Operator.Modulus);
 
 // Disambiguate overloads by operand type
-await Expect.That(typeof(MyMoney)).HasOperator<int>(Operator.Addition);
+await Expect.That(typeof(TrackDuration)).HasOperator<int>(Operator.Addition);
 
 // Conversion operators are keyed by their source → target signature
-await Expect.That(typeof(MyMoney)).HasImplicitConversionOperator<MyMoney, decimal>();
-await Expect.That(typeof(MyMoney)).HasExplicitConversionOperator(typeof(MyMoney), typeof(int));
+await Expect.That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDuration, TimeSpan>();
+await Expect.That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
 ```
 
 `HasOperator` / conversion operators match operators declared on the type itself; pass `inherit: true` to also
@@ -516,7 +516,7 @@ attributes like `[AllowNull]` or `[MaybeNull]` are ignored.
 
 ```csharp
 // All properties and fields of the request types must be nullable
-await Expect.That(In.AssemblyContaining<MyRequest>()
+await Expect.That(In.AssemblyContaining<AddTrackRequest>()
         .Types().WithName("Request").AsSuffix()
         .Properties())
     .AreNullable();
@@ -720,7 +720,7 @@ await Expect.That(types).HaveName("*Test*").AsWildcard();
 await Expect.That(types).HaveName(@"^Test\w+$").AsRegex();
 await Expect.That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
 
-Filtered.Types services = In.AssemblyContaining<MyClass>().Types()
+Filtered.Types services = In.AssemblyContaining<PlaylistService>().Types()
     .WithName("service").IgnoringCase().AsSuffix()
     .WhichAreClasses();
 ```

@@ -185,7 +185,7 @@ the rule that all built-in expectations follow (see [`null` subjects](../03-how-
   `IsNotBetween`.
 - Your expectation **compares the subject for equality or identity** against a value the caller supplied: use
   `ConstraintResult.WithEqualToValue<T>` and pass whether the expected value is `null`. `IsEqualTo(null)` succeeds for
-  a `null` subject, `IsNotEqualTo(null)` fails and `IsNotEqualTo("foo")` succeeds.
+  a `null` subject, `IsNotEqualTo(null)` fails and `IsNotEqualTo("Yesterday")` succeeds.
 - Your subject **cannot be `null`**, or your expectation **decides every `null` case itself**, e.g. `IsNull()` or
   `IsOneOf(...)`, whose expected values may or may not include `null`: use `ConstraintResult.WithValue<T>`.
 

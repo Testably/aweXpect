@@ -224,7 +224,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCou
 
 The match is case-insensitive. For nested members, the path is dot-separated (e.g. `"Artist.Name"`); for collection
 elements, the index is bracketed (e.g. `"Tracks[3]"`), and for dictionary entries the key, formatted with the invariant
-culture (e.g. `"Prices[1.5]"`).
+culture (e.g. `"Ratings[4.5]"`).
 
 The name must cover whole segments at the end of the member path, so `"Name"` ignores every member called `Name` at any
 depth, while `"ame"` or `"t.Name"` ignore nothing.
