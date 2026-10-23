@@ -934,6 +934,34 @@ public sealed partial class ThatConstructors
 			}
 
 			[Test]
+			public async Task AtIndex_WhenOneHasParameterOnlyBeforeSpecificIndex_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(string), typeof(int),])!,
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter<int>().AtIndex(1);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int at index 1,
+					             but it contained constructors without a matching parameter
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(int value, string name)
+					             ]
+					             """)
+					.Because("the int parameter of the (int, string) constructor is at index 0, not at index 1");
+			}
+
+			[Test]
 			public async Task AtIndexFromEnd_WhenAllHaveParameterAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]

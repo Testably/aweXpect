@@ -61,6 +61,25 @@ public sealed partial class ThatMethod
 			}
 
 			[Test]
+			public async Task AtIndex_WhenParameterOnlyExistsBeforeSpecificIndex_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<int>().AtIndex(1);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int at index 1,
+					             but it did not
+					             """)
+					.Because("the int parameter is at index 0, not at index 1");
+			}
+
+			[Test]
 			public async Task AtIndexFromEnd_WhenParameterExistsAtSpecificIndexFromEnd_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;

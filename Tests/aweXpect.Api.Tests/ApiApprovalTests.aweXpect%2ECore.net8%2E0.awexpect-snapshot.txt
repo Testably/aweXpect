@@ -1402,6 +1402,7 @@ namespace aweXpect.Options
         public aweXpect.Options.CollectionIndexOptions.IMatch Match { get; }
         public void AtIndex(int index) { }
         public void AtIndexFromEnd(int index) { }
+        public bool? MatchesIndex(int index, int? count) { }
         public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match) { }
         public void SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch match, string optionName) { }
         public interface IMatch

@@ -480,13 +480,7 @@ public static partial class ThatMethods
 				ParameterInfo[] parameters = method.GetParameters();
 				return await parameters.AnyAsync(async (p, i) =>
 				{
-					bool? isIndexInRange = collectionIndexOptions.Match switch
-					{
-						CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
-						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
-						_ => true, // No index constraint means all indices are valid
-					};
-					return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true && await parameterFilterOptions.Matches(p);
 				});
 			}, cancellationToken);
 #endif
@@ -503,13 +497,7 @@ public static partial class ThatMethods
 				ParameterInfo[] parameters = method.GetParameters();
 				return await parameters.AnyAsync(async (p, i) =>
 				{
-					bool? isIndexInRange = collectionIndexOptions.Match switch
-					{
-						CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
-						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
-						_ => true, // No index constraint means all indices are valid
-					};
-					return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true && await parameterFilterOptions.Matches(p);
 				});
 			}, cancellationToken);
 

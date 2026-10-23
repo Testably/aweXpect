@@ -40,6 +40,23 @@ public sealed partial class ThatMethods
 			}
 
 			[Test]
+			public async Task AtIndex_WhenParameterOnlyExistsBeforeIndex_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo?> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParameters)),
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveParameter<int>().AtIndex(1);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the int parameter is at index 0, not at index 1");
+			}
+
+			[Test]
 			public async Task ByName_WhenNoMethodHasParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo?> subject =

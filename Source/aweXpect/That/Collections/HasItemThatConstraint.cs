@@ -72,7 +72,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 	protected async Task<bool> IsDecidedBy(TItem item, int index, int? count, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		bool? isIndexInRange = ThatEnumerable.IsIndexInRange(Options, index, count);
+		bool? isIndexInRange = Options.MatchesIndex(index, count);
 		if (isIndexInRange is null)
 		{
 			return false;
