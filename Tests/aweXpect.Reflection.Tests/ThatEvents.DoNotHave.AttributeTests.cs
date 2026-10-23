@@ -91,6 +91,33 @@ public sealed partial class ThatEvents
 			}
 
 			[Test]
+			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.DerivedClass.InheritedEvent
+					             ]
+					             """)
+					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
+			}
+
+			[Test]
 			public async Task WhenNoEventHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<EventInfo?> subject = new[]
@@ -106,6 +133,23 @@ public sealed partial class ThatEvents
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(false);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with inherit: false only the attributes declared on the overriding event count");
+			}
+
 			[AttributeUsage(AttributeTargets.Event)]
 			private class FooAttribute : Attribute
 			{
@@ -117,6 +161,16 @@ public sealed partial class ThatEvents
 				[Foo] public event Action? TestEvent;
 
 				public event Action? NoAttributeEvent;
+			}
+
+			private class BaseClass
+			{
+				[Foo] public virtual event Action? InheritedEvent;
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override event Action? InheritedEvent;
 			}
 #pragma warning restore CS0067
 		}

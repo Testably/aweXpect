@@ -45,6 +45,23 @@ public sealed partial class ThatProperties
 			}
 
 			[TUnit.Core.Test]
+			public async Task WhenAllPropertiesInheritAttributeFromOverriddenProperties_ShouldSucceed()
+			{
+				IEnumerable<PropertyInfo> subject = new[]
+				{
+					typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!,
+				};
+
+				async Task Act()
+				{
+					await That(subject).Have<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
+			}
+
+			[TUnit.Core.Test]
 			public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]
@@ -95,6 +112,46 @@ public sealed partial class ThatProperties
 					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
 					             ]
 					             """);
+			}
+
+			[TUnit.Core.Test]
+			public async Task WhenPropertiesAreFilteredByInheritedAttribute_ShouldSucceed()
+			{
+				async Task Act()
+				{
+					await That(In.Type<DerivedClass>().Properties().With<TestAttribute>())
+						.IsNotEmpty().And.Have<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectation must agree with the filter on the inherited attribute");
+			}
+
+			[TUnit.Core.Test]
+			public async Task WithInheritFalse_WhenAllPropertiesInheritAttributeFromOverriddenProperties_ShouldFail()
+			{
+				IEnumerable<PropertyInfo> subject = new[]
+				{
+					typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!,
+				};
+
+				async Task Act()
+				{
+					await That(subject).Have<TestAttribute>(false);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have direct ThatProperties.Have.AttributeTests.TestAttribute,
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
+					               public string ThatProperties.Have.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             ]
+					             """)
+					.Because("with inherit: false only the attributes declared on the overriding property count");
 			}
 
 #if NET8_0_OR_GREATER
@@ -201,6 +258,16 @@ public sealed partial class ThatProperties
 				[Test(Value = "Property2Value")] public string TestProperty2 { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
+			}
+
+			private class BaseClass
+			{
+				[Test(Value = "BaseValue")] public virtual string InheritedProperty { get; set; } = "";
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override string InheritedProperty { get; set; } = "";
 			}
 			// ReSharper restore UnusedMember.Local
 		}

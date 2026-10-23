@@ -90,12 +90,17 @@ internal static class PropertyInfoHelpers
 		Func<Attribute, bool>? predicate = null,
 		bool inherit = true)
 	{
-		if (AttributePredicates.OnlyChecksType(predicate))
+		if (propertyInfo is null)
 		{
-			return propertyInfo?.IsDefined(attributeType, inherit) == true;
+			return false;
 		}
 
-		object? attribute = propertyInfo?.GetCustomAttributes(attributeType, inherit)
+		if (AttributePredicates.OnlyChecksType(predicate))
+		{
+			return Attribute.IsDefined(propertyInfo, attributeType, inherit);
+		}
+
+		object? attribute = Attribute.GetCustomAttributes(propertyInfo, attributeType, inherit)
 			.FirstOrDefault();
 		if (attribute is Attribute attributeValue)
 		{
