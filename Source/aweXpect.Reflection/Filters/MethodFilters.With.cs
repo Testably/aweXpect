@@ -20,10 +20,10 @@ public static partial class MethodFilters
 	public static MethodsWith With<TAttribute>(this Filtered.Methods @this, bool inherit = true)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		Filter.GenericFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.HasAttribute<TAttribute>(inherit: inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-		return new MethodsWith(@this.Which(filter), filter);
+		return new MethodsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -41,10 +41,10 @@ public static partial class MethodFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		Filter.GenericFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.HasAttribute(predicate, inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new MethodsWith(@this.Which(filter), filter);
+		return new MethodsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -52,10 +52,13 @@ public static partial class MethodFilters
 	/// </summary>
 	public class MethodsWith : Filtered.Methods
 	{
-		private readonly IChangeableFilter<MethodInfo> _filter;
+		private readonly Filter.GenericFilter<MethodInfo> _filter;
+		private readonly Filtered.Methods _source;
 
-		internal MethodsWith(Filtered.Methods inner, IChangeableFilter<MethodInfo> filter) : base(inner)
+		internal MethodsWith(Filtered.Methods source, Filter.GenericFilter<MethodInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -68,12 +71,9 @@ public static partial class MethodFilters
 		/// </remarks>
 		public MethodsWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter((result, methodInfo) => result || methodInfo.HasAttribute<TAttribute>(inherit: inherit),
+			=> new(_source, _filter.Extend((result, methodInfo) => result || methodInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -89,12 +89,9 @@ public static partial class MethodFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, methodInfo) => result || methodInfo.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 	}
 }

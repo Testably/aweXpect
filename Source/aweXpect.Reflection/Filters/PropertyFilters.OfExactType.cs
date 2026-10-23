@@ -19,10 +19,10 @@ public static partial class PropertyFilters
 	public static PropertiesOfType OfExactType(this Filtered.Properties @this,
 		Type propertyType)
 	{
-		IChangeableFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
+		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
 			propertyInfo => propertyInfo.PropertyType.IsOrInheritsFrom(propertyType, true),
 			() => $"of exact type {Formatter.Format(propertyType)} ");
-		return new PropertiesOfType(@this.Which(filter), filter);
+		return new PropertiesOfType(@this, filter);
 	}
 
 	/// <summary>
@@ -52,13 +52,10 @@ public static partial class PropertyFilters
 		///     Allow an alternative type <paramref name="propertyType" /> exactly.
 		/// </summary>
 		public PropertiesOfType OrOfExactType(Type propertyType)
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, propertyInfo)
 					=> result || propertyInfo.PropertyType.IsOrInheritsFrom(propertyType, true),
 				description
-					=> $"{description}or of exact type {Formatter.Format(propertyType)} ");
-			return this;
-		}
+					=> $"{description}or of exact type {Formatter.Format(propertyType)} "));
 	}
 }

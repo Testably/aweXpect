@@ -107,6 +107,24 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.TypeFilters.TypesWith withBar = In.AssemblyContaining<AssemblyFilters>()
+					.Types().With<BarAttribute>();
+
+				Filtered.Types withBarOrFoo = withBar.OrWith<FooAttribute>();
+
+				await That(withBar).IsEqualTo([typeof(BarClass), typeof(BarChildClass),]).InAnyOrder()
+					.Because("OrWith must return a new filter instead of changing the one it was called on");
+				await That(withBar.GetDescription())
+					.IsEqualTo("types with TypeFilters.With.BarAttribute in assembly").AsPrefix();
+				await That(withBarOrFoo).IsEqualTo([
+					typeof(BarClass), typeof(BarChildClass), typeof(FooClass2), typeof(FooClass3),
+					typeof(FooChildClass2),
+				]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()

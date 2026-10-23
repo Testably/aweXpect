@@ -13,10 +13,13 @@ public static partial class PropertyFilters
 	/// </summary>
 	public partial class PropertiesOfType : Filtered.Properties
 	{
-		private readonly IChangeableFilter<PropertyInfo> _filter;
+		private readonly Filter.GenericFilter<PropertyInfo> _filter;
+		private readonly Filtered.Properties _source;
 
-		internal PropertiesOfType(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter) : base(inner)
+		internal PropertiesOfType(Filtered.Properties source, Filter.GenericFilter<PropertyInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 	}
