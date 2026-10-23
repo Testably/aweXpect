@@ -582,6 +582,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -681,7 +687,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -784,7 +791,8 @@ window.BENCHMARK_DATA = {
           10785.703227742513,
           7683.338574000767,
           5340.474792480469,
-          5482.674256006877
+          5482.674256006877,
+          10548.28785588191
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -880,6 +888,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1003,7 +1012,8 @@ window.BENCHMARK_DATA = {
           372205.4109375,
           243022.30611979167,
           179886.34660993304,
-          191049.82526506696
+          191049.82526506696,
+          379705.4537760417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1111,7 +1121,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590287,
-          590288
+          590288,
+          590291
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1222,7 +1233,8 @@ window.BENCHMARK_DATA = {
           19946.654009137834,
           14174.112354823521,
           10447.778938802083,
-          10257.905839029949
+          10257.905839029949,
+          19265.818517831656
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1234,6 +1246,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -1884,6 +1897,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -1976,7 +1995,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -2072,7 +2092,8 @@ window.BENCHMARK_DATA = {
           288.3566347190312,
           186.6161285718282,
           131.59104719161988,
-          131.39477551778157
+          131.39477551778157,
+          282.45449867248533
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2161,6 +2182,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -2277,7 +2299,8 @@ window.BENCHMARK_DATA = {
           563.7408034642538,
           404.70598452885946,
           292.55798524220785,
-          270.9788565635681
+          270.9788565635681,
+          536.0882632573446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2289,6 +2312,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -2482,7 +2506,8 @@ window.BENCHMARK_DATA = {
           396.1303338686625,
           285.79106384913126,
           221.68629608835494,
-          216.83434759775798
+          216.83434759775798,
+          389.1260638554891
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2494,6 +2519,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -7757,6 +7783,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -8619,7 +8651,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -9485,7 +9518,8 @@ window.BENCHMARK_DATA = {
           137.32749166091284,
           101.19247957865397,
           71.23555343151092,
-          67.6071536724384
+          67.6071536724384,
+          134.76700851122538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10344,6 +10378,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -11230,7 +11265,8 @@ window.BENCHMARK_DATA = {
           252.7813046528743,
           199.8627430541175,
           140.69379103978474,
-          133.5027004991259
+          133.5027004991259,
+          261.78872073491414
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11423,6 +11459,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -12256,7 +12293,8 @@ window.BENCHMARK_DATA = {
           235.84552110036213,
           179.53965737138475,
           132.1688746554511,
-          130.06837366422016
+          130.06837366422016,
+          246.05112062181746
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -12268,6 +12306,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -13004,6 +13043,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -13103,7 +13148,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -13206,7 +13252,8 @@ window.BENCHMARK_DATA = {
           247.61652224404472,
           175.5745747770582,
           132.1127686023712,
-          137.70679620334082
+          137.70679620334082,
+          251.03506956100463
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13302,6 +13349,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -13425,7 +13473,8 @@ window.BENCHMARK_DATA = {
           528.5579905192058,
           410.0362854321798,
           312.7656935373942,
-          264.98138414110457
+          264.98138414110457,
+          548.793355623881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13437,6 +13486,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -13644,7 +13694,8 @@ window.BENCHMARK_DATA = {
           328.24125560124713,
           256.3212544759115,
           182.41032702582223,
-          177.53303417364756
+          177.53303417364756,
+          336.75120849609374
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13656,6 +13707,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -18926,6 +18978,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -19788,7 +19846,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -20654,7 +20713,8 @@ window.BENCHMARK_DATA = {
           644.5963696161906,
           474.9660445962633,
           347.03609368006386,
-          332.2014823641096
+          332.2014823641096,
+          630.612085546766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21513,6 +21573,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -22399,7 +22460,8 @@ window.BENCHMARK_DATA = {
           1346.082272720337,
           1081.5649642944336,
           721.9837555885315,
-          723.863410059611
+          723.863410059611,
+          1403.9547719319662
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23270,6 +23332,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -23425,7 +23488,8 @@ window.BENCHMARK_DATA = {
           663.5732850294846,
           501.903692817688,
           379.1946990966797,
-          387.27611650739397
+          387.27611650739397,
+          667.9892899195353
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23437,6 +23501,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -28751,6 +28816,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -29613,7 +29684,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -30479,7 +30551,8 @@ window.BENCHMARK_DATA = {
           639.4158733231681,
           489.6057282961332,
           358.33930240358626,
-          335.51049334662304
+          335.51049334662304,
+          614.1179178101676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31338,6 +31411,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -32224,7 +32298,8 @@ window.BENCHMARK_DATA = {
           27431.53550720215,
           15707.938596452985,
           11646.276164463588,
-          10527.001015218098
+          10527.001015218098,
+          27875.137176513672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33095,6 +33170,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -33250,7 +33326,8 @@ window.BENCHMARK_DATA = {
           788.1361436843872,
           592.8825717339149,
           496.7234803713285,
-          446.1077978134155
+          446.1077978134155,
+          810.8164026896159
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33262,6 +33339,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -34346,6 +34424,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -34503,7 +34587,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -34664,7 +34749,8 @@ window.BENCHMARK_DATA = {
           674.388996711144,
           501.0904170354207,
           374.1248019422804,
-          351.63203463187585
+          351.63203463187585,
+          675.698502667745
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34818,6 +34904,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -34999,7 +35086,8 @@ window.BENCHMARK_DATA = {
           83382.88087815505,
           53600.605712890625,
           29674.452872140067,
-          29032.11200358073
+          29032.11200358073,
+          83504.73860051081
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35165,7 +35253,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36109,6 +36198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -36266,7 +36361,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -36427,7 +36523,8 @@ window.BENCHMARK_DATA = {
           164.65683561960856,
           122.54405978747776,
           91.10116388003031,
-          88.5336746435899
+          88.5336746435899,
+          163.13640001614888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36581,6 +36678,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -36762,7 +36860,8 @@ window.BENCHMARK_DATA = {
           32059.95147235577,
           14625.619245402018,
           10640.509402683803,
-          10239.313264973958
+          10239.313264973958,
+          32638.65643310547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36928,7 +37027,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37083,7 +37183,8 @@ window.BENCHMARK_DATA = {
           236.87475269181388,
           176.23457074165344,
           128.83751685802753,
-          126.90802930082593
+          126.90802930082593,
+          258.9761901219686
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37095,6 +37196,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -37831,6 +37933,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -37930,7 +38038,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -38033,7 +38142,8 @@ window.BENCHMARK_DATA = {
           331.8518228530884,
           262.3391123453776,
           175.843368991216,
-          189.15189592043558
+          189.15189592043558,
+          355.9115953127543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38129,6 +38239,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -38252,7 +38363,8 @@ window.BENCHMARK_DATA = {
           370.3412171681722,
           313.74648211552545,
           211.97516117095947,
-          223.7064672433413
+          223.7064672433413,
+          391.5127222379049
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38264,6 +38376,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -38471,7 +38584,8 @@ window.BENCHMARK_DATA = {
           410.3584384600321,
           334.67340288162234,
           215.26402104695637,
-          229.2656852858407
+          229.2656852858407,
+          414.07689367930095
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38483,6 +38597,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -39175,6 +39290,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -39274,7 +39395,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -39377,7 +39499,8 @@ window.BENCHMARK_DATA = {
           612.8073773017296,
           450.04854290301984,
           343.08397165934247,
-          341.2975953737895
+          341.2975953737895,
+          646.7151170730591
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39473,6 +39596,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376,
@@ -39596,7 +39720,8 @@ window.BENCHMARK_DATA = {
           1862.7592698415122,
           1495.8328587214153,
           1060.9023658207484,
-          1098.6683935437884
+          1098.6683935437884,
+          1935.3038619995118
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39608,6 +39733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -39815,7 +39941,8 @@ window.BENCHMARK_DATA = {
           886.56546681722,
           712.3232481820243,
           506.97502061298917,
-          486.9049206513625
+          486.9049206513625,
+          926.7221125284831
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39827,6 +39954,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -40519,6 +40647,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -40618,7 +40752,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -40721,7 +40856,8 @@ window.BENCHMARK_DATA = {
           11268.857204730693,
           8130.3790415445965,
           5997.463837687174,
-          5840.609641393025
+          5840.609641393025,
+          11307.392217782828
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40817,6 +40953,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -40940,7 +41077,8 @@ window.BENCHMARK_DATA = {
           40469.83618570964,
           25770.636692592077,
           19428.709505353654,
-          18166.312662760418
+          18166.312662760418,
+          40505.289562988284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41047,6 +41185,7 @@ window.BENCHMARK_DATA = {
           18393,
           18609,
           18393,
+          18609,
           18609,
           18609
         ],
@@ -41159,7 +41298,8 @@ window.BENCHMARK_DATA = {
           10606.227949778238,
           7798.431198120117,
           5841.187400230994,
-          5623.385120391846
+          5623.385120391846,
+          10723.846369425455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41171,6 +41311,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -41863,6 +42004,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
         "message": "refactor!: take nested JSON expectations as an Action (#1937)"
+      },
+      {
+        "sha": "7d8edd0db94770860d65d2326987b10b5c160dfd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
+        "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
       }
     ],
     "labels": [
@@ -41962,7 +42109,8 @@ window.BENCHMARK_DATA = {
       "3484beb9",
       "ff85110d",
       "e0f2a99b",
-      "fc3af334"
+      "fc3af334",
+      "7d8edd0d"
     ],
     "datasets": [
       {
@@ -42065,7 +42213,8 @@ window.BENCHMARK_DATA = {
           10655.998033963717,
           7635.995834350586,
           5628.776477050781,
-          5509.620542672964
+          5509.620542672964,
+          10787.698076375325
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42161,6 +42310,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -42284,7 +42434,8 @@ window.BENCHMARK_DATA = {
           58148.7701171875,
           38248.78789411272,
           27688.36260579427,
-          27232.0114839994
+          27232.0114839994,
+          58661.48373616536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42378,6 +42529,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -42503,7 +42655,8 @@ window.BENCHMARK_DATA = {
           21012.97775033804,
           15406.235414945162,
           11314.074716421273,
-          11320.931415264424
+          11320.931415264424,
+          21266.158459003156
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42515,6 +42668,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
