@@ -50,8 +50,7 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>().AtIndex(index)
-							.FromEnd();
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()
@@ -169,8 +168,7 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar").AtIndex(index)
-							.FromEnd();
+						await That(subject).AreGeneric().WithArgument<ThatMethod.BaseClass>("TBar").AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()
@@ -457,7 +455,7 @@ public sealed partial class ThatMethods
 
 					async Task Act()
 					{
-						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
+						await That(subject).AreGeneric().WithArgument("TBar").AtIndexFromEnd(index);
 					}
 
 					await That(Act).Throws()

@@ -196,7 +196,6 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public class ConstructorsWithParameter<T>
 		: Filtered.Constructors,
-			IOptionsProvider<CollectionIndexOptions>,
 			IOptionsProvider<ParameterFilterOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
@@ -217,22 +216,24 @@ public static partial class ConstructorFilters
 			_parameterFilterOptions = parameterFilterOptions;
 		}
 
-		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
-
 		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
 		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => _parameterFilterOptions;
 
 		/// <summary>
-		///     …at the given <paramref name="index" />.
+		///     …at the given zero-based <paramref name="index" />.
 		/// </summary>
-		public ConstructorsWithParameterAtIndex<T> AtIndex(int index)
-		{
-			CollectionIndexOptions collectionIndexOptions = new();
-			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new ConstructorsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
-				_parameterFilterOptions);
-		}
+		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		public ConstructorsWithParameter<T> AtIndex(int index)
+			=> WithIndex(o => o.AtIndex(index));
+
+		/// <summary>
+		///     …at the given zero-based <paramref name="index" />, counted from the end of the parameters.
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+		/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+		public ConstructorsWithParameter<T> AtIndexFromEnd(int index)
+			=> WithIndex(o => o.AtIndexFromEnd(index));
 
 		/// <summary>
 		///     …without a default value.
@@ -297,51 +298,10 @@ public static partial class ConstructorFilters
 			Func<string> description)
 			=> new(_source, _createFilter, _collectionIndexOptions,
 				_parameterFilterOptions.WithPredicate(predicate, description));
-	}
 
-	/// <summary>
-	///     Additional filters on constructors with a parameter at a specific index.
-	/// </summary>
-	public class ConstructorsWithParameterAtIndex<T>
-		: Filtered.Constructors,
-			IOptionsProvider<CollectionIndexOptions>
-	{
-		private readonly CollectionIndexOptions _collectionIndexOptions;
-		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
-		private readonly ParameterFilterOptions _parameterFilterOptions;
-		private readonly Filtered.Constructors _source;
-
-		internal ConstructorsWithParameterAtIndex(
-			Filtered.Constructors source,
-			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
-			CollectionIndexOptions collectionIndexOptions,
-			ParameterFilterOptions parameterFilterOptions)
-			: base(source.Which(createFilter(collectionIndexOptions, parameterFilterOptions)))
-		{
-			_source = source;
-			_createFilter = createFilter;
-			_collectionIndexOptions = collectionIndexOptions;
-			_parameterFilterOptions = parameterFilterOptions;
-		}
-
-		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
-
-		/// <summary>
-		///     …from end.
-		/// </summary>
-		public ConstructorsWithParameterAtIndex<T> FromEnd()
-		{
-			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
-			{
-				CollectionIndexOptions collectionIndexOptions = new();
-				collectionIndexOptions.SetMatch(match.FromEnd());
-				return new ConstructorsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
-					_parameterFilterOptions);
-			}
-
-			return this;
-		}
+		private ConstructorsWithParameter<T> WithIndex(Action<CollectionIndexOptions> setIndex)
+			=> new(_source, _createFilter, FilterIndexOptions.With(_collectionIndexOptions, setIndex),
+				_parameterFilterOptions);
 	}
 
 	/// <summary>

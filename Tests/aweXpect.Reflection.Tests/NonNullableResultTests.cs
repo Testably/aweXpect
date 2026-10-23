@@ -568,7 +568,7 @@ public sealed class NonNullableResultTests
 	{
 		Type? subject = typeof(List<Uri>);
 
-		Type result = await That(subject).IsGeneric().WithArgument<Uri>().AtIndex(0).FromEnd();
+		Type result = await That(subject).IsGeneric().WithArgument<Uri>().AtIndexFromEnd(0);
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}

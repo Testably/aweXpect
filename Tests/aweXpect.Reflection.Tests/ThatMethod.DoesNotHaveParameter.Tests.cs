@@ -46,7 +46,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(subject).DoesNotHaveParameter<int>().AtIndex(1).FromEnd();
+					await That(subject).DoesNotHaveParameter<int>().AtIndexFromEnd(1);
 				}
 
 				await That(Act).Throws<FailException>()

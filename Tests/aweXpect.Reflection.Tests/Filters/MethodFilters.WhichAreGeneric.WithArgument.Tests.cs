@@ -12,6 +12,37 @@ public sealed partial class MethodFilters
 			public sealed class GenericTests
 			{
 				[Test]
+				public async Task WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+				{
+					void Act()
+					{
+						In.Type<MyTestClass>()
+							.Methods()
+							.WhichAreGeneric()
+							.WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(0).AtIndexFromEnd(1);
+					}
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("AtIndexFromEnd cannot be specified more than once.");
+				}
+
+				[Test]
+				public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+				{
+					void Act()
+					{
+						In.Type<MyTestClass>()
+							.Methods()
+							.WhichAreGeneric()
+							.WithArgument<ThatMethod.BaseClass>().AtIndex(-1);
+					}
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("index").And
+						.WithMessage("The index must not be negative.").AsPrefix();
+				}
+
+				[Test]
 				public async Task WhenMethodMatchesADerivedType_ShouldNotBeIncluded()
 				{
 					Filtered.Methods subject = In.Type<MyTestClass>()
@@ -55,6 +86,23 @@ public sealed partial class MethodFilters
 				}
 
 				[Test]
+				public async Task WhenMethodMatchesTheTypeExactlyAtTheGivenIndex_ShouldNotChangeTheFilterItWasCalledOn()
+				{
+					Reflection.MethodFilters.GenericMethodsWithArgument withArgument = In.Type<MyTestClass>()
+						.Methods()
+						.WhichAreGeneric()
+						.WithArgument<ThatMethod.BaseClass>();
+
+					Filtered.Methods atIndex0 = withArgument.AtIndex(0);
+
+					await That(withArgument).HasCount(1)
+						.Because("AtIndex must return a new filter instead of changing the one it was called on");
+					await That(withArgument.GetDescription())
+						.StartsWith("generic methods with argument of type ThatMethod.BaseClass in");
+					await That(atIndex0).IsEmpty();
+				}
+
+				[Test]
 				[Arguments(0, 1)]
 				[Arguments(1, 0)]
 				[Arguments(2, 0)]
@@ -64,12 +112,29 @@ public sealed partial class MethodFilters
 					Filtered.Methods subject = In.Type<MyTestClass>()
 						.Methods()
 						.WhichAreGeneric()
-						.WithArgument<ThatMethod.BaseClass>().AtIndex(index).FromEnd();
+						.WithArgument<ThatMethod.BaseClass>().AtIndexFromEnd(index);
 
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())
 						.StartsWith(
 							$"generic methods with argument of type ThatMethod.BaseClass at index {index} from end in");
+				}
+
+				[Test]
+				public async Task WhenMethodMatchesTheTypeExactlyAtTheGivenIndexFromEnd_ShouldNotChangeTheFilterItWasCalledOn()
+				{
+					Reflection.MethodFilters.GenericMethodsWithArgument withArgument = In.Type<MyTestClass>()
+						.Methods()
+						.WhichAreGeneric()
+						.WithArgument<ThatMethod.BaseClass>();
+
+					Filtered.Methods fromEnd = withArgument.AtIndexFromEnd(1);
+
+					await That(withArgument).HasCount(1)
+						.Because("AtIndexFromEnd must return a new filter instead of changing the one it was called on");
+					await That(withArgument.GetDescription())
+						.StartsWith("generic methods with argument of type ThatMethod.BaseClass in");
+					await That(fromEnd).IsEmpty();
 				}
 
 				[Test]
@@ -254,7 +319,7 @@ public sealed partial class MethodFilters
 					Filtered.Methods subject = In.Type<MyTestClass>()
 						.Methods()
 						.WhichAreGeneric()
-						.WithArgument<ThatMethod.BaseClass>("T2").AtIndex(index).FromEnd();
+						.WithArgument<ThatMethod.BaseClass>("T2").AtIndexFromEnd(index);
 
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())
@@ -399,7 +464,7 @@ public sealed partial class MethodFilters
 					Filtered.Methods subject = In.Type<MyTestClass>()
 						.Methods()
 						.WhichAreGeneric()
-						.WithArgument("T2").AtIndex(index).FromEnd();
+						.WithArgument("T2").AtIndexFromEnd(index);
 
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())
