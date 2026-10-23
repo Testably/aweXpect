@@ -252,6 +252,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
         "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
+      },
+      {
+        "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
+        "message": "refactor!: tidy up core option types for extension authors (#1936)"
       }
     ],
     "labels": [
@@ -296,7 +302,8 @@ window.BENCHMARK_DATA = {
       "ff85110d",
       "e0f2a99b",
       "fc3af334",
-      "7d8edd0d"
+      "7d8edd0d",
+      "41520e7b"
     ],
     "datasets": [
       {
@@ -344,7 +351,8 @@ window.BENCHMARK_DATA = {
           1153.6005626405988,
           1587.074523108346,
           2146.6287031173706,
-          2114.3928637186687
+          2114.3928637186687,
+          2186.235275522868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -384,6 +392,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -453,7 +462,8 @@ window.BENCHMARK_DATA = {
           7228.537023925781,
           10357.060993448893,
           16342.415704345703,
-          14957.040375845772
+          14957.040375845772,
+          15355.825709751674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -465,6 +475,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -772,6 +783,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
         "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
+      },
+      {
+        "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
+        "message": "refactor!: tidy up core option types for extension authors (#1936)"
       }
     ],
     "labels": [
@@ -816,7 +833,8 @@ window.BENCHMARK_DATA = {
       "ff85110d",
       "e0f2a99b",
       "fc3af334",
-      "7d8edd0d"
+      "7d8edd0d",
+      "41520e7b"
     ],
     "datasets": [
       {
@@ -864,7 +882,8 @@ window.BENCHMARK_DATA = {
           846.3012029647828,
           1093.7021845499673,
           1583.574257850647,
-          1567.7351565361023
+          1567.7351565361023,
+          1667.9719177246093
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -904,6 +923,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -973,7 +993,8 @@ window.BENCHMARK_DATA = {
           6572.16890335083,
           9574.104553222656,
           14681.243293253581,
-          13665.886261573205
+          13665.886261573205,
+          14049.678721110025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -985,6 +1006,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -1232,6 +1254,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
         "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
+      },
+      {
+        "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
+        "message": "refactor!: tidy up core option types for extension authors (#1936)"
       }
     ],
     "labels": [
@@ -1266,7 +1294,8 @@ window.BENCHMARK_DATA = {
       "ff85110d",
       "e0f2a99b",
       "fc3af334",
-      "7d8edd0d"
+      "7d8edd0d",
+      "41520e7b"
     ],
     "datasets": [
       {
@@ -1304,7 +1333,8 @@ window.BENCHMARK_DATA = {
           2675.1682684762136,
           3513.5043123881023,
           4920.164108821324,
-          4622.627007620676
+          4622.627007620676,
+          4905.266701918382
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1334,6 +1364,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1393,7 +1424,8 @@ window.BENCHMARK_DATA = {
           18646.04360961914,
           31211.16020856585,
           46931.094010416666,
-          44965.63232421875
+          44965.63232421875,
+          49180.38186848958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1436,7 +1468,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1642,6 +1675,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
         "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
+      },
+      {
+        "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
+        "message": "refactor!: tidy up core option types for extension authors (#1936)"
       }
     ],
     "labels": [
@@ -1676,7 +1715,8 @@ window.BENCHMARK_DATA = {
       "ff85110d",
       "e0f2a99b",
       "fc3af334",
-      "7d8edd0d"
+      "7d8edd0d",
+      "41520e7b"
     ],
     "datasets": [
       {
@@ -1714,7 +1754,8 @@ window.BENCHMARK_DATA = {
           4882.370091364934,
           7508.460547814002,
           9556.140469142369,
-          9424.706035069057
+          9424.706035069057,
+          9610.901234218052
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1744,6 +1785,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -1803,7 +1845,8 @@ window.BENCHMARK_DATA = {
           139457.57260742187,
           222777.1493094308,
           307460.18287760415,
-          284707.9052734375
+          284707.9052734375,
+          297619.3232828776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1841,6 +1884,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -2052,6 +2096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
         "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
+      },
+      {
+        "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
+        "message": "refactor!: tidy up core option types for extension authors (#1936)"
       }
     ],
     "labels": [
@@ -2086,7 +2136,8 @@ window.BENCHMARK_DATA = {
       "ff85110d",
       "e0f2a99b",
       "fc3af334",
-      "7d8edd0d"
+      "7d8edd0d",
+      "41520e7b"
     ],
     "datasets": [
       {
@@ -2124,7 +2175,8 @@ window.BENCHMARK_DATA = {
           1628.141726175944,
           2313.062545522054,
           2995.5186195373535,
-          2896.7260393778483
+          2896.7260393778483,
+          2910.7471103668213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2158,6 +2210,7 @@ window.BENCHMARK_DATA = {
           1520,
           1520,
           1520,
+          1488,
           1488,
           1488,
           1488,
@@ -2213,7 +2266,8 @@ window.BENCHMARK_DATA = {
           1027.2105717976888,
           1538.9667289733886,
           2056.5127802530924,
-          1853.5744817097982
+          1853.5744817097982,
+          2026.7957763671875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2225,6 +2279,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -2462,6 +2517,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:39:03 2026 \u002B0200",
         "message": "fix: allow a nullable inner exception type in WithInner like in HasInner (#1940)"
+      },
+      {
+        "sha": "41520e7b947145dd74bf8643cb168530ace5b6fb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 22 22:40:34 2026 \u002B0200",
+        "message": "refactor!: tidy up core option types for extension authors (#1936)"
       }
     ],
     "labels": [
@@ -2496,7 +2557,8 @@ window.BENCHMARK_DATA = {
       "ff85110d",
       "e0f2a99b",
       "fc3af334",
-      "7d8edd0d"
+      "7d8edd0d",
+      "41520e7b"
     ],
     "datasets": [
       {
@@ -2534,7 +2596,8 @@ window.BENCHMARK_DATA = {
           1118.559287071228,
           1629.7384761810304,
           2133.656341280256,
-          2023.157644712008
+          2023.157644712008,
+          2070.718031956599
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2564,6 +2627,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -2623,7 +2687,8 @@ window.BENCHMARK_DATA = {
           934.8839259465535,
           1464.2163693745931,
           1958.5688725880213,
-          1728.705407079061
+          1728.705407079061,
+          1890.0444913591657
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2635,6 +2700,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
