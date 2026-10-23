@@ -25,6 +25,21 @@ public static partial class FieldFilters
 		return new FieldsOfType(@this.Which(filter), filter);
 	}
 
+	/// <summary>
+	///     Filter for fields not of type <typeparamref name="TField" />.
+	/// </summary>
+	public static Filtered.Fields NotOfType<TField>(this Filtered.Fields @this)
+		=> NotOfType(@this, typeof(TField));
+
+	/// <summary>
+	///     Filter for fields not of type <paramref name="fieldType" />.
+	/// </summary>
+	public static Filtered.Fields NotOfType(this Filtered.Fields @this,
+		Type fieldType)
+		=> @this.Which(Filter.Suffix<FieldInfo>(
+			fieldInfo => !fieldInfo.FieldType.IsOrInheritsFrom(fieldType),
+			() => $"not of type {Formatter.Format(fieldType)} "));
+
 	public partial class FieldsOfType
 	{
 		/// <summary>

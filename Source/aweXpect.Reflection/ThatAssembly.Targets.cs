@@ -32,6 +32,23 @@ public static partial class ThatAssembly
 			options);
 	}
 
+	/// <summary>
+	///     Verifies that the <see cref="Assembly" /> does not target the <paramref name="unexpected" /> framework
+	///     (e.g. <c>net8.0</c>).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotTarget(
+		this IThat<Assembly?> subject, string unexpected)
+	{
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
+			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
+				static (s, it, grammars)
+				=> new TargetsConstraint(it, grammars, s.Unexpected, s.Options).Invert()),
+			subject,
+			options);
+	}
+
 	private sealed class TargetsConstraint(
 		string it,
 		ExpectationGrammars grammars,

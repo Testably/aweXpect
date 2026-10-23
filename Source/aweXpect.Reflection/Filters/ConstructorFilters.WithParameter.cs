@@ -172,6 +172,85 @@ public static partial class ConstructorFilters
 
 
 	/// <summary>
+	///     Filter for constructors without a parameter of type <typeparamref name="T" />.
+	/// </summary>
+	public static ConstructorsWithParameter<T> WithoutParameter<T>(this Filtered.Constructors @this)
+		=> WithoutParameterOfType<T>(@this, typeof(T));
+
+	/// <summary>
+	///     Filter for constructors without a parameter of type <typeparamref name="T" /> with the
+	///     <paramref name="unexpected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<T> WithoutParameter<T>(this Filtered.Constructors @this,
+		string unexpected)
+		=> WithoutNamedParameter<T>(@this, typeof(T), unexpected);
+
+	/// <summary>
+	///     Filter for constructors without a parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ConstructorsWithParameter<object?> WithoutParameter(this Filtered.Constructors @this,
+		Type parameterType)
+		=> WithoutParameterOfType<object?>(@this, parameterType);
+
+	/// <summary>
+	///     Filter for constructors without a parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="unexpected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<object?> WithoutParameter(this Filtered.Constructors @this,
+		Type parameterType, string unexpected)
+		=> WithoutNamedParameter<object?>(@this, parameterType, unexpected);
+
+	/// <summary>
+	///     Filter for constructors without a parameter with the <paramref name="unexpected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<object?> WithoutParameter(this Filtered.Constructors @this,
+		string unexpected)
+		=> WithoutNamedParameter<object?>(@this, null, unexpected);
+
+	private static ConstructorsWithParameter<T> WithoutParameterOfType<T>(Filtered.Constructors @this,
+		Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		return new ConstructorsWithParameter<T>(
+			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
+			collectionIndexOptions, parameterFilterOptions);
+	}
+
+	private static ConstructorsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Constructors @this,
+		Type? parameterType, string unexpected)
+	{
+		StringEqualityOptions stringEqualityOptions = new(nameof(unexpected));
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions;
+		if (parameterType is null)
+		{
+			parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected),
+				() => $"with name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+		}
+		else
+		{
+			parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+				() => $"of type {Formatter.Format(parameterType)}");
+			parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected),
+				() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
+		}
+
+		return new ConstructorsWithNamedParameter<T>(
+			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
+			collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+	}
+
+	private static IAsyncChangeableFilter<ConstructorInfo> WithoutParameterFilter(
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+		=> Filter.Suffix<ConstructorInfo>(
+			async constructorInfo
+				=> !await constructorInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
+			()
+				=> $"without parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+
+	/// <summary>
 	///     Additional filters on constructors with a parameter of a specific type.
 	/// </summary>
 	public class ConstructorsWithParameter<T>

@@ -153,7 +153,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             does not return void,
-					             but it did
+					             but it returned void
 					             """)
 					.AsWildcard();
 			}

@@ -80,6 +80,25 @@ internal static class Checks
 		new("the domain fails to not depend on the customer type",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(DomainTypes()).DoNotDependOn<Customer>(), "Order")),
+		new("a property found statically is not of another type",
+			() => ShouldPass(async ()
+				=> await That(typeof(Order).GetProperty(nameof(Order.Id))).IsNotOfType<string>())),
+		new("a method found statically does not return void",
+			() => ShouldPass(async ()
+				=> await That(typeof(Order).GetMethod(nameof(Order.Total))).DoesNotReturnVoid())),
+		new("a method with the parameter fails to not have it",
+			() => ShouldFail(async ()
+				=> await That(typeof(Repository).GetMethod(nameof(Repository.Load))).DoesNotHaveParameter<int>(),
+				"does not have parameter of type int")),
+		new("a type does not have another namespace",
+			() => ShouldPass(async () => await That(typeof(Order)).DoesNotHaveNamespace(InfrastructureNamespace))),
+		new("an assembly does not target another framework",
+			() => ShouldPassOrFailLoudly(async () => await That(typeof(Order).Assembly).DoesNotTarget("net48"))),
+		new("the methods of a type do not return void",
+			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).DoNotReturnVoid())),
+		new("the properties of a type not of a type are of the other type",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Type<Order>().Properties().NotOfType<int>()).AreOfType<Customer>())),
 	];
 
 	private static Filtered.Types DomainTypes()

@@ -99,16 +99,18 @@ await Expect.That(In.AssemblyContaining<MyClass>().Types().WhichArePublic())
 
 Shared by all types and members.
 
-|                                 | Filter                          | Expect (single)           | Expect (many)              |
-|---------------------------------|---------------------------------|---------------------------|----------------------------|
-| by name                         | `.WithName("x")`                | `.HasName("x")`           | `.HaveName("x")`           |
-| not by name                     | `.WithoutName("x")`             | `.DoesNotHaveName("x")`   | `.DoNotHaveName("x")`      |
-| by namespace *(types only)*     | `.WithNamespace("x")`           | `.HasNamespace("x")`      | `.HaveNamespace("x")`      |
-| within namespace *(types only)* | `.WhichAreWithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` |
+|                                 | Filter                          | Expect (single)              | Expect (many)              |
+|---------------------------------|---------------------------------|------------------------------|----------------------------|
+| by name                         | `.WithName("x")`                | `.HasName("x")`              | `.HaveName("x")`           |
+| not by name                     | `.WithoutName("x")`             | `.DoesNotHaveName("x")`      | `.DoNotHaveName("x")`      |
+| by namespace *(types only)*     | `.WithNamespace("x")`           | `.HasNamespace("x")`         | `.HaveNamespace("x")`      |
+| not by namespace *(types only)* | `.WithoutNamespace("x")`        | `.DoesNotHaveNamespace("x")` | `.DoNotHaveNamespace("x")` |
+| within namespace *(types only)* | `.WhichAreWithinNamespace("x")` | `.IsWithinNamespace("x")`    | `.AreWithinNamespace("x")` |
 
 `WithoutName`/`DoesNotHaveName`/`DoNotHaveName` are the negations of the name filter and expectations:
 `WithoutName` keeps the items whose name does *not* match, `DoesNotHaveName` verifies a single item is
 *not* named the given value, and `DoNotHaveName` verifies that *none* of the items in a collection are.
+`WithoutNamespace`/`DoesNotHaveNamespace`/`DoNotHaveNamespace` do the same for the namespace of types.
 They accept the same [string matching options](#string-matching-options) as their positive
 counterparts:
 
@@ -133,7 +135,8 @@ The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants 
 its sub-namespaces (so `Foo.Bar` includes `Foo.Bar.Baz` but not `Foo.BarBaz`). They compare the namespace
 exactly and case-sensitively and do not support any of the string matching options. Each has a negated
 form (`WhichAreNotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace`) that matches types
-outside the namespace.
+outside the namespace. Unlike `DoesNotHaveNamespace`, which compares the whole namespace as a string with the
+string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces.
 
 ## Types
 
@@ -327,8 +330,12 @@ In addition to [access modifiers](#access-modifiers),
 | returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                                 | `.Return<T>()`               |
 | returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                                          | `.ReturnExactly<T>()`        |
 | returns void                         | `.WhichReturnVoid()`                                | `.ReturnsVoid()`                                                | `.ReturnVoid()`              |
+| does not return type (or a subtype)  | `.WhichDoNotReturn<T>()`                            | `.DoesNotReturn<T>()`                                           | `.DoNotReturn<T>()`          |
+| does not return exactly              | `.WhichDoNotReturnExactly<T>()`                     | `.DoesNotReturnExactly<T>()`                                    | `.DoNotReturnExactly<T>()`   |
+| does not return void                 | `.WhichDoNotReturnVoid()`                           | `.DoesNotReturnVoid()`                                          | `.DoNotReturnVoid()`         |
 | no parameters                        | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`        |
 | parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`        |
+| no parameter of type (or subtype)    | `.WithoutParameter<T>()`                            | `.DoesNotHaveParameter<T>()`                                    | `.DoNotHaveParameter<T>()`   |
 | parameter of exact type              | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()` |
 | parameter count                      | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`     |
 | `ref` parameter                      | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`        |
@@ -344,9 +351,34 @@ expectation is `OrReturns…`, the filter and collection expectation are `OrRetu
 used as a generic type argument, use `WhichReturnVoid()` / `ReturnsVoid()` / `ReturnVoid()` to match
 void-returning methods.
 
+The negations `WhichDoNotReturn…` / `DoesNotReturn…` / `DoNotReturn…` match methods that do not return the
+type; on a collection, `DoNotReturn<T>()` verifies that *none* of the methods return it. They have no `Or…`
+companion: chain `.WhichDoNotReturn<T1>().WhichDoNotReturn<T2>()` (or combine expectations with `.And`) to
+exclude several return types.
+
+```csharp
+// Async methods never return void
+await Expect.That(In.AssemblyContaining<PlaylistService>().Methods().WhichAreAsync())
+    .DoNotReturnVoid();
+```
+
 The `ref` / `out` / `in` / `params` / optional parameter filters and expectations mirror `WithParameter`:
 each also has `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads to constrain the parameter's type
 and name (e.g. `.WithRefParameter<int>("count")`, `.HasOutParameterExactly<string>()`).
+
+`WithoutParameter` / `DoesNotHaveParameter` / `DoNotHaveParameter` are the negations of `WithParameter` /
+`HasParameter` / `HaveParameter`, with the `<T>()`, `(Type)`, `<T>("name")`, `(Type, "name")` and `("name")`
+overloads and the same options (`AtIndex(…)`, `FromEnd()`, `WithDefaultValue(…)`, the string matching options for
+the name and, on the filter, the modifiers like `WithRefModifier()`). They match when *no* parameter satisfies all
+of them, and `DoNotHaveParameter` verifies that for every item of a collection. The `…Exactly` and the `ref` /
+`out` / `in` / `params` / optional variants have no negation; on filters use e.g.
+`.WithoutParameter<int>().WithRefModifier()`.
+
+```csharp
+// Public methods take no bool flag
+await Expect.That(In.AssemblyContaining<PlaylistService>().Public.Methods())
+    .DoNotHaveParameter<bool>();
+```
 
 `WhichAreExtensionMethods()`, `IsAnExtensionMethod()` and `AreExtensionMethods()` match both classic `this`-parameter
 extension methods and extension methods declared with the C# extension block syntax (`extension(...) { … }`), including
@@ -425,6 +457,8 @@ In addition to [access modifiers](#access-modifiers),
 |----------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
 | of type (or a subtype)                 | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
 | of exact type                          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
+| not of type (or a subtype)             | `.NotOfType<T>()`                           | `.IsNotOfType<T>()`             | `.AreNotOfType<T>()`              |
+| not of exact type                      | `.NotOfExactType<T>()`                      | `.IsNotOfExactType<T>()`        | `.AreNotOfExactType<T>()`         |
 | static *(properties & fields)*         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 | nullable *(properties & fields)*       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  |
 | abstract / sealed *(properties only)*  | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
@@ -449,6 +483,11 @@ The `static`, `nullable`, `abstract`, `sealed`, `virtual`, `required`, `indexer`
 `extension property`, `read-only` *(fields)* and `constant` rows have a negated form: `WhichAreNot…` on filters
 and `IsNot…` / `AreNot…` on expectations (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`);
 `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
+
+The `readable`, `writable`, `read-only` and `write-only` rows of properties have no negated form, as each
+negation is another row: for *not read-only* use `IsWritable`, for *not writable* use `IsReadOnly`, for
+*not readable* use `IsWriteOnly` and for *not write-only* use `IsReadable` (the same holds for the filters and
+the plural forms). A property that is *not read-write* is either read-only or write-only.
 :::
 
 ### Nullability
@@ -474,7 +513,10 @@ declared with the C# extension block syntax (`extension(...) { … }`), both ins
 live on the compiler-generated grouping types backing the extension block, so they are surfaced from there, while the
 public accessor methods they emit are excluded from the reflected methods.
 
-Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types.
+Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types. The negations `NotOfType` / `IsNotOfType` /
+`AreNotOfType` (and the `…ExactType` forms) have no `Or…` companion: chain `.NotOfType<T1>().NotOfType<T2>()` (or
+combine expectations with `.And`) to exclude several types. On a collection, `AreNotOfType<T>()` verifies that
+*none* of the items is of the type.
 
 ```csharp
 In.AllLoadedAssemblies().Public.Properties()
@@ -497,6 +539,8 @@ In addition to [access modifiers](#access-modifiers),
 |--------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
 | handler of type (or a subtype) | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
 | handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
+| handler not of type            | `.NotOfType<T>()`                           | `.IsNotOfType<T>()`             | `.AreNotOfType<T>()`              |
+| handler not of exact type      | `.NotOfExactType<T>()`                      | `.IsNotOfExactType<T>()`        | `.AreNotOfExactType<T>()`         |
 | abstract / sealed              | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
 | static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 | virtual                        | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
@@ -505,7 +549,8 @@ In addition to [access modifiers](#access-modifiers),
 
 The `OfType` / `IsOfType` / `AreOfType` filters and expectations match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
-Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types.
+Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types, and chain
+`.NotOfType<T1>().NotOfType<T2>()` to exclude several.
 
 An event counts as *nullable* when its handler type is annotated as nullable
 (e.g. `event EventHandler? Changed;`), following the same [nullability](#nullability) rules as
@@ -538,6 +583,7 @@ In addition to [access modifiers](#access-modifiers) and
 | static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                                   | `.AreStatic()`               |
 | no parameters                  | `.WithoutParameters()`                              | `.HasNoParameters()`                                            | `.HaveNoParameters()`        |
 | parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`        |
+| no parameter of type           | `.WithoutParameter<T>()`                            | `.DoesNotHaveParameter<T>()`                                    | `.DoNotHaveParameter<T>()`   |
 | parameter of exact type        | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()` |
 | parameter count                | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`     |
 | `ref` parameter                | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`        |
@@ -566,6 +612,7 @@ and verify them directly:
 | by name                     | `.WithName("x")`             | `.HasName("x")`              | `.HaveName("x")`           |
 | not by name                 | `.WithoutName("x")`          | `.DoesNotHaveName("x")`      | `.DoNotHaveName("x")`      |
 | by target framework         | `.WhichTarget("net8.0")`     | `.Targets("net8.0")`         | `.Target("net8.0")`        |
+| not by target framework     | `.WhichDoNotTarget("net48")` | `.DoesNotTarget("net48")`    | `.DoNotTarget("net48")`    |
 | by version                  | `.WithVersion(…)`            | `.HasVersion(…)`             | `.HaveVersion(…)`          |
 | strong named                | `.WhichAreStrongNamed()`     | `.IsStrongNamed()`           | `.AreStrongNamed()`        |
 | not strong named            | `.WhichAreNotStrongNamed()`  | `.IsNotStrongNamed()`        | `.AreNotStrongNamed()`     |
@@ -590,7 +637,9 @@ await Expect.That(subject).Targets("net8.0");
 
 The target framework is matched against the short moniker form (e.g. `net8.0`, `netstandard2.0`, `net48`),
 derived from the assembly's `[TargetFramework]` attribute. Assemblies without that attribute are treated as
-having no target framework and never match.
+having no target framework and never match. The negations `WhichDoNotTarget` / `DoesNotTarget` / `DoNotTarget`
+accept the same [string matching options](#string-matching-options), and `DoNotTarget` verifies that *none* of
+the assemblies targets the framework.
 
 An assembly is considered strong named when its name carries a non-empty public key token.
 

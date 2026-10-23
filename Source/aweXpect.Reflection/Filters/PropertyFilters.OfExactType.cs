@@ -25,6 +25,21 @@ public static partial class PropertyFilters
 		return new PropertiesOfType(@this.Which(filter), filter);
 	}
 
+	/// <summary>
+	///     Filter for properties not of exact type <typeparamref name="TProperty" />.
+	/// </summary>
+	public static Filtered.Properties NotOfExactType<TProperty>(this Filtered.Properties @this)
+		=> NotOfExactType(@this, typeof(TProperty));
+
+	/// <summary>
+	///     Filter for properties not of exact type <paramref name="propertyType" />.
+	/// </summary>
+	public static Filtered.Properties NotOfExactType(this Filtered.Properties @this,
+		Type propertyType)
+		=> @this.Which(Filter.Suffix<PropertyInfo>(
+			propertyInfo => !propertyInfo.PropertyType.IsOrInheritsFrom(propertyType, true),
+			() => $"not of exact type {Formatter.Format(propertyType)} "));
+
 	public partial class PropertiesOfType
 	{
 		/// <summary>

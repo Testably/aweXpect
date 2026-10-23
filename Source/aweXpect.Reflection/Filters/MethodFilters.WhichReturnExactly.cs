@@ -25,6 +25,21 @@ public static partial class MethodFilters
 		return new MethodsWhichReturn(@this.Which(filter), filter);
 	}
 
+	/// <summary>
+	///     Filter for methods which do not return exact type <typeparamref name="TReturn" />.
+	/// </summary>
+	public static Filtered.Methods WhichDoNotReturnExactly<TReturn>(this Filtered.Methods @this)
+		=> WhichDoNotReturnExactly(@this, typeof(TReturn));
+
+	/// <summary>
+	///     Filter for methods which do not return exact type <paramref name="returnType" />.
+	/// </summary>
+	public static Filtered.Methods WhichDoNotReturnExactly(this Filtered.Methods @this,
+		Type returnType)
+		=> @this.Which(Filter.Suffix<MethodInfo>(
+			methodInfo => !methodInfo.ReturnType.IsOrInheritsFrom(returnType, true),
+			() => $"which do not return exactly {Formatter.Format(returnType)} "));
+
 	public partial class MethodsWhichReturn
 	{
 		/// <summary>

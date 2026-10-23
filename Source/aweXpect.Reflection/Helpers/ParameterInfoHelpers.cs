@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using aweXpect.Options;
+using aweXpect.Reflection.Options;
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -55,4 +58,24 @@ internal static class ParameterInfoHelpers
 		=> parameter.ParameterType.IsByRef
 			? parameter.ParameterType.GetElementType()!
 			: parameter.ParameterType;
+
+	/// <summary>
+	///     Checks if the <paramref name="method" /> has a parameter at an index allowed by the
+	///     <paramref name="collectionIndexOptions" /> which matches the <paramref name="parameterFilterOptions" />.
+	/// </summary>
+	public static ValueTask<bool> HasMatchingParameter(this MethodBase method,
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+	{
+		ParameterInfo[] parameters = method.GetParameters();
+		return parameters.AnyAsync(async (p, i) =>
+		{
+			bool? isIndexInRange = collectionIndexOptions.Match switch
+			{
+				CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
+				CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
+				_ => true,
+			};
+			return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+		});
+	}
 }

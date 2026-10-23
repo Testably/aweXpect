@@ -18,4 +18,21 @@ public static partial class TypeFilters
 				() => $"with namespace {options.GetExpectation(expected, ExpectationGrammars.None)} ")),
 			options);
 	}
+
+	/// <summary>
+	///     Filter for types without the <paramref name="unexpected" /> namespace.
+	/// </summary>
+	/// <remarks>
+	///     Unlike <see cref="WhichAreNotWithinNamespace(Filtered.Types, string)" />, this compares the whole namespace as a
+	///     string with the string options (e.g. <c>AsPrefix()</c> or <c>IgnoringCase()</c>), instead of excluding a
+	///     namespace and its sub-namespaces.
+	/// </remarks>
+	public static Filtered.Types.StringEqualityResult WithoutNamespace(this Filtered.Types @this, string unexpected)
+	{
+		StringEqualityOptions options = new(nameof(unexpected));
+		return new Filtered.Types.StringEqualityResult(@this.Which(Filter.Suffix<Type>(
+				async type => !await options.AreConsideredEqual(type.Namespace, unexpected),
+				() => $"without namespace {options.GetExpectation(unexpected, ExpectationGrammars.None)} ")),
+			options);
+	}
 }

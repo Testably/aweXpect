@@ -76,6 +76,60 @@ public static partial class ThatMethods
 #endif
 
 	/// <summary>
+	///     Verifies that none of the methods in the filtered collection return type <typeparamref name="TReturn" /> (or a
+	///     subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotReturn<TReturn>(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
+		=> DoNotReturn(subject, typeof(TReturn));
+
+	/// <summary>
+	///     Verifies that none of the methods in the filtered collection return type <paramref name="returnType" /> (or a
+	///     subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotReturn(
+		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(returnType, false);
+		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IEnumerable<MethodInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
+			subject);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that none of the methods in the filtered collection return type <typeparamref name="TReturn" /> (or a
+	///     subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotReturn<TReturn>(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
+		=> DoNotReturn(subject, typeof(TReturn));
+
+	/// <summary>
+	///     Verifies that none of the methods in the filtered collection return type <paramref name="returnType" /> (or a
+	///     subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotReturn(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(returnType, false);
+		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<TypeFilterOptions, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
+			subject);
+	}
+#endif
+
+	/// <summary>
 	///     Result that allows chaining additional return types for method collections.
 	/// </summary>
 	public sealed partial class MethodsReturnResult<TValue, TResult>
@@ -150,5 +204,50 @@ public static partial class ThatMethods
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only contained matching methods");
+	}
+
+	private sealed class DoNotReturnConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		TypeFilterOptions typeFilterOptions)
+		: CollectionConstraintResult<MethodInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<MethodInfo?>>
+#if NET8_0_OR_GREATER
+			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
+#endif
+	{
+#if NET8_0_OR_GREATER
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				method => method is not null && !typeFilterOptions.Matches(method.ReturnType), cancellationToken);
+#endif
+
+		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, method => method is not null && !typeFilterOptions.Matches(method.ReturnType));
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("all do not ");
+			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.Plural);
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" contained methods which ");
+			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.Plural);
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("also contain a method which ");
+			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.None);
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" only contained methods which do not ");
+			typeFilterOptions.AppendDescription(stringBuilder, ExpectationGrammars.Plural);
+		}
 	}
 }

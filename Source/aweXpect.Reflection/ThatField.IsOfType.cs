@@ -37,6 +37,30 @@ public static partial class ThatField
 	}
 
 	/// <summary>
+	///     Verifies that the <see cref="FieldInfo" /> is not of type <typeparamref name="TField" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotOfType<TField>(
+		this IThat<FieldInfo?> subject)
+		=> IsNotOfType(subject, typeof(TField));
+
+	/// <summary>
+	///     Verifies that the <see cref="FieldInfo" /> is not of type <paramref name="fieldType" /> (or a subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotOfType(
+		this IThat<FieldInfo?> subject, Type fieldType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(fieldType, false);
+		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
+			subject);
+	}
+
+	/// <summary>
 	///     Result that allows chaining additional types for a single field.
 	/// </summary>
 	public sealed partial class FieldOfTypeResult<TValue, TResult>
@@ -103,6 +127,6 @@ public static partial class ThatField
 			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it did");
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

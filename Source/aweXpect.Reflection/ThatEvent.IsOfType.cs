@@ -37,6 +37,32 @@ public static partial class ThatEvent
 	}
 
 	/// <summary>
+	///     Verifies that the <see cref="EventInfo" /> does not have a handler of type <typeparamref name="THandler" /> (or a
+	///     subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotOfType<THandler>(
+		this IThat<EventInfo?> subject)
+		=> IsNotOfType(subject, typeof(THandler));
+
+	/// <summary>
+	///     Verifies that the <see cref="EventInfo" /> does not have a handler of type <paramref name="handlerType" /> (or a
+	///     subtype).
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotOfType(
+		this IThat<EventInfo?> subject, Type handlerType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(handlerType, false);
+		return new AndOrResult<EventInfo, IThat<EventInfo?>>(
+			subject.Get().ExpectationBuilder.AddConstraint(typeFilterOptions,
+				static (typeFilterOptions, it, grammars)
+				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions).Invert()),
+			subject);
+	}
+
+	/// <summary>
 	///     Result that allows chaining additional types for a single event.
 	/// </summary>
 	public sealed partial class EventOfTypeResult<TValue, TResult>
@@ -103,6 +129,6 @@ public static partial class ThatEvent
 			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it did");
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

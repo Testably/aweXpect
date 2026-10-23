@@ -25,6 +25,21 @@ public static partial class EventFilters
 		return new EventsOfType(@this.Which(filter), filter);
 	}
 
+	/// <summary>
+	///     Filter for events without a handler of exact type <typeparamref name="THandler" />.
+	/// </summary>
+	public static Filtered.Events NotOfExactType<THandler>(this Filtered.Events @this)
+		=> NotOfExactType(@this, typeof(THandler));
+
+	/// <summary>
+	///     Filter for events without a handler of exact type <paramref name="handlerType" />.
+	/// </summary>
+	public static Filtered.Events NotOfExactType(this Filtered.Events @this,
+		Type handlerType)
+		=> @this.Which(Filter.Suffix<EventInfo>(
+			eventInfo => !eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType, true),
+			() => $"not of exact type {Formatter.Format(handlerType)} "));
+
 	public partial class EventsOfType
 	{
 		/// <summary>
