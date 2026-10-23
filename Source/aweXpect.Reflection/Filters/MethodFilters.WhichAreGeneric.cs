@@ -35,10 +35,7 @@ public static partial class MethodFilters
 	{
 		internal GenericMethods(Filtered.Methods inner) : base(inner)
 		{
-			FilteredMethods = inner;
 		}
-
-		internal Filtered.Methods FilteredMethods { get; }
 
 		/// <summary>
 		///     …with the <paramref name="expected" /> number of generic arguments.
@@ -57,21 +54,9 @@ public static partial class MethodFilters
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				(p, _) => argumentType == p.BaseType,
 				() => $"of type {Formatter.Format(typeof(T))}");
-			CollectionIndexOptions collectionIndexOptions = new();
-			IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-				method =>
-				{
-					Type[] arguments = method.GetGenericArguments();
-					return arguments.AnyAsync(async (p, i) =>
-					{
-						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
-						       await genericArgumentFilterOptions.Matches(p);
-					});
-				},
-				()
-					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Filtered.Methods filtered = Which(filter);
-			return new GenericMethodsWithArgument(new GenericMethods(filtered), collectionIndexOptions);
+			return new GenericMethodsWithArgument(this,
+				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
+				new CollectionIndexOptions());
 		}
 
 		/// <summary>
@@ -87,21 +72,9 @@ public static partial class MethodFilters
 			genericArgumentFilterOptions.AddPredicate(
 				(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-			CollectionIndexOptions collectionIndexOptions = new();
-			IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-				method =>
-				{
-					Type[] arguments = method.GetGenericArguments();
-					return arguments.AnyAsync(async (p, i) =>
-					{
-						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
-						       await genericArgumentFilterOptions.Matches(p);
-					});
-				},
-				()
-					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Filtered.Methods filtered = Which(filter);
-			return new GenericMethodsWithNamedArgument(new GenericMethods(filtered), collectionIndexOptions, stringEqualityOptions);
+			return new GenericMethodsWithNamedArgument(this,
+				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
+				new CollectionIndexOptions(), stringEqualityOptions);
 		}
 
 		/// <summary>
@@ -113,8 +86,14 @@ public static partial class MethodFilters
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-			CollectionIndexOptions collectionIndexOptions = new();
-			IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+			return new GenericMethodsWithNamedArgument(this,
+				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
+				new CollectionIndexOptions(), stringEqualityOptions);
+		}
+
+		private static IFilter<MethodInfo> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
+			CollectionIndexOptions collectionIndexOptions)
+			=> Filter.Suffix<MethodInfo>(
 				method =>
 				{
 					Type[] arguments = method.GetGenericArguments();
@@ -126,9 +105,6 @@ public static partial class MethodFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Filtered.Methods filtered = Which(filter);
-			return new GenericMethodsWithNamedArgument(new GenericMethods(filtered), collectionIndexOptions, stringEqualityOptions);
-		}
 	}
 
 	/// <summary>
@@ -139,12 +115,17 @@ public static partial class MethodFilters
 			IOptionsProvider<CollectionIndexOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, IFilter<MethodInfo>> _createFilter;
+		private readonly Filtered.Methods _source;
 
 		internal GenericMethodsWithArgument(
-			GenericMethods inner,
+			Filtered.Methods source,
+			Func<CollectionIndexOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions)
-			: base(inner.FilteredMethods)
+			: base(source.Which(createFilter(collectionIndexOptions)))
 		{
+			_source = source;
+			_createFilter = createFilter;
 			_collectionIndexOptions = collectionIndexOptions;
 		}
 
@@ -156,8 +137,9 @@ public static partial class MethodFilters
 		/// </summary>
 		public GenericMethodsWithArgumentAtIndex AtIndex(int index)
 		{
-			_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new GenericMethodsWithArgumentAtIndex(this, _collectionIndexOptions);
+			CollectionIndexOptions collectionIndexOptions = new();
+			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+			return new GenericMethodsWithArgumentAtIndex(_source, _createFilter, collectionIndexOptions);
 		}
 	}
 
@@ -172,10 +154,11 @@ public static partial class MethodFilters
 		private readonly StringEqualityOptions _options;
 
 		internal GenericMethodsWithNamedArgument(
-			GenericMethods inner,
+			Filtered.Methods source,
+			Func<CollectionIndexOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			StringEqualityOptions options)
-			: base(inner, collectionIndexOptions)
+			: base(source, createFilter, collectionIndexOptions)
 		{
 			_options = options;
 		}
@@ -192,12 +175,17 @@ public static partial class MethodFilters
 			IOptionsProvider<CollectionIndexOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, IFilter<MethodInfo>> _createFilter;
+		private readonly Filtered.Methods _source;
 
 		internal GenericMethodsWithArgumentAtIndex(
-			GenericMethods inner,
+			Filtered.Methods source,
+			Func<CollectionIndexOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions)
-			: base(inner.FilteredMethods)
+			: base(source.Which(createFilter(collectionIndexOptions)))
 		{
+			_source = source;
+			_createFilter = createFilter;
 			_collectionIndexOptions = collectionIndexOptions;
 		}
 
@@ -211,7 +199,9 @@ public static partial class MethodFilters
 		{
 			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 			{
-				_collectionIndexOptions.SetMatch(match.FromEnd());
+				CollectionIndexOptions collectionIndexOptions = new();
+				collectionIndexOptions.SetMatch(match.FromEnd());
+				return new GenericMethodsWithArgumentAtIndex(_source, _createFilter, collectionIndexOptions);
 			}
 
 			return this;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
@@ -20,19 +19,7 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new MethodsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -48,19 +35,7 @@ public static partial class MethodFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithNamedParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 	/// <summary>
@@ -71,19 +46,7 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new MethodsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -99,18 +62,6 @@ public static partial class MethodFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithNamedParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 }

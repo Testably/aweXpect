@@ -13,10 +13,13 @@ public static partial class FieldFilters
 	/// </summary>
 	public partial class FieldsOfType : Filtered.Fields
 	{
-		private readonly IChangeableFilter<FieldInfo> _filter;
+		private readonly Filter.GenericFilter<FieldInfo> _filter;
+		private readonly Filtered.Fields _source;
 
-		internal FieldsOfType(Filtered.Fields inner, IChangeableFilter<FieldInfo> filter) : base(inner)
+		internal FieldsOfType(Filtered.Fields source, Filter.GenericFilter<FieldInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 	}

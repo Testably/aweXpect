@@ -22,19 +22,7 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new MethodsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -50,19 +38,7 @@ public static partial class MethodFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithNamedParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 	/// <summary>
@@ -73,19 +49,7 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new MethodsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -101,19 +65,7 @@ public static partial class MethodFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithNamedParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 	/// <summary>
@@ -126,19 +78,7 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
-			methodInfo =>
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new MethodsWithNamedParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 
@@ -181,9 +121,8 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
-		return new MethodsWithParameter<T>(
-			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
-			collectionIndexOptions, parameterFilterOptions);
+		return new MethodsWithParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
+			parameterFilterOptions);
 	}
 
 	private static MethodsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Methods @this, Type? parameterType,
@@ -205,27 +144,43 @@ public static partial class MethodFilters
 				() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
 		}
 
-		return new MethodsWithNamedParameter<T>(
-			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
-			collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
+			parameterFilterOptions, stringEqualityOptions);
 	}
 
 	private static MethodsWithParameter<object?> WithParameterOfKind(Filtered.Methods @this,
 		Func<ParameterInfo, bool> predicate, string kind)
-	{
-		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(predicate);
-		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		=> new(@this,
+			(collectionIndexOptions, parameterFilterOptions)
+				=> WithParameterOfKindFilter(kind, collectionIndexOptions, parameterFilterOptions),
+			new CollectionIndexOptions(), new ParameterFilterOptions(predicate));
+
+	private static IFilter<MethodInfo> WithParameterFilter(
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+		=> Filter.Suffix<MethodInfo>(
+			methodInfo =>
+			{
+				ParameterInfo[] parameters = methodInfo.GetParameters();
+				return parameters.AnyAsync(async (p, i) =>
+				{
+					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
+					       await parameterFilterOptions.Matches(p);
+				});
+			},
+			()
+				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+
+	private static IFilter<MethodInfo> WithParameterOfKindFilter(string kind,
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+		=> Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
 			() =>
 			{
 				string description = parameterFilterOptions.GetDescription();
 				return $"with {kind} parameter{(description.Length == 0 ? "" : " ")}{description}{collectionIndexOptions.Match.GetDescription()} ";
 			});
-		return new MethodsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
-	}
 
-	private static IAsyncChangeableFilter<MethodInfo> WithoutParameterFilter(
+	private static IFilter<MethodInfo> WithoutParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
 		=> Filter.Suffix<MethodInfo>(
 			async methodInfo => !await methodInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
@@ -241,14 +196,19 @@ public static partial class MethodFilters
 			IOptionsProvider<ParameterFilterOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
 		private readonly ParameterFilterOptions _parameterFilterOptions;
+		private readonly Filtered.Methods _source;
 
 		internal MethodsWithParameter(
-			Filtered.Methods inner,
+			Filtered.Methods source,
+			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			ParameterFilterOptions parameterFiltersOptions)
-			: base(inner)
+			: base(source.Which(createFilter(collectionIndexOptions, parameterFiltersOptions)))
 		{
+			_source = source;
+			_createFilter = createFilter;
 			_collectionIndexOptions = collectionIndexOptions;
 			_parameterFilterOptions = parameterFiltersOptions;
 		}
@@ -264,83 +224,61 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameterAtIndex<T> AtIndex(int index)
 		{
-			_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new MethodsWithParameterAtIndex<T>(this, _collectionIndexOptions);
+			CollectionIndexOptions collectionIndexOptions = new();
+			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+			return new MethodsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
+				_parameterFilterOptions);
 		}
 
 		/// <summary>
 		///     …without a default value.
 		/// </summary>
 		public MethodsWithParameter<T> WithoutDefaultValue()
-		{
-			_parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
-			return this;
-		}
+			=> WithPredicate(p => !p.HasDefaultValue, () => "without a default value");
 
 		/// <summary>
 		///     …with a default value.
 		/// </summary>
 		public MethodsWithParameter<T> WithDefaultValue()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
-			return this;
-		}
+			=> WithPredicate(p => p.HasDefaultValue, () => "with a default value");
 
 		/// <summary>
 		///     …with the <paramref name="expected" /> default value.
 		/// </summary>
 		public MethodsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
 			where TValue : T
-		{
-			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
+			=> WithPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 				() => $"with default value {Formatter.Format(expected)}");
-			return this;
-		}
 
 		/// <summary>
 		///     …with the <see langword="ref" /> modifier.
 		/// </summary>
 		public MethodsWithParameter<T> WithRefModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsRefParameter(), () => "with ref modifier");
 
 		/// <summary>
 		///     …with the <see langword="out" /> modifier.
 		/// </summary>
 		public MethodsWithParameter<T> WithOutModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsOutParameter(), () => "with out modifier");
 
 		/// <summary>
 		///     …with the <see langword="in" /> modifier.
 		/// </summary>
 		public MethodsWithParameter<T> WithInModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsInParameter(), () => "with in modifier");
 
 		/// <summary>
 		///     …with the optional modifier.
 		/// </summary>
 		public MethodsWithParameter<T> WithOptionalModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
 
 		/// <summary>
 		///     …with the <see langword="params" /> modifier.
 		/// </summary>
 		public MethodsWithParameter<T> WithParamsModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsParamsParameter(), () => "with params modifier");
 
 		/// <summary>
 		///     …matching the <paramref name="predicate" />.
@@ -348,10 +286,12 @@ public static partial class MethodFilters
 		public MethodsWithParameter<T> Matching(Func<ParameterInfo, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
-		{
-			_parameterFilterOptions.AddMatching(predicate, doNotPopulateThisValue);
-			return this;
-		}
+			=> new(_source, _createFilter, _collectionIndexOptions,
+				_parameterFilterOptions.WithMatching(predicate, doNotPopulateThisValue));
+
+		private MethodsWithParameter<T> WithPredicate(Func<ParameterInfo, bool> predicate, Func<string> description)
+			=> new(_source, _createFilter, _collectionIndexOptions,
+				_parameterFilterOptions.WithPredicate(predicate, description));
 	}
 
 	/// <summary>
@@ -362,13 +302,21 @@ public static partial class MethodFilters
 			IOptionsProvider<CollectionIndexOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> _createFilter;
+		private readonly ParameterFilterOptions _parameterFilterOptions;
+		private readonly Filtered.Methods _source;
 
 		internal MethodsWithParameterAtIndex(
-			Filtered.Methods inner,
-			CollectionIndexOptions collectionIndexOptions)
-			: base(inner)
+			Filtered.Methods source,
+			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
+			CollectionIndexOptions collectionIndexOptions,
+			ParameterFilterOptions parameterFilterOptions)
+			: base(source.Which(createFilter(collectionIndexOptions, parameterFilterOptions)))
 		{
+			_source = source;
+			_createFilter = createFilter;
 			_collectionIndexOptions = collectionIndexOptions;
+			_parameterFilterOptions = parameterFilterOptions;
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
@@ -381,7 +329,10 @@ public static partial class MethodFilters
 		{
 			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 			{
-				_collectionIndexOptions.SetMatch(match.FromEnd());
+				CollectionIndexOptions collectionIndexOptions = new();
+				collectionIndexOptions.SetMatch(match.FromEnd());
+				return new MethodsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
+					_parameterFilterOptions);
 			}
 
 			return this;
@@ -399,11 +350,12 @@ public static partial class MethodFilters
 		private readonly StringEqualityOptions _options;
 
 		internal MethodsWithNamedParameter(
-			Filtered.Methods inner,
+			Filtered.Methods source,
+			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<MethodInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			ParameterFilterOptions parameterFiltersOptions,
 			StringEqualityOptions options)
-			: base(inner, collectionIndexOptions, parameterFiltersOptions)
+			: base(source, createFilter, collectionIndexOptions, parameterFiltersOptions)
 		{
 			_options = options;
 		}

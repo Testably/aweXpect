@@ -22,19 +22,7 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
-			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new ConstructorsWithParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -50,19 +38,7 @@ public static partial class ConstructorFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
-			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithNamedParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new ConstructorsWithNamedParameter<T>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 	/// <summary>
@@ -73,19 +49,7 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
-			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new ConstructorsWithParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
@@ -101,19 +65,7 @@ public static partial class ConstructorFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
-			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithNamedParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 	/// <summary>
@@ -126,19 +78,7 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
-			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.AnyAsync(async (p, i) =>
-				{
-					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
-					       await parameterFilterOptions.Matches(p);
-				});
-			},
-			()
-				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithNamedParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new ConstructorsWithNamedParameter<object?>(@this, WithParameterFilter, collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 
 
@@ -184,9 +124,8 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
-		return new ConstructorsWithParameter<T>(
-			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
-			collectionIndexOptions, parameterFilterOptions);
+		return new ConstructorsWithParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
+			parameterFilterOptions);
 	}
 
 	private static ConstructorsWithNamedParameter<T> WithoutNamedParameter<T>(Filtered.Constructors @this,
@@ -208,27 +147,43 @@ public static partial class ConstructorFilters
 				() => $"name {stringEqualityOptions.GetExpectation(unexpected, ExpectationGrammars.None)}");
 		}
 
-		return new ConstructorsWithNamedParameter<T>(
-			@this.Which(WithoutParameterFilter(collectionIndexOptions, parameterFilterOptions)),
-			collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new ConstructorsWithNamedParameter<T>(@this, WithoutParameterFilter, collectionIndexOptions,
+			parameterFilterOptions, stringEqualityOptions);
 	}
 
 	private static ConstructorsWithParameter<object?> WithParameterOfKind(Filtered.Constructors @this,
 		Func<ParameterInfo, bool> predicate, string kind)
-	{
-		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(predicate);
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		=> new(@this,
+			(collectionIndexOptions, parameterFilterOptions)
+				=> WithParameterOfKindFilter(kind, collectionIndexOptions, parameterFilterOptions),
+			new CollectionIndexOptions(), new ParameterFilterOptions(predicate));
+
+	private static IFilter<ConstructorInfo> WithParameterFilter(
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+		=> Filter.Suffix<ConstructorInfo>(
+			constructorInfo =>
+			{
+				ParameterInfo[] parameters = constructorInfo.GetParameters();
+				return parameters.AnyAsync(async (p, i) =>
+				{
+					return collectionIndexOptions.MatchesIndex(i, parameters.Length) == true &&
+					       await parameterFilterOptions.Matches(p);
+				});
+			},
+			()
+				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+
+	private static IFilter<ConstructorInfo> WithParameterOfKindFilter(string kind,
+		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
+		=> Filter.Suffix<ConstructorInfo>(
 			constructorInfo => constructorInfo.HasMatchingParameter(collectionIndexOptions, parameterFilterOptions),
 			() =>
 			{
 				string description = parameterFilterOptions.GetDescription();
 				return $"with {kind} parameter{(description.Length == 0 ? "" : " ")}{description}{collectionIndexOptions.Match.GetDescription()} ";
 			});
-		return new ConstructorsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
-	}
 
-	private static IAsyncChangeableFilter<ConstructorInfo> WithoutParameterFilter(
+	private static IFilter<ConstructorInfo> WithoutParameterFilter(
 		CollectionIndexOptions collectionIndexOptions, ParameterFilterOptions parameterFilterOptions)
 		=> Filter.Suffix<ConstructorInfo>(
 			async constructorInfo
@@ -245,14 +200,19 @@ public static partial class ConstructorFilters
 			IOptionsProvider<ParameterFilterOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
 		private readonly ParameterFilterOptions _parameterFilterOptions;
+		private readonly Filtered.Constructors _source;
 
 		internal ConstructorsWithParameter(
-			Filtered.Constructors inner,
+			Filtered.Constructors source,
+			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			ParameterFilterOptions parameterFilterOptions)
-			: base(inner)
+			: base(source.Which(createFilter(collectionIndexOptions, parameterFilterOptions)))
 		{
+			_source = source;
+			_createFilter = createFilter;
 			_collectionIndexOptions = collectionIndexOptions;
 			_parameterFilterOptions = parameterFilterOptions;
 		}
@@ -268,83 +228,61 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameterAtIndex<T> AtIndex(int index)
 		{
-			_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-			return new ConstructorsWithParameterAtIndex<T>(this, _collectionIndexOptions);
+			CollectionIndexOptions collectionIndexOptions = new();
+			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+			return new ConstructorsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
+				_parameterFilterOptions);
 		}
 
 		/// <summary>
 		///     …without a default value.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithoutDefaultValue()
-		{
-			_parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
-			return this;
-		}
+			=> WithPredicate(p => !p.HasDefaultValue, () => "without a default value");
 
 		/// <summary>
 		///     …with a default value.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithDefaultValue()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
-			return this;
-		}
+			=> WithPredicate(p => p.HasDefaultValue, () => "with a default value");
 
 		/// <summary>
 		///     …with the <paramref name="expected" /> default value.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
 			where TValue : T
-		{
-			_parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
+			=> WithPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 				() => $"with default value {Formatter.Format(expected)}");
-			return this;
-		}
 
 		/// <summary>
 		///     …with the <see langword="ref" /> modifier.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithRefModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsRefParameter(), () => "with ref modifier");
 
 		/// <summary>
 		///     …with the <see langword="out" /> modifier.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithOutModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsOutParameter(), () => "with out modifier");
 
 		/// <summary>
 		///     …with the <see langword="in" /> modifier.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithInModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsInParameter(), () => "with in modifier");
 
 		/// <summary>
 		///     …with the optional modifier.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithOptionalModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
 
 		/// <summary>
 		///     …with the <see langword="params" /> modifier.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithParamsModifier()
-		{
-			_parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
-			return this;
-		}
+			=> WithPredicate(p => p.IsParamsParameter(), () => "with params modifier");
 
 		/// <summary>
 		///     …matching the <paramref name="predicate" />.
@@ -352,10 +290,13 @@ public static partial class ConstructorFilters
 		public ConstructorsWithParameter<T> Matching(Func<ParameterInfo, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
-		{
-			_parameterFilterOptions.AddMatching(predicate, doNotPopulateThisValue);
-			return this;
-		}
+			=> new(_source, _createFilter, _collectionIndexOptions,
+				_parameterFilterOptions.WithMatching(predicate, doNotPopulateThisValue));
+
+		private ConstructorsWithParameter<T> WithPredicate(Func<ParameterInfo, bool> predicate,
+			Func<string> description)
+			=> new(_source, _createFilter, _collectionIndexOptions,
+				_parameterFilterOptions.WithPredicate(predicate, description));
 	}
 
 	/// <summary>
@@ -366,13 +307,21 @@ public static partial class ConstructorFilters
 			IOptionsProvider<CollectionIndexOptions>
 	{
 		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> _createFilter;
+		private readonly ParameterFilterOptions _parameterFilterOptions;
+		private readonly Filtered.Constructors _source;
 
 		internal ConstructorsWithParameterAtIndex(
-			Filtered.Constructors inner,
-			CollectionIndexOptions collectionIndexOptions)
-			: base(inner)
+			Filtered.Constructors source,
+			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
+			CollectionIndexOptions collectionIndexOptions,
+			ParameterFilterOptions parameterFilterOptions)
+			: base(source.Which(createFilter(collectionIndexOptions, parameterFilterOptions)))
 		{
+			_source = source;
+			_createFilter = createFilter;
 			_collectionIndexOptions = collectionIndexOptions;
+			_parameterFilterOptions = parameterFilterOptions;
 		}
 
 		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
@@ -385,7 +334,10 @@ public static partial class ConstructorFilters
 		{
 			if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 			{
-				_collectionIndexOptions.SetMatch(match.FromEnd());
+				CollectionIndexOptions collectionIndexOptions = new();
+				collectionIndexOptions.SetMatch(match.FromEnd());
+				return new ConstructorsWithParameterAtIndex<T>(_source, _createFilter, collectionIndexOptions,
+					_parameterFilterOptions);
 			}
 
 			return this;
@@ -403,11 +355,12 @@ public static partial class ConstructorFilters
 		private readonly StringEqualityOptions _options;
 
 		internal ConstructorsWithNamedParameter(
-			Filtered.Constructors inner,
+			Filtered.Constructors source,
+			Func<CollectionIndexOptions, ParameterFilterOptions, IFilter<ConstructorInfo>> createFilter,
 			CollectionIndexOptions collectionIndexOptions,
 			ParameterFilterOptions parameterFilterOptions,
 			StringEqualityOptions options)
-			: base(inner, collectionIndexOptions, parameterFilterOptions)
+			: base(source, createFilter, collectionIndexOptions, parameterFilterOptions)
 		{
 			_options = options;
 		}

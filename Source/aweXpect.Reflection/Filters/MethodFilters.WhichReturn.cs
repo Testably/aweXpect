@@ -19,10 +19,10 @@ public static partial class MethodFilters
 	public static MethodsWhichReturn WhichReturn(this Filtered.Methods @this,
 		Type returnType)
 	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		Filter.GenericFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.ReturnType.IsOrInheritsFrom(returnType),
 			() => $"which return {Formatter.Format(returnType)} ");
-		return new MethodsWhichReturn(@this.Which(filter), filter);
+		return new MethodsWhichReturn(@this, filter);
 	}
 
 	/// <summary>
@@ -45,10 +45,13 @@ public static partial class MethodFilters
 	/// </summary>
 	public partial class MethodsWhichReturn : Filtered.Methods
 	{
-		private readonly IChangeableFilter<MethodInfo> _filter;
+		private readonly Filter.GenericFilter<MethodInfo> _filter;
+		private readonly Filtered.Methods _source;
 
-		internal MethodsWhichReturn(Filtered.Methods inner, IChangeableFilter<MethodInfo> filter) : base(inner)
+		internal MethodsWhichReturn(Filtered.Methods source, Filter.GenericFilter<MethodInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -62,13 +65,10 @@ public static partial class MethodFilters
 		///     Allow an alternative return type <paramref name="returnType" />.
 		/// </summary>
 		public MethodsWhichReturn OrReturn(Type returnType)
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, methodInfo)
 					=> result || methodInfo.ReturnType.IsOrInheritsFrom(returnType),
 				description
-					=> $"{description}or return {Formatter.Format(returnType)} ");
-			return this;
-		}
+					=> $"{description}or return {Formatter.Format(returnType)} "));
 	}
 }
