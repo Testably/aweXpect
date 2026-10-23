@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12424.916563767652,
           13485.223824637276,
           12807.232430594308,
           6933.414092381795,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5465.63491657802,
           10661.615686035157,
           10859.483940711389,
-          10761.371106661283
+          10761.371106661283,
+          5400.608945210774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -430,7 +430,6 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -446,6 +445,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          374467.87669270835,
           381430.7604166667,
           367431.6522042411,
           173091.82380558894,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           178263.90457589287,
           366967.68484933034,
           367077.0509207589,
-          404275.446484375
+          404275.446484375,
+          170158.6887394832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590290,
           590286,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590292,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19723.56197466169,
           19269.201989310128,
           19883.603173828124,
           10319.672215053013,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           9735.35759226481,
           19052.053908284506,
           19073.23451944987,
-          20062.65581839425
+          20062.65581839425,
+          9581.275565011161
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          284.3743395487467,
           281.5726981798808,
           280.744578906468,
           149.64187732764654,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           127.2423220872879,
           279.5492787996928,
           269.05985800425213,
-          317.89798367818196
+          317.89798367818196,
+          123.11643706049237
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1163,7 +1163,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1179,6 +1178,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          545.8857168833415,
           545.6367696762085,
           524.7363516489664,
           278.45073550542196,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           264.1580552101135,
           479.27789274851483,
           492.77551492055255,
-          588.9981312433879
+          588.9981312433879,
+          250.0093619187673
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          414.86068773269653,
           420.18242228825886,
           409.01357405526295,
           219.6762054761251,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           217.47377688544137,
           377.77023349489485,
           394.8288933436076,
-          423.07194239752636
+          423.07194239752636,
+          196.22040678773607
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          159.92800674438476,
           155.88796105384827,
           157.59672282536823,
           84.48009303410848,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           68.17021545569102,
           121.85269018809001,
           127.88389204229627,
-          142.47595458030702
+          142.47595458030702,
+          67.22933446509498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1896,7 +1896,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1912,6 +1911,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          287.0499791463216,
           286.11980530420936,
           258.83759247461956,
           138.22454252243043,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           137.85823701222736,
           246.62521035330636,
           246.9380058924357,
-          294.797906262534
+          294.797906262534,
+          127.63511827786763
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          265.300892499777,
           267.3511466662089,
           261.93149512608846,
           131.6892367509695,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           124.88962190491813,
           233.39074051380157,
           245.1816193262736,
-          271.57582871119183
+          271.57582871119183,
+          119.77442303498586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          290.4190535545349,
           290.02106494903563,
           283.8399627049764,
           147.94141961733501,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           128.26875443458556,
           236.90531883239746,
           251.28773593902588,
-          254.4033211072286
+          254.4033211072286,
+          128.639973623412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2629,7 +2629,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2645,6 +2644,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          587.2065956115723,
           569.1244530995687,
           529.2615350087484,
           293.05900564193723,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           306.8110350095309,
           504.17037957055226,
           530.9690159479777,
-          582.3299278531756
+          582.3299278531756,
+          269.34060049057007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          354.8124809946333,
           351.2292379697164,
           347.3147570169889,
           191.29842136587416,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           179.17931116422017,
           326.126665694373,
           342.6898528734843,
-          356.816463470459
+          356.816463470459,
+          177.5032828092575
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          679.669674873352,
           694.2464557647705,
           681.3976145426433,
           335.329885993685,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           339.0800229390462,
           634.9449087551662,
           626.0357221875872,
-          642.6014015833537
+          642.6014015833537,
+          324.41010771478926
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3362,7 +3362,6 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3378,6 +3377,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1486.8155450820923,
           1381.0726502736409,
           1470.3232198861929,
           709.8711673736573,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           790.2118460337321,
           1358.3830726623535,
           1338.7096883138022,
-          1470.9790762583414
+          1470.9790762583414,
+          703.9579772215623
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          677.3187940597534,
           645.0629905064901,
           666.6414422988892,
           363.0286763827006,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           350.9397131919861,
           664.9636610031127,
           666.7595330018264,
-          705.6932716369629
+          705.6932716369629,
+          342.60260009765625
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          660.7158184051514,
           673.9764590263367,
           646.7950919696262,
           333.79513757569447,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           320.24254007339476,
           627.1959044592721,
           639.4023764928182,
-          689.4971020380656
+          689.4971020380656,
+          341.97174770491466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4095,7 +4095,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4111,6 +4110,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28682.911216227214,
           28239.413805280412,
           27983.34929402669,
           10494.499317714146,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           10878.940256391254,
           26854.12964957101,
           27634.447916666668,
-          28099.270060221355
+          28099.270060221355,
+          9780.914921351841
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4221,7 +4221,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          826.0765203067234,
           789.3217925389607,
           823.4265757878621,
           429.7796032905579,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           446.4941630999247,
           793.2429605484009,
           779.388911819458,
-          831.065656389509
+          831.065656389509,
+          406.2164990718548
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          794.5244412104289,
           756.0569742202758,
           764.6649042765299,
           390.46921273640226,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           335.6985916455587,
           666.9227337837219,
           712.6600814819336,
-          751.5135049184163
+          751.5135049184163,
+          361.75716539223987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4821,7 +4821,6 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
-          1856,
           1760,
           1760,
           1760,
@@ -4844,6 +4843,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84374.98778827373,
           85070.69497915414,
           83612.60432535807,
           29294.616748046876,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           29777.029740397134,
           83702.01136067709,
           83934.85948079427,
-          85047.43180338542
+          85047.43180338542,
+          28108.937866210938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4945,7 +4945,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5252,
           5252,
-          5252,
           5256,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
       {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          195.00022001266478,
           189.10568833351135,
           196.65326636632284,
           101.61307245095571,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           88.31335223572594,
           154.01466266314188,
           160.37339636484782,
-          182.60527583758036
+          182.60527583758036,
+          88.0090849717458
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5436,7 +5436,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5452,6 +5451,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32748.927028111048,
           33051.00584309896,
           32339.84567464193,
           10235.486079915365,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           10300.98420715332,
           31555.70805476262,
           31374.932298932756,
-          33716.88154296875
+          33716.88154296875,
+          9581.95962117513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5553,7 +5553,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          269.2464275677999,
           249.51677201588947,
           248.2201798439026,
           128.80031770070394,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           128.00200797716778,
           232.04578261375428,
           243.64965346881323,
-          264.7267829577128
+          264.7267829577128,
+          121.36933832902174
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          361.2869338671366,
           378.7131065981729,
           360.9726122220357,
           200.64068616231282,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           163.42488276958466,
           335.09430303573606,
           337.5906593799591,
-          354.9250924428304
+          354.9250924428304,
+          193.43693833351136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6169,7 +6169,6 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6185,6 +6184,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          395.88827346165976,
           411.08862390518186,
           399.202547677358,
           215.84019565582275,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           198.19016366345542,
           382.61274099349976,
           386.4090717520033,
-          410.5206116994222
+          410.5206116994222,
+          194.1953224182129
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          416.4393012864249,
           420.6346224784851,
           425.9174425942557,
           213.92019899686179,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           209.2567301273346,
           404.52534980773925,
           399.7628126780192,
-          422.9922739664714
+          422.9922739664714,
+          202.4171911239624
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          834.7785130182903,
           826.7595612843832,
           806.4954381942749,
           421.2194682121277,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           333.0829246520996,
           598.0839064915975,
           600.23728118624,
-          656.0322409947713
+          656.0322409947713,
+          324.3589371681213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6902,7 +6902,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6941,7 +6940,8 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
-          1376
+          1376,
+          1384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2045.080423082624,
           2034.205393110003,
           2001.4416610717774,
           1030.6404298146565,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1069.699947865804,
           1891.2691440582275,
           1932.489908091227,
-          2132.4215204874677
+          2132.4215204874677,
+          1020.3494524274554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          968.4909497578939,
           963.7541193644206,
           944.0517686435154,
           495.660335949489,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           511.6533489227295,
           897.9568466459002,
           901.9975225448609,
-          1002.7475083214896
+          1002.7475083214896,
+          442.5047735214233
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12412.906634990986,
           12597.300221369816,
           12430.40533564641,
           6483.9353596613955,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5937.429060254778,
           11421.311758422851,
           11424.84536336263,
-          11368.338891601563
+          11368.338891601563,
+          5628.697000356821
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7635,7 +7635,6 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7651,6 +7650,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41864.14045817057,
           42212.26511492048,
           41537.927233886716,
           18828.915138753255,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           19132.62122599284,
           40266.15532038762,
           42686.914099121095,
-          40644.98335484096
+          40644.98335484096,
+          17858.19163077218
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11381.553640093121,
           11727.328328813825,
           11562.734325702373,
           6341.513245646159,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5778.0363476093,
           10558.842607770648,
           10537.385789137621,
-          10606.605404663085
+          10606.605404663085,
+          5505.860894266764
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "391462ba40ae1a1a36545de23ad94db20b75d605",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 13:59:10 2026 \u002B0200",
-        "message": "fix: do not deadlock at the synchronous boundaries of Reflection and Snapshots (#1889)"
-      },
-      {
         "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
         "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
+      },
+      {
+        "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
+        "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
       }
     ],
     "labels": [
-      "391462ba",
       "78b13d35",
       "87d3aeb2",
       "fe413769",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "423a7284",
       "9c75ee02",
       "ae43e1f2",
-      "22416e11"
+      "22416e11",
+      "e6ee3749"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11762.522556011494,
           12061.380863734654,
           11939.927749633789,
           6105.555753072103,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5632.911038534982,
           10652.082068223219,
           10729.391098022461,
-          10825.977459247295
+          10825.977459247295,
+          5308.279452732631
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8368,7 +8368,6 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8384,6 +8383,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          60382.052001953125,
           60913.325411283055,
           62026.5597882952,
           28376.715168544226,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           27721.19256184896,
           57672.02178519113,
           58677.18685477121,
-          58557.807307942705
+          58557.807307942705,
+          26070.184802246094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23554,
           23553,
@@ -8507,6 +8506,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22550.113385881697,
           22978.201373760516,
           22762.531415666854,
           12592.395905630929,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           11683.99429626465,
           21099.93816731771,
           20898.730656215124,
-          21218.276585170202
+          21218.276585170202,
+          11009.43418766902
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
