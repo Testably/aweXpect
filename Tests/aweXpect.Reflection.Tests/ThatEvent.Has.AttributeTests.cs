@@ -71,6 +71,34 @@ public sealed partial class ThatEvent
 			}
 
 			[TUnit.Core.Test]
+			public async Task WhenEventInheritsAttributeFromOverriddenEvent_ShouldSucceed()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
+			}
+
+			[TUnit.Core.Test]
+			public async Task WhenEventInheritsMatchingAttributeFromOverriddenEvent_ShouldSucceed()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == 7);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the predicate is evaluated on the attribute inherited from the overridden base event");
+			}
+
+			[TUnit.Core.Test]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
 				EventInfo? subject = null;
@@ -88,6 +116,25 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
+			[TUnit.Core.Test]
+			public async Task WithInheritFalse_WhenEventInheritsAttributeFromOverriddenEvent_ShouldFail()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<TestAttribute>(false);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has direct ThatEvent.Has.AttributeTests.TestAttribute,
+					             but it did not in event Action ThatEvent.Has.AttributeTests.DerivedClass.InheritedEvent
+					             """)
+					.Because("with inherit: false only the attributes declared on the overriding event count");
+			}
+
 			[AttributeUsage(AttributeTargets.Event)]
 			private class TestAttribute : Attribute
 			{
@@ -102,6 +149,16 @@ public sealed partial class ThatEvent
 				[Test(Value = 42)] public event Action? TestEventWithValue;
 
 				public event Action? NoAttributeEvent;
+			}
+
+			private class BaseClass
+			{
+				[Test(Value = 7)] public virtual event Action? InheritedEvent;
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override event Action? InheritedEvent;
 			}
 #pragma warning restore CS0067
 		}

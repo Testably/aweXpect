@@ -39,6 +39,39 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
+			[Test]
+			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldFail()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatProperty.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in public string ThatProperty.DoesNotHave.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             """)
+					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
+			}
+
+			[Test]
+			public async Task WithInheritFalse_WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(false);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with inherit: false only the attributes declared on the overriding property count");
+			}
+
 			[AttributeUsage(AttributeTargets.Property)]
 			private class FooAttribute : Attribute
 			{
@@ -49,6 +82,16 @@ public sealed partial class ThatProperty
 				[Foo] public string TestProperty { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
+			}
+
+			private class BaseClass
+			{
+				[Foo] public virtual string InheritedProperty { get; set; } = "";
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override string InheritedProperty { get; set; } = "";
 			}
 		}
 	}

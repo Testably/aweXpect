@@ -34,10 +34,7 @@ public static partial class TypeFilters
 	{
 		internal GenericTypes(Filtered.Types inner) : base(inner)
 		{
-			FilteredTypes = inner;
 		}
-
-		internal Filtered.Types FilteredTypes { get; }
 
 		/// <summary>
 		///     …with the <paramref name="expected" /> number of generic arguments.
@@ -56,21 +53,9 @@ public static partial class TypeFilters
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				(type, name) => argumentType == (name is null ? type.BaseType : type),
 				() => $"of type {Formatter.Format(typeof(T))}");
-			CollectionIndexOptions collectionIndexOptions = new();
-			IAsyncChangeableFilter<Type> filter = Filter.Suffix<Type>(
-				type =>
-				{
-					Type[] arguments = type.GetGenericArguments();
-					return arguments.AnyAsync(async (p, i) =>
-					{
-						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
-						       await genericArgumentFilterOptions.Matches(p);
-					});
-				},
-				()
-					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Filtered.Types filtered = Which(filter);
-			return new GenericTypesWithArgument(new GenericTypes(filtered), collectionIndexOptions);
+			return new GenericTypesWithArgument(this,
+				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
+				new CollectionIndexOptions());
 		}
 
 		/// <summary>
@@ -86,21 +71,9 @@ public static partial class TypeFilters
 			genericArgumentFilterOptions.AddPredicate(
 				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-			CollectionIndexOptions collectionIndexOptions = new();
-			IAsyncChangeableFilter<Type> filter = Filter.Suffix<Type>(
-				type =>
-				{
-					Type[] arguments = type.GetGenericArguments();
-					return arguments.AnyAsync(async (p, i) =>
-					{
-						return collectionIndexOptions.MatchesIndex(i, arguments.Length) == true &&
-						       await genericArgumentFilterOptions.Matches(p);
-					});
-				},
-				()
-					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Filtered.Types filtered = Which(filter);
-			return new GenericTypesWithNamedArgument(new GenericTypes(filtered), collectionIndexOptions, stringEqualityOptions);
+			return new GenericTypesWithNamedArgument(this,
+				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
+				new CollectionIndexOptions(), stringEqualityOptions);
 		}
 
 		/// <summary>
@@ -112,8 +85,14 @@ public static partial class TypeFilters
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-			CollectionIndexOptions collectionIndexOptions = new();
-			IAsyncChangeableFilter<Type> filter = Filter.Suffix<Type>(
+			return new GenericTypesWithNamedArgument(this,
+				collectionIndexOptions => WithArgumentFilter(genericArgumentFilterOptions, collectionIndexOptions),
+				new CollectionIndexOptions(), stringEqualityOptions);
+		}
+
+		private static IFilter<Type> WithArgumentFilter(GenericArgumentFilterOptions genericArgumentFilterOptions,
+			CollectionIndexOptions collectionIndexOptions)
+			=> Filter.Suffix<Type>(
 				type =>
 				{
 					Type[] arguments = type.GetGenericArguments();
@@ -125,9 +104,6 @@ public static partial class TypeFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Filtered.Types filtered = Which(filter);
-			return new GenericTypesWithNamedArgument(new GenericTypes(filtered), collectionIndexOptions, stringEqualityOptions);
-		}
 
 		/// <summary>
 		///     Additional filters on types with a generic argument of a specific type.
@@ -137,12 +113,17 @@ public static partial class TypeFilters
 				IOptionsProvider<CollectionIndexOptions>
 		{
 			private readonly CollectionIndexOptions _collectionIndexOptions;
+			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
+			private readonly Filtered.Types _source;
 
 			internal GenericTypesWithArgument(
-				GenericTypes inner,
+				Filtered.Types source,
+				Func<CollectionIndexOptions, IFilter<Type>> createFilter,
 				CollectionIndexOptions collectionIndexOptions)
-				: base(inner.FilteredTypes)
+				: base(source.Which(createFilter(collectionIndexOptions)))
 			{
+				_source = source;
+				_createFilter = createFilter;
 				_collectionIndexOptions = collectionIndexOptions;
 			}
 
@@ -154,8 +135,9 @@ public static partial class TypeFilters
 			/// </summary>
 			public GenericTypesWithArgumentAtIndex AtIndex(int index)
 			{
-				_collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-				return new GenericTypesWithArgumentAtIndex(this, _collectionIndexOptions);
+				CollectionIndexOptions collectionIndexOptions = new();
+				collectionIndexOptions.SetMatch(new AtIndexMatch(index));
+				return new GenericTypesWithArgumentAtIndex(_source, _createFilter, collectionIndexOptions);
 			}
 		}
 
@@ -170,10 +152,11 @@ public static partial class TypeFilters
 			private readonly StringEqualityOptions _options;
 
 			internal GenericTypesWithNamedArgument(
-				GenericTypes inner,
+				Filtered.Types source,
+				Func<CollectionIndexOptions, IFilter<Type>> createFilter,
 				CollectionIndexOptions collectionIndexOptions,
 				StringEqualityOptions options)
-				: base(inner, collectionIndexOptions)
+				: base(source, createFilter, collectionIndexOptions)
 			{
 				_options = options;
 			}
@@ -190,12 +173,17 @@ public static partial class TypeFilters
 				IOptionsProvider<CollectionIndexOptions>
 		{
 			private readonly CollectionIndexOptions _collectionIndexOptions;
+			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
+			private readonly Filtered.Types _source;
 
 			internal GenericTypesWithArgumentAtIndex(
-				GenericTypes inner,
+				Filtered.Types source,
+				Func<CollectionIndexOptions, IFilter<Type>> createFilter,
 				CollectionIndexOptions collectionIndexOptions)
-				: base(inner.FilteredTypes)
+				: base(source.Which(createFilter(collectionIndexOptions)))
 			{
+				_source = source;
+				_createFilter = createFilter;
 				_collectionIndexOptions = collectionIndexOptions;
 			}
 
@@ -209,7 +197,9 @@ public static partial class TypeFilters
 			{
 				if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 				{
-					_collectionIndexOptions.SetMatch(match.FromEnd());
+					CollectionIndexOptions collectionIndexOptions = new();
+					collectionIndexOptions.SetMatch(match.FromEnd());
+					return new GenericTypesWithArgumentAtIndex(_source, _createFilter, collectionIndexOptions);
 				}
 
 				return this;

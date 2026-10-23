@@ -19,10 +19,10 @@ public static partial class FieldFilters
 	public static FieldsOfType OfExactType(this Filtered.Fields @this,
 		Type fieldType)
 	{
-		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
+		Filter.GenericFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.FieldType.IsOrInheritsFrom(fieldType, true),
 			() => $"of exact type {Formatter.Format(fieldType)} ");
-		return new FieldsOfType(@this.Which(filter), filter);
+		return new FieldsOfType(@this, filter);
 	}
 
 	/// <summary>
@@ -52,13 +52,10 @@ public static partial class FieldFilters
 		///     Allow an alternative type <paramref name="fieldType" /> exactly.
 		/// </summary>
 		public FieldsOfType OrOfExactType(Type fieldType)
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, fieldInfo)
 					=> result || fieldInfo.FieldType.IsOrInheritsFrom(fieldType, true),
 				description
-					=> $"{description}or of exact type {Formatter.Format(fieldType)} ");
-			return this;
-		}
+					=> $"{description}or of exact type {Formatter.Format(fieldType)} "));
 	}
 }

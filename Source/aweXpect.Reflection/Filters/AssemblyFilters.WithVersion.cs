@@ -28,44 +28,47 @@ public static partial class AssemblyFilters
 	///     Filter for assemblies by individual components of their <see cref="AssemblyName.Version" />.
 	/// </summary>
 	public static AssembliesWithVersion WithVersion(this Filtered.Assemblies @this)
-	{
-		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(_ => true, "");
-		return new AssembliesWithVersion(@this.Which(filter), filter);
-	}
+		=> new(@this, Filter.Suffix<Assembly>(_ => true, ""));
 
 	/// <summary>
 	///     Filter for assemblies by individual components of their <see cref="AssemblyName.Version" />.
 	/// </summary>
 	public class AssembliesWithVersion : Filtered.Assemblies
 	{
-		private readonly IChangeableFilter<Assembly> _filter;
+		private readonly Filter.GenericFilter<Assembly> _filter;
+		private readonly Filtered.Assemblies _source;
 
-		internal AssembliesWithVersion(Filtered.Assemblies inner, IChangeableFilter<Assembly> filter) : base(inner)
+		internal AssembliesWithVersion(Filtered.Assemblies source, Filter.GenericFilter<Assembly> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
 		/// <summary>
 		///     Compares the <see cref="Version.Major" /> version component.
 		/// </summary>
-		public VersionComponent WithMajor => new(this, _filter, "major", version => version.Major);
+		public VersionComponent WithMajor => new(this, "major", version => version.Major);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Minor" /> version component.
 		/// </summary>
-		public VersionComponent WithMinor => new(this, _filter, "minor", version => version.Minor);
+		public VersionComponent WithMinor => new(this, "minor", version => version.Minor);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Build" /> version component.
 		/// </summary>
 		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponent WithBuild => new(this, _filter, "build", version => version.Build);
+		public VersionComponent WithBuild => new(this, "build", version => version.Build);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Revision" /> version component.
 		/// </summary>
 		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
-		public VersionComponent WithRevision => new(this, _filter, "revision", version => version.Revision);
+		public VersionComponent WithRevision => new(this, "revision", version => version.Revision);
+
+		internal AssembliesWithVersion Extend(Func<bool, Assembly, bool> predicate, Func<string, string> description)
+			=> new(_source, _filter.Extend(predicate, description));
 	}
 
 	/// <summary>
@@ -74,18 +77,15 @@ public static partial class AssemblyFilters
 	public class VersionComponent
 	{
 		private readonly string _component;
-		private readonly IChangeableFilter<Assembly> _filter;
 		private readonly AssembliesWithVersion _owner;
 		private readonly Func<Version, int> _selector;
 
 		internal VersionComponent(
 			AssembliesWithVersion owner,
-			IChangeableFilter<Assembly> filter,
 			string component,
 			Func<Version, int> selector)
 		{
 			_owner = owner;
-			_filter = filter;
 			_component = component;
 			_selector = selector;
 		}
@@ -127,12 +127,9 @@ public static partial class AssemblyFilters
 			=> Apply(value => value != expected, $"not equal to {expected}");
 
 		private AssembliesWithVersion Apply(Func<int, bool> comparison, string comparisonText)
-		{
-			_filter.UpdateFilter(
+			=> _owner.Extend(
 				(result, assembly)
 					=> result && assembly.GetName().Version is { } version && comparison(_selector(version)),
 				description => $"{description} with {_component} version {comparisonText}");
-			return _owner;
-		}
 	}
 }

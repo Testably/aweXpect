@@ -49,6 +49,21 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
+			public async Task ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<int> withInt = In.Type<ClassWithParameters>()
+					.Methods().WithParameter<int>();
+
+				Filtered.Methods matching = withInt.Matching(p => p.Name == "count");
+
+				await That(withInt).Contains(IndexMethod())
+					.Because("Matching must return a new filter instead of changing the one it was called on");
+				await That(withInt.GetDescription())
+					.IsEqualTo("methods with parameter of type int in type").AsPrefix();
+				await That(matching).IsEqualTo([CountMethod(),]);
+			}
+
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
@@ -86,6 +101,21 @@ public sealed partial class MethodFilters
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with params parameter matching p => !p.ParameterType.IsArray in type")
 					.AsPrefix();
+			}
+
+			[Test]
+			public async Task WithParamsParameter_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<object?> withParams = In.Type<ClassWithParameters>()
+					.Methods().WithParamsParameter();
+
+				Filtered.Methods matching = withParams.Matching(p => !p.ParameterType.IsArray);
+
+				await That(withParams).Contains(ParamsArrayMethod())
+					.Because("Matching must return a new filter instead of changing the one it was called on");
+				await That(withParams.GetDescription())
+					.IsEqualTo("methods with params parameter in type").AsPrefix();
+				await That(matching).IsEqualTo([ParamsCollectionMethod(),]);
 			}
 
 			[Test]

@@ -36,4 +36,17 @@ internal static class ParameterModifierHelpers
 		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 		options.AddModifier(predicate, () => $"matching {expression.TrimExpression()}");
 	}
+
+	/// <summary>
+	///     Returns a copy of the <paramref name="options" /> with the custom <paramref name="predicate" />, described by
+	///     its caller argument <paramref name="expression" />, while the <paramref name="options" /> stay unchanged.
+	/// </summary>
+	public static ParameterFilterOptions WithMatching(
+		this ParameterFilterOptions options,
+		Func<ParameterInfo, bool> predicate,
+		string expression)
+	{
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+		return options.WithModifier(predicate, () => $"matching {expression.TrimExpression()}");
+	}
 }

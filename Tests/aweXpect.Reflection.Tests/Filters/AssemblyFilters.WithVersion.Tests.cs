@@ -89,6 +89,24 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Test]
+			public async Task EqualTo_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				Version version = assembly.GetName().Version!;
+
+				Reflection.AssemblyFilters.AssembliesWithVersion withMajor =
+					In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(version.Major);
+
+				Filtered.Assemblies withOtherMinor = withMajor.WithMinor.EqualTo(version.Minor + 1);
+
+				await That(withMajor).HasSingle().Which.IsEqualTo(assembly)
+					.Because("a further version component must return a new filter instead of changing the one it was called on");
+				await That(withMajor.GetDescription())
+					.IsEqualTo($" with major version equal to {version.Major}").AsSuffix();
+				await That(withOtherMinor).IsEmpty();
+			}
+
+			[Test]
 			public async Task GreaterThan_ShouldNotMatchTheBoundaryValue()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;

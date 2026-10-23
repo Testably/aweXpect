@@ -14,10 +14,10 @@ public static partial class FieldFilters
 	public static FieldsWith With<TAttribute>(this Filtered.Fields @this)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
+		Filter.GenericFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.HasAttribute<TAttribute>(),
 			() => $"with {Formatter.Format(typeof(TAttribute))} ");
-		return new FieldsWith(@this.Which(filter), filter);
+		return new FieldsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -30,10 +30,10 @@ public static partial class FieldFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
+		Filter.GenericFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.HasAttribute(predicate),
 			() => $"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new FieldsWith(@this.Which(filter), filter);
+		return new FieldsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -41,10 +41,13 @@ public static partial class FieldFilters
 	/// </summary>
 	public class FieldsWith : Filtered.Fields
 	{
-		private readonly IChangeableFilter<FieldInfo> _filter;
+		private readonly Filter.GenericFilter<FieldInfo> _filter;
+		private readonly Filtered.Fields _source;
 
-		internal FieldsWith(Filtered.Fields inner, IChangeableFilter<FieldInfo> filter) : base(inner)
+		internal FieldsWith(Filtered.Fields source, Filter.GenericFilter<FieldInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -53,12 +56,9 @@ public static partial class FieldFilters
 		/// </summary>
 		public FieldsWith OrWith<TAttribute>()
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter((result, fieldInfo) => result || fieldInfo.HasAttribute<TAttribute>(),
+			=> new(_source, _filter.Extend((result, fieldInfo) => result || fieldInfo.HasAttribute<TAttribute>(),
 				description
-					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} ");
-			return this;
-		}
+					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -69,12 +69,9 @@ public static partial class FieldFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, fieldInfo) => result || fieldInfo.HasAttribute(predicate),
 				description
-					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-			return this;
-		}
+					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 	}
 }
