@@ -390,6 +390,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
         "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
+      },
+      {
+        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
+        "message": "docs: use the music theme in the remaining examples (#1970)"
       }
     ],
     "labels": [
@@ -457,7 +463,8 @@ window.BENCHMARK_DATA = {
       "8e844194",
       "f61481d2",
       "77ca8a7f",
-      "3aaf6f00"
+      "3aaf6f00",
+      "01684f30"
     ],
     "datasets": [
       {
@@ -528,7 +535,8 @@ window.BENCHMARK_DATA = {
           746.0287245432536,
           682.6208861214774,
           385.53902740478514,
-          381.48705662999834
+          381.48705662999834,
+          404.5717393068167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -573,6 +581,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -683,7 +692,8 @@ window.BENCHMARK_DATA = {
           935.801241238912,
           848.7192447026571,
           493.92227150843695,
-          459.27633282343544
+          459.27633282343544,
+          532.7023837749774
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -695,6 +705,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1163,6 +1174,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
         "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
+      },
+      {
+        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
+        "message": "docs: use the music theme in the remaining examples (#1970)"
       }
     ],
     "labels": [
@@ -1230,7 +1247,8 @@ window.BENCHMARK_DATA = {
       "8e844194",
       "f61481d2",
       "77ca8a7f",
-      "3aaf6f00"
+      "3aaf6f00",
+      "01684f30"
     ],
     "datasets": [
       {
@@ -1301,7 +1319,8 @@ window.BENCHMARK_DATA = {
           132.3493261973063,
           127.16299282709757,
           71.2067626396815,
-          66.24985903104147
+          66.24985903104147,
+          75.95262475013733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1341,6 +1360,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1456,7 +1476,8 @@ window.BENCHMARK_DATA = {
           226.68383900324503,
           212.34665722846984,
           145.98810529708862,
-          114.2459699000631
+          114.2459699000631,
+          139.42729212687567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1468,6 +1489,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1936,6 +1958,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
         "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
+      },
+      {
+        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
+        "message": "docs: use the music theme in the remaining examples (#1970)"
       }
     ],
     "labels": [
@@ -2003,7 +2031,8 @@ window.BENCHMARK_DATA = {
       "8e844194",
       "f61481d2",
       "77ca8a7f",
-      "3aaf6f00"
+      "3aaf6f00",
+      "01684f30"
     ],
     "datasets": [
       {
@@ -2074,7 +2103,8 @@ window.BENCHMARK_DATA = {
           1995.2253605978829,
           1811.4357714335124,
           1058.8527389526366,
-          925.779819424947
+          925.779819424947,
+          1124.5583415985107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2114,6 +2144,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2229,7 +2260,8 @@ window.BENCHMARK_DATA = {
           1471.2968467712403,
           1372.7388380595617,
           846.1342365264893,
-          747.2022263663156
+          747.2022263663156,
+          907.0648664065769
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2304,6 +2336,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
+          1864,
           1864,
           1864
         ],
@@ -2649,6 +2682,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
         "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
+      },
+      {
+        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
+        "message": "docs: use the music theme in the remaining examples (#1970)"
       }
     ],
     "labels": [
@@ -2706,7 +2745,8 @@ window.BENCHMARK_DATA = {
       "8e844194",
       "f61481d2",
       "77ca8a7f",
-      "3aaf6f00"
+      "3aaf6f00",
+      "01684f30"
     ],
     "datasets": [
       {
@@ -2767,7 +2807,8 @@ window.BENCHMARK_DATA = {
           2913.4129531860353,
           2661.371395656041,
           1391.216616121928,
-          1321.880958693368
+          1321.880958693368,
+          1603.5351232801165
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2833,7 +2874,8 @@ window.BENCHMARK_DATA = {
           2984,
           3040,
           2984,
-          3040
+          3040,
+          2984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2902,7 +2944,8 @@ window.BENCHMARK_DATA = {
           3851.410376993815,
           3721.2723083496094,
           2159.7801091330393,
-          1980.2551272465632
+          1980.2551272465632,
+          2277.7916843707744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2967,6 +3010,7 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3981,
+          3980,
           3980,
           3980
         ],
@@ -3312,6 +3356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
         "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
+      },
+      {
+        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
+        "message": "docs: use the music theme in the remaining examples (#1970)"
       }
     ],
     "labels": [
@@ -3369,7 +3419,8 @@ window.BENCHMARK_DATA = {
       "8e844194",
       "f61481d2",
       "77ca8a7f",
-      "3aaf6f00"
+      "3aaf6f00",
+      "01684f30"
     ],
     "datasets": [
       {
@@ -3430,7 +3481,8 @@ window.BENCHMARK_DATA = {
           379.90855176108226,
           370.58754532677784,
           193.50392508506775,
-          177.1781394481659
+          177.1781394481659,
+          203.6781988143921
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,6 +3512,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3565,7 +3618,8 @@ window.BENCHMARK_DATA = {
           2403.7770568847654,
           2143.895212173462,
           1314.763245173863,
-          1131.0002739770073
+          1131.0002739770073,
+          1406.1510941432073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3577,6 +3631,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3975,6 +4030,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
         "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
+      },
+      {
+        "sha": "01684f3097d62e6c0d4b16420083cef1f0805e59",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:11:30 2026 \u002B0200",
+        "message": "docs: use the music theme in the remaining examples (#1970)"
       }
     ],
     "labels": [
@@ -4032,7 +4093,8 @@ window.BENCHMARK_DATA = {
       "8e844194",
       "f61481d2",
       "77ca8a7f",
-      "3aaf6f00"
+      "3aaf6f00",
+      "01684f30"
     ],
     "datasets": [
       {
@@ -4093,7 +4155,8 @@ window.BENCHMARK_DATA = {
           3606.5318046569823,
           3395.820640836443,
           1977.5680291493734,
-          1717.6265123912267
+          1717.6265123912267,
+          2049.2623252868652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4152,6 +4215,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -4228,7 +4292,8 @@ window.BENCHMARK_DATA = {
           283437.116398738,
           300407.2831333705,
           172952.72459309894,
-          158624.46012995794
+          158624.46012995794,
+          171310.73217773438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4294,7 +4359,8 @@ window.BENCHMARK_DATA = {
           17577,
           17727,
           17574,
-          17574
+          17574,
+          17573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
