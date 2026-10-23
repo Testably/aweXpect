@@ -243,7 +243,7 @@ public sealed partial class ThatEvents
 
 		private class TestClass
 		{
-			public event EventHandler? EventHandlerEvent
+			public static event EventHandler? EventHandlerEvent
 			{
 				add { }
 				remove { }

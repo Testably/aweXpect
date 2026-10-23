@@ -51,13 +51,13 @@ public sealed partial class EventFilters
 
 		private class TestClass
 		{
-			public event EventHandler? EventHandlerEvent
+			public static event EventHandler? EventHandlerEvent
 			{
 				add { }
 				remove { }
 			}
 
-			public event CustomHandler? CustomHandlerEvent
+			public static event CustomHandler? CustomHandlerEvent
 			{
 				add { }
 				remove { }

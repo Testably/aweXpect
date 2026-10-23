@@ -320,47 +320,6 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string unexpected)
 		=> DoNotHaveNamedParameter<object?>(subject, null, unexpected);
 
-	private static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveParameterOfType<TParameter>(
-		IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
-	{
-		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions =
-			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
-		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter>(subject.Get().ExpectationBuilder
-				.AddConstraint<(Type ParameterType, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
-					static (s, it, grammars)
-					=> new DoNotHaveParameterConstraint(it, grammars, s.ParameterType, null,
-						s.CollectionIndexOptions,
-						s.ParameterFilterOptions)),
-			subject,
-			collectionIndexOptions,
-			parameterFilterOptions);
-	}
-
-	private static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveNamedParameter<TParameter>(
-		IThat<IEnumerable<ConstructorInfo?>?> subject, Type? parameterType, string unexpected)
-	{
-		StringEqualityOptions stringEqualityOptions = new(nameof(unexpected));
-		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected));
-		if (parameterType is not null)
-		{
-			parameterFilterOptions.AddPredicate(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
-		}
-
-		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter>(subject.Get()
-				.ExpectationBuilder
-				.AddConstraint<(Type? ParameterType, string Unexpected, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, unexpected, collectionIndexOptions, parameterFilterOptions),
-					static (s, it, grammars)
-					=> new DoNotHaveParameterConstraint(it, grammars, s.ParameterType, s.Unexpected,
-						s.CollectionIndexOptions,
-						s.ParameterFilterOptions)),
-			subject,
-			collectionIndexOptions,
-			parameterFilterOptions,
-			stringEqualityOptions);
-	}
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that none of the items in the filtered collection of <see cref="ConstructorInfo" /> have
@@ -406,7 +365,26 @@ public static partial class ThatConstructors
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> DoNotHaveParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string unexpected)
 		=> DoNotHaveNamedParameter<object?>(subject, null, unexpected);
+#endif
 
+	private static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveParameterOfType<TParameter>(
+		IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter>(subject.Get().ExpectationBuilder
+				.AddConstraint<(Type ParameterType, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, collectionIndexOptions, parameterFilterOptions),
+					static (s, it, grammars)
+					=> new DoNotHaveParameterConstraint(it, grammars, s.ParameterType, null,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+#if NET8_0_OR_GREATER
 	private static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveParameterOfType<TParameter>(
 		IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 	{
@@ -423,7 +401,33 @@ public static partial class ThatConstructors
 			collectionIndexOptions,
 			parameterFilterOptions);
 	}
+#endif
 
+	private static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveNamedParameter<TParameter>(
+		IThat<IEnumerable<ConstructorInfo?>?> subject, Type? parameterType, string unexpected)
+	{
+		StringEqualityOptions stringEqualityOptions = new(nameof(unexpected));
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, unexpected));
+		if (parameterType is not null)
+		{
+			parameterFilterOptions.AddPredicate(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		}
+
+		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter>(subject.Get()
+				.ExpectationBuilder
+				.AddConstraint<(Type? ParameterType, string Unexpected, CollectionIndexOptions CollectionIndexOptions, ParameterFilterOptions ParameterFilterOptions), IEnumerable<ConstructorInfo?>>((parameterType, unexpected, collectionIndexOptions, parameterFilterOptions),
+					static (s, it, grammars)
+					=> new DoNotHaveParameterConstraint(it, grammars, s.ParameterType, s.Unexpected,
+						s.CollectionIndexOptions,
+						s.ParameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+
+#if NET8_0_OR_GREATER
 	private static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> DoNotHaveNamedParameter<TParameter>(
 		IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type? parameterType, string unexpected)
 	{

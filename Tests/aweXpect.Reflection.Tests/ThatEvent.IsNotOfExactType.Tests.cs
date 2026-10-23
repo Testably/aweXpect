@@ -127,7 +127,7 @@ public sealed partial class ThatEvent
 
 		private class TestClass
 		{
-			public event EventHandler? EventHandlerEvent
+			public static event EventHandler? EventHandlerEvent
 			{
 				add { }
 				remove { }
