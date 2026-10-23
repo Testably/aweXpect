@@ -19,10 +19,10 @@ public static partial class EventFilters
 	public static EventsOfType OfType(this Filtered.Events @this,
 		Type handlerType)
 	{
-		IChangeableFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
+		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
 			eventInfo => eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType),
 			() => $"of type {Formatter.Format(handlerType)} ");
-		return new EventsOfType(@this.Which(filter), filter);
+		return new EventsOfType(@this, filter);
 	}
 
 	/// <summary>
@@ -52,13 +52,10 @@ public static partial class EventFilters
 		///     Allow an alternative type <paramref name="handlerType" />.
 		/// </summary>
 		public EventsOfType OrOfType(Type handlerType)
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, eventInfo)
 					=> result || eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType),
 				description
-					=> $"{description}or of type {Formatter.Format(handlerType)} ");
-			return this;
-		}
+					=> $"{description}or of type {Formatter.Format(handlerType)} "));
 	}
 }

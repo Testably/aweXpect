@@ -20,10 +20,10 @@ public static partial class AssemblyFilters
 	public static AssembliesWith With<TAttribute>(this Filtered.Assemblies @this, bool inherit = true)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(
+		Filter.GenericFilter<Assembly> filter = Filter.Suffix<Assembly>(
 			assembly => assembly.HasAttribute<TAttribute>(inherit: inherit),
 			() => $" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}");
-		return new AssembliesWith(@this.Which(filter), filter);
+		return new AssembliesWith(@this, filter);
 	}
 
 	/// <summary>
@@ -41,10 +41,10 @@ public static partial class AssemblyFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<Assembly> filter = Filter.Suffix<Assembly>(
+		Filter.GenericFilter<Assembly> filter = Filter.Suffix<Assembly>(
 			assembly => assembly.HasAttribute(predicate, inherit),
 			() => $" with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");
-		return new AssembliesWith(@this.Which(filter), filter);
+		return new AssembliesWith(@this, filter);
 	}
 
 	/// <summary>
@@ -52,10 +52,13 @@ public static partial class AssemblyFilters
 	/// </summary>
 	public class AssembliesWith : Filtered.Assemblies
 	{
-		private readonly IChangeableFilter<Assembly> _filter;
+		private readonly Filter.GenericFilter<Assembly> _filter;
+		private readonly Filtered.Assemblies _source;
 
-		internal AssembliesWith(Filtered.Assemblies inner, IChangeableFilter<Assembly> filter) : base(inner)
+		internal AssembliesWith(Filtered.Assemblies source, Filter.GenericFilter<Assembly> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -68,12 +71,9 @@ public static partial class AssemblyFilters
 		/// </remarks>
 		public AssembliesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter((result, assembly) => result || assembly.HasAttribute<TAttribute>(inherit: inherit),
+			=> new(_source, _filter.Extend((result, assembly) => result || assembly.HasAttribute<TAttribute>(inherit: inherit),
 				description
-					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}");
-			return this;
-		}
+					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))}"));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -89,12 +89,9 @@ public static partial class AssemblyFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, assembly) => result || assembly.HasAttribute(predicate, inherit),
 				description
-					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}");
-			return this;
-		}
+					=> $"{description} or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()}"));
 	}
 }

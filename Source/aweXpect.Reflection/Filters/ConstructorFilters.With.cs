@@ -14,10 +14,10 @@ public static partial class ConstructorFilters
 	public static ConstructorsWith With<TAttribute>(this Filtered.Constructors @this)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		Filter.GenericFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo => constructorInfo.HasAttribute<TAttribute>(),
 			() => $"with {Formatter.Format(typeof(TAttribute))} ");
-		return new ConstructorsWith(@this.Which(filter), filter);
+		return new ConstructorsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -30,10 +30,10 @@ public static partial class ConstructorFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		Filter.GenericFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo => constructorInfo.HasAttribute(predicate),
 			() => $"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new ConstructorsWith(@this.Which(filter), filter);
+		return new ConstructorsWith(@this, filter);
 	}
 
 	/// <summary>
@@ -41,10 +41,13 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public class ConstructorsWith : Filtered.Constructors
 	{
-		private readonly IChangeableFilter<ConstructorInfo> _filter;
+		private readonly Filter.GenericFilter<ConstructorInfo> _filter;
+		private readonly Filtered.Constructors _source;
 
-		internal ConstructorsWith(Filtered.Constructors inner, IChangeableFilter<ConstructorInfo> filter) : base(inner)
+		internal ConstructorsWith(Filtered.Constructors source, Filter.GenericFilter<ConstructorInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -53,12 +56,9 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWith OrWith<TAttribute>()
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter((result, constructorInfo) => result || constructorInfo.HasAttribute<TAttribute>(),
+			=> new(_source, _filter.Extend((result, constructorInfo) => result || constructorInfo.HasAttribute<TAttribute>(),
 				description
-					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} ");
-			return this;
-		}
+					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -69,12 +69,9 @@ public static partial class ConstructorFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, constructorInfo) => result || constructorInfo.HasAttribute(predicate),
 				description
-					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-			return this;
-		}
+					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 	}
 }

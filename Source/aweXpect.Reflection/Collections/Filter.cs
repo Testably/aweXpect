@@ -19,7 +19,7 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new prefix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static IChangeableFilter<TEntity> Prefix<TEntity>(Func<TEntity, bool> predicate, string prefix)
+	public static GenericFilter<TEntity> Prefix<TEntity>(Func<TEntity, bool> predicate, string prefix)
 		=> new GenericPrefixFilter<TEntity>(predicate, prefix);
 
 	/// <summary>
@@ -32,13 +32,13 @@ internal static class Filter
 	/// <summary>
 	///     Creates a new suffix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static IChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, bool> predicate, string suffix)
+	public static GenericFilter<TEntity> Suffix<TEntity>(Func<TEntity, bool> predicate, string suffix)
 		=> new GenericSuffixFilter<TEntity>(predicate, suffix);
 
 	/// <summary>
 	///     Creates a new suffix <see cref="IFilter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static IChangeableFilter<TEntity> Suffix<TEntity>(Func<TEntity, bool> predicate, Func<string> suffix)
+	public static GenericFilter<TEntity> Suffix<TEntity>(Func<TEntity, bool> predicate, Func<string> suffix)
 		=> new GenericSuffixFuncFilter<TEntity>(predicate, suffix);
 
 	/// <summary>
@@ -97,7 +97,10 @@ internal static class Filter
 		protected abstract string DescribeCore(string text);
 	}
 
-	private abstract class GenericFilter<TEntity>(Func<TEntity, bool> filter) : IChangeableFilter<TEntity>
+	/// <summary>
+	///     A synchronous <see cref="IChangeableFilter{TEntity}" /> that can also be extended without changing it.
+	/// </summary>
+	internal abstract class GenericFilter<TEntity>(Func<TEntity, bool> filter) : IChangeableFilter<TEntity>
 	{
 		private List<Func<string, string>>? _descriptions;
 		private List<Func<bool, TEntity, bool>>? _predicates;
@@ -139,6 +142,18 @@ internal static class Filter
 			_predicates.Add(predicate);
 			_descriptions ??= [];
 			_descriptions.Add(description);
+		}
+
+		/// <summary>
+		///     Returns a copy of this filter that additionally applies the <paramref name="predicate" /> on the original
+		///     result and updates the <paramref name="description" />, while this filter stays unchanged.
+		/// </summary>
+		public GenericFilter<TEntity> Extend(Func<bool, TEntity, bool> predicate, Func<string, string> description)
+		{
+			GenericFilter<TEntity> copy = (GenericFilter<TEntity>)MemberwiseClone();
+			copy._predicates = _predicates is null ? [predicate,] : [.._predicates, predicate,];
+			copy._descriptions = _descriptions is null ? [description,] : [.._descriptions, description,];
+			return copy;
 		}
 
 		protected abstract string DescribeCore(string text);

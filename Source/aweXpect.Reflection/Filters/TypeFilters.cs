@@ -19,10 +19,8 @@ public static partial class TypeFilters
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
-		Quantifier quantifier = new();
-		return new TypesContainingMembers(
-			@this.Which(new ContainedMembersFilter<TMember, TFiltered>(navigate, filter, quantifier)),
-			quantifier);
+		ContainedMembersFilter<TMember, TFiltered> containedMembersFilter = new(navigate, filter, new Quantifier());
+		return new TypesContainingMembers(@this, containedMembersFilter, containedMembersFilter.WithQuantifier);
 	}
 
 	/// <summary>
@@ -43,133 +41,100 @@ public static partial class TypeFilters
 	/// </summary>
 	public class TypesContainingMembers : Filtered.Types
 	{
-		private readonly Quantifier _quantifier;
+		private readonly Filtered.Types _source;
+		private readonly Func<Quantifier, IFilter<Type>> _withQuantifier;
 
-		internal TypesContainingMembers(Filtered.Types inner, Quantifier quantifier) : base(inner)
+		internal TypesContainingMembers(Filtered.Types source, IFilter<Type> filter,
+			Func<Quantifier, IFilter<Type>> withQuantifier)
+			: base(source.Which(filter))
 		{
-			_quantifier = quantifier;
+			_source = source;
+			_withQuantifier = withQuantifier;
 		}
 
 		/// <summary>
 		///     Verifies, that the matching members occur at least…
 		/// </summary>
 		public CountTimesResult<Filtered.Types> AtLeast()
-			=> new(value =>
-			{
-				_quantifier.AtLeast(value);
-				return this;
-			});
+			=> new(value => Quantify(quantifier => quantifier.AtLeast(value)));
 
 		/// <summary>
 		///     Verifies, that the matching members occur at least <paramref name="minimum" /> times.
 		/// </summary>
 		public Filtered.Types AtLeast(Times minimum)
-		{
-			_quantifier.AtLeast(minimum.Value);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.AtLeast(minimum.Value));
 
 		/// <summary>
 		///     Verifies, that the matching members occur at most…
 		/// </summary>
 		public CountTimesResult<Filtered.Types> AtMost()
-			=> new(value =>
-			{
-				_quantifier.AtMost(value);
-				return this;
-			});
+			=> new(value => Quantify(quantifier => quantifier.AtMost(value)));
 
 		/// <summary>
 		///     Verifies, that the matching members occur at most <paramref name="maximum" /> times.
 		/// </summary>
 		public Filtered.Types AtMost(Times maximum)
-		{
-			_quantifier.AtMost(maximum.Value);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.AtMost(maximum.Value));
 
 		/// <summary>
 		///     Verifies, that the matching members occur between <paramref name="minimum" />…
 		/// </summary>
 		public BetweenResult<Filtered.Types> Between(int minimum)
-			=> new(maximum =>
-			{
-				_quantifier.Between(minimum, maximum);
-				return this;
-			});
+			=> new(maximum => Quantify(quantifier => quantifier.Between(minimum, maximum)));
 
 		/// <summary>
 		///     Verifies, that the matching members occur exactly <paramref name="expected" /> times.
 		/// </summary>
 		public Filtered.Types Exactly(Times expected)
-		{
-			_quantifier.Exactly(expected.Value);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.Exactly(expected.Value));
 
 		/// <summary>
 		///     Verifies, that the matching members occur less than…
 		/// </summary>
 		public CountTimesResult<Filtered.Types> LessThan()
-			=> new(value =>
-			{
-				_quantifier.LessThan(value);
-				return this;
-			});
+			=> new(value => Quantify(quantifier => quantifier.LessThan(value)));
 
 		/// <summary>
 		///     Verifies, that the matching members occur less than <paramref name="maximum" /> times.
 		/// </summary>
 		public Filtered.Types LessThan(Times maximum)
-		{
-			_quantifier.LessThan(maximum.Value);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.LessThan(maximum.Value));
 
 		/// <summary>
 		///     Verifies, that the matching members occur more than…
 		/// </summary>
 		public CountTimesResult<Filtered.Types> MoreThan()
-			=> new(value =>
-			{
-				_quantifier.MoreThan(value);
-				return this;
-			});
+			=> new(value => Quantify(quantifier => quantifier.MoreThan(value)));
 
 		/// <summary>
 		///     Verifies, that the matching members occur more than <paramref name="minimum" /> times.
 		/// </summary>
 		public Filtered.Types MoreThan(Times minimum)
-		{
-			_quantifier.MoreThan(minimum.Value);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.MoreThan(minimum.Value));
 
 		/// <summary>
 		///     Verifies, that no member matches the filter.
 		/// </summary>
 		public Filtered.Types Never()
-		{
-			_quantifier.Exactly(0);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.Exactly(0));
 
 		/// <summary>
 		///     Verifies, that exactly one member matches the filter.
 		/// </summary>
 		public Filtered.Types Once()
-		{
-			_quantifier.Exactly(1);
-			return this;
-		}
+			=> Quantify(quantifier => quantifier.Exactly(1));
 
 		/// <summary>
 		///     Verifies, that exactly two members match the filter.
 		/// </summary>
 		public Filtered.Types Twice()
+			=> Quantify(quantifier => quantifier.Exactly(2));
+
+		private Filtered.Types Quantify(Action<Quantifier> specify)
 		{
-			_quantifier.Exactly(2);
-			return this;
+			Quantifier quantifier = new();
+			specify(quantifier);
+			return _source.Which(_withQuantifier(quantifier));
 		}
 	}
 
@@ -199,8 +164,22 @@ public static partial class TypeFilters
 			MembersDescription = inner;
 		}
 
+		private ContainedMembersFilter(ContainedMembersFilter<TMember, TFiltered> original, Quantifier quantifier)
+		{
+			_navigate = original._navigate;
+			_filter = original._filter;
+			_quantifier = quantifier;
+			MembersDescription = original.MembersDescription;
+		}
+
 		/// <inheritdoc cref="IContainedMembersFilter.MembersDescription" />
 		public string MembersDescription { get; }
+
+		/// <summary>
+		///     Returns a copy of this filter that uses the given <paramref name="quantifier" />.
+		/// </summary>
+		public ContainedMembersFilter<TMember, TFiltered> WithQuantifier(Quantifier quantifier)
+			=> new ContainedMembersFilter<TMember, TFiltered>(this, quantifier);
 
 #if NET8_0_OR_GREATER
 		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type, CancellationToken)" />

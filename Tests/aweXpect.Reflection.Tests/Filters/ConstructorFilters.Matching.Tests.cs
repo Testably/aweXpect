@@ -32,6 +32,21 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Test]
+			public async Task ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.ConstructorFilters.ConstructorsWithParameter<int> withInt = In.Type<ClassWithConstructors>()
+					.Constructors().WithParameter<int>();
+
+				Filtered.Constructors matching = withInt.Matching(p => p.Name == "unknown");
+
+				await That(withInt).Contains(CountConstructor())
+					.Because("Matching must return a new filter instead of changing the one it was called on");
+				await That(withInt.GetDescription())
+					.IsEqualTo("constructors with parameter of type int in type").AsPrefix();
+				await That(matching).IsEmpty();
+			}
+
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				void Act()
