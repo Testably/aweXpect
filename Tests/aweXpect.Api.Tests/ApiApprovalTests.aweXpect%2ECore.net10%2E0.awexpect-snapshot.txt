@@ -2073,11 +2073,13 @@ namespace aweXpect.Synchronous
     public static class Synchronously
     {
         public static TType Verify<TType, TSelf>(aweXpect.Results.ExpectationResult<TType, TSelf> result) where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf> { }
+        public static void Verify(aweXpect.Core.Expectation.Combination combination) { }
         public static void Verify(aweXpect.Results.ExpectationResult result) { }
     }
     public static class SynchronouslyExtensions
     {
         public static TType VerifySynchronously<TType, TSelf>(this aweXpect.Results.ExpectationResult<TType, TSelf> result) where TSelf : aweXpect.Results.ExpectationResult<TType, TSelf> { }
+        public static void VerifySynchronously(this aweXpect.Core.Expectation.Combination combination) { }
         public static void VerifySynchronously(this aweXpect.Results.ExpectationResult result) { }
     }
 }
