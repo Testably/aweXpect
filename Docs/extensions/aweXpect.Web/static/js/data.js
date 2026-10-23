@@ -402,6 +402,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
         "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
+      },
+      {
+        "sha": "d795bb44729b246f090fd3f4726ca0de454cdfea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
+        "message": "test: expect the params modifier in the Matching failure messages (#1976)"
       }
     ],
     "labels": [
@@ -471,7 +477,8 @@ window.BENCHMARK_DATA = {
       "77ca8a7f",
       "3aaf6f00",
       "01684f30",
-      "eeb6f10c"
+      "eeb6f10c",
+      "d795bb44"
     ],
     "datasets": [
       {
@@ -544,7 +551,8 @@ window.BENCHMARK_DATA = {
           402.32251596450806,
           252.22146101792654,
           388.68835993607837,
-          420.1821586745126
+          420.1821586745126,
+          225.21917583261217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -588,6 +596,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -703,7 +712,8 @@ window.BENCHMARK_DATA = {
           995.0454494476319,
           547.0330158642361,
           918.3198987325032,
-          1043.8889147894722
+          1043.8889147894722,
+          589.1568284988404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -715,6 +725,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -1197,6 +1208,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
         "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
+      },
+      {
+        "sha": "d795bb44729b246f090fd3f4726ca0de454cdfea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
+        "message": "test: expect the params modifier in the Matching failure messages (#1976)"
       }
     ],
     "labels": [
@@ -1266,7 +1283,8 @@ window.BENCHMARK_DATA = {
       "77ca8a7f",
       "3aaf6f00",
       "01684f30",
-      "eeb6f10c"
+      "eeb6f10c",
+      "d795bb44"
     ],
     "datasets": [
       {
@@ -1339,7 +1357,8 @@ window.BENCHMARK_DATA = {
           197.58253553708394,
           107.85008602875929,
           182.68668971742903,
-          210.73924957911174
+          210.73924957911174,
+          104.07872362136841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1387,6 +1406,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1498,7 +1518,8 @@ window.BENCHMARK_DATA = {
           244.83706684112548,
           137.38816245396933,
           246.47757702607376,
-          301.9517139366695
+          301.9517139366695,
+          132.67716552416485
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1510,6 +1531,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -1932,6 +1954,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
         "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
+      },
+      {
+        "sha": "d795bb44729b246f090fd3f4726ca0de454cdfea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
+        "message": "test: expect the params modifier in the Matching failure messages (#1976)"
       }
     ],
     "labels": [
@@ -1991,7 +2019,8 @@ window.BENCHMARK_DATA = {
       "77ca8a7f",
       "3aaf6f00",
       "01684f30",
-      "eeb6f10c"
+      "eeb6f10c",
+      "d795bb44"
     ],
     "datasets": [
       {
@@ -2054,7 +2083,8 @@ window.BENCHMARK_DATA = {
           625.7590847015381,
           341.55834159851076,
           592.0976224626813,
-          631.2756338119507
+          631.2756338119507,
+          345.71186882654825
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2088,6 +2118,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -2193,7 +2224,8 @@ window.BENCHMARK_DATA = {
           999.7033538818359,
           527.9849604924519,
           914.6648674744827,
-          1035.4305335453578
+          1035.4305335453578,
+          543.2890694300334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2205,6 +2237,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -2617,6 +2650,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
         "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
+      },
+      {
+        "sha": "d795bb44729b246f090fd3f4726ca0de454cdfea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
+        "message": "test: expect the params modifier in the Matching failure messages (#1976)"
       }
     ],
     "labels": [
@@ -2676,7 +2715,8 @@ window.BENCHMARK_DATA = {
       "77ca8a7f",
       "3aaf6f00",
       "01684f30",
-      "eeb6f10c"
+      "eeb6f10c",
+      "d795bb44"
     ],
     "datasets": [
       {
@@ -2739,7 +2779,8 @@ window.BENCHMARK_DATA = {
           1695.4907952626547,
           1041.2209078924996,
           1622.0621901920863,
-          1708.298770268758
+          1708.298770268758,
+          1040.0927410125732
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2773,6 +2814,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -2878,7 +2920,8 @@ window.BENCHMARK_DATA = {
           21423.790985107422,
           11301.86473795573,
           19989.81854248047,
-          21215.52684733073
+          21215.52684733073,
+          10784.712821451823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2946,7 +2989,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3302,6 +3346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
         "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
+      },
+      {
+        "sha": "d795bb44729b246f090fd3f4726ca0de454cdfea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
+        "message": "test: expect the params modifier in the Matching failure messages (#1976)"
       }
     ],
     "labels": [
@@ -3361,7 +3411,8 @@ window.BENCHMARK_DATA = {
       "77ca8a7f",
       "3aaf6f00",
       "01684f30",
-      "eeb6f10c"
+      "eeb6f10c",
+      "d795bb44"
     ],
     "datasets": [
       {
@@ -3424,7 +3475,8 @@ window.BENCHMARK_DATA = {
           648.9808201423058,
           353.6068166586069,
           627.3658312388828,
-          725.0172378099882
+          725.0172378099882,
+          382.2548944950104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3454,6 +3506,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -3563,7 +3616,8 @@ window.BENCHMARK_DATA = {
           1347.2984526316325,
           688.8370215098063,
           1285.7120407104492,
-          1543.8675550314097
+          1543.8675550314097,
+          701.6683925219944
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3575,6 +3629,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -3987,6 +4042,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 16:29:57 2026 \u002B0200",
         "message": "fix: honour inherit in the attribute expectations of properties and events (#1968)"
+      },
+      {
+        "sha": "d795bb44729b246f090fd3f4726ca0de454cdfea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 16:52:45 2026 \u002B0200",
+        "message": "test: expect the params modifier in the Matching failure messages (#1976)"
       }
     ],
     "labels": [
@@ -4046,7 +4107,8 @@ window.BENCHMARK_DATA = {
       "77ca8a7f",
       "3aaf6f00",
       "01684f30",
-      "eeb6f10c"
+      "eeb6f10c",
+      "d795bb44"
     ],
     "datasets": [
       {
@@ -4109,7 +4171,8 @@ window.BENCHMARK_DATA = {
           1079.0714861551921,
           633.1405693462917,
           1024.9944611958094,
-          1081.7046429951986
+          1081.7046429951986,
+          673.0249552726746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4143,6 +4206,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -4248,7 +4312,8 @@ window.BENCHMARK_DATA = {
           778.9012372153146,
           415.72995338439944,
           704.645014836238,
-          886.6667691744291
+          886.6667691744291,
+          422.9103068033854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4260,6 +4325,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
