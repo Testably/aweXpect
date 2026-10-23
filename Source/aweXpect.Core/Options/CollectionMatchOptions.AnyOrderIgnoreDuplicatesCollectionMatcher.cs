@@ -144,7 +144,7 @@ public partial class CollectionMatchOptions
 			   MissingCount == 0 &&
 			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || AdditionalItemCount > 0);
 
-		public ValueTask<(bool, string?)>
+		public ValueTask<(bool IsFailure, string? Failure)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);
@@ -191,7 +191,7 @@ public partial class CollectionMatchOptions
 				: (false, null);
 		}
 
-		public async ValueTask<(bool, string?)>
+		public async ValueTask<(bool IsFailure, string? Failure)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);
