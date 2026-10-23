@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
-        "message": "refactor: speed up matching JSON against an expected object (#1891)"
-      },
-      {
         "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
-      "78b13d35",
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1204.02774365743,
           1150.5083653376653,
           1470.658320681254,
           1445.271382522583,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           545.9210633550372,
           412.256509744204,
           724.9107354482015,
-          358.9796726153447
+          358.9796726153447,
+          525.7508906682332
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -429,7 +429,6 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
-          992,
           928,
           928,
           928,
@@ -450,6 +449,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          959.6624974470872,
           854.7111960093181,
           898.764992918287,
           897.090498311179,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           690.1978113810221,
           546.8167120860173,
           925.4893353780111,
-          458.8412034511566
+          458.8412034511566,
+          710.5096167836871
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
-        "message": "refactor: speed up matching JSON against an expected object (#1891)"
-      },
-      {
         "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
-      "78b13d35",
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          156.74714631693703,
           140.93855563231878,
           141.24543137550353,
           144.55080912907917,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           101.06654013120212,
           65.39785539252418,
           140.68159465789796,
-          61.14534568786621
+          61.14534568786621,
+          97.33870738347372
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1037,7 +1037,6 @@ window.BENCHMARK_DATA = {
           384,
           384,
           384,
-          384,
           320,
           320,
           320,
@@ -1053,6 +1052,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.5991012573242,
           200.72816676752907,
           215.40178451538085,
           241.9134787241618,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           180.54400530228247,
           125.03223059858594,
           214.22257521947225,
-          113.4605214357376
+          113.4605214357376,
+          167.04808872086662
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "78b13d35945c33c3d1419aee1d8b7dceea1e08c5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:00:45 2026 \u002B0200",
-        "message": "refactor: speed up matching JSON against an expected object (#1891)"
-      },
-      {
         "sha": "87d3aeb20d199c102d1f4c48342c1512bbedc655",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 14:03:06 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
-      "78b13d35",
       "87d3aeb2",
       "fe413769",
       "3514e5d3",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          20580.747135416666,
           21500.484102376304,
           2299.7091654459637,
           1979.3088559468588,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1460.2642394474574,
           1097.6360457102458,
           2164.511978694371,
-          916.9871085030692
+          916.9871085030692,
+          1479.8069575383113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          6783,
           6781,
           2784,
           2376,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           2080,
           2080,
           2080,
+          2080,
           2080
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1246.4895590373449,
           1191.416109085083,
           1231.1467041015626,
           1247.7940812792096,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1114.4001684824625,
           922.9177323659261,
           1591.289589881897,
-          770.3706414358957
+          770.3706414358957,
+          1096.0758247375488
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1760,
           1760,
           1760,
           1760,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1897,
           1897,
           1985,
-          1985
+          1985,
+          1897
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2082,6 +2082,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -2127,7 +2133,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -2176,7 +2183,8 @@ window.BENCHMARK_DATA = {
           2148.273969014486,
           1493.810746056693,
           2752.4326885768346,
-          1294.4953686396282
+          1294.4953686396282,
+          2184.58882522583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2230,7 +2238,8 @@ window.BENCHMARK_DATA = {
           2984,
           3040,
           3040,
-          2984
+          2984,
+          3040
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2287,7 +2296,8 @@ window.BENCHMARK_DATA = {
           2995.4287437438966,
           2305.3181785583497,
           3882.8476697481597,
-          1976.3052455357142
+          1976.3052455357142,
+          3130.92204448155
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2341,6 +2351,7 @@ window.BENCHMARK_DATA = {
           4011,
           4011,
           4012,
+          4011,
           4011
         ],
         "borderColor": "#FF671B",
@@ -2613,6 +2624,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -2658,7 +2675,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -2707,7 +2725,8 @@ window.BENCHMARK_DATA = {
           265.10539229710895,
           196.4368517949031,
           389.34011707987105,
-          168.17566094795862
+          168.17566094795862,
+          272.7964896133968
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2737,6 +2756,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -2818,7 +2838,8 @@ window.BENCHMARK_DATA = {
           1669.878544807434,
           1361.2392132098857,
           2600.64382989066,
-          1147.9256518227714
+          1147.9256518227714,
+          1765.536045964559
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2830,6 +2851,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3144,6 +3166,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
         "message": "feat: add WithTimeout, WithCancellation and Because to Expect.ThatAll and Expect.ThatAny (#1957)"
+      },
+      {
+        "sha": "d5baef734c06e178ac841716542f060ce9f1f1e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 08:19:05 2026 \u002B0200",
+        "message": "refactor!: replace the forceDirect flag of aweXpect.Reflection with explicit Directly methods (#1950)"
       }
     ],
     "labels": [
@@ -3189,7 +3217,8 @@ window.BENCHMARK_DATA = {
       "9c75ee02",
       "ae43e1f2",
       "22416e11",
-      "e6ee3749"
+      "e6ee3749",
+      "d5baef73"
     ],
     "datasets": [
       {
@@ -3238,7 +3267,8 @@ window.BENCHMARK_DATA = {
           2621.463785171509,
           2139.520981343587,
           3588.475953510829,
-          1726.4148915154594
+          1726.4148915154594,
+          2694.5040934426443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3289,6 +3319,7 @@ window.BENCHMARK_DATA = {
           3673,
           3673,
           3672,
+          3673,
           3673,
           3673,
           3673,
@@ -3349,7 +3380,8 @@ window.BENCHMARK_DATA = {
           239427.77475210337,
           182064.14771321614,
           280600.33082932694,
-          156732.05252278646
+          156732.05252278646,
+          239112.05671037946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3400,6 +3432,7 @@ window.BENCHMARK_DATA = {
           17913,
           17608,
           17560,
+          17609,
           17609,
           17609,
           17609,
