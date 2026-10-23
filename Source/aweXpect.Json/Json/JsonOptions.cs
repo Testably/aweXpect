@@ -162,7 +162,7 @@ public class JsonOptions
 			return;
 		}
 
-		foreach (string name in MembersToIgnore.OfType<NamedMemberToIgnore>().Select(named => named.MemberName))
+		foreach (string name in MembersToIgnore.OfType<MemberToIgnore.ByName>().Select(named => named.MemberName))
 		{
 			if (unmatchedMembersToIgnore.TryGetValue(name, out string? suggestion))
 			{
