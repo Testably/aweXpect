@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12830.830071585518,
           12716.209959920247,
           13469.414391150842,
           6596.264731815883,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10548.28785588191,
           5469.286446791429,
           11289.833716074625,
-          5664.27356338501
+          5664.27356338501,
+          10600.113392421177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -437,7 +437,6 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -453,6 +452,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          364450.78185096156,
           360835.12444196426,
           385380.48684895836,
           178992.7767578125,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           379705.4537760417,
           184489.04161658653,
           371981.94210379466,
-          192327.6238606771
+          192327.6238606771,
+          380122.095703125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590291,
           590288,
           590292,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20109.71484883626,
           19577.099816458565,
           19206.561294555664,
           9672.389400227865,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19265.818517831656,
           10399.851348876953,
           20038.31573232015,
-          10892.447739737374
+          10892.447739737374,
+          19462.27752787272
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          319.50869131088257,
           342.94660336176554,
           306.34915406363353,
           138.71444506645201,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           282.45449867248533,
           133.25357217448098,
           323.0839761665889,
-          137.08161479234695
+          137.08161479234695,
+          266.7043742815653
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1170,7 +1170,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1186,6 +1185,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          480.948417867933,
           493.0574806758336,
           559.0478465398153,
           265.9254628590175,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           536.0882632573446,
           272.2709479967753,
           518.3976290042584,
-          302.2015242894491
+          302.2015242894491,
+          568.34365456899
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          383.6896659646715,
           394.50341510772705,
           399.7745791435242,
           223.6468460900443,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           389.1260638554891,
           209.5209174156189,
           391.0207567214966,
-          227.0751003106435
+          227.0751003106435,
+          425.49170913696287
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          150.6127185980479,
           148.89149589538573,
           160.59917413393657,
           78.1513781150182,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           134.76700851122538,
           68.92227263450623,
           126.88535022735596,
-          72.15881011315754
+          72.15881011315754,
+          133.24426571528116
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1903,7 +1903,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1919,6 +1918,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          254.0005808217185,
           258.0033085823059,
           262.4527729034424,
           136.25635732923234,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           261.78872073491414,
           139.30528627909146,
           238.74847851480757,
-          150.95673394203186
+          150.95673394203186,
+          262.0612068494161
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          231.8496056520022,
           244.99941361745198,
           261.8423598607381,
           132.18533142407736,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           246.05112062181746,
           137.05513084729512,
           236.130400793893,
-          135.1150687932968
+          135.1150687932968,
+          254.21816228230793
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.5313862051283,
           286.11733493804934,
           279.0654663306016,
           160.31036690565256,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           251.03506956100463,
           138.82402202061243,
           244.43317893573217,
-          134.51541717235858
+          134.51541717235858,
+          265.0771895090739
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2636,7 +2636,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2652,6 +2651,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          542.9683816092355,
           516.3736726125081,
           527.1524635950724,
           308.0143295434805,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           548.793355623881,
           290.7077779452006,
           513.8257446289062,
-          274.9079108421619
+          274.9079108421619,
+          547.8430905342102
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          317.0804671874413,
           327.2018767674764,
           345.8191385904948,
           197.49301727612814,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           336.75120849609374,
           186.880779616038,
           329.779704507192,
-          194.65207466057367
+          194.65207466057367,
+          351.88121871948243
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          645.035011100769,
           639.0630943591779,
           708.2389707565308,
           339.8828879424504,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           630.612085546766,
           344.5377906799316,
           650.0196727343967,
-          348.69677826336454
+          348.69677826336454,
+          649.0789494514465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3369,7 +3369,6 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3385,6 +3384,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1320.4583545412336,
           1381.041144434611,
           1460.132477393517,
           704.0699275970459,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1403.9547719319662,
           701.0505020959037,
           1389.456708272298,
-          802.2223131473248
+          802.2223131473248,
+          1449.1000511462871
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          646.8888455708822,
           646.5618248667035,
           643.0744180679321,
           347.3612709363302,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           667.9892899195353,
           353.19847571055095,
           642.9606801350911,
-          391.5066741194044
+          391.5066741194044,
+          671.8581862767537
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          640.4601805550711,
           640.4209254128592,
           696.0705689112345,
           334.4265292031424,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           614.1179178101676,
           323.5923639706203,
           627.6755740092351,
-          337.27263835498263
+          337.27263835498263,
+          653.3047718320574
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4102,7 +4102,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4118,6 +4117,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28272.02166513296,
           27720.800270589192,
           27599.6657023112,
           10571.065576171875,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           27875.137176513672,
           10801.203182765415,
           27960.84029497419,
-          11159.431754557292
+          11159.431754557292,
+          27856.558186848957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4228,7 +4228,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4248,6 +4247,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          778.1249496019803,
           785.4593592325847,
           826.4341165542603,
           425.74920657702853,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           810.8164026896159,
           416.29526437123616,
           788.6861869812012,
-          455.9635877609253
+          455.9635877609253,
+          802.7990395228068
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          750.3315128179697,
           726.2182041168213,
           735.735329246521,
           373.0331435839335,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           675.698502667745,
           369.0705276489258,
           657.8620715508094,
-          396.9796390533447
+          396.9796390533447,
+          707.5691544850667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4828,7 +4828,6 @@ window.BENCHMARK_DATA = {
           1856,
           1856,
           1856,
-          1856,
           1760,
           1760,
           1760,
@@ -4851,6 +4850,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82043.3909016927,
           83428.47364908854,
           85469.73887532552,
           29494.972002301896,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           83504.73860051081,
           30273.82550048828,
           82261.04782339242,
-          30312.222603352864
+          30312.222603352864,
+          85411.41490827288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4945,7 +4945,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5252,
           5252,
-          5252,
           5256,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
       {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          179.30994068659268,
           175.17753386497498,
           186.72757803476773,
           110.18292439835412,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           163.13640001614888,
           91.21036783854167,
           168.0002814769745,
-          99.19829645156861
+          99.19829645156861,
+          174.6523332754771
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5443,7 +5443,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5459,6 +5458,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32832.37120361328,
           33147.64429931641,
           31306.018702915735,
           11076.802041625977,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32638.65643310547,
           10732.662968226841,
           32451.822368915266,
-          11386.077808925083
+          11386.077808925083,
+          34173.76583658854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5553,7 +5553,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          237.70466898282368,
           243.2941465695699,
           251.0994581858317,
           139.39484674135844,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           258.9761901219686,
           138.73687052726746,
           245.42917222243088,
-          142.21630455897406
+          142.21630455897406,
+          265.2736421585083
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          354.57267611821493,
           360.10426191488904,
           368.94456850687664,
           187.3057516983577,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           355.9115953127543,
           169.5508926831759,
           356.4081742286682,
-          173.576873032252
+          173.576873032252,
+          360.1711370027982
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6176,7 +6176,6 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6192,6 +6191,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          364.20670493443805,
           389.23395179112754,
           375.71736411253613,
           220.09970924854278,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           391.5127222379049,
           207.60415089130402,
           393.10255762736,
-          211.34114462534586
+          211.34114462534586,
+          401.8323447887714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          399.33776105244954,
           419.3142405509949,
           425.68998495737713,
           213.04699403444926,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           414.07689367930095,
           234.64419938723248,
           395.96587397257485,
-          215.25031031095065
+          215.25031031095065,
+          416.9427511010851
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          797.5990753855024,
           799.918774332319,
           827.7983581542969,
           446.73118019104004,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           646.7151170730591,
           332.13477557500204,
           629.8804529190063,
-          354.3129647890727
+          354.3129647890727,
+          667.0184326171875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6909,7 +6909,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6925,6 +6924,7 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
+          1376,
           1376,
           1376,
           1376,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1831.3790845137376,
           1976.6952491760253,
           2028.140828704834,
           1160.9594509124756,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1935.3038619995118,
           1034.7066119057793,
           2228.1317497253417,
-          1193.7788029988608
+          1193.7788029988608,
+          2100.2480204264325
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          906.782819112142,
           952.1759960174561,
           947.1852062225341,
           510.2945117155711,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           926.7221125284831,
           498.746785736084,
           943.2415106637137,
-          524.4804087638855
+          524.4804087638855,
+          989.3694017955235
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12304.294448852539,
           12081.541130065918,
           12083.014532906669,
           6485.879282437838,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11307.392217782828,
           5900.501402173723,
           11422.437753295899,
-          5940.7898289998375
+          5940.7898289998375,
+          11395.240723830004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7642,7 +7642,6 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7658,6 +7657,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41226.83924967448,
           40712.498434884204,
           42139.088887532555,
           19462.812460763114,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           40505.289562988284,
           19400.051323523887,
           40195.521087646484,
-          19138.235481770833
+          19138.235481770833,
+          40385.8912882487
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11412.204189593975,
           11322.25827407837,
           11346.99682820638,
           6425.284461975098,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10723.846369425455,
           5791.129051795373,
           10494.592777797154,
-          5837.694809468588
+          5837.694809468588,
+          10547.019277300153
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "6e495ae1ba7bb7eb435dcc7718d5eacac7184988",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 18 22:22:11 2026 \u002B0200",
-        "message": "ci: run Stryker in project mode (#1878)"
-      },
-      {
         "sha": "06c125c6911590ad539abdfff6b602488771f7a8",
         "author": "dependabot[bot]",
         "date": "Mon Oct 19 07:34:27 2026 \u002B0000",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
-      "6e495ae1",
       "06c125c6",
       "5348e226",
       "369e335f",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11860.760524495443,
           11594.618412780761,
           11707.549776204427,
           6105.429531977727,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           10787.698076375325,
           5596.775501505534,
           10775.609970092773,
-          5504.425042470296
+          5504.425042470296,
+          10878.802782694498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8375,7 +8375,6 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8391,6 +8390,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59329.20127766927,
           60240.43694598858,
           60446.32313319615,
           27999.129021277793,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           58661.48373616536,
           27867.36478834886,
           59117.15697835286,
-          27818.082527160645
+          27818.082527160645,
+          58987.58564046224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23553,
           23553,
@@ -8514,6 +8513,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22494.33946110652,
           22314.193932669503,
           22333.71257672991,
           12393.453134809222,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21266.158459003156,
           11481.38140970866,
           20964.53826904297,
-          11362.45514855018
+          11362.45514855018,
+          20896.163779703777
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
