@@ -282,6 +282,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:26:34 2026 \u002B0200",
         "message": "refactor!: make the problem details options internal (#1953)"
+      },
+      {
+        "sha": "257e5c03d42cdce0027bfc862445bc0c4bcc12a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:56:30 2026 \u002B0200",
+        "message": "refactor!: name the header and JSON property parameters name (#1942)"
       }
     ],
     "labels": [
@@ -331,7 +337,8 @@ window.BENCHMARK_DATA = {
       "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
-      "8f08376f"
+      "8f08376f",
+      "257e5c03"
     ],
     "datasets": [
       {
@@ -384,7 +391,8 @@ window.BENCHMARK_DATA = {
           1562.7571428843908,
           2055.9568402216983,
           2138.348193105062,
-          2119.6740224020823
+          2119.6740224020823,
+          2146.4047200339182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -424,6 +432,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1264,
           1264,
           1264,
           1264,
@@ -503,7 +512,8 @@ window.BENCHMARK_DATA = {
           10323.991859436035,
           15105.585248674664,
           15635.732144869291,
-          15552.851615397136
+          15552.851615397136,
+          15688.014491154598
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -515,6 +525,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -857,6 +868,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:26:34 2026 \u002B0200",
         "message": "refactor!: make the problem details options internal (#1953)"
+      },
+      {
+        "sha": "257e5c03d42cdce0027bfc862445bc0c4bcc12a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:56:30 2026 \u002B0200",
+        "message": "refactor!: name the header and JSON property parameters name (#1942)"
       }
     ],
     "labels": [
@@ -906,7 +923,8 @@ window.BENCHMARK_DATA = {
       "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
-      "8f08376f"
+      "8f08376f",
+      "257e5c03"
     ],
     "datasets": [
       {
@@ -959,7 +977,8 @@ window.BENCHMARK_DATA = {
           1088.8364507130213,
           1521.4473068530742,
           1519.7365531921387,
-          1583.4144919259209
+          1583.4144919259209,
+          1582.4121567652776
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -999,6 +1018,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1078,7 +1098,8 @@ window.BENCHMARK_DATA = {
           9473.274732317243,
           13820.462447102864,
           14139.950078691754,
-          14393.294654337566
+          14393.294654337566,
+          14444.679507954916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1090,6 +1111,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -1372,6 +1394,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:26:34 2026 \u002B0200",
         "message": "refactor!: make the problem details options internal (#1953)"
+      },
+      {
+        "sha": "257e5c03d42cdce0027bfc862445bc0c4bcc12a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:56:30 2026 \u002B0200",
+        "message": "refactor!: name the header and JSON property parameters name (#1942)"
       }
     ],
     "labels": [
@@ -1411,7 +1439,8 @@ window.BENCHMARK_DATA = {
       "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
-      "8f08376f"
+      "8f08376f",
+      "257e5c03"
     ],
     "datasets": [
       {
@@ -1454,7 +1483,8 @@ window.BENCHMARK_DATA = {
           3449.407126835414,
           4643.40678914388,
           4382.063835144043,
-          4916.00042288644
+          4916.00042288644,
+          4909.23833993765
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1484,6 +1514,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1553,7 +1584,8 @@ window.BENCHMARK_DATA = {
           28675.54129464286,
           45484.21886393229,
           43396.591759314906,
-          46255.88087565104
+          46255.88087565104,
+          47094.58042689732
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1601,6 +1633,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61932,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1837,6 +1870,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:26:34 2026 \u002B0200",
         "message": "refactor!: make the problem details options internal (#1953)"
+      },
+      {
+        "sha": "257e5c03d42cdce0027bfc862445bc0c4bcc12a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:56:30 2026 \u002B0200",
+        "message": "refactor!: name the header and JSON property parameters name (#1942)"
       }
     ],
     "labels": [
@@ -1876,7 +1915,8 @@ window.BENCHMARK_DATA = {
       "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
-      "8f08376f"
+      "8f08376f",
+      "257e5c03"
     ],
     "datasets": [
       {
@@ -1919,7 +1959,8 @@ window.BENCHMARK_DATA = {
           7328.850267682757,
           9271.049850463867,
           9754.170414851262,
-          9354.149719238281
+          9354.149719238281,
+          9553.463603719076
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1949,6 +1990,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2018,7 +2060,8 @@ window.BENCHMARK_DATA = {
           201982.6768717448,
           303817.96064453124,
           271626.79561941966,
-          294633.78079659597
+          294633.78079659597,
+          301003.00397135416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2066,6 +2109,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521572,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2302,6 +2346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:26:34 2026 \u002B0200",
         "message": "refactor!: make the problem details options internal (#1953)"
+      },
+      {
+        "sha": "257e5c03d42cdce0027bfc862445bc0c4bcc12a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:56:30 2026 \u002B0200",
+        "message": "refactor!: name the header and JSON property parameters name (#1942)"
       }
     ],
     "labels": [
@@ -2341,7 +2391,8 @@ window.BENCHMARK_DATA = {
       "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
-      "8f08376f"
+      "8f08376f",
+      "257e5c03"
     ],
     "datasets": [
       {
@@ -2384,7 +2435,8 @@ window.BENCHMARK_DATA = {
           2145.1845136006673,
           2850.904726409912,
           3040.561870302473,
-          2883.736641747611
+          2883.736641747611,
+          2862.3433130900066
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2429,6 +2481,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2483,7 +2536,8 @@ window.BENCHMARK_DATA = {
           1491.8458365122476,
           1899.2328483581543,
           2070.6131882300742,
-          1909.8908480130708
+          1909.8908480130708,
+          2007.6191200256349
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2495,6 +2549,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -2767,6 +2822,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:26:34 2026 \u002B0200",
         "message": "refactor!: make the problem details options internal (#1953)"
+      },
+      {
+        "sha": "257e5c03d42cdce0027bfc862445bc0c4bcc12a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:56:30 2026 \u002B0200",
+        "message": "refactor!: name the header and JSON property parameters name (#1942)"
       }
     ],
     "labels": [
@@ -2806,7 +2867,8 @@ window.BENCHMARK_DATA = {
       "3804f6c8",
       "8dcdaffe",
       "1c027d4b",
-      "8f08376f"
+      "8f08376f",
+      "257e5c03"
     ],
     "datasets": [
       {
@@ -2849,7 +2911,8 @@ window.BENCHMARK_DATA = {
           1576.7940216064453,
           1995.230549948556,
           2134.953483581543,
-          2018.0769707815987
+          2018.0769707815987,
+          2095.206227620443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2879,6 +2942,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -2948,7 +3012,8 @@ window.BENCHMARK_DATA = {
           1397.4660514831544,
           1722.0373856862386,
           1959.4329750061036,
-          1763.2762260437012
+          1763.2762260437012,
+          1934.4136159261068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2960,6 +3025,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
