@@ -781,8 +781,8 @@ public sealed partial class ThatMethods
 
 					             Collection:
 					             [
-					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithRefInt(Int32& value),
-					               void ThatMethods.HaveParameter.NegatedTests.TestClass.AnotherMethodWithRefInt(Int32& number)
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithRefInt(ref int value),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.AnotherMethodWithRefInt(ref int number)
 					             ]
 					             """);
 			}

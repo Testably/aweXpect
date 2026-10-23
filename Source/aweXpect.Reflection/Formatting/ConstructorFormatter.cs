@@ -11,24 +11,7 @@ internal class ConstructorFormatter : IValueFormatter
 		{
 			Formatter.Format(stringBuilder, constructorInfo.DeclaringType);
 			stringBuilder.Append('(');
-			int index = 0;
-			foreach (ParameterInfo? parameter in constructorInfo.GetParameters())
-			{
-				if (index++ > 0)
-				{
-					stringBuilder.Append(", ");
-				}
-
-				Formatter.Format(stringBuilder, parameter.ParameterType);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(parameter.Name);
-				if (parameter.HasDefaultValue)
-				{
-					stringBuilder.Append(" = ");
-					Formatter.Format(stringBuilder, parameter.DefaultValue);
-				}
-			}
-
+			ParameterFormatter.AppendParameters(stringBuilder, constructorInfo.GetParameters());
 			stringBuilder.Append(')');
 			return true;
 		}
