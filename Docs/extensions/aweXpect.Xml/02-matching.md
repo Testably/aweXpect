@@ -1,5 +1,13 @@
 # Matching XML
 
+Describes the possible expectations for matching an `XElement` or an `XDocument` with an expected XML, and the
+[options](#options) to relax the comparison.
+
+| Expectation                                 | Negated | Summary                                            |
+|---------------------------------------------|---------|----------------------------------------------------|
+| [`Matches`](#elements-and-documents)        |         | matches the expected XML, additional nodes allowed |
+| [`MatchesExactly`](#elements-and-documents) |         | matches the expected XML exactly                   |
+
 ## Elements and documents
 
 You can verify that an [`XElement`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xelement) matches an
@@ -57,16 +65,29 @@ XElement track = XElement.Parse("""<track title="Let It Be" />""");
 await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
 ```
 
-## Additional nodes
+## Options
+
+The options are available wherever `XmlOptions` are accepted, i.e. `Matches`, `MatchesExactly`, `IsValidXmlMatching`,
+`IsValidXmlMatchingExactly` and [`AsXml(o => …)`](./01-strings.md#string-comparison-as-xml). Like the
+[options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options), an option that switches something on
+takes an optional `bool`:
+
+| Option                                                             | Configures                                                   |
+|--------------------------------------------------------------------|--------------------------------------------------------------|
+| [`IgnoringAdditionalNodes()`](#additional-nodes)                   | ignores additional attributes and child nodes of the subject |
+| [`IgnoringMember(path)`, `Ignoring(path => …)`](#ignoring-members) | leaves members out of the comparison                         |
+| [`IgnoringElementOrder()`](#element-order)                         | the child elements and texts can be in any order             |
+
+### Additional nodes
 
 You can ignore the attributes and child nodes of the subject that are not in the expected XML. The option is available
 for `MatchesExactly`, `IsValidXmlMatchingExactly` and [`AsXml()`](./01-strings.md#string-comparison-as-xml), and
 `Matches` and `IsValidXmlMatching` use it by default:
 
 ```csharp
-string order = """<order id="42" status="open"><item sku="A1" /></order>""";
+string album = """<album id="42" year="1969"><track title="Come Together" /></album>""";
 
-await Expect.That(order).IsEqualTo("""<order id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await Expect.That(album).IsEqualTo("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 The additional nodes are ignored on every level, and the expected nodes are still compared, so that missing nodes,
@@ -81,27 +102,27 @@ XML options:
 With `IgnoringAdditionalNodes(false)`, `Matches` and `IsValidXmlMatching` compare exactly, like `MatchesExactly` and
 `IsValidXmlMatchingExactly`.
 
-## Ignoring members
+### Ignoring members
 
 You can ignore members whose values change between runs, e.g. generated ids or timestamps. The options are available
 for `Matches`, `MatchesExactly`, `IsValidXmlMatching`, `IsValidXmlMatchingExactly` and
 [`AsXml()`](./01-strings.md#string-comparison-as-xml):
 
 ```csharp
-string order = """<order id="42" createdAt="2026-10-17"><item sku="A1" etag="x1" /></order>""";
+string album = """<album id="42" createdAt="2026-10-17"><track title="Come Together" etag="x1" /></album>""";
 
-await Expect.That(order).IsEqualTo("""<order id="1"><item sku="A1" /></order>""")
+await Expect.That(album).IsEqualTo("""<album id="1"><track title="Come Together" /></album>""")
     .AsXml(o => o
-        .IgnoringMember("/order/@id")
+        .IgnoringMember("/album/@id")
         .IgnoringMember("@createdAt")
         .Ignoring(path => path.EndsWith("/@etag")));
 ```
 
 `IgnoringMember` matches whole trailing segments of the [path](./01-strings.md#string-comparison-as-xml):
-`"@createdAt"` ignores the attribute on every element and `"item/@id"` the attribute of every `item`, while a path
-starting with `/`, e.g. `"/order/@id"`, only ignores this member. A segment without a position, e.g. `item`, matches
-every element of the name, and `item[2]` only the second. The names are compared case-sensitively, as in XML. Like
-the paths, they are local names, so that `"item"` ignores an `item` in every namespace, unlike
+`"@createdAt"` ignores the attribute on every element and `"track/@id"` the attribute of every `track`, while a path
+starting with `/`, e.g. `"/album/@id"`, only ignores this member. A segment without a position, e.g. `track`, matches
+every element of the name, and `track[2]` only the second. The names are compared case-sensitively, as in XML. Like
+the paths, they are local names, so that `"track"` ignores a `track` in every namespace, unlike
 [`HasElement`](./03-navigation.md#names-and-namespaces), which looks up the name with its namespace. `Ignoring`
 receives the path of every compared member instead.
 
@@ -111,7 +132,7 @@ when the expectation fails:
 
 ```text title="Failure message"
 XML options:
- - ignore members: ["/order/@id", "@createdAt", path => path.EndsWith("/@etag")]
+ - ignore members: ["/album/@id", "@createdAt", path => path.EndsWith("/@etag")]
 ```
 
 A member to ignore that matched no compared path is named in a failure, with the path it most likely meant, as a
@@ -127,25 +148,26 @@ As [additional nodes](#additional-nodes) of the subject are not compared when th
 member to ignore that only occurs in the subject matches no compared path either, and is named as well, although it
 is not needed.
 
-## Element order
+### Element order
 
 By default, the order of the child elements and texts is significant. You can ignore it for all compared elements:
 
 ```csharp
-XElement order = XElement.Parse("""<order><item sku="B2" /><item sku="A1" /></order>""");
+XElement album = XElement.Parse("""<album><track title="Something" /><track title="Come Together" /></album>""");
 
-await Expect.That(order).MatchesExactly("""<order><item sku="A1" /><item sku="B2" /></order>""",
+await Expect.That(album).MatchesExactly("""<album><track title="Come Together" /><track title="Something" /></album>""",
     o => o.IgnoringElementOrder());
 ```
 
 Each expected child is paired with the first unpaired child of the subject with the same name that matches it. The
 remaining children of the same name are paired in their order, so that their differences are reported, e.g.
-`/order/item[1]/@sku was "C3" instead of "A1"`, and the children that are still unpaired are reported as missing or
-unexpected. This greedy pairing can fail when [additional nodes](#additional-nodes) are ignored, e.g. by `Matches`,
-and an expected child matches several children of the subject, even if another pairing would succeed.
+`/album/track[1]/@title was "Here Comes the Sun" instead of "Come Together"`, and the children that are still
+unpaired are reported as missing or unexpected. This greedy pairing can fail when [additional nodes](#additional-nodes)
+are ignored, e.g. by `Matches`, and an expected child matches several children of the subject, even if another pairing
+would succeed.
 
 The texts are paired like the elements, so that the order of the texts in mixed content, e.g. `<p>a<b/>c</p>`, is
 ignored as well.
 
 As the children are no longer paired by their position, a position in a [member to ignore](#ignoring-members), e.g.
-`item[2]`, refers to the child at this position in each document.
+`track[2]`, refers to the child at this position in each document.
