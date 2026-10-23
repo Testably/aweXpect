@@ -19,10 +19,10 @@ public static partial class MethodFilters
 	public static MethodsWhichReturn WhichReturnExactly(this Filtered.Methods @this,
 		Type returnType)
 	{
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		Filter.GenericFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.ReturnType.IsOrInheritsFrom(returnType, true),
 			() => $"which return exactly {Formatter.Format(returnType)} ");
-		return new MethodsWhichReturn(@this.Which(filter), filter);
+		return new MethodsWhichReturn(@this, filter);
 	}
 
 	/// <summary>
@@ -52,13 +52,10 @@ public static partial class MethodFilters
 		///     Allow an alternative exact return type <paramref name="returnType" />.
 		/// </summary>
 		public MethodsWhichReturn OrReturnExactly(Type returnType)
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, methodInfo)
 					=> result || methodInfo.ReturnType.IsOrInheritsFrom(returnType, true),
 				description
-					=> $"{description}or return exactly {Formatter.Format(returnType)} ");
-			return this;
-		}
+					=> $"{description}or return exactly {Formatter.Format(returnType)} "));
 	}
 }

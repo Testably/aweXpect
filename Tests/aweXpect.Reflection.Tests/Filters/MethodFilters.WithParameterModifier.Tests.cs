@@ -90,6 +90,22 @@ public sealed partial class MethodFilters
 					.IsEqualTo("methods with parameter of type int and with ref modifier in assembly")
 					.AsPrefix();
 			}
+
+			[Test]
+			public async Task WithRefModifier_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.MethodFilters.MethodsWithParameter<int> withInt = In.Type<ClassWithModifierParameters>()
+					.Methods().WithParameter<int>();
+
+				Filtered.Methods withRef = withInt.WithRefModifier();
+
+				await That(withInt).Contains(PlainIntMethod())
+					.Because("WithRefModifier must return a new filter instead of changing the one it was called on");
+				await That(withInt.GetDescription())
+					.IsEqualTo("methods with parameter of type int in type").AsPrefix();
+				await That(withRef).Contains(RefIntMethod());
+				await That(withRef).DoesNotContain(PlainIntMethod());
+			}
 		}
 
 #pragma warning disable CA1822

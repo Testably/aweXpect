@@ -429,6 +429,28 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Test]
+			public async Task WithParameterWithDefaultValue_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.ConstructorFilters.ConstructorsWithParameter<int> withInt =
+					In.Type<TestClassWithConstructorParameters>().Constructors().WithParameter<int>();
+
+				Filtered.Constructors withDefaultValue = withInt.WithDefaultValue();
+
+				await That(withInt).IsEqualTo([
+						typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int), typeof(string),])!,
+						typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int),])!,
+						typeof(TestClassWithConstructorParameters).GetConstructor([typeof(string), typeof(int),])!,
+					]).InAnyOrder()
+					.Because("WithDefaultValue must return a new filter instead of changing the one it was called on");
+				await That(withInt.GetDescription())
+					.IsEqualTo("constructors with parameter of type int in").AsPrefix();
+				await That(withDefaultValue).IsEqualTo([
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(int),])!,
+					typeof(TestClassWithConstructorParameters).GetConstructor([typeof(string), typeof(int),])!,
+				]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task
 				WithParameterWithSpecificDefaultValue_ShouldFilterForConstructorsWithParameterWithSpecificDefaultValue()
 			{

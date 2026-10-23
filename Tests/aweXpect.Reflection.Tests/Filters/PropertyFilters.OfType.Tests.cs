@@ -79,6 +79,27 @@ public sealed partial class PropertyFilters
 						"properties of type PropertyFilters.OfType.OtherDummy or of type PropertyFilters.OfType.DummyBase in assembly")
 					.AsPrefix();
 			}
+
+			[Test]
+			public async Task ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.PropertyFilters.PropertiesOfType ofOtherDummy = In.AssemblyContaining<AssemblyFilters>()
+					.Properties().OfType<OtherDummy>();
+
+				Filtered.Properties ofOtherDummyOrDummyBase = ofOtherDummy.OrOfType<DummyBase>();
+
+				await That(ofOtherDummy).IsEqualTo([
+						typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
+					])
+					.Because("OrOfType must return a new filter instead of changing the one it was called on");
+				await That(ofOtherDummy.GetDescription())
+					.IsEqualTo("properties of type PropertyFilters.OfType.OtherDummy in assembly").AsPrefix();
+				await That(ofOtherDummyOrDummyBase).IsEqualTo([
+					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
+					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
+					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
+				]).InAnyOrder();
+			}
 		}
 
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
