@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Tests;
 
@@ -18,6 +19,37 @@ public sealed partial class ThatIPAddress
 
 				await That(Act).DoesNotThrow()
 					.Because("the options of aweXpect for comparing objects are still available");
+			}
+
+			[Test]
+			public async Task WhenEquivalentIgnoresAnUnknownMember_ShouldListItAsUnmatched()
+			{
+				IPAddress subject = IPAddress.Parse("10.0.0.2");
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(IPAddress.Parse("10.0.0.1"))
+						.Equivalent(o => o.IgnoringMember("ScopeId").IgnoringMember("PlayCount") with
+						{
+							DefaultComparisonTypeSelector = type => type == typeof(IPAddress)
+								? EquivalencyComparisonType.ByMembers
+								: EquivalencyDefaults.DefaultComparisonType(type),
+						});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to 10.0.0.1,
+					             but it was not:
+					               Property Address differed:
+					                   Actual: 33554442
+					                 Expected: 16777226
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - ignore members: ["ScopeId", "PlayCount"]
+					                "PlayCount" matched no member
+					             """)
+					.Because("the contexts are read from the options of the evaluation, which know the unmatched members");
 			}
 
 			[Test]
