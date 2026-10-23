@@ -200,6 +200,39 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenMaskingAsWildcard_QuestionMark_ShouldMatchASurrogatePairAsOneCharacter()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Mood: \U0001F3B5!";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Text("Mood: ?!").AsWildcard().Mask("<mood>");
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo("<mood>")
+					.Because("'?' matches a character outside the BMP as one character, like in aweXpect's string comparison");
+			}
+
+			[Test]
+			public async Task WhenMaskingAsWildcard_QuestionMark_ShouldNotMatchALineBreak()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				string subject = "Help\nIt\rBe";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Text("p?I").AsWildcard().Mask("<x>")
+						.For.Text("t?B").AsWildcard().Mask("<x>");
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo("Help\nIt\rBe")
+					.Because("'?' matches one character within a line");
+			}
+
+			[Test]
 			public async Task WhenMaskingAsWildcard_ShouldKeepTheLineBreaksOfEveryNewlineStyle()
 			{
 				InMemorySnapshotStore store = new();

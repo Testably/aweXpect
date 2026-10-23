@@ -70,8 +70,8 @@ public sealed class SnapshotText<TReturn> : SnapshotPattern<TReturn>
 		{
 			Kind.Regex => TextMasking.Pattern(text, options, template, true, nameof(text)),
 			Kind.Wildcard => TextMasking.Pattern(
-				Regex.Escape(text).Replace(@"\*", @"[^\r\n]*").Replace(@"\?", @"[^\r\n]"), options, template, false,
-				nameof(text)),
+				Regex.Escape(text).Replace(@"\*", @"[^\r\n]*").Replace(@"\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\r\n])"),
+				options, template, false, nameof(text)),
 			_ when _ignoreCase => TextMasking.Pattern(Regex.Escape(text), options, template, false, nameof(text)),
 			_ => TextMasking.Literal(text, template),
 		};
