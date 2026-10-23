@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13071.264615885417,
           12782.875373331706,
           12930.86651284354,
           12161.331097920736,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           11000.793195452008,
           11035.918569946289,
           5145.994079589844,
-          10697.089312039889
+          10697.089312039889,
+          7999.5514048258465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -425,7 +425,6 @@ window.BENCHMARK_DATA = {
           3880,
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -441,6 +440,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          380743.09919084824,
           366869.13255208335,
           374332.2424316406,
           333559.60625,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           394994.18777901784,
           374524.65652901784,
           161290.56471354168,
-          384140.58841145836
+          384140.58841145836,
+          302087.4689592634
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590290,
           590287,
           590290,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590287,
-          590292
+          590292,
+          590225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19926.72748674665,
           18828.92937360491,
           19355.920731764574,
           18560.86735636393,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           20335.475594656808,
           20285.122494506835,
           10095.689301045735,
-          20074.98917061942
+          20074.98917061942,
+          18065.067188807898
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          318.79838536580405,
           303.04539222717284,
           282.900653553009,
           275.5467573234013,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           301.3293744967534,
           313.4784437928881,
           132.47893340247018,
-          322.6525573730469
+          322.6525573730469,
+          273.9837770802634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1158,7 +1158,6 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1174,6 +1173,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          566.0890389955961,
           508.40030854088917,
           544.5324167251587,
           576.3078407560076,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           547.9582899093627,
           539.6706928888957,
           260.43213081359863,
-          515.0361580530803
+          515.0361580530803,
+          608.8601038614909
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          419.013505084174,
           413.61526072820027,
           403.3854622681936,
           380.8436924298604,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           408.9720551627023,
           387.9510932604472,
           186.86871829399695,
-          401.1061988194784
+          401.1061988194784,
+          416.59318628311155
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          160.89665835698446,
           155.31868969599407,
           152.00374499956766,
           153.13168195088704,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           145.69859178249652,
           148.68989426294962,
           64.55654364426931,
-          144.55811697642008
+          144.55811697642008,
+          151.66829425948006
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1891,7 +1891,6 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1907,6 +1906,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279.3737553278605,
           284.5175122261047,
           254.4663369814555,
           266.26093737284344,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           278.9406660886911,
           276.0284797350566,
           121.46104904810588,
-          259.9817698918856
+          259.9817698918856,
+          326.9361922899882
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          271.83663380940754,
           248.57068192164104,
           258.4038040297372,
           267.1239589055379,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           261.3472133416396,
           250.200190671285,
           115.60350522824696,
-          253.5283507347107
+          253.5283507347107,
+          243.30304209391275
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          288.20306339263914,
           281.13643503189087,
           271.5523865904127,
           274.633469804128,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           271.39230556488036,
           263.0757025082906,
           126.15319045384724,
-          257.9934313774109
+          257.9934313774109,
+          252.03252874101912
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2624,7 +2624,6 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2640,6 +2639,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          567.5544557571411,
           568.9786823817661,
           508.177921295166,
           547.2779916127523,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           599.9043617884319,
           540.0748545573308,
           251.28869821230572,
-          537.7937030156453
+          537.7937030156453,
+          662.1523787634713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          409.38812058766683,
           338.5008266312735,
           320.9899472554525,
           338.503156375885,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           360.99014946392606,
           334.47567488352456,
           165.87069220542907,
-          339.82704010009763
+          339.82704010009763,
+          351.3542137512794
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          672.6781906763713,
           664.6360087712605,
           670.0918502807617,
           644.017866007487,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           712.2639809335981,
           662.5475570042928,
           323.66008571216037,
-          666.2331348146711
+          666.2331348146711,
+          573.9394465764364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3357,7 +3357,6 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3373,6 +3372,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1500.9931957244874,
           1412.9502451578776,
           1301.1216748101372,
           1454.5325317382812,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1550.2128809611002,
           1473.0074490865072,
           640.5755175862994,
-          1437.4247745513917
+          1437.4247745513917,
+          1552.5757722218832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          681.681399790446,
           680.9607451121012,
           653.9903538386027,
           650.7262543996175,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           715.3743420380813,
           644.9033665974935,
           331.0907334940774,
-          693.8161659240723
+          693.8161659240723,
+          643.9477735928127
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          663.0657948176066,
           659.1956061681111,
           648.0003033955892,
           668.4242586771647,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           654.6825386683146,
           654.0846815109253,
           294.8128121239798,
-          641.4998718897501
+          641.4998718897501,
+          580.2161086627415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4090,7 +4090,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4106,6 +4105,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29468.374289957683,
           28126.84192911784,
           28262.343292236328,
           21275.813532511394,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28620.160689290366,
           28633.31409708659,
           9816.010982806865,
-          28001.67866734096
+          28001.67866734096,
+          18253.817936488562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4216,7 +4216,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          830.1895308494568,
           839.3253615061442,
           798.7865164438883,
           754.4136435190836,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           814.254658290318,
           827.2581593195597,
           391.12323812338025,
-          830.5997231801351
+          830.5997231801351,
+          757.1983052571615
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          728.3294523874919,
           672.4928464889526,
           686.9835518519084,
           672.365507443746,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           737.6013310114542,
           706.2803685506185,
           342.0495410283407,
-          733.3101908365885
+          733.3101908365885,
+          706.4060881296793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4823,7 +4823,6 @@ window.BENCHMARK_DATA = {
           1760,
           1760,
           1760,
-          1760,
           1696,
           1696,
           1696,
@@ -4839,6 +4838,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          84674.21430664063,
           84255.80981445312,
           83220.97748674665,
           63636.55314941406,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           84259.90938313802,
           83882.04572753907,
           27421.826108492336,
-          83982.65583683894
+          83982.65583683894,
+          34963.166076660156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4949,7 +4949,6 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252,
           5254,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
       {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          185.97163674036662,
           208.61744101842245,
           185.67947270075481,
           188.21348755700248,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           187.07066957155862,
           180.41693486486162,
           84.86785351313077,
-          197.68659586172836
+          197.68659586172836,
+          187.8523447880378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5431,7 +5431,6 @@ window.BENCHMARK_DATA = {
           552,
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5447,6 +5446,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32462.916735839844,
           32585.56709798177,
           32340.34287109375,
           19003.044596354168,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32923.75720621745,
           33069.13197835287,
           9418.380696614584,
-          32326.37315586635
+          32326.37315586635,
+          17580.579520670573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5557,7 +5557,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,6 +5599,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          274.26774803797406,
           246.5422890526908,
           241.47993920644123,
           268.211040687561,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           258.45064566930137,
           236.83989099661508,
           116.01052769025166,
-          250.5384820620219
+          250.5384820620219,
+          241.94896602630615
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          364.51087306340537,
           359.8615823745728,
           356.6248843193054,
           381.0567145665487,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           366.75934525898526,
           362.8493113517761,
           164.99766865798406,
-          406.6041113308498
+          406.6041113308498,
+          342.5799726486206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6164,7 +6164,6 @@ window.BENCHMARK_DATA = {
           744,
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6180,6 +6179,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          411.94895734786985,
           374.3104826609294,
           367.9100030263265,
           429.60222258934607,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           413.8394460360209,
           422.2229034900665,
           190.17301377228327,
-          397.38704807417736
+          397.38704807417736,
+          484.6903467859541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          444.2142570813497,
           391.1294521185068,
           394.7840934753418,
           433.5565303053175,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           432.4113624890645,
           417.66544618606565,
           195.42194975217183,
-          417.41266069412234
+          417.41266069412234,
+          401.1071700731913
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          834.1136222839356,
           809.7396153767903,
           831.3580392837524,
           797.9655483881633,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           723.6676161629813,
           700.2702398981367,
           323.26542986356293,
-          684.3803238187518
+          684.3803238187518,
+          663.1652751650129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6897,7 +6897,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6937,6 +6936,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2276.6943890707835,
           1956.640271759033,
           1934.5048047383627,
           2086.4835370381675,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2045.596595509847,
           1990.8591883523125,
           978.0236087526594,
-          1948.3768693483794
+          1948.3768693483794,
+          2210.3121805826822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          982.8708117167155,
           917.7512769063313,
           923.3069434483846,
           936.6117260615031,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           970.5110425313313,
           926.5604732513427,
           448.36756478037154,
-          949.1311612810407
+          949.1311612810407,
+          930.5131092071533
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12313.227788289389,
           12522.528411865234,
           12274.643423461914,
           11025.540795462472,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11473.480842003455,
           11292.1032816569,
           5556.290245056152,
-          11393.8872657189
+          11393.8872657189,
+          9329.90028146597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7630,7 +7630,6 @@ window.BENCHMARK_DATA = {
           1736,
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7646,6 +7645,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          42019.86980765207,
           43240.566931152345,
           42323.45726318359,
           35336.429896763395,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           40424.68985493978,
           41353.638083321704,
           17806.672297159832,
-          41440.198856898714
+          41440.198856898714,
+          32441.060227614184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7774,7 +7774,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18393,
           18609,
           18394,
@@ -7797,6 +7796,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11487.831527709961,
           11484.656599862235,
           11467.199547400842,
           10668.078244722807,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10528.551496233258,
           10809.885394795736,
           5504.403658185686,
-          10748.008057730538
+          10748.008057730538,
+          9121.985211885893
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "dd7508bde0e65a3e19ef89c6d72b1b68156791b1",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 14:37:26 2026 \u002B0200",
-        "message": "refactor: compare XML and look up XML nodes faster on the happy path (#1892)"
-      },
-      {
         "sha": "39b404f73af872eff13dce43f4ae86fc675cbe63",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 16:03:18 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 11:02:43 2026 \u002B0200",
         "message": "feat: add the missing negations to aweXpect.Reflection (#1948)"
+      },
+      {
+        "sha": "25ca35b15da261063adacb407cf8775393f101ab",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
+        "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
       }
     ],
     "labels": [
-      "dd7508bd",
       "39b404f7",
       "b5dab01f",
       "40ae946f",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "d5baef73",
       "16d46b22",
       "3009dddd",
-      "ce12e858"
+      "ce12e858",
+      "25ca35b1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11829.860947745186,
           12044.538322957356,
           11630.327285766602,
           10379.725567626952,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           10932.972702026367,
           10952.841056315105,
           5351.609930772048,
-          10953.876988002232
+          10953.876988002232,
+          8855.295495169503
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8363,7 +8363,6 @@ window.BENCHMARK_DATA = {
           2216,
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8379,6 +8378,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          60779.27548828125,
           62757.506181989396,
           61661.332481971156,
           50398.350755964006,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           60205.94738769531,
           59633.41945800781,
           25856.064980643136,
-          59159.49271647135
+          59159.49271647135,
+          45861.9401198167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8485,7 +8485,6 @@ window.BENCHMARK_DATA = {
         "data": [
           23554,
           23554,
-          23554,
           23553,
           23554,
           23553,
@@ -8532,7 +8531,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          22695.000967843192,
           22906.23571573893,
           22462.32637532552,
           20601.948231288367,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21079.71027483259,
           21036.080520629883,
           10806.609595743816,
-          21121.498502291164
+          21121.498502291164,
+          17923.596638997395
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
