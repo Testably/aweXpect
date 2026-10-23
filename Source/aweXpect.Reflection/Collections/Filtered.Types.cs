@@ -308,7 +308,7 @@ public static partial class Filtered
 		///     to widen the targeted/allowed namespaces and to opt out of sub-namespace matching.
 		/// </summary>
 		/// <remarks>
-		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" /> and
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn(string[])" /> and
 		///     <see cref="ExcludingSubNamespaces" /> do not mutate this instance but rebuild a fresh filter from the
 		///     original base collection, so deriving multiple views from the same instance cannot corrupt each other.
 		/// </remarks>
@@ -330,7 +330,14 @@ public static partial class Filtered
 			///     Widens the filter by the given <paramref name="namespaces" /> (including sub-namespaces unless
 			///     <see cref="ExcludingSubNamespaces" /> is used).
 			/// </summary>
-			public NamespaceDependencyFilterResult OrOn(params IEnumerable<string> namespaces)
+			public NamespaceDependencyFilterResult OrOn(params string[] namespaces)
+				=> OrOn(namespaces.AsEnumerable());
+
+			/// <summary>
+			///     Widens the filter by the given <paramref name="namespaces" /> (including sub-namespaces unless
+			///     <see cref="ExcludingSubNamespaces" /> is used).
+			/// </summary>
+			public NamespaceDependencyFilterResult OrOn(IEnumerable<string> namespaces)
 			{
 				NamespaceDependencyOptions widened = _options.Copy();
 				widened.OrOn(namespaces);
@@ -338,7 +345,7 @@ public static partial class Filtered
 			}
 
 			/// <summary>
-			///     Excludes sub-namespaces from matching for the whole filter (including any <see cref="OrOn" /> additions).
+			///     Excludes sub-namespaces from matching for the whole filter (including any <see cref="OrOn(string[])" /> additions).
 			/// </summary>
 			/// <remarks>
 			///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
@@ -358,7 +365,7 @@ public static partial class Filtered
 		///     namespaces and for the type's own namespace.
 		/// </summary>
 		/// <remarks>
-		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" />,
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn(string[])" />,
 		///     <see cref="ExcludingSubNamespaces" /> and <see cref="ExcludingOwnSubNamespaces" /> do not mutate this
 		///     instance but rebuild a fresh filter from the original base collection, so deriving multiple views from
 		///     the same instance cannot corrupt each other.
@@ -381,7 +388,14 @@ public static partial class Filtered
 			///     Widens the filter by the given <paramref name="namespaces" /> (including sub-namespaces unless
 			///     <see cref="ExcludingSubNamespaces" /> is used).
 			/// </summary>
-			public NamespaceDependencyOnlyOnFilterResult OrOn(params IEnumerable<string> namespaces)
+			public NamespaceDependencyOnlyOnFilterResult OrOn(params string[] namespaces)
+				=> OrOn(namespaces.AsEnumerable());
+
+			/// <summary>
+			///     Widens the filter by the given <paramref name="namespaces" /> (including sub-namespaces unless
+			///     <see cref="ExcludingSubNamespaces" /> is used).
+			/// </summary>
+			public NamespaceDependencyOnlyOnFilterResult OrOn(IEnumerable<string> namespaces)
 			{
 				NamespaceDependencyOptions widened = _options.Copy();
 				widened.OrOn(namespaces);
@@ -390,7 +404,7 @@ public static partial class Filtered
 
 			/// <summary>
 			///     Excludes sub-namespaces of the allowed namespaces from matching for the whole filter (including any
-			///     <see cref="OrOn" /> additions).
+			///     <see cref="OrOn(string[])" /> additions).
 			/// </summary>
 			/// <remarks>
 			///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
@@ -427,7 +441,7 @@ public static partial class Filtered
 		///     allowed namespaces and for the type's own namespace.
 		/// </summary>
 		/// <remarks>
-		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" />,
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn(string[])" />,
 		///     <see cref="ExcludingSubNamespaces" /> and <see cref="ExcludingOwnSubNamespaces" /> do not mutate this
 		///     instance but rebuild a fresh filter from the original base collection, so deriving multiple views from
 		///     the same instance cannot corrupt each other.
@@ -451,7 +465,15 @@ public static partial class Filtered
 			///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as
 			///     outside.
 			/// </summary>
-			public NamespaceDependencyOutsideFilterResult OrOn(params IEnumerable<string> namespaces)
+			public NamespaceDependencyOutsideFilterResult OrOn(params string[] namespaces)
+				=> OrOn(namespaces.AsEnumerable());
+
+			/// <summary>
+			///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
+			///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as
+			///     outside.
+			/// </summary>
+			public NamespaceDependencyOutsideFilterResult OrOn(IEnumerable<string> namespaces)
 			{
 				NamespaceDependencyOptions widened = _options.Copy();
 				widened.OrOn(namespaces);
@@ -460,7 +482,7 @@ public static partial class Filtered
 
 			/// <summary>
 			///     Excludes sub-namespaces of the allowed namespaces from matching for the whole filter (including any
-			///     <see cref="OrOn" /> additions), so that dependencies on them count as outside.
+			///     <see cref="OrOn(string[])" /> additions), so that dependencies on them count as outside.
 			/// </summary>
 			/// <remarks>
 			///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
@@ -519,7 +541,13 @@ public static partial class Filtered
 			/// <summary>
 			///     Clarifies that the types within the namespace are searched in the given <paramref name="assemblies" />.
 			/// </summary>
-			public Types InAssemblies(params IEnumerable<Assembly?> assemblies)
+			public Types InAssemblies(params Assembly?[] assemblies)
+				=> InAssemblies(assemblies.AsEnumerable());
+
+			/// <summary>
+			///     Clarifies that the types within the namespace are searched in the given <paramref name="assemblies" />.
+			/// </summary>
+			public Types InAssemblies(IEnumerable<Assembly?> assemblies)
 				=> From(In.Assemblies(assemblies));
 
 			/// <summary>

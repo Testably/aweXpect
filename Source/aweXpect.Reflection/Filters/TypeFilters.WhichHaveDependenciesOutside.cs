@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -26,7 +27,12 @@ public static partial class TypeFilters
 	///     count.
 	/// </remarks>
 	public static Filtered.Types.NamespaceDependencyOutsideFilterResult WhichHaveDependenciesOutside(
-		this Filtered.Types @this, params IEnumerable<string> namespaces)
+		this Filtered.Types @this, params string[] namespaces)
+		=> @this.WhichHaveDependenciesOutside(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="WhichHaveDependenciesOutside(Filtered.Types, string[])" />
+	public static Filtered.Types.NamespaceDependencyOutsideFilterResult WhichHaveDependenciesOutside(
+		this Filtered.Types @this, IEnumerable<string> namespaces)
 		=> new(new NamespaceDependencyOptions(namespaces),
 			options => @this.Which(Filter.Suffix<Type>(
 				type => type.HasDependencyNamespaceViolations(options),

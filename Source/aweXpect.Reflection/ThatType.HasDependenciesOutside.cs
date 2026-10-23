@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +34,13 @@ public static partial class ThatType
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyOutsideResult<Type, Type?> HasDependenciesOutside(
-		this IThat<Type?> subject, params IEnumerable<string> namespaces)
+		this IThat<Type?> subject, params string[] namespaces)
+		=> subject.HasDependenciesOutside(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="HasDependenciesOutside(IThat{Type?}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyOutsideResult<Type, Type?> HasDependenciesOutside(
+		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyOutsideResult<Type, Type?>(subject.Get().ExpectationBuilder

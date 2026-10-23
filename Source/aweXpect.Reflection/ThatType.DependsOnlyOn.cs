@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +32,13 @@ public static partial class ThatType
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyOnlyOnResult<Type, Type?> DependsOnlyOn(
-		this IThat<Type?> subject, params IEnumerable<string> namespaces)
+		this IThat<Type?> subject, params string[] namespaces)
+		=> subject.DependsOnlyOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DependsOnlyOn(IThat{Type?}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyOnlyOnResult<Type, Type?> DependsOnlyOn(
+		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyOnlyOnResult<Type, Type?>(subject.Get().ExpectationBuilder

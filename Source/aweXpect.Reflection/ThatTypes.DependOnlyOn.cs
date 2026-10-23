@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +36,13 @@ public static partial class ThatTypes
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOnlyOn(
-		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+		this IThat<IEnumerable<Type?>?> subject, params string[] namespaces)
+		=> subject.DependOnlyOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DependOnlyOn(IThat{IEnumerable{Type?}}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyOnlyOnResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
@@ -63,7 +70,13 @@ public static partial class ThatTypes
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOnlyOn(
-		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+		this IThat<IAsyncEnumerable<Type?>?> subject, params string[] namespaces)
+		=> subject.DependOnlyOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DependOnlyOn(IThat{IAsyncEnumerable{Type?}}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder

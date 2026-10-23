@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -27,7 +28,14 @@ public sealed class NamespaceDependencyOnlyOnResult<TType, TThat>
 	///     Widens the expression by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used).
 	/// </summary>
-	public NamespaceDependencyOnlyOnResult<TType, TThat> OrOn(params IEnumerable<string> namespaces)
+	public NamespaceDependencyOnlyOnResult<TType, TThat> OrOn(params string[] namespaces)
+		=> OrOn(namespaces.AsEnumerable());
+
+	/// <summary>
+	///     Widens the expression by the given <paramref name="namespaces" /> (including sub-namespaces unless
+	///     <see cref="ExcludingSubNamespaces" /> is used).
+	/// </summary>
+	public NamespaceDependencyOnlyOnResult<TType, TThat> OrOn(IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -35,7 +43,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TType, TThat>
 
 	/// <summary>
 	///     Excludes sub-namespaces of the allowed namespaces from matching for the whole expression (including any
-	///     <see cref="OrOn" /> additions).
+	///     <see cref="OrOn(string[])" /> additions).
 	/// </summary>
 	/// <remarks>
 	///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes

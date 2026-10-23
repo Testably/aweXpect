@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 
@@ -31,7 +32,13 @@ public static class Types
 	/// <summary>
 	///     Defines expectations on all types in the given <paramref name="assemblies" />.
 	/// </summary>
-	public static Filtered.Types InAssemblies(params IEnumerable<Assembly?> assemblies)
+	public static Filtered.Types InAssemblies(params Assembly?[] assemblies)
+		=> InAssemblies(assemblies.AsEnumerable());
+
+	/// <summary>
+	///     Defines expectations on all types in the given <paramref name="assemblies" />.
+	/// </summary>
+	public static Filtered.Types InAssemblies(IEnumerable<Assembly?> assemblies)
 		=> In.Assemblies(assemblies).Types();
 
 	/// <summary>

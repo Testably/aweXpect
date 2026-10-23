@@ -22,7 +22,13 @@ public static partial class ThatType
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<Type, Type?> DependsOn(
-		this IThat<Type?> subject, params IEnumerable<string> namespaces)
+		this IThat<Type?> subject, params string[] namespaces)
+		=> subject.DependsOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DependsOn(IThat{Type?}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyResult<Type, Type?> DependsOn(
+		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
@@ -85,7 +91,13 @@ public static partial class ThatType
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<Type, Type?> DoesNotDependOn(
-		this IThat<Type?> subject, params IEnumerable<string> namespaces)
+		this IThat<Type?> subject, params string[] namespaces)
+		=> subject.DoesNotDependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DoesNotDependOn(IThat{Type?}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyResult<Type, Type?> DoesNotDependOn(
+		this IThat<Type?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder

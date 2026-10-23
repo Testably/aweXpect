@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -28,7 +29,14 @@ public sealed class NamespaceDependencyOutsideResult<TType, TThat>
 	///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as outside.
 	/// </summary>
-	public NamespaceDependencyOutsideResult<TType, TThat> OrOn(params IEnumerable<string> namespaces)
+	public NamespaceDependencyOutsideResult<TType, TThat> OrOn(params string[] namespaces)
+		=> OrOn(namespaces.AsEnumerable());
+
+	/// <summary>
+	///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
+	///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as outside.
+	/// </summary>
+	public NamespaceDependencyOutsideResult<TType, TThat> OrOn(IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -36,7 +44,7 @@ public sealed class NamespaceDependencyOutsideResult<TType, TThat>
 
 	/// <summary>
 	///     Excludes sub-namespaces of the allowed namespaces from matching for the whole expression (including any
-	///     <see cref="OrOn" /> additions), so that dependencies on them count as outside.
+	///     <see cref="OrOn(string[])" /> additions), so that dependencies on them count as outside.
 	/// </summary>
 	/// <remarks>
 	///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes

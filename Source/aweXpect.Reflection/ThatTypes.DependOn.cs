@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +25,13 @@ public static partial class ThatTypes
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn(
-		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+		this IThat<IEnumerable<Type?>?> subject, params string[] namespaces)
+		=> subject.DependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DependOn(IThat{IEnumerable{Type?}}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DependOn(
+		this IThat<IEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
@@ -42,7 +49,13 @@ public static partial class ThatTypes
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn(
-		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+		this IThat<IAsyncEnumerable<Type?>?> subject, params string[] namespaces)
+		=> subject.DependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DependOn(IThat{IAsyncEnumerable{Type?}}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DependOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
@@ -144,7 +157,13 @@ public static partial class ThatTypes
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn(
-		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+		this IThat<IEnumerable<Type?>?> subject, params string[] namespaces)
+		=> subject.DoNotDependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DoNotDependOn(IThat{IEnumerable{Type?}}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotDependOn(
+		this IThat<IEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
@@ -162,7 +181,13 @@ public static partial class ThatTypes
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn(
-		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
+		this IThat<IAsyncEnumerable<Type?>?> subject, params string[] namespaces)
+		=> subject.DoNotDependOn(namespaces.AsEnumerable());
+
+	/// <inheritdoc cref="DoNotDependOn(IThat{IAsyncEnumerable{Type?}}, string[])" />
+	[GuaranteesNotNull]
+	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotDependOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
 		return new NamespaceDependencyResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
