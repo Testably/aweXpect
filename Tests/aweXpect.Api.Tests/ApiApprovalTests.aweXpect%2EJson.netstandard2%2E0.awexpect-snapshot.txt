@@ -183,9 +183,8 @@ namespace aweXpect.Json.Results
     {
         public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>> WhoseProperties { get; }
     }
-    public class JsonWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
+    public sealed class JsonWhichResult : aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>>
     {
-        public JsonWhichResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<string?> returnValue, System.Text.Json.JsonDocumentOptions options) { }
         public aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> Which(System.Action<aweXpect.Core.IThat<System.Text.Json.JsonElement?>> expectations) { }
     }
 }
