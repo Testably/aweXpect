@@ -56,38 +56,6 @@ public static partial class ThatTypes
 		Type baseType)
 		=> ExpectInheritFrom(subject, baseType, false);
 
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
-	///     class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     To also accept <typeparamref name="TBaseType" /> anywhere in the base-class chain use
-	///     <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritDirectlyFrom<TBaseType>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectInheritFrom(subject, typeof(TBaseType), true);
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
-	///     class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     To also accept <paramref name="baseType" /> anywhere in the base-class chain use
-	///     <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="baseType">The base type to check direct inheritance from.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritDirectlyFrom(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type baseType)
-		=> ExpectInheritFrom(subject, baseType, true);
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit from the base class
@@ -129,6 +97,38 @@ public static partial class ThatTypes
 		Type baseType)
 		=> ExpectInheritFrom(subject, baseType, false);
 #endif
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
+	///     class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is their direct parent.
+	/// </summary>
+	/// <remarks>
+	///     To also accept <typeparamref name="TBaseType" /> anywhere in the base-class chain use
+	///     <see cref="InheritFrom{TBaseType}(IThat{IEnumerable{Type}})" />.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritDirectlyFrom<TBaseType>(
+		this IThat<IEnumerable<Type?>?> subject)
+		=> ExpectInheritFrom(subject, typeof(TBaseType), true);
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> inherit directly from the base
+	///     class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is their direct parent.
+	/// </summary>
+	/// <remarks>
+	///     To also accept <paramref name="baseType" /> anywhere in the base-class chain use
+	///     <see cref="InheritFrom(IThat{IEnumerable{Type}}, Type)" />.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <param name="baseType">The base type to check direct inheritance from.</param>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritDirectlyFrom(
+		this IThat<IEnumerable<Type?>?> subject,
+		Type baseType)
+		=> ExpectInheritFrom(subject, baseType, true);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -200,37 +200,6 @@ public static partial class ThatTypes
 		Type baseType)
 		=> ExpectDoNotInheritFrom(subject, baseType, false);
 
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
-	///     base class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is not their direct
-	///     parent.
-	/// </summary>
-	/// <remarks>
-	///     Types that inherit from <typeparamref name="TBaseType" /> only indirectly satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritDirectlyFrom<TBaseType>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType), true);
-
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
-	///     base class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is not their direct parent.
-	/// </summary>
-	/// <remarks>
-	///     Types that inherit from <paramref name="baseType" /> only indirectly satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="baseType">The base type to check direct inheritance from.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritDirectlyFrom(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type baseType)
-		=> ExpectDoNotInheritFrom(subject, baseType, true);
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit from the base
@@ -268,6 +237,37 @@ public static partial class ThatTypes
 		Type baseType)
 		=> ExpectDoNotInheritFrom(subject, baseType, false);
 #endif
+
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
+	///     base class <typeparamref name="TBaseType" />, i.e. that <typeparamref name="TBaseType" /> is not their direct
+	///     parent.
+	/// </summary>
+	/// <remarks>
+	///     Types that inherit from <typeparamref name="TBaseType" /> only indirectly satisfy this expectation.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritDirectlyFrom<TBaseType>(
+		this IThat<IEnumerable<Type?>?> subject)
+		=> ExpectDoNotInheritFrom(subject, typeof(TBaseType), true);
+
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> inherit directly from the
+	///     base class <paramref name="baseType" />, i.e. that <paramref name="baseType" /> is not their direct parent.
+	/// </summary>
+	/// <remarks>
+	///     Types that inherit from <paramref name="baseType" /> only indirectly satisfy this expectation.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <param name="baseType">The base type to check direct inheritance from.</param>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritDirectlyFrom(
+		this IThat<IEnumerable<Type?>?> subject,
+		Type baseType)
+		=> ExpectDoNotInheritFrom(subject, baseType, true);
 
 #if NET8_0_OR_GREATER
 	/// <summary>

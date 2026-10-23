@@ -48,7 +48,7 @@ public sealed partial class TypeFilters
 				async Task Act()
 				{
 					await That(In.AssemblyContaining<WhichImplementDirectly>().Types()
-							.WhichImplementDirectly(typeof(FooImpl)))
+							.WhichImplementDirectly<FooImpl>())
 						.AreNotAbstract();
 				}
 
@@ -111,7 +111,7 @@ public sealed partial class TypeFilters
 				async Task Act()
 				{
 					await That(In.AssemblyContaining<WhichDoNotImplementDirectly>().Types()
-							.WhichDoNotImplementDirectly(typeof(FooImpl)))
+							.WhichDoNotImplementDirectly<FooImpl>())
 						.AreNotAbstract();
 				}
 

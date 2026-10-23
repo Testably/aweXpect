@@ -56,44 +56,6 @@ public static partial class ThatTypes
 		Type interfaceType)
 		=> ExpectImplement(subject, interfaceType, false);
 
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <typeparamref name="TInterface" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     An interface that a type only receives through a base class or through another implemented interface is
-	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
-	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
-	///     To also accept an indirectly implemented <typeparamref name="TInterface" /> use
-	///     <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ImplementDirectly<TInterface>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectImplement(subject, typeof(TInterface), true);
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <paramref name="interfaceType" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     An interface that a type only receives through a base class or through another implemented interface is
-	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
-	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
-	///     To also accept an indirectly implemented <paramref name="interfaceType" /> use
-	///     <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="interfaceType">The interface to check direct implementation of.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ImplementDirectly(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type interfaceType)
-		=> ExpectImplement(subject, interfaceType, true);
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
@@ -135,6 +97,44 @@ public static partial class ThatTypes
 		Type interfaceType)
 		=> ExpectImplement(subject, interfaceType, false);
 #endif
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
+	///     <typeparamref name="TInterface" /> directly.
+	/// </summary>
+	/// <remarks>
+	///     An interface that a type only receives through a base class or through another implemented interface is
+	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
+	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
+	///     To also accept an indirectly implemented <typeparamref name="TInterface" /> use
+	///     <see cref="Implement{TInterface}(IThat{IEnumerable{Type}})" />.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ImplementDirectly<TInterface>(
+		this IThat<IEnumerable<Type?>?> subject)
+		=> ExpectImplement(subject, typeof(TInterface), true);
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> implement the interface
+	///     <paramref name="interfaceType" /> directly.
+	/// </summary>
+	/// <remarks>
+	///     An interface that a type only receives through a base class or through another implemented interface is
+	///     not implemented directly. As the compiler emits all inherited interfaces into the metadata, an interface that
+	///     is declared on the type and also inherited cannot be told apart and counts as not direct.<br />
+	///     To also accept an indirectly implemented <paramref name="interfaceType" /> use
+	///     <see cref="Implement(IThat{IEnumerable{Type}}, Type)" />.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <param name="interfaceType">The interface to check direct implementation of.</param>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> ImplementDirectly(
+		this IThat<IEnumerable<Type?>?> subject,
+		Type interfaceType)
+		=> ExpectImplement(subject, interfaceType, true);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -212,38 +212,6 @@ public static partial class ThatTypes
 		Type interfaceType)
 		=> ExpectDoNotImplement(subject, interfaceType, false);
 
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <typeparamref name="TInterface" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     Types that implement <typeparamref name="TInterface" /> only through a base class or through another
-	///     implemented interface satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplementDirectly<TInterface>(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> ExpectDoNotImplement(subject, typeof(TInterface), true);
-
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
-	///     <paramref name="interfaceType" /> directly.
-	/// </summary>
-	/// <remarks>
-	///     Types that implement <paramref name="interfaceType" /> only through a base class or through another
-	///     implemented interface satisfy this expectation.
-	/// </remarks>
-	/// <param name="subject">The type collection subject.</param>
-	/// <param name="interfaceType">The interface to check direct implementation of.</param>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplementDirectly(
-		this IThat<IEnumerable<Type?>?> subject,
-		Type interfaceType)
-		=> ExpectDoNotImplement(subject, interfaceType, true);
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
@@ -281,6 +249,38 @@ public static partial class ThatTypes
 		Type interfaceType)
 		=> ExpectDoNotImplement(subject, interfaceType, false);
 #endif
+
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
+	///     <typeparamref name="TInterface" /> directly.
+	/// </summary>
+	/// <remarks>
+	///     Types that implement <typeparamref name="TInterface" /> only through a base class or through another
+	///     implemented interface satisfy this expectation.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplementDirectly<TInterface>(
+		this IThat<IEnumerable<Type?>?> subject)
+		=> ExpectDoNotImplement(subject, typeof(TInterface), true);
+
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> implement the interface
+	///     <paramref name="interfaceType" /> directly.
+	/// </summary>
+	/// <remarks>
+	///     Types that implement <paramref name="interfaceType" /> only through a base class or through another
+	///     implemented interface satisfy this expectation.
+	/// </remarks>
+	/// <param name="subject">The type collection subject.</param>
+	/// <param name="interfaceType">The interface to check direct implementation of.</param>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotImplementDirectly(
+		this IThat<IEnumerable<Type?>?> subject,
+		Type interfaceType)
+		=> ExpectDoNotImplement(subject, interfaceType, true);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
