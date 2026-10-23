@@ -1032,6 +1032,7 @@ namespace aweXpect.Equivalency
     }
     public abstract class EquivalencyExpectationBuilder : aweXpect.Core.ExpectationBuilder
     {
+        public abstract System.Type ExpectedType { get; }
         public void AppendExpectation(System.Text.StringBuilder stringBuilder, string? indentation = null) { }
         public System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult> IsMetBy<TValue>(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext context, System.Threading.CancellationToken cancellationToken) { }
     }

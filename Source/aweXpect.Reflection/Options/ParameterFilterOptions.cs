@@ -44,6 +44,35 @@ public class ParameterFilterOptions
 		_predicates = [ToAsyncPredicate(predicate),];
 	}
 
+	private ParameterFilterOptions(ParameterFilterOptions original)
+	{
+		_descriptions = [..original._descriptions,];
+		_modifierDescriptions = [..original._modifierDescriptions,];
+		_predicates = [..original._predicates,];
+	}
+
+	/// <summary>
+	///     Returns a copy of these options with an additional <paramref name="predicate" /> and
+	///     <paramref name="description" />, while these options stay unchanged.
+	/// </summary>
+	internal ParameterFilterOptions WithPredicate(Func<ParameterInfo, bool> predicate, Func<string> description)
+	{
+		ParameterFilterOptions copy = new(this);
+		copy.AddPredicate(predicate, description);
+		return copy;
+	}
+
+	/// <summary>
+	///     Returns a copy of these options with an additional modifier <paramref name="predicate" /> and
+	///     <paramref name="description" />, while these options stay unchanged.
+	/// </summary>
+	internal ParameterFilterOptions WithModifier(Func<ParameterInfo, bool> predicate, Func<string> description)
+	{
+		ParameterFilterOptions copy = new(this);
+		copy.AddModifier(predicate, description);
+		return copy;
+	}
+
 	/// <summary>
 	///     Adds an additional <paramref name="predicate" /> with the <paramref name="description" />.
 	/// </summary>

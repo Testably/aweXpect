@@ -71,6 +71,34 @@ public sealed partial class ThatProperty
 			}
 
 			[TUnit.Core.Test]
+			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
+			}
+
+			[TUnit.Core.Test]
+			public async Task WhenPropertyInheritsMatchingAttributeFromOverriddenProperty_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == "BaseValue");
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the predicate is evaluated on the attribute inherited from the overridden base property");
+			}
+
+			[TUnit.Core.Test]
 			public async Task WhenPropertyIsNull_ShouldFail()
 			{
 				PropertyInfo? subject = null;
@@ -88,10 +116,53 @@ public sealed partial class ThatProperty
 					             """);
 			}
 
+			[TUnit.Core.Test]
+			public async Task WhenPropertyOverridesPropertyWithNonInheritableAttribute_ShouldFail()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.NonInheritableProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<NonInheritableAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has ThatProperty.Has.AttributeTests.NonInheritableAttribute,
+					             but it did not in public string ThatProperty.Has.AttributeTests.DerivedClass.NonInheritableProperty { get; set; }
+					             """)
+					.Because("an attribute with Inherited = false is not inherited from the overridden base property");
+			}
+
+			[TUnit.Core.Test]
+			public async Task WithInheritFalse_WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldFail()
+			{
+				PropertyInfo subject = typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).Has<TestAttribute>(false);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has direct ThatProperty.Has.AttributeTests.TestAttribute,
+					             but it did not in public string ThatProperty.Has.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             """)
+					.Because("with inherit: false only the attributes declared on the overriding property count");
+			}
+
 			[AttributeUsage(AttributeTargets.Property)]
 			private class TestAttribute : Attribute
 			{
 				public string Value { get; set; } = "";
+			}
+
+			[AttributeUsage(AttributeTargets.Property, Inherited = false)]
+			private class NonInheritableAttribute : Attribute
+			{
 			}
 
 			// ReSharper disable UnusedMember.Local
@@ -100,6 +171,20 @@ public sealed partial class ThatProperty
 				[Test(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
+			}
+
+			private class BaseClass
+			{
+				[Test(Value = "BaseValue")] public virtual string InheritedProperty { get; set; } = "";
+
+				[NonInheritable] public virtual string NonInheritableProperty { get; set; } = "";
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override string InheritedProperty { get; set; } = "";
+
+				public override string NonInheritableProperty { get; set; } = "";
 			}
 			// ReSharper restore UnusedMember.Local
 		}

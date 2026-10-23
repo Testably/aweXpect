@@ -226,6 +226,22 @@ public sealed partial class TypeFilters
 			}
 
 			[Test]
+			public async Task Twice_ShouldNotChangeTheFilterItWasCalledOn()
+			{
+				Reflection.TypeFilters.TypesContainingMembers containing =
+					In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+						.WhichContainMethods(methods => methods.With<MarkerAttribute>());
+
+				Filtered.Types twice = containing.Twice();
+
+				await That(containing).IsEqualTo([typeof(TaggedClass), typeof(TwiceTaggedClass),]).InAnyOrder()
+					.Because("Twice must return a new filter instead of changing the one it was called on");
+				await That(containing.GetDescription())
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once ");
+				await That(twice).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Test]
 			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingMethod()
 			{
 				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedMethod>()

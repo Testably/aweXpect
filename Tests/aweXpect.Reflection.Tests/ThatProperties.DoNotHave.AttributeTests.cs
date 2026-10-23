@@ -106,6 +106,50 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldFail()
+			{
+				IEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
+					               public string ThatProperties.DoNotHave.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             ]
+					             """)
+					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
+			}
+
+			[Test]
+			public async Task WithInheritFalse_WhenPropertyInheritsAttributeFromOverriddenProperty_ShouldSucceed()
+			{
+				IEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetProperty(nameof(DerivedClass.InheritedProperty)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(false);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with inherit: false only the attributes declared on the overriding property count");
+			}
+
 			[AttributeUsage(AttributeTargets.Property)]
 			private class FooAttribute : Attribute
 			{
@@ -116,6 +160,16 @@ public sealed partial class ThatProperties
 				[Foo] public string TestProperty { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
+			}
+
+			private class BaseClass
+			{
+				[Foo] public virtual string InheritedProperty { get; set; } = "";
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override string InheritedProperty { get; set; } = "";
 			}
 		}
 	}

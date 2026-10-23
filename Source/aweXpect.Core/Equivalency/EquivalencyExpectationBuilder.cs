@@ -14,6 +14,9 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 {
 	private ConstraintResult? _result;
 
+	/// <inheritdoc cref="EquivalencyExpectationBuilder.ExpectedType" />
+	public override Type ExpectedType => typeof(T);
+
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
 	{
@@ -148,6 +151,12 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 	private protected EquivalencyExpectationBuilder()
 	{
 	}
+
+	/// <summary>
+	///     The type a value must have to meet the expectations, e.g. <see langword="long" /> for
+	///     <c>It.Is&lt;long&gt;()</c>.
+	/// </summary>
+	public abstract Type ExpectedType { get; }
 
 	/// <summary>
 	///     Appends the expectation of the root node to the <paramref name="stringBuilder" />.

@@ -19,9 +19,9 @@ public static partial class TypeFilters
 	public static TypesWith With<TAttribute>(this Filtered.Types @this, bool inherit = true)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<Type> filter = Filter.Suffix<Type>(type => type.HasAttribute<TAttribute>(inherit: inherit),
+		Filter.GenericFilter<Type> filter = Filter.Suffix<Type>(type => type.HasAttribute<TAttribute>(inherit: inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-		return new TypesWith(@this.Which(filter), filter);
+		return new TypesWith(@this, filter);
 	}
 
 	/// <summary>
@@ -39,9 +39,9 @@ public static partial class TypeFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<Type> filter = Filter.Suffix<Type>(type => type.HasAttribute(predicate, inherit),
+		Filter.GenericFilter<Type> filter = Filter.Suffix<Type>(type => type.HasAttribute(predicate, inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new TypesWith(@this.Which(filter), filter);
+		return new TypesWith(@this, filter);
 	}
 
 	/// <summary>
@@ -49,10 +49,13 @@ public static partial class TypeFilters
 	/// </summary>
 	public class TypesWith : Filtered.Types
 	{
-		private readonly IChangeableFilter<Type> _filter;
+		private readonly Filter.GenericFilter<Type> _filter;
+		private readonly Filtered.Types _source;
 
-		internal TypesWith(Filtered.Types inner, IChangeableFilter<Type> filter) : base(inner)
+		internal TypesWith(Filtered.Types source, Filter.GenericFilter<Type> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -65,12 +68,9 @@ public static partial class TypeFilters
 		/// </remarks>
 		public TypesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter((result, type) => result || type.HasAttribute<TAttribute>(inherit: inherit),
+			=> new(_source, _filter.Extend((result, type) => result || type.HasAttribute<TAttribute>(inherit: inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -86,12 +86,9 @@ public static partial class TypeFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, type) => result || type.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 	}
 }

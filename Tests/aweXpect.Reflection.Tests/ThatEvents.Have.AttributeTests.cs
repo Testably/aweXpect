@@ -45,6 +45,36 @@ public sealed partial class ThatEvents
 			}
 
 			[TUnit.Core.Test]
+			public async Task WhenAllEventsInheritAttributeFromOverriddenEvents_ShouldSucceed()
+			{
+				IEnumerable<EventInfo> subject = new[]
+				{
+					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!,
+				};
+
+				async Task Act()
+				{
+					await That(subject).Have<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
+			}
+
+			[TUnit.Core.Test]
+			public async Task WhenEventsAreFilteredByInheritedAttribute_ShouldSucceed()
+			{
+				async Task Act()
+				{
+					await That(In.Type<DerivedClass>().Events().With<TestAttribute>())
+						.IsNotEmpty().And.Have<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectation must agree with the filter on the inherited attribute");
+			}
+
+			[TUnit.Core.Test]
 			public async Task WhenNotAllEventsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = new[]
@@ -95,6 +125,33 @@ public sealed partial class ThatEvents
 					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
 					             ]
 					             """);
+			}
+
+			[TUnit.Core.Test]
+			public async Task WithInheritFalse_WhenAllEventsInheritAttributeFromOverriddenEvents_ShouldFail()
+			{
+				IEnumerable<EventInfo> subject = new[]
+				{
+					typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!,
+				};
+
+				async Task Act()
+				{
+					await That(subject).Have<TestAttribute>(false);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have direct ThatEvents.Have.AttributeTests.TestAttribute,
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.DerivedClass.InheritedEvent
+					             ]
+					             """)
+					.Because("with inherit: false only the attributes declared on the overriding event count");
 			}
 
 #if NET8_0_OR_GREATER
@@ -201,6 +258,16 @@ public sealed partial class ThatEvents
 				[Test(Value = "Event2Value")] public event Action? TestEvent2;
 
 				public event Action? NoAttributeEvent;
+			}
+
+			private class BaseClass
+			{
+				[Test(Value = "BaseValue")] public virtual event Action? InheritedEvent;
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override event Action? InheritedEvent;
 			}
 #pragma warning restore CS0067
 		}

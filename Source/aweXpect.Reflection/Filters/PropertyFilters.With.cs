@@ -20,10 +20,10 @@ public static partial class PropertyFilters
 	public static PropertiesWith With<TAttribute>(this Filtered.Properties @this, bool inherit = true)
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
+		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
 			propertyInfo => propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-		return new PropertiesWith(@this.Which(filter), filter);
+		return new PropertiesWith(@this, filter);
 	}
 
 	/// <summary>
@@ -41,10 +41,10 @@ public static partial class PropertyFilters
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		IChangeableFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
+		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
 			propertyInfo => propertyInfo.HasAttribute(predicate, inherit),
 			() => $"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-		return new PropertiesWith(@this.Which(filter), filter);
+		return new PropertiesWith(@this, filter);
 	}
 
 	/// <summary>
@@ -52,10 +52,13 @@ public static partial class PropertyFilters
 	/// </summary>
 	public class PropertiesWith : Filtered.Properties
 	{
-		private readonly IChangeableFilter<PropertyInfo> _filter;
+		private readonly Filter.GenericFilter<PropertyInfo> _filter;
+		private readonly Filtered.Properties _source;
 
-		internal PropertiesWith(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter) : base(inner)
+		internal PropertiesWith(Filtered.Properties source, Filter.GenericFilter<PropertyInfo> filter)
+			: base(source.Which(filter))
 		{
+			_source = source;
 			_filter = filter;
 		}
 
@@ -68,13 +71,10 @@ public static partial class PropertyFilters
 		/// </remarks>
 		public PropertiesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, propertyInfo) => result || propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} "));
 
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" /> that
@@ -90,12 +90,9 @@ public static partial class PropertyFilters
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
 			where TAttribute : Attribute
-		{
-			_filter.UpdateFilter(
+			=> new(_source, _filter.Extend(
 				(result, propertyInfo) => result || propertyInfo.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} ");
-			return this;
-		}
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 	}
 }
