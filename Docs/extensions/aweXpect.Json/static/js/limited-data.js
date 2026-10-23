@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
-        "message": "feat!: release all aweXpect packages from one repository with one version"
-      },
-      {
         "sha": "66de07e4365ee3790661f33baba3106193b6e939",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
         "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
+      },
+      {
+        "sha": "ae43e1f28a1e778b8e70dd87d53e92e67bccd91c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
+        "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
       }
     ],
     "labels": [
-      "68feb62f",
       "66de07e4",
       "391462ba",
       "78b13d35",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8f08376f",
       "257e5c03",
       "423a7284",
-      "9c75ee02"
+      "9c75ee02",
+      "ae43e1f2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          43654.32958984375,
           44267.41297325721,
           42254.887282151445,
           2442.302179609026,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2119.6740224020823,
           2146.4047200339182,
           2059.1950304848806,
-          2085.250993875357
+          2085.250993875357,
+          2159.383176950308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          14531,
           14541,
           14530,
           2520,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16047.227347237724,
           16217.150813176082,
           14543.159549419697,
           14057.160717303936,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           15552.851615397136,
           15688.014491154598,
           16086.041713169643,
-          16396.79063851493
+          16396.79063851493,
+          15133.340985979352
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "68feb62f7303b2dcab4f3972ec6d54f05e5a4e62",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 09:45:23 2026 \u002B0200",
-        "message": "feat!: release all aweXpect packages from one repository with one version"
-      },
-      {
         "sha": "66de07e4365ee3790661f33baba3106193b6e939",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 09:48:15 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
         "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
+      },
+      {
+        "sha": "ae43e1f28a1e778b8e70dd87d53e92e67bccd91c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
+        "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
       }
     ],
     "labels": [
-      "68feb62f",
       "66de07e4",
       "391462ba",
       "78b13d35",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8f08376f",
       "257e5c03",
       "423a7284",
-      "9c75ee02"
+      "9c75ee02",
+      "ae43e1f2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          41626.570294189456,
           41643.569763183594,
           40511.48933628627,
           1803.8105926513672,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1583.4144919259209,
           1582.4121567652776,
           1556.5610603604998,
-          1526.08910891215
+          1526.08910891215,
+          1496.4778762230505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          14342,
           14341,
           14342,
           2328,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
+          1200,
           1200
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14571.526543753487,
           14554.999634806316,
           13392.435609944661,
           12604.763811747232,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           14393.294654337566,
           14444.679507954916,
           14817.808522542318,
-          15387.121994018555
+          15387.121994018555,
+          13988.049116007487
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1456,6 +1456,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
         "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
+      },
+      {
+        "sha": "ae43e1f28a1e778b8e70dd87d53e92e67bccd91c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
+        "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
       }
     ],
     "labels": [
@@ -1498,7 +1504,8 @@ window.BENCHMARK_DATA = {
       "8f08376f",
       "257e5c03",
       "423a7284",
-      "9c75ee02"
+      "9c75ee02",
+      "ae43e1f2"
     ],
     "datasets": [
       {
@@ -1544,7 +1551,8 @@ window.BENCHMARK_DATA = {
           4916.00042288644,
           4909.23833993765,
           4785.261942727225,
-          4769.114517798791
+          4769.114517798791,
+          4486.050827026367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1574,6 +1582,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1649,7 +1658,8 @@ window.BENCHMARK_DATA = {
           46255.88087565104,
           47094.58042689732,
           47942.62646484375,
-          49307.38684082031
+          49307.38684082031,
+          42998.29046223958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1700,7 +1710,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
-          61926
+          61926,
+          61932
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1954,6 +1965,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
         "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
+      },
+      {
+        "sha": "ae43e1f28a1e778b8e70dd87d53e92e67bccd91c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
+        "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
       }
     ],
     "labels": [
@@ -1996,7 +2013,8 @@ window.BENCHMARK_DATA = {
       "8f08376f",
       "257e5c03",
       "423a7284",
-      "9c75ee02"
+      "9c75ee02",
+      "ae43e1f2"
     ],
     "datasets": [
       {
@@ -2042,7 +2060,8 @@ window.BENCHMARK_DATA = {
           9354.149719238281,
           9553.463603719076,
           9390.99150303432,
-          9300.453679765973
+          9300.453679765973,
+          9787.619030292217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2072,6 +2091,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2147,7 +2167,8 @@ window.BENCHMARK_DATA = {
           294633.78079659597,
           301003.00397135416,
           307906.261328125,
-          308304.42333984375
+          308304.42333984375,
+          288987.43701171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2198,7 +2219,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521594
+          521594,
+          521573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2452,6 +2474,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
         "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
+      },
+      {
+        "sha": "ae43e1f28a1e778b8e70dd87d53e92e67bccd91c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
+        "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
       }
     ],
     "labels": [
@@ -2494,7 +2522,8 @@ window.BENCHMARK_DATA = {
       "8f08376f",
       "257e5c03",
       "423a7284",
-      "9c75ee02"
+      "9c75ee02",
+      "ae43e1f2"
     ],
     "datasets": [
       {
@@ -2540,7 +2569,8 @@ window.BENCHMARK_DATA = {
           2883.736641747611,
           2862.3433130900066,
           2825.1707444872177,
-          2824.2265191759384
+          2824.2265191759384,
+          3005.791082235483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2585,6 +2615,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2645,7 +2676,8 @@ window.BENCHMARK_DATA = {
           1909.8908480130708,
           2007.6191200256349,
           1993.5016416822161,
-          1941.9585215250652
+          1941.9585215250652,
+          2134.299333844866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2657,6 +2689,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -2950,6 +2983,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 07:13:15 2026 \u002B0200",
         "message": "feat: verify Expect.ThatAll and Expect.ThatAny synchronously (#1955)"
+      },
+      {
+        "sha": "ae43e1f28a1e778b8e70dd87d53e92e67bccd91c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 07:16:30 2026 \u002B0200",
+        "message": "feat: add DependOn\u003CT\u003E() and DoNotDependOn\u003CT\u003E() for collections of types (#1945)"
       }
     ],
     "labels": [
@@ -2992,7 +3031,8 @@ window.BENCHMARK_DATA = {
       "8f08376f",
       "257e5c03",
       "423a7284",
-      "9c75ee02"
+      "9c75ee02",
+      "ae43e1f2"
     ],
     "datasets": [
       {
@@ -3038,7 +3078,8 @@ window.BENCHMARK_DATA = {
           2018.0769707815987,
           2095.206227620443,
           2074.568491128775,
-          2080.7716435750326
+          2080.7716435750326,
+          2215.4041298457555
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3068,6 +3109,7 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
+          2848,
           2848,
           2848,
           2848,
@@ -3143,7 +3185,8 @@ window.BENCHMARK_DATA = {
           1763.2762260437012,
           1934.4136159261068,
           1987.09263865153,
-          1815.4059623718263
+          1815.4059623718263,
+          2296.3830004374186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3155,6 +3198,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
