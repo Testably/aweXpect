@@ -348,6 +348,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
         "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
+      },
+      {
+        "sha": "012afc610cc06e123d6ef32a47006ce56db0a00f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
+        "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
       }
     ],
     "labels": [
@@ -408,7 +414,8 @@ window.BENCHMARK_DATA = {
       "16d46b22",
       "3009dddd",
       "ce12e858",
-      "25ca35b1"
+      "25ca35b1",
+      "012afc61"
     ],
     "datasets": [
       {
@@ -472,7 +479,8 @@ window.BENCHMARK_DATA = {
           677.288328579494,
           555.2639484405518,
           405.58563460622514,
-          554.524722303663
+          554.524722303663,
+          733.1091297013419
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -517,6 +525,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -613,7 +622,8 @@ window.BENCHMARK_DATA = {
           688.3620380401611,
           604.7439054489136,
           526.5110473632812,
-          730.0223516736712
+          730.0223516736712,
+          916.6795333715586
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -625,6 +635,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1044,6 +1055,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
         "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
+      },
+      {
+        "sha": "012afc610cc06e123d6ef32a47006ce56db0a00f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
+        "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
       }
     ],
     "labels": [
@@ -1104,7 +1121,8 @@ window.BENCHMARK_DATA = {
       "16d46b22",
       "3009dddd",
       "ce12e858",
-      "25ca35b1"
+      "25ca35b1",
+      "012afc61"
     ],
     "datasets": [
       {
@@ -1168,7 +1186,8 @@ window.BENCHMARK_DATA = {
           108.89591408627373,
           95.79679618676504,
           71.62533529905173,
-          101.25333801110585
+          101.25333801110585,
+          141.04191894190652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1208,6 +1227,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1309,7 +1329,8 @@ window.BENCHMARK_DATA = {
           193.8000604556157,
           196.65199001630148,
           127.38105940818787,
-          188.33656789461773
+          188.33656789461773,
+          202.7538287003835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1321,6 +1342,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1740,6 +1762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
         "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
+      },
+      {
+        "sha": "012afc610cc06e123d6ef32a47006ce56db0a00f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
+        "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
       }
     ],
     "labels": [
@@ -1800,7 +1828,8 @@ window.BENCHMARK_DATA = {
       "16d46b22",
       "3009dddd",
       "ce12e858",
-      "25ca35b1"
+      "25ca35b1",
+      "012afc61"
     ],
     "datasets": [
       {
@@ -1864,7 +1893,8 @@ window.BENCHMARK_DATA = {
           1313.8393812815348,
           1151.369754057664,
           1089.7140381152813,
-          1475.5675882192759
+          1475.5675882192759,
+          1983.5617647806803
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1904,6 +1934,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2005,7 +2036,8 @@ window.BENCHMARK_DATA = {
           1185.5056381225586,
           1030.0300219217936,
           956.9936212812152,
-          1135.7484572092692
+          1135.7484572092692,
+          1455.5706194468908
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2074,7 +2106,8 @@ window.BENCHMARK_DATA = {
           1896,
           1896,
           1985,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2376,6 +2409,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
         "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
+      },
+      {
+        "sha": "012afc610cc06e123d6ef32a47006ce56db0a00f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
+        "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
       }
     ],
     "labels": [
@@ -2426,7 +2465,8 @@ window.BENCHMARK_DATA = {
       "16d46b22",
       "3009dddd",
       "ce12e858",
-      "25ca35b1"
+      "25ca35b1",
+      "012afc61"
     ],
     "datasets": [
       {
@@ -2480,7 +2520,8 @@ window.BENCHMARK_DATA = {
           1871.1644248962402,
           1668.8786940256755,
           1565.2051467895508,
-          2150.525868007115
+          2150.525868007115,
+          2872.623115793864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2539,7 +2580,8 @@ window.BENCHMARK_DATA = {
           2984,
           2984,
           2984,
-          3040
+          3040,
+          2984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2601,7 +2643,8 @@ window.BENCHMARK_DATA = {
           2985.628717295329,
           2558.768775353065,
           2266.3127885546005,
-          3072.6050409589493
+          3072.6050409589493,
+          3881.450845990862
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2660,7 +2703,8 @@ window.BENCHMARK_DATA = {
           4009,
           4009,
           4011,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2962,6 +3006,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
         "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
+      },
+      {
+        "sha": "012afc610cc06e123d6ef32a47006ce56db0a00f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
+        "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
       }
     ],
     "labels": [
@@ -3012,7 +3062,8 @@ window.BENCHMARK_DATA = {
       "16d46b22",
       "3009dddd",
       "ce12e858",
-      "25ca35b1"
+      "25ca35b1",
+      "012afc61"
     ],
     "datasets": [
       {
@@ -3066,7 +3117,8 @@ window.BENCHMARK_DATA = {
           303.9146077292306,
           266.379841486613,
           206.4885399977366,
-          282.3061068534851
+          282.3061068534851,
+          417.27713199762195
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3096,6 +3148,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3187,7 +3240,8 @@ window.BENCHMARK_DATA = {
           1728.0309107462565,
           1542.7211791992188,
           1378.4693639119466,
-          1807.2084239959718
+          1807.2084239959718,
+          2287.9637486775714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3199,6 +3253,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3548,6 +3603,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 13:57:39 2026 \u002B0200",
         "message": "fix: take params arrays in aweXpect.Reflection so consumers below C#13 can pass single values (#1959)"
+      },
+      {
+        "sha": "012afc610cc06e123d6ef32a47006ce56db0a00f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 14:43:13 2026 \u002B0200",
+        "message": "refactor!: make the constructor of JsonWhichResult internal (#1961)"
       }
     ],
     "labels": [
@@ -3598,7 +3659,8 @@ window.BENCHMARK_DATA = {
       "16d46b22",
       "3009dddd",
       "ce12e858",
-      "25ca35b1"
+      "25ca35b1",
+      "012afc61"
     ],
     "datasets": [
       {
@@ -3652,7 +3714,8 @@ window.BENCHMARK_DATA = {
           2507.032745997111,
           2301.625678743635,
           2057.184552706205,
-          2845.298851267497
+          2845.298851267497,
+          3629.25562210083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3711,6 +3774,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705
         ],
         "borderColor": "#63A2AC",
@@ -3773,7 +3837,8 @@ window.BENCHMARK_DATA = {
           236156.50485026042,
           193403.40100911458,
           170172.23625837054,
-          242390.7084263393
+          242390.7084263393,
+          278802.257047526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3832,6 +3897,7 @@ window.BENCHMARK_DATA = {
           17818,
           17560,
           17609,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
