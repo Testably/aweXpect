@@ -2622,6 +2622,10 @@ namespace aweXpect.Reflection
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, params System.Collections.Generic.IEnumerable<string> namespaces) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?> DependOn<T>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn<T>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.TypeSetDependencyResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.TypeSetDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
@@ -2637,6 +2641,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject, params System.Collections.Generic.IEnumerable<string> namespaces) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, params System.Collections.Generic.IEnumerable<string> namespaces) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?> DoNotDependOn<T>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?> DoNotDependOn<T>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Reflection.Results.TypeSetDependencyResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
         [aweXpect.Core.GuaranteesNotNull]
