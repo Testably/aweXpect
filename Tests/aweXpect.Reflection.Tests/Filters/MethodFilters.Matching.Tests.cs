@@ -26,13 +26,13 @@ public sealed partial class MethodFilters
 			public async Task ShouldCombineWithOtherOptions()
 			{
 				Filtered.Methods methods = In.Type<ClassWithParameters>()
-					.Methods().WithParameter<int>().Matching(p => p.Name!.StartsWith("c")).WithDefaultValue();
+					.Methods().WithParameter<int>().Matching(p => p.Name == "count").WithDefaultValue();
 
 				await That(methods).IsEmpty()
 					.Because("Count has a parameter named 'count', but without a default value");
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with parameter of type int and with a default value and matching p => p.Name!.StartsWith(\"c\") in type")
+						"methods with parameter of type int and with a default value and matching p => p.Name == \"count\" in type")
 					.AsPrefix();
 			}
 
