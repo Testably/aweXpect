@@ -372,6 +372,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
         "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
+      },
+      {
+        "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
+        "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
       }
     ],
     "labels": [
@@ -436,7 +442,8 @@ window.BENCHMARK_DATA = {
       "012afc61",
       "81744dc6",
       "87616222",
-      "8e844194"
+      "8e844194",
+      "f61481d2"
     ],
     "datasets": [
       {
@@ -504,7 +511,8 @@ window.BENCHMARK_DATA = {
           733.1091297013419,
           540.599494116647,
           729.1559373310635,
-          746.0287245432536
+          746.0287245432536,
+          682.6208861214774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -549,6 +557,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -653,7 +662,8 @@ window.BENCHMARK_DATA = {
           916.6795333715586,
           682.278204202652,
           937.3580079396565,
-          935.801241238912
+          935.801241238912,
+          848.7192447026571
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -665,6 +675,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -1112,6 +1123,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
         "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
+      },
+      {
+        "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
+        "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
       }
     ],
     "labels": [
@@ -1176,7 +1193,8 @@ window.BENCHMARK_DATA = {
       "012afc61",
       "81744dc6",
       "87616222",
-      "8e844194"
+      "8e844194",
+      "f61481d2"
     ],
     "datasets": [
       {
@@ -1244,7 +1262,8 @@ window.BENCHMARK_DATA = {
           141.04191894190652,
           95.10027017763683,
           134.5251111984253,
-          132.3493261973063
+          132.3493261973063,
+          127.16299282709757
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1284,6 +1303,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1393,7 +1413,8 @@ window.BENCHMARK_DATA = {
           202.7538287003835,
           163.79742351600103,
           216.17308212916058,
-          226.68383900324503
+          226.68383900324503,
+          212.34665722846984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1405,6 +1426,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1852,6 +1874,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
         "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
+      },
+      {
+        "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
+        "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
       }
     ],
     "labels": [
@@ -1916,7 +1944,8 @@ window.BENCHMARK_DATA = {
       "012afc61",
       "81744dc6",
       "87616222",
-      "8e844194"
+      "8e844194",
+      "f61481d2"
     ],
     "datasets": [
       {
@@ -1984,7 +2013,8 @@ window.BENCHMARK_DATA = {
           1983.5617647806803,
           1465.920994313558,
           1981.854712677002,
-          1995.2253605978829
+          1995.2253605978829,
+          1811.4357714335124
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2024,6 +2054,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -2133,7 +2164,8 @@ window.BENCHMARK_DATA = {
           1455.5706194468908,
           1245.6852585719182,
           1546.312598500933,
-          1471.2968467712403
+          1471.2968467712403,
+          1372.7388380595617
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2204,6 +2236,7 @@ window.BENCHMARK_DATA = {
           1985,
           1953,
           1864,
+          1953,
           1953,
           1953,
           1953
@@ -2532,6 +2565,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
         "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
+      },
+      {
+        "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
+        "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
       }
     ],
     "labels": [
@@ -2586,7 +2625,8 @@ window.BENCHMARK_DATA = {
       "012afc61",
       "81744dc6",
       "87616222",
-      "8e844194"
+      "8e844194",
+      "f61481d2"
     ],
     "datasets": [
       {
@@ -2644,7 +2684,8 @@ window.BENCHMARK_DATA = {
           2872.623115793864,
           2098.2556749979653,
           2801.1938046046666,
-          2913.4129531860353
+          2913.4129531860353,
+          2661.371395656041
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2707,7 +2748,8 @@ window.BENCHMARK_DATA = {
           2984,
           3040,
           3040,
-          2984
+          2984,
+          3040
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2773,7 +2815,8 @@ window.BENCHMARK_DATA = {
           3881.450845990862,
           3050.5146051134384,
           3914.533017985026,
-          3851.410376993815
+          3851.410376993815,
+          3721.2723083496094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2836,7 +2879,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3980,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3162,6 +3206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
         "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
+      },
+      {
+        "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
+        "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
       }
     ],
     "labels": [
@@ -3216,7 +3266,8 @@ window.BENCHMARK_DATA = {
       "012afc61",
       "81744dc6",
       "87616222",
-      "8e844194"
+      "8e844194",
+      "f61481d2"
     ],
     "datasets": [
       {
@@ -3274,7 +3325,8 @@ window.BENCHMARK_DATA = {
           417.27713199762195,
           266.9882144194383,
           403.73561617533363,
-          379.90855176108226
+          379.90855176108226,
+          370.58754532677784
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3304,6 +3356,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -3403,7 +3456,8 @@ window.BENCHMARK_DATA = {
           2287.9637486775714,
           1756.864614339975,
           2311.7525332132977,
-          2403.7770568847654
+          2403.7770568847654,
+          2143.895212173462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3415,6 +3469,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3792,6 +3847,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:09:40 2026 \u002B0200",
         "message": "fix: show the parameter modifiers in the formatted methods and constructors of aweXpect.Reflection (#1964)"
+      },
+      {
+        "sha": "f61481d24351c8600bb221b9e05b98a015fe6827",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:36:18 2026 \u002B0200",
+        "message": "fix: match AtIndex in aweXpect.Reflection only at the requested index (#1965)"
       }
     ],
     "labels": [
@@ -3846,7 +3907,8 @@ window.BENCHMARK_DATA = {
       "012afc61",
       "81744dc6",
       "87616222",
-      "8e844194"
+      "8e844194",
+      "f61481d2"
     ],
     "datasets": [
       {
@@ -3904,7 +3966,8 @@ window.BENCHMARK_DATA = {
           3629.25562210083,
           2670.7475618634903,
           3631.342981719971,
-          3606.5318046569823
+          3606.5318046569823,
+          3395.820640836443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3963,6 +4026,7 @@ window.BENCHMARK_DATA = {
           3672,
           3672,
           3673,
+          3705,
           3705,
           3705,
           3705,
@@ -4033,7 +4097,8 @@ window.BENCHMARK_DATA = {
           278802.257047526,
           239105.79702524038,
           283999.76318359375,
-          283437.116398738
+          283437.116398738,
+          300407.2831333705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4096,7 +4161,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17577
+          17577,
+          17727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
