@@ -104,7 +104,7 @@ so its keys are compared with their own `Equals`, as for a dictionary whose comp
 ## Native AOT and trimming
 
 On .NET 8 and later, aweXpect needs no configuration when your test framework supports publishing a test project with
-trimming or Native AOT: a source generator that ships with the `aweXpect` package registers the members and events
+trimming or Native AOT: a source generator that ships with the `aweXpect.Core` package registers the members and events
 that equivalency and event recording need. You only have to act when a comparison or recording reaches a type the
 generator cannot see, for example the runtime type behind a member declared as `object`. The expectation then fails
 with an error that names the type and tells you how to register it, see

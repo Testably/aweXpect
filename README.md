@@ -58,7 +58,7 @@ More information can be found in the [test frameworks guide](https://docs.testab
 
 `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later, so your test project can be
 published with Native AOT. Equivalency and event recording work without reflection, because a source generator that
-ships with the `aweXpect` package registers the members and events they need when your project is compiled. A
+ships with the `aweXpect.Core` package registers the members and events they need when your project is compiled. A
 comparison or recording of a type the generator could not see fails with an error that tells you how to register it.
 More information can be found in the [Native AOT guide](https://docs.testably.org/aweXpect/how-it-works/native-aot).
 

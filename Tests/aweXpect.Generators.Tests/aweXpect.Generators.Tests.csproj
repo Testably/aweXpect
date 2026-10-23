@@ -6,7 +6,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\aweXpect.Core\aweXpect.Core.csproj"/>
-		<ProjectReference Include="..\..\Source\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer"/>
 		<ProjectReference Include="..\..\Source\aweXpect.SourceGenerators\aweXpect.SourceGenerators.csproj"/>
 		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>

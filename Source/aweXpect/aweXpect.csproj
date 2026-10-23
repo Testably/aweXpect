@@ -4,7 +4,7 @@
 		<Description>Assert unit tests in natural language using awesome expectations.</Description>
 	</PropertyGroup>
 
-	<!-- Unlike by default, the analyzers of aweXpect.Core reach the consumers, so that its expectation generator also runs in a project that only references aweXpect. -->
+	<!-- Unlike by default, the analyzers of aweXpect.Core reach the consumers, so that its expectation and type metadata generators also run in a project that only references aweXpect. -->
 	<ItemGroup>
 		<ProjectReference Include="..\aweXpect.Core\aweXpect.Core.csproj" PrivateAssets="contentfiles;build"/>
 		<ProjectReference Include="..\aweXpect.Core.Generators\aweXpect.Core.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
@@ -12,6 +12,11 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="aweXpect.Internal.Tests" PublicKey="$(PublicKey)"/>
+	</ItemGroup>
+
+	<!-- Older versions of this package ship the type metadata generator themselves, so the copy in aweXpect.Core only runs next to an aweXpect with this marker. -->
+	<ItemGroup>
+		<AssemblyMetadata Include="aweXpect.TypeMetadataGenerator" Value="aweXpect.Core"/>
 	</ItemGroup>
 
 	<ItemGroup>

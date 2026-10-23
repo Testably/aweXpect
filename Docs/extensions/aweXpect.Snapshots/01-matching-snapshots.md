@@ -125,7 +125,7 @@ Album {
   `.For.Members().WithName("Id").Ignore()`, apply while the object is written, see [rules](04-masking-values.md).
 
 In a trimmed application or under Native AOT, the members of the subject's type are only known when the source
-generator of aweXpect registers them for the call site, which it does for `MatchesSnapshot()`.
+generator of aweXpect.Core registers them for the call site, which it does for `MatchesSnapshot()`.
 
 ### Exceptions
 
@@ -178,10 +178,10 @@ ArgumentOutOfRangeException {
   ```
 
 - In a trimmed application or under Native AOT, the own members of a custom exception, e.g. a `Side` property of a
-  `RecordPlayerException`, are left out: the source generator of aweXpect registers no type derived from `Exception`,
-  because its `TargetSite` requires unreferenced code. The message, data and inner exceptions are still written, and so
-  are the `ParamName`, `ActualValue`, `ObjectName` and `FileName` of the framework exceptions, which are read without
-  reflection.
+  `RecordPlayerException`, are left out: the source generator of aweXpect.Core registers no type derived from
+  `Exception`, because its `TargetSite` requires unreferenced code. The message, data and inner exceptions are still
+  written, and so are the `ParamName`, `ActualValue`, `ObjectName` and `FileName` of the framework exceptions, which are
+  read without reflection.
 - A failure message still writes an exception as its type and message.
 
 ## Binary data and files

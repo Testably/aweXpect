@@ -64,8 +64,8 @@ internal static class Checks
 
 	/// <remarks>
 	///     A record is only written member-wise instead of through its compiler-generated <c>ToString()</c>, which would
-	///     write the list as its type name, when the source generator of aweXpect marks it as a record, as this project
-	///     disables the reflection fallback.
+	///     write the list as its type name, when the source generator of aweXpect.Core marks it as a record, as this
+	///     project disables the reflection fallback.
 	/// </remarks>
 	private static async Task RecordMatchesItsSnapshot()
 		=> await That(new Album("Abbey Road", 12.99m, ["Come Together", "Something",]))
@@ -86,7 +86,7 @@ internal static class Checks
 			.Which.MatchesSnapshot().Accepting(SnapshotAcceptance.None);
 
 	/// <remarks>
-	///     The source generator of aweXpect registers a custom exception with all its members, although
+	///     The source generator of aweXpect.Core registers a custom exception with all its members, although
 	///     <see cref="Exception.TargetSite" /> requires unreferenced code, so even without the reflection fallback that
 	///     this project disables, its own members, here <see cref="RecordPlayerException.Side" />, are written next to its
 	///     message and inner exception.
