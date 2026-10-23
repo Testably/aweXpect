@@ -541,10 +541,30 @@ internal static class JsonElementValidator
 				_ => throw new NotSupportedException()
 			};
 
+		static object? GetNumber(JsonElement jsonElement, Type expectedType)
+			=> jsonElement.ValueKind != JsonValueKind.Number
+				? null
+				: Type.GetTypeCode(Nullable.GetUnderlyingType(expectedType) ?? expectedType) switch
+				{
+					TypeCode.SByte when jsonElement.TryGetSByte(out sbyte value) => value,
+					TypeCode.Byte when jsonElement.TryGetByte(out byte value) => value,
+					TypeCode.Int16 when jsonElement.TryGetInt16(out short value) => value,
+					TypeCode.UInt16 when jsonElement.TryGetUInt16(out ushort value) => value,
+					TypeCode.Int32 when jsonElement.TryGetInt32(out int value) => value,
+					TypeCode.UInt32 when jsonElement.TryGetUInt32(out uint value) => value,
+					TypeCode.Int64 when jsonElement.TryGetInt64(out long value) => value,
+					TypeCode.UInt64 when jsonElement.TryGetUInt64(out ulong value) => value,
+					TypeCode.Single when jsonElement.TryGetSingle(out float value) => value,
+					TypeCode.Double when jsonElement.TryGetDouble(out double value) => value,
+					TypeCode.Decimal when jsonElement.TryGetDecimal(out decimal value) => value,
+					_ => null,
+				};
+
 		if (converter?.TryGetExpectation(expectedElement, out EquivalencyExpectationBuilder? expectationBuilder) ==
 		    true)
 		{
-			ConstraintResult constraintResult = await expectationBuilder.IsMetBy(GetValue(actualElement),
+			object? actualValue = GetNumber(actualElement, expectationBuilder.ExpectedType) ?? GetValue(actualElement);
+			ConstraintResult constraintResult = await expectationBuilder.IsMetBy(actualValue,
 				converter.Context, converter.CancellationToken);
 			if (constraintResult.Outcome == Outcome.Success)
 			{
