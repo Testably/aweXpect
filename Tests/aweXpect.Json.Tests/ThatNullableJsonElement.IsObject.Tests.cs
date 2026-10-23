@@ -658,5 +658,169 @@ public sealed partial class ThatNullableJsonElement
 					             """);
 			}
 		}
+
+		public sealed class WhosePropertiesTests
+		{
+			[Test]
+			public async Task All_WhenAllValuesAreStrings_ShouldSucceed()
+			{
+				JsonElement? subject = FromString("{\"artist\": \"The Beatles\", \"title\": \"Hey Jude\"}");
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task All_WhenSomeValuesAreNoStrings_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"title\": \"Hey Jude\", \"durationSeconds\": 431}");
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties satisfy p => p.Value.ValueKind == JsonValueKind.String for all items,
+					             but only 1 of 2 did
+
+					             Not matching items (properties):
+					             [
+					               "durationSeconds":431
+					             ]
+
+					             Collection (properties):
+					             [
+					               "title":"Hey Jude",
+					               "durationSeconds":431
+					             ]
+					             """);
+			}
+
+			[Test]
+			[Arguments("[]", "an array")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
+			public async Task WhenJsonIsNoObject_ShouldOnlyFailWithIsObject(string json, string kindString)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties.HasCount(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object whose properties have exactly 2 items,
+					              but it was {kindString}
+					              """)
+					.Because("the properties are only accessed when the subject is an object");
+			}
+
+			[Test]
+			public async Task WhenNamesAreDuplicated_ShouldKeepAllProperties()
+			{
+				JsonElement? subject = FromString("{\"a\": 1, \"a\": 2}");
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties.All().Satisfy(p => p.Value.GetInt32() == 1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties satisfy p => p.Value.GetInt32() == 1 for all items,
+					             but only 1 of 2 did
+
+					             Not matching items (properties):
+					             [
+					               "a":2
+					             ]
+
+					             Collection (properties):
+					             [
+					               "a":1,
+					               "a":2
+					             ]
+					             """)
+					.Because("the properties keep a duplicate name in the order of the document");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldOnlyFailWithIsObject()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties.HasCount(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties have exactly 2 items,
+					             but it was <null>
+					             """)
+					.Because("the properties are only accessed when the subject is an object");
+			}
+
+			[Test]
+			public async Task WithExpectation_WhenSubjectIsNull_ShouldOnlyFailWithIsObject()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With(2).Properties())
+						.WhoseProperties.Contains(p => p.Name == "a");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object with 2 properties whose properties contain an item matching p => p.Name == "a" at least once,
+					             but it was <null>
+
+					             JSON options:
+					              - ignore additional properties
+					             """);
+			}
+		}
+
+		public sealed class WhosePropertiesNegatedTests
+		{
+			[Test]
+			public async Task WhenPropertiesMeetTheExpectation_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"a\": 1, \"b\": 2}");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject().WhoseProperties.HasCount(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object whose properties have exactly 2 items,
+					             but it was
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject().WhoseProperties.HasCount(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object whose properties have exactly 2 items,
+					             but it was <null>
+					             """)
+					.Because("a null subject fails IsObject also when it is negated");
+			}
+		}
 	}
 }

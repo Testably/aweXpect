@@ -37,6 +37,10 @@ internal static partial class Checks
 			() => ShouldFail(async () => await That(Parse("[\"a\", null]")).IsArray().WhoseElements
 					.All().Satisfy(e => e.ValueKind == JsonValueKind.String),
 				"whose elements satisfy", "  \"a\",", "  null")),
+		new("the properties of an object fail with their JSON representation",
+			() => ShouldFail(async () => await That(Parse("{\"a\": \"x\", \"b\": [1, null]}")).IsObject().WhoseProperties
+					.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String),
+				"whose properties satisfy", "  \"a\":\"x\",", "  \"b\":[1,null]")),
 		new("a parsed JSON string is inspected with Which",
 			() => ShouldFail(async () => await That("[1]").IsValidJson().Which(e => e.IsObject()),
 				"is an object")),
@@ -88,6 +92,10 @@ internal static partial class Checks
 			() => ShouldFail(async () => await That(new JsonArray("a", null)).IsArray().WhoseElements
 					.All().Satisfy(e => e.ValueKind == JsonValueKind.Number),
 				"whose elements satisfy", "  \"a\",", "  null")),
+		new("the properties of a node object fail with their JSON representation",
+			() => ShouldFail(async () => await That(new JsonObject { ["a"] = 1, }).IsObject().WhoseProperties
+					.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String),
+				"whose properties satisfy", "  \"a\":1")),
 		new("a node matching an expected object fails loudly",
 			() => ShouldFailLoudly(async () => await That(new JsonObject { ["a"] = 1, }).Matches(new
 			{

@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using aweXpect.Core;
 
 namespace aweXpect.Json.Tests;
 
@@ -216,6 +219,141 @@ public sealed partial class ThatJsonNode
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsObject());
+
+				await That(Act).DoesNotThrow()
+					.Because("a null node is the JSON null, which is no object");
+			}
+		}
+
+		public sealed class WhosePropertiesTests
+		{
+			[Test]
+			public async Task All_WhenAllValuesAreStrings_ShouldSucceed()
+			{
+				JsonNode? subject = FromString("""{"artist": "The Beatles", "title": "Hey Jude"}""");
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task All_WhenSomeValuesAreNoStrings_ShouldFail()
+			{
+				JsonObject subject = new()
+				{
+					["title"] = "Hey Jude",
+					["durationSeconds"] = 431,
+				};
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties satisfy p => p.Value.ValueKind == JsonValueKind.String for all items,
+					             but only 1 of 2 did
+
+					             Not matching items (properties):
+					             [
+					               "durationSeconds":431
+					             ]
+
+					             Collection (properties):
+					             [
+					               "title":"Hey Jude",
+					               "durationSeconds":431
+					             ]
+					             """);
+			}
+
+			[Test]
+			[Arguments("[]", "an array")]
+			[Arguments("2", "a number")]
+			[Arguments("\"foo\"", "a string")]
+			public async Task WhenNodeIsNoObject_ShouldOnlyFailWithIsObject(string json, string kindString)
+			{
+				JsonNode? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties.HasCount(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an object whose properties have exactly 2 items,
+					              but it was {kindString}
+					              """)
+					.Because("the properties are only accessed when the subject is an object");
+			}
+
+			[Test]
+			public async Task WhenNodeWasModifiedBeforeTheEvaluation_ShouldVerifyTheModifiedProperties()
+			{
+				JsonObject subject = new()
+				{
+					["a"] = 1,
+				};
+				IThat<IEnumerable<JsonProperty>> expectation = That(subject).IsObject().WhoseProperties;
+
+				subject["b"] = 2;
+
+				async Task Act()
+					=> await expectation.HasCount(2);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectation is only evaluated when it is awaited");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonNode? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties.IsEmpty();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties are empty,
+					             but it was null
+					             """);
+			}
+		}
+
+		public sealed class WhosePropertiesNegatedTests
+		{
+			[Test]
+			public async Task WhenPropertiesMeetTheExpectation_ShouldFail()
+			{
+				JsonObject subject = new()
+				{
+					["a"] = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject().WhoseProperties.HasCount(1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an object whose properties have exactly one item,
+					             but it was
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldSucceed()
+			{
+				JsonNode? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject().WhoseProperties.HasCount(1));
 
 				await That(Act).DoesNotThrow()
 					.Because("a null node is the JSON null, which is no object");

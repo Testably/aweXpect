@@ -2,15 +2,16 @@
 
 Describes the possible expectations for the kind and the content of a `JsonElement` or a [`JsonNode`](#jsonnode).
 
-| Expectation                           | Negated | Summary                                                 |
-|---------------------------------------|---------|---------------------------------------------------------|
-| [`IsObject`](#isobject)               |         | a JSON object, optionally with expectations on it       |
-| [`IsArray`](#isarray)                 |         | a JSON array, optionally with expectations on it        |
-| [`IsArray().WhoseElements`](#isarray) |         | collection expectations on the elements of a JSON array |
-| [`IsString`](#value-kinds)            |         | a JSON string                                           |
-| [`IsNumber`](#value-kinds)            |         | a JSON number                                           |
-| [`IsBoolean`](#value-kinds)           |         | a JSON boolean, i.e. `true` or `false`                  |
-| [`IsNull`](#value-kinds)              |         | the JSON value `null`, only for a `JsonElement`         |
+| Expectation                               | Negated | Summary                                                    |
+|-------------------------------------------|---------|------------------------------------------------------------|
+| [`IsObject`](#isobject)                   |         | a JSON object, optionally with expectations on it          |
+| [`IsObject().WhoseProperties`](#isobject) |         | collection expectations on the properties of a JSON object |
+| [`IsArray`](#isarray)                     |         | a JSON array, optionally with expectations on it           |
+| [`IsArray().WhoseElements`](#isarray)     |         | collection expectations on the elements of a JSON array    |
+| [`IsString`](#value-kinds)                |         | a JSON string                                              |
+| [`IsNumber`](#value-kinds)                |         | a JSON number                                              |
+| [`IsBoolean`](#value-kinds)               |         | a JSON boolean, i.e. `true` or `false`                     |
+| [`IsNull`](#value-kinds)                  |         | the JSON value `null`, only for a `JsonElement`            |
 
 ## IsObject
 
@@ -162,6 +163,53 @@ JSON options:
  - ignore additional properties
  - treat null as absent
 ```
+
+You can verify the properties of an object regardless of their name with `WhoseProperties`. Like
+[`WhoseElements`](#isarray) for arrays, it provides all
+[collection expectations](https://docs.testably.org/aweXpect/collections/items) of aweXpect, here on the
+`JsonProperty` items in the order of the document. A name that occurs more than once in the object is kept as often as
+it occurs:
+
+```csharp
+JsonElement track = JsonDocument.Parse(
+    """{"title": "Let It Be", "artist": "The Beatles", "album": "Let It Be"}""").RootElement;
+
+await Expect.That(track).IsObject().WhoseProperties
+    .All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+
+await Expect.That(track).IsObject().WhoseProperties
+    .All().ComplyWith(p => p.Whose(x => x.Value, v => v.IsString()));
+
+await Expect.That(track).IsObject().WhoseProperties
+    .None().Satisfy(p => p.Name.StartsWith("_"));
+```
+
+If the track also had `"durationSeconds": 243`, the first expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+is an object whose properties satisfy p => p.Value.ValueKind == JsonValueKind.String for all items,
+but only 3 of 4 did
+
+Not matching items (properties):
+[
+  "durationSeconds":243
+]
+
+Collection (properties):
+[
+  "title":"Let It Be",
+  "artist":"The Beatles",
+  "album":"Let It Be",
+  "durationSeconds":243
+]
+```
+
+:::warning
+A `JsonProperty` has no value equality, so verify the properties with predicates on their `Name` and `Value`, like
+`Satisfy(p => …)` or `Contains(p => …)`, or with expectations on their value, like
+`ComplyWith(p => p.Whose(x => x.Value, v => …))`.
+:::
 
 ## IsArray
 
@@ -325,8 +373,8 @@ is `null`, so `IsString()`, `IsNumber()` and `IsBoolean()` are available, but no
 
 A [`JsonNode`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonnode) and its subtypes
 `JsonObject`, `JsonArray` and `JsonValue`, nullable or not, have the same expectations as a `JsonElement`:
-[`Matches`, `MatchesExactly`](./02-matching.md), `IsObject`, `IsArray` (with `WhoseElements`), `IsString`, `IsNumber`
-and `IsBoolean`, with the same options and failure messages:
+[`Matches`, `MatchesExactly`](./02-matching.md), `IsObject` (with `WhoseProperties`), `IsArray` (with
+`WhoseElements`), `IsString`, `IsNumber` and `IsBoolean`, with the same options and failure messages:
 
 ```csharp
 JsonNode? track = JsonNode.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""");

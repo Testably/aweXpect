@@ -50,6 +50,7 @@ JSON options:
 | [`Matches`](./02-matching.md)                                      | `JsonElement`, `JsonNode` | matches the expected value, additional properties allowed |
 | [`MatchesExactly`](./02-matching.md)                               | `JsonElement`, `JsonNode` | matches the expected value exactly                        |
 | [`IsObject`](./03-objects-and-arrays.md#isobject)                  | `JsonElement`, `JsonNode` | a JSON object, optionally with expectations on it         |
+| [`IsObject().WhoseProperties`](./03-objects-and-arrays.md#isobject) | `JsonElement`, `JsonNode` | collection expectations on the properties of a JSON object |
 | [`IsArray`](./03-objects-and-arrays.md#isarray)                    | `JsonElement`, `JsonNode` | a JSON array, optionally with expectations on it          |
 | [`IsArray().WhoseElements`](./03-objects-and-arrays.md#isarray)    | `JsonElement`, `JsonNode` | collection expectations on the elements of a JSON array   |
 | [`IsString`](./03-objects-and-arrays.md#value-kinds)               | `JsonElement`, `JsonNode` | a JSON string                                             |
@@ -69,7 +70,7 @@ The full documentation is available at
 
 - [JSON strings](./01-strings.md): comparing strings as JSON and validating them
 - [Matching JSON](./02-matching.md): `Matches` and `MatchesExactly`, and the options to relax the comparison
-- [Objects, arrays and value kinds](./03-objects-and-arrays.md): `IsObject`, `IsArray`, `WhoseElements`,
+- [Objects, arrays and value kinds](./03-objects-and-arrays.md): `IsObject`, `WhoseProperties`, `IsArray`, `WhoseElements`,
   the value kinds and `JsonNode` subjects
 - [Serialization](./04-serialization.md): `IsJsonSerializable` and `IsJsonSerializedAs`
 - [Customization](./05-customization.md): the default `JsonDocumentOptions` and `JsonSerializerOptions`
