@@ -20,7 +20,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
@@ -37,7 +37,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> NotEqualTo(
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> NotEqualTo(
 		HttpStatusCode? unexpected)
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
@@ -55,7 +55,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is a success status code (2xx).
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> Success()
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(mapper, static (mapper, it, grammars) =>
@@ -70,7 +70,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is a redirection status code (3xx).
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> Redirection()
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(mapper, static (mapper, it, grammars) =>
@@ -85,7 +85,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is a client error status code (4xx).
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> ClientError()
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(mapper, static (mapper, it, grammars) =>
@@ -100,7 +100,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is a server error status code (5xx).
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> ServerError()
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(mapper, static (mapper, it, grammars) =>
@@ -115,7 +115,7 @@ public class StatusCodeResult(
 	/// <summary>
 	///     …is a client or server error status code (4xx or 5xx).
 	/// </summary>
-	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
+	public AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> Error()
 		=> new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(mapper, static (mapper, it, grammars) =>

@@ -10,6 +10,16 @@ public sealed partial class ThatNullableJsonElement
 		public sealed class Tests
 		{
 			[Test]
+			public async Task ShouldReturnTheSubject()
+			{
+				JsonElement? subject = FromString("{\"foo\": 1}");
+
+				JsonElement result = await That(subject).IsObject();
+
+				await That(result.GetRawText()).IsEqualTo("{\"foo\": 1}");
+			}
+
+			[Test]
 			public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
 			{
 				JsonElement? subject = FromString("{}");

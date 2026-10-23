@@ -19,7 +19,7 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Object" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsObject(
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsObject(
 		this IThat<JsonElement?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
@@ -31,7 +31,7 @@ public static partial class ThatNullableJsonElement
 	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement?, IThat<JsonElement?>> IsObject(
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> IsObject(
 		this IThat<JsonElement?> subject,
 		Action<IJsonObjectResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
@@ -46,7 +46,7 @@ public static partial class ThatNullableJsonElement
 			jsonOptions = options(jsonOptions);
 		}
 
-		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
+		return new AndOrResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
 				static (s, it, grammar) => new IsObjectConstraint(it, grammar, s.Expectations, s.Options)),
 			subject);

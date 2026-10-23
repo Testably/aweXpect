@@ -68,6 +68,40 @@ public sealed partial class ThatHttpResponseMessage
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_Negated_ShouldFail()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.HasRequestMessage(request => request.HasMethod(HttpMethod.Get)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request message which does not have a GET method,
+					             but it was <null>
+					             """)
+					.Because("a null subject has no request message, so the negated expectation fails as well");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasRequestMessage(request => request.HasMethod(HttpMethod.Get));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request message which has a GET method,
+					             but it was <null>
+					             """);
+			}
 		}
 	}
 }

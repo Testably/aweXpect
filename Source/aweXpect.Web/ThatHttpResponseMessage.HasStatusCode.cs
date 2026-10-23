@@ -21,7 +21,7 @@ public static partial class ThatHttpResponseMessage
 	///     is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> HasStatusCode(
+	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> HasStatusCode(
 		this IThat<HttpResponseMessage?> subject,
 		HttpStatusCode? expected)
 		=> new(subject.Get().ExpectationBuilder

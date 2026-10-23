@@ -10,6 +10,17 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Test]
+			public async Task ShouldReturnTheSubject()
+			{
+				HttpResponseMessage? subject = ResponseBuilder
+					.WithStatusCode(HttpStatusCode.OK);
+
+				HttpResponseMessage result = await That(subject).HasStatusCode(HttpStatusCode.OK);
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder,];

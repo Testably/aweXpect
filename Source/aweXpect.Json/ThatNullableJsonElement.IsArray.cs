@@ -19,20 +19,20 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static IsArrayResult<JsonElement?> IsArray(
+	public static IsArrayResult<JsonElement, IThat<JsonElement?>> IsArray(
 		this IThat<JsonElement?> subject)
 		=> new(
 			subject.Get().ExpectationBuilder.AddConstraint(static (it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Array)),
 			subject,
-			static element => element.GetValueOrDefault());
+			static element => element);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />
 	///     whose value satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static IsArrayResult<JsonElement?> IsArray(
+	public static IsArrayResult<JsonElement, IThat<JsonElement?>> IsArray(
 		this IThat<JsonElement?> subject,
 		Action<IJsonArrayResult> expectations,
 		Func<JsonOptions, JsonOptions>? options = null)
@@ -47,11 +47,11 @@ public static partial class ThatNullableJsonElement
 			jsonOptions = options(jsonOptions);
 		}
 
-		return new IsArrayResult<JsonElement?>(
+		return new IsArrayResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((Expectations: expectations, Options: jsonOptions),
 				static (s, it, grammar) => new IsArrayConstraint(it, grammar, s.Expectations, s.Options)),
 			subject,
-			static element => element.GetValueOrDefault());
+			static element => element);
 	}
 
 	private sealed class IsArrayConstraint(

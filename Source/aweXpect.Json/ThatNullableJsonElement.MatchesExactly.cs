@@ -15,7 +15,7 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> value exactly.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement?, IThat<JsonElement?>> MatchesExactly(
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> MatchesExactly(
 		this IThat<JsonElement?> subject,
 		object? expected,
 		Func<JsonOptions, JsonOptions>? options = null,
@@ -27,7 +27,7 @@ public static partial class ThatNullableJsonElement
 			jsonOptions = options(jsonOptions);
 		}
 
-		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
+		return new AndOrResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
 				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
@@ -38,7 +38,7 @@ public static partial class ThatNullableJsonElement
 	///     Verifies that the subject <see cref="JsonElement" /> matches the <paramref name="expected" /> array exactly.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<JsonElement?, IThat<JsonElement?>> MatchesExactly<T>(
+	public static AndOrResult<JsonElement, IThat<JsonElement?>> MatchesExactly<T>(
 		this IThat<JsonElement?> subject,
 		IEnumerable<T> expected,
 		Func<JsonOptions, JsonOptions>? options = null,
@@ -50,7 +50,7 @@ public static partial class ThatNullableJsonElement
 			jsonOptions = options(jsonOptions);
 		}
 
-		return new AndOrResult<JsonElement?, IThat<JsonElement?>>(
+		return new AndOrResult<JsonElement, IThat<JsonElement?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Expected: expected, Expression: doNotPopulateThisValue, Options: jsonOptions),
 				static (s, it, grammar) => new MatchesConstraint(it, grammar, s.Expected, s.Expression, s.Options)),
