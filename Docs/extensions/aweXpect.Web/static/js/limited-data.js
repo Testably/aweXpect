@@ -270,6 +270,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -317,7 +323,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -368,7 +375,8 @@ window.BENCHMARK_DATA = {
           313.5394807815552,
           367.46315101214816,
           387.323452105889,
-          378.1162460190909
+          378.1162460190909,
+          422.4501633984702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -412,6 +420,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          608,
           608,
           608,
           608,
@@ -483,7 +492,8 @@ window.BENCHMARK_DATA = {
           812.6626326243082,
           1085.5130675179619,
           1017.244617325919,
-          946.9148646868192
+          946.9148646868192,
+          1019.8714075724284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -495,6 +505,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -823,6 +834,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -870,7 +887,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -921,7 +939,8 @@ window.BENCHMARK_DATA = {
           161.38451027870178,
           196.80615649223327,
           184.33467540740966,
-          173.92827180715707
+          173.92827180715707,
+          185.25359462102253
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -969,6 +988,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          440,
           440,
           440,
           440,
@@ -1036,7 +1056,8 @@ window.BENCHMARK_DATA = {
           226.80491277149744,
           299.2352420171102,
           245.9917560895284,
-          239.9630208015442
+          239.9630208015442,
+          269.1292947989244
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1048,6 +1069,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -1316,6 +1338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -1353,7 +1381,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -1394,7 +1423,8 @@ window.BENCHMARK_DATA = {
           496.79806166428784,
           589.1827468236287,
           592.3354431152344,
-          617.3021722157796
+          617.3021722157796,
+          638.4084940751394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1428,6 +1458,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          976,
           976,
           976,
           976,
@@ -1489,7 +1520,8 @@ window.BENCHMARK_DATA = {
           820.1712608337402,
           1002.5956145066482,
           949.1115576426188,
-          928.0707976659139
+          928.0707976659139,
+          990.9662404378255
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1501,6 +1533,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -1759,6 +1792,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -1796,7 +1835,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -1837,7 +1877,8 @@ window.BENCHMARK_DATA = {
           1270.9593681922327,
           1354.2231997081212,
           1617.6525829315185,
-          1595.8223574502128
+          1595.8223574502128,
+          1720.175451006208
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1871,6 +1912,7 @@ window.BENCHMARK_DATA = {
           1704,
           1704,
           1704,
+          1672,
           1672,
           1672,
           1672,
@@ -1932,7 +1974,8 @@ window.BENCHMARK_DATA = {
           13445.226335797992,
           15357.098996675932,
           20450.44499308268,
-          20831.374291992186
+          20831.374291992186,
+          21488.67304280599
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1977,6 +2020,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713
         ],
@@ -2202,6 +2246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -2239,7 +2289,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -2280,7 +2331,8 @@ window.BENCHMARK_DATA = {
           550.5181542714437,
           616.3446112360273,
           695.8637508392334,
-          623.1605824690598
+          623.1605824690598,
+          638.68865331014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2310,6 +2362,7 @@ window.BENCHMARK_DATA = {
           1408,
           1408,
           1120,
+          1080,
           1080,
           1080,
           1080,
@@ -2375,7 +2428,8 @@ window.BENCHMARK_DATA = {
           1140.2347684224446,
           1405.9346648624964,
           1288.2501042683919,
-          1239.9838808499849
+          1239.9838808499849,
+          1387.226598103841
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2387,6 +2441,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -2645,6 +2700,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -2682,7 +2743,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -2723,7 +2785,8 @@ window.BENCHMARK_DATA = {
           833.8486576080322,
           891.6429926798894,
           1071.2037959780012,
-          1035.9206748962401
+          1035.9206748962401,
+          1108.765048299517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2757,6 +2820,7 @@ window.BENCHMARK_DATA = {
           1528,
           1528,
           1528,
+          1424,
           1424,
           1424,
           1424,
@@ -2818,7 +2882,8 @@ window.BENCHMARK_DATA = {
           683.5088927586874,
           845.3514110565186,
           729.7602513177054,
-          708.2561755861555
+          708.2561755861555,
+          770.7377811159406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2830,6 +2895,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
