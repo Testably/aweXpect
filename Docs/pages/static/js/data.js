@@ -720,6 +720,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -842,7 +848,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -968,7 +975,8 @@ window.BENCHMARK_DATA = {
           7859.419778090257,
           7809.773435465495,
           10377.854996901293,
-          11303.24902695876
+          11303.24902695876,
+          9625.810393113356
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1064,6 +1072,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1233,7 +1242,8 @@ window.BENCHMARK_DATA = {
           245292.0140625,
           262455.7974609375,
           365015.7195870536,
-          360896.2228064904
+          360896.2228064904,
+          343904.22760416666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1364,7 +1374,8 @@ window.BENCHMARK_DATA = {
           590288,
           590289,
           590292,
-          590292
+          590292,
+          590266
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1498,7 +1509,8 @@ window.BENCHMARK_DATA = {
           14524.337534586588,
           14472.597387460562,
           19575.3539835612,
-          20284.666900634766
+          20284.666900634766,
+          21708.24972316197
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1510,6 +1522,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2321,6 +2334,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -2436,7 +2455,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -2555,7 +2575,8 @@ window.BENCHMARK_DATA = {
           184.8512527209062,
           201.48178997039795,
           325.1943915807284,
-          343.141472975413
+          343.141472975413,
+          276.6602389017741
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2644,6 +2665,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -2806,7 +2828,8 @@ window.BENCHMARK_DATA = {
           389.19339542388917,
           418.41485999425254,
           496.9883633931478,
-          540.52678666796
+          540.52678666796,
+          731.3550870895385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2818,6 +2841,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -3057,7 +3081,8 @@ window.BENCHMARK_DATA = {
           287.22703234354657,
           299.4140798648198,
           394.79838306563244,
-          393.42333698272705
+          393.42333698272705,
+          415.4043488184611
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3069,6 +3094,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -8493,6 +8519,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -9378,7 +9410,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -10267,7 +10300,8 @@ window.BENCHMARK_DATA = {
           114.15108967622122,
           112.90956422487895,
           140.20358544985453,
-          152.78660640716552
+          152.78660640716552,
+          148.2493472735087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11126,6 +11160,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -12058,7 +12093,8 @@ window.BENCHMARK_DATA = {
           196.89206547396523,
           202.53709905942281,
           262.4622178077698,
-          266.90153010686237
+          266.90153010686237,
+          322.500128142039
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12952,6 +12988,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -13130,7 +13167,8 @@ window.BENCHMARK_DATA = {
           178.72848569552104,
           181.59606536797114,
           243.4402543703715,
-          248.77635211210983
+          248.77635211210983,
+          251.49282754262288
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13142,6 +13180,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -14039,6 +14078,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -14161,7 +14206,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -14287,7 +14333,8 @@ window.BENCHMARK_DATA = {
           186.92283264795938,
           196.66333090464275,
           263.672407245636,
-          256.3669399579366
+          256.3669399579366,
+          258.9950368744986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14383,6 +14430,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -14552,7 +14600,8 @@ window.BENCHMARK_DATA = {
           403.77657002669116,
           427.1760190327962,
           562.72358247212,
-          512.5984234491984
+          512.5984234491984,
+          639.7948635646275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14564,6 +14613,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -14817,7 +14867,8 @@ window.BENCHMARK_DATA = {
           267.30244868596395,
           266.2940083571843,
           334.3504568168095,
-          341.6250548022134
+          341.6250548022134,
+          365.9750097819737
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -14829,6 +14880,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -20260,6 +20312,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -21145,7 +21203,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -22034,7 +22093,8 @@ window.BENCHMARK_DATA = {
           487.86827557881674,
           507.4122027669634,
           641.1975845972697,
-          641.5250670750936
+          641.5250670750936,
+          637.3664354960124
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22893,6 +22953,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -23825,7 +23886,8 @@ window.BENCHMARK_DATA = {
           1098.706383895874,
           1191.1756507873536,
           1386.3460890452068,
-          1497.8905403137207
+          1497.8905403137207,
+          1555.4841884885516
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24719,6 +24781,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -24897,7 +24960,8 @@ window.BENCHMARK_DATA = {
           491.83470923105875,
           515.1275077232948,
           690.2967896779378,
-          672.6900294621786
+          672.6900294621786,
+          724.0549907684326
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24909,6 +24973,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -30384,6 +30449,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -31269,7 +31340,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -32158,7 +32230,8 @@ window.BENCHMARK_DATA = {
           486.7118255175077,
           491.10843079430714,
           644.795959677015,
-          668.8403615315755
+          668.8403615315755,
+          650.9403317996433
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33017,6 +33090,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -33949,7 +34023,8 @@ window.BENCHMARK_DATA = {
           16749.660932268416,
           16186.242250569661,
           27360.841960362024,
-          28264.35965200571
+          28264.35965200571,
+          24621.772003173828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34843,7 +34918,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35021,7 +35097,8 @@ window.BENCHMARK_DATA = {
           602.6832408905029,
           606.713120664869,
           796.6672543207804,
-          791.154404435839
+          791.154404435839,
+          803.9011669158936
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35033,6 +35110,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -36278,6 +36356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -36458,7 +36542,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -36642,7 +36727,8 @@ window.BENCHMARK_DATA = {
           532.6910418192546,
           575.4003428618113,
           675.7457152048747,
-          743.736391544342
+          743.736391544342,
+          723.948392868042
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36796,6 +36882,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -37023,7 +37110,8 @@ window.BENCHMARK_DATA = {
           52063.303475516186,
           53533.527298990884,
           82617.67536272321,
-          84310.5775756836
+          84310.5775756836,
+          60821.8199332101
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37212,7 +37300,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5252
+          5252,
+          5254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38294,6 +38383,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -38474,7 +38569,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -38658,7 +38754,8 @@ window.BENCHMARK_DATA = {
           129.52384902749742,
           153.21272252400715,
           175.83587109247844,
-          184.0452355702718
+          184.0452355702718,
+          189.7367571592331
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38812,6 +38909,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -39039,7 +39137,8 @@ window.BENCHMARK_DATA = {
           14427.648673502605,
           15323.29451751709,
           31149.83259364537,
-          32576.726786295574
+          32576.726786295574,
+          25040.11217651367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39228,7 +39327,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39406,7 +39506,8 @@ window.BENCHMARK_DATA = {
           174.8215048313141,
           188.44351636568706,
           251.87383028666179,
-          254.74963620503743
+          254.74963620503743,
+          294.8517807324727
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39418,6 +39519,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -40315,6 +40417,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -40437,7 +40545,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -40563,7 +40672,8 @@ window.BENCHMARK_DATA = {
           275.69444805781046,
           294.46485637029014,
           359.30018679300946,
-          342.11096811294556
+          342.11096811294556,
+          372.5778000195821
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40659,6 +40769,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -40828,7 +40939,8 @@ window.BENCHMARK_DATA = {
           314.1503064815815,
           323.0838538487752,
           386.0578568322318,
-          373.1040886561076
+          373.1040886561076,
+          441.57036403020226
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40840,6 +40952,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -41093,7 +41206,8 @@ window.BENCHMARK_DATA = {
           338.59074878692627,
           337.04253204052264,
           407.8290137563433,
-          406.27484938076566
+          406.27484938076566,
+          415.3134157474224
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41105,6 +41219,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -41958,6 +42073,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -42080,7 +42201,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -42206,7 +42328,8 @@ window.BENCHMARK_DATA = {
           507.0891325632731,
           514.4456947871616,
           717.4852732976277,
-          685.7884595734732
+          685.7884595734732,
+          685.6721137364706
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42326,6 +42449,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -42471,7 +42595,8 @@ window.BENCHMARK_DATA = {
           1486.65680809021,
           1655.7900140126546,
           1855.5474794827974,
-          1971.5610669453938
+          1971.5610669453938,
+          2222.966188812256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42483,6 +42608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -42736,7 +42862,8 @@ window.BENCHMARK_DATA = {
           695.0208110173543,
           751.4218826293945,
           938.7351203282674,
-          950.6003372192383
+          950.6003372192383,
+          947.7432933534894
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42748,6 +42875,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -43601,6 +43729,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -43723,7 +43857,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -43849,7 +43984,8 @@ window.BENCHMARK_DATA = {
           8187.035876464844,
           8214.864991324288,
           11427.309153630184,
-          11389.34024963379
+          11389.34024963379,
+          10600.388579232353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43945,6 +44081,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -44114,7 +44251,8 @@ window.BENCHMARK_DATA = {
           27064.1409362793,
           26001.12851388114,
           41090.570795694985,
-          42109.6614868164
+          42109.6614868164,
+          36201.209376743864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44244,6 +44382,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
+          18609,
           18609,
           18609
         ],
@@ -44379,7 +44518,8 @@ window.BENCHMARK_DATA = {
           7921.800521850586,
           7917.693529256185,
           10758.646868024554,
-          10711.965084620884
+          10711.965084620884,
+          9982.453060695103
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44391,6 +44531,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -45244,6 +45385,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:57:17 2026 \u002B0200",
         "message": "feat!: filter parameters by a custom predicate with Matching in aweXpect.Reflection (#1960)"
+      },
+      {
+        "sha": "3aaf6f001921e706c76e569145ec3698adecf9cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:58:46 2026 \u002B0200",
+        "message": "docs: align the structure of the Json and Xml extension docs (#1966)"
       }
     ],
     "labels": [
@@ -45366,7 +45513,8 @@ window.BENCHMARK_DATA = {
       "87616222",
       "8e844194",
       "f61481d2",
-      "77ca8a7f"
+      "77ca8a7f",
+      "3aaf6f00"
     ],
     "datasets": [
       {
@@ -45492,7 +45640,8 @@ window.BENCHMARK_DATA = {
           7764.073996910682,
           7662.771510197566,
           10851.637959071568,
-          10903.74873046875
+          10903.74873046875,
+          10468.100550333658
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45588,6 +45737,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -45757,7 +45907,8 @@ window.BENCHMARK_DATA = {
           38403.32942082332,
           38546.71939697266,
           58405.40701904297,
-          59827.30839029948
+          59827.30839029948,
+          51575.098478190106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45882,6 +46033,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -46022,7 +46174,8 @@ window.BENCHMARK_DATA = {
           15377.496789114815,
           15288.57119516226,
           21224.502873738606,
-          21261.13007405599
+          21261.13007405599,
+          19541.90972464425
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46034,6 +46187,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
