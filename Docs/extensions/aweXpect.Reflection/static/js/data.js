@@ -270,6 +270,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -317,7 +323,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -368,7 +375,8 @@ window.BENCHMARK_DATA = {
           712.4593811035156,
           413.84195699010576,
           764.4701401165554,
-          700.9351417834943
+          700.9351417834943,
+          701.9421815872192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -413,6 +421,7 @@ window.BENCHMARK_DATA = {
           904,
           904,
           904,
+          680,
           680,
           680,
           680,
@@ -483,7 +492,8 @@ window.BENCHMARK_DATA = {
           899.1088951110839,
           563.1298767725626,
           928.6164199829102,
-          885.8778696695964
+          885.8778696695964,
+          888.2919058799744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -495,6 +505,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -823,6 +834,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -870,7 +887,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -921,7 +939,8 @@ window.BENCHMARK_DATA = {
           123.30812808672587,
           71.893810292085,
           142.84947752952576,
-          118.61724276542664
+          118.61724276542664,
+          134.43418616907937
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -961,6 +980,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          296,
           296,
           296,
           296,
@@ -1036,7 +1056,8 @@ window.BENCHMARK_DATA = {
           211.83564372062682,
           139.74082769666398,
           213.41635026931763,
-          206.80955353804998
+          206.80955353804998,
+          198.11067385673522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1048,6 +1069,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -1376,6 +1398,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -1423,7 +1451,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -1474,7 +1503,8 @@ window.BENCHMARK_DATA = {
           1989.0674397786458,
           1057.9688414255777,
           2111.6932860783168,
-          1891.9799923529993
+          1891.9799923529993,
+          1870.5410897391182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1514,6 +1544,7 @@ window.BENCHMARK_DATA = {
           2104,
           2104,
           2104,
+          2080,
           2080,
           2080,
           2080,
@@ -1589,7 +1620,8 @@ window.BENCHMARK_DATA = {
           1518.6269055775233,
           935.7436493464878,
           1557.508850778852,
-          1532.6002473195394
+          1532.6002473195394,
+          1481.536464691162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1645,6 +1677,7 @@ window.BENCHMARK_DATA = {
           1897,
           1985,
           1985,
+          1897,
           1897
         ],
         "borderColor": "#FF671B",
@@ -1869,6 +1902,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -1906,7 +1945,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -1947,7 +1987,8 @@ window.BENCHMARK_DATA = {
           2704.5054546991983,
           1500.0109330690825,
           2985.921454620361,
-          2711.4835270472936
+          2711.4835270472936,
+          2711.6330830710276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1993,7 +2034,8 @@ window.BENCHMARK_DATA = {
           3040,
           2984,
           2984,
-          2984
+          2984,
+          3040
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2042,7 +2084,8 @@ window.BENCHMARK_DATA = {
           3841.3821187700546,
           2407.3168144226074,
           3876.402209355281,
-          3835.140052286784
+          3835.140052286784,
+          3820.568997519357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2087,6 +2130,7 @@ window.BENCHMARK_DATA = {
           4012,
           4012,
           4011,
+          4012,
           4012,
           4012
         ],
@@ -2312,6 +2356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -2349,7 +2399,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -2390,7 +2441,8 @@ window.BENCHMARK_DATA = {
           391.7545042037964,
           199.92884837786357,
           369.9827445575169,
-          375.99946517944335
+          375.99946517944335,
+          390.96656297047934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2420,6 +2472,7 @@ window.BENCHMARK_DATA = {
           1400,
           576,
           576,
+          552,
           552,
           552,
           552,
@@ -2485,7 +2538,8 @@ window.BENCHMARK_DATA = {
           2336.7420885721845,
           1374.6877195040386,
           2358.0819844563803,
-          2244.9664247952974
+          2244.9664247952974,
+          2182.5031095232284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2497,6 +2551,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2755,6 +2810,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 01:07:38 2026 \u002B0200",
         "message": "fix!: keep the item type in AreEqualTo on struct enumerables (#1941)"
+      },
+      {
+        "sha": "1c027d4b4610b07fa17c1e1984c1707f4f9c2900",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 01:07:45 2026 \u002B0200",
+        "message": "refactor!: make the plumbing constructors of aweXpect.Reflection internal (#1956)"
       }
     ],
     "labels": [
@@ -2792,7 +2853,8 @@ window.BENCHMARK_DATA = {
       "7d8edd0d",
       "41520e7b",
       "3804f6c8",
-      "8dcdaffe"
+      "8dcdaffe",
+      "1c027d4b"
     ],
     "datasets": [
       {
@@ -2833,7 +2895,8 @@ window.BENCHMARK_DATA = {
           3590.0820574442546,
           1986.4806144714355,
           3730.8515721638996,
-          3458.86931010655
+          3458.86931010655,
+          3394.444876744197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2863,6 +2926,7 @@ window.BENCHMARK_DATA = {
           3697,
           3697,
           3697,
+          3673,
           3673,
           3673,
           3673,
@@ -2928,7 +2992,8 @@ window.BENCHMARK_DATA = {
           285696.83232421876,
           177185.6905436198,
           280900.4276297433,
-          279018.9016113281
+          279018.9016113281,
+          275831.9987792969
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2972,6 +3037,7 @@ window.BENCHMARK_DATA = {
           17609,
           17609,
           17608,
+          17609,
           17609,
           17609,
           17609
