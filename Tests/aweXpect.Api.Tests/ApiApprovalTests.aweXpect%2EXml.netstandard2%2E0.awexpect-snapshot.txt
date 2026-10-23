@@ -17,6 +17,8 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument?, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThat<System.Xml.Linq.XElement?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument?, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument?, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument?, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> MatchesExactly(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
@@ -35,6 +37,8 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement?, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement?, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasElement(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Xml.Linq.XName name, System.Action<aweXpect.Core.IThat<System.Xml.Linq.XElement?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement?, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement?, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]

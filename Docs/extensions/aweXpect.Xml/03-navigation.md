@@ -50,6 +50,32 @@ To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 await Expect.That(order).HasElement("customer", customer => customer.Matches("""<customer><address /></customer>"""));
 ```
 
+## Values
+
+You can add expectations on the value of an element with all string expectations of aweXpect:
+
+```csharp
+XElement track = XElement.Parse("""<track><title>Let It Be</title></track>""");
+
+await Expect.That(track).HasElement("title", title => title.HasValue(value => value.StartsWith("Let")));
+```
+
+If the title was "Yesterday" instead, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+has element "title" which has a value which starts with "Let",
+but value of the element was "Yesterday", which differs at index 0:
+   ↓ (actual)
+  "Yesterday"
+  "Let"
+   ↑ (expected prefix)
+```
+
+The value is the concatenated text of all descendant text nodes, including CDATA sections, like
+[`XElement.Value`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xelement.value). So the value of an
+element with mixed content, e.g. `<p>a<b>x</b>c</p>`, is `axc`, and the value of an element without text is empty.
+
 ## Documents
 
 All these expectations are also available for an
