@@ -1,5 +1,14 @@
 # XML strings
 
+Describes the possible expectations for strings that contain XML.
+
+| Expectation                                         | Negated                   | Summary                                         |
+|-----------------------------------------------------|---------------------------|-------------------------------------------------|
+| [`IsEqualTo(…).AsXml()`](#string-comparison-as-xml) | `IsNotEqualTo(…).AsXml()` | equal to the expected XML, compared by content  |
+| [`IsValidXml`](#validation)                         |                           | can be parsed as a well-formed XML document     |
+| [`IsValidXmlMatching`](#validation)                 |                           | valid XML that matches the expected XML         |
+| [`IsValidXmlMatchingExactly`](#validation)          |                           | valid XML that matches the expected XML exactly |
+
 ## String comparison as XML
 
 You can verify that a string is equal to the expected XML, compared by its content instead of its formatting:

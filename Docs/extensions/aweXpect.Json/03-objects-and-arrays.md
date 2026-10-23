@@ -36,6 +36,30 @@ JSON options:
  - ignore additional properties
 ```
 
+`Matching(…)` also accepts `It.Is…` expectations, e.g. to verify a value with the string expectations of aweXpect:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+
+await Expect.That(track).IsObject(o => o
+    .With("title").Matching(It.Is<string>().That.StartsWith("Let")));
+```
+
+If the title was "Yesterday" instead, the expectation would fail with:
+
+```text title="Failure message"
+Expected that track
+is an object and $.title matches It.Is<string>().That.StartsWith("Let"),
+but it differed as $.title was "Yesterday", which differs at index 0:
+   ↓ (actual)
+  "Yesterday"
+  "Let"
+   ↑ (expected prefix)
+
+JSON options:
+ - ignore additional properties
+```
+
 You can verify that a property is another object, recursively:
 
 ```csharp

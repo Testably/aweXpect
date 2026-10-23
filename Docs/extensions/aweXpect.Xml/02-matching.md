@@ -1,5 +1,13 @@
 # Matching XML
 
+Describes the possible expectations for matching an `XElement` or an `XDocument` with an expected XML, and the
+[options](#options) to relax the comparison.
+
+| Expectation                                 | Negated | Summary                                            |
+|---------------------------------------------|---------|----------------------------------------------------|
+| [`Matches`](#elements-and-documents)        |         | matches the expected XML, additional nodes allowed |
+| [`MatchesExactly`](#elements-and-documents) |         | matches the expected XML exactly                   |
+
 ## Elements and documents
 
 You can verify that an [`XElement`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xelement) matches an
@@ -57,7 +65,20 @@ XElement track = XElement.Parse("""<track title="Let It Be" />""");
 await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
 ```
 
-## Additional nodes
+## Options
+
+The options are available wherever `XmlOptions` are accepted, i.e. `Matches`, `MatchesExactly`, `IsValidXmlMatching`,
+`IsValidXmlMatchingExactly` and [`AsXml(o => …)`](./01-strings.md#string-comparison-as-xml). Like the
+[options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options), an option that switches something on
+takes an optional `bool`:
+
+| Option                                                             | Configures                                                   |
+|--------------------------------------------------------------------|--------------------------------------------------------------|
+| [`IgnoringAdditionalNodes()`](#additional-nodes)                   | ignores additional attributes and child nodes of the subject |
+| [`IgnoringMember(path)`, `Ignoring(path => …)`](#ignoring-members) | leaves members out of the comparison                         |
+| [`IgnoringElementOrder()`](#element-order)                         | the child elements and texts can be in any order             |
+
+### Additional nodes
 
 You can ignore the attributes and child nodes of the subject that are not in the expected XML. The option is available
 for `MatchesExactly`, `IsValidXmlMatchingExactly` and [`AsXml()`](./01-strings.md#string-comparison-as-xml), and
@@ -81,7 +102,7 @@ XML options:
 With `IgnoringAdditionalNodes(false)`, `Matches` and `IsValidXmlMatching` compare exactly, like `MatchesExactly` and
 `IsValidXmlMatchingExactly`.
 
-## Ignoring members
+### Ignoring members
 
 You can ignore members whose values change between runs, e.g. generated ids or timestamps. The options are available
 for `Matches`, `MatchesExactly`, `IsValidXmlMatching`, `IsValidXmlMatchingExactly` and
@@ -127,7 +148,7 @@ As [additional nodes](#additional-nodes) of the subject are not compared when th
 member to ignore that only occurs in the subject matches no compared path either, and is named as well, although it
 is not needed.
 
-## Element order
+### Element order
 
 By default, the order of the child elements and texts is significant. You can ignore it for all compared elements:
 

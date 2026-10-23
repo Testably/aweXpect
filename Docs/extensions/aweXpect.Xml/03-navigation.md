@@ -1,5 +1,14 @@
 # Attributes and child elements
 
+Describes the possible expectations for the attributes, child elements and values of an `XElement` or an
+[`XDocument`](#documents).
+
+| Expectation                     | Negated                | Summary                                                      |
+|---------------------------------|------------------------|--------------------------------------------------------------|
+| [`HasAttribute`](#attributes)   | `DoesNotHaveAttribute` | has the attribute, optionally with expectations on its value |
+| [`HasElement`](#child-elements) | `DoesNotHaveElement`   | has the child element, optionally with expectations on it    |
+| [`HasValue`](#values)           |                        | the value satisfies the expectations                         |
+
 ## Attributes
 
 You can verify that an [`XElement`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xelement) has an
@@ -48,6 +57,36 @@ To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 
 ```csharp
 await Expect.That(order).HasElement("customer", customer => customer.Matches("""<customer><address /></customer>"""));
+```
+
+To verify all child elements with a name, select them with
+[`Whose`](https://docs.testably.org/aweXpect/how-it-works/combining#on-members-of-the-subject) and use the
+[collection expectations](https://docs.testably.org/aweXpect/collections/items) of aweXpect, e.g. the
+[quantifiers](https://docs.testably.org/aweXpect/collections/items#quantifiers) with `ComplyWith(…)`:
+
+```csharp
+XElement order = XElement.Parse("""<order><item sku="A1" /><item sku="B2" /><note /></order>""");
+
+await Expect.That(order).Whose(o => o.Elements("item"), items => items.HasCount(2));
+await Expect.That(order).Whose(o => o.Elements("item"), items => items
+    .All().ComplyWith(item => item.HasAttribute("sku")));
+```
+
+With a third `<item sku="C3" />`, the first expectation would fail with the following message. As `Elements(…)` is
+only enumerated as far as needed, it states a lower bound:
+
+```text title="Failure message"
+Expected that order
+whose Elements("item") have exactly 2 items,
+but Elements("item") had at least 3 items
+
+Collection (Elements("item")):
+[
+  <item sku="A1" />,
+  <item sku="B2" />,
+  <item sku="C3" />,
+  (… and maybe more)
+]
 ```
 
 ## Values

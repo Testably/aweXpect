@@ -64,6 +64,26 @@ await Expect.That(JsonDocument.Parse("true").RootElement).Matches(true);
 await Expect.That(JsonDocument.Parse("null").RootElement).Matches(null);
 ```
 
+## Expected JSON
+
+The expected value can also be a `JsonElement`, a `JsonDocument` or a `JsonNode`, whose JSON is used as it is, e.g. to
+match an expected JSON text:
+
+```csharp
+JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
+
+await Expect.That(track).Matches(JsonDocument.Parse("""{"title": "Let It Be"}"""));
+```
+
+`MatchesExactly(JsonDocument.Parse("""{"title": "Let It Be"}"""))` would fail because of the additional `artist`
+property:
+
+```text title="Failure message"
+Expected that track
+matches JsonDocument.Parse("""{"title": "Let It Be"}""") exactly,
+but it differed as $.artist had unexpected "The Beatles"
+```
+
 ## Options
 
 The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `MatchesExactly`,
