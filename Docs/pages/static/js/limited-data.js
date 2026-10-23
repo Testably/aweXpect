@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12161.331097920736,
           12973.617682823768,
           13068.29561832973,
           10746.097734723773,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10697.089312039889,
           7999.5514048258465,
           7742.476958211263,
-          5210.969314575195
+          5210.969314575195,
+          7859.419778090257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,6 @@ window.BENCHMARK_DATA = {
         "data": [
           3880,
           3880,
-          3880,
           2192,
           2192,
           2192,
@@ -438,6 +437,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          333559.60625,
           377927.78155048075,
           384787.41236979165,
           379704.0484375,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           384140.58841145836,
           302087.4689592634,
           300924.51510416664,
-          162883.67442103795
+          162883.67442103795,
+          245292.0140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590290,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590225,
           590226,
-          590287
+          590287,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          18560.86735636393,
           19459.704374186196,
           19681.54003252302,
           19777.559936523438,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           20074.98917061942,
           18065.067188807898,
           17909.513950602213,
-          9323.177334376744
+          9323.177334376744,
+          14524.337534586588
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          275.5467573234013,
           318.83840522766116,
           284.13055518468224,
           270.87850427627563,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           322.6525573730469,
           273.9837770802634,
           268.5749477999551,
-          123.02076901708331
+          123.02076901708331,
+          184.8512527209062
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1155,7 +1155,6 @@ window.BENCHMARK_DATA = {
         "data": [
           600,
           600,
-          600,
           536,
           536,
           536,
@@ -1171,6 +1170,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          576.3078407560076,
           545.812861251831,
           512.7722974190345,
           553.014966583252,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           515.0361580530803,
           608.8601038614909,
           590.109141476949,
-          250.56537062327067
+          250.56537062327067,
+          389.19339542388917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          380.8436924298604,
           414.13615633646646,
           389.247496509552,
           394.10989402135215,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           401.1061988194784,
           416.59318628311155,
           415.7524501596178,
-          202.06207796732585
+          202.06207796732585,
+          287.22703234354657
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          153.13168195088704,
           151.69424080848694,
           163.23447360992432,
           147.43041648864747,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           144.55811697642008,
           151.66829425948006,
           151.41221645673116,
-          65.51748577753703
+          65.51748577753703,
+          114.15108967622122
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1888,7 +1888,6 @@ window.BENCHMARK_DATA = {
         "data": [
           536,
           536,
-          536,
           472,
           472,
           472,
@@ -1904,6 +1903,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          266.26093737284344,
           278.4389914830526,
           281.77575432459514,
           276.4899801254272,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           259.9817698918856,
           326.9361922899882,
           313.2394310406276,
-          127.82158738772074
+          127.82158738772074,
+          196.89206547396523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          267.1239589055379,
           263.1948678334554,
           259.18998562494914,
           260.34343061447146,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           253.5283507347107,
           243.30304209391275,
           237.49920315742492,
-          115.09965844154358
+          115.09965844154358,
+          178.72848569552104
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          274.633469804128,
           281.6031672795614,
           269.9539073430575,
           253.18411010106405,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           257.9934313774109,
           252.03252874101912,
           241.04713221958704,
-          125.37886052131653
+          125.37886052131653,
+          186.92283264795938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2621,7 +2621,6 @@ window.BENCHMARK_DATA = {
         "data": [
           576,
           576,
-          576,
           512,
           512,
           512,
@@ -2637,6 +2636,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          547.2779916127523,
           555.6839349746704,
           609.5470302581787,
           533.5308125178019,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           537.7937030156453,
           662.1523787634713,
           640.4373806544712,
-          258.99104475975037
+          258.99104475975037,
+          403.77657002669116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          338.503156375885,
           339.0941930770874,
           341.82178592681885,
           350.5273838043213,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           339.82704010009763,
           351.3542137512794,
           351.05339755330766,
-          173.34568036397297
+          173.34568036397297,
+          267.30244868596395
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          644.017866007487,
           724.5473428726197,
           661.8000355448041,
           631.4953853607178,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           666.2331348146711,
           573.9394465764364,
           560.1261488369533,
-          328.97456585566204
+          328.97456585566204,
+          487.86827557881674
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3354,7 +3354,6 @@ window.BENCHMARK_DATA = {
         "data": [
           872,
           872,
-          872,
           808,
           808,
           808,
@@ -3370,6 +3369,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1454.5325317382812,
           1480.9957383473713,
           1412.6370819091796,
           1417.2390192576818,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1437.4247745513917,
           1552.5757722218832,
           1528.468043899536,
-          682.2448314666748
+          682.2448314666748,
+          1098.706383895874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          650.7262543996175,
           651.2884432247707,
           668.5405497550964,
           637.2551863988241,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           693.8161659240723,
           643.9477735928127,
           641.3820680777231,
-          355.27583128611246
+          355.27583128611246,
+          491.83470923105875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          668.4242586771647,
           697.8973037719727,
           662.0744834899903,
           657.9991912160601,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           641.4998718897501,
           580.2161086627415,
           582.0692969640096,
-          331.4084296544393
+          331.4084296544393,
+          486.7118255175077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4087,7 +4087,6 @@ window.BENCHMARK_DATA = {
         "data": [
           920,
           920,
-          920,
           856,
           856,
           856,
@@ -4103,6 +4102,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21275.813532511394,
           27876.408895639273,
           28159.617494855607,
           27739.56977742513,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28001.67866734096,
           18253.817936488562,
           18028.941225324357,
-          10521.541318766276
+          10521.541318766276,
+          16749.660932268416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4213,7 +4213,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          754.4136435190836,
           781.755993906657,
           832.9981196085612,
           790.4042289733886,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           830.5997231801351,
           757.1983052571615,
           777.056998693026,
-          412.2517735799154
+          412.2517735799154,
+          602.6832408905029
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          672.365507443746,
           710.9916900488047,
           732.6541241237095,
           680.5529984156291,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           733.3101908365885,
           706.4060881296793,
           691.7548534393311,
-          323.0181734085083
+          323.0181734085083,
+          532.6910418192546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4820,7 +4820,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1760,
           1760,
-          1760,
           1696,
           1696,
           1696,
@@ -4836,6 +4835,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          63636.55314941406,
           85735.19432779947,
           84855.27948869977,
           83996.48580697867,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           83982.65583683894,
           34963.166076660156,
           34370.29956490653,
-          27610.4389058431
+          27610.4389058431,
+          52063.303475516186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4946,7 +4946,6 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252,
           5254,
           5252,
           5252,
@@ -4990,6 +4989,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256,
           5256,
           5256
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
       {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          188.21348755700248,
           169.66866821050644,
           217.2856798330943,
           161.2346766312917,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           197.68659586172836,
           187.8523447880378,
           192.3838214079539,
-          85.46598759064308
+          85.46598759064308,
+          129.52384902749742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5428,7 +5428,6 @@ window.BENCHMARK_DATA = {
         "data": [
           552,
           552,
-          552,
           488,
           488,
           488,
@@ -5444,6 +5443,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19003.044596354168,
           31599.64034830729,
           33054.366263253345,
           31524.582922363283,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32326.37315586635,
           17580.579520670573,
           16781.729989188058,
-          8980.615689958844
+          8980.615689958844,
+          14427.648673502605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5554,7 +5554,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,6 +5599,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          268.211040687561,
           256.7979057629903,
           255.98440024058024,
           246.9466314315796,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           250.5384820620219,
           241.94896602630615,
           240.8125906308492,
-          119.37625473340353
+          119.37625473340353,
+          174.8215048313141
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          381.0567145665487,
           393.2888808250427,
           380.1713130133493,
           380.13433100382485,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           406.6041113308498,
           342.5799726486206,
           339.8047703229464,
-          175.07092701594036
+          175.07092701594036,
+          275.69444805781046
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6161,7 +6161,6 @@ window.BENCHMARK_DATA = {
         "data": [
           744,
           744,
-          744,
           680,
           680,
           680,
@@ -6177,6 +6176,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          429.60222258934607,
           403.6646994590759,
           379.39592453149646,
           424.7500306129456,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           397.38704807417736,
           484.6903467859541,
           468.92224655832564,
-          198.35163577397665
+          198.35163577397665,
+          314.1503064815815
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          433.5565303053175,
           421.3822946548462,
           406.0427146639143,
           429.941170946757,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           417.41266069412234,
           401.1071700731913,
           405.95541184743246,
-          198.3134943962097
+          198.3134943962097,
+          338.59074878692627
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          797.9655483881633,
           817.8794736128586,
           784.4698096593221,
           738.510299428304,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           684.3803238187518,
           663.1652751650129,
           657.6112369696299,
-          331.48690201441445
+          331.48690201441445,
+          507.0891325632731
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6894,7 +6894,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1688,
           1688,
-          1688,
           1496,
           1496,
           1496,
@@ -6934,6 +6933,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2086.4835370381675,
           1926.0452201843261,
           1919.6376831054688,
           1956.5965227762858,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1948.3768693483794,
           2210.3121805826822,
           2136.0983006795245,
-          1006.7325293223063
+          1006.7325293223063,
+          1486.65680809021
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          936.6117260615031,
           956.8472429275513,
           994.6585425694783,
           928.9799004236858,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           949.1311612810407,
           930.5131092071533,
           914.684546025594,
-          438.1396519220792
+          438.1396519220792,
+          695.0208110173543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11025.540795462472,
           12350.95728125939,
           12560.01080431257,
           12095.517626081195,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11393.8872657189,
           9329.90028146597,
           9115.95382792155,
-          5772.556676424467
+          5772.556676424467,
+          8187.035876464844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7627,7 +7627,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1736,
           1736,
-          1736,
           1616,
           1616,
           1616,
@@ -7643,6 +7642,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          35336.429896763395,
           42145.70847981771,
           41860.19234357561,
           41480.84568074544,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           41440.198856898714,
           32441.060227614184,
           31469.59187098912,
-          18713.19337158203
+          18713.19337158203,
+          27064.1409362793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7771,7 +7771,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18393,
           18609,
           18394,
@@ -7794,6 +7793,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10668.078244722807,
           11545.183874947685,
           11547.069750104632,
           11357.373403930664,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10748.008057730538,
           9121.985211885893,
           8871.124907430012,
-          5739.221201760428
+          5739.221201760428,
+          7921.800521850586
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "40ae946f89b5291fb97eca2e8896847f0a133467",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 20 18:23:57 2026 \u002B0200",
-        "message": "test: cover the main features of the extension packages in their benchmarks (#1899)"
-      },
-      {
         "sha": "c2e176c2637dbde72d026ce0843cf4d1080d66ab",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 20 18:36:26 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 15:04:37 2026 \u002B0200",
         "message": "feat: add HasValue for XML elements (#1963)"
+      },
+      {
+        "sha": "87616222406b8d1e510724eba036d66964e43ad4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 15:06:25 2026 \u002B0200",
+        "message": "feat: add IgnoringAdditionalNodes to the XML options (#1962)"
       }
     ],
     "labels": [
-      "40ae946f",
       "c2e176c2",
       "f8bfa2a9",
       "c0e60219",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "ce12e858",
       "25ca35b1",
       "012afc61",
-      "81744dc6"
+      "81744dc6",
+      "87616222"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10379.725567626952,
           11947.496971638997,
           11792.899156842914,
           11806.986289469402,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           10953.876988002232,
           8855.295495169503,
           8578.56080862192,
-          5391.211570152869
+          5391.211570152869,
+          7764.073996910682
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8360,7 +8360,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2216,
           2216,
-          2216,
           2096,
           2096,
           2096,
@@ -8376,6 +8375,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          50398.350755964006,
           60739.25038364955,
           59679.43747820173,
           61172.17591145833,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           59159.49271647135,
           45861.9401198167,
           44937.93971470424,
-          25838.5528717041
+          25838.5528717041,
+          38403.32942082332
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23553,
           23554,
@@ -8530,6 +8529,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20601.948231288367,
           22682.448538643974,
           22920.64430454799,
           22436.85123384916,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21121.498502291164,
           17923.596638997395,
           17332.538838704426,
-          10699.183555094402
+          10699.183555094402,
+          15377.496789114815
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
