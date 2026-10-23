@@ -17,14 +17,18 @@ await Expect.That(track).MatchesExactly("""
 ```
 
 `Matches` ignores the attributes and child nodes of the subject that are not in the expected XML, while
-`MatchesExactly` fails for them. Missing nodes, different values and a different order of the expected child elements
-fail both, unless you [ignore the element order](#element-order). If the title was "Yesterday" instead, `Matches`
-would fail with:
+`MatchesExactly` fails for them: `Matches` is `MatchesExactly` with the option
+[`IgnoringAdditionalNodes()`](#additional-nodes). Missing nodes, different values and a different order of the
+expected child elements fail both, unless you [ignore the element order](#element-order). If the title was "Yesterday"
+instead, `Matches` would fail with:
 
 ```text title="Failure message"
 Expected that track
 matches <track title="Let It Be" />,
 but it differed as /track/@title was "Yesterday" instead of "Let It Be"
+
+XML options:
+ - ignore additional nodes
 ```
 
 The elements are compared by their content like by [`AsXml()`](./01-strings.md#string-comparison-as-xml): attributes
@@ -52,6 +56,30 @@ XElement track = XElement.Parse("""<track title="Let It Be" />""");
 
 await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
 ```
+
+## Additional nodes
+
+You can ignore the attributes and child nodes of the subject that are not in the expected XML. The option is available
+for `MatchesExactly`, `IsValidXmlMatchingExactly` and [`AsXml()`](./01-strings.md#string-comparison-as-xml), and
+`Matches` and `IsValidXmlMatching` use it by default:
+
+```csharp
+string order = """<order id="42" status="open"><item sku="A1" /></order>""";
+
+await Expect.That(order).IsEqualTo("""<order id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+```
+
+The additional nodes are ignored on every level, and the expected nodes are still compared, so that missing nodes,
+different values and a different order of the expected child elements fail the expectation. The option is listed when
+the expectation fails:
+
+```text title="Failure message"
+XML options:
+ - ignore additional nodes
+```
+
+With `IgnoringAdditionalNodes(false)`, `Matches` and `IsValidXmlMatching` compare exactly, like `MatchesExactly` and
+`IsValidXmlMatchingExactly`.
 
 ## Ignoring members
 
@@ -95,8 +123,9 @@ XML options:
    "@createdat" matched no member (did you mean "@createdAt"?)
 ```
 
-As `Matches` does not compare the additional nodes of the subject, a member to ignore that only occurs in the subject
-matches no compared path either, and is named as well, although it is not needed.
+As [additional nodes](#additional-nodes) of the subject are not compared when they are ignored, e.g. by `Matches`, a
+member to ignore that only occurs in the subject matches no compared path either, and is named as well, although it
+is not needed.
 
 ## Element order
 
@@ -112,8 +141,8 @@ await Expect.That(order).MatchesExactly("""<order><item sku="A1" /><item sku="B2
 Each expected child is paired with the first unpaired child of the subject with the same name that matches it. The
 remaining children of the same name are paired in their order, so that their differences are reported, e.g.
 `/order/item[1]/@sku was "C3" instead of "A1"`, and the children that are still unpaired are reported as missing or
-unexpected. This greedy pairing can fail for `Matches`, which ignores additional nodes, when an expected child matches
-several children of the subject, even if another pairing would succeed.
+unexpected. This greedy pairing can fail when [additional nodes](#additional-nodes) are ignored, e.g. by `Matches`,
+and an expected child matches several children of the subject, even if another pairing would succeed.
 
 The texts are paired like the elements, so that the order of the texts in mixed content, e.g. `<p>a<b/>c</p>`, is
 ignored as well.

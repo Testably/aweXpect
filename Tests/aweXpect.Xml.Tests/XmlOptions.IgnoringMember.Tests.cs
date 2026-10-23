@@ -116,6 +116,7 @@ public sealed partial class XmlOptionsTests
 				             but it differed as /order/item/@sku was "A1" instead of "B2"
 
 				             XML options:
+				              - ignore additional nodes
 				              - ignore members: ["@id"]
 				             """);
 		}

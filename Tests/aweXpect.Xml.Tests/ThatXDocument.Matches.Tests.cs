@@ -35,6 +35,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             matches <a x="1"/>,
 					             but it differed as /a/@x was "2" instead of "1"
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 
@@ -51,6 +54,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             matches <a/>,
 					             but it had no root element
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 
@@ -67,6 +73,9 @@ public sealed partial class ThatXDocument
 					             Expected that subject
 					             matches <a/>,
 					             but it was <null>
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 		}
@@ -87,6 +96,9 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             does not match <a/>,
 					             but it had no root element
+
+					             XML options:
+					              - ignore additional nodes
 					             """)
 					.Because("a document without a root element cannot be compared with the expected XML");
 			}
@@ -107,6 +119,9 @@ public sealed partial class ThatXDocument
 
 					             Actual:
 					             <a x="1" />
+
+					             XML options:
+					              - ignore additional nodes
 					             """);
 			}
 		}

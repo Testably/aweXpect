@@ -20,11 +20,13 @@ public static partial class ThatXElement
 	///     attributes and child nodes of the subject that are not in the <paramref name="expected" /> XML are ignored.
 	///     Missing nodes, different values and the order of the child nodes in the <paramref name="expected" /> XML fail
 	///     the expectation, unless the order is ignored with <see cref="XmlOptionsExtensions.IgnoringElementOrder" />.
+	///     <para />
+	///     This is <see cref="MatchesExactly" /> with <see cref="XmlOptionsExtensions.IgnoringAdditionalNodes" /> preset.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<XElement?, IThat<XElement?>> Matches(
 		this IThat<XElement?> subject,
 		string expected,
 		Func<XmlOptions, XmlOptions>? options = null)
-		=> MatchesXmlConstraint<XElement>.Add(subject, expected, false, element => element, options);
+		=> MatchesXmlConstraint<XElement>.Add(subject, expected, true, element => element, options);
 }

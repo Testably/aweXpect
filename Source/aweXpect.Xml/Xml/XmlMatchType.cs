@@ -75,7 +75,7 @@ internal sealed class XmlMatchType(XmlOptions options) : IStringMatchType
 				$"was {Formatter.Format(actual)}, which {SecureXml.DescribeLoadError(actual, e)}", e));
 		}
 
-		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options, false);
+		_comparisonResult = XmlComparer.Compare(actualDocument.Root!, expectedDocument.Root!, options);
 		_unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_unmatchedMembersToIgnore,
 			_comparisonResult.GetUnmatchedMembersToIgnore());
 		return new ValueTask<StringMatchResult>(!_comparisonResult.HasError);

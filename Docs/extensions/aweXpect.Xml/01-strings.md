@@ -50,7 +50,8 @@ elements are paired by this path, so an additional element is reported as unexpe
 after it, and a different order is reported once for their parent.
 
 You can [ignore members](./02-matching.md#ignoring-members) whose values change between runs, e.g.
-`AsXml(o => o.IgnoringMember("@createdAt"))`.
+`AsXml(o => o.IgnoringMember("@createdAt"))`, or [ignore the additional nodes](./02-matching.md#additional-nodes) of
+the subject to compare it with a part of the XML, e.g. `AsXml(o => o.IgnoringAdditionalNodes())`.
 
 If the subject is not valid XML, the expectation fails with the reason:
 
@@ -78,6 +79,12 @@ exception:
 await Expect.That(orders).All().AreEqualTo("""<order id="42" />""").AsXml();
 await Expect.That(orders).Contains("""<order id="42" />""").AsXml();
 await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("""<error code="42" />""").AsXml();
+```
+
+The options are available there as well, e.g. to find an item that contains the expected XML:
+
+```csharp
+await Expect.That(orders).Contains("""<order id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 ## Validation
@@ -143,6 +150,9 @@ await Expect.That(track).IsValidXmlMatchingExactly("""<track artist="The Beatles
 Expected that track
 is valid XML which matches <track title="Yesterday" />,
 but it differed as /track/@title was "Let It Be" instead of "Yesterday"
+
+XML options (it):
+ - ignore additional nodes
 ```
 
 You can also verify that a string is not valid XML:
