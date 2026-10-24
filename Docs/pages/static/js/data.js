@@ -786,6 +786,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -919,7 +925,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -1056,7 +1063,8 @@ window.BENCHMARK_DATA = {
           10820.637940470378,
           10810.58373436561,
           7818.823548453195,
-          7765.589809962681
+          7765.589809962681,
+          7822.334305899484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1152,6 +1160,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2168,
           2168,
           2168,
           2168,
@@ -1343,7 +1352,8 @@ window.BENCHMARK_DATA = {
           367407.18723958335,
           393848.27903645835,
           264457.22584635415,
-          299425.33346354164
+          299425.33346354164,
+          253496.61342075892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1485,7 +1495,8 @@ window.BENCHMARK_DATA = {
           590292,
           590290,
           590289,
-          590226
+          590226,
+          590289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1630,7 +1641,8 @@ window.BENCHMARK_DATA = {
           18899.767822265625,
           20969.147963460287,
           14383.847210475376,
-          17956.768531799316
+          17956.768531799316,
+          14615.994557698568
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1642,6 +1654,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -2530,6 +2543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -2656,7 +2675,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -2786,7 +2806,8 @@ window.BENCHMARK_DATA = {
           286.2571052233378,
           314.5645035743713,
           190.26812784488385,
-          270.98244549677923
+          270.98244549677923,
+          205.65544237409318
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2875,6 +2896,7 @@ window.BENCHMARK_DATA = {
           536,
           536,
           536,
+          512,
           512,
           512,
           512,
@@ -3059,7 +3081,8 @@ window.BENCHMARK_DATA = {
           509.4408800125122,
           561.353712717692,
           396.6291165718666,
-          608.7831144968669
+          608.7831144968669,
+          454.4919906616211
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3071,6 +3094,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -3332,7 +3356,8 @@ window.BENCHMARK_DATA = {
           395.18833112716675,
           430.89207015718733,
           289.81966073172435,
-          406.96304297447205
+          406.96304297447205,
+          310.2939220428467
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3344,6 +3369,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -8845,6 +8871,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -9741,7 +9773,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -10641,7 +10674,8 @@ window.BENCHMARK_DATA = {
           138.03557125159674,
           155.76122209003992,
           111.64656725100109,
-          153.11850668589275
+          153.11850668589275,
+          111.65735150178274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11500,6 +11534,7 @@ window.BENCHMARK_DATA = {
           472,
           472,
           472,
+          448,
           448,
           448,
           448,
@@ -12454,7 +12489,8 @@ window.BENCHMARK_DATA = {
           240.90429197038924,
           308.1447731335958,
           200.21666078567506,
-          326.08622087751115
+          326.08622087751115,
+          213.2433645884196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13359,6 +13395,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -13548,7 +13585,8 @@ window.BENCHMARK_DATA = {
           235.5147764512471,
           277.1869590600332,
           177.828397665705,
-          242.46588732646063
+          242.46588732646063,
+          192.27366811888558
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -13560,6 +13598,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -14534,6 +14573,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -14667,7 +14712,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -14804,7 +14850,8 @@ window.BENCHMARK_DATA = {
           257.69669218063353,
           280.6222023282732,
           192.90160182317098,
-          244.57540913990564
+          244.57540913990564,
+          201.55737851460773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14900,6 +14947,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          488,
           488,
           488,
           488,
@@ -15091,7 +15139,8 @@ window.BENCHMARK_DATA = {
           513.6955831209818,
           586.7204406738281,
           439.7986380894979,
-          652.7113464900425
+          652.7113464900425,
+          426.06097049713134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15103,6 +15152,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -15378,7 +15428,8 @@ window.BENCHMARK_DATA = {
           321.3351816813151,
           367.7933386053358,
           279.4605901400248,
-          345.77950392450606
+          345.77950392450606,
+          255.58313453992207
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15390,6 +15441,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -20898,6 +20950,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -21794,7 +21852,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -22694,7 +22753,8 @@ window.BENCHMARK_DATA = {
           670.2369775772095,
           678.4237544377645,
           505.3405729702541,
-          573.8886089691749
+          573.8886089691749,
+          492.58369140625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23553,6 +23613,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          784,
           784,
           784,
           784,
@@ -24507,7 +24568,8 @@ window.BENCHMARK_DATA = {
           1357.0264436176844,
           1485.3658111572265,
           1182.3771327972413,
-          1509.6490745544434
+          1509.6490745544434,
+          1129.9494004567464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25412,6 +25474,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -25601,7 +25664,8 @@ window.BENCHMARK_DATA = {
           652.0940409342448,
           686.036365875831,
           523.4014408929007,
-          626.6024329845721
+          626.6024329845721,
+          530.8613119125366
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -25613,6 +25677,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -31165,6 +31230,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -32061,7 +32132,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -32961,7 +33033,8 @@ window.BENCHMARK_DATA = {
           666.4287216186524,
           675.7499383046077,
           511.0073853810628,
-          569.881523336683
+          569.881523336683,
+          534.1135330200195
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33820,6 +33893,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          832,
           832,
           832,
           832,
@@ -34774,7 +34848,8 @@ window.BENCHMARK_DATA = {
           27970.35310950646,
           28159.2263205392,
           16993.35537109375,
-          17844.134950764976
+          17844.134950764976,
+          17186.323482259115
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35679,7 +35754,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35868,7 +35944,8 @@ window.BENCHMARK_DATA = {
           784.004943554218,
           811.6489627544696,
           606.4497417449951,
-          751.1669582220225
+          751.1669582220225,
+          620.2818890889486
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35880,6 +35957,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -37202,6 +37280,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -37393,7 +37477,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -37588,7 +37673,8 @@ window.BENCHMARK_DATA = {
           644.9024306024824,
           795.2553162941566,
           532.3843023300171,
-          698.6867324965341
+          698.6867324965341,
+          548.080187865666
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37742,6 +37828,7 @@ window.BENCHMARK_DATA = {
           1696,
           1696,
           1696,
+          1680,
           1680,
           1680,
           1680,
@@ -37991,7 +38078,8 @@ window.BENCHMARK_DATA = {
           82915.27797288161,
           84936.50045979818,
           53122.301753743486,
-          34187.34366455078
+          34187.34366455078,
+          53812.21346028646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38190,6 +38278,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
+          5256,
           5256,
           5256
         ],
@@ -39339,6 +39428,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -39530,7 +39625,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -39725,7 +39821,8 @@ window.BENCHMARK_DATA = {
           173.50550532341003,
           194.44816528047835,
           136.14292492866517,
-          185.00628903706868
+          185.00628903706868,
+          127.07751408645085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39879,6 +39976,7 @@ window.BENCHMARK_DATA = {
           488,
           488,
           488,
+          464,
           464,
           464,
           464,
@@ -40128,7 +40226,8 @@ window.BENCHMARK_DATA = {
           32119.307010904948,
           33554.37880859375,
           14462.351048787436,
-          16816.85038248698
+          16816.85038248698,
+          15506.104487101236
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40328,7 +40427,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40517,7 +40617,8 @@ window.BENCHMARK_DATA = {
           238.7306263446808,
           269.76247780663624,
           188.12115805943807,
-          236.6107426484426
+          236.6107426484426,
+          183.42867705027263
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40529,6 +40630,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -41503,6 +41605,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -41636,7 +41744,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -41773,7 +41882,8 @@ window.BENCHMARK_DATA = {
           363.6311019017146,
           394.3313356913053,
           269.14819087982175,
-          334.36145370347157
+          334.36145370347157,
+          283.74410346349083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41869,6 +41979,7 @@ window.BENCHMARK_DATA = {
           680,
           680,
           680,
+          656,
           656,
           656,
           656,
@@ -42060,7 +42171,8 @@ window.BENCHMARK_DATA = {
           367.898837629954,
           443.6755181948344,
           335.64798930486046,
-          465.0975208963667
+          465.0975208963667,
+          325.79122712061957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42072,6 +42184,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -42347,7 +42460,8 @@ window.BENCHMARK_DATA = {
           406.1388169697353,
           439.78423878124784,
           336.0070526599884,
-          389.5008248601641
+          389.5008248601641,
+          347.3669530550639
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42359,6 +42473,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -43289,6 +43404,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -43422,7 +43543,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -43559,7 +43681,8 @@ window.BENCHMARK_DATA = {
           686.5494660695393,
           734.3481685638428,
           487.539719581604,
-          657.4390679872953
+          657.4390679872953,
+          535.659684254573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43679,6 +43802,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
+          1384,
           1384,
           1384,
           1384,
@@ -43846,7 +43970,8 @@ window.BENCHMARK_DATA = {
           1937.311197153727,
           2134.4198738098144,
           1527.3993657430012,
-          2137.9968823024205
+          2137.9968823024205,
+          1671.4951089223225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43858,6 +43983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -44133,7 +44259,8 @@ window.BENCHMARK_DATA = {
           908.1084722110203,
           998.6613637288411,
           772.0106415430705,
-          907.7002262702355
+          907.7002262702355,
+          787.5017206192017
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44145,6 +44272,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -45075,6 +45203,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -45208,7 +45342,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -45345,7 +45480,8 @@ window.BENCHMARK_DATA = {
           11456.623254629281,
           11351.792691548666,
           8211.781428410457,
-          9208.048548771785
+          9208.048548771785,
+          8152.490203857422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45441,6 +45577,7 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
+          1576,
           1576,
           1576,
           1576,
@@ -45632,7 +45769,8 @@ window.BENCHMARK_DATA = {
           39845.490966796875,
           40782.745161946616,
           27134.86317225865,
-          31453.90966796875
+          31453.90966796875,
+          27208.274605887276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45767,6 +45905,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -45919,7 +46058,8 @@ window.BENCHMARK_DATA = {
           10619.155096200797,
           10697.217547825405,
           7937.113430786133,
-          8832.719029017857
+          8832.719029017857,
+          7969.653987339565
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45931,6 +46071,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -46861,6 +47002,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:33:31 2026 \u002B0200",
         "message": "fix: read the result contexts of IPAddress equality from the evaluation options (#1973)"
+      },
+      {
+        "sha": "198a74405c367fb20a734c670ce87625d45497b8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 21:14:37 2026 \u002B0200",
+        "message": "refactor!: use AtIndexFromEnd in aweXpect.Reflection instead of AtIndex(i).FromEnd() (#1977)"
       }
     ],
     "labels": [
@@ -46994,7 +47141,8 @@ window.BENCHMARK_DATA = {
       "cba28a96",
       "bb3fba51",
       "487fa47b",
-      "c80cc523"
+      "c80cc523",
+      "198a7440"
     ],
     "datasets": [
       {
@@ -47131,7 +47279,8 @@ window.BENCHMARK_DATA = {
           10794.302447979268,
           10835.51753939115,
           7730.011117117746,
-          8728.175127156575
+          8728.175127156575,
+          7692.775153526893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47227,6 +47376,7 @@ window.BENCHMARK_DATA = {
           2096,
           2096,
           2096,
+          2056,
           2056,
           2056,
           2056,
@@ -47418,7 +47568,8 @@ window.BENCHMARK_DATA = {
           58520.15526035854,
           57933.969889322914,
           38623.33852277483,
-          45086.952185058595
+          45086.952185058595,
+          38888.241878255205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47543,6 +47694,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -47705,7 +47857,8 @@ window.BENCHMARK_DATA = {
           21145.052980550132,
           21030.855454508463,
           15442.794743129185,
-          17436.937591552734
+          17436.937591552734,
+          15523.372462972005
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47717,6 +47870,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
