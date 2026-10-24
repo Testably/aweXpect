@@ -174,10 +174,10 @@ public class ManualExpectationBuilderTests
 		string expectation1, string expectation2, bool expectedResult)
 	{
 		ManualExpectationBuilder<string> sut1 = new();
-		sut1.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+		sut1.ForMember(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, "length "))
 			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation1)));
 		ManualExpectationBuilder<string> sut2 = new();
-		sut2.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+		sut2.ForMember(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, "length "))
 			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation2)));
 
 		bool result = sut1.Equals((object)sut2);
@@ -189,10 +189,10 @@ public class ManualExpectationBuilderTests
 	public async Task Equals_ViaDefaultEqualityComparer_ShouldUseTheExpectations()
 	{
 		ManualExpectationBuilder<string> sut1 = new();
-		sut1.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+		sut1.ForMember(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, "length "))
 			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint("is 1")));
 		ManualExpectationBuilder<string> sut2 = new();
-		sut2.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+		sut2.ForMember(MemberAccessor<string, int>.FromFuncWithName(s => s.Length, "length "))
 			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint("is 1")));
 
 		bool result = EqualityComparer<ManualExpectationBuilder<string>>.Default.Equals(sut1, sut2);
