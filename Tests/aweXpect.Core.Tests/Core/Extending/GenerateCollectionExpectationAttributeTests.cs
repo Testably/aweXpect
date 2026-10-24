@@ -162,7 +162,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 		GenerateCollectionExpectationAttribute subject = new("AreLucky", "is lucky", "are lucky")
 		{
 			NullableOverload = false,
-			OnCollection = true,
+			CollectionOverload = true,
 			NegatedName = "AreUnlucky",
 			FormattedItem = "ToBadge",
 			Summary = "summary",
@@ -173,7 +173,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 		await That(subject.ExpectationText).IsEqualTo("is lucky");
 		await That(subject.PluralExpectationText).IsEqualTo("are lucky");
 		await That(subject.NullableOverload).IsFalse();
-		await That(subject.OnCollection).IsTrue();
+		await That(subject.CollectionOverload).IsTrue();
 		await That(subject.NegatedName).IsEqualTo("AreUnlucky");
 		await That(subject.FormattedItem).IsEqualTo("ToBadge");
 		await That(subject.Summary).IsEqualTo("summary");
@@ -190,7 +190,7 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			.Because("the generator takes the text of [GenerateExpectation] on the same method");
 		await That(subject.PluralExpectationText).IsEqualTo("are lucky");
 		await That(subject.NullableOverload).IsTrue();
-		await That(subject.OnCollection).IsFalse();
+		await That(subject.CollectionOverload).IsFalse();
 		await That(subject.NegatedName).IsNull();
 		await That(subject.FormattedItem).IsNull();
 	}
@@ -213,6 +213,120 @@ public sealed class GenerateCollectionExpectationAttributeTests
 
 			             Collection:
 			             [7, 7]
+			             """);
+	}
+
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task CollectionOverload_AsyncEnumerable_ShouldReadAllItems()
+	{
+		IAsyncEnumerable<int> subject = ToAsyncEnumerable(2, 1, 3);
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but only 1 of 3 were
+
+			             Not matching items:
+			             [1, 3]
+
+			             Collection:
+			             [2, 1, 3]
+			             """);
+	}
+#endif
+
+	[Test]
+	public async Task CollectionOverload_LazyEnumerable_ShouldReadAllItems()
+	{
+		IEnumerable<int> subject = ToEnumerable(2, 1, 3);
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but only 1 of 3 were
+
+			             Not matching items:
+			             [1, 3]
+
+			             Collection:
+			             [2, 1, 3]
+			             """);
+	}
+
+	[Test]
+	public async Task CollectionOverload_NullableOverload_WhenItemIsNull_ShouldNotMatch()
+	{
+		int?[] subject = [2, null,];
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but only 1 of 2 were
+
+			             Not matching items:
+			             [<null>]
+
+			             Collection:
+			             [2, <null>]
+			             """);
+	}
+
+	[Test]
+	public async Task CollectionOverload_WhenAllItemsMatch_ShouldSucceed()
+	{
+		int[] subject = [2, 4,];
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task CollectionOverload_WhenNegated_ShouldFailWhenAllItemsMatch()
+	{
+		int[] subject = [2, 4,];
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(they => they.AreEven());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             not all are even,
+			             but all 2 were
+
+			             Collection:
+			             [2, 4]
+			             """);
+	}
+
+	[Test]
+	public async Task CollectionOverload_WhenNull_ShouldFail()
+	{
+		IEnumerable<int>? subject = null;
+
+		async Task Act()
+			=> await That(subject).AreEven();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             all are even,
+			             but it was <null>
 			             """);
 	}
 
@@ -560,120 +674,6 @@ public sealed class GenerateCollectionExpectationAttributeTests
 			               Alice,
 			               <null>
 			             ]
-			             """);
-	}
-
-#if NET8_0_OR_GREATER
-	[Test]
-	public async Task OnCollection_AsyncEnumerable_ShouldReadAllItems()
-	{
-		IAsyncEnumerable<int> subject = ToAsyncEnumerable(2, 1, 3);
-
-		async Task Act()
-			=> await That(subject).AreEven();
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             all are even,
-			             but only 1 of 3 were
-
-			             Not matching items:
-			             [1, 3]
-
-			             Collection:
-			             [2, 1, 3]
-			             """);
-	}
-#endif
-
-	[Test]
-	public async Task OnCollection_LazyEnumerable_ShouldReadAllItems()
-	{
-		IEnumerable<int> subject = ToEnumerable(2, 1, 3);
-
-		async Task Act()
-			=> await That(subject).AreEven();
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             all are even,
-			             but only 1 of 3 were
-
-			             Not matching items:
-			             [1, 3]
-
-			             Collection:
-			             [2, 1, 3]
-			             """);
-	}
-
-	[Test]
-	public async Task OnCollection_NullableOverload_WhenItemIsNull_ShouldNotMatch()
-	{
-		int?[] subject = [2, null,];
-
-		async Task Act()
-			=> await That(subject).AreEven();
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             all are even,
-			             but only 1 of 2 were
-
-			             Not matching items:
-			             [<null>]
-
-			             Collection:
-			             [2, <null>]
-			             """);
-	}
-
-	[Test]
-	public async Task OnCollection_WhenAllItemsMatch_ShouldSucceed()
-	{
-		int[] subject = [2, 4,];
-
-		async Task Act()
-			=> await That(subject).AreEven();
-
-		await That(Act).DoesNotThrow();
-	}
-
-	[Test]
-	public async Task OnCollection_WhenNegated_ShouldFailWhenAllItemsMatch()
-	{
-		int[] subject = [2, 4,];
-
-		async Task Act()
-			=> await That(subject).DoesNotComplyWith(they => they.AreEven());
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             not all are even,
-			             but all 2 were
-
-			             Collection:
-			             [2, 4]
-			             """);
-	}
-
-	[Test]
-	public async Task OnCollection_WhenNull_ShouldFail()
-	{
-		IEnumerable<int>? subject = null;
-
-		async Task Act()
-			=> await That(subject).AreEven();
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             all are even,
-			             but it was <null>
 			             """);
 	}
 

@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreSealed", "is sealed", "are sealed",
-		OnCollection = true, NegatedName = "AreNotSealed",
+		CollectionOverload = true, NegatedName = "AreNotSealed",
 		Remarks = """
 		          Static types are not considered sealed, even though they
 		          have <see cref="Type.IsSealed" /> set to <see langword="true" />.

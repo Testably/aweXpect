@@ -31,7 +31,7 @@ internal sealed class Moderator(string name) : Member(name);
 
 internal static partial class ThatMember
 {
-	[GenerateCollectionExpectation("HaveShortNames", "has a short name", "have short names", OnCollection = true)]
+	[GenerateCollectionExpectation("HaveShortNames", "has a short name", "have short names", CollectionOverload = true)]
 	private static bool HasShortName<TMember>(TMember member) where TMember : Member => member.Name.Length <= 3;
 }
 
@@ -51,7 +51,7 @@ internal static partial class ThatAccount
 	}
 
 	[GenerateCollectionExpectation("AreAdmins", "is an admin", "are admins",
-		OnCollection = true, NegatedName = "AreNoAdmins", FormattedItem = nameof(ToBadge))]
+		CollectionOverload = true, NegatedName = "AreNoAdmins", FormattedItem = nameof(ToBadge))]
 	private static bool IsAdmin(Account account) => account.Level > 8;
 
 	[GenerateExpectation("Is{Not}AtLevel", "is {not} at level {level}", Result = nameof(DescribeLevel))]
@@ -134,7 +134,7 @@ internal static partial class ThatLuckyNumber
 	[GenerateExpectation("Is{Not}Between", "is {not} between {minimum} and {maximum}", NullableOverload = false)]
 	private static bool IsBetween(int value, int minimum, int maximum) => value >= minimum && value <= maximum;
 
-	[GenerateCollectionExpectation("AreEven", "is even", "are even", OnCollection = true, NegatedName = "AreNotEven")]
+	[GenerateCollectionExpectation("AreEven", "is even", "are even", CollectionOverload = true, NegatedName = "AreNotEven")]
 	private static bool IsEven(int value) => value % 2 == 0;
 
 	[GenerateCollectionExpectation("AreLucky", "are lucky")]

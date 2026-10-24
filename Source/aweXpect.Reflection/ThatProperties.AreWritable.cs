@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreWritable", "is writable", "are writable",
-		OnCollection = true, FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsWritableProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsWritable();
 }

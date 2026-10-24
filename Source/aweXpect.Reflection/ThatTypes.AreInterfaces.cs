@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreInterfaces", "is an interface", "are interfaces",
-		OnCollection = true, NegatedName = "AreNotInterfaces")]
+		CollectionOverload = true, NegatedName = "AreNotInterfaces")]
 	private static PredicateResult IsAnInterfaceType(Type? type)
 		=> type is null ? ItemResults.Null : type.IsInterface;
 }

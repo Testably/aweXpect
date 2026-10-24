@@ -193,12 +193,14 @@ await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
 
 ### On the collection
 
-`OnCollection = true` also generates the expectation directly on the collection, which all items have to meet, and a
-`NegatedName` generates an expectation directly on the collection, which no item may meet:
+`CollectionOverload = true` also generates the expectation as an overload directly on the collection, which all items
+have to meet, and a `NegatedName` generates an expectation directly on the collection, which no item may meet. The two
+are independent: `CollectionOverload` only adds the positive overload, so the negated one on the collection needs a
+`NegatedName`, while the quantified `None()` is always available.
 
 ```csharp no-compile
 [GenerateCollectionExpectation("AreLongerThan", "is longer than {minimum}", "are longer than {minimum}",
-    OnCollection = true, NegatedName = "AreNotLongerThan")]
+    CollectionOverload = true, NegatedName = "AreNotLongerThan")]
 private static bool IsLongerThan(Track track, TimeSpan minimum)
     => track.Duration > minimum;
 ```

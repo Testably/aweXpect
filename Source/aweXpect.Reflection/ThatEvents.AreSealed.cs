@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatEvents
 {
 	[GenerateCollectionExpectation("AreSealed", "is sealed", "are sealed",
-		OnCollection = true, NegatedName = "AreNotSealed", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotSealed", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsSealedEvent(EventInfo? @event)
 		=> @event is null ? ItemResults.Null : @event.IsReallySealed();
 }

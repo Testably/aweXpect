@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("Override", "overrides a base property", "override a base property",
-		OnCollection = true, NegatedName = "DoNotOverride", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "DoNotOverride", FormattedItem = nameof(Formattable))]
 	private static PredicateResult OverridesProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsOverride();
 }

@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatFields
 {
 	[GenerateCollectionExpectation("AreStatic", "is static", "are static",
-		OnCollection = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsStaticField(FieldInfo? field)
 		=> field is null ? ItemResults.Null : field.IsStatic;
 }

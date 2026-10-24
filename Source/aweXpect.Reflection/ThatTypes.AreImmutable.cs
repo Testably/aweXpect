@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreImmutable", "is immutable", "are immutable",
-		OnCollection = true, NegatedName = "AreNotImmutable",
+		CollectionOverload = true, NegatedName = "AreNotImmutable",
 		Remarks = """
 		          A type is considered immutable when all instance fields (including inherited ones) are
 		          <see langword="readonly" /> and all instance properties (including inherited ones) have no setter

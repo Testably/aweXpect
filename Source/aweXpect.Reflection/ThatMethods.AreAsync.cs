@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatMethods
 {
 	[GenerateCollectionExpectation("AreAsync", "is async", "are async",
-		OnCollection = true, NegatedName = "AreNotAsync", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotAsync", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsAsyncMethod(MethodInfo? method)
 		=> method is null ? ItemResults.Null : method.IsAsync();
 }

@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreInstantiable", "is instantiable", "are instantiable",
-		OnCollection = true, NegatedName = "AreNotInstantiable",
+		CollectionOverload = true, NegatedName = "AreNotInstantiable",
 		Remarks = """
 		          Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 		          """)]

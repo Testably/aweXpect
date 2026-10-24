@@ -75,7 +75,7 @@ internal static class CollectionExpectationWriter
 				AsyncConstraintOf(model, item), null);
 		}
 
-		if (model.OnCollection)
+		if (model.CollectionOverload)
 		{
 			AppendCollectionExpectations(sb, model, item, model.Name, $"{EnumerableQuantifier}.All()", "all items");
 		}

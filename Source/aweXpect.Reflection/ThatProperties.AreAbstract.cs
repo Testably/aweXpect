@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreAbstract", "is abstract", "are abstract",
-		OnCollection = true, NegatedName = "AreNotAbstract", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotAbstract", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsAbstractProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsReallyAbstract();
 }

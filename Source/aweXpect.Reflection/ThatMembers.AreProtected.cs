@@ -8,7 +8,7 @@ namespace aweXpect;
 public static partial class ThatMembers
 {
 	[GenerateCollectionExpectation("AreProtected", "is protected", "are protected",
-		OnCollection = true, NegatedName = "AreNotProtected", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotProtected", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsProtectedMember<TMember>(TMember? member)
 		where TMember : MemberInfo
 		=> member is null ? ItemResults.Null : member.HasAccessModifier(AccessModifiers.Protected);

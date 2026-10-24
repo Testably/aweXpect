@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreRefStructs", "is a ref struct", "are ref structs",
-		OnCollection = true, NegatedName = "AreNotRefStructs")]
+		CollectionOverload = true, NegatedName = "AreNotRefStructs")]
 	private static PredicateResult IsARefStructType(Type? type)
 		=> type is null ? ItemResults.Null : type.IsRefStruct();
 }

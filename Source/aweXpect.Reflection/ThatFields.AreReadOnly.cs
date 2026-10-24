@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatFields
 {
 	[GenerateCollectionExpectation("AreReadOnly", "is read-only", "are read-only",
-		OnCollection = true, NegatedName = "AreNotReadOnly", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotReadOnly", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsReadOnlyField(FieldInfo? field)
 		=> field is null ? ItemResults.Null : field.IsInitOnly;
 }

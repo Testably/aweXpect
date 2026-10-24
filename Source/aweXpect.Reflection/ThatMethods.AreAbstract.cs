@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatMethods
 {
 	[GenerateCollectionExpectation("AreAbstract", "is abstract", "are abstract",
-		OnCollection = true, NegatedName = "AreNotAbstract", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotAbstract", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsAbstractMethod(MethodInfo? method)
 		=> method is null ? ItemResults.Null : method.IsAbstract;
 }

@@ -83,23 +83,29 @@ public sealed class GenerateCollectionExpectationAttribute : Attribute
 	public bool NullableOverload { get; set; } = true;
 
 	/// <summary>
-	///     Whether the expectation is also generated directly on the collection, where all items have to meet it, e.g.
-	///     <c>That(tracks).AreRadioFriendly()</c>.
+	///     Whether the expectation is also generated as an overload directly on the collection, where all items have to
+	///     meet it, e.g. <c>That(tracks).AreRadioFriendly()</c>, in addition to the quantified forms such as
+	///     <c>All()</c>.
 	/// </summary>
 	/// <remarks>
 	///     It extends an <see cref="System.Collections.Generic.IEnumerable{T}" /> and, on .NET 8 or later, an
 	///     <c>IAsyncEnumerable&lt;T&gt;</c> of the item, reads the collection to its end, so that the failure message
 	///     lists every item that does not meet it, and fails for a <see langword="null" /> collection.
+	///     <para />
+	///     This overload is only the positive one: the negated overload on the collection, where no item may meet the
+	///     expectation, is only generated when <see cref="NegatedName" /> is set. The quantified negation
+	///     <c>None()</c> is always available.
 	/// </remarks>
-	public bool OnCollection { get; set; }
+	public bool CollectionOverload { get; set; }
 
 	/// <summary>
 	///     The name of an expectation directly on the collection that no item may meet, e.g.
 	///     <c>AreNotRadioFriendly</c> for <c>That(tracks).AreNotRadioFriendly()</c>.
 	/// </summary>
 	/// <remarks>
-	///     It extends the same collections as <see cref="OnCollection" /> and lists every item that meets the
-	///     expectation in the failure message.
+	///     It extends the same collections as <see cref="CollectionOverload" /> and lists every item that meets the
+	///     expectation in the failure message. It is generated independently of <see cref="CollectionOverload" />, so
+	///     setting only the <see cref="NegatedName" /> generates only the negated overload.
 	/// </remarks>
 	public string? NegatedName { get; set; }
 

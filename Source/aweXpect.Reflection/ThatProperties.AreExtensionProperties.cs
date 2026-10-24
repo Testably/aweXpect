@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreExtensionProperties", "is an extension property", "are extension properties",
-		OnCollection = true, NegatedName = "AreNotExtensionProperties", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotExtensionProperties", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsAnExtensionPropertyInfo(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsExtensionProperty();
 }

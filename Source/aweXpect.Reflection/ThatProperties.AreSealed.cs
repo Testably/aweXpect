@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreSealed", "is sealed", "are sealed",
-		OnCollection = true, NegatedName = "AreNotSealed", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotSealed", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsSealedProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsReallySealed();
 }

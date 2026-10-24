@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatEvents
 {
 	[GenerateCollectionExpectation("Override", "overrides a base event", "override a base event",
-		OnCollection = true, NegatedName = "DoNotOverride", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "DoNotOverride", FormattedItem = nameof(Formattable))]
 	private static PredicateResult OverridesEvent(EventInfo? @event)
 		=> @event is null ? ItemResults.Null : @event.IsOverride();
 }

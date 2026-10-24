@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatEvents
 {
 	[GenerateCollectionExpectation("AreNullable", "is nullable", "are nullable",
-		OnCollection = true, NegatedName = "AreNotNullable", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotNullable", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsNullableEvent(EventInfo? @event)
 		=> @event is null ? ItemResults.Null : @event.IsNullable();
 }

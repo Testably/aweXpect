@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("HaveADefaultConstructor", "has a default constructor", "have a default constructor",
-		OnCollection = true, NegatedName = "DoNotHaveADefaultConstructor")]
+		CollectionOverload = true, NegatedName = "DoNotHaveADefaultConstructor")]
 	private static PredicateResult HasADefaultConstructorType(Type? type)
 		=> type is null ? ItemResults.Null : type.HasDefaultConstructor();
 }

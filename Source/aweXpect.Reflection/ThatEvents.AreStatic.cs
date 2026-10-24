@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatEvents
 {
 	[GenerateCollectionExpectation("AreStatic", "is static", "are static",
-		OnCollection = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsStaticEvent(EventInfo? @event)
 		=> @event is null ? ItemResults.Null : @event.IsReallyStatic();
 }

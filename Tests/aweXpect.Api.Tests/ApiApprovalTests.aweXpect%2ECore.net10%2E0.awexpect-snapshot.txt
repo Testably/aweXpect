@@ -755,12 +755,12 @@ namespace aweXpect.Core.Extending
     {
         public GenerateCollectionExpectationAttribute(string name, string expectationText, string pluralExpectationText) { }
         public GenerateCollectionExpectationAttribute(string name, string pluralExpectationText) { }
+        public bool CollectionOverload { get; set; }
         public string? ExpectationText { get; }
         public string? FormattedItem { get; set; }
         public string Name { get; }
         public string? NegatedName { get; set; }
         public bool NullableOverload { get; set; }
-        public bool OnCollection { get; set; }
         public string PluralExpectationText { get; }
         public string? Remarks { get; set; }
         public string? Summary { get; set; }

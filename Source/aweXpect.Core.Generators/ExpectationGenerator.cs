@@ -251,7 +251,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 			signature.ReturnsPredicateResult,
 			GetItems(signature.Subject, signature.ConstraintPrefix,
 				GetNamedArgument<bool?>(attribute, "NullableOverload") ?? true),
-			GetNamedArgument<bool?>(attribute, "OnCollection") ?? false,
+			GetNamedArgument<bool?>(attribute, "CollectionOverload") ?? false,
 			negatedName,
 			formattedItemMethod,
 			itemTypeParameter is null ? null : Escape(itemTypeParameter.Name),

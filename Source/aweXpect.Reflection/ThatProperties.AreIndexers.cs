@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreIndexers", "is an indexer", "are indexers",
-		OnCollection = true, NegatedName = "AreNotIndexers", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotIndexers", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsAnIndexerProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsIndexer();
 }

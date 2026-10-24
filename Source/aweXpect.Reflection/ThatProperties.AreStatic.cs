@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreStatic", "is static", "are static",
-		OnCollection = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotStatic", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsStaticProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsReallyStatic();
 }

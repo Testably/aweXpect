@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreEnums", "is an enum", "are enums",
-		OnCollection = true, NegatedName = "AreNotEnums")]
+		CollectionOverload = true, NegatedName = "AreNotEnums")]
 	private static PredicateResult IsAnEnumType(Type? type)
 		=> type is null ? ItemResults.Null : type.IsEnum;
 }

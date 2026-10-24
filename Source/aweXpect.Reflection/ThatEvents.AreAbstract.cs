@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatEvents
 {
 	[GenerateCollectionExpectation("AreAbstract", "is abstract", "are abstract",
-		OnCollection = true, NegatedName = "AreNotAbstract", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotAbstract", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsAbstractEvent(EventInfo? @event)
 		=> @event is null ? ItemResults.Null : @event.IsReallyAbstract();
 }

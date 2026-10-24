@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreReadOnly", "is read-only", "are read-only",
-		OnCollection = true, NegatedName = "AreNotReadOnly")]
+		CollectionOverload = true, NegatedName = "AreNotReadOnly")]
 	private static PredicateResult IsReadOnlyType(Type? type)
 		=> type is null ? ItemResults.Null : type.IsReadOnlyStruct();
 }

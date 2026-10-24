@@ -76,6 +76,62 @@ public sealed class CoreCollectionExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task CollectionOverload_ShouldGenerateTheExpectationThatAllItemsMeetOnTheCollection()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", CollectionOverload = true, Remarks = "Ignores whitespace.")]
+			private static bool IsEmpty(string value) => value.Trim().Length == 0;
+			""");
+
+		await ThatCompiles(result);
+		await ThatContainsLines(result,
+			"""
+				/// <summary>
+				///     Verifies that all items are empty.
+				/// </summary>
+				/// <remarks>
+				///     Ignores whitespace.
+				/// </remarks>
+				[global::aweXpect.Core.GuaranteesNotNull]
+				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>> AreEmpty(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?> subject)
+				{
+					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsEmpty_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<string?>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)),
+						subject);
+				}
+			""");
+		await That(result.Generated)
+			.Contains("new IsEmpty_GeneratedAsyncElementsConstraint(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)");
+		await That(result.Generated).Contains("(__it, __grammars, __state, false)").Exactly(3)
+			.Because("the expectations on the elements are not on the collection");
+		await That(result.Generated).Contains(": base(it, grammars, quantifier, isOnCollection)").Exactly(2);
+		await That(result.Generated).DoesNotContain(" AreNotEmpty(")
+			.Because("the negated overload on the collection is only generated with a negated name");
+	}
+
+	[Test]
+	public async Task CollectionOverload_WithParameters_ShouldPassThemToTheConstraint()
+	{
+		GeneratorRunner.GeneratorResult result = RunOn(
+			"""
+			[GenerateCollectionExpectation("AreBetween", "is between {minimum} and {maximum}", "are between {minimum} and {maximum}",
+				NullableOverload = false, CollectionOverload = true, NegatedName = "AreNotBetween")]
+			private static bool IsBetween(int value, int minimum, int maximum) => value >= minimum && value <= maximum;
+			""");
+
+		await ThatCompiles(result);
+		await That(result.Generated)
+			.Contains(" AreBetween(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?> subject, int minimum, int maximum)");
+		await That(result.Generated)
+			.Contains("AddConstraint((minimum, maximum), (__state, __it, __grammars) => new IsBetween_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true, __state.Item1, __state.Item2))");
+		await That(result.Generated)
+			.Contains("(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true, __state.Item1, __state.Item2)")
+			.Exactly(2);
+		await That(result.Generated).Contains("(__it, __grammars, __state.Item1, false, __state.Item2, __state.Item3)")
+			.Exactly(3);
+	}
+
+	[Test]
 	public async Task EvaluationCancellationToken_BeforeAParamsParameter_ShouldBePassedAtItsPosition()
 	{
 		GeneratorRunner.GeneratorResult result = RunOn(
@@ -181,7 +237,7 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		GeneratorRunner.GeneratorResult result = RunOn(
 			"""
 			[GenerateCollectionExpectation("ArePublic", "is public", "are public",
-				OnCollection = true, NegatedName = "AreNotPublic", FormattedItem = nameof(Describe))]
+				CollectionOverload = true, NegatedName = "AreNotPublic", FormattedItem = nameof(Describe))]
 			private static bool IsPublic<TMember>(TMember member) where TMember : System.Reflection.MemberInfo
 				=> member.Name.Length > 0;
 
@@ -269,15 +325,15 @@ public sealed class CoreCollectionExpectationGeneratorTests
 					private static Task<PredicateResult> IsKnown(string value)
 						=> Task.FromResult(value.Length == 0 ? PredicateResult.FailureBothWays("was empty") : true);
 
-					[GenerateCollectionExpectation("AreLong", "is long", "are long", OnCollection = true,
+					[GenerateCollectionExpectation("AreLong", "is long", "are long", CollectionOverload = true,
 						NegatedName = "AreNotLong", FormattedItem = nameof(Describe))]
 					private static bool IsLong(string value, int minimum) => value.Length > minimum;
 
-					[GenerateCollectionExpectation("AreSmall", "is small", "are small", OnCollection = true,
+					[GenerateCollectionExpectation("AreSmall", "is small", "are small", CollectionOverload = true,
 						NegatedName = "AreNotSmall", FormattedItem = nameof(Describe))]
 					private static bool IsSmall(int value) => value < 3;
 
-					[GenerateCollectionExpectation("AreSet", "is set", "are set", OnCollection = true,
+					[GenerateCollectionExpectation("AreSet", "is set", "are set", CollectionOverload = true,
 						NegatedName = "AreUnset", FormattedItem = nameof(Describe))]
 					private static bool IsSet<TItem>(TItem? item) where TItem : class => item != null;
 
@@ -432,60 +488,6 @@ public sealed class CoreCollectionExpectationGeneratorTests
 		await That(result.Generated).Contains(" AreZero(this global::aweXpect.IEnumerableElements<int?> elements)");
 		await That(result.Generated).Contains("!(item is null) && global::Lib.ThatSample.IsZero(item.Value)").Exactly(2);
 		await That(result.Generated).DoesNotContain("IEnumerableElements<int>");
-	}
-
-	[Test]
-	public async Task OnCollection_ShouldGenerateTheExpectationThatAllItemsMeetOnTheCollection()
-	{
-		GeneratorRunner.GeneratorResult result = RunOn(
-			"""
-			[GenerateCollectionExpectation("AreEmpty", "is empty", "are empty", OnCollection = true, Remarks = "Ignores whitespace.")]
-			private static bool IsEmpty(string value) => value.Trim().Length == 0;
-			""");
-
-		await ThatCompiles(result);
-		await ThatContainsLines(result,
-			"""
-				/// <summary>
-				///     Verifies that all items are empty.
-				/// </summary>
-				/// <remarks>
-				///     Ignores whitespace.
-				/// </remarks>
-				[global::aweXpect.Core.GuaranteesNotNull]
-				public static global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>> AreEmpty(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?> subject)
-				{
-					return new global::aweXpect.Results.AndOrResult<global::System.Collections.Generic.IEnumerable<string?>, global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<string?>?>>(global::aweXpect.Core.Extending.ThatExtensions.Get(subject).ExpectationBuilder.AddConstraint((__it, __grammars) => new IsEmpty_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<string?>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)),
-						subject);
-				}
-			""");
-		await That(result.Generated)
-			.Contains("new IsEmpty_GeneratedAsyncElementsConstraint(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true)");
-		await That(result.Generated).Contains("(__it, __grammars, __state, false)").Exactly(3)
-			.Because("the expectations on the elements are not on the collection");
-		await That(result.Generated).Contains(": base(it, grammars, quantifier, isOnCollection)").Exactly(2);
-	}
-
-	[Test]
-	public async Task OnCollection_WithParameters_ShouldPassThemToTheConstraint()
-	{
-		GeneratorRunner.GeneratorResult result = RunOn(
-			"""
-			[GenerateCollectionExpectation("AreBetween", "is between {minimum} and {maximum}", "are between {minimum} and {maximum}",
-				NullableOverload = false, OnCollection = true, NegatedName = "AreNotBetween")]
-			private static bool IsBetween(int value, int minimum, int maximum) => value >= minimum && value <= maximum;
-			""");
-
-		await ThatCompiles(result);
-		await That(result.Generated)
-			.Contains(" AreBetween(this global::aweXpect.Core.IThat<global::System.Collections.Generic.IEnumerable<int>?> subject, int minimum, int maximum)");
-		await That(result.Generated)
-			.Contains("AddConstraint((minimum, maximum), (__state, __it, __grammars) => new IsBetween_GeneratedElementsConstraint<global::System.Collections.Generic.IEnumerable<int>?>(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.All(), true, __state.Item1, __state.Item2))");
-		await That(result.Generated)
-			.Contains("(__it, __grammars, global::aweXpect.Options.EnumerableQuantifier.None(global::aweXpect.Core.ExpectationGrammars.Nested), true, __state.Item1, __state.Item2)")
-			.Exactly(2);
-		await That(result.Generated).Contains("(__it, __grammars, __state.Item1, false, __state.Item2, __state.Item3)")
-			.Exactly(3);
 	}
 
 	[Test]

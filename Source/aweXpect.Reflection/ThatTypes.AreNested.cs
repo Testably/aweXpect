@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatTypes
 {
 	[GenerateCollectionExpectation("AreNested", "is nested", "are nested",
-		OnCollection = true, NegatedName = "AreNotNested")]
+		CollectionOverload = true, NegatedName = "AreNotNested")]
 	private static PredicateResult IsNestedType(Type? type)
 		=> type is null ? ItemResults.Null : type.IsNested;
 }

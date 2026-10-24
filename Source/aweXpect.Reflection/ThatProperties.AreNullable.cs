@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatProperties
 {
 	[GenerateCollectionExpectation("AreNullable", "is nullable", "are nullable",
-		OnCollection = true, NegatedName = "AreNotNullable", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotNullable", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsNullableProperty(PropertyInfo? property)
 		=> property is null ? ItemResults.Null : property.IsNullable();
 }

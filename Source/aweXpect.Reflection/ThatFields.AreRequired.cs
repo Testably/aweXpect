@@ -7,7 +7,7 @@ namespace aweXpect;
 public static partial class ThatFields
 {
 	[GenerateCollectionExpectation("AreRequired", "is required", "are required",
-		OnCollection = true, NegatedName = "AreNotRequired", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotRequired", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsRequiredField(FieldInfo? field)
 		=> field is null ? ItemResults.Null : field.IsRequired();
 }

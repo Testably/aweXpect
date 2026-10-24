@@ -8,7 +8,7 @@ namespace aweXpect;
 public static partial class ThatMembers
 {
 	[GenerateCollectionExpectation("ArePublic", "is public", "are public",
-		OnCollection = true, NegatedName = "AreNotPublic", FormattedItem = nameof(Formattable))]
+		CollectionOverload = true, NegatedName = "AreNotPublic", FormattedItem = nameof(Formattable))]
 	private static PredicateResult IsPublicMember<TMember>(TMember? member)
 		where TMember : MemberInfo
 		=> member is null ? ItemResults.Null : member.HasAccessModifier(AccessModifiers.Public);
