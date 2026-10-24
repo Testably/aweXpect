@@ -88,6 +88,12 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	/// </remarks>
 	public abstract ValueTask<MatchResult> Match(TSubject actual, TExpected expected);
 
+	/// <inheritdoc />
+	public sealed override ValueTask<MatchResult> Match<TOther>(TSubject actual, TOther expected)
+		=> TryCast(expected, out TExpected typedExpected)
+			? Match(actual, typedExpected)
+			: new ValueTask<MatchResult>(MatchResult.NoMatch);
+
 	/// <summary>
 	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value like
 	///     <see cref="Match(TSubject, TExpected)" />, for a comparison whose failure is explained.
@@ -98,6 +104,12 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	/// </remarks>
 	public virtual ValueTask<MatchResult> MatchWithExplanation(TSubject actual, TExpected expected)
 		=> Match(actual, expected);
+
+	/// <inheritdoc />
+	public sealed override ValueTask<MatchResult> MatchWithExplanation<TOther>(TSubject actual, TOther expected)
+		=> TryCast(expected, out TExpected typedExpected)
+			? MatchWithExplanation(actual, typedExpected)
+			: new ValueTask<MatchResult>(MatchResult.NoMatch);
 
 	/// <summary>
 	///     The failure text for the comparison of the <paramref name="actual" /> with the <paramref name="expected" />
@@ -110,18 +122,6 @@ public abstract class ObjectMatcher<TSubject, TExpected> : ObjectMatcher<TSubjec
 	public virtual string GetFailure(string it, ExpectationGrammars grammars, TSubject? actual, TExpected expected,
 		MatchResult result, string? indentation)
 		=> base.GetFailure(it, grammars, actual, expected, result, indentation);
-
-	/// <inheritdoc />
-	public sealed override ValueTask<MatchResult> Match<TOther>(TSubject actual, TOther expected)
-		=> TryCast(expected, out TExpected typedExpected)
-			? Match(actual, typedExpected)
-			: new ValueTask<MatchResult>(MatchResult.NoMatch);
-
-	/// <inheritdoc />
-	public sealed override ValueTask<MatchResult> MatchWithExplanation<TOther>(TSubject actual, TOther expected)
-		=> TryCast(expected, out TExpected typedExpected)
-			? MatchWithExplanation(actual, typedExpected)
-			: new ValueTask<MatchResult>(MatchResult.NoMatch);
 
 	/// <inheritdoc />
 	public sealed override string GetFailure<TOther>(string it, ExpectationGrammars grammars, TSubject? actual,

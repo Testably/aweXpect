@@ -1105,17 +1105,50 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 	private string GetOptionString()
 	{
-		string initialString = _comparer is not null
-			? $" using {Formatter.Format(_comparer.GetType())}"
-			: _ignoreCase
-				? " ignoring case"
-				: "";
+		string initialString = GetComparisonOptionString();
 		if (!_ignoreLeadingWhiteSpace && !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle &&
 		    !_ignoreIndentation)
 		{
 			return WithNormalizedWhiteSpace(initialString);
 		}
 
+		List<string> tokens = GetIgnoredWhiteSpaceTokens();
+		StringBuilder sb = new();
+		sb.Append(initialString);
+		if (!initialString.Contains("ignoring"))
+		{
+			sb.Append(" ignoring");
+		}
+		else
+		{
+			sb.Append(tokens.Count == 1 ? " and" : ",");
+		}
+
+		for (int i = 0; i < tokens.Count; i++)
+		{
+			if (i > 0)
+			{
+				sb.Append(i == tokens.Count - 1 ? " and" : ",");
+			}
+
+			sb.Append(' ').Append(tokens[i]);
+		}
+
+		return WithNormalizedWhiteSpace(sb.ToString());
+	}
+
+	private string GetComparisonOptionString()
+	{
+		if (_comparer is not null)
+		{
+			return $" using {Formatter.Format(_comparer.GetType())}";
+		}
+
+		return _ignoreCase ? " ignoring case" : "";
+	}
+
+	private List<string> GetIgnoredWhiteSpaceTokens()
+	{
 		List<string> tokens = [];
 		switch (_ignoreLeadingWhiteSpace, _ignoreTrailingWhiteSpace)
 		{
@@ -1140,28 +1173,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			tokens.Add("indentation");
 		}
 
-		StringBuilder sb = new();
-		sb.Append(initialString);
-		if (!initialString.Contains("ignoring"))
-		{
-			sb.Append(" ignoring");
-		}
-		else
-		{
-			sb.Append(tokens.Count == 1 ? " and" : ",");
-		}
-
-		for (int i = 0; i < tokens.Count; i++)
-		{
-			if (i > 0)
-			{
-				sb.Append(i == tokens.Count - 1 ? " and" : ",");
-			}
-
-			sb.Append(' ').Append(tokens[i]);
-		}
-
-		return WithNormalizedWhiteSpace(sb.ToString());
+		return tokens;
 	}
 
 	private string WithNormalizedWhiteSpace(string optionString)

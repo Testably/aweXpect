@@ -129,13 +129,13 @@ public static partial class ThatIPAddress
 		public override ObjectMatcher<IPAddress?> ForEvaluation(MatchEnvironment environment)
 			=> SharedMatcher;
 
-		private static IPAddress? Normalize(IPAddress? address)
-			=> address is { IsIPv4MappedToIPv6: true, } ? address.MapToIPv4() : address;
-
 		private sealed class Matcher : ObjectMatcher<IPAddress?, IPAddress?>
 		{
 			public override ValueTask<MatchResult> Match(IPAddress? actual, IPAddress? expected)
 				=> new(MatchResult.From(Equals(Normalize(actual), Normalize(expected))));
+
+			private static IPAddress? Normalize(IPAddress? address)
+				=> address is { IsIPv4MappedToIPv6: true, } ? address.MapToIPv4() : address;
 		}
 	}
 }

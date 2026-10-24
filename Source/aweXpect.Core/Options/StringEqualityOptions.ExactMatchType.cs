@@ -40,10 +40,16 @@ public partial class StringEqualityOptions
 		/// </remarks>
 		public override int? CountOccurrences(string actual, string expected, StringMatchSettings settings,
 			int maximum)
-			=> settings.Comparer is null
-				? CountOrdinalOccurrences(actual, expected,
-					settings.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal, maximum)
-				: null;
+		{
+			if (settings.Comparer is not null)
+			{
+				return null;
+			}
+
+			StringComparison comparison =
+				settings.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+			return CountOrdinalOccurrences(actual, expected, comparison, maximum);
+		}
 
 		/// <inheritdoc />
 		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,

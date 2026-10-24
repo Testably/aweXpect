@@ -104,14 +104,14 @@ public static partial class ThatHttpRequestMessage
 
 			_requestUri = actual.RequestUri?.ToString();
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
-			if (_requestUri is not null &&
-			    (_matchResult = await _evaluationOptions.MatchWithExplanation(_requestUri, expected)).IsMatch)
+			if (_requestUri is null)
 			{
-				Outcome = Outcome.Success;
+				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			Outcome = Outcome.Failure;
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_requestUri, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

@@ -48,38 +48,6 @@ public partial class StringEqualityOptions
 			=> new WildcardMatcher(settings.IgnoreCase);
 
 		/// <summary>
-		///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
-		/// </summary>
-		private static Regex CreateRegex(string expected, bool ignoreCase)
-			=> GetOrParseRegex(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline);
-
-		/// <remarks>
-		///     The casing is ignored by comparing the upper-case invariant values instead of with
-		///     <see cref="RegexOptions.IgnoreCase" />, so that the same characters are considered equal as by
-		///     <see cref="System.StringComparison.OrdinalIgnoreCase" /> in the plain comparison.
-		/// </remarks>
-		private static string FoldCase(string value, bool ignoreCase)
-			=> ignoreCase ? value.ToUpperInvariant() : value;
-
-		/// <remarks>
-		///     The pattern is anchored with <c>\A</c> and <c>\z</c>, so that it has to cover the complete value:
-		///     <c>^</c> and <c>$</c> would bind to a line boundary, and <c>$</c> would also allow a trailing newline.
-		/// </remarks>
-		private static string WildcardToRegularExpression(string value)
-			=> $@"\A{WildcardToUnanchoredRegularExpression(value)}\z";
-
-		/// <remarks>
-		///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a newline
-		///     like any other character.<br />
-		///     A <c>?</c> matches a surrogate pair as one character, and the atomic group keeps it from matching only its
-		///     first half when the rest of the pattern would not match otherwise.
-		/// </remarks>
-		private static string WildcardToUnanchoredRegularExpression(string value)
-			=> Regex.Escape(value)
-				.Replace("\\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|.)")
-				.Replace("\\*", ".*");
-
-		/// <summary>
 		///     Matches the patterns of one evaluation, in which a collection compares every item with the same pattern, so
 		///     it keeps the regex that was parsed last.
 		/// </summary>
@@ -121,7 +89,7 @@ public partial class StringEqualityOptions
 			///     by the regex engine.
 			/// </remarks>
 			public override int? CountOccurrences(string actual, string expected, int maximum)
-				=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
+				=> RegexMatchType.CountMatches(FoldCase(actual, ignoreCase),
 					GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
 						RegexOptions.Singleline), maximum);
 
@@ -136,6 +104,38 @@ public partial class StringEqualityOptions
 
 				return _regex;
 			}
+
+			/// <summary>
+			///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
+			/// </summary>
+			private static Regex CreateRegex(string expected, bool ignoreCase)
+				=> GetOrParseRegex(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline);
+
+			/// <remarks>
+			///     The casing is ignored by comparing the upper-case invariant values instead of with
+			///     <see cref="RegexOptions.IgnoreCase" />, so that the same characters are considered equal as by
+			///     <see cref="System.StringComparison.OrdinalIgnoreCase" /> in the plain comparison.
+			/// </remarks>
+			private static string FoldCase(string value, bool ignoreCase)
+				=> ignoreCase ? value.ToUpperInvariant() : value;
+
+			/// <remarks>
+			///     The pattern is anchored with <c>\A</c> and <c>\z</c>, so that it has to cover the complete value:
+			///     <c>^</c> and <c>$</c> would bind to a line boundary, and <c>$</c> would also allow a trailing newline.
+			/// </remarks>
+			private static string WildcardToRegularExpression(string value)
+				=> $@"\A{WildcardToUnanchoredRegularExpression(value)}\z";
+
+			/// <remarks>
+			///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a
+			///     newline like any other character.<br />
+			///     A <c>?</c> matches a surrogate pair as one character, and the atomic group keeps it from matching only
+			///     its first half when the rest of the pattern would not match otherwise.
+			/// </remarks>
+			private static string WildcardToUnanchoredRegularExpression(string value)
+				=> Regex.Escape(value)
+					.Replace("\\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|.)")
+					.Replace("\\*", ".*");
 		}
 	}
 }

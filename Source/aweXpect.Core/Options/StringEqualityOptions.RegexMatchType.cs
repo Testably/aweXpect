@@ -204,7 +204,7 @@ public partial class StringEqualityOptions
 		///     consistent with an empty expected value which never occurs. The matches are found one by one, so that no
 		///     match is searched after the <paramref name="maximum" />.
 		/// </remarks>
-		public static int CountOccurrences(string actual, Regex regex, int maximum)
+		public static int CountMatches(string actual, Regex regex, int maximum)
 		{
 			int count = 0;
 			for (Match match = regex.Match(actual); match.Success && count < maximum; match = match.NextMatch())
@@ -259,7 +259,7 @@ public partial class StringEqualityOptions
 			///     by the regex engine.
 			/// </remarks>
 			public override int? CountOccurrences(string actual, string expected, int maximum)
-				=> RegexMatchType.CountOccurrences(actual, GetRegex(expected), maximum);
+				=> CountMatches(actual, GetRegex(expected), maximum);
 
 			private Regex GetRegex(string expected)
 			{
