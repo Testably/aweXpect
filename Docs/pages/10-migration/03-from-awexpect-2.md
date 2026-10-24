@@ -200,7 +200,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - Mark an expectation that a `null` subject can never satisfy with `[GuaranteesNotNull]`, and follow the
   [null rule](../11-extending/02-constraints-and-results.md#null-subjects).
 - The element interfaces nested in `ThatEnumerable` and `ThatAsyncEnumerable` moved to the top level, e.g.
-  `ThatEnumerable.IElements<TItem>` is now `IEnumerableItems<TItem>`.
+  `ThatEnumerable.IElements<TItem>` is now `IEnumerableElements<TItem>`.
 - A custom `IObjectMatchType` implements `AppendContexts(…)` and `AreConsideredEqualWithExplanation(…)`, which takes
   over `GetExtendedFailure`.
 - A customization group stores each value on its own. See
