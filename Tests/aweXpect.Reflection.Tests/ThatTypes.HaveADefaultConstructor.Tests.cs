@@ -45,9 +45,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have a default constructor,
-					             but it contained types without a default constructor
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -74,7 +79,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all have a default constructor,
-					             but it only contained types with a default constructor
+					             but all * did
 
 					             Collection:
 					             [
@@ -120,7 +125,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all have a default constructor,
-					             but it only contained types with a default constructor
+					             but all * did
 
 					             Collection:
 					             [
@@ -162,9 +167,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have a default constructor,
-					             but it contained types without a default constructor
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

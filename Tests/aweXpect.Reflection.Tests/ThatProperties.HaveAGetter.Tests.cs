@@ -40,9 +40,14 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have a getter,
-					             but it contained properties without a getter
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -67,7 +72,7 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             not all have a getter,
-					             but it only contained properties with a getter
+					             but all * did
 
 					             Collection:
 					             [

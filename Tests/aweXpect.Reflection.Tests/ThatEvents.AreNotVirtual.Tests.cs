@@ -27,10 +27,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not virtual,
-					             but it contained virtual events
+					             none are virtual,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,8 +87,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a virtual event,
-					             but it only contained non-virtual events
+					             at least one is virtual,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -111,10 +116,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not virtual,
-					             but it contained virtual events
+					             none are virtual,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

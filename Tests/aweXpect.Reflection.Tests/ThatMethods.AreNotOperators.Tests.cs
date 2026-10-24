@@ -41,10 +41,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not operators,
-					             but it contained operators
+					             none are operators,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -69,8 +74,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an operator,
-					             but it only contained non-operators
+					             at least one is an operator,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -113,8 +118,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an operator,
-					             but it only contained non-operators
+					             at least one is an operator,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -154,10 +159,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not operators,
-					             but it contained operators
+					             none are operators,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

@@ -31,10 +31,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that static types in all loaded assemblies
-						             are all not static,
-						             but it contained static types
+						             none are static,
+						             but * of * were
 
-						             Not matching items:
+						             Matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]
@@ -55,10 +60,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}static types in all loaded assemblies
-						              are all not static,
-						              but it contained static types
+						              none are static,
+						              but * of * were
 
-						              Not matching items:
+						              Matching items:
+						              [
+						                *
+						              ]
+
+						              Collection:
 						              [
 						                *
 						              ]

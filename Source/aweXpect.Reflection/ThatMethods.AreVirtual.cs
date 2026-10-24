@@ -1,122 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
+﻿using System.Reflection;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
 public static partial class ThatMethods
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are virtual.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreVirtual(
-		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new AreVirtualConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are virtual.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreVirtual(
-		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new AreVirtualConstraint(it, grammars)),
-			subject);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are not virtual.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreNotVirtual(
-		this IThat<IEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new AreNotVirtualConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are not virtual.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreNotVirtual(
-		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>(static (it, grammars)
-				=> new AreNotVirtualConstraint(it, grammars)),
-			subject);
-#endif
-
-	private sealed class AreVirtualConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<MethodInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, method => method?.IsVirtual == true, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => method?.IsVirtual == true);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all virtual");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained non-virtual methods");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are not all virtual");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained virtual methods");
-	}
-
-	private sealed class AreNotVirtualConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<MethodInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, method => method?.IsVirtual == false, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => method?.IsVirtual == false);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all not virtual");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained virtual methods");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain a virtual method");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained non-virtual methods");
-	}
+	[GenerateCollectionExpectation("AreVirtual", "is virtual", "are virtual",
+		OnCollection = true, NegatedName = "AreNotVirtual", FormattedItem = nameof(Formattable))]
+	private static PredicateResult IsVirtualMethod(MethodInfo? method)
+		=> method is null ? ItemResults.Null : method.IsVirtual;
 }

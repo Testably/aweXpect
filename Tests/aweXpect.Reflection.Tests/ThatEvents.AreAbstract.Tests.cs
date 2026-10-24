@@ -25,10 +25,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all abstract,
-					             but it contained non-abstract events
+					             all are abstract,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,8 +87,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all abstract,
-					             but it only contained abstract events
+					             not all are abstract,
+					             but all * were
 
 					             Collection:
 					             [

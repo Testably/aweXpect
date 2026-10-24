@@ -32,10 +32,15 @@ public sealed partial class TypeFilters
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which inherit directly from TypeFilters.WhichInheritDirectlyFrom.Tests.FooBase in assembly containing type TypeFilters.WhichInheritDirectlyFrom
-					             are all abstract,
-					             but it contained non-abstract types
+					             all are abstract,
+					             but none of 1 were
 
 					             Not matching items:
+					             [
+					               TypeFilters.WhichInheritDirectlyFrom.Tests.FooDerived
+					             ]
+
+					             Collection:
 					             [
 					               TypeFilters.WhichInheritDirectlyFrom.Tests.FooDerived
 					             ]

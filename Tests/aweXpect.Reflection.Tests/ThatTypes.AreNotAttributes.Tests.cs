@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not attributes,
-					             but it contained attributes
+					             none are attributes,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -83,10 +88,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which are attributes in assembly containing type ThatTypes.AreNotAttributes
-					             are all not attributes,
-					             but it contained attributes
+					             none are attributes,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -110,8 +120,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types which are not attributes in assembly containing type ThatTypes.AreNotAttributes
-					             also contain an attribute,
-					             but it only contained not attributes
+					             at least one is an attribute,
+					             but none of * were
 
 					             Collection:
 					             [

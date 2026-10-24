@@ -27,10 +27,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not sealed,
-					             but it contained sealed events
+					             none are sealed,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -82,8 +87,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a sealed event,
-					             but it only contained non-sealed events
+					             at least one is sealed,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -111,10 +116,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not sealed,
-					             but it contained sealed events
+					             none are sealed,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

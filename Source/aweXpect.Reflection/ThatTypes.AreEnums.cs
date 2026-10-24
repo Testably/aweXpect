@@ -1,122 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
 public static partial class ThatTypes
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are enums.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreEnums(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>(static (it, grammars)
-				=> new AreEnumsConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are enums.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreEnums(
-		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>(static (it, grammars)
-				=> new AreEnumsConstraint(it, grammars)),
-			subject);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not enums.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotEnums(
-		this IThat<IEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>(static (it, grammars)
-				=> new AreNotEnumsConstraint(it, grammars)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not enums.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotEnums(
-		this IThat<IAsyncEnumerable<Type?>?> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>(static (it, grammars)
-				=> new AreNotEnumsConstraint(it, grammars)),
-			subject);
-#endif
-
-	private sealed class AreEnumsConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<Type?>(it, grammars),
-			IContextConstraint<IEnumerable<Type?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => type?.IsEnum == true, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.IsEnum == true);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all enums");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained other types");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are not all enums");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained enums");
-	}
-
-	private sealed class AreNotEnumsConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<Type?>(it, grammars),
-			IContextConstraint<IEnumerable<Type?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => type?.IsEnum != true, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type?.IsEnum != true);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all not enums");
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained enums");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain an enum");
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained not enums");
-	}
+	[GenerateCollectionExpectation("AreEnums", "is an enum", "are enums",
+		OnCollection = true, NegatedName = "AreNotEnums")]
+	private static PredicateResult IsAnEnumType(Type? type)
+		=> type is null ? ItemResults.Null : type.IsEnum;
 }

@@ -43,10 +43,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not virtual,
-					             but it contained virtual methods
+					             none are virtual,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -71,8 +76,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a virtual method,
-					             but it only contained non-virtual methods
+					             at least one is virtual,
+					             but none of * were
 
 					             Collection:
 					             [
@@ -130,10 +135,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not virtual,
-					             but it contained virtual methods
+					             none are virtual,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

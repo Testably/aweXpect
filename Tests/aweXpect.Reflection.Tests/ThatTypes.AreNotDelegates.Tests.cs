@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not delegates,
-					             but it contained delegates
+					             none are delegates,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -83,10 +88,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which are delegates in assembly containing type ThatTypes.AreNotDelegates
-					             are all not delegates,
-					             but it contained delegates
+					             none are delegates,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -110,8 +120,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types which are not delegates in assembly containing type ThatTypes.AreNotDelegates
-					             also contain a delegate,
-					             but it only contained not delegates
+					             at least one is a delegate,
+					             but none of * were
 
 					             Collection:
 					             [

@@ -39,10 +39,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all readable,
-					             but it contained not readable properties
+					             all are readable,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -66,8 +71,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all readable,
-					             but it only contained readable properties
+					             not all are readable,
+					             but all * were
 
 					             Collection:
 					             [

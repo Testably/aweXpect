@@ -21,10 +21,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreSealed
-					             are all sealed,
-					             but it contained non-sealed types
+					             all are sealed,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -75,8 +80,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: false, IsSealed: true, IsInterface: false, } in assembly containing type ThatTypes.AreSealed
-					             are not all sealed,
-					             but it only contained sealed types
+					             not all are sealed,
+					             but all * were
 
 					             Collection:
 					             [

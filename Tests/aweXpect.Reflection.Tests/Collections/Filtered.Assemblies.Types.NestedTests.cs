@@ -40,10 +40,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that nested types in all loaded assemblies
-						             are all not nested,
-						             but it contained nested types
+						             none are nested,
+						             but * of * were
 
-						             Not matching items:
+						             Matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]
@@ -64,10 +69,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}nested types in all loaded assemblies
-						              are all not nested,
-						              but it contained nested types
+						              none are nested,
+						              but * of * were
 
-						              Not matching items:
+						              Matching items:
+						              [
+						                *
+						              ]
+
+						              Collection:
 						              [
 						                *
 						              ]

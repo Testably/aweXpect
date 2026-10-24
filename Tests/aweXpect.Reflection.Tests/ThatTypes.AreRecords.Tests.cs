@@ -22,10 +22,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreRecords
-					             are all records,
-					             but it contained other types
+					             all are records,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -76,8 +81,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsRecordClass() in assembly containing type ThatTypes.AreRecords
-					             are not all records,
-					             but it only contained records
+					             not all are records,
+					             but all * were
 
 					             Collection:
 					             [

@@ -32,10 +32,15 @@ public sealed partial class TypeFilters
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which directly implement TypeFilters.WhichImplementDirectly.Tests.IFoo in assembly containing type TypeFilters.WhichImplementDirectly
-					             are all abstract,
-					             but it contained non-abstract types
+					             all are abstract,
+					             but none of 1 were
 
 					             Not matching items:
+					             [
+					               TypeFilters.WhichImplementDirectly.Tests.FooImpl
+					             ]
+
+					             Collection:
 					             [
 					               TypeFilters.WhichImplementDirectly.Tests.FooImpl
 					             ]

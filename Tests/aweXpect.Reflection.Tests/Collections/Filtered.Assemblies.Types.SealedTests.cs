@@ -31,10 +31,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sealed types in all loaded assemblies
-						             are all not sealed,
-						             but it contained sealed types
+						             none are sealed,
+						             but * of * were
 
-						             Not matching items:
+						             Matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]
@@ -55,10 +60,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}sealed types in all loaded assemblies
-						              are all not sealed,
-						              but it contained sealed types
+						              none are sealed,
+						              but * of * were
 
-						              Not matching items:
+						              Matching items:
+						              [
+						                *
+						              ]
+
+						              Collection:
 						              [
 						                *
 						              ]

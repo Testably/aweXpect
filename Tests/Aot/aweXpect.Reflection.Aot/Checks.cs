@@ -62,8 +62,14 @@ internal static class Checks
 		new("the types of a namespace fail when one is not sealed",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(DomainTypes().WhichAreClasses()).AreSealed(), "Customer")),
+		new("named types fail when one is sealed",
+			() => ShouldFail(async () => await That(In.Types<Order, Customer>()).AreNotSealed(),
+				"none are sealed", "Order")),
 		new("the methods of a type are not abstract",
 			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).AreNotAbstract())),
+		new("the methods of a type fail to be static and are listed",
+			() => ShouldFailOrFailLoudly(async ()
+				=> await That(In.Type<Order>().Methods()).AreStatic(), "decimal Order.Total()")),
 		new("the assemblies depend on a referenced assembly",
 			() => ShouldPassOrFailLoudly(async ()
 				=> await That(In.AssemblyContaining<Order>()).DependOn("aweXpect.Reflection"))),

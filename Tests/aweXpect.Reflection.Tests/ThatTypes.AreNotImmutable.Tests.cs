@@ -44,11 +44,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not immutable,
-					             but it contained immutable types
+					             none are immutable,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ImmutableClass
+					             ]
+
+					             Collection:
+					             [
+					               ClassWithMutableField,
 					               ImmutableClass
 					             ]
 					             """);
@@ -87,11 +93,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all not immutable,
-					             but it contained immutable types
+					             none are immutable,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ImmutableClass
+					             ]
+
+					             Collection:
+					             [
+					               ClassWithMutableField,
 					               ImmutableClass
 					             ]
 					             """);
@@ -117,8 +129,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an immutable type,
-					             but it only contained mutable types
+					             at least one is immutable,
+					             but none of 1 were
 
 					             Collection:
 					             [

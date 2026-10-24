@@ -44,10 +44,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all extension methods,
-					             but it contained non-extension methods
+					             all are extension methods,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -72,8 +77,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all extension methods,
-					             but it only contained extension methods
+					             not all are extension methods,
+					             but all * were
 
 					             Collection:
 					             [
@@ -116,8 +121,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all extension methods,
-					             but it only contained extension methods
+					             not all are extension methods,
+					             but all * were
 
 					             Collection:
 					             [
@@ -157,10 +162,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all extension methods,
-					             but it contained non-extension methods
+					             all are extension methods,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -212,10 +222,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all extension methods,
-					             but it contained non-extension methods
+					             all are extension methods,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

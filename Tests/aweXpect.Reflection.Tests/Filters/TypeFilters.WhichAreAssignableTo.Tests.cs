@@ -71,11 +71,17 @@ public sealed partial class TypeFilters
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types which are assignable to TypeFilters.WhichAreAssignableTo.Tests.AssignableBase in assembly containing type TypeFilters.WhichAreAssignableTo
-					             are all abstract,
-					             but it contained non-abstract types
+					             all are abstract,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
+					               TypeFilters.WhichAreAssignableTo.Tests.AssignableDerived
+					             ]
+
+					             Collection:
+					             [
+					               TypeFilters.WhichAreAssignableTo.Tests.AssignableBase,
 					               TypeFilters.WhichAreAssignableTo.Tests.AssignableDerived
 					             ]
 					             """);

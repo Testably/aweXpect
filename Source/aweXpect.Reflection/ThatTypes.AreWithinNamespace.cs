@@ -1,136 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
 public static partial class ThatTypes
 {
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are within
-	///     the <paramref name="expected" /> namespace (including sub-namespaces).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreWithinNamespace(
-		this IThat<IEnumerable<Type?>?> subject, string expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<string, IEnumerable<Type?>>(expected,
-				static (expected, it, grammars)
-				=> new AreWithinNamespaceConstraint(it, grammars, expected)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are within
-	///     the <paramref name="expected" /> namespace (including sub-namespaces).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreWithinNamespace(
-		this IThat<IAsyncEnumerable<Type?>?> subject, string expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<string, IAsyncEnumerable<Type?>>(expected,
-				static (expected, it, grammars)
-				=> new AreWithinNamespaceConstraint(it, grammars, expected)),
-			subject);
-#endif
-
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not within
-	///     the <paramref name="expected" /> namespace (including sub-namespaces).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotWithinNamespace(
-		this IThat<IEnumerable<Type?>?> subject, string expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<string, IEnumerable<Type?>>(expected,
-				static (expected, it, grammars)
-				=> new AreNotWithinNamespaceConstraint(it, grammars, expected)),
-			subject);
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not within
-	///     the <paramref name="expected" /> namespace (including sub-namespaces).
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotWithinNamespace(
-		this IThat<IAsyncEnumerable<Type?>?> subject, string expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<string, IAsyncEnumerable<Type?>>(expected,
-				static (expected, it, grammars)
-				=> new AreNotWithinNamespaceConstraint(it, grammars, expected)),
-			subject);
-#endif
-
-	private sealed class AreWithinNamespaceConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		string expected)
-		: CollectionConstraintResult<Type?>(it, grammars),
-			IContextConstraint<IEnumerable<Type?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => type.IsWithinNamespace(expected), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => type.IsWithinNamespace(expected));
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all within namespace ").Append(Formatter.Format(expected));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching types");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are not all within namespace ").Append(Formatter.Format(expected));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching types");
-	}
-
-	private sealed class AreNotWithinNamespaceConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		string expected)
-		: CollectionConstraintResult<Type?>(it, grammars),
-			IContextConstraint<IEnumerable<Type?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, type => !type.IsWithinNamespace(expected), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, type => !type.IsWithinNamespace(expected));
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all not within namespace ").Append(Formatter.Format(expected));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching types");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain a type within namespace ").Append(Formatter.Format(expected));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching types");
-	}
+	[GenerateCollectionExpectation("AreWithinNamespace", "is within namespace {expected}",
+		"are within namespace {expected}",
+		OnCollection = true, NegatedName = "AreNotWithinNamespace",
+		Remarks = "Sub-namespaces of the <paramref name=\"expected\" /> namespace are included.")]
+	private static PredicateResult IsWithinNamespaceType(Type? type, string expected)
+		=> type is null ? ItemResults.Null : type.IsWithinNamespace(expected);
 }

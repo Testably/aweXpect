@@ -42,10 +42,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all static,
-					             but it contained non-static methods
+					             all are static,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -69,8 +74,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all static,
-					             but it only contained static methods
+					             not all are static,
+					             but all * were
 
 					             Collection:
 					             [
@@ -113,8 +118,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are not all static,
-					             but it only contained static methods
+					             not all are static,
+					             but all * were
 
 					             Collection:
 					             [
@@ -154,10 +159,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             are all static,
-					             but it contained non-static methods
+					             all are static,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

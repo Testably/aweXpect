@@ -42,9 +42,14 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all override a base property,
-					             but it contained properties which do not override a base property
+					             but none of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -68,8 +73,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             do not all override a base property,
-					             but it only contained properties which override a base property
+					             not all override a base property,
+					             but all * did
 
 					             Collection:
 					             [
@@ -127,9 +132,14 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all override a base property,
-					             but it contained properties which do not override a base property
+					             but none of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

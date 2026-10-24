@@ -40,10 +40,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that records in all loaded assemblies
-						             are all abstract,
-						             but it contained non-abstract types
+						             all are abstract,
+						             but only * of * were
 
 						             Not matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]
