@@ -16,6 +16,11 @@ namespace aweXpect
         public static TResult InAnyOrder<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions> { }
         public static TResult Properly<TResult>(this TResult result) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionMatchOptions>, aweXpect.Results.IProperContainmentOptions { }
     }
+    public static class DateTimeKindPropertyResultExtensions
+    {
+        public static TResult EqualTo<TResult>(this aweXpect.Results.IDateTimeKindPropertyResult<TResult> result, System.DateTimeKind? expected) { }
+        public static TResult NotEqualTo<TResult>(this aweXpect.Results.IDateTimeKindPropertyResult<TResult> result, System.DateTimeKind? unexpected) { }
+    }
     public static class Expect
     {
         public static aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<T>> That<T>(System.ReadOnlySpan<T> subject, [System.Runtime.CompilerServices.CallerArgumentExpression("subject")] string doNotPopulateThisValue = "") { }
@@ -104,6 +109,36 @@ namespace aweXpect
     {
         public InconclusiveException(string message) { }
     }
+    public static class IntPropertyResultExtensions
+    {
+        public static aweXpect.Results.BetweenResult<TResult, int?> Between<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? minimum) { }
+        public static TResult EqualTo<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? expected) { }
+        public static TResult GreaterThan<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? expected) { }
+        public static TResult GreaterThanOrEqualTo<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? expected) { }
+        public static TResult LessThan<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? expected) { }
+        public static TResult LessThanOrEqualTo<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? expected) { }
+        public static aweXpect.Results.BetweenResult<TResult, int?> NotBetween<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? minimum) { }
+        public static TResult NotEqualTo<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? unexpected) { }
+        public static TResult NotGreaterThan<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? unexpected) { }
+        public static TResult NotGreaterThanOrEqualTo<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? unexpected) { }
+        public static TResult NotLessThan<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? unexpected) { }
+        public static TResult NotLessThanOrEqualTo<TResult>(this aweXpect.Results.IIntPropertyResult<TResult> result, int? unexpected) { }
+    }
+    public static class LongPropertyResultExtensions
+    {
+        public static aweXpect.Results.BetweenResult<TResult, long?> Between<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? minimum) { }
+        public static TResult EqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? expected) { }
+        public static TResult GreaterThan<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? expected) { }
+        public static TResult GreaterThanOrEqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? expected) { }
+        public static TResult LessThan<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? expected) { }
+        public static TResult LessThanOrEqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? expected) { }
+        public static aweXpect.Results.BetweenResult<TResult, long?> NotBetween<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? minimum) { }
+        public static TResult NotEqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
+        public static TResult NotGreaterThan<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
+        public static TResult NotGreaterThanOrEqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
+        public static TResult NotLessThan<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
+        public static TResult NotLessThanOrEqualTo<TResult>(this aweXpect.Results.ILongPropertyResult<TResult> result, long? unexpected) { }
+    }
     public static class ObjectEqualityOptionsExtensions
     {
         public static TSelf Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement> result, System.Collections.Generic.IEqualityComparer<TElement> comparer) where TSelf : aweXpect.Results.IObjectEqualityResult<TSelf, TElement> { }
@@ -164,10 +199,36 @@ namespace aweXpect
         public static TResult NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
         public static TResult Using<TResult>(this TResult result, System.Collections.Generic.IEqualityComparer<string> comparer) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
     }
+    public static class StringPropertyResultExtensions
+    {
+        public static aweXpect.Results.StringEqualityResult<TType, TThat> Containing<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string expected) { }
+        public static aweXpect.Results.StringEqualityResult<TType, TThat> EndingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string? expected) { }
+        public static aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string unexpected) { }
+        public static aweXpect.Results.StringEqualityResult<TType, TThat> NotEndingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string unexpected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string? unexpected) { }
+        public static aweXpect.Results.StringEqualityResult<TType, TThat> NotStartingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string unexpected) { }
+        public static aweXpect.Results.StringEqualityResult<TType, TThat> StartingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string expected) { }
+    }
     public static class ThatDelegateExtensions
     {
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ExpectationResult IsCollectedAfter<T>(this aweXpect.Delegates.ThatDelegate.WithValue<T> source, System.Action<T> cleanup, [System.Runtime.CompilerServices.CallerArgumentExpression("cleanup")] string doNotPopulateThisValue = "") where T : class { }
+    }
+    public static class TimeSpanPropertyResultExtensions
+    {
+        public static aweXpect.Results.BetweenResult<TResult, System.TimeSpan?> Between<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? minimum) { }
+        public static TResult EqualTo<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? expected) { }
+        public static TResult GreaterThan<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? expected) { }
+        public static TResult GreaterThanOrEqualTo<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? expected) { }
+        public static TResult LessThan<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? expected) { }
+        public static TResult LessThanOrEqualTo<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? expected) { }
+        public static aweXpect.Results.BetweenResult<TResult, System.TimeSpan?> NotBetween<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? minimum) { }
+        public static TResult NotEqualTo<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? unexpected) { }
+        public static TResult NotGreaterThan<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? unexpected) { }
+        public static TResult NotGreaterThanOrEqualTo<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? unexpected) { }
+        public static TResult NotLessThan<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? unexpected) { }
+        public static TResult NotLessThanOrEqualTo<TResult>(this aweXpect.Results.ITimeSpanPropertyResult<TResult> result, System.TimeSpan? unexpected) { }
     }
     public static class ToleranceExtensions
     {
@@ -1808,6 +1869,20 @@ namespace aweXpect.Results
     public interface ICollectionContainmentOptions
     {
     }
+    public interface IDateTimeKindPropertyResult<out TResult>
+    {
+        TResult Compare(aweXpect.Results.PropertyComparison<System.DateTimeKind> comparison);
+    }
+    public interface IIntPropertyResult<out TResult>
+    {
+        System.Action<int?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.PropertyComparison<int> comparison);
+    }
+    public interface ILongPropertyResult<out TResult>
+    {
+        System.Action<long?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.PropertyComparison<long> comparison);
+    }
     public interface INumberToleranceResult<TSelf, TNumber> : aweXpect.Core.IOptionsProvider<aweXpect.Options.NumberTolerance<TNumber>> where TSelf : aweXpect.Results.INumberToleranceResult<TSelf, TNumber> where TNumber : struct, System.Numerics.INumber<TNumber>
     {
     }
@@ -1828,6 +1903,16 @@ namespace aweXpect.Results
     }
     public interface IStringPatternMatchTypeOptions
     {
+    }
+    public interface IStringPropertyResult<TType, TThat>
+    {
+        System.Action<string?, string>? Validation { get; }
+        TResult Compare<TResult>(string? expected, aweXpect.Options.StringEqualityOptions options, bool isNegated, System.Func<aweXpect.Core.ExpectationBuilder, TThat, aweXpect.Options.StringEqualityOptions, TResult> createResult);
+    }
+    public interface ITimeSpanPropertyResult<out TResult>
+    {
+        System.Action<System.TimeSpan?, string>? Validation { get; }
+        TResult Compare(aweXpect.Results.PropertyComparison<System.TimeSpan> comparison);
     }
     public interface IWithinToleranceResult<TResult, TTolerance> : aweXpect.Core.IOptionsProvider<aweXpect.Options.IRelativeToleranceOptions<TTolerance>>
     {
@@ -1872,93 +1957,53 @@ namespace aweXpect.Results
     {
         public ObjectHasItemResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TCollection?> collection, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.ObjectEqualityOptions<TItem> options) { }
     }
+    public sealed class PropertyComparison<TProperty> where TProperty : struct
+    {
+        public bool IsNegated { get; }
+        public void AppendExpectation(System.Text.StringBuilder stringBuilder) { }
+        public aweXpect.Core.Constraints.Outcome Evaluate(TProperty? actual) { }
+    }
     public static class PropertyResult
     {
         public class DateTimeKind<TItem> : aweXpect.Results.PropertyResult.DateTimeKind<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {
             public DateTimeKind(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.DateTimeKind?> mapper, string propertyExpression) { }
         }
-        public class DateTimeKind<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class DateTimeKind<TValue, TType, TThat> : aweXpect.Results.IDateTimeKindPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
         {
             public DateTimeKind(TThat subject, System.Func<TValue, System.DateTimeKind?> mapper, string propertyExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(System.DateTimeKind? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(System.DateTimeKind? unexpected) { }
         }
         public class Int<TItem> : aweXpect.Results.PropertyResult.Int<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {
             public Int(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null) { }
         }
-        public class Int<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class Int<TValue, TType, TThat> : aweXpect.Results.IIntPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
         {
             public Int(TThat subject, System.Func<TValue, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
-            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, int?> Between(int? minimum) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(int? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThan(int? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThanOrEqualTo(int? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> LessThan(int? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> LessThanOrEqualTo(int? expected) { }
-            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, int?> NotBetween(int? minimum) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(int? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThan(int? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(int? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(int? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(int? unexpected) { }
         }
         public class Long<TItem> : aweXpect.Results.PropertyResult.Long<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {
             public Long(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null) { }
         }
-        public class Long<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class Long<TValue, TType, TThat> : aweXpect.Results.ILongPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
         {
             public Long(TThat subject, System.Func<TValue, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
-            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, long?> Between(long? minimum) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(long? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThan(long? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThanOrEqualTo(long? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> LessThan(long? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> LessThanOrEqualTo(long? expected) { }
-            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, long?> NotBetween(long? minimum) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(long? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThan(long? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(long? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(long? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(long? unexpected) { }
         }
         public class String<TItem> : aweXpect.Results.PropertyResult.String<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {
             public String(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
         }
-        public class String<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class String<TValue, TType, TThat> : aweXpect.Results.IStringPropertyResult<TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
         {
             public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> Containing(string expected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> EndingWith(string expected) { }
-            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo(string? expected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining(string unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> NotEndingWith(string unexpected) { }
-            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo(string? unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> NotStartingWith(string unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TType, TThat> StartingWith(string expected) { }
         }
         public class TimeSpan<TItem> : aweXpect.Results.PropertyResult.TimeSpan<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {
             public TimeSpan(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null) { }
         }
-        public class TimeSpan<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class TimeSpan<TValue, TType, TThat> : aweXpect.Results.ITimeSpanPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
         {
             public TimeSpan(TThat subject, System.Func<TValue, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
-            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, System.TimeSpan?> Between(System.TimeSpan? minimum) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> EqualTo(System.TimeSpan? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThan(System.TimeSpan? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> GreaterThanOrEqualTo(System.TimeSpan? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> LessThan(System.TimeSpan? expected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> LessThanOrEqualTo(System.TimeSpan? expected) { }
-            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>, System.TimeSpan?> NotBetween(System.TimeSpan? minimum) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotEqualTo(System.TimeSpan? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThan(System.TimeSpan? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(System.TimeSpan? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThan(System.TimeSpan? unexpected) { }
-            public aweXpect.Results.AndOrResult<TType, TThat> NotLessThanOrEqualTo(System.TimeSpan? unexpected) { }
         }
     }
     public class RepeatedCheckResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.RepeatedCheckOptions>

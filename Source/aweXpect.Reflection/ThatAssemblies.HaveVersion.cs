@@ -127,10 +127,10 @@ public static partial class ThatAssemblies
 		public VersionComponentResult<TCollection> WithRevision
 			=> new(this, "revision version", version => version.Revision);
 
-		internal HaveVersionResult<TCollection> Add(string component, string comparisonText,
-			Func<Version, int> selector, Func<int, bool> comparison)
+		internal HaveVersionResult<TCollection> Add(string component, Func<Version, int> selector,
+			PropertyComparison<int> comparison)
 		{
-			_checks.Add(new VersionComponentCheck(component, comparisonText, selector, comparison));
+			_checks.Add(new VersionComponentCheck(component, selector, comparison));
 			return this;
 		}
 	}
@@ -139,7 +139,11 @@ public static partial class ThatAssemblies
 	///     Comparison of a single component of the <see cref="AssemblyName.Version" /> for all items in a collection of
 	///     <see cref="Assembly" />.
 	/// </summary>
-	public class VersionComponentResult<TCollection>
+	/// <remarks>
+	///     The comparison operators, e.g. <c>EqualTo(…)</c> or <c>Between(…).And(…)</c>, are extension methods in
+	///     <see cref="IntPropertyResultExtensions" />.
+	/// </remarks>
+	public class VersionComponentResult<TCollection> : IIntPropertyResult<HaveVersionResult<TCollection>>
 	{
 		private readonly string _component;
 		private readonly HaveVersionResult<TCollection> _owner;
@@ -155,53 +159,23 @@ public static partial class ThatAssemblies
 			_selector = selector;
 		}
 
-		/// <summary>
-		///     The component is greater than the <paramref name="expected" /> value.
-		/// </summary>
-		public HaveVersionResult<TCollection> GreaterThan(int expected)
-			=> _owner.Add(_component, $"greater than {expected}", _selector, value => value > expected);
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Validation" />
+		Action<int?, string>? IIntPropertyResult<HaveVersionResult<TCollection>>.Validation => null;
 
-		/// <summary>
-		///     The component is greater than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HaveVersionResult<TCollection> GreaterThanOrEqualTo(int expected)
-			=> _owner.Add(_component, $"greater than or equal to {expected}", _selector, value => value >= expected);
-
-		/// <summary>
-		///     The component is less than the <paramref name="expected" /> value.
-		/// </summary>
-		public HaveVersionResult<TCollection> LessThan(int expected)
-			=> _owner.Add(_component, $"less than {expected}", _selector, value => value < expected);
-
-		/// <summary>
-		///     The component is less than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HaveVersionResult<TCollection> LessThanOrEqualTo(int expected)
-			=> _owner.Add(_component, $"less than or equal to {expected}", _selector, value => value <= expected);
-
-		/// <summary>
-		///     The component is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HaveVersionResult<TCollection> EqualTo(int expected)
-			=> _owner.Add(_component, $"equal to {expected}", _selector, value => value == expected);
-
-		/// <summary>
-		///     The component is not equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HaveVersionResult<TCollection> NotEqualTo(int expected)
-			=> _owner.Add(_component, $"not equal to {expected}", _selector, value => value != expected);
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Compare(PropertyComparison{int})" />
+		HaveVersionResult<TCollection> IIntPropertyResult<HaveVersionResult<TCollection>>.Compare(
+			PropertyComparison<int> comparison)
+			=> _owner.Add(_component, _selector, comparison);
 	}
 
 	internal sealed class VersionComponentCheck(
 		string component,
-		string comparisonText,
 		Func<Version, int> selector,
-		Func<int, bool> comparison)
+		PropertyComparison<int> comparison)
 	{
 		public string Component { get; } = component;
-		public string ComparisonText { get; } = comparisonText;
 		public Func<Version, int> Selector { get; } = selector;
-		public Func<int, bool> Comparison { get; } = comparison;
+		public PropertyComparison<int> Comparison { get; } = comparison;
 	}
 
 	private sealed class HaveVersionComponentsConstraint(
@@ -214,14 +188,29 @@ public static partial class ThatAssemblies
 			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
+		private bool _isUnanswered;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A comparison that cannot be answered, e.g. an ordering against a <see langword="null" /> bound, fails the
+		///     expectation and its negation.
+		/// </remarks>
+		public override Outcome Outcome => _isUnanswered ? Outcome.FailureBothWays : base.Outcome;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, Matches, cancellationToken);
+		{
+			_isUnanswered = false;
+			return await SetAsyncValue(actual, context, Matches, cancellationToken);
+		}
 #endif
 
 		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, Matches);
+		{
+			_isUnanswered = false;
+			return SetValue(actual, context, Matches);
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -251,7 +240,15 @@ public static partial class ThatAssemblies
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained assemblies with a matching version");
+		{
+			if (_isUnanswered)
+			{
+				AppendNormalResult(stringBuilder, indentation);
+				return;
+			}
+
+			stringBuilder.Append(It).Append(" only contained assemblies with a matching version");
+		}
 
 		private bool Matches(Assembly? assembly)
 		{
@@ -261,15 +258,20 @@ public static partial class ThatAssemblies
 				return false;
 			}
 
+			bool isMatching = true;
 			foreach (VersionComponentCheck check in checks)
 			{
-				if (!check.Comparison(check.Selector(version)))
+				Outcome outcome = check.Comparison.Evaluate(check.Selector(version));
+				if (outcome == Outcome.FailureBothWays)
 				{
+					_isUnanswered = true;
 					return false;
 				}
+
+				isMatching &= outcome == Outcome.Success;
 			}
 
-			return true;
+			return isMatching;
 		}
 
 		private void AppendComponents(StringBuilder stringBuilder)
@@ -281,7 +283,13 @@ public static partial class ThatAssemblies
 					stringBuilder.Append(" and ");
 				}
 
-				stringBuilder.Append(checks[i].Component).Append(' ').Append(checks[i].ComparisonText);
+				stringBuilder.Append(checks[i].Component).Append(' ');
+				if (checks[i].Comparison.IsNegated)
+				{
+					stringBuilder.Append("not ");
+				}
+
+				checks[i].Comparison.AppendExpectation(stringBuilder);
 			}
 		}
 	}

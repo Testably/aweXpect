@@ -77,6 +77,54 @@ For the index options, call `MatchesIndex(index, count)` on the `CollectionIndex
 of items or `null` while it is not known yet. Only `true` means that the item is at the expected index: `null` means
 that a later item could still be, and `false` that no later item can be, so you can stop there.
 
+## Property comparisons
+
+An expectation on a property of the subject, e.g. the duration of a track, can return a result that offers the same
+operators as the built-in property expectations like `HasLength()`: `EqualTo`, `GreaterThan`, `Between(…).And(…)` and
+their `Not…` counterparts, with the same argument checks and texts. Implement the interface for the type of the
+property:
+
+| Property type  | Interface                              | Operators                                                    |
+|----------------|----------------------------------------|--------------------------------------------------------------|
+| `int`          | `IIntPropertyResult<TResult>`          | equality, ordering, `Between` and their negations            |
+| `long`         | `ILongPropertyResult<TResult>`         | equality, ordering, `Between` and their negations            |
+| `TimeSpan`     | `ITimeSpanPropertyResult<TResult>`     | equality, ordering, `Between` and their negations            |
+| `DateTimeKind` | `IDateTimeKindPropertyResult<TResult>` | `EqualTo`, `NotEqualTo`                                      |
+| `string`       | `IStringPropertyResult<TType, TThat>`  | `EqualTo`, `StartingWith`, `Containing`, …, string options   |
+
+The operators are extension methods in the `aweXpect` namespace. They check the arguments with your `Validation`, which
+receives the value and the name of its parameter, e.g. `minimum`, and pass a `PropertyComparison<T>` to your `Compare`
+method. `Compare` adds the constraint and returns `TResult`, the result the caller continues with. Implement the
+interface explicitly, so that its members do not show up next to the operators:
+
+```csharp no-compile
+public class DurationResult(IThat<Track?> subject)
+    : ITimeSpanPropertyResult<AndOrResult<Track, IThat<Track?>>>
+{
+    Action<TimeSpan?, string>? ITimeSpanPropertyResult<AndOrResult<Track, IThat<Track?>>>.Validation
+        => null;
+
+    AndOrResult<Track, IThat<Track?>> ITimeSpanPropertyResult<AndOrResult<Track, IThat<Track?>>>.Compare(
+        PropertyComparison<TimeSpan> comparison)
+        => new(subject.Get().ExpectationBuilder.AddConstraint(comparison,
+                static (c, it, grammars) => new HasDurationConstraint(it, grammars, c)),
+            subject);
+}
+```
+
+An expectation that returns this result, e.g. `HasDuration()`, then reads
+`Expect.That(track).HasDuration().Between(TimeSpan.FromMinutes(2)).And(TimeSpan.FromMinutes(4))`.
+
+In the constraint, `comparison.Evaluate(actual)` returns the `Outcome`, with `Outcome.FailureBothWays` for an ordering
+against `null`, and `comparison.AppendExpectation(stringBuilder)` writes the comparison, e.g. "between" and both values.
+`IsNegated` tells that the operator is a negated one, e.g. `NotGreaterThan`: the outcome already includes the negation,
+but the text does not, so that you can place the "not" where your sentence needs it, e.g. "has duration not greater
+than …" or "does not have duration greater than …".
+
+For a `string` property, `Compare` receives the expected value, the `StringEqualityOptions` and whether the comparison
+has to be inverted, and creates the result with the factory it receives. The caller can still add options like
+`IgnoringCase()` after the operator, so read the options only when the constraint is evaluated.
+
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you

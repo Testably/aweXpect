@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Delegates;
 using aweXpect.Options;
 
@@ -30,6 +29,8 @@ public static class PropertyResult
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="IntPropertyResultExtensions" />.
+	///     <para />
 	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
@@ -39,182 +40,16 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<int?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: IIntPropertyResult<AndOrResult<TType, TThat>>
 		where TThat : IThat<TValue>
 	{
-		/// <summary>
-		///     …is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> EqualTo(
-			int? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a == e,
-				"equal to ");
-		}
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Validation" />
+		Action<int?, string>? IIntPropertyResult<AndOrResult<TType, TThat>>.Validation => validation;
 
-		/// <summary>
-		///     …is not equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotEqualTo(
-			int? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, u) => a != u,
-				"equal to ", true);
-		}
-
-		/// <summary>
-		///     …is greater than the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> GreaterThan(
-			int? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a > e,
-				"greater than ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not greater than the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotGreaterThan(
-			int? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a > e),
-				"greater than ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is greater than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
-			int? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a >= e,
-				"greater than or equal to ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not greater than or equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
-			int? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a >= e),
-				"greater than or equal to ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is less than the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> LessThan(
-			int? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a < e,
-				"less than ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not less than the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotLessThan(
-			int? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a < e),
-				"less than ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is less than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> LessThanOrEqualTo(
-			int? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a <= e,
-				"less than or equal to ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not less than or equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
-			int? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a <= e),
-				"less than or equal to ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is between the <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<AndOrResult<TType, TThat>, int?> Between(
-			int? minimum)
-		{
-			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TType, TThat>, int?>(maximum =>
-			{
-				validation?.Invoke(maximum, nameof(maximum));
-				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return Add(minimum, (a, e) => a >= e && a <= maximum,
-					"between ",
-					isOrderedAgainstNull: minimum is null || maximum is null,
-					hasMaximum: true, maximum: maximum);
-			});
-		}
-
-		/// <summary>
-		///     …is not between the <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<AndOrResult<TType, TThat>, int?> NotBetween(
-			int? minimum)
-		{
-			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TType, TThat>, int?>(maximum =>
-			{
-				validation?.Invoke(maximum, nameof(maximum));
-				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
-					"between ", true,
-					minimum is null || maximum is null,
-					true, maximum);
-			});
-		}
-
-		private AndOrResult<TType, TThat> Add(
-			int? expected,
-			Func<int?, int?, bool> condition,
-			string expectationPrefix,
-			bool isNegative = false,
-			bool isOrderedAgainstNull = false,
-			bool hasMaximum = false,
-			int? maximum = null)
-			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint(
-						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
-							Comparison: new StructComparison<int>(expected, condition, expectationPrefix, isNegative,
-								isOrderedAgainstNull, hasMaximum, maximum)),
-						static (state, it, constraintGrammars) =>
-							new StructPropertyConstraint<TValue, int>(
-								it, constraintGrammars | state.Grammars,
-								state.Mapper,
-								state.PropertyExpression,
-								state.Comparison)),
-				subject);
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Compare(PropertyComparison{int})" />
+		AndOrResult<TType, TThat> IIntPropertyResult<AndOrResult<TType, TThat>>.Compare(
+			PropertyComparison<int> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
 	}
 
 	/// <summary>
@@ -232,6 +67,8 @@ public static class PropertyResult
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="LongPropertyResultExtensions" />.
+	///     <para />
 	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
@@ -241,182 +78,16 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<long?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: ILongPropertyResult<AndOrResult<TType, TThat>>
 		where TThat : IThat<TValue>
 	{
-		/// <summary>
-		///     …is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> EqualTo(
-			long? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a == e,
-				"equal to ");
-		}
+		/// <inheritdoc cref="ILongPropertyResult{TResult}.Validation" />
+		Action<long?, string>? ILongPropertyResult<AndOrResult<TType, TThat>>.Validation => validation;
 
-		/// <summary>
-		///     …is not equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotEqualTo(
-			long? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, u) => a != u,
-				"equal to ", true);
-		}
-
-		/// <summary>
-		///     …is greater than the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> GreaterThan(
-			long? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a > e,
-				"greater than ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not greater than the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotGreaterThan(
-			long? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a > e),
-				"greater than ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is greater than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
-			long? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a >= e,
-				"greater than or equal to ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not greater than or equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
-			long? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a >= e),
-				"greater than or equal to ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is less than the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> LessThan(
-			long? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a < e,
-				"less than ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not less than the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotLessThan(
-			long? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a < e),
-				"less than ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is less than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> LessThanOrEqualTo(
-			long? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a <= e,
-				"less than or equal to ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not less than or equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
-			long? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a <= e),
-				"less than or equal to ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is between the <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<AndOrResult<TType, TThat>, long?> Between(
-			long? minimum)
-		{
-			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TType, TThat>, long?>(maximum =>
-			{
-				validation?.Invoke(maximum, nameof(maximum));
-				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return Add(minimum, (a, e) => a >= e && a <= maximum,
-					"between ",
-					isOrderedAgainstNull: minimum is null || maximum is null,
-					hasMaximum: true, maximum: maximum);
-			});
-		}
-
-		/// <summary>
-		///     …is not between the <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<AndOrResult<TType, TThat>, long?> NotBetween(
-			long? minimum)
-		{
-			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TType, TThat>, long?>(maximum =>
-			{
-				validation?.Invoke(maximum, nameof(maximum));
-				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
-					"between ", true,
-					minimum is null || maximum is null,
-					true, maximum);
-			});
-		}
-
-		private AndOrResult<TType, TThat> Add(
-			long? expected,
-			Func<long?, long?, bool> condition,
-			string expectationPrefix,
-			bool isNegative = false,
-			bool isOrderedAgainstNull = false,
-			bool hasMaximum = false,
-			long? maximum = null)
-			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint(
-						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
-							Comparison: new StructComparison<long>(expected, condition, expectationPrefix, isNegative,
-								isOrderedAgainstNull, hasMaximum, maximum)),
-						static (state, it, constraintGrammars) =>
-							new StructPropertyConstraint<TValue, long>(
-								it, constraintGrammars | state.Grammars,
-								state.Mapper,
-								state.PropertyExpression,
-								state.Comparison)),
-				subject);
+		/// <inheritdoc cref="ILongPropertyResult{TResult}.Compare(PropertyComparison{long})" />
+		AndOrResult<TType, TThat> ILongPropertyResult<AndOrResult<TType, TThat>>.Compare(
+			PropertyComparison<long> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
 	}
 
 	/// <summary>
@@ -433,6 +104,9 @@ public static class PropertyResult
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in
+	///     <see cref="DateTimeKindPropertyResultExtensions" />.
+	///     <para />
 	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
@@ -441,40 +115,13 @@ public static class PropertyResult
 		Func<TValue, DateTimeKind?> mapper,
 		string propertyExpression,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: IDateTimeKindPropertyResult<AndOrResult<TType, TThat>>
 		where TThat : IThat<TValue>
 	{
-		/// <summary>
-		///     …is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> EqualTo(
-			DateTimeKind? expected)
-			=> Add(expected, (a, e) => a == e,
-				"equal to ");
-
-		/// <summary>
-		///     …is not equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotEqualTo(
-			DateTimeKind? unexpected)
-			=> Add(unexpected, (a, u) => a != u,
-				"equal to ", true);
-
-		private AndOrResult<TType, TThat> Add(
-			DateTimeKind? expected,
-			Func<DateTimeKind?, DateTimeKind?, bool> condition,
-			string expectationPrefix,
-			bool isNegative = false)
-			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint(
-						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
-							Comparison: new StructComparison<DateTimeKind>(expected, condition, expectationPrefix, isNegative)),
-						static (state, it, constraintGrammars) =>
-							new StructPropertyConstraint<TValue, DateTimeKind>(
-								it, constraintGrammars | state.Grammars,
-								state.Mapper,
-								state.PropertyExpression,
-								state.Comparison)),
-				subject);
+		/// <inheritdoc cref="IDateTimeKindPropertyResult{TResult}.Compare(PropertyComparison{DateTimeKind})" />
+		AndOrResult<TType, TThat> IDateTimeKindPropertyResult<AndOrResult<TType, TThat>>.Compare(
+			PropertyComparison<DateTimeKind> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
 	}
 
 	/// <summary>
@@ -492,6 +139,9 @@ public static class PropertyResult
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in
+	///     <see cref="TimeSpanPropertyResultExtensions" />.
+	///     <para />
 	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
 	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
 	/// </remarks>
@@ -501,182 +151,16 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<TimeSpan?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: ITimeSpanPropertyResult<AndOrResult<TType, TThat>>
 		where TThat : IThat<TValue>
 	{
-		/// <summary>
-		///     …is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> EqualTo(
-			TimeSpan? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a == e,
-				"equal to ");
-		}
+		/// <inheritdoc cref="ITimeSpanPropertyResult{TResult}.Validation" />
+		Action<TimeSpan?, string>? ITimeSpanPropertyResult<AndOrResult<TType, TThat>>.Validation => validation;
 
-		/// <summary>
-		///     …is not equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotEqualTo(
-			TimeSpan? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, u) => a != u,
-				"equal to ", true);
-		}
-
-		/// <summary>
-		///     …is greater than the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> GreaterThan(
-			TimeSpan? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a > e,
-				"greater than ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not greater than the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotGreaterThan(
-			TimeSpan? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a > e),
-				"greater than ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is greater than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
-			TimeSpan? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a >= e,
-				"greater than or equal to ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not greater than or equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
-			TimeSpan? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a >= e),
-				"greater than or equal to ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is less than the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> LessThan(
-			TimeSpan? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a < e,
-				"less than ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not less than the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotLessThan(
-			TimeSpan? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a < e),
-				"less than ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is less than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> LessThanOrEqualTo(
-			TimeSpan? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a <= e,
-				"less than or equal to ",
-				isOrderedAgainstNull: expected is null);
-		}
-
-		/// <summary>
-		///     …is not less than or equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
-			TimeSpan? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, e) => !(a <= e),
-				"less than or equal to ", true,
-				unexpected is null);
-		}
-
-		/// <summary>
-		///     …is between the <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<AndOrResult<TType, TThat>, TimeSpan?> Between(
-			TimeSpan? minimum)
-		{
-			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TType, TThat>, TimeSpan?>(maximum =>
-			{
-				validation?.Invoke(maximum, nameof(maximum));
-				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return Add(minimum, (a, e) => a >= e && a <= maximum,
-					"between ",
-					isOrderedAgainstNull: minimum is null || maximum is null,
-					hasMaximum: true, maximum: maximum);
-			});
-		}
-
-		/// <summary>
-		///     …is not between the <paramref name="minimum" />…
-		/// </summary>
-		public BetweenResult<AndOrResult<TType, TThat>, TimeSpan?> NotBetween(
-			TimeSpan? minimum)
-		{
-			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TType, TThat>, TimeSpan?>(maximum =>
-			{
-				validation?.Invoke(maximum, nameof(maximum));
-				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
-				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
-					"between ", true,
-					minimum is null || maximum is null,
-					true, maximum);
-			});
-		}
-
-		private AndOrResult<TType, TThat> Add(
-			TimeSpan? expected,
-			Func<TimeSpan?, TimeSpan?, bool> condition,
-			string expectationPrefix,
-			bool isNegative = false,
-			bool isOrderedAgainstNull = false,
-			bool hasMaximum = false,
-			TimeSpan? maximum = null)
-			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint(
-						(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression,
-							Comparison: new StructComparison<TimeSpan>(expected, condition, expectationPrefix, isNegative,
-								isOrderedAgainstNull, hasMaximum, maximum)),
-						static (state, it, constraintGrammars) =>
-							new StructPropertyConstraint<TValue, TimeSpan>(
-								it, constraintGrammars | state.Grammars,
-								state.Mapper,
-								state.PropertyExpression,
-								state.Comparison)),
-				subject);
+		/// <inheritdoc cref="ITimeSpanPropertyResult{TResult}.Compare(PropertyComparison{TimeSpan})" />
+		AndOrResult<TType, TThat> ITimeSpanPropertyResult<AndOrResult<TType, TThat>>.Compare(
+			PropertyComparison<TimeSpan> comparison)
+			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
 	}
 
 	/// <summary>
@@ -694,6 +178,8 @@ public static class PropertyResult
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
+	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="StringPropertyResultExtensions" />.
+	///     <para />
 	///     The <paramref name="grammars" /> travel with the continuation instead of with the method, so that the same
 	///     property reads in the active voice (<c>with message equal to …</c>) when it is nested under another
 	///     expectation and as a standalone sentence (<c>has message equal to …</c>) otherwise.
@@ -711,211 +197,61 @@ public static class PropertyResult
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
 		bool includeValueInContext = false)
+		: IStringPropertyResult<TType, TThat>
 		where TThat : IThat<TValue>
 	{
-		/// <summary>
-		///     …contains the <paramref name="expected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> Containing(
-			string expected)
-		{
-			ThrowIfNullOrEmpty(expected, nameof(expected));
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			options.Containing();
-			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
+		/// <inheritdoc cref="IStringPropertyResult{TType, TThat}.Validation" />
+		Action<string?, string>? IStringPropertyResult<TType, TThat>.Validation => validation;
 
-		/// <summary>
-		///     …ends with the <paramref name="expected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> EndingWith(
-			string expected)
-		{
-			ThrowIfNullOrEmpty(expected, nameof(expected));
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			options.AsSuffix();
-			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
-
-		/// <summary>
-		///     …is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public StringEqualityTypeResult<TType, TThat> EqualTo(
-			string? expected)
-		{
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			return new StringEqualityTypeResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
-
-		/// <summary>
-		///     …does not contain the <paramref name="unexpected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> NotContaining(
-			string unexpected)
-		{
-			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			options.Containing();
-			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …does not end with the <paramref name="unexpected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> NotEndingWith(
-			string unexpected)
-		{
-			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			options.AsSuffix();
-			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …is not equal to the <paramref name="unexpected" /> value.
-		/// </summary>
-		public StringEqualityTypeResult<TType, TThat> NotEqualTo(
-			string? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			return new StringEqualityTypeResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …does not start with the <paramref name="unexpected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> NotStartingWith(
-			string unexpected)
-		{
-			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new(nameof(unexpected));
-			options.AsPrefix();
-			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
-		}
-
-		/// <summary>
-		///     …starts with the <paramref name="expected" /> value.
-		/// </summary>
-		/// <remarks>
-		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
-		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
-		///     string always does.
-		/// </remarks>
-		public StringEqualityResult<TType, TThat> StartingWith(
-			string expected)
-		{
-			ThrowIfNullOrEmpty(expected, nameof(expected));
-			validation?.Invoke(expected, nameof(expected));
-			StringEqualityOptions options = new(nameof(expected));
-			options.AsPrefix();
-			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
-		}
-
-		private static void ThrowIfNullOrEmpty(string value, string paramName)
-		{
-#pragma warning disable S3236 // The caller information would name the local parameter instead of the public one it forwards
-			value.ThrowIfNull(paramName);
-#pragma warning restore S3236
-			if (value.Length == 0)
-			{
-				// ReSharper disable once LocalizableElement
-				throw Tracing.WriteException(new ArgumentException($"The '{paramName}' string cannot be empty.", paramName));
-			}
-		}
-
-		private ExpectationBuilder Build(
+		/// <inheritdoc
+		///     cref="IStringPropertyResult{TType, TThat}.Compare{TResult}(string?, StringEqualityOptions, bool, Func{ExpectationBuilder, TThat, StringEqualityOptions, TResult})" />
+		TResult IStringPropertyResult<TType, TThat>.Compare<TResult>(
 			string? expected,
 			StringEqualityOptions options,
-			bool invert)
-			=> subject.Get().ExpectationBuilder
-				.AddConstraint(
-					(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
-						Mapper: mapper, PropertyExpression: propertyExpression, Options: options, Invert: invert),
-					static (state, it, constraintGrammars) =>
-					{
-						StringConstraint<TValue> constraint = new(
-							state.IncludeValueInContext,
-							it,
-							constraintGrammars | state.Grammars,
-							state.Expected,
-							state.Mapper,
-							state.PropertyExpression,
-							state.Options);
-						return state.Invert ? constraint.Invert() : constraint;
-					});
+			bool isNegated,
+			Func<ExpectationBuilder, TThat, StringEqualityOptions, TResult> createResult)
+			=> createResult(subject.Get().ExpectationBuilder
+					.AddConstraint(
+						(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
+							Mapper: mapper, PropertyExpression: propertyExpression, Options: options, Invert: isNegated),
+						static (state, it, constraintGrammars) =>
+						{
+							StringConstraint<TValue> constraint = new(
+								state.IncludeValueInContext,
+								it,
+								constraintGrammars | state.Grammars,
+								state.Expected,
+								state.Mapper,
+								state.PropertyExpression,
+								state.Options);
+							return state.Invert ? constraint.Invert() : constraint;
+						}),
+				subject, options);
 	}
 
-	/// <summary>
-	///     The comparison of a struct property with the <see cref="Expected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     The expectation text is only formatted when a message needs it, as most expectations are met.
-	/// </remarks>
-	private sealed class StructComparison<TProperty>(
-		TProperty? expected,
-		Func<TProperty?, TProperty?, bool> condition,
-		string expectationPrefix,
-		bool isNegative,
-		bool isOrderedAgainstNull = false,
-		bool hasMaximum = false,
-		TProperty? maximum = null)
+	private static ExpectationBuilder AddStructConstraint<TValue, TProperty>(
+		IThat<TValue> subject,
+		ExpectationGrammars grammars,
+		Func<TValue, TProperty?> mapper,
+		string propertyExpression,
+		PropertyComparison<TProperty> comparison)
 		where TProperty : struct
-	{
-		public TProperty? Expected { get; } = expected;
-		public Func<TProperty?, TProperty?, bool> Condition { get; } = condition;
-		public bool IsNegative { get; } = isNegative;
-		public bool IsOrderedAgainstNull { get; } = isOrderedAgainstNull;
-
-		public void AppendExpectation(StringBuilder stringBuilder)
-		{
-			stringBuilder.Append(expectationPrefix);
-			Formatter.Format(stringBuilder, Expected);
-			if (hasMaximum)
-			{
-				stringBuilder.Append(" and ");
-				Formatter.Format(stringBuilder, maximum);
-			}
-		}
-	}
+		=> subject.Get().ExpectationBuilder
+			.AddConstraint(
+				(Grammars: grammars, Mapper: mapper, PropertyExpression: propertyExpression, Comparison: comparison),
+				static (state, it, constraintGrammars) =>
+					new StructPropertyConstraint<TValue, TProperty>(
+						it, constraintGrammars | state.Grammars,
+						state.Mapper,
+						state.PropertyExpression,
+						state.Comparison));
 
 	private sealed class StructPropertyConstraint<TItem, TProperty>(
 		string it,
 		ExpectationGrammars grammars,
 		Func<TItem, TProperty?> mapper,
 		string propertyExpression,
-		StructComparison<TProperty> comparison)
+		PropertyComparison<TProperty> comparison)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 			IValueConstraint<TItem>
 		where TProperty : struct
@@ -941,17 +277,12 @@ public static class PropertyResult
 				return this;
 			}
 
-			Outcome = comparison.Condition(_value, comparison.Expected) ? Outcome.Success : Outcome.Failure;
-			if (comparison.IsOrderedAgainstNull)
-			{
-				Outcome = Outcome.FailureBothWays;
-			}
-
+			Outcome = comparison.Evaluate(_value);
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, comparison.IsNegative);
+			=> Append(stringBuilder, comparison.IsNegated);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -976,7 +307,7 @@ public static class PropertyResult
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, !comparison.IsNegative);
+			=> Append(stringBuilder, !comparison.IsNegated);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

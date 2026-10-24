@@ -80,10 +80,10 @@ public static partial class ThatAssembly
 		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponent WithRevision => new(this, "revision version", version => version.Revision);
 
-		internal HasVersionResult Add(string component, string comparisonText, Func<Version, int> selector,
-			Func<int, bool> comparison)
+		internal HasVersionResult Add(string component, Func<Version, int> selector,
+			PropertyComparison<int> comparison)
 		{
-			_checks.Add(new VersionComponentCheck(component, comparisonText, selector, comparison));
+			_checks.Add(new VersionComponentCheck(component, selector, comparison));
 			return this;
 		}
 	}
@@ -91,7 +91,11 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Comparison of a single component of the <see cref="AssemblyName.Version" /> of an <see cref="Assembly" />.
 	/// </summary>
-	public class VersionComponent
+	/// <remarks>
+	///     The comparison operators, e.g. <c>EqualTo(…)</c> or <c>Between(…).And(…)</c>, are extension methods in
+	///     <see cref="IntPropertyResultExtensions" />.
+	/// </remarks>
+	public class VersionComponent : IIntPropertyResult<HasVersionResult>
 	{
 		private readonly string _component;
 		private readonly HasVersionResult _owner;
@@ -104,53 +108,22 @@ public static partial class ThatAssembly
 			_selector = selector;
 		}
 
-		/// <summary>
-		///     The component is greater than the <paramref name="expected" /> value.
-		/// </summary>
-		public HasVersionResult GreaterThan(int expected)
-			=> _owner.Add(_component, $"greater than {expected}", _selector, value => value > expected);
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Validation" />
+		Action<int?, string>? IIntPropertyResult<HasVersionResult>.Validation => null;
 
-		/// <summary>
-		///     The component is greater than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HasVersionResult GreaterThanOrEqualTo(int expected)
-			=> _owner.Add(_component, $"greater than or equal to {expected}", _selector, value => value >= expected);
-
-		/// <summary>
-		///     The component is less than the <paramref name="expected" /> value.
-		/// </summary>
-		public HasVersionResult LessThan(int expected)
-			=> _owner.Add(_component, $"less than {expected}", _selector, value => value < expected);
-
-		/// <summary>
-		///     The component is less than or equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HasVersionResult LessThanOrEqualTo(int expected)
-			=> _owner.Add(_component, $"less than or equal to {expected}", _selector, value => value <= expected);
-
-		/// <summary>
-		///     The component is equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HasVersionResult EqualTo(int expected)
-			=> _owner.Add(_component, $"equal to {expected}", _selector, value => value == expected);
-
-		/// <summary>
-		///     The component is not equal to the <paramref name="expected" /> value.
-		/// </summary>
-		public HasVersionResult NotEqualTo(int expected)
-			=> _owner.Add(_component, $"not equal to {expected}", _selector, value => value != expected);
+		/// <inheritdoc cref="IIntPropertyResult{TResult}.Compare(PropertyComparison{int})" />
+		HasVersionResult IIntPropertyResult<HasVersionResult>.Compare(PropertyComparison<int> comparison)
+			=> _owner.Add(_component, _selector, comparison);
 	}
 
 	private sealed class VersionComponentCheck(
 		string component,
-		string comparisonText,
 		Func<Version, int> selector,
-		Func<int, bool> comparison)
+		PropertyComparison<int> comparison)
 	{
 		public string Component { get; } = component;
-		public string ComparisonText { get; } = comparisonText;
 		public Func<Version, int> Selector { get; } = selector;
-		public Func<int, bool> Comparison { get; } = comparison;
+		public PropertyComparison<int> Comparison { get; } = comparison;
 	}
 
 	private sealed class HasVersionComponentsConstraint(
@@ -174,17 +147,24 @@ public static partial class ThatAssembly
 				return this;
 			}
 
+			Outcome = Outcome.Success;
 			foreach (VersionComponentCheck check in checks)
 			{
-				if (!check.Comparison(check.Selector(_version)))
+				Outcome outcome = check.Comparison.Evaluate(check.Selector(_version));
+				if (outcome == Outcome.FailureBothWays)
 				{
 					_failed = check;
-					Outcome = Outcome.Failure;
+					Outcome = outcome;
 					return this;
+				}
+
+				if (outcome == Outcome.Failure && _failed is null)
+				{
+					_failed = check;
+					Outcome = outcome;
 				}
 			}
 
-			Outcome = Outcome.Success;
 			return this;
 		}
 
@@ -242,7 +222,13 @@ public static partial class ThatAssembly
 					stringBuilder.Append(" and ");
 				}
 
-				stringBuilder.Append(checks[i].Component).Append(' ').Append(checks[i].ComparisonText);
+				stringBuilder.Append(checks[i].Component).Append(' ');
+				if (checks[i].Comparison.IsNegated)
+				{
+					stringBuilder.Append("not ");
+				}
+
+				checks[i].Comparison.AppendExpectation(stringBuilder);
 			}
 		}
 	}
