@@ -9,7 +9,7 @@ namespace aweXpect.Web;
 /// <summary>
 ///     Extension methods on <see cref="AwexpectCustomization" /> for aweXpect.Web.
 /// </summary>
-public static class WebAwexpectCustomizationExtensions
+public static class WebCustomizationExtensions
 {
 	/// <summary>
 	///     Customize the aweXpect.Web settings.

@@ -19,7 +19,7 @@ internal sealed record SnapshotSettings(
 {
 	public static SnapshotSettings Read()
 	{
-		SnapshotsAwexpectCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
+		SnapshotsCustomizationExtensions.SnapshotsCustomization customization = Customize.aweXpect.Snapshots();
 		return new SnapshotSettings(customization.Store.Get(), customization.Acceptance.Get(),
 			customization.Rules.Get(), customization.Reporters.Get(), customization.Comparers.Get());
 	}

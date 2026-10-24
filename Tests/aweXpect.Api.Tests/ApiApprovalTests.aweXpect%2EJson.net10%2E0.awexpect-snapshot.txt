@@ -143,9 +143,9 @@ namespace aweXpect.Json
         TReturn Matching(object? expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "");
         TReturn Null();
     }
-    public static class JsonAwexpectCustomizationExtensions
+    public static class JsonCustomizationExtensions
     {
-        public static aweXpect.Json.JsonAwexpectCustomizationExtensions.JsonCustomization Json(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public static aweXpect.Json.JsonCustomizationExtensions.JsonCustomization Json(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
         public class JsonCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<System.Text.Json.JsonDocumentOptions> DefaultJsonDocumentOptions { get; }

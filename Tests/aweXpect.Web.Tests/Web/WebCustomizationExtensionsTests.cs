@@ -4,7 +4,7 @@ using aweXpect.Web.ContentProcessors;
 
 namespace aweXpect.Tests.Web;
 
-public sealed class WebAwexpectCustomizationExtensionsTests
+public sealed class WebCustomizationExtensionsTests
 {
 	[Test]
 	public async Task ContentProcessors_Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()

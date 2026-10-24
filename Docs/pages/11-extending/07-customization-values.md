@@ -59,7 +59,7 @@ To offer several related values, add a group: a class that exposes one `ICustomi
 Each value is stored under its own key, so it can be set and restored independently of the other values of the group:
 
 ```csharp
-public static class JsonAwexpectCustomizationExtensions
+public static class JsonCustomizationExtensions
 {
     public static JsonCustomization Json(this AwexpectCustomization awexpectCustomization)
         => new(awexpectCustomization);

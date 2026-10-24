@@ -9,7 +9,7 @@ namespace aweXpect.Snapshots
 		[global::System.Runtime.CompilerServices.ModuleInitializer]
 		internal static void Register()
 		{
-			var reporters = global::aweXpect.Snapshots.SnapshotsAwexpectCustomizationExtensions
+			var reporters = global::aweXpect.Snapshots.SnapshotsCustomizationExtensions
 				.Snapshots(global::aweXpect.Customization.Customize.aweXpect.Global).Reporters;
 			foreach (var reporter in reporters.Get())
 			{
