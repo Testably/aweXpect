@@ -33,16 +33,16 @@ internal sealed class TypesMemberBuilder :
 	}
 
 	public Filtered.Events.MemberScopeResult Events()
-		=> new(_source, "events ", _state.BuildEventFilter(), MemberScope.DeclaredOnly);
+		=> new(_source, "events ", _state.BuildEventFilter(), MemberScopes.DeclaredOnly);
 
 	public Filtered.Fields.MemberScopeResult Fields()
-		=> new(_source, "fields ", _state.BuildFieldFilter(), MemberScope.DeclaredOnly);
+		=> new(_source, "fields ", _state.BuildFieldFilter(), MemberScopes.DeclaredOnly);
 
 	public Filtered.Methods.MemberScopeResult Methods()
-		=> new(_source, "methods ", _state.BuildMethodFilter(), MemberScope.DeclaredOnly);
+		=> new(_source, "methods ", _state.BuildMethodFilter(), MemberScopes.DeclaredOnly);
 
 	public Filtered.Properties.MemberScopeResult Properties()
-		=> new(_source, "properties ", _state.BuildPropertyFilter(), MemberScope.DeclaredOnly);
+		=> new(_source, "properties ", _state.BuildPropertyFilter(), MemberScopes.DeclaredOnly);
 
 	IMembers IMembers.IProtected.Internal
 		=> new TypesMemberBuilder(_source, _state.WithAccess(AccessModifiers.ProtectedInternal));

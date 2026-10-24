@@ -92,28 +92,28 @@ internal sealed class AssembliesTypeBuilder :
 
 	public Filtered.Events Events()
 	{
-		Filtered.Events events = new(new Filtered.Types(_source, ""), "events ", MemberScope.DeclaredOnly);
+		Filtered.Events events = new(new Filtered.Types(_source, ""), "events ", MemberScopes.DeclaredOnly);
 		IFilter<EventInfo>? filter = _memberState.BuildEventFilter();
 		return filter is null ? events : events.Which(filter);
 	}
 
 	public Filtered.Fields Fields()
 	{
-		Filtered.Fields fields = new(new Filtered.Types(_source, ""), "fields ", MemberScope.DeclaredOnly);
+		Filtered.Fields fields = new(new Filtered.Types(_source, ""), "fields ", MemberScopes.DeclaredOnly);
 		IFilter<FieldInfo>? filter = _memberState.BuildFieldFilter();
 		return filter is null ? fields : fields.Which(filter);
 	}
 
 	public Filtered.Methods Methods()
 	{
-		Filtered.Methods methods = new(new Filtered.Types(_source, ""), "methods ", MemberScope.DeclaredOnly);
+		Filtered.Methods methods = new(new Filtered.Types(_source, ""), "methods ", MemberScopes.DeclaredOnly);
 		IFilter<MethodInfo>? filter = _memberState.BuildMethodFilter();
 		return filter is null ? methods : methods.Which(filter);
 	}
 
 	public Filtered.Properties Properties()
 	{
-		Filtered.Properties properties = new(new Filtered.Types(_source, ""), "properties ", MemberScope.DeclaredOnly);
+		Filtered.Properties properties = new(new Filtered.Types(_source, ""), "properties ", MemberScopes.DeclaredOnly);
 		IFilter<PropertyInfo>? filter = _memberState.BuildPropertyFilter();
 		return filter is null ? properties : properties.Which(filter);
 	}

@@ -38,7 +38,7 @@ public static partial class ThatType
 
 	private static TypeContainingMembersScopeResult<Type, Type?> ContainsMembers<TMember, TFiltered>(
 		IThat<Type?> subject,
-		Func<Filtered.Types, MemberScope, TFiltered> navigate,
+		Func<Filtered.Types, MemberScopes, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{

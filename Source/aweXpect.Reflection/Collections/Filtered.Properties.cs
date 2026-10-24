@@ -23,7 +23,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="PropertyInfo" />.
 		/// </summary>
-		internal Properties(Types types, string description, MemberScope memberScope)
+		internal Properties(Types types, string description, MemberScopes memberScope)
 			: base(types.SelectMany(type => type.GetDeclaredProperties(memberScope)))
 		{
 			_types = types;
@@ -107,12 +107,12 @@ public static partial class Filtered
 		public sealed class MemberScopeResult : Properties
 		{
 			private readonly IFilter<PropertyInfo>? _memberFilter;
-			private readonly MemberScope _scope;
+			private readonly MemberScopes _scope;
 			private readonly string _sourceDescription;
 			private readonly Types _sourceTypes;
 
 			internal MemberScopeResult(Types types, string description, IFilter<PropertyInfo>? filter,
-				MemberScope memberScope)
+				MemberScopes memberScope)
 				: base(Create(types, description, filter, memberScope))
 			{
 				_sourceTypes = types;
@@ -129,7 +129,7 @@ public static partial class Filtered
 			///     A property inherited from a base type is included once for each type that inherits it.
 			/// </remarks>
 			public MemberScopeResult IncludingInherited()
-				=> new(_sourceTypes, _sourceDescription, _memberFilter, _scope & ~MemberScope.DeclaredOnly);
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, _scope & ~MemberScopes.DeclaredOnly);
 
 			/// <summary>
 			///     Also includes the inherited properties, including those declared on <see cref="object" />,
@@ -139,10 +139,10 @@ public static partial class Filtered
 			///     A property inherited from a base type is included once for each type that inherits it.
 			/// </remarks>
 			public MemberScopeResult IncludingObjectMembers()
-				=> new(_sourceTypes, _sourceDescription, _memberFilter, MemberScope.IncludingObjectMembers);
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, MemberScopes.IncludingObjectMembers);
 
 			private static Properties Create(Types types, string description, IFilter<PropertyInfo>? filter,
-				MemberScope memberScope)
+				MemberScopes memberScope)
 			{
 				Properties properties = new(types, memberScope.DescribeListing(description), memberScope);
 				return filter is null ? properties : properties.Which(filter);

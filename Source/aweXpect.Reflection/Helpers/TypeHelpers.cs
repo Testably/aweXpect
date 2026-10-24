@@ -12,7 +12,7 @@ using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
 using MembersKey = (
-	aweXpect.Reflection.Collections.MemberScope Scope,
+	aweXpect.Reflection.Collections.MemberScopes Scope,
 	aweXpect.Reflection.CompilerGeneratedMembers CompilerGenerated,
 	aweXpect.Reflection.SpecialNameMembers SpecialName);
 
@@ -136,11 +136,11 @@ internal static class TypeHelpers
 
 	/// <summary>
 	///     Searches for events in the <paramref name="type" />, including inherited ones unless the
-	///     <paramref name="memberScope" /> is <see cref="MemberScope.DeclaredOnly" />.
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static EventInfo[] GetDeclaredEvents(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		if (!ReflectionFallback.IsSupported)
 		{
@@ -195,11 +195,11 @@ internal static class TypeHelpers
 
 	/// <summary>
 	///     Searches for fields in the <paramref name="type" />, including inherited ones unless the
-	///     <paramref name="memberScope" /> is <see cref="MemberScope.DeclaredOnly" />.
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static FieldInfo[] GetDeclaredFields(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		if (!ReflectionFallback.IsSupported)
 		{
@@ -223,7 +223,7 @@ internal static class TypeHelpers
 				           BindingFlags.Public |
 				           BindingFlags.Instance |
 				           BindingFlags.Static);
-			if ((memberScope & MemberScope.IncludingPrivateBaseMembers) != 0)
+			if ((memberScope & MemberScopes.IncludingPrivateBaseMembers) != 0)
 			{
 				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
 				{
@@ -268,11 +268,11 @@ internal static class TypeHelpers
 
 	/// <summary>
 	///     Searches for methods in the <paramref name="type" />, including inherited ones unless the
-	///     <paramref name="memberScope" /> is <see cref="MemberScope.DeclaredOnly" />.
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static MethodInfo[] GetDeclaredMethods(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly,
+		MemberScopes memberScope = MemberScopes.DeclaredOnly,
 		bool includeOperators = false)
 	{
 		if (!ReflectionFallback.IsSupported)
@@ -333,11 +333,11 @@ internal static class TypeHelpers
 
 	/// <summary>
 	///     Searches for properties in the <paramref name="type" />, including inherited ones unless the
-	///     <paramref name="memberScope" /> is <see cref="MemberScope.DeclaredOnly" />.
+	///     <paramref name="memberScope" /> is <see cref="MemberScopes.DeclaredOnly" />.
 	/// </summary>
 	public static PropertyInfo[] GetDeclaredProperties(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScopes memberScope = MemberScopes.DeclaredOnly)
 	{
 		if (!ReflectionFallback.IsSupported)
 		{
@@ -361,7 +361,7 @@ internal static class TypeHelpers
 				               BindingFlags.Public |
 				               BindingFlags.Static |
 				               BindingFlags.Instance);
-			if ((memberScope & MemberScope.IncludingPrivateBaseMembers) != 0)
+			if ((memberScope & MemberScopes.IncludingPrivateBaseMembers) != 0)
 			{
 				for (Type? baseType = type.BaseType; baseType is not null; baseType = baseType.BaseType)
 				{
@@ -410,16 +410,16 @@ internal static class TypeHelpers
 	///     Maps the <paramref name="memberScope" /> to the corresponding <see cref="BindingFlags" />.
 	/// </summary>
 	/// <remarks>
-	///     <see cref="MemberScope.DeclaredOnly" /> restricts the search to members declared directly on the type, otherwise
+	///     <see cref="MemberScopes.DeclaredOnly" /> restricts the search to members declared directly on the type, otherwise
 	///     the inherited members are returned as well (including inherited static members via
 	///     <see cref="BindingFlags.FlattenHierarchy" />), but like for <see cref="Type.GetMethods()" /> without
 	///     <see cref="BindingFlags.DeclaredOnly" /> never the <see langword="private" /> members of base types. Only
-	///     <see cref="MemberScope.IncludingPrivateBaseMembers" /> collects them by walking the base type chain. As reflection
+	///     <see cref="MemberScopes.IncludingPrivateBaseMembers" /> collects them by walking the base type chain. As reflection
 	///     does not return the members of base interfaces, the members of an interface type are collected from its base
 	///     interfaces with <see cref="InterfaceMemberFlags" />. Each caller walks the chain itself, because the trim analyzer
 	///     does not apply the <see cref="ReflectionFallback.IsSupported" /> guard of a method to a lambda in it.
 	/// </remarks>
-	private static BindingFlags ToBindingFlags(this MemberScope memberScope)
+	private static BindingFlags ToBindingFlags(this MemberScopes memberScope)
 		=> memberScope.IsDirect()
 			? BindingFlags.DeclaredOnly
 			: BindingFlags.FlattenHierarchy;
@@ -434,25 +434,25 @@ internal static class TypeHelpers
 	                                                  BindingFlags.Static;
 
 	/// <summary>
-	///     Drops the flags that have no effect together with <see cref="MemberScope.DeclaredOnly" />, so that equivalent
+	///     Drops the flags that have no effect together with <see cref="MemberScopes.DeclaredOnly" />, so that equivalent
 	///     scopes share one cache entry.
 	/// </summary>
-	private static MemberScope Normalize(this MemberScope memberScope)
-		=> memberScope.IsDirect() ? MemberScope.DeclaredOnly : memberScope;
+	private static MemberScopes Normalize(this MemberScopes memberScope)
+		=> memberScope.IsDirect() ? MemberScopes.DeclaredOnly : memberScope;
 
 	/// <summary>
 	///     Checks if the <paramref name="member" /> of the <paramref name="type" /> belongs to the
 	///     <paramref name="memberScope" />: a member inherited from <see cref="object" />, <see cref="ValueType" /> or
-	///     <see cref="Enum" /> only with <see cref="MemberScope.IncludingObjectMembers" />, and an inherited member that the
-	///     <paramref name="type" /> cannot access only with <see cref="MemberScope.IncludingPrivateBaseMembers" />.
+	///     <see cref="Enum" /> only with <see cref="MemberScopes.IncludingObjectMembers" />, and an inherited member that the
+	///     <paramref name="type" /> cannot access only with <see cref="MemberScopes.IncludingPrivateBaseMembers" />.
 	/// </summary>
-	private static bool Includes(this MemberScope memberScope, MemberInfo member, Type type)
+	private static bool Includes(this MemberScopes memberScope, MemberInfo member, Type type)
 		=> member.DeclaringType == type ||
-		   (((memberScope & MemberScope.IncludingObjectMembers) != 0 ||
+		   (((memberScope & MemberScopes.IncludingObjectMembers) != 0 ||
 		     (member.DeclaringType != typeof(object) &&
 		      member.DeclaringType != typeof(ValueType) &&
 		      member.DeclaringType != typeof(Enum))) &&
-		    ((memberScope & MemberScope.IncludingPrivateBaseMembers) != 0 ||
+		    ((memberScope & MemberScopes.IncludingPrivateBaseMembers) != 0 ||
 		     member.IsAccessibleFrom(type)));
 
 	/// <summary>
@@ -1584,10 +1584,10 @@ internal static class TypeHelpers
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	public static MemberInfo[] GetMutableMembers(this Type type)
-		=> type.GetDeclaredFields(MemberScope.IncludingPrivateBaseMembers)
+		=> type.GetDeclaredFields(MemberScopes.IncludingPrivateBaseMembers)
 			.Where(field => field is { IsStatic: false, IsInitOnly: false, })
 			.OfType<MemberInfo>()
-			.Concat(type.GetDeclaredProperties(MemberScope.IncludingPrivateBaseMembers)
+			.Concat(type.GetDeclaredProperties(MemberScopes.IncludingPrivateBaseMembers)
 				.Where(property => !property.IsReallyStatic() && property.HasSetter()))
 			.ToArray();
 

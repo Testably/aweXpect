@@ -63,7 +63,7 @@ public static partial class ThatTypes
 	private static TypeContainingMembersScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>
 		ContainMembers<TMember, TFiltered>(
 			IThat<IEnumerable<Type?>?> subject,
-			Func<Filtered.Types, MemberScope, TFiltered> navigate,
+			Func<Filtered.Types, MemberScopes, TFiltered> navigate,
 			Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
@@ -77,6 +77,25 @@ public static partial class ThatTypes
 			scope);
 	}
 
+#if NET8_0_OR_GREATER
+	private static TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>
+		ContainMembers<TMember, TFiltered>(
+			IThat<IAsyncEnumerable<Type?>?> subject,
+			Func<Filtered.Types, MemberScopes, TFiltered> navigate,
+			Func<TFiltered, TFiltered> filter)
+		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
+	{
+		ScopeOptions scope = new();
+		Quantifier quantifier = new();
+		return new TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
+			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
+				quantifier, scope),
+			subject,
+			quantifier,
+			scope);
+	}
+#endif
+
 	private static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> Contain<TMember, TFiltered>(
 		IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
@@ -89,6 +108,22 @@ public static partial class ThatTypes
 			subject,
 			quantifier);
 	}
+
+#if NET8_0_OR_GREATER
+	private static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>
+		Contain<TMember, TFiltered>(
+			IThat<IAsyncEnumerable<Type?>?> subject,
+			Func<Filtered.Types, TFiltered> navigate,
+			Func<TFiltered, TFiltered> filter)
+		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
+	{
+		Quantifier quantifier = new();
+		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
+			AddContainConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
+			subject,
+			quantifier);
+	}
+#endif
 
 	private static ExpectationBuilder AddContainConstraint<TMember, TFiltered>(
 		IThat<IEnumerable<Type?>?> subject,
@@ -109,37 +144,6 @@ public static partial class ThatTypes
 	}
 
 #if NET8_0_OR_GREATER
-	private static TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>
-		ContainMembers<TMember, TFiltered>(
-			IThat<IAsyncEnumerable<Type?>?> subject,
-			Func<Filtered.Types, MemberScope, TFiltered> navigate,
-			Func<TFiltered, TFiltered> filter)
-		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
-	{
-		ScopeOptions scope = new();
-		Quantifier quantifier = new();
-		return new TypeContainingMembersScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
-			AddContainConstraint<TMember, TFiltered>(subject, types => navigate(types, scope.MemberScope), filter,
-				quantifier, scope),
-			subject,
-			quantifier,
-			scope);
-	}
-
-	private static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>
-		Contain<TMember, TFiltered>(
-			IThat<IAsyncEnumerable<Type?>?> subject,
-			Func<Filtered.Types, TFiltered> navigate,
-			Func<TFiltered, TFiltered> filter)
-		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
-	{
-		Quantifier quantifier = new();
-		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
-			AddContainConstraint<TMember, TFiltered>(subject, navigate, filter, quantifier, null),
-			subject,
-			quantifier);
-	}
-
 	private static ExpectationBuilder AddContainConstraint<TMember, TFiltered>(
 		IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Types, TFiltered> navigate,

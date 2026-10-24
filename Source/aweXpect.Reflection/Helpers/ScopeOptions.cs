@@ -11,7 +11,7 @@ internal sealed class ScopeOptions
 	/// <summary>
 	///     The scope of the members.
 	/// </summary>
-	public MemberScope MemberScope { get; private set; }
+	public MemberScopes MemberScope { get; private set; }
 
 	/// <summary>
 	///     Whether only declared elements or direct relations are considered.
@@ -21,11 +21,11 @@ internal sealed class ScopeOptions
 	/// <summary>
 	///     Restricts the scope to declared elements or direct relations.
 	/// </summary>
-	public void Directly() => MemberScope |= MemberScope.DeclaredOnly;
+	public void Directly() => MemberScope |= MemberScopes.DeclaredOnly;
 
 	/// <summary>
 	///     Adds the members declared on <see cref="object" />, <see cref="System.ValueType" /> and
 	///     <see cref="System.Enum" />.
 	/// </summary>
-	public void IncludingObjectMembers() => MemberScope |= MemberScope.IncludingObjectMembers;
+	public void IncludingObjectMembers() => MemberScope |= MemberScopes.IncludingObjectMembers;
 }

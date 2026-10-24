@@ -34,7 +34,7 @@ public static partial class TypeFilters
 			type => type.GetNullableMembers(memberScope).Length == 0,
 			DescribeOnlyHaving(memberScope, "non-nullable")));
 
-	private static string DescribeOnlyHaving(MemberScope memberScope, string nullability)
+	private static string DescribeOnlyHaving(MemberScopes memberScope, string nullability)
 		=> memberScope.IsDirect()
 			? $"which only declare {nullability} members "
 			: $"which only have {nullability} members {memberScope.ObjectMembersText()}";

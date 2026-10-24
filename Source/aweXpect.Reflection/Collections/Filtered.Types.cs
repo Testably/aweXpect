@@ -206,22 +206,22 @@ public static partial class Filtered
 		/// <summary>
 		///     Get all events in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		internal Events Events(MemberScope memberScope) => new(this, "events ", memberScope);
+		internal Events Events(MemberScopes memberScope) => new(this, "events ", memberScope);
 
 		/// <summary>
 		///     Get all fields in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		internal Fields Fields(MemberScope memberScope) => new(this, "fields ", memberScope);
+		internal Fields Fields(MemberScopes memberScope) => new(this, "fields ", memberScope);
 
 		/// <summary>
 		///     Get all methods in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		internal Methods Methods(MemberScope memberScope) => new(this, "methods ", memberScope);
+		internal Methods Methods(MemberScopes memberScope) => new(this, "methods ", memberScope);
 
 		/// <summary>
 		///     Get all properties in the filtered types in the <paramref name="memberScope" />.
 		/// </summary>
-		internal Properties Properties(MemberScope memberScope) => new(this, "properties ", memberScope);
+		internal Properties Properties(MemberScopes memberScope) => new(this, "properties ", memberScope);
 
 		/// <inheritdoc cref="IMembers.IProtected.Internal" />
 		IMembers IMembers.IProtected.Internal

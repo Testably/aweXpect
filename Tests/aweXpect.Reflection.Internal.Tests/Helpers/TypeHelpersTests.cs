@@ -50,7 +50,7 @@ public sealed class TypeHelpersTests
 
 		FieldInfo[] declared = type.GetDeclaredFields();
 		FieldInfo[] declaredAgain = type.GetDeclaredFields();
-		FieldInfo[] includingInherited = type.GetDeclaredFields(MemberScope.Inherited);
+		FieldInfo[] includingInherited = type.GetDeclaredFields(MemberScopes.None);
 		FieldInfo[] includingBackingFields;
 		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Fields))
@@ -104,11 +104,11 @@ public sealed class TypeHelpersTests
 	{
 		Type type = typeof(CachedMembersTestClass);
 
-		MethodInfo[] inherited = type.GetDeclaredMethods(MemberScope.Inherited);
-		MethodInfo[] includingObjectMembers = type.GetDeclaredMethods(MemberScope.IncludingObjectMembers);
-		MethodInfo[] declared = type.GetDeclaredMethods(MemberScope.DeclaredOnly);
+		MethodInfo[] inherited = type.GetDeclaredMethods(MemberScopes.None);
+		MethodInfo[] includingObjectMembers = type.GetDeclaredMethods(MemberScopes.IncludingObjectMembers);
+		MethodInfo[] declared = type.GetDeclaredMethods(MemberScopes.DeclaredOnly);
 		MethodInfo[] declaredIncludingObjectMembers =
-	type.GetDeclaredMethods(MemberScope.DeclaredOnly | MemberScope.IncludingObjectMembers);
+	type.GetDeclaredMethods(MemberScopes.DeclaredOnly | MemberScopes.IncludingObjectMembers);
 
 		await That(inherited).IsEmpty()
 	.Because("the methods declared on System.Object are not included by default");

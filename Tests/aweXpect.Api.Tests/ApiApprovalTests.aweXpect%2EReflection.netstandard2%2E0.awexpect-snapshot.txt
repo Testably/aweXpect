@@ -2450,10 +2450,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreWithinNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainConstructors(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Reflection.Collections.Filtered.Constructors> filter) { }
-        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers.MemberScopeResult WhichContainEvents(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Reflection.Collections.Filtered.Events> filter) { }
-        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers.MemberScopeResult WhichContainFields(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
-        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers.MemberScopeResult WhichContainMethods(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
-        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers.MemberScopeResult WhichContainProperties(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembersScopeResult WhichContainEvents(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Reflection.Collections.Filtered.Events> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembersScopeResult WhichContainFields(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembersScopeResult WhichContainMethods(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembersScopeResult WhichContainProperties(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, params string[] namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.TypeSetDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
@@ -2523,11 +2523,11 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.Collections.Filtered.Types Never() { }
             public aweXpect.Reflection.Collections.Filtered.Types Once() { }
             public aweXpect.Reflection.Collections.Filtered.Types Twice() { }
-            public sealed class MemberScopeResult : aweXpect.Reflection.TypeFilters.TypesContainingMembers
-            {
-                public aweXpect.Reflection.TypeFilters.TypesContainingMembers Directly() { }
-                public aweXpect.Reflection.TypeFilters.TypesContainingMembers IncludingObjectMembers() { }
-            }
+        }
+        public sealed class TypesContainingMembersScopeResult : aweXpect.Reflection.TypeFilters.TypesContainingMembers
+        {
+            public aweXpect.Reflection.TypeFilters.TypesContainingMembers Directly() { }
+            public aweXpect.Reflection.TypeFilters.TypesContainingMembers IncludingObjectMembers() { }
         }
         public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
         {

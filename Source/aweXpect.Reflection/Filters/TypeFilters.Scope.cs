@@ -12,11 +12,11 @@ public static partial class TypeFilters
 	/// </summary>
 	public class InheritanceScopeResult : Filtered.Types
 	{
-		private readonly Func<MemberScope, IFilter<Type>> _create;
+		private readonly Func<MemberScopes, IFilter<Type>> _create;
 		private readonly Filtered.Types _source;
 
-		internal InheritanceScopeResult(Filtered.Types source, Func<MemberScope, IFilter<Type>> create,
-			MemberScope memberScope = MemberScope.Inherited)
+		internal InheritanceScopeResult(Filtered.Types source, Func<MemberScopes, IFilter<Type>> create,
+			MemberScopes memberScope = MemberScopes.None)
 			: base(source.Which(create(memberScope)))
 		{
 			_source = source;
@@ -28,12 +28,12 @@ public static partial class TypeFilters
 		///     base class or a directly implemented interface).
 		/// </summary>
 		public InheritanceScopeResult Directly()
-			=> new(_source, _create, MemberScope.DeclaredOnly);
+			=> new(_source, _create, MemberScopes.DeclaredOnly);
 
 		/// <summary>
 		///     Creates the filter of the <paramref name="memberScope" /> on the source types.
 		/// </summary>
-		private protected Filtered.Types WithScope(MemberScope memberScope)
+		private protected Filtered.Types WithScope(MemberScopes memberScope)
 			=> new InheritanceScopeResult(_source, _create, memberScope);
 	}
 
@@ -49,7 +49,7 @@ public static partial class TypeFilters
 	/// </remarks>
 	public sealed class MemberScopeResult : InheritanceScopeResult
 	{
-		internal MemberScopeResult(Filtered.Types source, Func<MemberScope, IFilter<Type>> create)
+		internal MemberScopeResult(Filtered.Types source, Func<MemberScopes, IFilter<Type>> create)
 			: base(source, create)
 		{
 		}
@@ -59,6 +59,6 @@ public static partial class TypeFilters
 		///     <see cref="Enum" />.
 		/// </summary>
 		public Filtered.Types IncludingObjectMembers()
-			=> WithScope(MemberScope.IncludingObjectMembers);
+			=> WithScope(MemberScopes.IncludingObjectMembers);
 	}
 }

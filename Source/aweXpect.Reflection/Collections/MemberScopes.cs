@@ -10,13 +10,13 @@ namespace aweXpect.Reflection.Collections;
 ///     <see langword="internal" /> members of base types in another assembly, as a derived type cannot access them.
 /// </remarks>
 [Flags]
-internal enum MemberScope
+internal enum MemberScopes
 {
 	/// <summary>
 	///     Include the inherited members, except those declared on <see cref="object" />, <see cref="ValueType" /> and
 	///     <see cref="Enum" />.
 	/// </summary>
-	Inherited = 0,
+	None = 0,
 
 	/// <summary>
 	///     Only include members declared directly on the type.

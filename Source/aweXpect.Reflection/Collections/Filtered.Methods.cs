@@ -19,18 +19,18 @@ public static partial class Filtered
 	{
 		private readonly string _description;
 		private readonly bool _includeOperators;
-		private readonly MemberScope _memberScope;
+		private readonly MemberScopes _memberScope;
 		private readonly Types? _types;
 
 		/// <summary>
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
-		internal Methods(Types types, string description, MemberScope memberScope)
+		internal Methods(Types types, string description, MemberScopes memberScope)
 			: this(types, description, memberScope, false)
 		{
 		}
 
-		private Methods(Types types, string description, MemberScope memberScope, bool includeOperators)
+		private Methods(Types types, string description, MemberScopes memberScope, bool includeOperators)
 			: base(types.SelectMany(type => type.GetDeclaredMethods(memberScope, includeOperators)))
 		{
 			_types = types;
@@ -139,12 +139,12 @@ public static partial class Filtered
 		public sealed class MemberScopeResult : Methods
 		{
 			private readonly IFilter<MethodInfo>? _memberFilter;
-			private readonly MemberScope _scope;
+			private readonly MemberScopes _scope;
 			private readonly string _sourceDescription;
 			private readonly Types _sourceTypes;
 
 			internal MemberScopeResult(Types types, string description, IFilter<MethodInfo>? filter,
-				MemberScope memberScope)
+				MemberScopes memberScope)
 				: base(Create(types, description, filter, memberScope))
 			{
 				_sourceTypes = types;
@@ -161,7 +161,7 @@ public static partial class Filtered
 			///     A method inherited from a base type is included once for each type that inherits it.
 			/// </remarks>
 			public MemberScopeResult IncludingInherited()
-				=> new(_sourceTypes, _sourceDescription, _memberFilter, _scope & ~MemberScope.DeclaredOnly);
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, _scope & ~MemberScopes.DeclaredOnly);
 
 			/// <summary>
 			///     Also includes the inherited methods, including those declared on <see cref="object" />,
@@ -171,10 +171,10 @@ public static partial class Filtered
 			///     A method inherited from a base type is included once for each type that inherits it.
 			/// </remarks>
 			public MemberScopeResult IncludingObjectMembers()
-				=> new(_sourceTypes, _sourceDescription, _memberFilter, MemberScope.IncludingObjectMembers);
+				=> new(_sourceTypes, _sourceDescription, _memberFilter, MemberScopes.IncludingObjectMembers);
 
 			private static Methods Create(Types types, string description, IFilter<MethodInfo>? filter,
-				MemberScope memberScope)
+				MemberScopes memberScope)
 			{
 				Methods methods = new(types, memberScope.DescribeListing(description), memberScope);
 				return filter is null ? methods : methods.Which(filter);
