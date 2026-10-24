@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
-        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
-      },
-      {
         "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
-      "22416e11",
       "e6ee3749",
       "d5baef73",
       "16d46b22",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2129.560279028756,
           2042.1801124572753,
           2077.001663716634,
           1578.9626701899938,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1263.9030807495117,
           2053.383698976957,
           2043.5405117915227,
-          2093.122287205287
+          2093.122287205287,
+          1786.4942106882731
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16761.890055338543,
           15391.861755371094,
           15718.753243001302,
           11173.423699951172,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           8023.185302734375,
           15778.961948649088,
           16242.11040242513,
-          15207.722082955497
+          15207.722082955497,
+          12970.143255615234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
-        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
-      },
-      {
         "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
-      "22416e11",
       "e6ee3749",
       "d5baef73",
       "16d46b22",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1497.093700849093,
           1498.1973813374836,
           1486.3478076934814,
           1128.5401138578143,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           922.1590306942279,
           1754.598953100351,
           1771.8533543178014,
-          1698.8427904569185
+          1698.8427904569185,
+          1392.230298451015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1057,7 +1057,7 @@ window.BENCHMARK_DATA = {
           1200,
           1200,
           1200,
-          1200,
+          1240,
           1240,
           1240,
           1240,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15476.73989868164,
           14812.17020525251,
           14565.10988180978,
           10421.98610534668,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           7333.939217200646,
           14503.715684744027,
           15140.182056681315,
-          13623.88699885777
+          13623.88699885777,
+          12282.749443562825
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
-        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
-      },
-      {
         "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
-      "22416e11",
       "e6ee3749",
       "d5baef73",
       "16d46b22",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4823.465909140451,
           4861.015960184733,
           4692.944160461426,
           3622.1291872660317,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2689.1067942105806,
           5335.27877338116,
           5207.0996897379555,
-          5115.043141291691
+          5115.043141291691,
+          4164.019689941406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1660,12 +1660,12 @@ window.BENCHMARK_DATA = {
           3472,
           3472,
           3472,
-          3472,
           3688,
           3688,
           3688,
           3688,
           3688,
+          3736,
           3736,
           3736,
           3736,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          48279.15001502404,
           48144.07750651042,
           50823.221697126115,
           31321.70557454427,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           22547.263248697916,
           46847.978872445914,
           45587.53950195313,
-          46853.86432756697
+          46853.86432756697,
+          36211.60117885045
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61926,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
-        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
-      },
       {
         "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
-      "22416e11",
       "e6ee3749",
       "d5baef73",
       "16d46b22",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9957.347856374887,
           9324.525813802084,
           9356.952390034994,
           7529.41606257512,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5590.569007237752,
           9548.16493334089,
           9468.506856645856,
-          9149.728116548979
+          9149.728116548979,
+          8519.754654947918
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2273,7 +2273,7 @@ window.BENCHMARK_DATA = {
           7024,
           7024,
           7024,
-          7024,
+          7064,
           7064,
           7064,
           7064,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          307115.0388183594,
           298102.9944661458,
           307790.766671317,
           229010.78647460937,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           159775.3765218099,
           306089.28485576925,
           289248.92626953125,
-          287720.96236746653
+          287720.96236746653,
+          255799.1060221354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521594,
-          521594
+          521594,
+          521541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
-        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
-      },
       {
         "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
-      "22416e11",
       "e6ee3749",
       "d5baef73",
       "16d46b22",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2846.8184577396937,
           2834.0015637324404,
           2814.846851348877,
           2218.777467580942,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1800.4310746874128,
           2816.453644343785,
           2819.9463176727295,
-          2844.144291941325
+          2844.144291941325,
+          2608.9355915614537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2006.2863346980168,
           1934.3893112769495,
           1928.3281036376952,
           1608.089585240682,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1289.9836774190267,
           1970.3915857950847,
           1952.1838048299153,
-          1940.7319385822002
+          1940.7319385822002,
+          1912.1763672461877
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "22416e11140790e60632cd07a85ca13f454d8f92",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Oct 23 08:16:25 2026 \u002B0200",
-        "message": "fix!: return non-null subjects from the status code and nullable JsonElement expectations (#1944)"
-      },
-      {
         "sha": "e6ee3749e8a627dcadfdd01ebb1218d1d825d82f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 08:18:06 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 12:32:09 2026 \u002B0200",
         "message": "refactor!: move the quantified collection constraints to aweXpect.Core.Extending (#2008)"
+      },
+      {
+        "sha": "1785986badc06d46b51d798e2c9694662bfbb744",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 12:41:53 2026 \u002B0200",
+        "message": "refactor!: add IsActive and IsIntroduced to the expectation grammars (#2007)"
       }
     ],
     "labels": [
-      "22416e11",
       "e6ee3749",
       "d5baef73",
       "16d46b22",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5703bc6b",
       "7d17a8ab",
       "5d9a56d9",
-      "b7f4f05b"
+      "b7f4f05b",
+      "1785986b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2111.455764452616,
           2011.4980986458916,
           2050.1515513102213,
           1664.0862977164131,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1214.2710430438701,
           2085.9824703216555,
           2035.3208287556965,
-          2064.61764553615
+          2064.61764553615,
+          1825.33505153656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3462,7 +3462,6 @@ window.BENCHMARK_DATA = {
         "data": [
           2848,
           2848,
-          2848,
           2856,
           2856,
           2856,
@@ -3490,6 +3489,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2864,
           2864,
           2864,
           2864,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1936.6367230733235,
           1753.6066614786785,
           1757.868075643267,
           1514.8275981267293,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1224.1755921290471,
           1768.434166844686,
           1714.6503540919377,
-          1723.6669108527046
+          1723.6669108527046,
+          2038.7895050048828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
