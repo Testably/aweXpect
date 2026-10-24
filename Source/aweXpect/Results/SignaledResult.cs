@@ -12,13 +12,21 @@ namespace aweXpect.Results;
 ///     The number of times is already given, so this result intentionally carries no quantifiers: use
 ///     <see cref="SignalCountResult" /> to specify how often a callback must be signaled.
 /// </remarks>
-public class SignaledResult(
-	ExpectationBuilder expectationBuilder,
-	IThat<Signaler> returnValue,
-	SignalerOptions options)
-	: AndOrResult<SignalerResult, IThat<Signaler>, SignaledResult>(expectationBuilder, returnValue),
+public class SignaledResult
+	: AndOrResult<SignalerResult, IThat<Signaler>, SignaledResult>,
 		IOptionsProvider<SignalerOptions>
 {
+	private readonly SignalerOptions _options;
+
+	internal SignaledResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<Signaler> returnValue,
+		SignalerOptions options)
+		: base(expectationBuilder, returnValue)
+	{
+		_options = options;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
+	SignalerOptions IOptionsProvider<SignalerOptions>.Options => _options;
 }

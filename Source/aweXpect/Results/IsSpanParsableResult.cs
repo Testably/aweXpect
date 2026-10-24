@@ -7,13 +7,20 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result for verifying that the subject is parsable into the type <typeparamref name="TType" />.
 /// </summary>
-public class IsSpanParsableResult<TType>(
-	ExpectationBuilder expectationBuilder,
-	IThat<SpanWrapper<char>> subject,
-	IFormatProvider? formatProvider)
-	: AndOrResult<SpanWrapper<char>, IThat<SpanWrapper<char>>>(expectationBuilder, subject)
+public class IsSpanParsableResult<TType> : AndOrResult<SpanWrapper<char>, IThat<SpanWrapper<char>>>
 	where TType : ISpanParsable<TType>
 {
+	private readonly IFormatProvider? _formatProvider;
+
+	internal IsSpanParsableResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<SpanWrapper<char>> subject,
+		IFormatProvider? formatProvider)
+		: base(expectationBuilder, subject)
+	{
+		_formatProvider = formatProvider;
+	}
+
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>
@@ -21,7 +28,7 @@ public class IsSpanParsableResult<TType>(
 		=> new ThatSubject<TType>(ExpectationBuilder
 			.ForWhich<SpanWrapper<char>, TType?>(d =>
 			{
-				if (TType.TryParse(d.AsSpan(), formatProvider, out TType? result))
+				if (TType.TryParse(d.AsSpan(), _formatProvider, out TType? result))
 				{
 					return result;
 				}

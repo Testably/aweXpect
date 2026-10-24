@@ -14,19 +14,30 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     The number of times is specified via <see cref="QuantifierExtensions" />.
 /// </remarks>
-public class EventTriggerResult<TSubject>(
-	ExpectationBuilder expectationBuilder,
-	IThat<IEventRecording<TSubject>> returnValue,
-	TriggerEventFilter filter,
-	Quantifier quantifier,
-	RepeatedCheckOptions options)
-	: AndOrResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>(
-			expectationBuilder, returnValue),
+public class EventTriggerResult<TSubject>
+	: AndOrResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>,
 		EventTriggerResult<TSubject>.ICustomParameterFilter,
 		IOptionsProvider<Quantifier>,
 		IOptionsProvider<RepeatedCheckOptions>
 	where TSubject : notnull
 {
+	private readonly TriggerEventFilter _filter;
+	private readonly RepeatedCheckOptions _options;
+	private readonly Quantifier _quantifier;
+
+	internal EventTriggerResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<IEventRecording<TSubject>> returnValue,
+		TriggerEventFilter filter,
+		Quantifier quantifier,
+		RepeatedCheckOptions options)
+		: base(expectationBuilder, returnValue)
+	{
+		_filter = filter;
+		_quantifier = quantifier;
+		_options = options;
+	}
+
 	/// <inheritdoc cref="ICustomParameterFilter.WithParameter{TParameter}(string, int?, Func{TParameter, bool})" />
 	EventTriggerResult<TSubject> ICustomParameterFilter.WithParameter<TParameter>(
 		string expression,
@@ -35,7 +46,7 @@ public class EventTriggerResult<TSubject>(
 	{
 		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
-		filter.AddPredicate(
+		_filter.AddPredicate(
 			o => position == null
 				? o.Any(x => x is TParameter p && UserCode.Invoke(predicate, p, "the predicate"))
 				: MatchesAt(o, position.Value, predicate),
@@ -44,10 +55,10 @@ public class EventTriggerResult<TSubject>(
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	RepeatedCheckOptions IOptionsProvider<RepeatedCheckOptions>.Options => options;
+	RepeatedCheckOptions IOptionsProvider<RepeatedCheckOptions>.Options => _options;
 
 	/// <summary>
 	///     Adds a predicate for the sender of the event.
@@ -61,7 +72,7 @@ public class EventTriggerResult<TSubject>(
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		filter.AddPredicate(
+		_filter.AddPredicate(
 			o => o.Length > 0 && UserCode.Invoke(predicate, o[0], "the predicate"),
 			$" with sender {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -81,7 +92,7 @@ public class EventTriggerResult<TSubject>(
 		where TEventArgs : EventArgs
 	{
 		predicate.ThrowIfNull();
-		filter.AddPredicate(
+		_filter.AddPredicate(
 			o => MatchesAt(o, 1, predicate),
 			$" with {Formatter.Format(typeof(TEventArgs))} {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -99,7 +110,7 @@ public class EventTriggerResult<TSubject>(
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		filter.AddPredicate(
+		_filter.AddPredicate(
 			o => o.Any(x => x is TParameter m && UserCode.Invoke(predicate, m, "the predicate")),
 			$" with {Formatter.Format(typeof(TParameter))} parameter {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -119,7 +130,7 @@ public class EventTriggerResult<TSubject>(
 	{
 		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
-		filter.AddPredicate(
+		_filter.AddPredicate(
 			o => MatchesAt(o, position, predicate),
 			$" with {Formatter.Format(typeof(TParameter))} parameter [{position}] {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -130,7 +141,7 @@ public class EventTriggerResult<TSubject>(
 	/// </summary>
 	public EventTriggerResult<TSubject> Within(TimeSpan timeout)
 	{
-		options.Within(timeout);
+		_options.Within(timeout);
 		return this;
 	}
 

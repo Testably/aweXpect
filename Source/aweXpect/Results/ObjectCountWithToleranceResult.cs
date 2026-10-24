@@ -11,49 +11,62 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="QuantifierExtensions" /> and
 ///     <see cref="ObjectEqualityOptionsExtensions" />.
 /// </remarks>
-public class ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue,
-	Quantifier quantifier,
-	ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
-	: AndOrResult<TType, TThat, ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>>(
-			expectationBuilder, returnValue),
+public class ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>
+	: AndOrResult<TType, TThat, ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>>,
 		IOptionsProvider<Quantifier>,
 		IObjectEqualityWithToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>,
 			TElement, TTolerance>
 {
-	private readonly TThat _returnValue = returnValue;
+	private readonly ObjectEqualityWithToleranceOptions<TElement, TTolerance> _options;
+	private readonly Quantifier _quantifier;
+	private readonly TThat _returnValue;
+
+	internal ObjectCountWithToleranceResult(
+		ExpectationBuilder expectationBuilder,
+		TThat returnValue,
+		Quantifier quantifier,
+		ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
+		: base(expectationBuilder, returnValue)
+	{
+		_returnValue = returnValue;
+		_quantifier = quantifier;
+		_options = options;
+	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
+	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityWithToleranceOptions<TElement, TTolerance>
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => options;
+		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
-		options.Within(tolerance);
-		return new WithinResult(ExpectationBuilder, _returnValue, quantifier, options);
+		_options.Within(tolerance);
+		return new WithinResult(ExpectationBuilder, _returnValue, _quantifier, _options);
 	}
 
 	/// <summary>
 	///     The result directly after <see cref="Within(TTolerance)" />, whose tolerance can still be made relative to
 	///     the expected value, e.g. via <c>Percent()</c>.
 	/// </summary>
-	public sealed class WithinResult(
-		ExpectationBuilder expectationBuilder,
-		TThat returnValue,
-		Quantifier quantifier,
-		ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
-		: ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>(expectationBuilder, returnValue,
-				quantifier, options),
+	public sealed class WithinResult
+		: ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>,
 			IWithinToleranceResult<ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>, TTolerance>
 	{
+		internal WithinResult(
+			ExpectationBuilder expectationBuilder,
+			TThat returnValue,
+			Quantifier quantifier,
+			ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
+			: base(expectationBuilder, returnValue, quantifier, options)
+		{
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
 			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>)this).Options;

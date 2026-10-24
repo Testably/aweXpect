@@ -11,21 +11,31 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
 ///     <see cref="StringEqualityOptionsExtensions" />.
 /// </remarks>
-public class StringProperCollectionMatchResult<TType, TThat>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue,
-	StringEqualityOptions options,
-	CollectionMatchOptions collectionMatchOptions)
-	: AndOrResult<TType, TThat, StringProperCollectionMatchResult<TType, TThat>>(expectationBuilder, returnValue),
+public class StringProperCollectionMatchResult<TType, TThat>
+	: AndOrResult<TType, TThat, StringProperCollectionMatchResult<TType, TThat>>,
 		IOptionsProvider<CollectionMatchOptions>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions,
 		ICollectionContainmentOptions,
 		IProperContainmentOptions
 {
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
+	private readonly CollectionMatchOptions _collectionMatchOptions;
+	private readonly StringEqualityOptions _options;
+
+	internal StringProperCollectionMatchResult(
+		ExpectationBuilder expectationBuilder,
+		TThat returnValue,
+		StringEqualityOptions options,
+		CollectionMatchOptions collectionMatchOptions)
+		: base(expectationBuilder, returnValue)
+	{
+		_options = options;
+		_collectionMatchOptions = collectionMatchOptions;
+	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => _options;
 }
