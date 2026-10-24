@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5340.474792480469,
           5482.674256006877,
           10548.28785588191,
           5469.286446791429,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10832.311373197115,
           5138.976625442505,
           10927.52736790975,
-          10934.580082820012
+          10934.580082820012,
+          10625.064782949594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          179886.34660993304,
           191049.82526506696,
           379705.4537760417,
           184489.04161658653,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           371048.873828125,
           160992.68551199776,
           377486.63190104166,
-          365699.7063802083
+          365699.7063802083,
+          372349.51276041666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590287,
           590288,
           590291,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590290,
           590287,
           590292,
-          590290
+          590290,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10447.778938802083,
           10257.905839029949,
           19265.818517831656,
           10399.851348876953,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19921.152348109656,
           9524.840710231236,
           19641.993630981444,
-          19657.402290852864
+          19657.402290852864,
+          19058.726595197404
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          131.59104719161988,
           131.39477551778157,
           282.45449867248533,
           133.25357217448098,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           335.15895795822144,
           125.7688092163631,
           354.83541577657064,
-          270.478179359436
+          270.478179359436,
+          294.52274356569563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          292.55798524220785,
           270.9788565635681,
           536.0882632573446,
           272.2709479967753,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           490.70683758599415,
           230.83236303696265,
           488.1098541895548,
-          533.0979579289755
+          533.0979579289755,
+          503.14729477809027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          221.68629608835494,
           216.83434759775798,
           389.1260638554891,
           209.5209174156189,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           387.37396478652954,
           194.65890187483566,
           393.5741816248213,
-          391.69833517074585
+          391.69833517074585,
+          383.81931997934976
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          71.23555343151092,
           67.6071536724384,
           134.76700851122538,
           68.92227263450623,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           151.13110345204672,
           70.46661165356636,
           145.3027798618589,
-          149.59767820040386
+          149.59767820040386,
+          145.6725654443105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          140.69379103978474,
           133.5027004991259,
           261.78872073491414,
           139.30528627909146,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           251.36154244740803,
           124.85725712776184,
           245.87467125483923,
-          266.87253134591236
+          266.87253134591236,
+          274.5951492627462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          132.1688746554511,
           130.06837366422016,
           246.05112062181746,
           137.05513084729512,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           246.57321246465048,
           118.11973311901093,
           236.4103583438056,
-          241.02702174867903
+          241.02702174867903,
+          265.51502685546876
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          132.1127686023712,
           137.70679620334082,
           251.03506956100463,
           138.82402202061243,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           257.3949202219645,
           127.3903511842092,
           268.6450390448937,
-          262.5879327774048
+          262.5879327774048,
+          271.019814046224
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          312.7656935373942,
           264.98138414110457,
           548.793355623881,
           290.7077779452006,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           497.3336700598399,
           255.66964111328124,
           524.4197180821345,
-          515.6964517593384
+          515.6964517593384,
+          543.024337548476
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          182.41032702582223,
           177.53303417364756,
           336.75120849609374,
           186.880779616038,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           343.05807479222614,
           164.19173996265118,
           341.9401974360148,
-          320.72028623308455
+          320.72028623308455,
+          339.8304950714111
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          347.03609368006386,
           332.2014823641096,
           630.612085546766,
           344.5377906799316,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           629.5781616483416,
           329.44736552238464,
           689.2244403362274,
-          629.9355028016226
+          629.9355028016226,
+          690.1582059224446
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          721.9837555885315,
           723.863410059611,
           1403.9547719319662,
           701.0505020959037,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1375.784213747297,
           656.2123964627584,
           1366.1297442572456,
-          1351.9396536900447
+          1351.9396536900447,
+          1479.0615255991618
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          379.1946990966797,
           387.27611650739397,
           667.9892899195353,
           353.19847571055095,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           698.8061735788981,
           321.87240428190967,
           643.7252431869507,
-          659.7661266326904
+          659.7661266326904,
+          652.4607740402222
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          358.33930240358626,
           335.51049334662304,
           614.1179178101676,
           323.5923639706203,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           611.2960834503174,
           320.2746046611241,
           658.779904978616,
-          602.0006704330444
+          602.0006704330444,
+          661.2998420079549
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11646.276164463588,
           10527.001015218098,
           27875.137176513672,
           10801.203182765415,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28074.099779401506,
           10851.304249064127,
           27581.238907877603,
-          27594.829791259766
+          27594.829791259766,
+          28037.395547049386
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          496.7234803713285,
           446.1077978134155,
           810.8164026896159,
           416.29526437123616,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           849.7840337117512,
           390.6332723753793,
           788.4490484237671,
-          775.5856283823649
+          775.5856283823649,
+          806.8981889316013
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          374.1248019422804,
           351.63203463187585,
           675.698502667745,
           369.0705276489258,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           724.4463818232218,
           336.48655770375177,
           704.6499107996623,
-          676.7678209032331
+          676.7678209032331,
+          694.1144290765127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4854,7 +4854,7 @@ window.BENCHMARK_DATA = {
           1680,
           1680,
           1680,
-          1680,
+          1688,
           1688,
           1688,
           1688,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29674.452872140067,
           29032.11200358073,
           83504.73860051081,
           30273.82550048828,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           84115.55133463541,
           27130.838614908855,
           84535.62928263347,
-          84185.43197835286
+          84185.43197835286,
+          83814.92526855468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5256,
           5252,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
       {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          91.10116388003031,
           88.5336746435899,
           163.13640001614888,
           91.21036783854167,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           202.61823102633159,
           86.42247979130063,
           184.38410047122412,
-          185.4899571963719
+          185.4899571963719,
+          180.89989035924276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10640.509402683803,
           10239.313264973958,
           32638.65643310547,
           10732.662968226841,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           33027.11542765299,
           8907.560680682842,
           32663.567504882812,
-          31940.021842447917
+          31940.021842447917,
+          32891.47668457031
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5615,
-          5615,
           5614,
           5615,
           5614,
@@ -5599,6 +5598,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614,
           5614
         ],
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          128.83751685802753,
           126.90802930082593,
           258.9761901219686,
           138.73687052726746,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           244.8237632751465,
           115.16590298073632,
           244.48581635157268,
-          244.43889958517892
+          244.43889958517892,
+          256.258244005839
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          175.843368991216,
           189.15189592043558,
           355.9115953127543,
           169.5508926831759,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           348.0887165387472,
           161.67912128993444,
           359.7383336339678,
-          347.09953096934726
+          347.09953096934726,
+          352.7390212059021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          211.97516117095947,
           223.7064672433413,
           391.5127222379049,
           207.60415089130402,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           366.91732358932495,
           185.63858553568522,
           377.17135320390975,
-          387.25615380605063
+          387.25615380605063,
+          370.2707068443298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          215.26402104695637,
           229.2656852858407,
           414.07689367930095,
           234.64419938723248,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           412.1185622851054,
           195.6275898860051,
           405.41184839835535,
-          400.82645537303046
+          400.82645537303046,
+          402.3194078377315
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          343.08397165934247,
           341.2975953737895,
           646.7151170730591,
           332.13477557500204,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           690.4038049697876,
           334.13899183273315,
           724.727005141122,
-          684.7687705113337
+          684.7687705113337,
+          747.1188324610392
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6904,7 +6904,7 @@ window.BENCHMARK_DATA = {
           1376,
           1376,
           1376,
-          1376,
+          1384,
           1384,
           1384,
           1384,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1060.9023658207484,
           1098.6683935437884,
           1935.3038619995118,
           1034.7066119057793,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1952.0433807373047,
           1002.7757556915283,
           2074.059708150228,
-          1958.0201350620814
+          1958.0201350620814,
+          1971.7185803731284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          506.97502061298917,
           486.9049206513625,
           926.7221125284831,
           498.746785736084,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           957.6677699770246,
           464.8748167991638,
           956.786252784729,
-          928.5776203155517
+          928.5776203155517,
+          967.0803143819173
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5997.463837687174,
           5840.609641393025,
           11307.392217782828,
           5900.501402173723,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11550.72001538958,
           5478.403459402231,
           11218.427151271275,
-          11357.175270667443
+          11357.175270667443,
+          11331.774263822115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19428.709505353654,
           18166.312662760418,
           40505.289562988284,
           19400.051323523887,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           41918.698704310824,
           17787.92162867955,
           40766.7369150015,
-          40398.31779785156
+          40398.31779785156,
+          40443.70773784931
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5841.187400230994,
           5623.385120391846,
           10723.846369425455,
           5791.129051795373,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10706.022544273963,
           5380.410812922886,
           10519.155495779854,
-          10544.52723459097
+          10544.52723459097,
+          10569.151204790387
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "e0f2a99bd5945cdb6458b5c766ddc887845632ee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 22 22:38:28 2026 \u002B0200",
-        "message": "refactor!: let string match types fail both ways with a reason that follows \u0022it\u0022 (#1934)"
-      },
-      {
         "sha": "fc3af3347fc6be99a06dceffdd49d6010d11067f",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 22 22:38:38 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 09:13:09 2026 \u002B0200",
         "message": "refactor!: make the \u0060JsonOptions\u0060 constructor internal (#1987)"
+      },
+      {
+        "sha": "d2a64ca4b7ab3a3e3bccdfd3dedde2f2c5772485",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 24 10:02:04 2026 \u002B0200",
+        "message": "refactor!: hand out every nested subject as \u0060IThatSubject\u003CT\u003E\u0060 (#1988)"
       }
     ],
     "labels": [
-      "e0f2a99b",
       "fc3af334",
       "7d8edd0d",
       "41520e7b",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "c61c4c1b",
       "d7ba0a7a",
       "c72faf85",
-      "5b99ffec"
+      "5b99ffec",
+      "d2a64ca4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5628.776477050781,
           5509.620542672964,
           10787.698076375325,
           5596.775501505534,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11041.578094482422,
           5213.175956726074,
           10856.006446251502,
-          10933.370629446847
+          10933.370629446847,
+          10762.291939368615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27688.36260579427,
           27232.0114839994,
           58661.48373616536,
           27867.36478834886,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           58727.364103190106,
           25595.61394042969,
           58681.763157435824,
-          58048.0772857666
+          58048.0772857666,
+          59224.431052071704
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23553,
           23553,
           23553,
@@ -8532,6 +8531,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11314.074716421273,
           11320.931415264424,
           21266.158459003156,
           11481.38140970866,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           20946.3355082194,
           11302.479058837891,
           20932.46697998047,
-          20892.836672269383
+          20892.836672269383,
+          20849.49552800105
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
