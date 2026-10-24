@@ -8,7 +8,7 @@ public class JsonOptionsTests
 	public async Task DocumentOptions_ShouldDefaultToAllowTrailingCommas()
 	{
 		string subject = "[1, 2,]";
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		async Task Act()
 			=> await That(subject).IsValidJsonMatchingExactly([1, 2,], _ => sut);
@@ -19,7 +19,7 @@ public class JsonOptionsTests
 	[Test]
 	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		void Act()
 			=> sut.IgnoringMember(null!);
@@ -32,7 +32,7 @@ public class JsonOptionsTests
 	[Test]
 	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		void Act()
 			=> sut.IgnoringMember("");
@@ -45,7 +45,7 @@ public class JsonOptionsTests
 	[Test]
 	public async Task Ignoring_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		void Act()
 			=> sut.Ignoring(null!);
@@ -65,7 +65,7 @@ public class JsonOptionsTests
 			etag = "b",
 			name = "x",
 		};
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		JsonOptions result = sut.IgnoringMember("id").Ignoring(path => path.EndsWith(".etag"));
 
@@ -91,7 +91,7 @@ public class JsonOptionsTests
 	[Test]
 	public async Task ComparingNumbersWithin_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		void Act()
 			=> sut.ComparingNumbersWithin(-0.1);
@@ -104,7 +104,7 @@ public class JsonOptionsTests
 	[Test]
 	public async Task ComparingNumbersWithin_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		void Act()
 			=> sut.ComparingNumbersWithin(double.NaN);
@@ -118,7 +118,7 @@ public class JsonOptionsTests
 	public async Task ComparingNumbersWithin_ShouldNotChangeTheOriginalOptions()
 	{
 		JsonElement subject = JsonDocument.Parse("1.5").RootElement;
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		_ = sut.ComparingNumbersWithin(1);
 
@@ -153,7 +153,7 @@ public class JsonOptionsTests
 	public async Task Percent_ShouldNotAffectCopiesMadeBefore()
 	{
 		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
-		JsonNumbersWithinOptions withinOptions = new JsonOptions().ComparingNumbersWithin(5);
+		JsonNumbersWithinOptions withinOptions = (await DefaultOptions()).ComparingNumbersWithin(5);
 		JsonOptions copyBeforePercent = withinOptions.IgnoringArrayOrder();
 
 		JsonOptions percentOptions = withinOptions.Percent();
@@ -174,7 +174,7 @@ public class JsonOptionsTests
 	public async Task Percent_ShouldNotAffectOtherOptionsFromTheSameOrigin()
 	{
 		JsonElement subject = JsonDocument.Parse("0.3").RootElement;
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 		JsonOptions absoluteOptions = sut.ComparingNumbersWithin(5);
 
 		_ = sut.ComparingNumbersWithin(5).Percent();
@@ -190,7 +190,7 @@ public class JsonOptionsTests
 	public async Task Ignoring_ShouldDescribeThePredicateWithoutCommonWhiteSpace()
 	{
 		JsonElement subject = JsonDocument.Parse("{\"name\": \"x\"}").RootElement;
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		JsonOptions result = sut.Ignoring(path
 			=> path.EndsWith(".etag"));
@@ -220,7 +220,7 @@ public class JsonOptionsTests
 	public async Task WithDocumentOptions_ShouldSetDocumentOptions()
 	{
 		string subject = "[1, /* two */ 2]";
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		JsonOptions result = sut.WithDocumentOptions(o => o with
 		{
@@ -237,7 +237,7 @@ public class JsonOptionsTests
 	public async Task WithDocumentOptions_ShouldSupportProvidingFixedOptions()
 	{
 		string subject = "[1, /* two */ 2]";
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 		JsonDocumentOptions documentOptions = new()
 		{
 			CommentHandling = JsonCommentHandling.Skip,
@@ -254,7 +254,7 @@ public class JsonOptionsTests
 	[Test]
 	public async Task WithDocumentOptions_WhenCallbackIsNull_ShouldThrowArgumentNullException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await DefaultOptions();
 
 		void Act()
 			=> sut.WithDocumentOptions(null!);
@@ -262,5 +262,19 @@ public class JsonOptionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("documentOptions").And
 			.WithMessage("The 'documentOptions' cannot be null.").AsPrefix();
+	}
+
+	/// <summary>
+	///     The options that aweXpect.Json passes to the <c>options</c> callback, as only the package can create them.
+	/// </summary>
+	internal static async Task<JsonOptions> DefaultOptions()
+	{
+		JsonOptions? options = null;
+		await That("1").IsValidJsonMatchingExactly(1, o =>
+		{
+			options = o;
+			return o;
+		});
+		return options!;
 	}
 }

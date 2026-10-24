@@ -158,7 +158,6 @@ namespace aweXpect.Json
     }
     public class JsonOptions
     {
-        public JsonOptions() { }
     }
     public static class JsonOptionsExtensions
     {

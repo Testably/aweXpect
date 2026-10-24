@@ -314,7 +314,7 @@ public sealed partial class ExpectedSerializerOptionsTests
 	[Test]
 	public async Task WithSerializerOptions_WhenNull_ShouldThrowArgumentNullException()
 	{
-		JsonOptions sut = new();
+		JsonOptions sut = await JsonOptionsTests.DefaultOptions();
 
 		void Act()
 			=> sut.WithSerializerOptions(null!);
