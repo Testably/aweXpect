@@ -87,7 +87,7 @@ public static partial class ThatDictionary
 
 	[CreateExpectationFamily("Is{Not}EqualTo", PerSubject = true, Remarks = KeyComparerRemarks,
 		Summary = IsEqualToSummary, NegatedSummary = IsNotEqualToSummary)]
-	internal static StringEqualityResult<TCollection?, IThat<TCollection?>>
+	internal static StringEqualityTypeResult<TCollection?, IThat<TCollection?>>
 		IsEqualToForStringsCore<TCollection, TKey>(
 			IThat<TCollection?> subject,
 			IEnumerable<KeyValuePair<TKey, string?>>? expected,
@@ -99,7 +99,7 @@ public static partial class ThatDictionary
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<TCollection?, IThat<TCollection?>>(
+		return new StringEqualityTypeResult<TCollection?, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint(
 				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
 					Negated: negated),

@@ -216,6 +216,44 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenTheValueDoesNotMatchTheSuffix_AsSuffix_ShouldSucceed()
+			{
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(1, "Go").AsSuffix();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenTheValueMatchesTheSuffix_AsSuffix_ShouldFail()
+			{
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(1, "Be").AsSuffix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain [1] = "Be" as suffix,
+					             but it did
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be"
+					             }
+					             """);
+			}
 		}
 
 		public sealed class WithinTests

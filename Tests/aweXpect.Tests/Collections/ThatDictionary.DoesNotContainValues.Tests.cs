@@ -102,6 +102,22 @@ public sealed partial class ThatDictionary
 			}
 
 			[Test]
+			public async Task WhenNoStringValueMatchesAPrefix_AsPrefix_ShouldSucceed()
+			{
+				IReadOnlyDictionary<int, string?> subject = new Dictionary<int, string?>
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues("x", "ar").AsPrefix();
+
+				await That(Act).DoesNotThrow()
+					.Because("\"ar\" is only a suffix of \"bar\", not a prefix");
+			}
+
+			[Test]
 			public async Task WhenOneStringValueDiffersOnlyInCase_WithIgnoringCase_ShouldFail()
 			{
 				Dictionary<int, string?> subject = new()
@@ -119,6 +135,34 @@ public sealed partial class ThatDictionary
 					             does not contain values ["BAZ", "BAR"] ignoring case,
 					             but it contained [
 					               "BAR"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar"
+					             }
+					             """);
+			}
+
+			[Test]
+			public async Task WhenOneStringValueMatchesAPrefix_AsPrefix_ShouldFail()
+			{
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues("x", "ba").AsPrefix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain values ["x", "ba"] as prefix,
+					             but it contained [
+					               "ba"
 					             ]
 
 					             Dictionary:

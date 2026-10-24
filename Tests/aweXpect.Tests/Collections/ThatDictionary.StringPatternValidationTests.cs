@@ -7,10 +7,6 @@ public sealed partial class ThatDictionary
 	/// <summary>
 	///     An unusable pattern is rejected whichever entries the subject has, also when no value is compared with it.
 	/// </summary>
-	/// <remarks>
-	///     The results offer no <c>AsRegex()</c>, so the match type is switched through the options, as an extension
-	///     would do.
-	/// </remarks>
 	public sealed class StringPatternValidationTests
 	{
 		[Test]
@@ -24,7 +20,7 @@ public sealed partial class ThatDictionary
 			IDictionary<int, string?>? subject = ToSubject(values);
 
 			async Task Act()
-				=> await That(subject).Contains(2, "[").AsRegexThroughOptions();
+				=> await That(subject).Contains(2, "[").AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("expected").And
@@ -42,7 +38,7 @@ public sealed partial class ThatDictionary
 			IDictionary<int, string?>? subject = ToSubject(values);
 
 			async Task Act()
-				=> await That(subject).ContainsValue("[").AsRegexThroughOptions();
+				=> await That(subject).ContainsValue("[").AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("expected").And
@@ -60,7 +56,7 @@ public sealed partial class ThatDictionary
 			IDictionary<int, string?>? subject = ToSubject(values);
 
 			async Task Act()
-				=> await That(subject).ContainsValues("a", "[").AsRegexThroughOptions();
+				=> await That(subject).ContainsValues("a", "[").AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("expected").And
@@ -78,7 +74,7 @@ public sealed partial class ThatDictionary
 			IDictionary<int, string?>? subject = ToSubject(values);
 
 			async Task Act()
-				=> await That(subject).DoesNotContain(2, "[").AsRegexThroughOptions();
+				=> await That(subject).DoesNotContain(2, "[").AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("unexpected").And
@@ -96,7 +92,7 @@ public sealed partial class ThatDictionary
 			IDictionary<int, string?>? subject = ToSubject(values);
 
 			async Task Act()
-				=> await That(subject).DoesNotContainValue("[").AsRegexThroughOptions();
+				=> await That(subject).DoesNotContainValue("[").AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("unexpected").And
@@ -114,7 +110,7 @@ public sealed partial class ThatDictionary
 			IDictionary<int, string?>? subject = ToSubject(values);
 
 			async Task Act()
-				=> await That(subject).DoesNotContainValues("a", "[").AsRegexThroughOptions();
+				=> await That(subject).DoesNotContainValues("a", "[").AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("unexpected").And
@@ -137,7 +133,7 @@ public sealed partial class ThatDictionary
 			};
 
 			async Task Act()
-				=> await That(subject).IsEqualTo(expected).AsRegexThroughOptions();
+				=> await That(subject).IsEqualTo(expected).AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("expected").And
@@ -160,7 +156,7 @@ public sealed partial class ThatDictionary
 			};
 
 			async Task Act()
-				=> await That(subject).IsNotEqualTo(unexpected).AsRegexThroughOptions();
+				=> await That(subject).IsNotEqualTo(unexpected).AsRegex();
 
 			await That(Act).Throws<ArgumentException>()
 				.WithParamName("unexpected").And
