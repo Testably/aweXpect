@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
@@ -38,13 +39,19 @@ public static partial class ThatAssembly
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IAsyncConstraint<Assembly?>
+			IAsyncContextConstraint<Assembly?>
 	{
-		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
+		private StringEqualityOptions? _evaluationOptions;
+
+		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			StringEqualityOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = evaluationOptions;
 			Outcome = actual is not null &&
-			          await actual.GetReferencedAssemblyNames().AnyAsync(dep => options.AreConsideredEqual(dep.Name, expected))
+			          await actual.GetReferencedAssemblyNames()
+				          .AnyAsync(dep => evaluationOptions.AreConsideredEqual(dep.Name, expected))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -72,7 +79,7 @@ public static partial class ThatAssembly
 					Actual.GetReferencedAssemblyNames().Select(dep => dep.Name).ToArray());
 			}
 
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 	}
 }

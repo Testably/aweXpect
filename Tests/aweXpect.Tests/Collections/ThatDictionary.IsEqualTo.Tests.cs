@@ -715,6 +715,41 @@ public sealed partial class ThatDictionary
 			}
 
 			[Test]
+			public async Task WhenAValueDoesNotMatchItsWildcard_AsWildcard_ShouldFail()
+			{
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+					[2] = "Help!",
+					[3] = "Yesterday",
+				};
+				Dictionary<int, string> expected = new()
+				{
+					[1] = "Let*",
+					[2] = "*Me",
+					[3] = "Yes*",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to dictionary expected as wildcard,
+					             but it contained key 2 with value "Help!" instead of "*Me"
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be",
+					               [2] = "Help!",
+					               [3] = "Yesterday"
+					             }
+					             """)
+					.Because("each expected value is the pattern for the value of the same key, so only key 2 differs");
+			}
+
+			[Test]
 			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				Dictionary<int, string> subject = new()
@@ -731,6 +766,27 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("the values have the same string options as ContainsValue");
+			}
+
+			[Test]
+			public async Task WhenTheValuesMatchTheirRegexes_AsRegex_ShouldSucceed()
+			{
+				IDictionary<int, string> subject = new Dictionary<int, string>
+				{
+					[1] = "Let It Be",
+					[2] = "Help!",
+				};
+				Dictionary<int, string> expected = new()
+				{
+					[1] = "^Let .* Be$",
+					[2] = "^He.p!$",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsRegex();
+
+				await That(Act).DoesNotThrow()
+					.Because("each expected value is the regex for the value of the same key");
 			}
 		}
 
@@ -944,7 +1000,7 @@ public sealed partial class ThatDictionary
 				};
 
 				async Task Act()
-					=> await (StringEqualityResult<IDictionary<string, string?>?, IThat<IDictionary<string, string?>?>>)
+					=> await (StringEqualityTypeResult<IDictionary<string, string?>?, IThat<IDictionary<string, string?>?>>)
 						That(subject).IsEqualTo(expected).IgnoringCase();
 
 				await That(Act).DoesNotThrow()

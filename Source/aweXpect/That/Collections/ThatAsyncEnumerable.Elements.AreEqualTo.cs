@@ -35,7 +35,7 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	[CreateExpectationFamily("AreEqualTo", Summary = ElementsAreEqualTo)]
-	internal static ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	internal static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		AreEqualToCore<TItem>(
 			Elements<TItem> elements,
 			TItem expected)
@@ -43,7 +43,7 @@ public static partial class ThatAsyncEnumerable
 		IAsyncEnumerableElements<TItem> iElements = elements;
 		Options.ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new AsyncCollectionConstraint<TItem>(

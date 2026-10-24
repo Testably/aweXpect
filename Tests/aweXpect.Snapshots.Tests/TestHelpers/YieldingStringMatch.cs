@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Snapshots.Tests.TestHelpers;
@@ -16,41 +15,29 @@ internal static class YieldingStringMatch
 		return result;
 	}
 
-	private sealed class YieldingMatchType : IStringMatchType
+	private sealed class YieldingMatchType : StringMatchType
 	{
-		public bool InspectsSubject => false;
+		private static readonly YieldingMatcher Matcher = new();
 
-		public async ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected,
-			bool ignoreCase, IEqualityComparer<string>? comparer)
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> Matcher;
+
+		public override MatchPhrase Phrase { get; } = MatchPhrase.EqualTo.WithName(" after yielding");
+
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer | StringMatchSettingKinds.WhiteSpace;
+
+		private sealed class YieldingMatcher : StringMatcher
 		{
-			await Task.Yield();
-			return string.Equals(actual, expected, StringComparison.Ordinal);
-		}
+			public override async ValueTask<MatchResult> Match(string? actual, string? expected)
+			{
+				await Task.Yield();
+				return MatchResult.From(string.Equals(actual, expected, StringComparison.Ordinal));
+			}
 
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The comparison has no options to explain.
-		}
-
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} equal to \"{expected}\"";
-
-		public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-			=> $"{it} was \"{actual}\"";
-
-		public string GetTypeString() => " after yielding";
-
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer) => "";
-
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// The comparison ignores the options, so every option is accepted.
-		}
-
-		public void ValidateExpected(string? expected)
-		{
-			// Every expected value can be compared.
+			public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+				string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
+				=> $"{it} was \"{actual}\"";
 		}
 	}
 }

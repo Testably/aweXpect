@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -58,13 +59,16 @@ public static partial class ThatHttpResponseMessage
 		ProblemDetailsOptions options,
 		StringEqualityOptions typeOptions)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
-			IAsyncConstraint<HttpResponseMessage>
+			IAsyncContextConstraint<HttpResponseMessage>
 	{
 		private readonly List<string> _failures = [];
+		private ProblemDetailsOptions? _evaluationOptions;
+		private StringEqualityOptions? _evaluationTypeOptions;
 		private string? _parseError;
 
 		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpResponseMessage? actual,
+			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -92,35 +96,33 @@ public static partial class ThatHttpResponseMessage
 			}
 
 			_failures.Clear();
+			StringEqualityOptions evaluationTypeOptions = typeOptions.ForEvaluation(context, cancellationToken);
+			ProblemDetailsOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationTypeOptions = evaluationTypeOptions;
+			_evaluationOptions = evaluationOptions;
 
 			if (type == null)
 			{
 				_failures.Add($"{It} did not match the expected format because no 'type' property existed");
 			}
-			else if (expectedType != null && !await typeOptions.AreConsideredEqual(type, expectedType))
+			else if (expectedType != null)
 			{
-				_failures.Add(typeOptions.GetExtendedMemberFailure(It, "type", Grammars, type, expectedType));
+				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType);
+				if (!typeResult.IsMatch)
+				{
+					_failures.Add(evaluationTypeOptions.GetExtendedMemberFailure(It, "type", Grammars, type,
+						expectedType, typeResult));
+				}
 			}
 
-			if (options.Status != null && status != options.Status)
+			if (evaluationOptions.Status != null && status != evaluationOptions.Status)
 			{
 				_failures.Add($"{It} had status {Formatter.Format(status)}");
 			}
 
-			if (!await options.IsTitleConsideredEqualTo(title))
-			{
-				_failures.Add(options.GetTitleFailure(It, Grammars, title));
-			}
-
-			if (!await options.IsDetailConsideredEqualTo(detail))
-			{
-				_failures.Add(options.GetDetailFailure(It, Grammars, detail));
-			}
-
-			if (!await options.IsInstanceConsideredEqualTo(instance))
-			{
-				_failures.Add(options.GetInstanceFailure(It, Grammars, instance));
-			}
+			AddFailure(await evaluationOptions.GetTitleFailure(It, Grammars, title));
+			AddFailure(await evaluationOptions.GetDetailFailure(It, Grammars, detail));
+			AddFailure(await evaluationOptions.GetInstanceFailure(It, Grammars, instance));
 
 			if (_failures.Any())
 			{
@@ -130,6 +132,14 @@ public static partial class ThatHttpResponseMessage
 
 			Outcome = Outcome.Success;
 			return this;
+		}
+
+		private void AddFailure(string? failure)
+		{
+			if (failure is not null)
+			{
+				_failures.Add(failure);
+			}
 		}
 
 		private static JsonDocument? ParseObjectOrDefault(string content, out string? error)
@@ -212,8 +222,8 @@ public static partial class ThatHttpResponseMessage
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			typeOptions.AppendContexts(contexts);
-			options.AppendContexts(contexts);
+			(_evaluationTypeOptions ?? typeOptions).AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

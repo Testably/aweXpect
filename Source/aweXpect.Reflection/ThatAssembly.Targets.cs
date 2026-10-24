@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
@@ -55,26 +56,31 @@ public static partial class ThatAssembly
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IAsyncConstraint<Assembly?>
+			IAsyncContextConstraint<Assembly?>
 	{
-		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
+		private StringEqualityOptions? _evaluationOptions;
+		private MatchResult _matchResult;
+
+		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual?.GetTargetFramework(), expected)
-				? Outcome.Success
-				: Outcome.Failure;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.GetTargetFramework(), expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("targets ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "target framework", Grammars, Actual?.GetTargetFramework(), expected));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "target framework",
+				Grammars, Actual?.GetTargetFramework(), expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);

@@ -102,23 +102,33 @@ public static partial class ThatAssemblies
 			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetAsyncValue(actual, context,
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
+		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context,
-				assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetValue(actual, context,
+				assembly => EvaluationOptions.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
+		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			base.AppendContexts(contexts);
-			options.AppendContexts(contexts);
+			EvaluationOptions.AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -145,18 +155,28 @@ public static partial class ThatAssemblies
 			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options;
+
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, DoesNotTarget, cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetAsyncValue(actual, context, DoesNotTarget, cancellationToken);
+		}
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context, DoesNotTarget, cancellationToken);
+		{
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			return await SetValue(actual, context, DoesNotTarget, cancellationToken);
+		}
 
 		private async ValueTask<bool> DoesNotTarget(Assembly? assembly)
-			=> assembly is not null && !await options.AreConsideredEqual(assembly.GetTargetFramework(), unexpected);
+			=> assembly is not null && !await EvaluationOptions.AreConsideredEqual(assembly.GetTargetFramework(), unexpected);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all target ").Append(options.GetExpectation(unexpected, Grammars.Negate()));

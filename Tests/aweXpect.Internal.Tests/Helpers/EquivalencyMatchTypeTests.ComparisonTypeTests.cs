@@ -34,13 +34,13 @@ public sealed partial class EquivalencyMatchTypeTests
 					Value = 1,
 				},
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions()
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions()
 				.For<MyClass2>(o => o with
 				{
 					ComparisonType = EquivalencyComparisonType.ByValue,
 				}));
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
@@ -64,12 +64,12 @@ public sealed partial class EquivalencyMatchTypeTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyMatchType sut = new(new EquivalencyOptions
+			EquivalencyMatchType<object?> sut = new(new EquivalencyOptions
 			{
 				DefaultComparisonTypeSelector = _ => EquivalencyComparisonType.ByValue,
 			});
 
-			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			Explanation explanation = await ExplainAsync(sut, actual, expected);
 			bool result = explanation.IsMatch;
 			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 

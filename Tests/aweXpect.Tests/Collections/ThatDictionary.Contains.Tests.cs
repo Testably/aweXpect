@@ -290,6 +290,45 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow()
 					.Because("the value of an entry has the same string options as ContainsValue");
 			}
+
+			[Test]
+			public async Task WhenTheValueDoesNotMatchTheWildcard_AsWildcard_ShouldFail()
+			{
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+				};
+
+				async Task Act()
+					=> await That(subject).Contains(1, "Let*Go").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains [1] = "Let*Go" as wildcard,
+					             but it contained key 1 with value "Let It Be"
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be"
+					             }
+					             """);
+			}
+
+			[Test]
+			public async Task WhenTheValueMatchesThePrefix_AsPrefix_ShouldSucceed()
+			{
+				IReadOnlyDictionary<int, string> subject = new Dictionary<int, string>
+				{
+					[1] = "Let It Be",
+				};
+
+				async Task Act()
+					=> await That(subject).Contains(new KeyValuePair<int, string?>(1, "Let")).AsPrefix();
+
+				await That(Act).DoesNotThrow()
+					.Because("the match type applies to the value of the entry, also for a read-only dictionary");
+			}
 		}
 
 		public sealed class WithinTests

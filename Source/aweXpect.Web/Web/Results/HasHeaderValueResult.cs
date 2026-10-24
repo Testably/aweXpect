@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -118,11 +119,14 @@ public class HasHeaderValueResult<TType, TThat>
 		Func<TType, string?[]?> headerValueAccessor,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
-			IAsyncConstraint<TType?>
+			IAsyncContextConstraint<TType?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
 		private string?[]? _headerValues;
+		private MatchResult _matchResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -139,13 +143,15 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 
 			string? headerValue = _headerValues[0];
-			Outcome = await options.AreConsideredEqual(headerValue, expected) ? Outcome.Success : Outcome.Failure;
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(headerValue, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the header, which carries the negation and the number of the subject, like
@@ -181,8 +187,8 @@ public class HasHeaderValueResult<TType, TThat>
 			=> AppendValueFailure(stringBuilder);
 
 		private void AppendValueFailure(StringBuilder stringBuilder)
-			=> stringBuilder.Append(options.GetExtendedMemberFailure(It, "header value", Grammars, _headerValues?[0],
-				expected));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "header value",
+				Grammars, _headerValues?[0], expected, _matchResult));
 	}
 
 	private sealed class WithHeaderValuesConstraint(
@@ -193,11 +199,13 @@ public class HasHeaderValueResult<TType, TThat>
 		StringEqualityOptions options,
 		CollectionMatchOptions matchOptions)
 		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
-			IAsyncConstraint<TType?>
+			IAsyncContextConstraint<TType?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
 		private string?[]? _headerValues;
 
-		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -207,8 +215,9 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 
 			_headerValues = headerValueAccessor(actual);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			Outcome = _headerValues is not null &&
-			          await matchOptions.Matches(It, _headerValues, expected, options)
+			          await matchOptions.Matches(It, _headerValues, expected, _evaluationOptions)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -216,7 +225,7 @@ public class HasHeaderValueResult<TType, TThat>
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		/// <remarks>
 		///     The text continues the one of the header, which carries the negation, like <c>WithValue</c> does.

@@ -11,7 +11,8 @@ internal static class EqualityOptionsContextHelpers
 	/// <summary>
 	///     Returns the <paramref name="options" /> to use for all comparisons of the evaluation in the
 	///     <paramref name="context" />, see
-	///     <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	///     <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" /> and
+	///     <see cref="StringEqualityOptions.ForEvaluation(IEvaluationContext, CancellationToken)" />.
 	/// </summary>
 	/// <remarks>
 	///     Options that wrap other options, to let the comparer of a set subject decide, are kept while the comparison is
@@ -21,20 +22,35 @@ internal static class EqualityOptionsContextHelpers
 	public static IOptionsEquality<T> ForEvaluation<T>(this IOptionsEquality<T> options, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		if (options is ObjectEqualityOptions<T> objectEqualityOptions)
+		IOptionsEquality<T>? evaluationOptions = ForEvaluationOrNull(options, context, cancellationToken);
+		if (evaluationOptions is not null)
 		{
-			return objectEqualityOptions.ForEvaluation(context, cancellationToken);
+			return evaluationOptions;
 		}
 
-		if (options is IOptionsProvider<IOptionsEquality<T>> { Options: ObjectEqualityOptions<T> wrappedOptions, } &&
+		if (options is IOptionsProvider<IOptionsEquality<T>> { Options: { } wrappedOptions, } &&
 		    !DefaultEquality.IsUsedBy(wrappedOptions))
 		{
-			ObjectEqualityOptions<T> evaluationOptions = wrappedOptions.ForEvaluation(context, cancellationToken);
-			return ReferenceEquals(evaluationOptions, wrappedOptions) ? options : evaluationOptions;
+			IOptionsEquality<T>? wrappedEvaluationOptions =
+				ForEvaluationOrNull(wrappedOptions, context, cancellationToken);
+			return wrappedEvaluationOptions is null || ReferenceEquals(wrappedEvaluationOptions, wrappedOptions)
+				? options
+				: wrappedEvaluationOptions;
 		}
 
 		return options;
 	}
+
+	private static IOptionsEquality<T>? ForEvaluationOrNull<T>(IOptionsEquality<T> options,
+		IEvaluationContext context, CancellationToken cancellationToken)
+		=> options switch
+		{
+			ObjectEqualityOptions<T> objectEqualityOptions
+				=> objectEqualityOptions.ForEvaluation(context, cancellationToken),
+			StringEqualityOptions stringEqualityOptions
+				=> (IOptionsEquality<T>)stringEqualityOptions.ForEvaluation(context, cancellationToken),
+			_ => null,
+		};
 
 	/// <summary>
 	///     Rejects the first of the <paramref name="expected" /> items that the match type of string

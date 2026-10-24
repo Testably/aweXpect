@@ -32,18 +32,20 @@ public class ObjectEqualityWithToleranceOptionsTests
 	}
 
 	[Test]
-	[Arguments(3, true)]
-	[Arguments(4, false)]
-	public async Task AreConsideredEqualWithExplanation_ShouldDecideWithTheTolerance(int expected, bool expectMatch)
+	public async Task AreConsideredEqual_WithDefaultTolerance_ShouldReadItForEachComparison()
 	{
+		int tolerance = 1;
 		ObjectEqualityWithToleranceOptions<int, int> sut =
-			new((a, e, t) => Math.Abs(a - e) <= t);
-		sut.Within(2);
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithDefaultTolerance(() => tolerance);
 
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, expected);
+		bool first = await sut.AreConsideredEqual(1, 2);
+		tolerance = 0;
+		bool second = await sut.AreConsideredEqual(1, 2);
 
-		await That(result.IsMatch).IsEqualTo(expectMatch);
-		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected)).IsEqualTo("it was 1");
+		await That(first).IsTrue();
+		await That(second).IsFalse()
+			.Because("a comparison outside an evaluation has no evaluation to read the default tolerance once for");
 	}
 
 	[Test]
@@ -102,6 +104,21 @@ public class ObjectEqualityWithToleranceOptionsTests
 		string result = sut.GetItemExpectation("3", "an item", "equal to");
 
 		await That(result).IsEqualTo("an item equal to 3 ± 2");
+	}
+
+	[Test]
+	[Arguments(3, true)]
+	[Arguments(4, false)]
+	public async Task MatchWithExplanation_ShouldDecideWithTheTolerance(int expected, bool expectMatch)
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(2);
+
+		MatchResult result = await sut.MatchWithExplanation(1, expected);
+
+		await That(result.IsMatch).IsEqualTo(expectMatch);
+		await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected, result)).IsEqualTo("it was 1");
 	}
 
 	[Test]

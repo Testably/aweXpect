@@ -113,14 +113,14 @@ public sealed class CustomizeSettingsTests
 		{
 			await That(ActInScope).Throws<ArgumentException>()
 				.WithMessage(
-					"""The regex "(a+)+$" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
+					"""The regex pattern "(a+)+$" did not complete within 0:00.010. Simplify the pattern to avoid catastrophic backtracking.""")
 				.AsPrefix()
 				.Because("the expectation is built before the scope, but evaluated within it");
 		}
 
 		await That(ActAfterScope).Throws<ArgumentException>()
 			.WithMessage(
-				"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+				"""The regex pattern "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
 			.AsPrefix()
 			.Because("the default timeout must be restored once the customization is disposed");
 	}

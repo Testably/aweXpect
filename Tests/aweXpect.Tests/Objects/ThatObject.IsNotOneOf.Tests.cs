@@ -46,6 +46,32 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
+			public async Task WhenATypedMatchTypeExplainsTheMatch_ShouldDescribeTheMatchedValue()
+			{
+				MyClass subject = new()
+				{
+					Value = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(new MyClass
+					{
+						Value = 1,
+					}, new MyClass
+					{
+						Value = 2,
+					}).ByKey(x => x?.Value ?? 0);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not keyed like one of [ThatObject.MyClass { Value = 1 }, ThatObject.MyClass { Value = 2 }],
+					             but it had the key 2 of the value with the key 2
+					             """)
+					.Because("the match type explains the comparison with the value that matched");
+			}
+
+			[Test]
 			public async Task WhenComparingWithEquivalenceAndContainsEquivalentValue_ShouldFail()
 			{
 				object subject = new MyClass();

@@ -88,7 +88,7 @@ public static partial class ThatJsonObject
 			: callback(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get());
 
 	/// <remarks>
-	///     Compares through <see cref="ObjectEqualityOptions{TSubject}" /> with an <see cref="EquivalencyMatchType" />
+	///     Compares through <see cref="ObjectEqualityOptions{TSubject}" /> with an <see cref="EquivalencyMatchType{TSubject}" />
 	///     like <c>IsEquivalentTo</c>, so that the comparison is part of the evaluation and the failure lists the
 	///     equivalency options with a hint for every member to ignore that matched no member.
 	/// </remarks>
@@ -104,7 +104,7 @@ public static partial class ThatJsonObject
 		private string? _deserializationError;
 		private object? _deserializedObject;
 		private ObjectEqualityOptions<object?>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private MatchResult _matchResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(object? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -137,13 +137,13 @@ public static partial class ThatJsonObject
 
 			_deserializedObject = deserializedObject;
 			_evaluationOptions = _equalityOptions.ForEvaluation(context, cancellationToken);
-			_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(deserializedObject, actual);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(deserializedObject, actual);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		private static ObjectEqualityOptions<object?> CreateEqualityOptions(EquivalencyOptions options)
-			=> new ObjectEqualityOptions<object?>().SetMatchType(new EquivalencyMatchType(options), "Equivalent");
+			=> new ObjectEqualityOptions<object?>().SetMatchType(new EquivalencyMatchType<object?>(options), "Equivalent");
 
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> _evaluationOptions?.AppendContexts(contexts);
@@ -172,10 +172,10 @@ public static partial class ThatJsonObject
 			{
 				stringBuilder.Append(It).Append(" could not be deserialized: ").Append(_deserializationError);
 			}
-			else if (_matchResult is not null)
+			else if (_evaluationOptions is not null)
 			{
-				stringBuilder.Append(_matchResult.GetExtendedFailure(It, Grammars, _deserializedObject, Actual,
-					indentation));
+				stringBuilder.Append(_evaluationOptions.GetExtendedFailure(It, Grammars, _deserializedObject, Actual,
+					_matchResult, indentation));
 			}
 		}
 
@@ -193,7 +193,7 @@ public static partial class ThatJsonObject
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_matchResult is not null)
+			if (_evaluationOptions is not null)
 			{
 				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 			}

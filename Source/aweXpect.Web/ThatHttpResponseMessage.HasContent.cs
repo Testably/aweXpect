@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -76,12 +77,15 @@ public static partial class ThatHttpResponseMessage
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
-			IAsyncConstraint<HttpResponseMessage>
+			IAsyncContextConstraint<HttpResponseMessage>
 	{
+		private StringEqualityOptions? _evaluationOptions;
+		private MatchResult _matchResult;
 		private string? _message;
 
 		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpResponseMessage? actual,
+			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -96,7 +100,9 @@ public static partial class ThatHttpResponseMessage
 #else
 			_message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
-			if (await options.AreConsideredEqual(_message, expected))
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected);
+			if (_matchResult.IsMatch)
 			{
 				Outcome = Outcome.Success;
 				return this;
@@ -108,7 +114,7 @@ public static partial class ThatHttpResponseMessage
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
+			=> (_evaluationOptions ?? options).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a string content ", "have a string content "))
@@ -122,7 +128,8 @@ public static partial class ThatHttpResponseMessage
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedMemberFailure(It, "string content", Grammars, _message, expected));
+				stringBuilder.Append((_evaluationOptions ?? options).GetExtendedMemberFailure(It, "string content",
+					Grammars, _message, expected, _matchResult));
 			}
 		}
 

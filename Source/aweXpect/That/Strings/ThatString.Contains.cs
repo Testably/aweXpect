@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -72,9 +73,10 @@ public static partial class ThatString
 		Quantifier quantifier,
 		StringEqualityOptions options)
 		: ConstraintResult(grammars),
-			IAsyncConstraint<string?>
+			IAsyncContextConstraint<string?>
 	{
 		private string? _actual;
+		private StringEqualityOptions? _evaluationOptions;
 		private int _actualCount;
 		private bool _isFinished;
 		private bool _isNegated;
@@ -85,11 +87,13 @@ public static partial class ThatString
 		///     options validate the expected value while they count, so an unusable pattern is rejected whichever
 		///     subject it is searched in.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			_actual = actual;
 			int decisiveAmount = GetDecisiveAmount();
-			_actualCount = await options.CountOccurrences(actual ?? string.Empty, expected, decisiveAmount);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_actualCount = await _evaluationOptions.CountOccurrences(actual ?? string.Empty, expected, decisiveAmount);
 			_isFinished = _actualCount < decisiveAmount;
 			if (actual is null)
 			{
@@ -134,7 +138,7 @@ public static partial class ThatString
 				contexts.AddStringContext("Expected", expected, this);
 			}
 
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
@@ -172,7 +176,7 @@ public static partial class ThatString
 				}
 
 				Formatter.Format(stringBuilder, _actual);
-				stringBuilder.Append(options.GetOccurrenceDetails(_actual, expected, _actualCount)
+				stringBuilder.Append((_evaluationOptions ?? options).GetOccurrenceDetails(_actual, expected, _actualCount)
 					.Indent(indentation, false));
 			}
 		}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
@@ -9,29 +8,63 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly IStringMatchType ExactMatch = new ExactMatchType();
+	private static readonly StringMatchType ExactMatch = new ExactMatchType();
 
-	private sealed class ExactMatchType : IStringMatchType
+	private sealed class ExactMatchType : BuiltInMatchType
 	{
+		private static readonly MatchPhrase SharedPhrase = MatchPhrase.EqualTo;
+
 		#region IMatchType Members
 
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => false;
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-		public string GetExtendedFailure(string it, string? actual, string? expected,
+		/// <inheritdoc />
+		public override bool InspectsSubject => false;
+
+		/// <inheritdoc />
+		public override bool ListsLineDifferences => true;
+
+		/// <inheritdoc />
+		public override bool SuggestsIgnoringNewlineStyle => true;
+
+		/// <inheritdoc />
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.Comparer |
+			   StringMatchSettingKinds.WhiteSpace;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     Without a comparer, a window equals the <paramref name="expected" /> string exactly where an ordinal search
+		///     finds it, so the windows are not copied.
+		/// </remarks>
+		public override int? CountOccurrences(string actual, string expected, StringMatchSettings settings,
+			int maximum)
+		{
+			if (settings.Comparer is not null)
+			{
+				return null;
+			}
+
+			StringComparison comparison =
+				settings.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+			return CountOrdinalOccurrences(actual, expected, comparison, maximum);
+		}
+
+		/// <inheritdoc />
+		public override string GetExtendedFailure(string it, ExpectationGrammars grammars, string? actual,
+			string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string> comparer,
 			StringDifferenceSettings? settings)
 		{
 			if (actual == null || expected == null)
 			{
-				return $"{it} was {Formatter.Format(actual)}";
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual)}";
 			}
 
 			string prefix =
-				$"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+				$"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
 			int minCommonLength = Math.Min(actual.Length, expected.Length);
 			StringDifference stringDifference = new(actual, expected, comparer, settings);
 			int indexOfFirstMismatch = stringDifference.IndexOfFirstMismatch(StringDifference.MatchType.Equality);
@@ -80,79 +113,27 @@ public partial class StringEqualityOptions
 			return $"{prefix}, which {stringDifference}";
 		}
 
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		/// <inheritdoc />
+		public override MatchResult
+			Compare(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null && expected is null)
 			{
-				return new ValueTask<StringMatchResult>(true);
+				return MatchResult.From(true);
 			}
 
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<StringMatchResult>(false);
+				return MatchResult.From(false);
 			}
 
 			if (comparer is not null)
 			{
-				return new ValueTask<StringMatchResult>(AreEqualByComparer(comparer, actual, expected));
+				return MatchResult.From(AreEqualByComparer(comparer, actual, expected));
 			}
 
-			return new ValueTask<StringMatchResult>(string.Equals(actual, expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
-		}
-
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
-			{
-				(true, false) =>
-					$"{grammars.Verb("is", "are")} equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("is not", "are not")} equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not equal to {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
-
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
-			=> "";
-
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			if (comparer != null)
-			{
-				return $" using {Formatter.Format(comparer.GetType())}";
-			}
-
-			if (ignoreCase)
-			{
-				return " ignoring case";
-			}
-
-			return "";
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
+			return MatchResult.From(string.Equals(actual, expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 
 		#endregion

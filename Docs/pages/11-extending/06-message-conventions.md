@@ -228,9 +228,9 @@ The `grammars` a constraint receives tell it how its texts are used in the sente
 | `Active`     | the expectation continues a `With…` clause, which drops the verb, e.g. `with message equal to "Yesterday"`    |
 | `Introduced` | the subject was already introduced by a connector like the `that` of `has item that`                          |
 
-`Active` has the opposite meaning for the expectation text of a string match type (`IStringMatchType.GetExpectation`):
+`Active` has the opposite meaning for the expectation text of a string comparison (`StringEqualityOptions.GetExpectation`):
 there it asks for the text with the verb (`is equal to "Yesterday"`), and without it the text starts with the
-comparison (`equal to "Yesterday"`).
+comparison (`equal to "Yesterday"`). Core writes both from the `MatchPhrase` of the match type.
 
 `ExpectationGrammarsExtensions` checks them with `IsNegated()`, `IsNested()`, `IsPlural()`, `IsActive()` or
 `IsIntroduced()`, and toggles the negation with `Negate()`. Use the plural form of the verb in the expectation text

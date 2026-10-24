@@ -179,6 +179,48 @@ public sealed partial class ThatDictionary
 			}
 
 			[Test]
+			public async Task WhenStringValuesDoNotAllMatchTheWildcards_AsWildcard_ShouldFail()
+			{
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).ContainsValues("f*", "b?z", "*x*").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains values ["f*", "b?z", "*x*"] as wildcard,
+					             but it did not contain [
+					               "b?z",
+					               "*x*"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar"
+					             }
+					             """)
+					.Because("each pattern is matched against the values on its own");
+			}
+
+			[Test]
+			public async Task WhenStringValuesMatchTheWildcards_AsWildcard_ShouldSucceed()
+			{
+				IDictionary<int, string?> subject = ToDictionary<string?>(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).ContainsValues("b*", "*o").AsWildcard();
+
+				await That(Act).DoesNotThrow()
+					.Because("each pattern is matched against the values on its own");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<int, string>? subject = null;

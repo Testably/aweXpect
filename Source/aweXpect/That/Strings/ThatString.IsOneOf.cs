@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -48,8 +49,10 @@ public static partial class ThatString
 		string? expectedExpression,
 		StringEqualityOptions options)
 		: ConstraintResult.WithValue<string?>(it, grammars),
-			IAsyncConstraint<string?>
+			IAsyncContextConstraint<string?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
+
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
@@ -58,10 +61,12 @@ public static partial class ThatString
 		///     completely, which rejects an unusable pattern whichever value the subject matches. Any other sequence is
 		///     only enumerated up to the first match, as it may be infinite.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			StringEqualityOptions stringEqualityOptions = options;
+			StringEqualityOptions stringEqualityOptions = options.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = stringEqualityOptions;
 			bool comparesAllValues = options.InspectsSubject && expectedValues is ICollection<string?>;
 			bool isOneOf = false;
 			foreach (string? value in expectedValues)
@@ -93,7 +98,7 @@ public static partial class ThatString
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
 			contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

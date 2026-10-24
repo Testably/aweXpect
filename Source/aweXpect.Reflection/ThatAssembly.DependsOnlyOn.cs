@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Options;
@@ -46,11 +47,13 @@ public static partial class ThatAssembly
 		string[] allowed,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IAsyncConstraint<Assembly?>
+			IAsyncContextConstraint<Assembly?>
 	{
+		private StringEqualityOptions? _evaluationOptions;
 		private string?[] _violations = [];
 
-		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -59,7 +62,8 @@ public static partial class ThatAssembly
 				return this;
 			}
 
-			_violations = await actual.GetDisallowedAssemblyDependencies(allowed, options);
+			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+			_violations = await actual.GetDisallowedAssemblyDependencies(allowed, _evaluationOptions);
 			Outcome = _violations.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -84,7 +88,7 @@ public static partial class ThatAssembly
 				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
 			}
 
-			options.AppendContexts(contexts);
+			(_evaluationOptions ?? options).AppendContexts(contexts);
 		}
 
 		private string DescribeAllowed()

@@ -359,7 +359,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains("foo\nbar").IgnoringIndentation().AsBlock();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AsBlock cannot be combined with IgnoringIndentation.")
+					.WithMessage("IgnoringIndentation cannot be combined with AsBlock.")
 					.Because("a block compares the lines on its own");
 			}
 
@@ -1044,7 +1044,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains("foo").NormalizingWhiteSpace().AsBlock();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AsBlock cannot be combined with NormalizingWhiteSpace.")
+					.WithMessage("NormalizingWhiteSpace cannot be combined with AsBlock.")
 					.Because("a block compares the lines, which the normalization joins");
 			}
 

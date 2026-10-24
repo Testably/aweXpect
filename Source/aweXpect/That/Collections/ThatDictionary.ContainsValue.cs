@@ -62,7 +62,7 @@ public static partial class ThatDictionary
 
 	[CreateExpectationFamily("ContainsValue", NegatedName = "DoesNotContainValue", PerSubject = true,
 		GuaranteesNotNull = true, Summary = ContainsValueSummary, NegatedSummary = DoesNotContainValueSummary)]
-	internal static StringEqualityResult<TCollection, IThat<TCollection?>>
+	internal static StringEqualityTypeResult<TCollection, IThat<TCollection?>>
 		ContainsValueForStringsCore<TCollection, TKey>(
 			IThat<TCollection?> subject,
 			string? expected,
@@ -71,7 +71,7 @@ public static partial class ThatDictionary
 	{
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<TCollection, IThat<TCollection?>>(
+		return new StringEqualityTypeResult<TCollection, IThat<TCollection?>>(
 			expectationBuilder.AddConstraint((Expected: expected, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValueConstraint<TCollection, TKey, string?>(it, grammars,

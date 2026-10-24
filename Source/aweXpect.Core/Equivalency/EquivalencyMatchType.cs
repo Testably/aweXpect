@@ -17,21 +17,16 @@ namespace aweXpect.Equivalency;
 ///     <c>IsEquivalentTo</c>.
 /// </summary>
 /// <remarks>
-///     Use it via <see cref="ObjectEqualityOptions{TSubject}.SetMatchType(IObjectMatchType, string)" />.<br />
-///     <see cref="AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" /> returns the match type
-///     itself, which keeps the differences of that comparison for the failure message, so use a new instance for each
-///     expectation.<br />
+///     Use it via <see cref="ObjectEqualityOptions{TSubject}.SetMatchType(ObjectMatchType{TSubject}, string)" />.<br />
 ///     Mark the parameters of the expectation that receive the compared values with the
 ///     <see cref="RequiresMemberMetadataAttribute" />, so that the members of their types are registered for trimming.
 /// </remarks>
-public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
+public sealed class EquivalencyMatchType<TSubject> : ObjectMatchType<TSubject>
 {
-	private readonly CancellationToken _cancellationToken;
+	private static readonly MatchPhrase SharedPhrase =
+		MatchPhrase.Being("equivalent to").WithName(" using equivalency");
+
 	private readonly EquivalencyOptions _equivalencyOptions;
-	private readonly IEvaluationContext? _evaluation;
-	private StringBuilder? _failureBuilder;
-	private bool _isMatch;
-	private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 
 	/// <summary>
 	///     Compares with the <paramref name="equivalencyOptions" />.
@@ -43,127 +38,126 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 		_equivalencyOptions = equivalencyOptions;
 	}
 
-	private EquivalencyMatchType(EquivalencyOptions equivalencyOptions, IEvaluationContext evaluation,
-		CancellationToken cancellationToken)
-	{
-		_equivalencyOptions = equivalencyOptions;
-		_evaluation = evaluation;
-		_cancellationToken = cancellationToken;
-	}
-
+	/// <inheritdoc />
 	/// <remarks>
-	///     Created by the first comparison that explains its differences, because the items of a collection are
-	///     compared without an explanation.
+	///     The expectations of an <c>It.Is…</c> in the expected object are canceled by the cancellation of the
+	///     <paramref name="environment" /> and use the timeout and the time system of its evaluation. The matcher keeps the
+	///     members to ignore that matched nothing across the items of a collection.
 	/// </remarks>
-	private StringBuilder FailureBuilder => _failureBuilder ??= new StringBuilder();
-
-	/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
-	bool IObjectMatchResult.IsMatch => _isMatch;
-
-	/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?, string?)" />
-	/// <remarks>
-	///     The differences keep their layout and are shifted as a whole by the <paramref name="indentation" />.
-	/// </remarks>
-	string IObjectMatchResult.GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual,
-		object? expected, string? indentation)
-	{
-		if (grammars.IsNegated())
-		{
-			return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented(indentation))}, which is considered equivalent";
-		}
-
-		if (actual is null != expected is null)
-		{
-			StringBuilder failureBuilder = FailureBuilder;
-			failureBuilder.Clear();
-			failureBuilder.Append(it);
-			failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
-			Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-			failureBuilder.Append(" instead of ");
-			Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
-			return failureBuilder.ToString();
-		}
-
-		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder?.ToString().Indent(indentation, false)}";
-	}
-
-	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />
-	/// <remarks>
-	///     Only options that can ignore members by name track them, so that most comparisons of collection items stay
-	///     as they are.
-	/// </remarks>
-	public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		=> CanIgnoreMembersByName(_equivalencyOptions)
-			? AreConsideredEqualTrackingMembersToIgnore(actual, expected)
-			: EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions, _evaluation,
-				_cancellationToken);
-
-	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
-	/// <remarks>
-	///     The items of a collection are compared one after the other with the same match type, so the members to
-	///     ignore of every failed comparison are kept.
-	/// </remarks>
-	public async ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
-		TExpected expected)
-	{
-		StringBuilder failureBuilder = FailureBuilder;
-		failureBuilder.Clear();
-		(_isMatch, _unmatchedMembersToIgnore) = await EquivalencyComparison.CompareExplaining(actual, expected,
-			_equivalencyOptions, failureBuilder, _evaluation, _unmatchedMembersToIgnore, _cancellationToken);
-		return this;
-	}
-
-	private async ValueTask<bool> AreConsideredEqualTrackingMembersToIgnore<TActual, TExpected>(TActual actual,
-		TExpected expected)
-	{
-		(bool isEquivalent, _unmatchedMembersToIgnore) =
-			await EquivalencyComparison.IsEquivalentTrackingMembersToIgnore(actual, expected, _equivalencyOptions,
-				_evaluation, _unmatchedMembersToIgnore, _cancellationToken);
-		return isEquivalent;
-	}
-
-	/// <remarks>
-	///     The options registered for a type are only created during the comparison, so they may ignore members by
-	///     name as well.
-	/// </remarks>
-	private static bool CanIgnoreMembersByName(EquivalencyOptions equivalencyOptions)
-		=>equivalencyOptions.HasRegistrations ||
-		   equivalencyOptions.MembersToIgnore.Any(memberToIgnore => memberToIgnore is MemberToIgnore.ByName);
-
-	/// <summary>
-	///     Returns a match type for the comparisons of the <paramref name="evaluation" />, so that the expectations of
-	///     an <c>It.Is…</c> in the expected object are canceled by the <paramref name="cancellationToken" /> and use
-	///     the timeout and the time system of the <paramref name="evaluation" />.
-	/// </summary>
-	/// <remarks>
-	///     It also keeps the differences of its own comparisons, so that evaluations do not share them.
-	/// </remarks>
-	internal EquivalencyMatchType ForEvaluation(IEvaluationContext evaluation, CancellationToken cancellationToken)
-		=> new(_equivalencyOptions, evaluation, cancellationToken);
-
-	/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
-	public string GetExpectation(string expected, ExpectationGrammars grammars)
-		=> $"{grammars.Verb("is", "are")} {(grammars.IsNegated() ? "not " : "")}equivalent to {expected}";
-
-	/// <inheritdoc cref="IObjectMatchType.PrependItemAndComparison" />
-	public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
-		=> itemNoun is null ? $"equivalent to {expected}" : $"{itemNoun} equivalent to {expected}";
-
-	/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
-	public void AppendContexts(ResultContextCollector contexts)
-	{
-		if (_unmatchedMembersToIgnore is null)
-		{
-			contexts.AddEquivalencyContext(_equivalencyOptions);
-			return;
-		}
-
-		Dictionary<string, string?> unmatchedMembersToIgnore = new(_unmatchedMembersToIgnore,
-			StringComparer.OrdinalIgnoreCase);
-		contexts.Add(new ResultContext.SyncCallback("Equivalency options",
-			() => _equivalencyOptions.ToString(unmatchedMembersToIgnore), int.MinValue));
-	}
+	public override ObjectMatcher<TSubject> ForEvaluation(MatchEnvironment environment)
+		=> new EquivalencyMatcher(_equivalencyOptions, environment.Evaluation, environment.CancellationToken);
 
 	/// <inheritdoc />
-	public override string ToString() => " using equivalency";
+	public override MatchPhrase Phrase => SharedPhrase;
+
+	private sealed class EquivalencyMatcher(
+		EquivalencyOptions equivalencyOptions,
+		IEvaluationContext? evaluation,
+		CancellationToken cancellationToken) : ObjectMatcher<TSubject>
+	{
+		private StringBuilder? _failureBuilder;
+		private Dictionary<string, string?>? _unmatchedMembersToIgnore;
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     Only options that can ignore members by name track them, so that most comparisons of collection items stay
+		///     as they are.
+		/// </remarks>
+		public override ValueTask<MatchResult> Match<TExpected>(TSubject actual, TExpected expected)
+			=> CanIgnoreMembersByName(equivalencyOptions)
+				? MatchTrackingMembersToIgnore(actual, expected)
+				: MatchWithoutTracking(actual, expected);
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     The items of a collection are compared one after the other with the same matcher, so the members to ignore
+		///     of every failed comparison are kept.
+		/// </remarks>
+		public override async ValueTask<MatchResult> MatchWithExplanation<TExpected>(TSubject actual,
+			TExpected expected)
+		{
+			StringBuilder failureBuilder = _failureBuilder ??= new StringBuilder();
+			failureBuilder.Clear();
+			(bool isMatch, _unmatchedMembersToIgnore) = await EquivalencyComparison.CompareExplaining(actual,
+				expected, equivalencyOptions, failureBuilder, evaluation, _unmatchedMembersToIgnore,
+				cancellationToken);
+			return isMatch
+				? MatchResult.Match
+				: MatchResult.NoMatchBecause(new DifferencesExplanation(failureBuilder.ToString()));
+		}
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     The differences keep their layout and are shifted as a whole by the <paramref name="indentation" />.
+		/// </remarks>
+		public override string GetFailure<TExpected>(string it, ExpectationGrammars grammars, TSubject? actual,
+			TExpected expected, MatchResult result, string? indentation)
+		{
+			if (grammars.IsNegated())
+			{
+				return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented(indentation))}, which is considered equivalent";
+			}
+
+			if (actual is null != expected is null)
+			{
+				StringBuilder failureBuilder = new();
+				failureBuilder.Append(it);
+				failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
+				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
+				failureBuilder.Append(" instead of ");
+				Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+				return failureBuilder.ToString();
+			}
+
+			return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{(result.Explanation as DifferencesExplanation)?.Differences.Indent(indentation, false)}";
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (_unmatchedMembersToIgnore is null)
+			{
+				contexts.AddEquivalencyContext(equivalencyOptions);
+				return;
+			}
+
+			Dictionary<string, string?> unmatchedMembersToIgnore = new(_unmatchedMembersToIgnore,
+				StringComparer.OrdinalIgnoreCase);
+			contexts.Add(new ResultContext.SyncCallback("Equivalency options",
+				() => equivalencyOptions.ToString(unmatchedMembersToIgnore), int.MinValue));
+		}
+
+		private async ValueTask<MatchResult> MatchWithoutTracking<TExpected>(TSubject actual, TExpected expected)
+			=> MatchResult.From(await EquivalencyComparison.IsEquivalent(actual, expected, equivalencyOptions,
+				evaluation, cancellationToken));
+
+		private async ValueTask<MatchResult> MatchTrackingMembersToIgnore<TExpected>(TSubject actual,
+			TExpected expected)
+		{
+			(bool isEquivalent, _unmatchedMembersToIgnore) =
+				await EquivalencyComparison.IsEquivalentTrackingMembersToIgnore(actual, expected, equivalencyOptions,
+					evaluation, _unmatchedMembersToIgnore, cancellationToken);
+			return MatchResult.From(isEquivalent);
+		}
+
+		/// <remarks>
+		///     The options registered for a type are only created during the comparison, so they may ignore members by
+		///     name as well.
+		/// </remarks>
+		private static bool CanIgnoreMembersByName(EquivalencyOptions equivalencyOptions)
+			=> equivalencyOptions.HasRegistrations ||
+			   equivalencyOptions.MembersToIgnore.Any(memberToIgnore => memberToIgnore is MemberToIgnore.ByName);
+	}
+
+	/// <summary>
+	///     The differences that an equivalency comparison found.
+	/// </summary>
+	private sealed class DifferencesExplanation(string differences) : MatchExplanation
+	{
+		public string Differences { get; } = differences;
+
+		/// <inheritdoc />
+		public override string GetFailure(string it, ExpectationGrammars grammars, string? indentation)
+			=> $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{Differences.Indent(indentation, false)}";
+	}
 }

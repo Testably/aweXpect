@@ -77,7 +77,8 @@ public static partial class ThatObject
 			IAsyncContextConstraint<TSubject>
 	{
 		private ObjectEqualityOptions<TSubject>? _evaluationOptions;
-		private IObjectMatchResult? _matchResult;
+		private TExpected? _matchedCandidate;
+		private MatchResult _matchResult;
 
 		/// <remarks>
 		///     Every candidate is compared with an explanation, as the failure message explains the comparison with a
@@ -87,12 +88,14 @@ public static partial class ThatObject
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_matchedCandidate = default;
 			_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			foreach (TExpected? value in expected)
 			{
-				_matchResult = await _evaluationOptions.AreConsideredEqualWithExplanation(actual, value);
+				_matchResult = await _evaluationOptions.MatchWithExplanation(actual, value);
 				if (_matchResult.IsMatch)
 				{
+					_matchedCandidate = value;
 					Outcome = Outcome.Success;
 					return this;
 				}
@@ -125,7 +128,7 @@ public static partial class ThatObject
 		{
 			TExpected?[] candidates = expected.Take(2).ToArray();
 			stringBuilder.Append(candidates.Length == 1
-				? _matchResult!.GetExtendedFailure(It, Grammars, Actual, candidates[0], indentation)
+				? (_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual, candidates[0], _matchResult, indentation)
 				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented(indentation))}");
 		}
 
@@ -133,7 +136,12 @@ public static partial class ThatObject
 			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
+		/// <remarks>
+		///     The negated expectation fails for the candidate that matched, so the match type explains the comparison
+		///     with that candidate.
+		/// </remarks>
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append((_evaluationOptions ?? options).GetExtendedFailure(It, Grammars, Actual,
+				_matchedCandidate, _matchResult, indentation));
 	}
 }

@@ -33,7 +33,7 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = new("expected");
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  ", "");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  ", "", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "  ", which has unexpected whitespace ("  " at the beginning)
@@ -45,7 +45,7 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			StringEqualityOptions sut = new("expected");
 
-			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "  ");
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "  ", MatchResult.NoMatch);
 
 			await That(result).IsEqualTo("""
 			                             it was "", which misses some whitespace ("  " at the beginning)
@@ -60,7 +60,7 @@ public sealed partial class StringEqualityOptionsTests
 			string result;
 			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(4))
 			{
-				result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo \n\n\n\n", "foo");
+				result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo \n\n\n\n", "foo", MatchResult.NoMatch);
 			}
 
 			await That(result).IsEqualTo("""

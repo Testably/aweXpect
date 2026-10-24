@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -8,7 +8,7 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly IStringMatchType WildcardMatch = new WildcardMatchType();
+	private static readonly StringMatchType WildcardMatch = new WildcardMatchType();
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as wildcard pattern.<br />
@@ -19,143 +19,123 @@ public partial class StringEqualityOptions
 	/// </exception>
 	public StringEqualityOptions AsWildcard()
 	{
-		if (_comparer is not null)
-		{
-			throw ComparerAndPatternConflict();
-		}
-
 		SetMatchType(WildcardMatch, nameof(AsWildcard));
 		return this;
 	}
 
-	private sealed class WildcardMatchType : IStringMatchType
+	private sealed class WildcardMatchType : StringMatchType
 	{
-		/// <summary>
-		///     Counts the non-overlapping matches of the <paramref name="expected" /> wildcard pattern in the
-		///     <paramref name="actual" /> value, up to the <paramref name="maximum" />.
-		/// </summary>
-		public static int CountOccurrences(string actual, string expected, bool ignoreCase, int maximum)
-			=> RegexMatchType.CountOccurrences(FoldCase(actual, ignoreCase),
-				GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
-					RegexOptions.Singleline), maximum);
+		private static readonly MatchPhrase SharedPhrase =
+			MatchPhrase.Verb("matches", "match", "matching")
+				.WithName(" as wildcard")
+				.WithPattern("wildcard", "wildcard pattern");
 
-		/// <summary>
-		///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
-		/// </summary>
-		public static Regex CreateRegex(string expected, bool ignoreCase)
-			=> GetOrParseRegex(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline);
+		/// <inheritdoc />
+		public override bool InspectsSubject => true;
 
-		/// <summary>
-		///     Whether the <paramref name="actual" /> value matches the <paramref name="regex" /> from
-		///     <see cref="CreateRegex" />.
-		/// </summary>
-		public static bool IsMatch(Regex regex, string actual, bool ignoreCase)
-			=> regex.IsMatch(FoldCase(actual, ignoreCase));
+		/// <inheritdoc />
+		public override MatchPhrase Phrase => SharedPhrase;
 
+		/// <inheritdoc />
 		/// <remarks>
-		///     The casing is ignored by comparing the upper-case invariant values instead of with
-		///     <see cref="RegexOptions.IgnoreCase" />, so that the same characters are considered equal as by
-		///     <see cref="System.StringComparison.OrdinalIgnoreCase" /> in the plain comparison.
+		///     A pattern is matched by the regex engine, which has no way to consult a comparer.
 		/// </remarks>
-		private static string FoldCase(string value, bool ignoreCase)
-			=> ignoreCase ? value.ToUpperInvariant() : value;
+		public override StringMatchSettingKinds SupportedSettings
+			=> StringMatchSettingKinds.IgnoreCase | StringMatchSettingKinds.WhiteSpace;
 
-		/// <remarks>
-		///     The pattern is anchored with <c>\A</c> and <c>\z</c>, so that it has to cover the complete value:
-		///     <c>^</c> and <c>$</c> would bind to a line boundary, and <c>$</c> would also allow a trailing newline.
-		/// </remarks>
-		private static string WildcardToRegularExpression(string value)
-			=> $@"\A{WildcardToUnanchoredRegularExpression(value)}\z";
+		/// <inheritdoc />
+		public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
+			=> new WildcardMatcher(settings.IgnoreCase);
 
-		/// <remarks>
-		///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a newline
-		///     like any other character.<br />
-		///     A <c>?</c> matches a surrogate pair as one character, and the atomic group keeps it from matching only its
-		///     first half when the rest of the pattern would not match otherwise.
-		/// </remarks>
-		private static string WildcardToUnanchoredRegularExpression(string value)
-			=> Regex.Escape(value)
-				.Replace("\\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|.)")
-				.Replace("\\*", ".*");
-
-		#region IStringMatchType Members
-
-		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
-		public bool InspectsSubject => true;
-
-		/// <inheritdoc
-		///     cref="IStringMatchType.GetExtendedFailure(string, string?, string?, bool, IEqualityComparer{string}, StringDifferenceSettings?)" />
-		public string GetExtendedFailure(string it, string? actual, string? expected,
-			bool ignoreCase,
-			IEqualityComparer<string> comparer,
-			StringDifferenceSettings? settings)
+		/// <summary>
+		///     Matches the patterns of one evaluation, in which a collection compares every item with the same pattern, so
+		///     it keeps the regex that was parsed last.
+		/// </summary>
+		private sealed class WildcardMatcher(bool ignoreCase) : StringMatcher
 		{
-			if (expected is null)
+			private string? _pattern;
+			private Regex? _regex;
+
+			/// <inheritdoc />
+			public override ValueTask<MatchResult> Match(string? actual, string? expected)
 			{
-				return $"could not compare the <null> wildcard pattern with {Formatter.Format(actual)}";
+				if (actual is null || expected is null)
+				{
+					return new ValueTask<MatchResult>(MatchResult.NoMatch);
+				}
+
+				return new ValueTask<MatchResult>(
+					MatchResult.From(GetRegex(expected).IsMatch(FoldCase(actual, ignoreCase))));
 			}
 
-			StringDifference stringDifference = new(actual, expected, comparer,
-				settings.WithMatchType(StringDifference.MatchType.Wildcard));
-			return $"{it} did not match{stringDifference.ToString("")}";
-		}
-
-		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<StringMatchResult>
-			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-		{
-			if (actual is null || expected is null)
+			/// <inheritdoc />
+			public override string GetFailure(string it, ExpectationGrammars grammars, string? actual,
+				string? expected, MatchResult result, StringDifferenceSettings? differenceSettings)
 			{
-				return new ValueTask<StringMatchResult>(false);
+				if (expected is null)
+				{
+					return $"could not compare the <null> wildcard pattern with {Formatter.Format(actual)}";
+				}
+
+				StringDifference stringDifference = new(actual, expected,
+					ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal,
+					differenceSettings.WithMatchType(StringDifference.MatchType.Wildcard));
+				return $"{it} did not match{stringDifference.ToString("")}";
 			}
 
-			return new ValueTask<StringMatchResult>(IsMatch(CreateRegex(expected, ignoreCase), actual, ignoreCase));
-		}
+			/// <inheritdoc />
+			/// <remarks>
+			///     A pattern can match a different number of characters than it is long, so its occurrences are counted
+			///     by the regex engine.
+			/// </remarks>
+			public override int? CountOccurrences(string actual, string expected, int maximum)
+				=> RegexMatchType.CountMatches(FoldCase(actual, ignoreCase),
+					GetOrParseRegex(WildcardToUnanchoredRegularExpression(FoldCase(expected, ignoreCase)),
+						RegexOptions.Singleline), maximum);
 
-		/// <inheritdoc cref="IStringMatchType.AppendContexts(ResultContextCollector)" />
-		public void AppendContexts(ResultContextCollector contexts)
-		{
-			// The options are already part of the expectation.
-		}
-
-		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />
-		public string GetExpectation(string? expected, ExpectationGrammars grammars)
-			=> (grammars.IsActive(), grammars.IsNegated()) switch
+			private Regex GetRegex(string expected)
 			{
-				(true, false) =>
-					$"{grammars.Verb("matches", "match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, false) =>
-					$"matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(true, true) =>
-					$"{grammars.Verb("does not match", "do not match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-				(false, true) =>
-					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength))}",
-			};
+				if (_regex is null || !string.Equals(_pattern, expected, StringComparison.Ordinal) ||
+				    _regex.MatchTimeout != GetRegexTimeout())
+				{
+					_regex = CreateRegex(expected, ignoreCase);
+					_pattern = expected;
+				}
 
-		/// <inheritdoc cref="IStringMatchType.GetTypeString()" />
-		public string GetTypeString()
-			=> " as wildcard";
+				return _regex;
+			}
 
-		/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
-		/// <remarks>
-		///     A <paramref name="comparer" /> is rejected for a pattern, so only the casing can be ignored here.
-		/// </remarks>
-		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-			=> ignoreCase ? " ignoring case" : "";
+			/// <summary>
+			///     Parses the <paramref name="expected" /> wildcard pattern into a regex that has to cover the whole value.
+			/// </summary>
+			private static Regex CreateRegex(string expected, bool ignoreCase)
+				=> GetOrParseRegex(WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline);
 
-		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
-		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-		{
-			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
+			/// <remarks>
+			///     The casing is ignored by comparing the upper-case invariant values instead of with
+			///     <see cref="RegexOptions.IgnoreCase" />, so that the same characters are considered equal as by
+			///     <see cref="System.StringComparison.OrdinalIgnoreCase" /> in the plain comparison.
+			/// </remarks>
+			private static string FoldCase(string value, bool ignoreCase)
+				=> ignoreCase ? value.ToUpperInvariant() : value;
+
+			/// <remarks>
+			///     The pattern is anchored with <c>\A</c> and <c>\z</c>, so that it has to cover the complete value:
+			///     <c>^</c> and <c>$</c> would bind to a line boundary, and <c>$</c> would also allow a trailing newline.
+			/// </remarks>
+			private static string WildcardToRegularExpression(string value)
+				=> $@"\A{WildcardToUnanchoredRegularExpression(value)}\z";
+
+			/// <remarks>
+			///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a
+			///     newline like any other character.<br />
+			///     A <c>?</c> matches a surrogate pair as one character, and the atomic group keeps it from matching only
+			///     its first half when the rest of the pattern would not match otherwise.
+			/// </remarks>
+			private static string WildcardToUnanchoredRegularExpression(string value)
+				=> Regex.Escape(value)
+					.Replace("\\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|.)")
+					.Replace("\\*", ".*");
 		}
-
-		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-		public void ValidateExpected(string? expected)
-		{
-			// StringEqualityOptions validates the expected value of a built-in match type.
-		}
-
-		#endregion
 	}
 }

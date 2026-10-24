@@ -266,6 +266,24 @@ public sealed partial class ThatException
 						             but it was <null>
 						             """);
 				}
+
+				[Test]
+				public async Task WhenSubjectIsOfTheInnerExceptionType_ShouldCheckTheInnerExceptionType()
+				{
+					ArgumentException subject = new("outer", new InvalidOperationException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner<ArgumentException>(e => e.HasMessage("inner"));
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ArgumentException whose message is equal to "inner",
+						             but it had an inner InvalidOperationException:
+						               inner
+						             """)
+						.Because("the type argument names the inner exception type, even when the subject has the same type");
+				}
 			}
 
 			public sealed class TypeTests
@@ -315,6 +333,24 @@ public sealed partial class ThatException
 						             has an inner ThatException.CustomException,
 						             but it was <null>
 						             """);
+				}
+
+				[Test]
+				public async Task WhenSubjectIsOfTheInnerExceptionType_ShouldCheckTheInnerExceptionType()
+				{
+					ArgumentException subject = new("outer", new InvalidOperationException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner<ArgumentException>();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ArgumentException,
+						             but it had an inner InvalidOperationException:
+						               inner
+						             """)
+						.Because("the type argument names the inner exception type, even when the subject has the same type");
 				}
 			}
 
