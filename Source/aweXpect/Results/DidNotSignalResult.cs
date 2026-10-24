@@ -12,15 +12,23 @@ namespace aweXpect.Results;
 ///     Absence is not an occurrence, so this result intentionally carries no quantifiers: use
 ///     <see cref="SignalCountResult" /> to count how often a callback was signaled.
 /// </remarks>
-public class DidNotSignalResult(
-	ExpectationBuilder expectationBuilder,
-	IThat<Signaler> returnValue,
-	SignalerOptions options)
-	: AndOrResult<SignalerResult, IThat<Signaler>, DidNotSignalResult>(expectationBuilder, returnValue),
+public class DidNotSignalResult
+	: AndOrResult<SignalerResult, IThat<Signaler>, DidNotSignalResult>,
 		IOptionsProvider<SignalerOptions>
 {
+	private readonly SignalerOptions _options;
+
+	internal DidNotSignalResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<Signaler> returnValue,
+		SignalerOptions options)
+		: base(expectationBuilder, returnValue)
+	{
+		_options = options;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
+	SignalerOptions IOptionsProvider<SignalerOptions>.Options => _options;
 }
 
 /// <summary>
@@ -31,14 +39,21 @@ public class DidNotSignalResult(
 ///     Absence is not an occurrence, so this result intentionally carries no quantifiers: use
 ///     <see cref="SignalCountWhoseResult{TParameter}" /> to count how often a callback was signaled.
 /// </remarks>
-public class DidNotSignalResult<TParameter>(
-	ExpectationBuilder expectationBuilder,
-	IThat<Signaler<TParameter>> returnValue,
-	SignalerOptions<TParameter> options)
-	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, DidNotSignalResult<TParameter>>(
-			expectationBuilder, returnValue),
+public class DidNotSignalResult<TParameter>
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, DidNotSignalResult<TParameter>>,
 		ISignalerResult<DidNotSignalResult<TParameter>, TParameter>
 {
+	private readonly SignalerOptions<TParameter> _options;
+
+	internal DidNotSignalResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<Signaler<TParameter>> returnValue,
+		SignalerOptions<TParameter> options)
+		: base(expectationBuilder, returnValue)
+	{
+		_options = options;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => _options;
 }

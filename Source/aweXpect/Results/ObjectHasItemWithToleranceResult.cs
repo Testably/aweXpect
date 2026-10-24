@@ -11,49 +11,62 @@ namespace aweXpect.Results;
 ///     The options are specified via <see cref="CollectionIndexOptionsExtensions" /> and
 ///     <see cref="ObjectEqualityOptionsExtensions" />.
 /// </remarks>
-public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
-	ExpectationBuilder expectationBuilder,
-	IThat<TCollection?> collection,
-	CollectionIndexOptions collectionIndexOptions,
-	ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
-	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>>(
-			expectationBuilder, collection),
+public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
+	: AndOrResult<TCollection, IThat<TCollection?>, ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>>,
 		IOptionsProvider<CollectionIndexOptions>,
 		IObjectEqualityWithToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TItem,
 			TTolerance>
 {
-	private readonly IThat<TCollection?> _collection = collection;
+	private readonly IThat<TCollection?> _collection;
+	private readonly CollectionIndexOptions _collectionIndexOptions;
+	private readonly ObjectEqualityWithToleranceOptions<TItem, TTolerance> _options;
+
+	internal ObjectHasItemWithToleranceResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<TCollection?> collection,
+		CollectionIndexOptions collectionIndexOptions,
+		ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+		: base(expectationBuilder, collection)
+	{
+		_collection = collection;
+		_collectionIndexOptions = collectionIndexOptions;
+		_options = options;
+	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityWithToleranceOptions<TItem, TTolerance>
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => options;
+		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => _options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => _collectionIndexOptions;
 
 	/// <inheritdoc cref="ObjectEqualityOptionsExtensions.Within{TSelf, TElement, TTolerance}(IObjectEqualityWithToleranceResult{TSelf, TElement, TTolerance}, TTolerance)" />
 	public WithinResult Within(TTolerance tolerance)
 	{
-		options.Within(tolerance);
-		return new WithinResult(ExpectationBuilder, _collection, collectionIndexOptions, options);
+		_options.Within(tolerance);
+		return new WithinResult(ExpectationBuilder, _collection, _collectionIndexOptions, _options);
 	}
 
 	/// <summary>
 	///     The result directly after <see cref="Within(TTolerance)" />, whose tolerance can still be made relative to
 	///     the expected value, e.g. via <c>Percent()</c>.
 	/// </summary>
-	public sealed class WithinResult(
-		ExpectationBuilder expectationBuilder,
-		IThat<TCollection?> collection,
-		CollectionIndexOptions collectionIndexOptions,
-		ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
-		: ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(expectationBuilder, collection,
-				collectionIndexOptions, options),
+	public sealed class WithinResult
+		: ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>,
 			IWithinToleranceResult<ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>, TTolerance>
 	{
+		internal WithinResult(
+			ExpectationBuilder expectationBuilder,
+			IThat<TCollection?> collection,
+			CollectionIndexOptions collectionIndexOptions,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			: base(expectationBuilder, collection, collectionIndexOptions, options)
+		{
+		}
+
 		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 		IRelativeToleranceOptions<TTolerance> IOptionsProvider<IRelativeToleranceOptions<TTolerance>>.Options
 			=> ((IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>)this).Options;

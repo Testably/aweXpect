@@ -13,16 +13,25 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     The options are specified via <see cref="QuantifierExtensions" /> and <see cref="SignalerOptionsExtensions" />.
 /// </remarks>
-public class SignalCountWhoseResult<TParameter>(
-	ExpectationBuilder expectationBuilder,
-	IThat<Signaler<TParameter>> returnValue,
-	Quantifier quantifier,
-	SignalerOptions<TParameter> options)
-	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, SignalCountWhoseResult<TParameter>>(
-			expectationBuilder, returnValue),
+public class SignalCountWhoseResult<TParameter>
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, SignalCountWhoseResult<TParameter>>,
 		IOptionsProvider<Quantifier>,
 		ISignalerResult<SignalCountWhoseResult<TParameter>, TParameter>
 {
+	private readonly SignalerOptions<TParameter> _options;
+	private readonly Quantifier _quantifier;
+
+	internal SignalCountWhoseResult(
+		ExpectationBuilder expectationBuilder,
+		IThat<Signaler<TParameter>> returnValue,
+		Quantifier quantifier,
+		SignalerOptions<TParameter> options)
+		: base(expectationBuilder, returnValue)
+	{
+		_quantifier = quantifier;
+		_options = options;
+	}
+
 	/// <summary>
 	///     …with parameters that…
 	/// </summary>
@@ -32,14 +41,14 @@ public class SignalCountWhoseResult<TParameter>(
 	public IThatSubject<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			ExpectationBuilder.ForWhich<SignalerResult<TParameter>, IEnumerable<TParameter>>(
-				x => x.Parameters.Where(options.Matches).ToArray(),
+				x => x.Parameters.Where(_options.Matches).ToArray(),
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => _options;
 }

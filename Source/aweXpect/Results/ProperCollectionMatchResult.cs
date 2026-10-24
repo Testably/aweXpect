@@ -10,15 +10,23 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     The options are specified via <see cref="CollectionMatchOptionsExtensions" />.
 /// </remarks>
-public class ProperCollectionMatchResult<TType, TThat, TItem>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue,
-	CollectionMatchOptions collectionMatchOptions)
-	: AndOrResult<TType, TThat, ProperCollectionMatchResult<TType, TThat, TItem>>(expectationBuilder, returnValue),
+public class ProperCollectionMatchResult<TType, TThat, TItem>
+	: AndOrResult<TType, TThat, ProperCollectionMatchResult<TType, TThat, TItem>>,
 		IOptionsProvider<CollectionMatchOptions>,
 		ICollectionContainmentOptions,
 		IProperContainmentOptions
 {
+	private readonly CollectionMatchOptions _collectionMatchOptions;
+
+	internal ProperCollectionMatchResult(
+		ExpectationBuilder expectationBuilder,
+		TThat returnValue,
+		CollectionMatchOptions collectionMatchOptions)
+		: base(expectationBuilder, returnValue)
+	{
+		_collectionMatchOptions = collectionMatchOptions;
+	}
+
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => _collectionMatchOptions;
 }
