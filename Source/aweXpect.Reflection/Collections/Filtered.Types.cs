@@ -35,7 +35,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
-		public Types(IEnumerable<Type?> source, string description)
+		internal Types(IEnumerable<Type?> source, string description)
 			: base(source.WhereNotNull())
 		{
 			_description = description;
@@ -111,11 +111,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
-		protected Types(Types inner) : this(inner, inner.Filters)
+		private protected Types(Types inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Types(Types inner, List<IFilter<Type>> filters) : base(inner, filters)
+		private Types(Types inner, IReadOnlyList<IFilter<Type>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_assemblies = inner._assemblies;
@@ -220,7 +220,7 @@ public static partial class Filtered
 			=> new TypesMemberBuilder(this, MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
 
 		/// <inheritdoc />
-		private protected override Types CloneWith(List<IFilter<Type>> filters)
+		private protected override Types CloneWith(IReadOnlyList<IFilter<Type>> filters)
 			=> new(this, filters);
 
 		/// <summary>

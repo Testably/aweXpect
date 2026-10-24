@@ -31,7 +31,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of the given <paramref name="constructors" />.
 		/// </summary>
-		internal Constructors(IEnumerable<ConstructorInfo> constructors, string description)
+		internal Constructors(IEnumerable<ConstructorInfo?> constructors, string description)
 			: base(constructors.WhereNotNull())
 		{
 			_description = description;
@@ -40,11 +40,11 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="ConstructorInfo" />.
 		/// </summary>
-		protected Constructors(Constructors inner) : this(inner, inner.Filters)
+		private protected Constructors(Constructors inner) : this(inner, inner.Filters)
 		{
 		}
 
-		private Constructors(Constructors inner, List<IFilter<ConstructorInfo>> filters) : base(inner, filters)
+		private Constructors(Constructors inner, IReadOnlyList<IFilter<ConstructorInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
@@ -68,7 +68,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Constructors CloneWith(List<IFilter<ConstructorInfo>> filters)
+		private protected override Constructors CloneWith(IReadOnlyList<IFilter<ConstructorInfo>> filters)
 			=> new(this, filters);
 
 		/// <summary>

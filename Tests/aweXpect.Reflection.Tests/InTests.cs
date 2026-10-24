@@ -85,6 +85,16 @@ public sealed class InTests
 	}
 
 	[Test]
+	public async Task Constructors_WithNullConstructor_ShouldIgnoreIt()
+	{
+		ConstructorInfo constructor = typeof(ClassWithMembers).GetConstructors()[0];
+
+		Filtered.Constructors sut = In.Constructors(null, constructor);
+
+		await That(sut).HasSingle().Which.IsEqualTo(constructor);
+	}
+
+	[Test]
 	public async Task Events_WithEnumerable_ShouldContainProvidedEvents()
 	{
 		IEnumerable<EventInfo> events = typeof(BaseClassWithMembers).GetEvents();
@@ -96,11 +106,31 @@ public sealed class InTests
 	}
 
 	[Test]
+	public async Task Events_WithNullEvent_ShouldIgnoreIt()
+	{
+		EventInfo @event = typeof(BaseClassWithMembers).GetEvents()[0];
+
+		Filtered.Events sut = In.Events(null, @event);
+
+		await That(sut).HasSingle().Which.IsEqualTo(@event);
+	}
+
+	[Test]
 	public async Task Fields_ShouldExcludeCompilerGeneratedBackingFields()
 	{
 		Filtered.Fields fields = In.Type<ClassWithMembers>().Fields();
 
 		await That(fields).All().Satisfy(field => !field.Name.EndsWith("__BackingField")).And.IsNotEmpty();
+	}
+
+	[Test]
+	public async Task Fields_WithNullField_ShouldIgnoreIt()
+	{
+		FieldInfo field = typeof(ClassWithMembers).GetField(nameof(ClassWithMembers.Field))!;
+
+		Filtered.Fields sut = In.Fields(null, field);
+
+		await That(sut).HasSingle().Which.IsEqualTo(field);
 	}
 
 	[Test]
@@ -119,6 +149,16 @@ public sealed class InTests
 		Filtered.Methods methods = In.Type<ClassWithMembers>().Methods();
 
 		await That(methods).All().Satisfy(method => !method.IsSpecialName).And.IsNotEmpty();
+	}
+
+	[Test]
+	public async Task Methods_WithNullMethod_ShouldIgnoreIt()
+	{
+		MethodInfo method = typeof(ClassWithMembers).GetMethod(nameof(ClassWithMembers.Method))!;
+
+		Filtered.Methods sut = In.Methods(null, method);
+
+		await That(sut).HasSingle().Which.IsEqualTo(method);
 	}
 
 	[Test]
@@ -150,6 +190,16 @@ public sealed class InTests
 
 		await That(sut).IsEqualTo(properties).InAnyOrder();
 		await That(sut.GetDescription()).IsEqualTo("in the properties ").AsPrefix();
+	}
+
+	[Test]
+	public async Task Properties_WithNullProperty_ShouldIgnoreIt()
+	{
+		PropertyInfo property = typeof(ClassWithMembers).GetProperty(nameof(ClassWithMembers.Property))!;
+
+		Filtered.Properties sut = In.Properties(null, property);
+
+		await That(sut).HasSingle().Which.IsEqualTo(property);
 	}
 
 	[Test]
@@ -193,6 +243,14 @@ public sealed class InTests
 		Filtered.Types sut = In.Types(types);
 
 		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task Types_WithNullType_ShouldIgnoreIt()
+	{
+		Filtered.Types sut = In.Types(null, typeof(InTests));
+
+		await That(sut).HasSingle().Which.IsEqualTo(typeof(InTests));
 	}
 
 	[Test]
