@@ -10,6 +10,42 @@ public sealed partial class ThatException
 			public sealed class ExpectationsTests
 			{
 				[Test]
+				public async Task WhenAwaited_ShouldReturnTheSubject()
+				{
+					ArgumentException subject = new("outer", "paramName", new CustomException("inner"));
+
+					ArgumentException result = await That(subject)
+						.HasInner(typeof(CustomException), e => e.HasMessage("inner"));
+
+					await That(result).IsSameAs(subject);
+				}
+
+				[Test]
+				public async Task WhenChainedWithHasParamName_ShouldApplyBoth()
+				{
+					ArgumentException subject = new("outer", "paramName", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(CustomException), e => e.HasMessage("inner"))
+							.And.HasParamName("other");
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException whose message is equal to "inner" and has param name equal to "other",
+						             but it had param name "paramName", which differs at index 0:
+						                ↓ (actual)
+						               "paramName"
+						               "other"
+						                ↑ (expected)
+
+						             Param name:
+						             paramName
+						             """)
+						.Because("the chain continues on the ArgumentException subject");
+				}
+
+				[Test]
 				public async Task WhenCombinedWithTheGenericOverloadAndInnerExceptionHasUnexpectedType_ShouldReportItOnce()
 				{
 					Exception subject = new("outer", new Exception("inner"));
@@ -182,6 +218,40 @@ public sealed partial class ThatException
 
 			public sealed class TypeTests
 			{
+				[Test]
+				public async Task WhenAwaited_ShouldReturnTheSubject()
+				{
+					ArgumentException subject = new("outer", "paramName", new CustomException("inner"));
+
+					ArgumentException result = await That(subject).HasInner(typeof(CustomException));
+
+					await That(result).IsSameAs(subject);
+				}
+
+				[Test]
+				public async Task WhenChainedWithHasParamName_ShouldApplyBoth()
+				{
+					ArgumentException subject = new("outer", "paramName", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(CustomException)).And.HasParamName("other");
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException and has param name equal to "other",
+						             but it had param name "paramName", which differs at index 0:
+						                ↓ (actual)
+						               "paramName"
+						               "other"
+						                ↑ (expected)
+
+						             Param name:
+						             paramName
+						             """)
+						.Because("the chain continues on the ArgumentException subject");
+				}
+
 				[Test]
 				public async Task WhenInnerExceptionIsNotOfTheExpectedType_ShouldFail()
 				{
