@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
-        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
-      },
-      {
         "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
-      "a65978ac",
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2186.526701790946,
           2167.4484387715656,
           2089.276038851057,
           1223.462247303554,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1182.9661610467094,
           1614.5534926096598,
           2077.84502919515,
-          2096.4120679219563
+          2096.4120679219563,
+          1088.5809260050455
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -424,7 +424,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1264,
           1264,
           1264,
           1264,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15467.650754801432,
           15402.08388264974,
           16405.978548177085,
           9062.060671997071,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           8022.546643938337,
           11307.781594848633,
           15683.67432814378,
-          16112.966912841797
+          16112.966912841797,
+          6610.846553548177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
-        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
-      },
-      {
         "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
-      "a65978ac",
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1531.099872295673,
           1583.5541142781576,
           1479.4907387953538,
           866.4225905963352,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           888.9724784215291,
           1156.9452547345843,
           1511.8478254590716,
-          1481.8427160703218
+          1481.8427160703218,
+          790.2367533842722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1032,7 +1032,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
-          1224,
+          1200,
           1200,
           1200,
           1200,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14126.028885977608,
           14154.284542377178,
           14842.046515909831,
           8000.706635611398,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           7199.160710652669,
           10336.702198282877,
           14151.450436183384,
-          14486.738298543294
+          14486.738298543294,
+          6074.126847839356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
-        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
-      },
-      {
         "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
-      "a65978ac",
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4578.080839538574,
           4785.992984008789,
           4648.083818708147,
           2528.471649169922,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2711.429491043091,
           3627.615557607015,
           4696.820342508951,
-          4650.155782427107
+          4650.155782427107,
+          2492.695984976632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1640,7 +1640,7 @@ window.BENCHMARK_DATA = {
           3520,
           3520,
           3520,
-          3520,
+          3472,
           3472,
           3472,
           3472,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          42673.760904947914,
           46869.422551081734,
           48116.435006277905,
           24321.01766531808,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           20691.110637958234,
           30605.35041503906,
           46746.01085486779,
-          45795.19700270433
+          45795.19700270433,
+          18058.38230074369
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61932,
           61926,
           61926,
           61921,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
-        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
-      },
       {
         "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
-      "a65978ac",
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9472.83072611491,
           9108.803155517578,
           9377.361384073893,
           5670.498892102923,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5230.420607640193,
           7440.7867980957035,
           9320.324465070453,
-          9302.502903238932
+          9302.502903238932,
+          4604.548663838705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2248,7 +2248,7 @@ window.BENCHMARK_DATA = {
           7048,
           7048,
           7048,
-          7048,
+          7024,
           7024,
           7024,
           7024,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          287392.14599609375,
           294419.1672363281,
           302584.3828473772,
           172590.8935546875,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           143417.30936104912,
           219293.1565266927,
           293740.4150390625,
-          304315.1563313802
+          304315.1563313802,
+          129290.10226004464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521573,
           521594,
           521594,
           521542,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
-        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
-      },
       {
         "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
-      "a65978ac",
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3179.6271011352537,
           2940.541816711426,
           2951.1923433031357,
           1823.3769211402307,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1581.9557225363594,
           2213.898701300988,
           2901.782163347517,
-          2861.5740786234537
+          2861.5740786234537,
+          1492.1467374165852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2856,7 +2856,6 @@ window.BENCHMARK_DATA = {
           1544,
           1544,
           1544,
-          1544,
           1520,
           1520,
           1520,
@@ -2872,6 +2871,7 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
+          1328,
           1328,
           1328,
           1328,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2126.5519622802735,
           1956.1818823133196,
           2093.6677487691245,
           1331.4039871509258,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1095.4172948201497,
           1599.6504638671875,
           1956.5905985514323,
-          2010.372226969401
+          2010.372226969401,
+          1009.2138515199933
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "a65978ac51570299edfaa01557a16401992d2d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 21 09:58:19 2026 \u002B0200",
-        "message": "refactor: list the types of unfiltered assemblies in a single iterator (#1921)"
-      },
-      {
         "sha": "cf954d73d781dd9181238d7bdaa017c84a0c6e54",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 21 10:00:19 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Oct 23 19:12:45 2026 \u002B0200",
         "message": "feat: let extensions find It.Is expectations and explain IsJsonSerializable failures like IsEquivalentTo (#1972)"
+      },
+      {
+        "sha": "487fa47b4bcf3aed31e5c692ed1589317da8e6cf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Oct 23 19:17:53 2026 \u002B0200",
+        "message": "refactor: expose the name of MemberToIgnore.ByName (#1971)"
       }
     ],
     "labels": [
-      "a65978ac",
       "cf954d73",
       "0bac86a9",
       "bbe7c60f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4713c904",
       "906ecb34",
       "cba28a96",
-      "bb3fba51"
+      "bb3fba51",
+      "487fa47b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2161.130169187273,
           2014.2628242492676,
           2054.2856057484946,
           1258.816874577449,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1212.5538330078125,
           1635.980863571167,
           2087.58590398516,
-          2070.109078216553
+          2070.109078216553,
+          1085.5600940159388
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3464,7 +3464,6 @@ window.BENCHMARK_DATA = {
           2872,
           2872,
           2872,
-          2872,
           2848,
           2848,
           2848,
@@ -3491,6 +3490,7 @@ window.BENCHMARK_DATA = {
           2848,
           2848,
           2848,
+          2856,
           2856,
           2856,
           2856,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2095.842677561442,
           1745.1242872873943,
           1869.58156644381,
           1298.6538293202718,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           973.8596305847168,
           1514.8563364664712,
           1755.5434099344106,
-          1923.4046264648437
+          1923.4046264648437,
+          849.1343587557475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
