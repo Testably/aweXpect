@@ -93,7 +93,7 @@ internal sealed class StringOccurrenceConstraint(
 			return;
 		}
 
-		StringOccurrences.AppendResult(stringBuilder, it, expected, _actual, _actualCount, _isFinished,
+		StringOccurrences.AppendResult(stringBuilder, it, expected, _actual, (_actualCount, _isFinished),
 			_evaluationOptions ?? options, indentation);
 	}
 

@@ -742,7 +742,7 @@ public static class PropertyResult
 				return;
 			}
 
-			StringOccurrences.AppendResult(stringBuilder, propertyExpression, expected, _value, _count, _isFinished,
+			StringOccurrences.AppendResult(stringBuilder, propertyExpression, expected, _value, (_count, _isFinished),
 				_evaluationOptions ?? options, indentation);
 		}
 

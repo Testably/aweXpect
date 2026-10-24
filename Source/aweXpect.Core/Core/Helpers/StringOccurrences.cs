@@ -59,8 +59,9 @@ internal static class StringOccurrences
 	///     <c>it contained "a" once in "abc"</c>.
 	/// </summary>
 	public static void AppendResult(StringBuilder stringBuilder, string subject, string expected, string actual,
-		int count, bool isFinished, StringEqualityOptions options, string? indentation)
+		(int Count, bool IsFinished) occurrences, StringEqualityOptions options, string? indentation)
 	{
+		(int count, bool isFinished) = occurrences;
 		if (count == 0)
 		{
 			stringBuilder.Append(subject).Append(" did not contain ");
