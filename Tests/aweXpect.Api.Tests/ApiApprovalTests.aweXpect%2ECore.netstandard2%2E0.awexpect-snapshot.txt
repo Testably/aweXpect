@@ -176,17 +176,6 @@ namespace aweXpect
         public static TResult NormalizingWhiteSpace<TResult>(this TResult result, bool normalizeWhiteSpace = true) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
         public static TResult Using<TResult>(this TResult result, System.Collections.Generic.IEqualityComparer<string> comparer) where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions> { }
     }
-    public static class StringPropertyResultExtensions
-    {
-        public static aweXpect.Results.StringEqualityResult<TType, TThat> Containing<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string expected) { }
-        public static aweXpect.Results.StringEqualityResult<TType, TThat> EndingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string expected) { }
-        public static aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string? expected) { }
-        public static aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string unexpected) { }
-        public static aweXpect.Results.StringEqualityResult<TType, TThat> NotEndingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string unexpected) { }
-        public static aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string? unexpected) { }
-        public static aweXpect.Results.StringEqualityResult<TType, TThat> NotStartingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string unexpected) { }
-        public static aweXpect.Results.StringEqualityResult<TType, TThat> StartingWith<TType, TThat>(this aweXpect.Results.IStringPropertyResult<TType, TThat> result, string expected) { }
-    }
     public static class ThatDelegateExtensions
     {
         [aweXpect.Core.GuaranteesNotNull]
@@ -1818,11 +1807,6 @@ namespace aweXpect.Results
     public interface IStringPatternMatchTypeOptions
     {
     }
-    public interface IStringPropertyResult<TType, TThat>
-    {
-        System.Action<string?, string>? Validation { get; }
-        TResult Compare<TResult>(string? expected, aweXpect.Options.StringEqualityOptions options, bool isNegated, System.Func<aweXpect.Core.ExpectationBuilder, TThat, aweXpect.Options.StringEqualityOptions, TResult> createResult);
-    }
     public interface ITimeSpanPropertyResult<out TResult>
     {
         System.Action<System.TimeSpan?, string>? Validation { get; }
@@ -1907,9 +1891,17 @@ namespace aweXpect.Results
         {
             public String(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
         }
-        public class String<TValue, TType, TThat> : aweXpect.Results.IStringPropertyResult<TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
+        public class String<TValue, TType, TThat> where TThat : aweXpect.Core.IThat<TValue>
         {
             public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> Containing(string expected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> EndingWith(string expected) { }
+            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo(string? expected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining(string unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotEndingWith(string unexpected) { }
+            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo(string? unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotStartingWith(string unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> StartingWith(string expected) { }
         }
         public class TimeSpan<TItem> : aweXpect.Results.PropertyResult.TimeSpan<TItem, TItem, aweXpect.Core.IThat<TItem>>
         {

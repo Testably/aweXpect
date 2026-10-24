@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Delegates;
 using aweXpect.Options;
 
@@ -178,8 +179,6 @@ public static class PropertyResult
 	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
 	/// <remarks>
-	///     The operators, e.g. <c>EqualTo(…)</c>, are extension methods in <see cref="StringPropertyResultExtensions" />.
-	///     <para />
 	///     The <paramref name="grammars" /> travel with the continuation instead of with the method, so that the same
 	///     property reads in the active voice (<c>with message equal to …</c>) when it is nested under another
 	///     expectation and as a standalone sentence (<c>has message equal to …</c>) otherwise.
@@ -197,36 +196,170 @@ public static class PropertyResult
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
 		bool includeValueInContext = false)
-		: IStringPropertyResult<TType, TThat>
 		where TThat : IThat<TValue>
 	{
-		/// <inheritdoc cref="IStringPropertyResult{TType, TThat}.Validation" />
-		Action<string?, string>? IStringPropertyResult<TType, TThat>.Validation => validation;
+		/// <summary>
+		///     …contains the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
+		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
+		///     string always does.
+		/// </remarks>
+		public StringEqualityResult<TType, TThat> Containing(
+			string expected)
+		{
+			ThrowIfNullOrEmpty(expected, nameof(expected));
+			validation?.Invoke(expected, nameof(expected));
+			StringEqualityOptions options = new(nameof(expected));
+			options.Containing();
+			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
+		}
 
-		/// <inheritdoc
-		///     cref="IStringPropertyResult{TType, TThat}.Compare{TResult}(string?, StringEqualityOptions, bool, Func{ExpectationBuilder, TThat, StringEqualityOptions, TResult})" />
-		TResult IStringPropertyResult<TType, TThat>.Compare<TResult>(
+		/// <summary>
+		///     …ends with the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
+		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
+		///     string always does.
+		/// </remarks>
+		public StringEqualityResult<TType, TThat> EndingWith(
+			string expected)
+		{
+			ThrowIfNullOrEmpty(expected, nameof(expected));
+			validation?.Invoke(expected, nameof(expected));
+			StringEqualityOptions options = new(nameof(expected));
+			options.AsSuffix();
+			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
+		}
+
+		/// <summary>
+		///     …is equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public StringEqualityTypeResult<TType, TThat> EqualTo(
+			string? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			StringEqualityOptions options = new(nameof(expected));
+			return new StringEqualityTypeResult<TType, TThat>(Build(expected, options, false), subject, options);
+		}
+
+		/// <summary>
+		///     …does not contain the <paramref name="unexpected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
+		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
+		///     string always does.
+		/// </remarks>
+		public StringEqualityResult<TType, TThat> NotContaining(
+			string unexpected)
+		{
+			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
+			validation?.Invoke(unexpected, nameof(unexpected));
+			StringEqualityOptions options = new(nameof(unexpected));
+			options.Containing();
+			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
+		}
+
+		/// <summary>
+		///     …does not end with the <paramref name="unexpected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
+		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
+		///     string always does.
+		/// </remarks>
+		public StringEqualityResult<TType, TThat> NotEndingWith(
+			string unexpected)
+		{
+			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
+			validation?.Invoke(unexpected, nameof(unexpected));
+			StringEqualityOptions options = new(nameof(unexpected));
+			options.AsSuffix();
+			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
+		}
+
+		/// <summary>
+		///     …is not equal to the <paramref name="unexpected" /> value.
+		/// </summary>
+		public StringEqualityTypeResult<TType, TThat> NotEqualTo(
+			string? unexpected)
+		{
+			validation?.Invoke(unexpected, nameof(unexpected));
+			StringEqualityOptions options = new(nameof(unexpected));
+			return new StringEqualityTypeResult<TType, TThat>(Build(unexpected, options, true), subject, options);
+		}
+
+		/// <summary>
+		///     …does not start with the <paramref name="unexpected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> or empty <paramref name="unexpected" /> throws, because neither is a substring
+		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
+		///     string always does.
+		/// </remarks>
+		public StringEqualityResult<TType, TThat> NotStartingWith(
+			string unexpected)
+		{
+			ThrowIfNullOrEmpty(unexpected, nameof(unexpected));
+			validation?.Invoke(unexpected, nameof(unexpected));
+			StringEqualityOptions options = new(nameof(unexpected));
+			options.AsPrefix();
+			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
+		}
+
+		/// <summary>
+		///     …starts with the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     A <see langword="null" /> or empty <paramref name="expected" /> throws, because neither is a substring
+		///     anything could meaningfully be checked against: <see langword="null" /> never matches and the empty
+		///     string always does.
+		/// </remarks>
+		public StringEqualityResult<TType, TThat> StartingWith(
+			string expected)
+		{
+			ThrowIfNullOrEmpty(expected, nameof(expected));
+			validation?.Invoke(expected, nameof(expected));
+			StringEqualityOptions options = new(nameof(expected));
+			options.AsPrefix();
+			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
+		}
+
+		private static void ThrowIfNullOrEmpty(string value, string paramName)
+		{
+#pragma warning disable S3236 // The caller information would name the local parameter instead of the public one it forwards
+			value.ThrowIfNull(paramName);
+#pragma warning restore S3236
+			if (value.Length == 0)
+			{
+				// ReSharper disable once LocalizableElement
+				throw Tracing.WriteException(new ArgumentException($"The '{paramName}' string cannot be empty.", paramName));
+			}
+		}
+
+		private ExpectationBuilder Build(
 			string? expected,
 			StringEqualityOptions options,
-			bool isNegated,
-			Func<ExpectationBuilder, TThat, StringEqualityOptions, TResult> createResult)
-			=> createResult(subject.Get().ExpectationBuilder
-					.AddConstraint(
-						(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
-							Mapper: mapper, PropertyExpression: propertyExpression, Options: options, Invert: isNegated),
-						static (state, it, constraintGrammars) =>
-						{
-							StringConstraint<TValue> constraint = new(
-								state.IncludeValueInContext,
-								it,
-								constraintGrammars | state.Grammars,
-								state.Expected,
-								state.Mapper,
-								state.PropertyExpression,
-								state.Options);
-							return state.Invert ? constraint.Invert() : constraint;
-						}),
-				subject, options);
+			bool invert)
+			=> subject.Get().ExpectationBuilder
+				.AddConstraint(
+					(IncludeValueInContext: includeValueInContext, Grammars: grammars, Expected: expected,
+						Mapper: mapper, PropertyExpression: propertyExpression, Options: options, Invert: invert),
+					static (state, it, constraintGrammars) =>
+					{
+						StringConstraint<TValue> constraint = new(
+							state.IncludeValueInContext,
+							it,
+							constraintGrammars | state.Grammars,
+							state.Expected,
+							state.Mapper,
+							state.PropertyExpression,
+							state.Options);
+						return state.Invert ? constraint.Invert() : constraint;
+					});
 	}
 
 	private static ExpectationBuilder AddStructConstraint<TValue, TProperty>(

@@ -90,7 +90,6 @@ property:
 | `long`         | `ILongPropertyResult<TResult>`         | equality, ordering, `Between` and their negations            |
 | `TimeSpan`     | `ITimeSpanPropertyResult<TResult>`     | equality, ordering, `Between` and their negations            |
 | `DateTimeKind` | `IDateTimeKindPropertyResult<TResult>` | `EqualTo`, `NotEqualTo`                                      |
-| `string`       | `IStringPropertyResult<TType, TThat>`  | `EqualTo`, `StartingWith`, `Containing`, …, string options   |
 
 The operators are extension methods in the `aweXpect` namespace. They check the arguments with your `Validation`, which
 receives the value and the name of its parameter, e.g. `minimum`, and pass a `PropertyComparison<T>` to your `Compare`
@@ -121,9 +120,9 @@ against `null`, and `comparison.AppendExpectation(stringBuilder)` writes the com
 but the text does not, so that you can place the "not" where your sentence needs it, e.g. "has duration not greater
 than …" or "does not have duration greater than …".
 
-For a `string` property, `Compare` receives the expected value, the `StringEqualityOptions` and whether the comparison
-has to be inverted, and creates the result with the factory it receives. The caller can still add options like
-`IgnoringCase()` after the operator, so read the options only when the constraint is evaluated.
+A `string` property is not part of this pattern yet. Its operators return results that offer the string options, e.g.
+`IgnoringCase()`, and stay instance methods of `PropertyResult.String<TValue, TType, TThat>` until there is an
+interface for them.
 
 ## Time tolerances
 
