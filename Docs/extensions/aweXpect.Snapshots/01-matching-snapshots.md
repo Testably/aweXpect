@@ -20,7 +20,7 @@ public class AlbumTests
 The snapshot is the file `AlbumTests.Describes.awexpect-snapshot.txt` in the directory of the test file: the first part
 is the name of the test file without its extension, the second part the name of the test method. Both are determined at
 compile time, so no reflection is needed and the expectation also works under Native AOT. The marker
-`.awexpect-snapshot.` keeps the snapshots apart from other files, e.g. those of other snapshot tools.
+`.awexpect-snapshot.` keeps the snapshots apart from other files.
 
 Before the first run the snapshot does not exist yet, so the expectation fails with:
 

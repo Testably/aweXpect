@@ -39,11 +39,6 @@
 		</AssemblyAttribute>
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="ThatPublicApi.MatchesPublicApiSnapshot.FileTests.*.awexpect-snapshot.*" DependentUpon="ThatPublicApi.MatchesPublicApiSnapshot.FileTests.cs"/>
-		<None Update="ThatPublicApi.MatchesPublicApiSnapshot.Tests.*.awexpect-snapshot.*" DependentUpon="ThatPublicApi.MatchesPublicApiSnapshot.Tests.cs"/>
-	</ItemGroup>
-
 	<!-- A project reference does not import the build targets of the package, so they are imported here. -->
 	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
 

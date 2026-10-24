@@ -22,10 +22,6 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="SourceRootsTests.*.awexpect-snapshot.*" DependentUpon="SourceRootsTests.cs"/>
-	</ItemGroup>
-
 	<!-- A project reference does not import the build targets of the package, so they are imported here. -->
 	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Snapshots/buildTransitive/aweXpect.Snapshots.targets"/>
 

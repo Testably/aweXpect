@@ -45,8 +45,8 @@ The snapshot is stored as `<Class>.<Method>.awexpect-snapshot.txt` next to the t
 of the test file. A missing or different snapshot fails the test and writes the actual value to
 `<Class>.<Method>.awexpect-snapshot.pending.txt`; rename it to `<Class>.<Method>.awexpect-snapshot.txt` to accept it,
 or set the environment variable `AWEXPECT_ACCEPT_SNAPSHOTS` to `all` to accept all changed snapshots of a test run (or
-to `new` to only add the missing ones). Snapshots of version 0.1 are named `.snapshot.` instead, see
-[Migrating from 0.1](./03-naming-snapshots.md#migrating-from-01).
+to `new` to only add the missing ones). In Rider and Visual Studio, the snapshots are
+[nested under their test file](./03-naming-snapshots.md#nesting-in-the-ide).
 `OrphanedSnapshots.CheckAsync()` in the teardown of the test run reports the snapshots that no test uses any more on a
 build server, and deletes them while accepting all changes.
 [Comparers](./08-comparers.md) decide whether a value matches its snapshot instead of the built-in

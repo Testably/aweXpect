@@ -45,4 +45,34 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+	    Nests each snapshot under its test file in Rider and Visual Studio, which take the nesting from the evaluation of
+	    the project, so it is set on the items and not in a target. Test file names and snapshot names both contain dots,
+	    so the test file is the longest prefix of up to eight parts of the file name for which a `.cs` file exists in the
+	    same directory; a later match overwrites an earlier, shorter one. A `DependentUpon` that is already set is kept.
+	    The `%` of the prefix is escaped again, as MSBuild would otherwise read an escaped name part, e.g. `%2E`, as a dot.
+	    `<AweXpectSnapshotsNestFiles>false</AweXpectSnapshotsNestFiles>` turns it off.
+	-->
+	<ItemGroup Condition="'$(AweXpectSnapshotsNestFiles)' != 'false' and '$(Language)' == 'C#'">
+		<None Update="**/*.awexpect-snapshot.*">
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){1}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){2}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){3}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){4}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){5}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){6}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<_AweXpectSnapshotsPrefix>$([System.Text.RegularExpressions.Regex]::Match('%(Filename)', '^[^.]+(\.[^.]+){7}(?=\.)').Value.Replace('%', '%25'))</_AweXpectSnapshotsPrefix>
+			<_AweXpectSnapshotsTestFile Condition="'%(_AweXpectSnapshotsPrefix)' != '' and Exists('%(RootDir)%(Directory)%(_AweXpectSnapshotsPrefix).cs')">%(_AweXpectSnapshotsPrefix).cs</_AweXpectSnapshotsTestFile>
+			<DependentUpon Condition="'%(DependentUpon)' == '' and '%(_AweXpectSnapshotsTestFile)' != ''">%(_AweXpectSnapshotsTestFile)</DependentUpon>
+		</None>
+	</ItemGroup>
+
 </Project>

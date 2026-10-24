@@ -23,10 +23,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="ApiApprovalTests.*.awexpect-snapshot.txt" DependentUpon="ApiApprovalTests.cs"/>
-	</ItemGroup>
-
-	<ItemGroup>
 		<!-- The netstandard2.0 build of aweXpect.Json references a newer System.Text.Json than the runtime of the tests provides. -->
 		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>
